@@ -1,0 +1,1 @@
+export const FCM_CLOUD_SEND_MESSAGE_URL: string = 'https://fcm.googleapis.com/fcm/send';
