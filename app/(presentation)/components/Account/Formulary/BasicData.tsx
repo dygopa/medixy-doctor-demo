@@ -1,4 +1,4 @@
-import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
+import { FormInput, FormSelect } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { ChangeEvent, useContext, useRef } from "react";
 import { IUserContext, UserContext } from "../context/UserContext";
@@ -114,7 +114,7 @@ export default function BasicData ({account, setAccount}: IFormularyProps){
                                 <FormInput
                                     type={"text"}
                                     placeholder="Escribe tu CURP..."
-                                    min={0}
+                                    disabled={true}
                                     defaultValue={account?.curp}
                                     className="form-control w-full"
                                     onChange={(e) =>
@@ -137,29 +137,30 @@ export default function BasicData ({account, setAccount}: IFormularyProps){
                             </div>
                             <div className="flex flex-col justify-between items-start relative gap-1">
                                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">Sexo</p>
-                                <FormInput
-                                    type={"text"}
-                                    placeholder="Escribe tu sexo..."
-                                    min={0}
+                                <FormSelect
                                     defaultValue={account?.sex}
                                     className="form-control w-full"
                                     onChange={(e) =>
-                                        setAccount({ ...account, sex: e.target.value })
+                                        setAccount({ ...account, sex: +e.target.value })
                                     }
-                                />
+                                >
+                                    <option value="">Seleciona tu sexo</option>
+                                    <option value={1}>Femenino</option>
+                                    <option value={2}>Masculino</option>
+                                </FormSelect>
                             </div>
                             <div className="flex flex-col justify-between items-start relative gap-1">
                                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">País nacimiento</p>
-                                <FormInput
-                                    type={"text"}
-                                    placeholder="Escribe tu pais de nacimiento..."
-                                    min={0}
+                                <FormSelect
                                     defaultValue={account?.country}
                                     className="form-control w-full"
                                     onChange={(e) =>
                                         setAccount({ ...account, country: e.target.value })
                                     }
-                                />
+                                >
+                                    <option value="">Tu pais de nacimiento</option>
+                                    <option value="MEX">México</option>
+                                </FormSelect>
                             </div>
                             <div className="flex flex-col justify-between items-start relative gap-1">
                                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">Tipo de persona</p>

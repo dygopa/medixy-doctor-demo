@@ -79,10 +79,10 @@ function Main() {
               <Link
                 href={DashboardRoutesEnum.Dashboard}
                 className="sidebar-logo flex justify-center pt-3 pb-3"
-                title="Página de inicio de Prosit"
+                title="Página de inicio de Noodus"
               >
                 <Image
-                  src="/logo-white.png"
+                  src="/logo-white-noodus.png"
                   width={110}
                   height={110}
                   alt="App logo white"

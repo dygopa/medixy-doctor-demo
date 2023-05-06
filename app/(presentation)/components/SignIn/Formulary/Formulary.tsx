@@ -6,6 +6,8 @@ import { FormularyContext, IFormularyContext } from "./context/FormularyContext"
 import { DashboardRoutesEnum } from "(presentation)/(routes)/dashboardRoutes";
 import { AuthFailure, authFailuresEnum } from "domain/core/failures/auth/authFailure";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
+import Link from "next/link";
+import { VALIDATE_EMAIL } from "(presentation)/(utils)/errors-validation";
 
 export default function Formulary() {
   const { state, actions, dispatch } = useContext<IFormularyContext>(FormularyContext);
@@ -22,39 +24,43 @@ export default function Formulary() {
     password: "",
   })
 
-  const handleEmail = (value: string) => {
-    setErrors({ ...errors, global: "" });
+  const handleEmail = () => {
+    let hasError = false
 
-    if (value.length <= 2) {
-      setErrors({ ...errors, email: "El correo debe contener más de 2 carácteres" })
-    } else {
-      setErrors({ ...errors, email: "" })
+    if (values.email.length < 6) {
+      setErrors({ ...errors, email: "El correo debe contener más de 6 carácteres" })
+      hasError = true;
+    } if(!VALIDATE_EMAIL(values.email)){
+      setErrors({ ...errors, email: "El email debe ser correcto" })
+      hasError = true
+    }else {
+      errors["email"] = ""
     }
-    
-    setValues({ ...values, email: value });
+
+    console.log(values.email, errors)
+
+    return hasError;
   }
 
-  const handlePassword = (value: string) => {
-    setErrors({ ...errors, global: "" });
+  const handlePassword = () => {
 
-    if (value.length <= 2) {
-      setErrors({ ...errors, password: "La contraseña debe contener más de 2 carácteres" })
+    if (values.password.length < 6) {
+      setErrors({ ...errors, password: "La contraseña debe contener más de 6 carácteres" })
+      return true
     } else {
       setErrors({ ...errors, password: "" })
+      return false
     }
     
-    setValues({ ...values, password: value });
   }
-
+  
   const onSubmit = (e: any) => {
+
     e.preventDefault();
 
-    handleEmail(values.email);
-    handlePassword(values.password);
-
-    if (errors.password.length !== 0 || errors.email.length !== 0) {
+    if(handleEmail() || handlePassword()){
       return;
-    } 
+    }
 
     signInUser({ email: values.email, password: values.password })(dispatch);
   }
@@ -65,7 +71,7 @@ export default function Formulary() {
         setErrors({ ...errors, global: "Las credenciales son invalidas" })
         break;
       case authFailuresEnum.userNotFound:
-        setErrors({ ...errors, global: "Las credenciales son invalidas" })
+        setErrors({ ...errors, global: "No existe una cuenta con estas credenciales" })
         break;
       case authFailuresEnum.tooManyRequest:
         setErrors({ ...errors, global: "Se ha excedido el limite de intentos de inicio de sesión" })
@@ -90,15 +96,13 @@ export default function Formulary() {
 
   return (
     <form onSubmit={(e: any) => onSubmit(e)} className="w-full relative">
-      <AlertComponent variant="error" show={errors.global !== ""} description={errors.global} />
+      <AlertComponent variant="error" show={error !== null} description={errors.global} />
       <AlertComponent variant="success" show={successful === true} description="Redireccionando a tu cuenta..." />
-      <div className="mb-3">
+      <div className="w-[70%] mx-auto flex flex-col justify-center items-center gap-2 mb-8 text-center">
         <h2 className="text-2xl font-bold text-center intro-x xl:text-3xl xl:text-left">
           Inicio de sesión
         </h2>
-      </div>
-      <div className="mb-8">
-        <span className="font-light text-lg">
+        <span className="font-light text-lg text-center">
           Escribe tus credenciales para acceder al panel de proveedores
         </span>
       </div>
@@ -109,7 +113,7 @@ export default function Formulary() {
             className="w-full py-3 pr-10"
             placeholder="Correo electrónico"
             value={values.email}
-            onChange={(e: any) => handleEmail(e.target.value)}
+            onChange={(e: any) => setValues({ ...values, email: e.target.value }) }
           />
           <Lucide
             icon="AtSign"
@@ -130,7 +134,7 @@ export default function Formulary() {
             className="w-full py-3 pr-10"
             placeholder="Contraseña"
             value={values.password}
-            onChange={(e: any) => handlePassword(e.target.value)}
+            onChange={(e: any) => setValues({ ...values, password: e.target.value })}
           />
           <Lucide
             icon="Lock"
@@ -144,17 +148,17 @@ export default function Formulary() {
           <span className="text-danger"></span>
         </div>
       </div>
-      <div className="w-full flex justify-center">
-        <svg className="animate-spin h-5 w-5" viewBox="0 0 24 24" />
+      <div className="w-full flex flex-col justify-center items-center gap-4 text-center mt-8">
+        <Button disabled={loading || values.password === "" || values.email === "" } variant="primary" type="submit" className="w-full py-2">
+          {loading ? (
+            "Cargando"
+          ) : (
+            "Acceder a mi cuenta"
+          )}
+          
+        </Button>
+        <Link className="text-base text-primary font-light" href="/register">No tengo una cuenta, <span className="font-semibold">crear una cuenta</span></Link>
       </div>
-      <Button disabled={loading} variant="primary" type="submit" className="py-3 px-8 mb-4">
-        {loading ? (
-          "Cargando"
-        ) : (
-          "Acceder a mi cuenta"
-        )}
-        
-      </Button>
     </form>
   );
 }

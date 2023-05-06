@@ -57,8 +57,8 @@ export class AuthRepository implements IAuthRepository {
 
       return "SUCCESS";
     } catch (error) {
-      const exception = error as any;
-      return new AuthFailure(authFailuresEnum.serverError);
+      const exception = error as AuthFailure;
+      return new AuthFailure(exception.code);
     }
   }
 

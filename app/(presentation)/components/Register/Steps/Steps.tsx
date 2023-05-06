@@ -4,9 +4,9 @@ import { IStepsContext, StepsContext } from './context/StepsContext';
 
 export default function Steps() {
 
-    const { state } = useContext<IStepsContext>(StepsContext);
+    const { state, actions, dispatch } = useContext<IStepsContext>(StepsContext);
+    const { changeStep } = actions;
     const { data: active } = state.step;
-
 
     let steps_list = [
         {
@@ -25,8 +25,11 @@ export default function Steps() {
 
     const StepComponent = (data:{title: string, value: number}) => {
         return(
-            <div className='flex flex-col justify-center items-center gap-2 text-center'>
+            <div 
+            onClick={()=>{ active > data.value && changeStep(data.value - 1)(dispatch) }}
+            className='flex flex-col justify-center items-center gap-2 text-center'>
                 <p className={twMerge([
+                    active > data.value && "cursor-pointer",
                     'text-base block relative text-gray-950',
                     active === data.value ? "font-normal" : "font-light"
                 ])}>

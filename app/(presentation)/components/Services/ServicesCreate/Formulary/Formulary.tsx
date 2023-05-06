@@ -148,7 +148,7 @@ export default function Formulary({userId}:{
                         <option value={1}>Activo</option>
                         <option value={2}>Borrador</option>
                     </FormSelect>
-                    <Button disabled={loadingCreationService || localities.length === 0 || formData.service_category_id === 0} onClick={()=>{ 
+                    <Button disabled={loadingCreationService || localities.length === 0 || formData.service_category_id === 0 || formData.name === ""} onClick={()=>{ 
                         createUserService({...formData, id: userId}, localities)(dispatch) 
                         //console.log(localities, {...formData, id: userId})
                     }} variant="primary" className="w-1/2">{loadingCreationService ? "Creando..." : "Crear servicio"}</Button>
@@ -177,6 +177,7 @@ export default function Formulary({userId}:{
                                         <option value="">Seleccione la categoria</option>
                                         {categories && [...categories as Array<any>].map((elem, i) => <option key={i} value={elem["id"]}>{elem["name"]}</option> )}
                                     </FormSelect>
+
                                 </div>
                                 <div className="flex justify-between items-start relative w-full gap-3">
                                     <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">Servicio 
@@ -189,11 +190,10 @@ export default function Formulary({userId}:{
                                         className="form-control w-[70%]"
                                         onChange={(e)=> setFormData({ ...formData, name: e.target.value }) }
                                     />
+
                                 </div>
                                 <div className="flex justify-between items-start relative w-full gap-3">
-                                    <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">Cargar imagen
-                                        <span className="text-primary font-bold">*</span>
-                                    </p>
+                                    <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">Cargar imagen</p>
                                     <FormInput
                                         type="file"
                                         className="form-control w-[70%]"

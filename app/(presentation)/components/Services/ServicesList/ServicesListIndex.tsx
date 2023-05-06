@@ -38,10 +38,6 @@ export default function ServicesListIndex() {
 
       <div className="mt-10">
         <ServicesProvider>
-          <div className="mt-4">
-            <Filters/>
-          </div>
-
           <div className="mt-8">
             <Table user={user}/>
           </div>
