@@ -39,8 +39,8 @@ export default function FormularyCURP() {
 
     const onSubmit = () => {
 
-        if (values.curp.length <= 2 || values.curp.length === 0 ) {
-            setErrors({ ...errors, curp: "El CURP debe tener más de 2 caracteres" })
+        if (values.curp.length <= 9) {
+            setErrors({ ...errors, curp: "El CURP debe tener más de 10 caracteres" })
             return;
         } else {
             setErrors({ ...errors, curp: "" })
@@ -90,7 +90,7 @@ export default function FormularyCURP() {
 
             <div className="w-full text-center">
                 <Link href="/register" className="text-primary font-light text-base">No sabes cual es tu CURP?, visita este sitio</Link>
-                <Button onClick={() => onSubmit()} disabled={loading} variant="primary" type="submit" className="mt-4 w-full">
+                <Button onClick={() => onSubmit()} disabled={loading || values.curp.length === 0} variant="primary" type="submit" className="mt-4 w-full">
                     {loading ? (
                     "Cargando"
                     ) : (

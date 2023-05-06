@@ -11,6 +11,7 @@ import Link from "next/link";
 import { twMerge } from "tailwind-merge";
 import { FiCheck } from "react-icons/fi";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
+import { VALIDATE_EMAIL, VALIDATE_STRING } from "(presentation)/(utils)/errors-validation";
 
 export default function Formulary() {
   const { state, actions, dispatch } = useContext<IRegisterContext>(RegisterContext);
@@ -42,8 +43,13 @@ export default function Formulary() {
     phone_number: "",
   })
 
+  const [wrongEmail, setWrongEmail] = useState(false)
   const [termsContidions, setTermsContidions] = useState(false)
   const [activePolicy, setActivePolicy] = useState(false)
+
+  const [wrongName, setWrongName] = useState(false)
+  const [wrongFirstName, setWrongFirstName] = useState(false)
+  const [wrongLastName, setWrongLastName] = useState(false)
 
   const CheckboxComponent = ({active, customClick}:{active:boolean;customClick:Function;}) => {
     return(
@@ -88,17 +94,20 @@ export default function Formulary() {
     values.phone_number === "" && list.push("phone_number")
 
     setListOfErrors(list)
-
-    if (list.length > 0){
+    if(list.length > 0){
       console.log(listOfErrors)
-    //  console.log(values)
-    return;
-    } else{
-      formData = {...formData as Object, ...values}
-      registerUser(formData)(dispatch);
-      console.log(formData)
-    //  //changeStep(2)(stepDispatch)
+      return;
     }
+    if(!VALIDATE_EMAIL(values.email)){
+      setWrongEmail(true)
+      return;
+    }else{
+      setWrongEmail(false)
+    }
+
+    formData = {...formData as Object, ...values}
+    registerUser(formData)(dispatch);
+    console.log(formData)
 
   }
 
@@ -149,6 +158,7 @@ export default function Formulary() {
           value={values.names}
           onChange={(e: any) => setValues({...values, names: e.target.value})}
         />
+        {wrongName && <span className="text-red-500 mt-1">El nombre no puede contener números</span>}
         {listOfErrors.includes("names") && <span className="text-red-500 mt-1">Campo requerido</span>}
       </div>
       <div className="relative w-full grid grid-cols-2 justify-between items-center gap-3">
@@ -160,6 +170,7 @@ export default function Formulary() {
             value={values.first_lastname}
             onChange={(e: any) => setValues({...values, first_lastname: e.target.value})}
           />
+          {wrongFirstName && <span className="text-red-500 mt-1">El primer apellido no puede contener números</span>}
           {listOfErrors.includes("first_lastname") && <span className="text-red-500 mt-1">Campo requerido</span>}
         </div>
         <div className="relative w-full">
@@ -170,6 +181,7 @@ export default function Formulary() {
             value={values.second_lastname}
             onChange={(e: any) => setValues({...values, second_lastname: e.target.value})}
           />
+          {wrongLastName && <span className="text-red-500 mt-1">El segundo apellido no puede contener números</span>}
           {listOfErrors.includes("second_lastname") && <span className="text-red-500 mt-1">Campo requerido</span>}
         </div>
 
@@ -193,6 +205,7 @@ export default function Formulary() {
           onChange={(e: any) => setValues({...values, email: e.target.value})}
         />
         {listOfErrors.includes("email") && <span className="text-red-500 mt-1">Campo requerido</span>}
+        {wrongEmail && <span className="text-red-500 mt-1">El email debe ser correcto</span>}
       </div>
 
       <div className="relative w-full">

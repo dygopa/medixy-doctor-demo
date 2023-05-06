@@ -6,7 +6,7 @@ import {
     FormSwitch
   } from "(presentation)/components/core/BaseComponents/Form";
 import SearchLocality from "(presentation)/components/core/SearchLocality/SearchLocality";
-import { useState, useEffect, SetStateAction, useContext, ChangeEvent } from "react";
+import { useState, useEffect, SetStateAction, useContext, ChangeEvent, useMemo } from "react";
 import { FiCheck, FiCheckCircle, FiX } from "react-icons/fi";
 import { BiBuildingHouse } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
@@ -64,9 +64,12 @@ export default function Formulary({userId}:{
         },
     ]
 
-    const StepComponent = (data:{title: string, value: number}) => {
+    const StepComponent = (data:{title: string; value: number; index:number}) => {
         return(
-            <div className={twMerge([
+            <div 
+            onClick={()=>{ data["index"] === 0 && setActive(0) }}
+            className={twMerge([
+                data["index"] === 0 && "cursor-pointer",
                 "w-full flex justify-start items-center gap-3 bg-white border  rounded-md p-4",
                 active === data["value"] ? 'bg-white border-slate-200' : 'bg-transparent border-transparent'
             ])}>
@@ -95,7 +98,7 @@ export default function Formulary({userId}:{
                     Si tu consultorio no existe dentro de la plataforma puedes crearlo para tener acceso a sus servicios
                 </p>
                 <div className="w-full flex flex-col justify-start items-start gap-3">
-                    {steps.map((s, i)=> <StepComponent title={s["title"]} value={s["value"]} key={i} /> )}
+                    {steps.map((s, i)=> <StepComponent title={s["title"]} value={s["value"]} index={i} key={i} /> )}
                 </div>
             </div>
         )
@@ -173,8 +176,7 @@ export default function Formulary({userId}:{
                                 }
                                 
                                 <div className="w-full flex justify-end items-center gap-8 mt-3">
-                                    <p onClick={()=>{ setActive(1) }} className="w-fit text-primary font-medium text-sm cursor-pointer">Crear desde cero</p>
-                                    <Button onClick={()=>{ setActive(1) }} disabled={Object.keys(formData).length === 0} variant="primary">Continuar</Button>
+                                    <Button onClick={()=>{ setActive(1) }} disabled={formData?.parent_location_id === 0} variant="primary">Continuar</Button>
                                 </div>
                             </div>
                         </div>
@@ -218,6 +220,10 @@ export default function Formulary({userId}:{
         loadAPI()
     }, [loadedMedicalCenters])
 
+    useMemo(() => {
+        if (createUserLocalitySuccess) window.location.href = "/localities";
+    }, [createUserLocalitySuccess])
+
     return (
         <>
             
@@ -226,7 +232,7 @@ export default function Formulary({userId}:{
 
             <div className="w-full flex justify-between items-start">
                 <h2 className="mr-5 text-2xl font-bold truncate">Nuevo consultorio</h2>
-                <Button disabled={createUserLocalityLoading} onClick={()=>{
+                <Button disabled={createUserLocalityLoading || formData?.parent_location_id === 0 || formData?.name === ""} onClick={()=>{
                     console.log(formData)
                     createUserLocality({...formData, id: userId})(dispatch)
                 }} variant="primary">{createUserLocalityLoading ? "Creando..." : "Crear consultorio"}</Button>
@@ -289,6 +295,7 @@ export default function Formulary({userId}:{
                                             type={"text"}
                                             placeholder="Escribe la dirección del consultorio..."
                                             min={0}
+                                            disabled={true}
                                             value={formData.address}
                                             className="form-control w-[70%]"
                                             onChange={(e:any) => {

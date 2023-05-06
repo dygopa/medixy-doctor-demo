@@ -48,6 +48,10 @@ export default function Formulary({userId}:{
     }, [userId, pathname]);
   
     useMemo(()=> setFormData(data as unknown as ILocality),[successful])
+    
+    useMemo(() => {
+        if (successfulUpdate) window.location.href = "/localities";
+    }, [successfulUpdate])
 
     return (
         <>

@@ -72,10 +72,15 @@ export default function MedicalConsultationList() {
 
   if (consultations.length === 0 && sucessful)
     return (
-      <ErrorMessage
-        description="No posees pacientes para esta fecha"
-        retry={getMedicalConsultationDispatch}
-      />
+      <div className="w-full h-fit flex flex-col justify-between items-center bg-white rounded-md shadow-md p-4">
+        <div className="w-full h-[6vh] border-b flex justify-between items-center pb-1">
+          <p className='font-semibold text-lg text-slate-900'>Citas pendientes</p>
+        </div>
+        <div className="w-full h-[30vh] flex flex-col justify-center items-center gap-2 rounded-md overflow-y-auto text-center">
+        <p className="font-medium text-lg text-slate-900">Nada por aquí aún</p>
+          <p className="font-light text-sm text-slate-500">No tienes citas para esta fecha aún en la plataforma, te recomendamos crear <Link href="/services" className="font-semibold text-primary">servicios</Link> para exponerte a los pacientes</p>
+        </div>
+      </div>
     )
 
   return (

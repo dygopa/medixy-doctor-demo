@@ -26,7 +26,7 @@ export default function Navigation() {
           title="Página de inicio de Prosit"
         >
           <Image
-            src="/logo-white.png"
+            src="/logo.png"
             width={110}
             height={110}
             alt="App logo white"

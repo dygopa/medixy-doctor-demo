@@ -2,8 +2,9 @@ import MedicalConsultationNext from "./MedicalConsultationNext/MedicalConsultati
 import MedicalConsultationCalendar from "./MedicalConsultationCalendar/MedicalConsultationCalendar";
 import MedicalConsultationList from "./MedicalConsultationList/MedicalConsultationList";
 import MedicalConsultationListProvider from "./MedicalConsultationList/context/MedicalConsultationListContext";
+import { IUser } from "domain/core/entities/userEntity";
 
-function DoctorsCase() {
+function DoctorsCase({account}:{account:IUser}) {
   return (
     <div className="w-full flex flex-col justify-start items-center gap-4">
       
@@ -12,7 +13,7 @@ function DoctorsCase() {
         <div className="w-[60%] h-full flex justify-between items-center bg-white rounded-md px-5 shadow-md">
           <div className="w-3/5 h-full flex flex-col justify-center items-start gap-2">
             <p className='font-medium text-base text-slate-900'>Tablero</p>
-            <p className='font-light text-xl text-slate-900'>Bienvenido a Prosit, <b className='font-bold'>Dylan González</b></p>
+            <p className='font-light text-xl text-slate-900'>Bienvenido a Noodus, <b className='font-bold'>{account.names} {account.firstName}</b></p>
             <p className='font-light text-sm text-slate-500'>Mantén un seguimiento de tus citas médicos y asegúrate de estar preparado para cada consulta</p>
           </div>
           <div className="w-[10rem] h-[10rem]">
