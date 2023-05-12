@@ -26,7 +26,7 @@ export default function Navigation() {
           title="Página de inicio de Prosit"
         >
           <Image
-            src="/logo.png"
+            src="/logo-white.png"
             width={110}
             height={110}
             alt="App logo white"
@@ -53,8 +53,9 @@ export default function Navigation() {
                 <Menu
                   className={clsx({
                     // Animation
-                    [`animate-fill-mode-forwards animate-delay ${menu.ignore && "hidden"}`]:
-                      menu.pathname !== pathname,
+                    [`animate-fill-mode-forwards animate-delay ${
+                      menu.ignore && "hidden"
+                    }`]: menu.pathname !== pathname,
                   })}
                   menu={menu}
                   isActive={menu.pathname === pathname}
@@ -115,8 +116,9 @@ export default function Navigation() {
                 key={menuKey}
                 className={clsx({
                   // Animation
-                  [`animate-[0.4s_ease-in-out_0.1s_intro-menu] animate-fill-mode-forwards animate-delay ${menu.ignore && "hidden"}`]:
-                    menu.pathname !== pathname,
+                  [`animate-[0.4s_ease-in-out_0.1s_intro-menu] animate-fill-mode-forwards animate-delay ${
+                    menu.ignore && "hidden"
+                  }`]: menu.pathname !== pathname,
                 })}
                 menu={menu}
                 isActive={menu.pathname === pathname}
