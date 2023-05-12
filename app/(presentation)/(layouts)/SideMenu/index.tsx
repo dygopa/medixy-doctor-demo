@@ -21,34 +21,32 @@ function SideMenu({
   children: React.ReactNode;
   navigation: INavigation[];
 }) {
-
-  
   const { state, actions, dispatch } = useContext<IAuthContext>(AuthContext);
   const { getUserAuthenticated } = actions;
 
   const { data, loading, error, successful } = state.getUserAuthenticated;
-  
-  const [loadedUser, setLoadedUser] = useState(false)
+
+  const [loadedUser, setLoadedUser] = useState(false);
 
   const loadUser = () => {
-    getUserAuthenticated()(dispatch)
-    setLoadedUser(true)
-  }
+    getUserAuthenticated()(dispatch);
+    setLoadedUser(true);
+  };
 
-  useEffect(()=>{
-    loadUser()
-  }, [loadedUser])
+  useEffect(() => {
+    loadUser();
+  }, [loadedUser]);
 
-  useMemo(()=>{
-    if(error !== null) redirect("/login")
-  }, [error])
-  
+  useMemo(() => {
+    if (error !== null) redirect("/login");
+  }, [error]);
+
   return (
     <div className="py-5 md:py-0 -mx-3 px-3 sm:-mx-8 sm:px-8 bg-primary dark:bg-transparent">
       <MobileMenu />
       <div className="flex mt-[4.7rem] md:mt-0 overflow-hidden">
         {/* BEGIN: Side Menu */}
-        <nav className="hidden  md:block md:w-[105px] xl:w-[250px] pl-5 pr-6 py-5 overflow-x-hidden z-10 h-[101vh] fixed">
+        <nav className="hidden  md:block md:w-[105px] xl:w-[250px] pl-5 pr-6 py-5 overflow-hidden z-10 h-[101vh] fixed">
           <Navigation />
         </nav>
         {/* END: Side Menu */}
