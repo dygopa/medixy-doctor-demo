@@ -1,9 +1,8 @@
 import { useRouter, useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
-import Button from "../BaseComponents/Button";
+import { useEffect, useState } from "react";
 
 interface IPaginationProps {
-  page: string | number;
+  page: string;
   limit: number;
   total: number;
   maxPreviousPages?: number;
@@ -14,15 +13,15 @@ export default function Paginate({
   page,
   limit,
   total,
-  maxPreviousPages = 5,
-  maxNextPages = 5,
+  maxPreviousPages = 4,
+  maxNextPages = 4,
 }: IPaginationProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const pageParam = searchParams.get("page");
 
-  const currentPage = parseInt(page.toString(), 10);
+  const currentPage = parseInt(page, 10);
 
   const [nextPages, setNextPages] = useState<number[]>([]);
   const [previousPages, setPreviousPages] = useState<number[]>([]);
@@ -44,7 +43,9 @@ export default function Paginate({
     router.push(window.location.pathname + locationSearch);
   };
 
-  const getNextPages = useCallback(() => {
+  const getNextPages = () => {
+    if (total === 0) return;
+
     const nextPagesArray: number[] = [];
 
     for (
@@ -52,7 +53,7 @@ export default function Paginate({
       nextPage < currentPage + maxNextPages;
       nextPage++
     ) {
-      const currentTotal: number = nextPage * limit;
+      const currentTotal: number = nextPage * limit - limit;
 
       if (currentTotal > total) break;
 
@@ -62,9 +63,9 @@ export default function Paginate({
     }
 
     setNextPages(nextPagesArray);
-  }, [currentPage, limit, maxNextPages, total]);
+  };
 
-  const getPreviousPages = useCallback(() => {
+  const getPreviousPages = () => {
     if (currentPage > 1) {
       const previousPagesArray: number[] = [];
 
@@ -90,57 +91,79 @@ export default function Paginate({
 
       setPreviousPages(previousPagesArray.sort((a, b) => a - b));
     }
-  }, [currentPage, limit, maxPreviousPages, total]);
+  };
 
   useEffect(() => {
     getNextPages();
-  }, [currentPage, getNextPages]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
 
   useEffect(() => {
     getPreviousPages();
-  }, [currentPage, getPreviousPages]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentPage]);
+
+  if (currentPage === 1 && total < limit) return <div />;
 
   return (
-    <div className="flex">
-      {currentPage !== 1 &&
-        previousPages.length > 0 &&
-        previousPages.map((previousPage: number) => (
-          <Button
-            key={previousPage}
-            variant="outline-primary"
-            type="button"
-            className="me-2"
-            style={{ padding: "5px 13px" }}
-            onClick={() => onChangePage(previousPage)}
-          >
-            {previousPage}
-          </Button>
-        ))}
+    <div>
+      <div className="d-flex justify-content-end">
+        {previousPages.length > 0 &&
+          previousPages.indexOf(1) < 0 &&
+          currentPage !== 1 && (
+            <>
+              <div className="mr-2">
+                <button
+                  type="button"
+                  className="mr-2 border border-primary hover:bg-primary hover:text-white text-primary rounded-full"
+                  style={{ padding: "5px 13px" }}
+                  onClick={() => onChangePage(1)}
+                >
+                  1
+                </button>
+              </div>
 
-      {currentPage && (
-        <Button
-          variant="primary"
-          type="button"
-          className="me-2"
-          style={{ padding: "5px 15px" }}
-        >
-          {currentPage}
-        </Button>
-      )}
+              <div className="me-3 mt-3">...</div>
+            </>
+          )}
 
-      {nextPages.length > 0 &&
-        nextPages.map((nextPage: number) => (
-          <Button
-            key={nextPage}
-            variant="outline-primary"
+        {previousPages.length > 0 &&
+          currentPage !== 1 &&
+          previousPages.map((previousPage: number) => (
+            <button
+              key={previousPage}
+              type="button"
+              className="mr-2 border border-primary hover:bg-primary hover:text-white text-primary rounded-full"
+              style={{ padding: "5px 13px" }}
+              onClick={() => onChangePage(previousPage)}
+            >
+              {previousPage}
+            </button>
+          ))}
+
+        {currentPage && (
+          <button
             type="button"
-            className="btn btn-outline-primary me-2"
+            className="mr-2 border border-primary bg-primary text-white rounded-full"
             style={{ padding: "5px 13px" }}
-            onClick={() => onChangePage(nextPage)}
           >
-            {nextPage}
-          </Button>
-        ))}
+            {currentPage}
+          </button>
+        )}
+
+        {nextPages.length > 0 &&
+          nextPages.map((nextPage: number) => (
+            <button
+              key={nextPage}
+              type="button"
+              className="mr-2 border border-primary hover:bg-primary hover:text-white text-primary rounded-full"
+              style={{ padding: "5px 13px" }}
+              onClick={() => onChangePage(nextPage)}
+            >
+              {nextPage}
+            </button>
+          ))}
+      </div>
     </div>
   );
 }

@@ -55,4 +55,28 @@ export default class AuthUseCase {
       throw error;
     }
   }
+
+  async checkOTP( code: string ): Promise<any> {
+    try {
+      const response = await this._repository.checkOTP(code);
+
+      if (response instanceof AuthFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateUserOTP(obj: { email: string; password: string; }): Promise<boolean> {
+    try {
+      const response = await this._repository.updateUserOTP({ email: obj.email, password: obj.password });
+
+      if (response instanceof AuthFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

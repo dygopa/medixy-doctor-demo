@@ -16,6 +16,7 @@ import {
 } from "../../context/ServicesContext";
 import { ILocality } from "domain/core/entities/localityEntity";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
+import { IStepByStepContext, StepByStepContext } from "(presentation)/components/core/StepByStep/context/StepByStepContext";
 
 interface ILocalityService {
   service_id: number;
@@ -23,7 +24,7 @@ interface ILocalityService {
   price: number;
 }
 
-export default function Formulary({ userId }: { userId: string }) {
+export default function Formulary({ userId, accountId }: { userId: string; accountId: string }) {
   const { state, actions, dispatch } =
     useContext<IServicesContext>(ServicesContext);
   const { createUserService, getCategories, getUserMedicalCenters } = actions;
@@ -43,6 +44,9 @@ export default function Formulary({ userId }: { userId: string }) {
   } = state.getUserMedicalCenters;
 
   const { data: categories } = state.getCategories;
+
+  const { actions: actionsStep, dispatch: dispatchStep } = useContext<IStepByStepContext>(StepByStepContext);
+  const { createUserSteps } = actionsStep;
 
   const [loadedListOfTimes, setLoadedListOfTimes] = useState(false);
   const [loadedAPI, setLoadedAPI] = useState(false);
@@ -126,13 +130,22 @@ export default function Formulary({ userId }: { userId: string }) {
     setLoadedAPI(true);
   };
 
+  useMemo(() => {
+    if (successFulCreationService){
+      createUserSteps(accountId, "SERVICE_CREATED")(dispatchStep)
+      setTimeout(() => {
+        window.location.href = "/services"
+      }, 1000);
+    };
+  }, [successFulCreationService])
+
+  useMemo(()=>{
+    if(userId) getUserMedicalCenters(userId)(dispatch)
+  },[userId])
+
   useEffect(() => {
     loadAPI();
   }, [loadedAPI]);
-
-  useMemo(() => {
-    if (userId) getUserMedicalCenters(userId)(dispatch);
-  }, [userId]);
 
   return (
     <>

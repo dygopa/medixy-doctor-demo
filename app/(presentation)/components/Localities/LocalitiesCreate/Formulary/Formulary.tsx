@@ -5,7 +5,7 @@ import {
   FormTextarea,
   FormSwitch,
 } from "(presentation)/components/core/BaseComponents/Form";
-import SearchLocality from "(presentation)/components/core/SearchLocality/SearchLocality";
+import SearchLocality from "(presentation)/components/core/SpecialSearch/SpecialSearch";
 import {
   useState,
   useEffect,
@@ -24,8 +24,9 @@ import {
 } from "../../context/LocalitiesContext";
 import { ILocality } from "domain/core/entities/localityEntity";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
+import { IStepByStepContext, StepByStepContext } from "(presentation)/components/core/StepByStep/context/StepByStepContext";
 
-export default function Formulary({ userId }: { userId: string }) {
+export default function Formulary({ userId, accountId }: { userId: string; accountId: string }) {
   const { state, actions, dispatch } =
     useContext<ILocalitiesContext>(LocalitiesContext);
 
@@ -42,6 +43,9 @@ export default function Formulary({ userId }: { userId: string }) {
     successful: createUserLocalitySuccess,
     error: createUserLocalityError,
   } = state.createUserLocality;
+
+  const { actions: actionsStep, dispatch: dispatchStep } = useContext<IStepByStepContext>(StepByStepContext);
+  const { createUserSteps } = actionsStep;
 
   const [formData, setFormData] = useState({
     parent_location_id: 0,
@@ -275,7 +279,12 @@ export default function Formulary({ userId }: { userId: string }) {
   }, [loadedMedicalCenters]);
 
   useMemo(() => {
-    if (createUserLocalitySuccess) window.location.href = "/localities";
+    if (createUserLocalitySuccess){
+      createUserSteps(accountId, "LOCATION_CREATED")(dispatchStep)
+      setTimeout(() => {
+        window.location.href = "/localities"
+      }, 1000);
+    };
   }, [createUserLocalitySuccess]);
 
   return (

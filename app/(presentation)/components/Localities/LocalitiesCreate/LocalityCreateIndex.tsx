@@ -36,7 +36,7 @@ export default function LocalityCreateIndex() {
   return (
     <div className="py-5">
       <LocalitiesProvider>
-        <Formulary userId={loading ? "" : data.userId} />
+        <Formulary userId={loading ? "" : data.userId} accountId={loading ? "" : data.accountId}/>
       </LocalitiesProvider>
     </div>
   );

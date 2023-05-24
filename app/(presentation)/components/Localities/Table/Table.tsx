@@ -74,7 +74,7 @@ export default function Table({ user }: { user: IUser }) {
 
   if (successful && [...(data as Array<ILocality>)].length > 0) {
     return (
-      <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2 overflow-auto intro-y lg:overflow-visible z-0">
+      <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2 overflow-auto lg:overflow-visible z-0">
         {[...(data as Array<ILocality>)].map((center, i) => (
           <LocalityComponent data={center} key={i} />
         ))}

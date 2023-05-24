@@ -70,7 +70,7 @@ const createUserService = (obj:any, list:Array<any>) => async (dispatch: Dispatc
   try {
     dispatch({ type: "CREATE_USER_SERVICE_LOADING" });
     
-    const res: number = await new ServicesUseCase().createUserService(obj, list);
+    const res: string = await new ServicesUseCase().createUserService(obj, list);
 
     dispatch({ type: "CREATE_USER_SERVICE_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

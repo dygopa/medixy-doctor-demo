@@ -10,6 +10,7 @@ import { IUser } from "domain/core/entities/userEntity";
 import { FiPlus, FiSave, FiTrash } from "react-icons/fi";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
+import { IStepByStepContext, StepByStepContext } from "(presentation)/components/core/StepByStep/context/StepByStepContext";
 
 export default function Credentials({
   account,
@@ -45,6 +46,9 @@ export default function Credentials({
   } = state.updateMedicalSpeciality;
 
   const { data, loading, error, successful } = state.getUserMedicalSpecialities;
+
+  const { actions: actionsStep, dispatch: dispatchStep } = useContext<IStepByStepContext>(StepByStepContext);
+  const { createUserSteps } = actionsStep;
 
   const [formData, setFormData] = useState({
     id: account.userId,
@@ -186,6 +190,7 @@ export default function Credentials({
   useMemo(() => {
     if (account.userId) {
       getUserMedicalSpecialities(account.userId)(dispatch);
+      if(successFulRegister) createUserSteps(account.accountId, "PROFILE_COMPLETED")(dispatchStep)
     }
   }, [successFulRegister, successFulDelete, successFulUpdate]);
 

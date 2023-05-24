@@ -25,7 +25,7 @@ export default function FormularyTypeUser() {
   const { changeStep } = stepActions;
 
   const [values, setValues] = useState({
-    type_user: "",
+    type_user: formData?.type_user ?? "",
   });
   const [errors, setErrors] = useState({
     global: "",
@@ -79,7 +79,7 @@ export default function FormularyTypeUser() {
           ¿Qué tipo de proveedor eres?
         </p>
         <p className="text-gray-500 font-light lg:text-base md:text-base text-md">
-          Escribe tus credenciales para acceder al panel de proveedores
+          Selecciona en la lista la opción que te identifique como proveedor
         </p>
       </div>
       <div className="relative w-full text-slate-500">

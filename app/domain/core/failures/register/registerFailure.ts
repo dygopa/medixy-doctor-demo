@@ -7,4 +7,6 @@ export const enum registerFailuresEnum {
   tooManyRequest = "TOO_MANY_REQUEST",
   serverError = "SERVER_ERROR",
   curpNotFound = "CURP_NOT_FOUND",
+  emailAlreadyRegistered = "EMAIL_ALREADY_REGISTERED",
+  curpAlreadyRegistered = "CURP_ALREADY_REGISTERED",
 }

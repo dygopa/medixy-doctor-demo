@@ -5,7 +5,7 @@ import {
   FormTextarea,
   FormSwitch,
 } from "(presentation)/components/core/BaseComponents/Form";
-import SearchLocality from "(presentation)/components/core/SearchLocality/SearchLocality";
+import SearchLocality from "(presentation)/components/core/SpecialSearch/SpecialSearch";
 import {
   useState,
   useEffect,

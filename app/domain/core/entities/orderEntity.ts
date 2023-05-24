@@ -46,3 +46,15 @@ export interface IOrder {
     deletedOn: any | null;
 }
 
+export interface IOrderMedical {
+    orderId: number;
+    orderType: string;
+    medicalExam: string;
+    indications: string;
+    specialty?: string | null;
+    doctorName?: string | null;
+    otherDoctorName?: string | null;
+    createdOn: Date;
+    updatedOn?: Date | null;
+    deletedOn?: Date | null;
+}

@@ -7,6 +7,7 @@ import {
   AuthContext,
   IAuthContext,
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import DashboardProvider from "./DoctorsCase/context/DashboardContext";
 
 export default function DashboardIndex() {
   const { state, actions, dispatch } = useContext<IAuthContext>(AuthContext);
@@ -33,7 +34,9 @@ export default function DashboardIndex() {
 
   return (
     <div className="py-8">
-      <DoctorsCase account={account} />
+      <DashboardProvider>
+        <DoctorsCase account={account} />
+      </DashboardProvider>
     </div>
   );
 }

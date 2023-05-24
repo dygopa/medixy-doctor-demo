@@ -7,6 +7,7 @@ import { IUser } from "domain/core/entities/userEntity";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import { IUserContext, UserContext } from "../context/UserContext";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
+import { StickyNavbar } from "(presentation)/components/core/StickyNavbar/StickyNavbar";
 
 interface IFormularyProps {
   account: IUser;
@@ -43,7 +44,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
   }, [account.userId]);
 
   return (
-    <div>
+    <div className="w-full h-full relative">
       <AlertComponent
         variant="error"
         show={error !== null}
@@ -54,8 +55,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
         show={successful === true}
         description="Cuenta actualizada exitosamente"
       />
-
-      <div className="w-full lg:flex justify-between items-center">
+      <div className="w-full lg:flex justify-between items-center sticky top-[67px] z-[50] border-b bg-slate-100 pt-2">
         <div className="lg:w-[50%]">
           <h2 className="lg:mr-5 text-2xl font-bold truncate">Mi cuenta</h2>
           <p className="font-light text-slate-500 text-base my-3">

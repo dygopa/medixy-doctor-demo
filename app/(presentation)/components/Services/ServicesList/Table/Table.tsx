@@ -83,7 +83,7 @@ export default function TableServices({ user }: { user: IUser }) {
 
   const TableComponent = () => {
     return (
-      <div className="col-span-12 overflow-auto intro-y lg:overflow-visible z-0">
+      <div className="col-span-12 overflow-auto lg:overflow-visible z-0">
         <Table className="border-spacing-y-[10px] border-separate -mt-2">
           <Table.Thead>
             <Table.Tr>

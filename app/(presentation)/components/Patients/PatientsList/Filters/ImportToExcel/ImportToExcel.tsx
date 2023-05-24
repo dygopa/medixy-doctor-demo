@@ -4,7 +4,7 @@ import Button from "(presentation)/components/core/BaseComponents/Button";
 
 export default function ImportToExcel() {
   return (
-    <Button variant="outline-primary" className="w-full mb-3">
+    <Button variant="outline-primary" className="w-full">
       Importar citas
     </Button>
   );

@@ -21,7 +21,7 @@ const AlertComponent = ({ variant, show, description }: IAlertProps) => {
   return (
     <div
       className={twMerge([
-        "lg:w-[25rem] md:w-[25rem] w-[22rem] bg-white h-fit rounded-md border shadow-md fixed top-20 lg:right-20 md:right-20 right-6 z-50 overflow-hidden",
+        "lg:w-[25rem] md:w-[25rem] w-[22rem] bg-white h-fit rounded-md border shadow-md fixed top-20 lg:right-20 md:right-20 right-6 z-[99] overflow-hidden",
         isVisible ? "visible" : "hidden",
       ])}
     >

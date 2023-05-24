@@ -34,10 +34,10 @@ export default function AccountIndex() {
   }, [successful]);
 
   return (
-    <div className="py-5">
-      <UserProvider>
+    <UserProvider>
+      <div className="py-5 relative">
         <Formulary account={account} setAccount={setAccount} />
-      </UserProvider>
-    </div>
+      </div>
+    </UserProvider>
   );
 }

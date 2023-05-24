@@ -4,6 +4,7 @@ import CreateAgenda from './CreateAgenda/CreateAgenda';
 import CreateAppointment from './CreateAppointment/CreateAppointment';
 import { twMerge } from 'tailwind-merge';
 import AppointmentDetail from './AppointmentDetail/AppointmentDetail';
+import CreateAgendaHelp from './CreateAgendaHelp/CreateAgendaHelp';
 
 function Popup() {
 
@@ -26,19 +27,20 @@ function Popup() {
       return () => {
         document.removeEventListener("mousedown", handleClickOutside);
       };
-    }, [ref]);
+    }, [ref]); 
   }
 
   useOutsideAlerter(wrapperRef);
 
   return (
-    <div ref={wrapperRef} className={twMerge([
-      'z-[52] fixed top-0 left-0 w-full h-screen bg-gray-900/50 backdrop-blur-md flex flex-col justify-center items-center',
+    <div className={twMerge([
+      'z-[52] fixed top-0 left-0 w-full h-screen overflow-y-auto bg-gray-900/50 flex flex-col justify-center items-center',
       status ? "visible" : "hidden"
     ])}>
-      {type === 0 && <CreateAppointment cancelFuntion={()=>{}} />}
-      {type === 1 && <CreateAgenda cancelFuntion={()=>{}} />}
-      {type === 2 && <AppointmentDetail cancelFuntion={()=>{}} />}
+      {type === 0 && <CreateAppointment customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
+      {type === 1 && <CreateAgenda customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
+      {type === 2 && <AppointmentDetail customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
+      {type === 3 && <CreateAgendaHelp customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
     </div>
   )
 }

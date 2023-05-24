@@ -24,7 +24,7 @@ function Calendar({
       headerToolbar={{
         start: "prev,next today",
         center: "title",
-        end: "dayGridMonth",
+        end: "timeGridWeek",
       }}
       buttonText={{
         today: "Hoy",
@@ -33,9 +33,9 @@ function Calendar({
         prev: "fa-solid fa-chevron-left",
         next: "fa-solid fa-chevron-right",
       }}
-      initialView="dayGridMonth"
+      initialView="timeGridWeek"
       views={{ 
-        dayGridMonth: {
+        timeGridWeek: {
           titleFormat: { month: "long", year: "numeric" },
         },
       }}

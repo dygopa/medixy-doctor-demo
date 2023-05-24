@@ -1,17 +1,18 @@
 "use client";
 
 import { IUser } from "domain/core/entities/userEntity";
-import Navigator from "./Navigator/Navigator";
 import Steps from "./Steps/Steps";
+import CreatePatientProvider from "./context/CreatePatientContext";
 
 export default function PatientsCreateIndex() {
   return (
-    <div className="container py-5">
-      <Navigator />
+    <CreatePatientProvider>
+      <div className="container">
 
-      <div className="flex mt-10">
-        <Steps />
+        <div className="">
+          <Steps />
+        </div>
       </div>
-    </div>
+    </CreatePatientProvider>
   );
 }

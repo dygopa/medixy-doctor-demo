@@ -24,7 +24,7 @@ export default function FormularyCURP() {
   const { changeStep } = stepActions;
 
   const [values, setValues] = useState({
-    curp: "",
+    curp: formData?.curp ?? "",
   });
 
   const [errors, setErrors] = useState({
@@ -78,7 +78,7 @@ export default function FormularyCURP() {
           ¿Cuál es tú CURP?
         </p>
         <p className="text-gray-500 font-light lg:text-base md:text-base text-md">
-          Escribe tus credenciales para acceder al panel de proveedores
+          Por favor, indicanos tu CURP para comenzar la creación de tu cuenta
         </p>
       </div>
       <div className="relative w-full text-slate-500">
@@ -96,7 +96,8 @@ export default function FormularyCURP() {
 
       <div className="w-full text-center">
         <Link
-          href="/register"
+          target="_blank"
+          href="https://www.gob.mx/curp/"
           className="text-primary font-light lg:text-base md:text-base text-md"
         >
           No sabes cual es tu CURP?, visita este sitio

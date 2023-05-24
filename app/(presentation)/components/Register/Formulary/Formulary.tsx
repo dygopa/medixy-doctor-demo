@@ -28,7 +28,7 @@ import {
 export default function Formulary() {
   const { state, actions, dispatch } =
     useContext<IRegisterContext>(RegisterContext);
-  const { registerUser } = actions;
+  const { registerUser, updateRegisterData } = actions;
   const { data, loading, error, successful } = state.registerUser;
   let { data: formData } = state.registerData;
 
@@ -42,12 +42,12 @@ export default function Formulary() {
   let [listOfErrors, setListOfErrors] = useState<Array<String>>([]);
 
   let [values, setValues] = useState({
-    email: "",
-    password: "",
-    names: "",
-    first_lastname: "",
-    second_lastname: "",
-    phone_number: "",
+    email: formData?.email ?? "",
+    password: formData?.password ?? "",
+    names: formData?.names ?? "",
+    first_lastname: formData?.first_lastname ?? "",
+    second_lastname: formData?.second_lastname ?? "",
+    phone_number: formData?.phone_number ?? "",
   });
 
   const [errors, setErrors] = useState({
@@ -123,7 +123,6 @@ export default function Formulary() {
     values.password === "" && list.push("password");
     values.names === "" && list.push("names");
     values.first_lastname === "" && list.push("first_lastname");
-    values.second_lastname === "" && list.push("second_lastname");
     values.phone_number === "" && list.push("phone_number");
 
     setListOfErrors(list);
@@ -156,10 +155,30 @@ export default function Formulary() {
         errors["global"] =
           "Algo no ha salido como se esperaba. Vuelve a intentarlo.";
         break;
+      case registerFailuresEnum.emailAlreadyRegistered:
+        errors["global"] =
+          "El email ya esta siendo usado por otro proveedor.";
+        break;
+      case registerFailuresEnum.curpAlreadyRegistered:
+        errors["global"] =
+          "El CURP ya esta registrado por otro proveedor.";
+        break;
       default:
         break;
     }
   };
+
+  console.log(formData);
+
+  const setValuesFormData = () => {
+    formData = { ...(formData as Object), ...values };
+    updateRegisterData(formData)(dispatch);
+  };
+
+  useMemo(() => {
+    setValuesFormData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values]);
 
   useMemo(() => {
     if (successful) window.location.href = "/dashboard";
@@ -188,7 +207,7 @@ export default function Formulary() {
           Vamos a crear tu cuenta
         </p>
         <p className="text-gray-500 font-light lg:text-base md:text-base text-md">
-          Escribe tus credenciales para acceder al panel de proveedores
+          Estas a un paso de completar la creación de tu cuenta
         </p>
       </div>
       <div className="relative w-full">
@@ -238,14 +257,6 @@ export default function Formulary() {
               setValues({ ...values, second_lastname: e.target.value })
             }
           />
-          {wrongLastName && (
-            <span className="text-red-500 mt-1">
-              El segundo apellido no puede contener números
-            </span>
-          )}
-          {listOfErrors.includes("second_lastname") && (
-            <span className="text-red-500 mt-1">Campo requerido</span>
-          )}
         </div>
       </div>
       <div className="relative w-full">

@@ -1,31 +1,23 @@
-import { IPoints } from "./pointsEntity";
-
 export interface IPatient {
-    patientId: string;
-    firstName: string;
+    patientId: number;
+    name: string;
     lastName: string;
-    user: string;
-    url: string;
-    genrer: string;
-    age: number;
-    address: string;
-    points: IPoints | null;
-    membership: string;
-    city: string;
-    phoneCountryCode: string;
+    motherLastName: string;
+    curp: string;
     email: string;
-    profilePictureUrl: string;
-    registerComplete: boolean;
-    documentNumber: string;
-    country: string;
+    sex: number;
+    age?: number | null;
+    ageType?: string;
     phoneNumber: string;
-    documentType: string;
-    personType: string;
-    token: string;
-    stripeId: string;
-    birthDate: any | null;
-    createdOn: any | null;
-    updatedOn: any | null;
-    deletedOn: any | null;
+    country: string;
+    state: number;
+    address: string;
+    city: string;
+    pictureUrl: string;
+    federativeEntityId?: number | null;
+    birthDate: Date | null;
+    createdOn: Date;
+    updatedOn: Date | null;
+    deletedOn: Date | null;
 }
 

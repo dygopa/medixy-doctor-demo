@@ -39,8 +39,8 @@ export class RegisterRepository implements IRegisterRepository {
       nookies.set(undefined, 'access_token', access_token, { path: '/' });
       return "SUCCESS";
     } catch (error) {
-      const exception = error as any;
-      return new RegisterFailure(registerFailuresEnum.serverError);
+      const exception = error as RegisterFailure;
+      return new RegisterFailure(exception.code);
     }
   }
 }

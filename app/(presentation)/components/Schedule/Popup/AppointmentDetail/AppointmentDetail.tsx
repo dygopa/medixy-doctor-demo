@@ -1,8 +1,9 @@
 import Button from '(presentation)/components/core/BaseComponents/Button'
 import React, { useState } from 'react'
 
-function AppointmentDetail({cancelFuntion}:{
-  cancelFuntion: Function
+function AppointmentDetail({cancelFuntion, customRef}:{
+    cancelFuntion: Function;
+    customRef: React.LegacyRef<HTMLDivElement>;
 }) {
 
     const DataSpan = ({label, value}:{
@@ -18,7 +19,7 @@ function AppointmentDetail({cancelFuntion}:{
     }
 
     return (
-        <div className='w-[32%] min-h-[60vh] h-fit max-h-screen flex flex-col justify-between items-start bg-white rounded-md p-6 gap-8'>
+        <div ref={customRef} className='w-[32%] min-h-[60vh] h-fit max-h-screen flex flex-col justify-between items-start bg-white rounded-md p-6 gap-8'>
             <p className="font-bold text-2xl text-slate-900">Cita</p>
             <div className="w-full flex justify-between items-center gap-2">
                 <div className="w-1/4 flex justify-center items-center">

@@ -14,7 +14,7 @@ export default interface IServiceRepository {
   getCategories(): Promise<Array<any> | ServiceFailure>;
   getUserServices(id:number): Promise<Array<IService> | ServiceFailure>;
   addServiceToLocality(obj:any): Promise<any | ServiceFailure>;
-  createUserService(obj:any): Promise<number | ServiceFailure>;
+  createUserService(obj:any): Promise<string | ServiceFailure>;
   updateService(obj:any): Promise<number | ServiceFailure>;
 }
 
@@ -80,7 +80,7 @@ export class ServicesRepository implements IServiceRepository {
     }
   }
 
-  async createUserService(obj:any): Promise<number | ServiceFailure> {
+  async createUserService(obj:any): Promise<string | ServiceFailure> {
     try {
       let cookies = nookies.get(undefined, 'access_token');
 
@@ -95,7 +95,8 @@ export class ServicesRepository implements IServiceRepository {
         description: obj["description"],
         conditions: obj["conditions"],
         base_price: obj["base_price"],
-        status: obj["status"]
+        status: obj["status"],
+        locations: obj["locations"]
       });
 
       var requestOptions = {
@@ -112,7 +113,7 @@ export class ServicesRepository implements IServiceRepository {
 
       console.log("CREATE_USER_SERVICE_ENDPOINT", data["data"])
 
-      return data["data"]["id"] ?? 0;
+      return "SUCCESS";
     } catch (error) {
       console.log("Error", error)
       const exception = error as any;

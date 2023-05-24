@@ -113,7 +113,7 @@ export default function Steps() {
   };
 
   return (
-    <div className="w-full h-fit">
+    <div className="lg:w-[80%] md:w-[70%] lg:px-20 md:px-14 sm:px-20 px-8 w-full h-fit">
       <div className="flex items-center justify-between mb-8">
         <div>
           <h3 className="lg:text-xl md:text-xl">Paso {active + 1} de 3</h3>

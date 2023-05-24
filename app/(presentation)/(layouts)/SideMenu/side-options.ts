@@ -29,18 +29,10 @@ export const navigationOptions: FormattedMenu[] = [
     {
         active: false,
         subMenu: undefined,
-        title: "Pacientes",
-        pathname: PatientsRoutesEnum.PatientsList,
-        icon: "User",
-        ignore: true,
-    },
-    {
-        active: false,
-        subMenu: undefined,
         title: "Agenda",
         pathname: ScheduleRoutesEnum.Schedule,
         icon: "Calendar",
-        ignore: true,
+        ignore: false,
     },
     {
         active: false,
@@ -64,6 +56,14 @@ export const navigationOptions: FormattedMenu[] = [
         title: "Mis servicios",
         pathname: ServicesRoutesEnum.Services,
         icon: "Briefcase",
+        ignore: false,
+    },
+    {
+        active: false,
+        subMenu: undefined,
+        title: "Mis pacientes",
+        pathname: PatientsRoutesEnum.PatientsList,
+        icon: "Contact",
         ignore: false,
     },
 ]
