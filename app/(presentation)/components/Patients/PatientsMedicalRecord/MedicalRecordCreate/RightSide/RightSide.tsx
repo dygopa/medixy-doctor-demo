@@ -1,11 +1,15 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import CurrentConsultation from "./CurrentConsultation/CurrentConsultation";
 import Orders from "./Orders/Orders";
 import Recipe from "./Recipe/Recipe";
 import Records from "./Records/Records";
 
 export default function RightSide() {
+  const [isLoading, setIsLoading] = useState(true);
+
   const setValuesLocalStorage = () => {
+    setIsLoading(true);
+
     const values = localStorage.getItem("noodus.storage.medical-record-create");
 
     if (!values) {
@@ -132,11 +136,15 @@ export default function RightSide() {
         JSON.stringify(valuesFormulary)
       );
     }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
     setValuesLocalStorage();
   }, []);
+
+  if (isLoading) return <div />;
 
   return (
     <div>

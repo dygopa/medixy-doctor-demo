@@ -14,7 +14,7 @@ export default function VitalSigns() {
       "noodus.storage.medical-record-create"
     );
 
-    if (!valuesStorage) window.location.reload();
+    if (!valuesStorage) return;
 
     const valuesJSON = JSON.parse(valuesStorage ?? "");
     setWeight(valuesJSON.currentConsultation.weight);

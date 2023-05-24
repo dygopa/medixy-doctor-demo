@@ -3,15 +3,15 @@ import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 export function medicalConsultySupabaseToMap(data: any): IMedicalConsulty {
   return {
     id: data?.id ?? 0,
-    patientId: data?.idPaciente ?? 0,
-    consultationDate: data?.fechaConsulta ? new Date(data.fechaConsulta) : new Date(),
+    patientId: data?.pacienteId ?? 0,
+    consultationDate: data?.fechaConsulta ? new Date(new Date(data.fechaConsulta).getFullYear(), new Date(data.fechaConsulta).getMonth() + 1, new Date(data.fechaConsulta).getDate() + 1) : new Date(),
     consultationReason: data?.motivoConsulta ?? "",
     referrerBy: data?.referidoPor,
     sufferingDate: data?.inicioPadecimiento ? new Date(data.inicioPadecimiento) : null,
     generalInspection: data?.inspeccionGeneral,
     respiratorySystem: data?.aparatoRespiratorio,
     digestiveSystem: data?.aparatoDigestivo,
-    cardiovascularSystem: data?.aparatoCardiovascular,
+    cardiovascularSystem: data?.aparatoCardioVascular,
     reproductiveSystem: data?.aparatoReproductor,
     urinarySystem: data?.aparatoUrinario,
     ophthalmologicalSystem: data?.inspeccionOftalmologica,
@@ -22,7 +22,7 @@ export function medicalConsultySupabaseToMap(data: any): IMedicalConsulty {
     diagnose: data?.diagnostico ?? "",
     observations: data?.observaciones,
     medicalMeasures: [],
-    createdOn: data?.fechaConsulta ? new Date(data.fechaConsulta) : new Date(),
+    createdOn: data?.fechaConsulta ? new Date(new Date(data.fechaConsulta).getFullYear(), new Date(data.fechaConsulta).getMonth() + 1, new Date(data.fechaConsulta).getDate() + 1) : new Date(),
     updatedOn: data?.fechaActualizacion ? new Date(data.fechaActualizacion) : null,
     deletedOn: data?.fechaEliminacion ? new Date(data.fechaEliminacion) : null,
   } as IMedicalConsulty;
@@ -30,7 +30,7 @@ export function medicalConsultySupabaseToMap(data: any): IMedicalConsulty {
 
 export function fromMedicalConsultySupabaseDocumentData(medicalConsulty: IMedicalConsulty): any {
   const documentData = {
-    idPaciente: medicalConsulty.patientId,
+    pacienteId: medicalConsulty.patientId,
     fechaConsulta: medicalConsulty.consultationDate,
     motivoConsulta: medicalConsulty.consultationReason,
     referidoPor: medicalConsulty.referrerBy,
@@ -38,7 +38,7 @@ export function fromMedicalConsultySupabaseDocumentData(medicalConsulty: IMedica
     inspeccionGeneral: medicalConsulty.generalInspection,
     aparatoRespiratorio: medicalConsulty.reproductiveSystem,
     aparatoDigestivo: medicalConsulty.digestiveSystem,
-    aparatoCardiovascular: medicalConsulty.cardiovascularSystem,
+    aparatoCardioVascular: medicalConsulty.cardiovascularSystem,
     aparatoReproductor: medicalConsulty.reproductiveSystem,
     aparatoUrinario: medicalConsulty.urinarySystem,
     inspeccionOftalmologica: medicalConsulty.ophthalmologicalSystem,

@@ -50,7 +50,7 @@ export const MedicalRecordCreateSummaryReducer = (state: any, action: any) => {
             ...state,
             createMedicalConsulty: {
               ...state.createMedicalConsulty,
-              data: action.payload.adata,
+              data: action.payload.data,
               loading: false,
               successful: true,
               error: null,

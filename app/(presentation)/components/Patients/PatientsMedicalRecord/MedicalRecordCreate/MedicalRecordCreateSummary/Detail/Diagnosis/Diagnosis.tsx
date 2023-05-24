@@ -8,7 +8,7 @@ export default function Diagnosis() {
       "noodus.storage.medical-record-create"
     );
 
-    if (!valuesStorage) window.location.reload();
+    if (!valuesStorage) return;
 
     const valuesJSON = JSON.parse(valuesStorage ?? "");
     setDiagnosis(valuesJSON.currentConsultation.diagnose);

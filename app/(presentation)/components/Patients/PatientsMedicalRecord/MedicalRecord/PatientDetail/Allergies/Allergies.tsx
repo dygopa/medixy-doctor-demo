@@ -4,7 +4,7 @@ export default function Allergies() {
   return (
     <div
       className={clsx([
-        "relative zoom-in lg:h-[27vh] md:h-[30vh] h-auto",
+        "relative zoom-in lg:h-[30vh] md:h-[32vh] h-auto",
         "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
       ])}
     >

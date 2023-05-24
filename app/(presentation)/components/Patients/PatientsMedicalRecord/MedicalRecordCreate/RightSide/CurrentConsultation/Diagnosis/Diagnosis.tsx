@@ -3,13 +3,16 @@ import {
   FormInput,
   FormTextarea,
 } from "(presentation)/components/core/BaseComponents/Form";
+import clsx from "clsx";
 import { ICIE10 } from "domain/core/entities/cie10Entity";
+import { useSearchParams } from "next/navigation";
 import {
   ChangeEvent,
   Dispatch,
   SetStateAction,
   useContext,
   useEffect,
+  useState,
 } from "react";
 import {
   IMedicalRecordCreateContext,
@@ -55,6 +58,12 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
   const { getCIE10 } = actions;
   const { data: cie10, loading, successful, error } = state.cie10;
 
+  const [diagnoseError, setDiagnoseError] = useState(false);
+
+  const params = useSearchParams();
+
+  const diagnose = params.get("diagnose");
+
   const getCIE10List = (): string[] => {
     const cie10List: string[] = [];
 
@@ -66,6 +75,10 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
 
     return cie10List;
   };
+
+  useEffect(() => {
+    if (diagnose === "true") setDiagnoseError(true);
+  }, [diagnose]);
 
   useEffect(() => {
     getCIE10()(dispatch);
@@ -84,28 +97,44 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
             {error ? (
               <p>Algo no ha salido bien. Vuelve a intentarlo</p>
             ) : (
-              <AutocompleteInput
-                disabled={loading || error !== null}
-                defaultValue={
-                  loading ? "Obteniendo enfermedades CIE10" : values.diagnose
-                }
-                setDefaultValue
-                items={
-                  successful && cie10.data.length > 0 ? getCIE10List() : []
-                }
-                placeholder="Nombre de la enfermedad - CIE10"
-                className="h-[50px] w-full"
-                onlyItemsAdd
-                onChange={(item: string) => {
-                  if (item.length === 0) setValues({ ...values, diagnose: "" });
-                }}
-                onClick={(item: string) => {
-                  setValues({ ...values, diagnose: item });
-                }}
-                onKeyDown={(item: string) =>
-                  setValues({ ...values, diagnose: item })
-                }
-              />
+              <>
+                <AutocompleteInput
+                  disabled={loading || error !== null}
+                  defaultValue={
+                    loading ? "Obteniendo enfermedades CIE10" : values.diagnose
+                  }
+                  setDefaultValue
+                  items={
+                    successful && cie10.data.length > 0 ? getCIE10List() : []
+                  }
+                  placeholder="Nombre de la enfermedad - CIE10"
+                  className={clsx([
+                    "h-[50px] w-full",
+                    diagnoseError && "border-danger",
+                  ])}
+                  onlyItemsAdd
+                  onChange={(item: string) => {
+                    if (item.length === 0) {
+                      setValues({ ...values, diagnose: "" });
+                      setDiagnoseError(true);
+                    }
+                  }}
+                  onClick={(item: string) => {
+                    setValues({ ...values, diagnose: item });
+                    setDiagnoseError(false);
+                  }}
+                  onKeyDown={(item: string) => {
+                    setValues({ ...values, diagnose: item });
+                    setDiagnoseError(false);
+                  }}
+                />
+
+                {diagnoseError && (
+                  <p className="text-danger mt-1">
+                    Debe seleccionar el diagnóstico
+                  </p>
+                )}
+              </>
             )}
           </div>
         </div>

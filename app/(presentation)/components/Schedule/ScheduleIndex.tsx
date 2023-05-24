@@ -21,9 +21,9 @@ export default function ScheduleIndex() {
         <Navigator/>
         <Popup/>
         <Filters/>
-        <div className="mt-8 flex justify-between items-start gap-5">
+        <div className="mt-8 flex flex-col lg:flex-row justify-between flex-wrap lg:flex-nowrap items-start gap-5">
           {/* BEGIN: Calendar Content */}
-          <div className='w-2/3 h-[64vh]'>
+          <div className='w-full lg:w-2/3 h-[64vh]'>
             <Calendar initialEvent={""} handleClick={()=>{}}/>
           </div>
           {/* END: Calendar Content */}

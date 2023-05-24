@@ -9,7 +9,7 @@ export default function Orders() {
       "noodus.storage.medical-record-create"
     );
 
-    if (!valuesStorage) window.location.reload();
+    if (!valuesStorage) return;
 
     const valuesJSON = JSON.parse(valuesStorage ?? "");
     setOrders(valuesJSON.orders);

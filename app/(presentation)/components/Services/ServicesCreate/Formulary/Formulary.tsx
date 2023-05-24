@@ -24,7 +24,7 @@ interface ILocalityService {
   price: number;
 }
 
-export default function Formulary({ userId }: { userId: string }) {
+export default function Formulary({ userId, accountId }: { userId: string; accountId: string }) {
   const { state, actions, dispatch } =
     useContext<IServicesContext>(ServicesContext);
   const { createUserService, getCategories, getUserMedicalCenters } = actions;
@@ -132,7 +132,7 @@ export default function Formulary({ userId }: { userId: string }) {
 
   useMemo(() => {
     if (successFulCreationService){
-      createUserSteps(userId, "SERVICE_CREATED")(dispatchStep)
+      createUserSteps(accountId, "SERVICE_CREATED")(dispatchStep)
       setTimeout(() => {
         window.location.href = "/services"
       }, 1000);

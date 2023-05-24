@@ -26,7 +26,7 @@ import { ILocality } from "domain/core/entities/localityEntity";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { IStepByStepContext, StepByStepContext } from "(presentation)/components/core/StepByStep/context/StepByStepContext";
 
-export default function Formulary({ userId }: { userId: string }) {
+export default function Formulary({ userId, accountId }: { userId: string; accountId: string }) {
   const { state, actions, dispatch } =
     useContext<ILocalitiesContext>(LocalitiesContext);
 
@@ -280,7 +280,7 @@ export default function Formulary({ userId }: { userId: string }) {
 
   useMemo(() => {
     if (createUserLocalitySuccess){
-      createUserSteps(userId, "LOCATION_CREATED")(dispatchStep)
+      createUserSteps(accountId, "LOCATION_CREATED")(dispatchStep)
       setTimeout(() => {
         window.location.href = "/localities"
       }, 1000);

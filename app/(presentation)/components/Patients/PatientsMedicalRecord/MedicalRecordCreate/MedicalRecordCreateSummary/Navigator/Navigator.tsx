@@ -1,5 +1,9 @@
 import { MedicalMeasureTypesEnum } from "(presentation)/(enum)/medicalMeasure/medicalMeasureEnums";
 import {
+  TreatmentDosisTypeEnum,
+  TreatmentViaDosisEnum,
+} from "(presentation)/(enum)/treatment/treatmentEnums";
+import {
   PatientsMedicalRecordRoutesEnum,
   PatientsRoutesEnum,
 } from "(presentation)/(routes)/patientsRoutes";
@@ -10,6 +14,10 @@ import {
   IMedicalMeasure,
   IMedicalMeasureType,
 } from "domain/core/entities/medicalMeasureEntity";
+import {
+  ITreatment,
+  ITreatmentMedicine,
+} from "domain/core/entities/treatmentEntity";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
@@ -181,10 +189,57 @@ export default function Navigator() {
     return medicalMeasures;
   };
 
+  const getTreatment = (values: any) => {
+    if (values?.recipes?.length === 0) return;
+
+    let treatment: ITreatment = {
+      id: 0,
+      status: 1,
+      patientId: patient?.patientId ?? 0,
+      medicalConsultyId: 0,
+      treatmentMedicines: [],
+    };
+
+    const treatmentMedicines: ITreatmentMedicine[] = [];
+
+    values.recipes.forEach((recipe: any) => {
+      const treatmentMedicine: ITreatmentMedicine = {
+        id: 0,
+        viaDosis:
+          recipe?.via?.length > 0
+            ? parseInt(recipe.via)
+            : TreatmentViaDosisEnum.ORAL,
+        medicine: recipe.medicine,
+        dosisQuantity: recipe.quantity,
+        dosisType:
+          recipe?.unit?.length > 0
+            ? parseInt(recipe.unit)
+            : TreatmentDosisTypeEnum.CAPSULE,
+        takeUntilMeasure: recipe.duringMeasure,
+        takeUntilValue:
+          recipe?.duringValue > 0 ? parseInt(recipe.duringValue) : 0,
+        takeEachMeasure: recipe.frequencyMeasure,
+        takeEachValue:
+          recipe?.frequencyValue > 0 ? parseInt(recipe.frequencyValue) : 0,
+        createdOn: new Date(),
+        treatmentId: 0,
+        status: 1,
+      };
+
+      treatmentMedicines.push(treatmentMedicine);
+    });
+
+    treatment.treatmentMedicines = treatmentMedicines;
+
+    return treatment;
+  };
+
   const onCreateMedicalConsulty = () => {
     const values = getValuesFromLocalStorage();
 
     const medicalMeasures = getMedicalMeasures(values);
+
+    const treatment = getTreatment(values);
 
     const medicalConsulty: IMedicalConsulty = {
       id: 0,
@@ -192,13 +247,13 @@ export default function Navigator() {
         ? new Date(
             new Date(values.currentConsultation.consultationDate).getFullYear(),
             new Date(values.currentConsultation.consultationDate).getMonth(),
-            new Date(values.currentConsultation.consultationDate).getDate() + 1,
-            0,
-            0,
-            0,
-            0
+            new Date(values.currentConsultation.consultationDate).getDate() + 1
           )
-        : new Date(),
+        : new Date(
+            new Date().getFullYear(),
+            new Date().getMonth(),
+            new Date().getDate() + 1
+          ),
       consultationReason: values.currentConsultation.consultationReason,
       referrerBy:
         values.currentConsultation.referredBy.length > 0
@@ -265,13 +320,12 @@ export default function Navigator() {
           ? values.currentConsultation.observations
           : null,
       medicalMeasures: medicalMeasures,
+      treatments: treatment ? [treatment] : [],
       createdOn: new Date(),
       updatedOn: null,
       deletedOn: null,
       patientId: patient?.patientId ?? 0,
     };
-
-    console.log(medicalConsulty);
 
     createMedicalConsulty(medicalConsulty)(dispatch);
   };
@@ -285,12 +339,14 @@ export default function Navigator() {
   };
 
   const onCreateMedicalConsultySucessful = () => {
+    localStorage.removeItem("noodus.storage.medical-record-create");
+
     setTimeout(() => {
       router.push(
         PatientsRoutesEnum.PatientsView +
           patient?.patientId +
           PatientsMedicalRecordRoutesEnum.MedicalRecord +
-          `?view_medical_record=true&medical_record_id=${medicalConsulty.data.id}&from=medical-consulty-summary`
+          `?view_medical_record=true&medical_record_id=${medicalConsulty.data?.id}&from=medical-consulty-summary`
       );
     }, 3000);
   };
@@ -324,7 +380,7 @@ export default function Navigator() {
             <div className="mr-3">
               <Button
                 variant="primary"
-                disabled={loading}
+                disabled={loading || successful}
                 onClick={() => onCreateMedicalConsulty()}
               >
                 Crear consulta
@@ -332,7 +388,7 @@ export default function Navigator() {
             </div>
 
             <div>
-              {loading ? (
+              {loading || successful ? (
                 <Button variant="outline-primary" disabled>
                   Volver
                 </Button>

@@ -37,6 +37,7 @@ export default function Navigator() {
     let errors = {
       consultationDate: false,
       consultationReason: false,
+      diagnose: false,
       size: false,
       weight: false,
       temperature: false,
@@ -119,6 +120,12 @@ export default function Navigator() {
       count: handleGlicemyErrors(values.glicemy)
         ? errors.count + 1
         : errors.count,
+    };
+
+    errors = {
+      ...errors,
+      diagnose: values.diagnose.length === 0 ? true : false,
+      count: values.diagnose.length === 0 ? errors.count + 1 : errors.count,
     };
 
     return errors;

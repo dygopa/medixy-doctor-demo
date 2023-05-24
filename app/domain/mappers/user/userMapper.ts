@@ -3,6 +3,7 @@ import { IUser } from "domain/core/entities/userEntity";
 export function userAPIToMap(data: any): IUser {
   return {
     userId: data?.id ?? "",
+    accountId: data?.user_id ?? "",
     names: data?.names ?? "",
     firstName: data?.first_lastname ?? "",
     lastName: data?.second_lastname ?? "",

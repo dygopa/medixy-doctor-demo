@@ -1,6 +1,7 @@
 "use client";
 
-import { useContext, useEffect } from "react";
+import clsx from "clsx";
+import { useContext, useEffect, useRef, useState } from "react";
 import {
   IMedicalRecordCreateContext,
   MedicalRecordCreateContext,
@@ -23,6 +24,26 @@ export default function MedicalRecordCreateIndex({
   );
   const { getPatientById } = actions;
   const { data: patient, loading, successful, error } = state.patient;
+
+  const [screenSize, setScreenSize] = useState(getCurrentDimension());
+
+  function getCurrentDimension() {
+    return {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    };
+  }
+
+  useEffect(() => {
+    const updateDimension = () => {
+      setScreenSize(getCurrentDimension());
+    };
+    window.addEventListener("resize", updateDimension);
+
+    return () => {
+      window.removeEventListener("resize", updateDimension);
+    };
+  }, [screenSize]);
 
   useEffect(() => {
     let isCleanup = true;
@@ -72,15 +93,25 @@ export default function MedicalRecordCreateIndex({
 
   return (
     <>
-      <div className="py-5">
+      <div className="py-5 xl:container">
         <Navigator />
 
         <div className="mt-10 grid grid-cols-12 gap-4">
-          <div className="xl:col-span-3 col-span-12">
-            <LeftSide />
+          <div
+            className={clsx([
+              "col-span-12",
+              screenSize.width <= 1866 ? "xl:col-span-0" : "xl:col-span-3",
+            ])}
+          >
+            <LeftSide windowWidth={screenSize.width} />
           </div>
 
-          <div className="xl:col-span-9 col-span-12">
+          <div
+            className={clsx([
+              "xl:col-span-9 col-span-12",
+              screenSize.width <= 1866 ? "xl:col-span-12" : "xl:col-span-9",
+            ])}
+          >
             <RightSide />
           </div>
         </div>

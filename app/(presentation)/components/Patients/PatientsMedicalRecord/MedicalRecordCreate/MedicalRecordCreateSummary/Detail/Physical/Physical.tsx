@@ -8,7 +8,7 @@ export default function Physical() {
       "noodus.storage.medical-record-create"
     );
 
-    if (!valuesStorage) window.location.reload();
+    if (!valuesStorage) return;
 
     const valuesJSON = JSON.parse(valuesStorage ?? "");
     setPhysical(valuesJSON.currentConsultation.generalInspection);

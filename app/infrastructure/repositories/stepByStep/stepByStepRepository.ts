@@ -15,15 +15,22 @@ export class StepByStepRepository implements IStepByStepRepository {
 
     async createUserSteps(id:string, event: string): Promise<any | AuthFailure> {
         try {
+            const stepAlreadyExist = await supabase.from("EventosUsuarios").select().eq("usuarioId", parseInt(id)).eq("evento", event)
 
+            if(stepAlreadyExist.data && stepAlreadyExist.data?.length > 0 ){
+                console.log("Already exists")
+                return;
+            }
+            
             const snapshots = await supabase.from("EventosUsuarios").insert({
                 evento: event,
-                usuarioId: 1
+                usuarioId: parseInt(id)
             });
 
             if(!snapshots.error) throw new AuthFailure(snapshots.statusText);
 
             return snapshots.data;
+
         } catch (error) {
             const exception = error as AuthFailure;
             return new AuthFailure(exception.code);
@@ -33,7 +40,7 @@ export class StepByStepRepository implements IStepByStepRepository {
     async getSteps(id:string): Promise<any | AuthFailure> {
         try {
 
-            const snapshots = await supabase.from("EventosUsuarios").select().eq("usuarioId", 1);
+            const snapshots = await supabase.from("EventosUsuarios").select().eq("usuarioId", parseInt(id));
 
             if(snapshots.error)throw new AuthFailure(snapshots.statusText)
             console.log(snapshots.data)

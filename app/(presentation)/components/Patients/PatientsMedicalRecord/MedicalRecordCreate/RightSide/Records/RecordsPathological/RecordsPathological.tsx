@@ -52,9 +52,9 @@ export default function RecordsPathological({
       <div
         className={clsx(["transition-all", showFields ? "block" : "hidden"])}
       >
-        <div className="flex items-center justify-between mb-4 w-full">
-          <div className="flex items-center w-full">
-            <div className="mr-5 w-[200px]">
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[350px] w-full">
               <p className="text-slate-900 font-lighter text-lg">Alergías</p>
             </div>
 
@@ -137,7 +137,7 @@ export default function RecordsPathological({
                       <button
                         type="button"
                         key={i}
-                        className="mt-3  mr-3"
+                        className="mt-3 mr-3"
                         onClick={() => {
                           setValues({
                             ...values,
@@ -171,9 +171,9 @@ export default function RecordsPathological({
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-4 w-full">
-          <div className="flex items-center w-full">
-            <div className="mr-5 w-[200px]">
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[350px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Intervenciones quirúrgicas
               </p>
@@ -224,8 +224,8 @@ export default function RecordsPathological({
           </div>
         </div>
 
-        <div className="flex items-center w-full">
-          <div className="mr-5 w-[200px]">
+        <div className="xl:flex items-center mb-4 w-full">
+          <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[350px] w-full">
             <p className="text-slate-900 font-lighter text-lg">
               Toma medicamentos actualmente
             </p>
@@ -338,9 +338,9 @@ export default function RecordsPathological({
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-4 w-full">
-          <div className="flex items-center w-full">
-            <div className="mr-5 w-[200px]">
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[350px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Transfusiones
               </p>
@@ -391,9 +391,9 @@ export default function RecordsPathological({
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-4 w-full">
-          <div className="flex items-center w-full">
-            <div className="mr-5 w-[200px]">
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[350px] w-full">
               <p className="text-slate-900 font-lighter text-lg">Anemia</p>
             </div>
 
@@ -440,9 +440,9 @@ export default function RecordsPathological({
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-4 w-full">
-          <div className="flex items-center w-full">
-            <div className="mr-5 w-[200px]">
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[350px] w-full">
               <p className="text-slate-900 font-lighter text-lg">Artritis</p>
             </div>
 
@@ -489,9 +489,9 @@ export default function RecordsPathological({
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-4 w-full">
-          <div className="flex items-center w-full">
-            <div className="mr-5 w-[200px]">
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[350px] w-full">
               <p className="text-slate-900 font-lighter text-lg">Asma</p>
             </div>
 
@@ -538,9 +538,9 @@ export default function RecordsPathological({
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-4 w-full">
-          <div className="flex items-center w-full">
-            <div className="mr-5 w-[200px]">
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[350px] w-full">
               <p className="text-slate-900 font-lighter text-lg">Cáncer</p>
             </div>
 
@@ -587,9 +587,9 @@ export default function RecordsPathological({
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-4 w-full">
-          <div className="flex items-center w-full">
-            <div className="mr-5 w-[200px]">
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[350px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Coágulos sanguíneos
               </p>
@@ -638,9 +638,9 @@ export default function RecordsPathological({
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-4 w-full">
-          <div className="flex items-center w-full">
-            <div className="mr-5 w-[200px]">
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[350px] w-full">
               <p className="text-slate-900 font-lighter text-lg">Colitis</p>
             </div>
 

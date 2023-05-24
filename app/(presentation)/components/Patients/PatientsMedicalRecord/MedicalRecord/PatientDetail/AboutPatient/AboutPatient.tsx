@@ -15,7 +15,7 @@ export default function AboutPatient() {
   return (
     <div
       className={clsx([
-        "relative zoom-in lg:h-[27vh] h-auto",
+        "relative zoom-in lg:h-[30vh] h-auto",
         "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
       ])}
     >
@@ -82,7 +82,7 @@ export default function AboutPatient() {
                 <span className="font-medium text-[16px]">
                   {patient && patient.motherLastName?.length > 0
                     ? patient?.motherLastName
-                    : "-"}
+                    : "No especificado"}
                 </span>
               </div>
 
@@ -98,7 +98,7 @@ export default function AboutPatient() {
                       : `${patient.age} ${
                           patient?.ageType === "years" ? "año" : "mes"
                         }`
-                    : "-"}{" "}
+                    : "No especificado"}{" "}
                 </span>
               </div>
 
@@ -106,7 +106,9 @@ export default function AboutPatient() {
                 <p className="font-normal text-slate-500 mb-1">CURP</p>
 
                 <span className="font-medium text-[16px]">
-                  {patient && patient.curp?.length > 0 ? patient?.curp : "-"}
+                  {patient && patient.curp?.length > 0
+                    ? patient?.curp
+                    : "No especificado"}
                 </span>
               </div>
 
@@ -124,7 +126,9 @@ export default function AboutPatient() {
                 </p>
 
                 <span className="font-medium text-[16px]">
-                  {patient && patient.email?.length > 0 ? patient?.email : "-"}
+                  {patient && patient.email?.length > 0
+                    ? patient?.email
+                    : "No especificado"}
                 </span>
               </div>
             </div>

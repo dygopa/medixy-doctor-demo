@@ -1,3 +1,9 @@
+import {
+  TreatmentDosisTypeEnum,
+  TreatmentDosisTypeTextEnum,
+  TreatmentViaDosisEnum,
+  TreatmentViaDosisTextEnum,
+} from "(presentation)/(enum)/treatment/treatmentEnums";
 import AutocompleteInput from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInput";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
@@ -28,9 +34,9 @@ export default function AddRecipe({
 }: IAddRecipeProps) {
   const [values, setValues] = useState({
     medicine: "",
-    via: "oral",
+    via: "1",
     quantity: "",
-    unit: "capsule",
+    unit: "1",
     frequencyMeasure: "hours",
     frequencyValue: "",
     duringMeasure: "hours",
@@ -162,7 +168,7 @@ export default function AddRecipe({
     <div>
       <div className="xl:flex items-center justify-between mb-4 w-full">
         <div className="xl:flex items-center w-full">
-          <div className="xl:mr-5 mb-1 xl:w-[195px] w-full">
+          <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[195px] w-full">
             <p className="text-slate-900 font-lighter text-lg">Medicamento</p>
           </div>
 
@@ -190,14 +196,14 @@ export default function AddRecipe({
       <div className="xl:flex items-center justify-between mb-4 w-full">
         <div className="xl:flex items-center">
           <div className="xl:flex items-center w-full">
-            <div className="mr-5 w-[250px]">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[250px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Prescripción
               </p>
             </div>
 
             <div className="xl:flex items-center w-full">
-              <div className="mr-3">
+              <div className="xl:mr-3 xl:mb-0 mb-3">
                 <div className="mb-1">
                   <p className="text-md text-slate-500">Vía</p>
                 </div>
@@ -210,20 +216,38 @@ export default function AddRecipe({
                       setValues({ ...values, [e.target.name]: e.target.value })
                     }
                   >
-                    <option value="oral">Oral</option>
-                    <option value="sublingual">Sublingual</option>
-                    <option value="topica">Tópica</option>
-                    <option value="transdérmica">Transdérmica</option>
-                    <option value="oftalmológica">Oftalmológica</option>
-                    <option value="inhalatoria">Inhalatoria</option>
-                    <option value="rectal">Rectal</option>
-                    <option value="vaginal">Vaginal</option>
-                    <option value="parental">Parental</option>
+                    <option value={TreatmentViaDosisEnum.ORAL}>
+                      {TreatmentViaDosisTextEnum.ORAL}
+                    </option>
+                    <option value={TreatmentViaDosisEnum.SUBLINGUAL}>
+                      {TreatmentViaDosisTextEnum.SUBLINGUAL}
+                    </option>
+                    <option value={TreatmentViaDosisEnum.TOPICA}>
+                      {TreatmentViaDosisTextEnum.TOPICA}
+                    </option>
+                    <option value={TreatmentViaDosisEnum.TRANSDERMIC}>
+                      {TreatmentViaDosisTextEnum.TRANSDERMIC}
+                    </option>
+                    <option value={TreatmentViaDosisEnum.OPHTHALMOLOGICAL}>
+                      {TreatmentViaDosisTextEnum.OPHTHALMOLOGICAL}
+                    </option>
+                    <option value={TreatmentViaDosisEnum.INHALATION}>
+                      {TreatmentViaDosisTextEnum.INHALATION}
+                    </option>
+                    <option value={TreatmentViaDosisEnum.RECTAL}>
+                      {TreatmentViaDosisTextEnum.RECTAL}
+                    </option>
+                    <option value={TreatmentViaDosisEnum.VAGINAL}>
+                      {TreatmentViaDosisTextEnum.VAGINAL}
+                    </option>
+                    <option value={TreatmentViaDosisEnum.PARENTAL}>
+                      {TreatmentViaDosisTextEnum.PARENTAL}
+                    </option>
                   </FormSelect>
                 </div>
               </div>
 
-              <div className="mr-3">
+              <div className="xl:mr-3 xl:mb-0 mb-3">
                 <div className="mb-1">
                   <p className="text-md text-slate-500">Cantidad</p>
                 </div>
@@ -243,12 +267,12 @@ export default function AddRecipe({
 
                       setValues({ ...values, [e.target.name]: e.target.value });
                     }}
-                    className="w-[70px]"
+                    className="xl:w-[70px] w-full"
                   />
                 </div>
               </div>
 
-              <div className="mr-3">
+              <div className="xl:mr-3 xl:mb-0 mb-3">
                 <div className="mb-1">
                   <p className="text-md text-slate-500">Unidad</p>
                 </div>
@@ -261,14 +285,30 @@ export default function AddRecipe({
                       setValues({ ...values, [e.target.name]: e.target.value })
                     }
                   >
-                    <option value="capsule">Cápsula</option>
-                    <option value="jarabe">Jarabe</option>
-                    <option value="polvos">Polvos</option>
-                    <option value="suspention">Suspensión</option>
-                    <option value="comprimite">Comprimidos</option>
-                    <option value="granulate">Granulados</option>
-                    <option value="emulsion">Emulsión</option>
-                    <option value="inyectable">Inyectables</option>
+                    <option value={TreatmentDosisTypeEnum.CAPSULE}>
+                      {TreatmentDosisTypeTextEnum.CAPSULE}
+                    </option>
+                    <option value={TreatmentDosisTypeEnum.JARABE}>
+                      {TreatmentDosisTypeTextEnum.JARABE}
+                    </option>
+                    <option value={TreatmentDosisTypeEnum.POLVOS}>
+                      {TreatmentDosisTypeTextEnum.POLVOS}
+                    </option>
+                    <option value={TreatmentDosisTypeEnum.SUSPENTION}>
+                      {TreatmentDosisTypeTextEnum.SUSPENTION}
+                    </option>
+                    <option value={TreatmentDosisTypeEnum.COMPRIMITE}>
+                      {TreatmentDosisTypeTextEnum.COMPRIMITE}
+                    </option>
+                    <option value={TreatmentDosisTypeEnum.GRANULATE}>
+                      {TreatmentDosisTypeTextEnum.GRANULATE}
+                    </option>
+                    <option value={TreatmentDosisTypeEnum.EMULSION}>
+                      {TreatmentDosisTypeTextEnum.EMULSION}
+                    </option>
+                    <option value={TreatmentDosisTypeEnum.INYECTABLE}>
+                      {TreatmentDosisTypeTextEnum.INYECTABLE}
+                    </option>
                   </FormSelect>
                 </div>
               </div>
@@ -277,13 +317,13 @@ export default function AddRecipe({
         </div>
 
         <div>
-          <div className="flex items-center w-full">
-            <div className="mr-5 w-[250px]">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[250px] w-full">
               <p className="text-slate-900 font-lighter text-lg">Duración</p>
             </div>
 
-            <div className="flex items-center w-full">
-              <div className="mr-3">
+            <div className="xl:flex items-center w-full">
+              <div className="xl:mr-3 xl:mb-0 mb-3">
                 <div className="mb-1">
                   <p className="text-md text-slate-500">Cada</p>
                 </div>
@@ -306,14 +346,14 @@ export default function AddRecipe({
                         [e.target.name]: e.target.value,
                       });
                     }}
-                    className="w-[80px]"
+                    className="xl:w-[80px] w-full"
                   />
                 </div>
               </div>
 
-              <div className="mr-3">
+              <div className="xl:mr-3 xl:mb-0 mb-3">
                 <div className="mb-1">
-                  <p className="text-md text-white h-[20px]" />
+                  <p className="text-md text-white xl:h-[20px]" />
                 </div>
 
                 <div>
@@ -332,7 +372,7 @@ export default function AddRecipe({
                 </div>
               </div>
 
-              <div className="mr-3">
+              <div className="xl:mr-3 xl:mb-0 mb-3">
                 <div className="mb-1">
                   <p className="text-md text-slate-500">Durante</p>
                 </div>
@@ -352,14 +392,14 @@ export default function AddRecipe({
 
                       setValues({ ...values, [e.target.name]: e.target.value });
                     }}
-                    className="w-[80px]"
+                    className="xl:w-[80px] w-full"
                   />
                 </div>
               </div>
 
-              <div className="mr-3">
+              <div className="xl:mr-3 xl:mb-0 mb-3">
                 <div className="mb-1">
-                  <p className="text-md text-white h-[20px]" />
+                  <p className="text-md text-white xl:h-[20px]" />
                 </div>
 
                 <div>
@@ -382,14 +422,14 @@ export default function AddRecipe({
         </div>
       </div>
 
-      <div className="flex items-center justify-between w-full mt-4">
-        <div className="flex items-center w-full">
-          <div className="mr-5 w-[195px]">
+      <div className="xl:flex items-center justify-between w-full mt-4">
+        <div className="xl:flex items-center w-full">
+          <div className="xl:mr-5 xl:mb-0 mb-1 w-[195px]">
             <p className="text-slate-900 font-lighter text-lg" />
           </div>
 
-          <div className="flex items-center w-full">
-            <div className="w-full mr-3">
+          <div className="xl:flex items-center w-full">
+            <div className="w-full xl:mr-3 xl:mb-0 mb-3">
               <FormInput
                 value={values.indication}
                 name="indication"

@@ -37,7 +37,7 @@ export default function PopupIndex() {
       'z-[52] fixed top-0 left-0 w-full h-screen overflow-y-auto bg-gray-900/30 flex flex-col justify-center items-end',
       status ? "visible" : "hidden"
     ])}>
-      <div ref={wrapperRef} className='w-[30%] min-h-screen max-h-screen overflow-y-auto h-screen flex flex-col justify-between items-start bg-white p-6 gap-8'>
+      <div ref={wrapperRef} className='w-full md:w-[50%] lg:w-[30%] min-h-screen max-h-screen overflow-y-auto h-screen flex flex-col justify-between items-start bg-white p-6 gap-8'>
         <div className="w-full h-[90%] relative flex flex-col justify-start items-center gap-3">
           <div className="w-full flex justify-between items-center">
             <p className='text-lg text-slate-900 font-semibold'>{change.title}</p>

@@ -190,7 +190,7 @@ export default function Credentials({
   useMemo(() => {
     if (account.userId) {
       getUserMedicalSpecialities(account.userId)(dispatch);
-      createUserSteps(account.userId, "PROFILE_COMPLETED")(dispatchStep)
+      if(successFulRegister) createUserSteps(account.accountId, "PROFILE_COMPLETED")(dispatchStep)
     }
   }, [successFulRegister, successFulDelete, successFulUpdate]);
 

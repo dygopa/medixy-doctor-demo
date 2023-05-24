@@ -1,4 +1,5 @@
 import { IMedicalMeasure } from "./medicalMeasureEntity";
+import { ITreatment } from "./treatmentEntity";
 
 export interface IMedicalConsulty {
     id: number;
@@ -21,6 +22,7 @@ export interface IMedicalConsulty {
     diagnose: string;
     observations?: string | null;
     medicalMeasures?: IMedicalMeasure[];
+    treatments?: ITreatment[];
     createdOn: Date;
     updatedOn: Date | null;
     deletedOn: Date | null;

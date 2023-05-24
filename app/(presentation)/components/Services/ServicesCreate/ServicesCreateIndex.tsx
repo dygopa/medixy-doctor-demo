@@ -35,7 +35,7 @@ export default function ServicesCreateIndex() {
   return (
     <div className="py-5">
       <ServicesProvider>
-        <Formulary userId={loading ? "" : data.userId} />
+        <Formulary userId={loading ? "" : data.userId} accountId={loading ? "" : data.accountId}/>
       </ServicesProvider>
     </div>
   );

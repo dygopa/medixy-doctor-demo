@@ -30,7 +30,15 @@ export default function Detail() {
       "noodus.storage.medical-record-create"
     );
 
-    if (!valuesStorage) window.location.reload();
+    if (!valuesStorage) {
+      router.push(
+        PatientsRoutesEnum.PatientsView +
+          patient?.patientId +
+          PatientsMedicalRecordRoutesEnum.MedicalRecord +
+          PatientsMedicalRecordRoutesEnum.MedicalRecordCreate
+      );
+      return;
+    }
 
     const valuesJSON = JSON.parse(valuesStorage ?? "");
 

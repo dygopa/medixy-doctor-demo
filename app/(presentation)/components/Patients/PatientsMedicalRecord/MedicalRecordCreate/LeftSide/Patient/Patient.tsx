@@ -84,7 +84,7 @@ export default function Patient({
                       : `${patient.age} ${
                           patient?.ageType === "years" ? "año" : "mes"
                         }`
-                    : "-"}{" "}
+                    : "No especificado"}{" "}
                 </span>
               </div>
 
@@ -108,7 +108,7 @@ export default function Patient({
                     <span className="font-medium text-[16px]">
                       {patient && patient.motherLastName.length > 0
                         ? patient.motherLastName
-                        : "-"}
+                        : "No especificado"}
                     </span>
                   </div>
 
@@ -116,7 +116,9 @@ export default function Patient({
                     <p className="font-normal text-slate-500 mb-1">CURP</p>
 
                     <span className="font-medium text-[16px]">
-                      {patient && patient.curp.length > 0 ? patient.curp : "-"}
+                      {patient && patient.curp.length > 0
+                        ? patient.curp
+                        : "No especificado"}
                     </span>
                   </div>
 
@@ -126,7 +128,7 @@ export default function Patient({
                     <span className="font-medium text-[16px]">
                       {patient && patient.phoneNumber.length > 0
                         ? patient.phoneNumber
-                        : "-"}
+                        : "No especificado"}
                     </span>
                   </div>
 
@@ -138,7 +140,7 @@ export default function Patient({
                     <span className="font-medium text-[16px]">
                       {patient && patient.email.length > 0
                         ? patient.email
-                        : "-"}
+                        : "No especificado"}
                     </span>
                   </div>
                 </>

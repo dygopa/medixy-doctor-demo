@@ -45,9 +45,9 @@ export default function RecordsFamily({
       <div
         className={clsx(["transition-all", showFields ? "block" : "hidden"])}
       >
-        <div className="flex items-center justify-between mb-4 w-full">
-          <div className="flex items-center w-full">
-            <div className="mr-5 w-[200px]">
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[350px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Diabéticos en la familia
               </p>
@@ -98,9 +98,9 @@ export default function RecordsFamily({
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-4 w-full">
-          <div className="flex items-center w-full">
-            <div className="mr-5 w-[200px]">
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[350px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Cáncer en la familia
               </p>
@@ -151,9 +151,9 @@ export default function RecordsFamily({
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-4 w-full">
-          <div className="flex items-center w-full">
-            <div className="mr-5 w-[200px]">
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[350px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Hipertensión en la familia
               </p>
@@ -204,9 +204,9 @@ export default function RecordsFamily({
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-4 w-full">
-          <div className="flex items-center w-full">
-            <div className="mr-5 w-[200px]">
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[350px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Sida en la familia
               </p>
@@ -255,9 +255,9 @@ export default function RecordsFamily({
           </div>
         </div>
 
-        <div className="flex items-center justify-between mb-4 w-full">
-          <div className="flex items-center w-full">
-            <div className="mr-5 w-[200px]">
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[350px] w-full">
               <p className="text-slate-900 font-lighter text-lg">Otra</p>
             </div>
 

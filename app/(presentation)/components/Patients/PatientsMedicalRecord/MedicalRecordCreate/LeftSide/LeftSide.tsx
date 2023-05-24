@@ -1,16 +1,25 @@
 import clsx from "clsx";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import MedicalRecordNavigation from "./MedicalRecordNavigation/MedicalRecordNavigation";
 import Patient from "./Patient/Patient";
 
-export default function LeftSide() {
+interface ILeftSideProps {
+  windowWidth: any;
+}
+
+export default function LeftSide({ windowWidth }: ILeftSideProps) {
   const [showCompleteDetails, setShowCompleteDetails] = useState(false);
 
   return (
-    <div className="sticky top-[155px] z-[99] xl:block hidden">
+    <div
+      className={clsx([
+        "sticky top-[155px] z-[99]",
+        windowWidth <= 1866 ? "hidden" : "block",
+      ])}
+    >
       <div
         className={clsx([
-          "mb-8 h-[18vh]",
+          "h-[18vh]",
           showCompleteDetails ? "w-[1200px]" : "w-full",
         ])}
       >

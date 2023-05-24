@@ -9,7 +9,7 @@ export default function Reason() {
       "noodus.storage.medical-record-create"
     );
 
-    if (!valuesStorage) window.location.reload();
+    if (!valuesStorage) return;
 
     const valuesJSON = JSON.parse(valuesStorage ?? "");
     setReason(valuesJSON.currentConsultation.consultationReason);

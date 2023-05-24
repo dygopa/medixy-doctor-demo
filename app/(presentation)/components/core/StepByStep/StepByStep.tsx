@@ -135,18 +135,6 @@ export default function StepByStep({ user }: { user: IUser }) {
     );
   };
 
-  function handleClickInStep(id:number, prop:string){
-    if(id === 0){
-      createUserSteps(id, prop)(dispatch)
-    }
-    if(id === 1){
-      createUserSteps(id, prop)(dispatch)
-    }
-    if(id === 2){
-      createUserSteps(id, prop)(dispatch)
-    }
-  }
-
   function formatListOfSteps(){
     console.log(data)
     let list = data as any[]
@@ -166,7 +154,7 @@ export default function StepByStep({ user }: { user: IUser }) {
   },[successful])
 
   useEffect(() => {
-    getSteps(user?.userId)(dispatch);
+    if(user?.accountId) getSteps(user?.accountId)(dispatch);
   }, [user]);
 
   return (

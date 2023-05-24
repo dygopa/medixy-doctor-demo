@@ -77,7 +77,7 @@ export default function TableResponsive() {
         patients.data.map((patient: IPatient) => (
           <div
             key={patient.patientId}
-            className="mt-2 overflow-auto intro-x bg-white border rounded-lg p-4 flex flex-col justify-between items-start gap-4"
+            className="mt-2 overflow-auto bg-white border rounded-lg p-4 flex flex-col justify-between items-start gap-4"
           >
             <div className="w-full flex justify-between items-center gap-4">
               <Link
@@ -113,7 +113,7 @@ export default function TableResponsive() {
                   leaveTo="transform opacity-0 scale-95"
                 >
                   <Menu.Items className="absolute right-0 z-15 mt-1 w-36 origin-top-right rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5">
-                    <Menu.Item>
+                    {/* <Menu.Item>
                       {({ active }) => (
                         <div>
                           <Link
@@ -130,7 +130,7 @@ export default function TableResponsive() {
                           </Link>
                         </div>
                       )}
-                    </Menu.Item>
+                          </Menu.Item> */}
                     <Menu.Item>
                       {({ active }) => (
                         <div>
