@@ -44,10 +44,13 @@ export default class ServiceUseCase {
     }
   }
 
-  async createUserService(obj:any, list:Array<any>): Promise<number> {
+  async createUserService(obj:any, list:Array<any>): Promise<string> {
     try {
-      const response = await this._repository.createUserService(obj);
-      list.forEach(async(elem) => await this._repository.addServiceToLocality({...elem, service_id: response}))
+      list = list.map(elem => ({
+        location_id: elem["location_id"],
+        price: elem["price"]
+      }))
+      const response = await this._repository.createUserService({...obj, locations: list});
 
       if (response instanceof ServiceFailure) throw response;
       return response;

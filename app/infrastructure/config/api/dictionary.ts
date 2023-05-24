@@ -22,3 +22,6 @@ export const CREATE_USER_SERVICE_ENDPOINT = (id:number) => process.env.NEXT_PUBL
 export const UPDATE_USER_SERVICE_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/service/${id}`;
 export const DELETE_USER_SERVICE_ENDPOINT = (id:number, service_id:number) => process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}/service/${service_id}`;
 export const ADD_SERVICE_TO_LOCATION_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL + `/service_in_location`;
+
+export const UPDATE_USER_OTP_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL + `/doctor/auth`;
+export const CHECK_OTP_ENDPOINT = (code:string) => process.env.NEXT_PUBLIC_API_URL + `/doctor/opt/${code}`;

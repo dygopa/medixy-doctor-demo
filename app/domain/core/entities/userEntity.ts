@@ -7,7 +7,7 @@ export interface IUser {
   email: string;
   curp: string;
   birthDate: string;
-  sex: string;
+  sex: number;
   websiteUrl: string;
   phone: string;
   personType: string;

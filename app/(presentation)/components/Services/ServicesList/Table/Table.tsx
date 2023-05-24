@@ -5,70 +5,202 @@ import Paginate from "(presentation)/components/core/Paginate/Paginate";
 import Link from "next/link";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { useContext, useMemo } from "react";
-import { IServicesContext, ServicesContext } from "../../context/ServicesContext";
+import {
+  IServicesContext,
+  ServicesContext,
+} from "../../context/ServicesContext";
 import { IService } from "domain/core/entities/serviceEntity";
+import Table from "(presentation)/components/core/BaseComponents/Table";
+import { useRouter } from "next/navigation";
 
-export default function Table({user}:{
-  user: IUser;
-}){
+export default function TableServices({ user }: { user: IUser }) {
+  const { state, actions, dispatch } =
+    useContext<IServicesContext>(ServicesContext);
+  const { data, loading, successful, error } = state.getUserServices;
+  const { getUserServices } = actions;
 
-  const { state, actions, dispatch } = useContext<IServicesContext>(ServicesContext);
-  const { 
-      data, 
-      loading, 
-      successful, 
-      error 
-  } = state.getUserServices;
-  const { getUserServices } = actions
-  
+  const router = useRouter();
 
-  const TableData = ({data}:{data:IService}) => {
-    return(
-      <Link 
-      href={`/services/${data.id}`}
-      className="cursor-pointer w-full grid grid-cols-4 items-center justify-items-start bg-white px-3 py-4 border rounded-lg">
-        <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">{data.name}</p>
-        <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">{data.service_category.name}</p>
+  const TableData = ({ data }: { data: IService }) => {
+    return (
+      <Link
+        href={`/services/${data.id}`}
+        className="cursor-pointer w-full grid grid-cols-4 items-center justify-items-start bg-white px-3 py-4 border rounded-lg"
+      >
+        <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">
+          {data.name}
+        </p>
+        <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">
+          {data.service_category.name}
+        </p>
         <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">
           <div className="w-full flex justify-start items-center gap-2">
             <span className="rounded-full w-[12px] h-[12px] bg-success"></span>
             <p className="text-sm font-medium text-slate-900">Activo</p>
           </div>
         </p>
-        <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">${data.base_price}</p>
+        <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">
+          ${data.base_price}
+        </p>
       </Link>
-    )
+    );
+  };
+
+  const CardData = ({ data }: { data: IService }) => {
+    return (
+      <Link
+        href={`/services/${data.id}`}
+        className="bg-white border rounded-lg p-4 flex flex-col justify-between items-start gap-4 cursor-pointer"
+      >
+        <div className="w-full flex justify-start items-center gap-4">
+          <div className="relative flex flex-col justify-center items-start">
+            <p className="font-semibold text-lg text-gray-950">{data.name}</p>
+            <p className="font-light text-sm text-slate-500">
+              Categoria: {data.service_category.name}
+            </p>
+          </div>
+        </div>
+        <div className="w-full grid grid-cols-3 gap-1">
+          <div className="flex flex-col justify-start items-start gap-2 text-left">
+            <p className="font-light text-gray-500 text-sm">Precio base</p>
+            <p className="font-normal text-gray-950 text-base">
+              ${data.base_price}
+            </p>
+          </div>
+          <div className="flex flex-col justify-start items-start gap-2 text-left">
+            <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">
+              <p className="font-light text-gray-500 text-sm mb-3">Estatus</p>
+              <div className="w-full flex justify-start items-center gap-2">
+                <span className="rounded-full w-[12px] h-[12px] bg-success"></span>
+                <p className="text-sm font-medium text-slate-900">Activo</p>
+              </div>
+            </p>
+          </div>
+        </div>
+      </Link>
+    );
+  };
+
+  const TableComponent = () => {
+    return (
+      <div className="col-span-12 overflow-auto lg:overflow-visible z-0">
+        <Table className="border-spacing-y-[10px] border-separate -mt-2">
+          <Table.Thead>
+            <Table.Tr>
+              <Table.Th className="border-b-0 whitespace-nowrap text-base">
+                Servicio
+              </Table.Th>
+
+              <Table.Th className="border-b-0 whitespace-nowrap text-base">
+                Categoría
+              </Table.Th>
+
+              <Table.Th className="border-b-0 whitespace-nowrap text-base">
+                Estatus
+              </Table.Th>
+
+              <Table.Th className="border-b-0 whitespace-nowrap text-base">
+                Precio base
+              </Table.Th>
+            </Table.Tr>
+          </Table.Thead>
+
+          <Table.Tbody>
+            {successful &&
+              [...(data as Array<IService>)].length > 0 &&
+              [...(data as Array<IService>)].map((service, i) => (
+                <Table.Tr
+                  key={service.id}
+                  onClick={() => router.push(`/services/${service.id}`)}
+                  className="bg-white"
+                >
+                  <Table.Td>
+                    <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">
+                      {service.name}
+                    </p>
+                  </Table.Td>
+
+                  <Table.Td>
+                    <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">
+                      {service.service_category.name}
+                    </p>
+                  </Table.Td>
+
+                  <Table.Td>
+                    <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">
+                      <div className="w-full flex justify-start items-center gap-2">
+                        <span className="rounded-full w-[12px] h-[12px] bg-success"></span>
+                        <p className="text-sm font-medium text-slate-900">
+                          Activo
+                        </p>
+                      </div>
+                    </p>
+                  </Table.Td>
+
+                  <Table.Td>
+                    <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">
+                      ${service.base_price}
+                    </p>
+                  </Table.Td>
+                </Table.Tr>
+              ))}
+          </Table.Tbody>
+        </Table>
+      </div>
+    );
+  };
+
+  const CardsComponent = () => {
+    return (
+      <div className="grid sm:grid-cols-2 grid-cols-1 gap-4">
+        {successful &&
+          [...(data as Array<IService>)].length > 0 &&
+          [...(data as Array<IService>)].map((service, i) => (
+            <div key={service.id}>
+              <CardData data={service} />
+            </div>
+          ))}
+      </div>
+    );
+  };
+
+  useMemo(() => {
+    if (user.userId) getUserServices(user.userId)(dispatch);
+  }, [user.userId]);
+
+  if (loading) {
+    return (
+      <div className="w-full flex flex-col justify-center items-center">
+        <p className="font-bold text-slate-900 text-lg">Un momento...</p>
+        <p className="font-light text-slate-500 text-base">
+          Cargando tus servicios.
+        </p>
+      </div>
+    );
   }
 
-  useMemo(()=>{
-    if(user.userId) getUserServices(user.userId)(dispatch)
-  },[user.userId])
+  if (successful && [...(data as Array<IService>)].length === 0) {
+    return (
+      <div className="w-full flex flex-col justify-center items-center">
+        <p className="font-bold text-slate-900 text-lg">
+          Vaya, no tienes servicios aún
+        </p>
+        <p className="font-light text-slate-500 text-base">
+          Lo sentimos, pero no tienes servicios agregados todavia.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>
-      <div className="w-full grid grid-cols-4 items-center justify-items-start pb-3 mb-3 border-b border-slate-200 p-3">
-        <p className="border-b-0 whitespace-nowrap text-sm font-light text-slate-500">Servicio</p>
-        <p className="border-b-0 whitespace-nowrap text-sm font-light text-slate-500">Categoría</p>
-        <p className="border-b-0 whitespace-nowrap text-sm font-light text-slate-500">Estatus</p>
-        <p className="border-b-0 whitespace-nowrap text-sm font-light text-slate-500">Precio base</p>
+      <div className="lg:block md:block hidden">
+        <TableComponent />
       </div>
-      {loading &&
-        <div className="w-full flex flex-col justify-center items-center">
-          <p className="font-bold text-slate-900 text-lg">Un momento...</p>
-          <p className="font-light text-slate-500 text-base">Cargando tus servicios.</p>
-        </div>
-      }
-          
-      {(successful && [...data as Array<IService>].length > 0) && 
-        [...data as Array<IService>].map((service, i)=> <TableData data={service} key={i} />)
-      }
-      
-      {(successful && [...data as Array<IService>].length === 0) && 
-        <div className="w-full flex flex-col justify-center items-center">
-          <p className="font-bold text-slate-900 text-lg">Vaya, no tienes servicios aún</p>
-          <p className="font-light text-slate-500 text-base">Lo sentimos, pero no tienes servicios agregados todavia.</p>
-        </div>
-      }
+
+      <div className="lg:hidden md:hidden block">
+        <CardsComponent />
+      </div>
     </div>
   );
 }

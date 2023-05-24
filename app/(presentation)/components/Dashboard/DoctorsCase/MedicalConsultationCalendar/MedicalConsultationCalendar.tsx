@@ -2,17 +2,44 @@ import clsx from "clsx";
 import { MdOutlineNotificationsActive } from "react-icons/md";
 import { BsCalendarDate } from "react-icons/bs";
 import { FiUser } from "react-icons/fi";
+import { DashboardContext, IDashboardContext } from "../context/DashboardContext";
+import { useContext, useEffect, useState } from "react";
+
 export default function MedicalConsultationCalendar() {
 
-  const StatComponent = ({children, value, label}:{children:any; value:number; label:string;}) => {
-    return(
+  const { state, actions, dispatch } = useContext<IDashboardContext>(DashboardContext);
+  const { getCompletedAppointments, getPatients, getPendingAppointments } = actions;
+
+  const { data: completedAppointments, loading: loadingCompletedAppointments } = state.getCompletedAppointments;
+  const { data: patients, loading: loadingPatients } = state.getPatients;
+  const { data: pendingAppointments, loading: loadingPendingAppointments } = state.getPendingAppointments;
+
+  const [loadedData, setLoadedData] = useState(false);
+
+  const StatComponent = ({children, value, label}: {
+    children: any;
+    value: number;
+    label: string;
+  }) => {
+    return (
       <div className="h-full flex flex-col justify-between items-start gap-2">
         {children}
         <p className="font-semibold text-2xl text-slate-900">{value}</p>
         <p className="font-light text-base text-slate-500">{label}</p>
       </div>
-    )
-  }
+    );
+  };
+
+  function loadData(){
+    getCompletedAppointments()(dispatch)
+    getPatients()(dispatch)
+    getPendingAppointments()(dispatch)
+    setLoadedData(true)
+  } 
+
+  useEffect(()=>{
+    loadData()
+  },[loadedData])
 
   return (
     <div
@@ -21,27 +48,31 @@ export default function MedicalConsultationCalendar() {
       ])}
     >
       <div className="w-full flex flex-col gap-1">
-        <p className='font-semibold text-lg text-slate-900'>Resumen</p>
-        <p className='font-light text-sm text-slate-500'>Para mejorar tus estadisticas en la plataforma puedes configurar tus consultorios y asignarles servicios para de esa manera ser visible en el marketplace de pacientes</p>
+        <p className="font-semibold text-lg text-slate-900">Resumen</p>
+        <p className="font-light text-sm text-slate-500">
+          Para mejorar tus estadisticas en la plataforma puedes configurar tus
+          consultorios y asignarles servicios para de esa manera ser visible en
+          el marketplace de pacientes
+        </p>
       </div>
       <div
         className={clsx([
-          "w-full h-full grid grid-cols-3 justify-between items-center",
+          "w-full h-full grid lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-4 justify-between items-center",
         ])}
       >
-        <StatComponent value={0} label={"Citas pendientes"}>
+        <StatComponent value={loadingPendingAppointments ? 0 : (pendingAppointments as any[])?.length} label={"Citas pendientes"}>
           <div className="w-12 h-12 flex justify-center items-center rounded-lg bg-green-200 text-green-800 text-xl">
-            <MdOutlineNotificationsActive/>
+            <MdOutlineNotificationsActive />
           </div>
         </StatComponent>
-        <StatComponent value={0} label={"Citas completadas"}>
+        <StatComponent value={loadingCompletedAppointments ? 0 : (completedAppointments as any[])?.length} label={"Citas completadas"}>
           <div className="w-12 h-12 flex justify-center items-center rounded-lg bg-yellow-200 text-yellow-800 text-xl">
-            <BsCalendarDate/>
+            <BsCalendarDate />
           </div>
         </StatComponent>
-        <StatComponent value={0} label={"Pacientes"}>
+        <StatComponent value={loadingPatients ? 0 : (patients as any[])?.length} label={"Pacientes"}>
           <div className="w-12 h-12 flex justify-center items-center rounded-lg bg-red-200 text-red-800 text-xl">
-            <FiUser/>
+            <FiUser />
           </div>
         </StatComponent>
       </div>

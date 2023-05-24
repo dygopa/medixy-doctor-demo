@@ -36,18 +36,35 @@ function Main() {
           activeMobileMenu && "after:visible after:opacity-100 z-[60]",
         ])}
       >
-        <div className="h-[70px] px-3 sm:px-8 flex items-center">
-          <Button
-            variant="outline-primary"
-            onClick={() => {
-              setActiveMobileMenu(!activeMobileMenu);
+        <div className="flex">
+          <Link
+            href={{
+              pathname: DashboardRoutesEnum.Dashboard,
             }}
+            className="h-[70px] px-3 sm:px-8 flex items-center"
           >
-            <Lucide
-              icon="BarChart2"
-              className="w-8 h-8 text-white transform -rotate-90"
+            <Image
+              src="/logo-white.png"
+              width={250}
+              height={250}
+              alt="App logo"
             />
-          </Button>
+          </Link>
+
+          <div className="h-[70px] px-3 sm:px-8 flex items-center w-full justify-end">
+            <Button
+              variant="outline-primary"
+              className="px-4 border-white"
+              onClick={() => {
+                setActiveMobileMenu(!activeMobileMenu);
+              }}
+            >
+              <Lucide
+                icon="BarChart2"
+                className="w-8 h-8 text-white transform -rotate-90"
+              />
+            </Button>
+          </div>
         </div>
         <div
           ref={scrollableRef}
@@ -65,7 +82,7 @@ function Main() {
                 setActiveMobileMenu(!activeMobileMenu);
               }}
               className={clsx([
-                "fixed top-0 right-0 mt-4 mr-4 transition-opacity duration-200 ease-in-out",
+                "fixed top-0 right-0 mt-4 mr-4 transition-opacity duration-200 ease-in-out border-white px-2",
                 !activeMobileMenu && "invisible opacity-0",
                 activeMobileMenu && "visible opacity-100",
               ])}
@@ -82,7 +99,7 @@ function Main() {
                 title="Página de inicio de Prosit"
               >
                 <Image
-                  src="/logo-white-noodus.png"
+                  src="/logo-white.png"
                   width={110}
                   height={110}
                   alt="App logo white"
@@ -95,49 +112,51 @@ function Main() {
                 menu == "divider" ? (
                   <Divider as="li" className="my-6" key={menuKey}></Divider>
                 ) : (
-                  <li key={menuKey}>
-                    <Menu
-                      menu={menu}
-                      formattedMenuState={[formattedMenu, setFormattedMenu]}
-                      level="first"
-                      setActiveMobileMenu={setActiveMobileMenu}
-                    ></Menu>
-                    {/* BEGIN: Second Child */}
-                    {menu.subMenu && (
-                      <Transition
-                        in={menu.activeDropdown}
-                        onEnter={enter}
-                        onExit={leave}
-                        timeout={300}
-                      >
-                        <ul
-                          className={clsx([
-                            "bg-black/10 rounded-lg mx-4 my-1 dark:bg-darkmode-700",
-                            !menu.activeDropdown && "hidden",
-                            menu.activeDropdown && "block",
-                          ])}
+                  !menu.ignore && (
+                    <li key={menuKey}>
+                      <Menu
+                        menu={menu}
+                        formattedMenuState={[formattedMenu, setFormattedMenu]}
+                        level="first"
+                        setActiveMobileMenu={setActiveMobileMenu}
+                      ></Menu>
+                      {/* BEGIN: Second Child */}
+                      {menu.subMenu && (
+                        <Transition
+                          in={menu.activeDropdown}
+                          onEnter={enter}
+                          onExit={leave}
+                          timeout={300}
                         >
-                          {menu.subMenu.map((subMenu, subMenuKey) => (
-                            <li
-                              className="max-w-[1280px] w-full mx-auto"
-                              key={subMenuKey}
-                            >
-                              <Menu
-                                menu={subMenu}
-                                formattedMenuState={[
-                                  formattedMenu,
-                                  setFormattedMenu,
-                                ]}
-                                level="second"
-                                setActiveMobileMenu={setActiveMobileMenu}
-                              ></Menu>
-                            </li>
-                          ))}
-                        </ul>
-                      </Transition>
-                    )}
-                    {/* END: Second Child */}
-                  </li>
+                          <ul
+                            className={clsx([
+                              "bg-black/10 rounded-lg mx-4 my-1 dark:bg-darkmode-700",
+                              !menu.activeDropdown && "hidden",
+                              menu.activeDropdown && "block",
+                            ])}
+                          >
+                            {menu.subMenu.map((subMenu, subMenuKey) => (
+                              <li
+                                className="max-w-[1280px] w-full mx-auto"
+                                key={subMenuKey}
+                              >
+                                <Menu
+                                  menu={subMenu}
+                                  formattedMenuState={[
+                                    formattedMenu,
+                                    setFormattedMenu,
+                                  ]}
+                                  level="second"
+                                  setActiveMobileMenu={setActiveMobileMenu}
+                                ></Menu>
+                              </li>
+                            ))}
+                          </ul>
+                        </Transition>
+                      )}
+                      {/* END: Second Child */}
+                    </li>
+                  )
                 )
               )}
               {/* END: First Child */}
@@ -158,13 +177,15 @@ function Main() {
                     key={menuKey}
                   ></Divider>
                 ) : (
-                  <Menu
-                    key={menuKey}
-                    menu={menu}
-                    formattedMenuState={[formattedMenu, setFormattedMenu]}
-                    level="second"
-                    setActiveMobileMenu={setActiveMobileMenu}
-                  ></Menu>
+                  !menu.ignore && (
+                    <Menu
+                      key={menuKey}
+                      menu={menu}
+                      formattedMenuState={[formattedMenu, setFormattedMenu]}
+                      level="second"
+                      setActiveMobileMenu={setActiveMobileMenu}
+                    ></Menu>
+                  )
                 )
               )}
             </ul>

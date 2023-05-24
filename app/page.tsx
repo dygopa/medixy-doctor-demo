@@ -1,6 +1,10 @@
-import { DashboardRoutesEnum } from "(presentation)/(routes)/dashboardRoutes";
-import { redirect } from "next/navigation";
+import AppLayout from "(presentation)/(layouts)/AppLayout/AppLayout";
+import Index from "(presentation)/components/Index/Index";
 
 export default async function Home() {
-  return <div></div>
+  return (
+    <AppLayout title="Prosit" pathname={"/"}>
+      <Index/>
+    </AppLayout>
+  )
 }

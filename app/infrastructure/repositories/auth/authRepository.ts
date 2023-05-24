@@ -4,7 +4,7 @@ import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import nookies from 'nookies';
 import { getTokenMessaging } from 'infrastructure/config/firebase/firebase-client';
 import { AuthFailure, authFailuresEnum } from 'domain/core/failures/auth/authFailure';
-import { AUTH_ENDPOINT, GET_USER_ENDPOINT } from 'infrastructure/config/api/dictionary';
+import { AUTH_ENDPOINT, CHECK_OTP_ENDPOINT, GET_USER_ENDPOINT, UPDATE_USER_OTP_ENDPOINT } from 'infrastructure/config/api/dictionary';
 import { redirect } from "next/navigation";
 import { userAPIToMap } from 'domain/mappers/user/userMapper';
 export default interface IAuthRepository {
@@ -116,6 +116,69 @@ export class AuthRepository implements IAuthRepository {
       await supabase.auth.updateUser({ password: obj.newPassword })
 
       return true;
+    } catch (error) {
+      const exception = error as any;
+      return new AuthFailure(authFailuresEnum.serverError);
+    }
+  }
+
+  async checkOTP(code:string): Promise<any | AuthFailure> {
+    try {
+
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+      } as RequestInit;
+
+      let URL = CHECK_OTP_ENDPOINT(code) as RequestInfo
+
+      const response = await fetch(URL, requestOptions)
+      let data = await response.json()
+
+      if(!data["meta"]["success"]) throw new AuthFailure(data["meta"]["error"]["type"]);
+
+      return data;
+    } catch (error) {
+      const exception = error as any;
+      return new AuthFailure(authFailuresEnum.serverError);
+    }
+  }
+
+  async updateUserOTP(obj: { email: string; password: string }): Promise<any | AuthFailure> {
+    try {
+      const credentials: SignInWithPasswordCredentials = {
+        email: obj.email,
+        password: obj.password
+      }
+
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      var raw = JSON.stringify(credentials);
+
+      var requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      } as RequestInit;
+
+      let URL = UPDATE_USER_OTP_ENDPOINT as RequestInfo
+
+      const response = await fetch(URL, requestOptions)
+      let data = await response.json()
+
+      if(!data["meta"]["success"]) throw new AuthFailure(data["meta"]["error"]["type"]);
+
+      let access_token = data["data"]["access_token"] ?? ""
+      
+      nookies.set(undefined, 'access_token', access_token, { path: '/' });
+
+      return "SUCCESS";
     } catch (error) {
       const exception = error as any;
       return new AuthFailure(authFailuresEnum.serverError);

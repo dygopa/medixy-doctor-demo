@@ -1,0 +1,66 @@
+import { IGetPatientsResponse } from "domain/core/response/patientsResponse";
+import DashboardUseCase from "domain/useCases/dashboard/DashboardUseCase";
+import { Dispatch } from "react";
+
+export interface IDashboardActions {
+  getPendingAppointments: Function;
+  getCompletedAppointments: Function;
+  getLatestAppointment: Function;
+  getPatients: Function;
+}
+
+const getPendingAppointments = (obj:any) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_PENDING_APPOINTMENTS_LOADING" });
+
+    const res: Array<any> = await new DashboardUseCase().getPendingAppointments();
+
+    dispatch({ type: "GET_PENDING_APPOINTMENTS_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "GET_PENDING_APPOINTMENTS_ERROR", payload: { error: error } });
+  }
+}
+
+const getCompletedAppointments = (obj:any) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_COMPLETED_APPOINTMENTS_LOADING" });
+
+    const res: Array<any> = await new DashboardUseCase().getCompletedAppointments();
+
+    dispatch({ type: "GET_COMPLETED_APPOINTMENTS_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "GET_COMPLETED_APPOINTMENTS_ERROR", payload: { error: error } });
+  }
+}
+
+const getLatestAppointment = (obj:any) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_LATEST_APPOINTMENT_LOADING" });
+
+    const res: Object = await new DashboardUseCase().getLatestAppointment();
+
+    dispatch({ type: "GET_LATEST_APPOINTMENT_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "GET_LATEST_APPOINTMENT_ERROR", payload: { error: error } });
+  }
+}
+
+const getPatients = (obj:{ skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; country?: string | undefined, startDate?: Date | undefined; endDate?: Date | undefined; }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_PATIENTS_LOADING" });
+
+    const res: IGetPatientsResponse = await new DashboardUseCase().getPatients(obj);
+    
+
+    dispatch({ type: "GET_PATIENTS_SUCCESSFUL", payload: { data: res.data } });
+  } catch (error) {
+    dispatch({ type: "GET_PATIENTS_ERROR", payload: { error: error } });
+  }
+}
+
+export const actions: IDashboardActions = {
+  getPendingAppointments,
+  getCompletedAppointments,
+  getLatestAppointment,
+  getPatients,
+}

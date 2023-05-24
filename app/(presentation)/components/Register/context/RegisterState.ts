@@ -8,7 +8,7 @@ export interface IRegisterState {
 }
 
 interface IRegisterUserState {
-  data: string | null | Object;
+  data: string | null | Object | any;
   loading: boolean;
   successful: boolean;
   error: RegisterFailure | null; 
