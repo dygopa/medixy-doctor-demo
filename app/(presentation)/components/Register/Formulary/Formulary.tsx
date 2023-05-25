@@ -145,29 +145,32 @@ export default function Formulary() {
   const handleErrors = () => {
     switch (error?.code) {
       case registerFailuresEnum.wrongPassword:
-        setErrors({...errors, global: 
-          "Las credenciales son invalidas"
-        })
+        setErrors({ ...errors, global: "Las credenciales son invalidas" });
         break;
       case registerFailuresEnum.tooManyRequest:
-        setErrors({...errors, global: 
-          "Se ha excedido el limite de intentos para registrar tu cuenta"
-        })
+        setErrors({
+          ...errors,
+          global:
+            "Se ha excedido el limite de intentos para registrar tu cuenta",
+        });
         break;
       case registerFailuresEnum.serverError:
-        setErrors({...errors, global: 
-          "Algo no ha salido como se esperaba. Vuelve a intentarlo."
-        })
+        setErrors({
+          ...errors,
+          global: "Algo no ha salido como se esperaba. Vuelve a intentarlo.",
+        });
         break;
       case registerFailuresEnum.emailAlreadyRegistered:
-        setErrors({...errors, global: 
-          "El email ya esta siendo usado por otro proveedor."
-        })
+        setErrors({
+          ...errors,
+          global: "El email ya esta siendo usado por otro proveedor.",
+        });
         break;
       case registerFailuresEnum.curpAlreadyRegistered:
-        setErrors({...errors, global: 
-          "El CURP ya esta registrado por otro proveedor."
-        })
+        setErrors({
+          ...errors,
+          global: "El CURP ya esta registrado por otro proveedor.",
+        });
         break;
       default:
         break;
@@ -323,7 +326,7 @@ export default function Formulary() {
             Acepto los{" "}
             <Link
               target="_blank"
-              className="text-primary font-medium pointer-events-none"
+              className="text-primary font-medium  pointer-events-none"
               href="#"
             >
               terminos y condiciones
@@ -339,12 +342,11 @@ export default function Formulary() {
             }}
           />
           <p className="font-light text-sm text-slate-900">
-            Acepto la{" "}
+            Acepto los{" "}
             <Link
               target="_blank"
-              className="text-primary font-medium pointer-events-none"
+              className="text-primary font-medium  pointer-events-none"
               href="#"
-              
             >
               politica de privacidad
             </Link>{" "}

@@ -135,9 +135,9 @@ export default function BasicDetails({
 
   return (
     <div>
-      <div className="xl:flex items-center justify-between mb-4">
+      <div className="mb-4">
         <div className="xl:flex lg:flex xl:mb-0 mb-4 items-center">
-          <div className="mr-5 xl:mb-0 lg:mb-0 mb-1 xl:w-[300px] w-[200px]">
+          <div className="mr-5 xl:mb-0 lg:mb-0 mb-1 xl:w-[250px] w-[200px]">
             <p className="text-slate-900 font-lighter text-lg flex">
               Fecha de la consulta <p className="text-danger">*</p>
             </p>
@@ -150,7 +150,7 @@ export default function BasicDetails({
               type="date"
               onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e)}
               className={clsx([
-                "h-[50px] xl:w-[350px] w-full",
+                "h-[50px]  w-full",
                 errors.consultationDate.length > 0 &&
                   "border-danger hover:border-danger",
               ])}
@@ -162,8 +162,8 @@ export default function BasicDetails({
           </div>
         </div>
 
-        <div className="xl:flex lg:flex items-center">
-          <div className="mr-5 xl:w-[150px] w-[200px] xl:mb-0 lg:mb-0 mb-1">
+        <div className="xl:flex lg:flex items-center mt-4">
+          <div className="mr-5 xl:w-[250px] w-[200px] xl:mb-0 lg:mb-0 mb-1">
             <p className="text-slate-900 font-lighter text-lg">Referido por</p>
           </div>
 
@@ -173,7 +173,7 @@ export default function BasicDetails({
               name="referredBy"
               type="text"
               onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e)}
-              className="h-[50px] xl:w-[350px] w-full"
+              className="h-[50px] w-full"
             />
           </div>
         </div>
@@ -207,9 +207,9 @@ export default function BasicDetails({
         </div>
       </div>
 
-      <div className="xl:flex items-center justify-between mb-4">
-        <div className="xl:flex lg:flex items-center">
-          <div className="mr-5 xl:w-[300px] md:w-[200px] sm:w-[300px] w-[300px] xl:mb-0 lg:mb-0 mb-1">
+      <div className="xl:flex items-center justify-between w-full mb-4">
+        <div className="xl:flex lg:flex items-center w-full">
+          <div className="mr-5 xl:w-[250px] lg:w-[200px] xl:mb-0 lg:mb-0 mb-1">
             <p className="text-slate-900 font-lighter text-lg">
               Inicio del padecimiento
             </p>
@@ -221,7 +221,7 @@ export default function BasicDetails({
               name="sufferingDate"
               type="date"
               onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e)}
-              className="h-[50px] xl:w-[350px] w-full"
+              className="h-[50px] w-full"
             />
           </div>
         </div>

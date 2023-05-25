@@ -68,7 +68,7 @@ export default function Formulary() {
 
   const onSubmit = (e: any) => {
     e.preventDefault();
-    
+
     if (handleEmail() || handlePassword()) {
       return;
     }
