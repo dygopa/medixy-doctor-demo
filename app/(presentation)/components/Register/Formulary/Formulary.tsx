@@ -317,7 +317,7 @@ export default function Formulary() {
             <Link
               target="_blank"
               className="text-primary font-medium"
-              href="/terms-and-conditions"
+              href="#"
             >
               terminos y condiciones
             </Link>{" "}
@@ -336,7 +336,7 @@ export default function Formulary() {
             <Link
               target="_blank"
               className="text-primary font-medium"
-              href="/privacy-policy"
+              href="#"
             >
               politica de privacidad
             </Link>{" "}

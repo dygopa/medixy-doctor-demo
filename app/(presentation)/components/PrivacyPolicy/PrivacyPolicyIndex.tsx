@@ -97,7 +97,7 @@ export default function PrivacyPolicyIndex() {
                 solicitudes de derechos ARCO, son los siguientes: a) Nombre de la persona o departamento de datos
                 personales: Coordinaci&oacute;n de Ventas b) Av. Tlalnepantla-Tenayuca 25, San Bartolo Tenayuca, 54150
                 Tlalnepantla de Baz, M&eacute;x. c) Correo electr&oacute;nico: </span><span className="c0 c3"><a className="c10"
-                    href="mailto:contacto@medhaustlalnepantla.com">contacto@medhaustlalnepantla.com</a></span><span
+                    href="#">contacto@medhaustlalnepantla.com</a></span><span
                 className="c4 c0">&nbsp;d) N&uacute;mero telef&oacute;nico: (55) 10572938</span></p>
         <p className="c6"><span className="c2">Usted puede revocar su consentimiento para el uso de sus datos personales</span></p>
         <p className="c6"><span className="c0">Usted puede revocar el consentimiento que, en su caso, nos haya otorgado para el
