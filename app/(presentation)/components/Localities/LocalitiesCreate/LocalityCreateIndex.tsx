@@ -17,26 +17,16 @@ import {
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 
 export default function LocalityCreateIndex() {
-  const { state, actions, dispatch } = useContext<IAuthContext>(AuthContext);
-  const { getUserAuthenticated } = actions;
-
-  const { data, loading, error, successful } = state.getUserAuthenticated;
-
-  const [loadedUser, setLoadedUser] = useState(false);
-
-  const loadUser = () => {
-    getUserAuthenticated()(dispatch);
-    setLoadedUser(true);
-  };
-
-  useEffect(() => {
-    loadUser();
-  }, [loadedUser]);
+  const { state } = useContext<IAuthContext>(AuthContext);
+  const { data, loading } = state.getUserAuthenticated;
 
   return (
     <div className="py-5">
       <LocalitiesProvider>
-        <Formulary userId={loading ? "" : data.userId} accountId={loading ? "" : data.accountId}/>
+        <Formulary
+          userId={loading ? "" : data.userId}
+          accountId={loading ? "" : data.accountId}
+        />
       </LocalitiesProvider>
     </div>
   );

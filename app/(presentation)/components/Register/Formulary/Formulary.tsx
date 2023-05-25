@@ -196,6 +196,9 @@ export default function Formulary() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
 
+  console.log(error);
+  console.log(errors);
+
   return (
     <div className="lg:w-[60%] md:w-[70%] lg:px-20 md:px-14 sm:px-20 px-8 w-full h-fit flex flex-col justify-between items-center gap-6">
       <AlertComponent
@@ -321,7 +324,11 @@ export default function Formulary() {
           />
           <p className="font-light text-sm text-slate-900">
             Acepto los{" "}
-            <Link target="_blank" className="text-primary font-medium" href="#">
+            <Link
+              target="_blank"
+              className="text-primary font-medium  pointer-events-none"
+              href="#"
+            >
               terminos y condiciones
             </Link>{" "}
             de la plataforma
@@ -336,7 +343,11 @@ export default function Formulary() {
           />
           <p className="font-light text-sm text-slate-900">
             Acepto los{" "}
-            <Link target="_blank" className="text-primary font-medium" href="#">
+            <Link
+              target="_blank"
+              className="text-primary font-medium  pointer-events-none"
+              href="#"
+            >
               politica de privacidad
             </Link>{" "}
             de la plataforma

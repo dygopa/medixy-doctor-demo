@@ -63,9 +63,10 @@ export class AuthRepository implements IAuthRepository {
   }
 
   async getUserAuthenticated(): Promise<IUser | AuthFailure> {
-    try {      
-      
+    try {  
       let obj = nookies.get(undefined, 'access_token');
+
+      if (obj?.access_token?.length === 0) throw new AuthFailure(authFailuresEnum.userNotFound);
 
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -95,10 +96,9 @@ export class AuthRepository implements IAuthRepository {
 
   async signOutUser(): Promise<boolean | AuthFailure> {
     try {
-      await supabase.auth.signOut();
+      // await supabase.auth.signOut();
 
       nookies.set(undefined, 'access_token', '', { path: '/' });
-      redirect("/login")
 
       return true;
     } catch (error) {

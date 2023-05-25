@@ -82,7 +82,7 @@ export const endNavigationOptions: FormattedMenu[] = [
         active: false,
         subMenu: undefined,
         title: "Salir",
-        pathname: AccountRoutesEnum.SignIn,
+        pathname: AccountRoutesEnum.Logout,
         icon: "LogOut",
         ignore: false,
     },
