@@ -43,7 +43,7 @@ function SideMenu({
   }, [loadedUser]);
 
   useMemo(() => {
-    /*if (error !== null) redirect("/login");*/
+    if (error !== null) redirect("/login");
   }, [error]);
 
   return (
