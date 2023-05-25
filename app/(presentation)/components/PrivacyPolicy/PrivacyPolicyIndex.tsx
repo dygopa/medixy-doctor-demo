@@ -22,7 +22,7 @@ export default function PrivacyPolicyIndex() {
         <hr/>
         <p className="c14"><span className="c4 c0"></span></p>
         <p className="c6"><span className="c5">Certus project management SA DE CV.</span><span className="c0">, mejor conocido
-                como&nbsp;</span><span className="c5">Medhaus tlalnepantla</span><span className="c4 c0">, con domicilio en Carr.
+                como&nbsp;</span><span className="c5">Prosit tlalnepantla</span><span className="c4 c0">, con domicilio en Carr.
                 M&eacute;xico-Toluca 5474, , Cuajimalpa de Morelos, 05320 Ciudad de M&eacute;xico, CDMX 05320., y portal de
                 internet&nbsp;https://atomic-temporary-203126534.wpcomstaging.com/ es el responsable del uso y
                 protecci&oacute;n de sus datos personales, y al respecto le informamos lo siguiente:</span></p>
@@ -76,7 +76,7 @@ export default function PrivacyPolicyIndex() {
             <li className="c1 li-bullet-0"><span className="c4 c0">Realizar procesos de facturaci&oacute;n y pago;</span></li>
             <li className="c1 li-bullet-0"><span className="c4 c0">En su caso, cumplir lo requerido por la Ley; </span></li>
             <li className="c1 li-bullet-0"><span className="c4 c0">Cumplir con los requerimientos de naturaleza legal que cualquier
-                    autoridad competente o cualquier legislaci&oacute;n aplicable imponga a Medhaus.</span></li>
+                    autoridad competente o cualquier legislaci&oacute;n aplicable imponga a Prosit.</span></li>
             <li className="c16 li-bullet-0"><span className="c4 c0">Enviar futuras promociones y servicios</span></li>
         </ul>
         <p className="c6"><span className="c5">Requiere del consentimiento</span><span className="c4 c0">&nbsp;No No</span></p>
@@ -92,12 +92,12 @@ export default function PrivacyPolicyIndex() {
                 deber&aacute; presentar la solicitud respectiva a trav&eacute;s del siguiente medio: Enviando un correo
                 electr&oacute;nico a&nbsp;https://atomic-temporary-203126534.wpcomstaging.com/ Para conocer el procedimiento
                 y requisitos para el ejercicio de los derechos ARCO, ponemos a su disposici&oacute;n el siguiente medio:
-                Enviando un correo electr&oacute;nico a&nbsp;contacto@medhaustlalnepantla.com&nbsp;Los datos de contacto de
+                Enviando un correo electr&oacute;nico a&nbsp;&nbsp;Los datos de contacto de
                 la persona o departamento de datos personales, que est&aacute; a cargo de dar tr&aacute;mite a las
                 solicitudes de derechos ARCO, son los siguientes: a) Nombre de la persona o departamento de datos
                 personales: Coordinaci&oacute;n de Ventas b) Av. Tlalnepantla-Tenayuca 25, San Bartolo Tenayuca, 54150
                 Tlalnepantla de Baz, M&eacute;x. c) Correo electr&oacute;nico: </span><span className="c0 c3"><a className="c10"
-                    href="mailto:contacto@medhaustlalnepantla.com">contacto@medhaustlalnepantla.com</a></span><span
+                    href="mailto:"></a></span><span
                 className="c4 c0">&nbsp;d) N&uacute;mero telef&oacute;nico: (55) 10572938</span></p>
         <p className="c6"><span className="c2">Usted puede revocar su consentimiento para el uso de sus datos personales</span></p>
         <p className="c6"><span className="c0">Usted puede revocar el consentimiento que, en su caso, nos haya otorgado para el
@@ -108,7 +108,7 @@ export default function PrivacyPolicyIndex() {
                 podamos seguir prestando el servicio que nos solicit&oacute;, o la conclusi&oacute;n de su relaci&oacute;n
                 con nosotros. Para revocar su consentimiento deber&aacute; presentar su solicitud a trav&eacute;s del
                 siguiente medio: Enviando un correo electr&oacute;nico a</span><span
-                className="c5">&nbsp;contacto@medhaustlalnepantla.com</span><span className="c4 c0">&nbsp;Para conocer el
+                className="c5">&nbsp;</span><span className="c4 c0">&nbsp;Para conocer el
                 procedimiento y requisitos para la revocaci&oacute;n del consentimiento.</span></p>
         <p className="c6"><span className="c2">&iquest;C&oacute;mo puede limitar el uso o divulgaci&oacute;n de su
                 informaci&oacute;n personal?</span></p>
@@ -142,9 +142,9 @@ export default function PrivacyPolicyIndex() {
                 productos o servicios que ofrecemos; de nuestras pr&aacute;cticas de privacidad; de cambios en nuestro
                 modelo de negocio, o por otras causas. Nos comprometemos a mantenerlo informado sobre los cambios que pueda
                 sufrir el presente aviso de privacidad, a trav&eacute;s de: En el siguiente sitio web&nbsp;</span><span
-                className="c5">medhaustlalnepantla.com</span><span className="c0">&nbsp;El procedimiento a trav&eacute;s del cual se
+                className="c5"></span><span className="c0">&nbsp;El procedimiento a trav&eacute;s del cual se
                 llevar&aacute;n a cabo las notificaciones sobre cambios o actualizaciones al presente aviso de privacidad es
-                el siguiente: En el siguiente sitio web&nbsp;</span><span className="c5">medhaustlalnepantla.com</span></p>
+                el siguiente: En el siguiente sitio web&nbsp;</span><span className="c5"></span></p>
         <p className="c15"><span className="c4 c12"></span></p>
        
       </div>

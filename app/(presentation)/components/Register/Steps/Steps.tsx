@@ -33,7 +33,7 @@ export default function Steps() {
       >
         <p
           className={twMerge([
-            "lg:text-[18px] md:text-[15px] sm:text-[12px] text-[12px]",
+            "lg:text-[14px] md:text-[14px] sm:text-[12px] text-[12px]",
             active > data.value && "cursor-pointer",
             "text-[12px] block relative text-gray-950",
             active === data.value ? "font-normal" : "font-light",
@@ -99,7 +99,7 @@ export default function Steps() {
         <div className="h-[60px]">
           <p
             className={twMerge([
-              "lg:text-[18px] md:text-[15px] sm:text-[12px] text-[12px]",
+              "lg:text-[12px] md:text-[12px] sm:text-[12px] text-[12px]",
               active > data.value && "cursor-pointer",
               "text-[12px] block relative text-gray-950",
               active === data.value ? "font-normal" : "font-light",

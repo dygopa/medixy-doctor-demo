@@ -19,7 +19,7 @@ export default function Decider() {
           Valida tu información
         </h2>
         <span className="font-light text-lg text-center">
-        Verifica si indicaste el código correcto y si lo es y no eres tu, el equipo de Medhaus se comunicará contigo
+        Verifica si indicaste el código correcto y si lo es y no eres tu, el equipo de Prosit se comunicará contigo
         </span>
       </div>
       <div className="mb-4 relative w-full flex flex-col justify-center items-center">

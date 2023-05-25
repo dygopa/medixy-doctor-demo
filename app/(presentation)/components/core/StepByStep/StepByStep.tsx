@@ -34,7 +34,7 @@ export default function StepByStep({ user }: { user: IUser }) {
       step_enum: "PROFILE_COMPLETED",
       completed: false,
       description:
-        "Completa la información que los pacientes verán en tu perfil de Medhaus.",
+        "Completa la información que los pacientes verán en tu perfil de Prosit.",
       cta: "/account",
       cta_title: "Ir a completar el perfil",
     },

@@ -145,30 +145,34 @@ export default function Formulary() {
   const handleErrors = () => {
     switch (error?.code) {
       case registerFailuresEnum.wrongPassword:
-        errors["global"] = "Las credenciales son invalidas";
+        setErrors({...errors, global: 
+          "Las credenciales son invalidas"
+        })
         break;
       case registerFailuresEnum.tooManyRequest:
-        errors["global"] =
-          "Se ha excedido el limite de intentos para registrar tu cuenta";
+        setErrors({...errors, global: 
+          "Se ha excedido el limite de intentos para registrar tu cuenta"
+        })
         break;
       case registerFailuresEnum.serverError:
-        errors["global"] =
-          "Algo no ha salido como se esperaba. Vuelve a intentarlo.";
+        setErrors({...errors, global: 
+          "Algo no ha salido como se esperaba. Vuelve a intentarlo."
+        })
         break;
       case registerFailuresEnum.emailAlreadyRegistered:
-        errors["global"] =
-          "El email ya esta siendo usado por otro proveedor.";
+        setErrors({...errors, global: 
+          "El email ya esta siendo usado por otro proveedor."
+        })
         break;
       case registerFailuresEnum.curpAlreadyRegistered:
-        errors["global"] =
-          "El CURP ya esta registrado por otro proveedor.";
+        setErrors({...errors, global: 
+          "El CURP ya esta registrado por otro proveedor."
+        })
         break;
       default:
         break;
     }
   };
-
-  console.log(formData);
 
   const setValuesFormData = () => {
     formData = { ...(formData as Object), ...values };

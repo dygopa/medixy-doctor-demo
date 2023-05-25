@@ -32,13 +32,14 @@ export class RegisterRepository implements IRegisterRepository {
       const response = await fetch(URL, requestOptions)
 
       let data = await response.json()
-      if(!data["meta"]["success"]) throw new RegisterFailure(data["meta"]["error"]["type"]);
+      if(data["meta"]["success"] === false) throw new RegisterFailure(data["meta"]["error"]["type"]);
 
       let access_token = data["meta"]["authentication"]["access_token"] ?? ""
 
       nookies.set(undefined, 'access_token', access_token, { path: '/' });
       return "SUCCESS";
     } catch (error) {
+      console.log(error)
       const exception = error as RegisterFailure;
       return new RegisterFailure(exception.code);
     }

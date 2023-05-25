@@ -76,7 +76,7 @@ export const endNavigationOptions: FormattedMenu[] = [
         title: "Configuración",
         pathname: SettingsRoutesEnum.Settings,
         icon: "Settings",
-        ignore: true,
+        ignore: false,
     },
     {
         active: false,
