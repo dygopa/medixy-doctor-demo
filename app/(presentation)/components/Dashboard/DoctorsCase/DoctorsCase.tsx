@@ -7,8 +7,8 @@ import { IUser } from "domain/core/entities/userEntity";
 function DoctorsCase({ account }: { account: IUser }) {
   return (
     <div className="w-full flex flex-col justify-start items-center gap-1">
-      <div className="w-full min-h-[35vh] h-fit relative lg:flex justify-between items-center gap-7">
-        <div className="lg:w-[60%] w-full h-full py-5 lg:flex md:flex sm:flex justify-between items-center bg-white rounded-md px-5 shadow-md">
+      <div className="w-full lg:h-[20vh] h-auto relative lg:flex justify-between  gap-7">
+        <div className="lg:w-[60%] w-full h-full py-5 lg:flex md:flex sm:flex justify-between bg-white rounded-md px-5 shadow-md">
           <div className="lg:w-3/5 md:w-3/5 sm:w-3/5 w-full h-full flex flex-col justify-center items-start gap-2">
             <p className="font-medium text-base text-slate-900">Tablero</p>
             <p className="font-light text-xl text-slate-900">
@@ -30,11 +30,13 @@ function DoctorsCase({ account }: { account: IUser }) {
             />
           </div>
         </div>
+
         <div className="lg:w-[40%] w-full h-full relative lg:mt-0 mt-8">
           <MedicalConsultationNext />
         </div>
       </div>
-      <div className="w-full relative lg:flex justify-between items-center gap-4">
+
+      <div className="w-full relative lg:flex justify-between  gap-6 mt-8">
         <div className="lg:w-[60%] lg:mb-0 mb-8">
           <MedicalConsultationCalendar />
         </div>
