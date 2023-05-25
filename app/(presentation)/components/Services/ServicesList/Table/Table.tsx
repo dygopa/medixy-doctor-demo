@@ -48,36 +48,39 @@ export default function TableServices({ user }: { user: IUser }) {
 
   const CardData = ({ data }: { data: IService }) => {
     return (
-      <Link
-        href={`/services/${data.id}`}
-        className="bg-white border rounded-lg p-4 flex flex-col justify-between items-start gap-4 cursor-pointer"
-      >
-        <div className="w-full flex justify-start items-center gap-4">
-          <div className="relative flex flex-col justify-center items-start">
-            <p className="font-semibold text-lg text-gray-950">{data.name}</p>
-            <p className="font-light text-sm text-slate-500">
-              Categoria: {data.service_category.name}
-            </p>
+      <>
+        
+        <Link
+          href={`/services/${data.id}`}
+          className="bg-white border rounded-lg p-4 flex flex-col justify-between items-start gap-4 cursor-pointer"
+        >
+          <div className="w-full flex justify-start items-center gap-4">
+            <div className="relative flex flex-col justify-center items-start">
+              <p className="font-semibold text-lg text-gray-950">{data.name}</p>
+              <p className="font-light text-sm text-slate-500">
+                Categoria: {data.service_category.name}
+              </p>
+            </div>
           </div>
-        </div>
-        <div className="w-full grid grid-cols-3 gap-1">
-          <div className="flex flex-col justify-start items-start gap-2 text-left">
-            <p className="font-light text-gray-500 text-sm">Precio base</p>
-            <p className="font-normal text-gray-950 text-base">
-              ${data.base_price}
-            </p>
+          <div className="w-full grid grid-cols-3 gap-1">
+            <div className="flex flex-col justify-start items-start gap-2 text-left">
+              <p className="font-light text-gray-500 text-sm">Precio base</p>
+              <p className="font-normal text-gray-950 text-base">
+                ${data.base_price}
+              </p>
+            </div>
+            <div className="flex flex-col justify-start items-start gap-2 text-left">
+              <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">
+                <p className="font-light text-gray-500 text-sm mb-3">Estatus</p>
+                <div className="w-full flex justify-start items-center gap-2">
+                  <span className="rounded-full w-[12px] h-[12px] bg-success"></span>
+                  <p className="text-sm font-medium text-slate-900">Activo</p>
+                </div>
+              </p>
+            </div>
           </div>
-          <div className="flex flex-col justify-start items-start gap-2 text-left">
-            <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">
-              <p className="font-light text-gray-500 text-sm mb-3">Estatus</p>
-              <div className="w-full flex justify-start items-center gap-2">
-                <span className="rounded-full w-[12px] h-[12px] bg-success"></span>
-                <p className="text-sm font-medium text-slate-900">Activo</p>
-              </div>
-            </p>
-          </div>
-        </div>
-      </Link>
+        </Link>
+      </>
     );
   };
 
@@ -106,6 +109,8 @@ export default function TableServices({ user }: { user: IUser }) {
           </Table.Thead>
 
           <Table.Tbody>
+            
+            
             {successful &&
               [...(data as Array<IService>)].length > 0 &&
               [...(data as Array<IService>)].map((service, i) => (
@@ -146,6 +151,25 @@ export default function TableServices({ user }: { user: IUser }) {
               ))}
           </Table.Tbody>
         </Table>
+        {loading && 
+          <div className="w-full flex flex-col justify-center items-center">
+            <p className="font-bold text-slate-900 text-lg">Un momento...</p>
+            <p className="font-light text-slate-500 text-base">
+              Cargando tus servicios.
+            </p>
+          </div>
+        }
+
+        {successful && [...(data as Array<IService>)].length === 0 && 
+          <div className="w-full flex flex-col justify-center items-center">
+          <p className="font-bold text-slate-900 text-lg">
+            Vaya, no tienes servicios aún
+          </p>
+          <p className="font-light text-slate-500 text-base">
+            Lo sentimos, pero no tienes servicios agregados todavia.
+          </p>
+        </div>
+        }
       </div>
     );
   };
@@ -167,30 +191,6 @@ export default function TableServices({ user }: { user: IUser }) {
   useMemo(() => {
     if (user.userId) getUserServices(user.userId)(dispatch);
   }, [user.userId]);
-
-  if (loading) {
-    return (
-      <div className="w-full flex flex-col justify-center items-center">
-        <p className="font-bold text-slate-900 text-lg">Un momento...</p>
-        <p className="font-light text-slate-500 text-base">
-          Cargando tus servicios.
-        </p>
-      </div>
-    );
-  }
-
-  if (successful && [...(data as Array<IService>)].length === 0) {
-    return (
-      <div className="w-full flex flex-col justify-center items-center">
-        <p className="font-bold text-slate-900 text-lg">
-          Vaya, no tienes servicios aún
-        </p>
-        <p className="font-light text-slate-500 text-base">
-          Lo sentimos, pero no tienes servicios agregados todavia.
-        </p>
-      </div>
-    );
-  }
 
   return (
     <div>
