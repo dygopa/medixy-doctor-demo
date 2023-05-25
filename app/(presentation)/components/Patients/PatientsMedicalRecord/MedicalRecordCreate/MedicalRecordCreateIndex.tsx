@@ -75,7 +75,7 @@ export default function MedicalRecordCreateIndex({
       </div>
     );
 
-  if (!patient?.patientId && successful) {
+  /* if (!patient?.patientId && successful) {
     return (
       <div className="w-full flex flex-col justify-center items-center py-8">
         <p className="font-bold text-slate-900 text-lg">
@@ -86,14 +86,14 @@ export default function MedicalRecordCreateIndex({
         </p>
       </div>
     );
-  }
+  }  */
 
   if (!patient?.patientId && !successful)
     return <div className="mt-5" style={{ height: "80vh" }} />;
 
   return (
     <>
-      <div className="py-5 xl:container">
+      <div className="py-5">
         <Navigator />
 
         <div className="mt-10 grid grid-cols-12 gap-4">
@@ -112,16 +112,16 @@ export default function MedicalRecordCreateIndex({
               screenSize.width <= 1866 ? "xl:col-span-12" : "xl:col-span-9",
             ])}
           >
-            <RightSide />
+            <RightSide width={screenSize.width} />
           </div>
         </div>
 
-        <div>
+        {/* <div>
           <History />
-        </div>
+          </div> */}
       </div>
 
-      <MainPopup />
+      {/* <MainPopup /> */}
     </>
   );
 }

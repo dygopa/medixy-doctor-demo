@@ -13,14 +13,14 @@ export default function LeftSide({ windowWidth }: ILeftSideProps) {
   return (
     <div
       className={clsx([
-        "sticky top-[155px] z-[99]",
-        windowWidth <= 1866 ? "hidden" : "block",
+        "top-[155px] z-[99]",
+        windowWidth <= 1866 ? "static" : "sticky",
       ])}
     >
       <div
         className={clsx([
-          "h-[18vh]",
-          showCompleteDetails ? "w-[1200px]" : "w-full",
+          "xl:h-[18vh] h-auto mb-8",
+          showCompleteDetails ? "xl:w-[1200px]" : "w-full",
         ])}
       >
         <Patient
@@ -29,7 +29,12 @@ export default function LeftSide({ windowWidth }: ILeftSideProps) {
         />
       </div>
 
-      <div className="w-[385px]">
+      <div
+        className={clsx([
+          "w-[385px]",
+          windowWidth <= 1866 ? "hidden" : "block",
+        ])}
+      >
         <MedicalRecordNavigation />
       </div>
     </div>
