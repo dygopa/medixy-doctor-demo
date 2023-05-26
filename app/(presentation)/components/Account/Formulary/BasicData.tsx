@@ -56,6 +56,8 @@ export default function BasicData({ account, setAccount }: IFormularyProps) {
 
   const handleClickRef = () => avatarRef.current && avatarRef.current.click();
 
+  console.log(user);
+  console.log(account);
   return (
     <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-5">
       <div className="border w-full rounded-md p-5 flex">
@@ -128,7 +130,7 @@ export default function BasicData({ account, setAccount }: IFormularyProps) {
                   type={"text"}
                   placeholder="Escribe tu apellido materno..."
                   min={0}
-                  defaultValue={account?.lastName}
+                  defaultValue={user?.lastName}
                   className="form-control w-full"
                   onChange={(e) =>
                     setAccount({ ...account, lastName: e.target.value })
@@ -159,9 +161,7 @@ export default function BasicData({ account, setAccount }: IFormularyProps) {
                   placeholder="Escribe el nombre del consultorio..."
                   min={0}
                   defaultValue={
-                    account?.birthDate !== ""
-                      ? moment(account?.birthDate).toDate().getDate()
-                      : Date.now()
+                    user?.birthDate 
                   }
                   className="form-control w-full"
                   onChange={(e) =>
@@ -190,7 +190,7 @@ export default function BasicData({ account, setAccount }: IFormularyProps) {
                   País nacimiento
                 </p>
                 <FormSelect
-                  defaultValue={account?.country}
+                  defaultValue={user?.country}
                   className="form-control w-full"
                   onChange={(e) =>
                     setAccount({ ...account, country: e.target.value })

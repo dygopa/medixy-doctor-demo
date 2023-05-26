@@ -7,6 +7,7 @@ export function userAPIToMap(data: any): IUser {
     names: data?.names ?? "",
     firstName: data?.first_lastname ?? "",
     lastName: data?.second_lastname ?? "",
+    phone: data?.phone_number ?? "",
     status: data?.status ?? 0,
     email: data?.email ?? "",
     curp: data?.curp ?? "",

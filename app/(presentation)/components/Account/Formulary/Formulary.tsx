@@ -28,7 +28,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
       second_lastname: account.lastName ?? "",
       curp: account.curp ?? "",
       phone_number: account.phone ?? "",
-      birthdate: "2023-04-29",
+      birthdate: account.birthDate ?? "",
       birth_country: account.country ?? "",
       sex: account.sex ?? 0,
       person_type: account.personType ?? 0,
