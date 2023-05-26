@@ -4,6 +4,7 @@ import { Dispatch } from "react";
 
 export interface ILocalitiesActions {
   getMedicalCenters: Function;
+  getCountryStates: Function;
   getUserLocalities: Function;
   createUserLocality: Function;
   updateUserLocality: Function;
@@ -21,6 +22,19 @@ const getMedicalCenters = () => async (dispatch: Dispatch<any>) => {
   } catch (error) {
     console.log("Error calling action", error)
     dispatch({ type: "GET_MEDICAL_CENTERS_ERROR", payload: { error: error } });
+  }
+}
+
+const getCountryStates = () => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_COUNTRY_STATES_LOADING" });
+    
+    const res: Array<any> = await new LocalitiesUseCase().getCountryStates();
+
+    dispatch({ type: "GET_COUNTRY_STATES_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "GET_COUNTRY_STATES_ERROR", payload: { error: error } });
   }
 }
 
@@ -80,6 +94,7 @@ const updateLocalityData = (obj:Object) => async (dispatch: Dispatch<any>) => di
 
 export const actions: ILocalitiesActions = {
   getMedicalCenters,
+  getCountryStates,
   getUserLocalities,
   createUserLocality,
   updateUserLocality,
