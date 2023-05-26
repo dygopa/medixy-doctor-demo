@@ -10,21 +10,8 @@ import {
 import Formulary from "./Formulary/Formulary";
 
 export default function ServiceViewIndex() {
-  const { state, actions, dispatch } = useContext<IAuthContext>(AuthContext);
-  const { getUserAuthenticated } = actions;
-
-  const { data, loading, error, successful } = state.getUserAuthenticated;
-
-  const [loadedUser, setLoadedUser] = useState(false);
-
-  const loadUser = () => {
-    getUserAuthenticated()(dispatch);
-    setLoadedUser(true);
-  };
-
-  useEffect(() => {
-    loadUser();
-  }, [loadedUser]);
+  const { state } = useContext<IAuthContext>(AuthContext);
+  const { data, loading } = state.getUserAuthenticated;
 
   return (
     <div className="py-5">

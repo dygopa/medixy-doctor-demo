@@ -11,26 +11,14 @@ import {
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 
 export default function AccountIndex() {
-  const { state, actions, dispatch } = useContext<IAuthContext>(AuthContext);
-  const { getUserAuthenticated } = actions;
-
-  const { data, loading, error, successful } = state.getUserAuthenticated;
+  const { state } = useContext<IAuthContext>(AuthContext);
+  const { data, successful } = state.getUserAuthenticated;
 
   const [account, setAccount] = useState<IUser>({} as IUser);
 
-  const [loadedUser, setLoadedUser] = useState(false);
-
-  const loadUser = () => {
-    getUserAuthenticated()(dispatch);
-    setLoadedUser(true);
-  };
-
-  useEffect(() => {
-    loadUser();
-  }, [loadedUser]);
-
   useMemo(() => {
     if (successful) setAccount(data);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [successful]);
 
   return (

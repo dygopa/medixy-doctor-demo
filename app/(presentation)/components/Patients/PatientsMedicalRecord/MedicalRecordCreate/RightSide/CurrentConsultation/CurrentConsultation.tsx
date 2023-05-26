@@ -7,7 +7,13 @@ import Diagnosis from "./Diagnosis/Diagnosis";
 import PhysicalExploration from "./PhysicalExploration/PhysicalExploration";
 import VitalSigns from "./VitalSigns/VitalSigns";
 
-export default function CurrentConsultation() {
+interface ICurrentConsultationProps {
+  width: number;
+}
+
+export default function CurrentConsultation({
+  width,
+}: ICurrentConsultationProps) {
   const [values, setValues] = useState({
     consultationDate: "",
     referredBy: "",
@@ -165,7 +171,11 @@ export default function CurrentConsultation() {
           </div>
 
           <div className="py-4">
-            <PhysicalExploration values={values} setValues={setValues} />
+            <PhysicalExploration
+              values={values}
+              setValues={setValues}
+              width={width}
+            />
           </div>
 
           <div className="py-4">

@@ -193,10 +193,10 @@ export default function AddRecipe({
         </div>
       </div>
 
-      <div className="xl:flex items-center justify-between mb-4 w-full">
-        <div className="xl:flex items-center">
+      <div className="mb-4 w-full">
+        <div className="xl:flex items-center mb-4">
           <div className="xl:flex items-center w-full">
-            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[250px] w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[200px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Prescripción
               </p>
@@ -267,7 +267,7 @@ export default function AddRecipe({
 
                       setValues({ ...values, [e.target.name]: e.target.value });
                     }}
-                    className="xl:w-[70px] w-full"
+                    className="xl:w-[150px] w-full"
                   />
                 </div>
               </div>
@@ -318,7 +318,7 @@ export default function AddRecipe({
 
         <div>
           <div className="xl:flex items-center w-full">
-            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[250px] w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[200px] w-full">
               <p className="text-slate-900 font-lighter text-lg">Duración</p>
             </div>
 
@@ -346,7 +346,7 @@ export default function AddRecipe({
                         [e.target.name]: e.target.value,
                       });
                     }}
-                    className="xl:w-[80px] w-full"
+                    className="xl:w-[150px] w-full"
                   />
                 </div>
               </div>
@@ -392,7 +392,7 @@ export default function AddRecipe({
 
                       setValues({ ...values, [e.target.name]: e.target.value });
                     }}
-                    className="xl:w-[80px] w-full"
+                    className="xl:w-[150px] w-full"
                   />
                 </div>
               </div>

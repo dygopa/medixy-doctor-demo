@@ -145,29 +145,32 @@ export default function Formulary() {
   const handleErrors = () => {
     switch (error?.code) {
       case registerFailuresEnum.wrongPassword:
-        setErrors({...errors, global: 
-          "Las credenciales son invalidas"
-        })
+        setErrors({ ...errors, global: "Las credenciales son invalidas" });
         break;
       case registerFailuresEnum.tooManyRequest:
-        setErrors({...errors, global: 
-          "Se ha excedido el limite de intentos para registrar tu cuenta"
-        })
+        setErrors({
+          ...errors,
+          global:
+            "Se ha excedido el limite de intentos para registrar tu cuenta",
+        });
         break;
       case registerFailuresEnum.serverError:
-        setErrors({...errors, global: 
-          "Algo no ha salido como se esperaba. Vuelve a intentarlo."
-        })
+        setErrors({
+          ...errors,
+          global: "Algo no ha salido como se esperaba. Vuelve a intentarlo.",
+        });
         break;
       case registerFailuresEnum.emailAlreadyRegistered:
-        setErrors({...errors, global: 
-          "El email ya esta siendo usado por otro proveedor."
-        })
+        setErrors({
+          ...errors,
+          global: "El email ya esta siendo usado por otro proveedor.",
+        });
         break;
       case registerFailuresEnum.curpAlreadyRegistered:
-        setErrors({...errors, global: 
-          "El CURP ya esta registrado por otro proveedor."
-        })
+        setErrors({
+          ...errors,
+          global: "El CURP ya esta registrado por otro proveedor.",
+        });
         break;
       default:
         break;
@@ -192,6 +195,9 @@ export default function Formulary() {
     if (error) handleErrors();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
+
+  console.log(error);
+  console.log(errors);
 
   return (
     <div className="lg:w-[60%] md:w-[70%] lg:px-20 md:px-14 sm:px-20 px-8 w-full h-fit flex flex-col justify-between items-center gap-6">
@@ -320,7 +326,7 @@ export default function Formulary() {
             Acepto los{" "}
             <Link
               target="_blank"
-              className="text-primary font-medium"
+              className="text-primary font-medium  pointer-events-none"
               href="#"
             >
               terminos y condiciones
@@ -339,7 +345,7 @@ export default function Formulary() {
             Acepto los{" "}
             <Link
               target="_blank"
-              className="text-primary font-medium"
+              className="text-primary font-medium  pointer-events-none"
               href="#"
             >
               politica de privacidad

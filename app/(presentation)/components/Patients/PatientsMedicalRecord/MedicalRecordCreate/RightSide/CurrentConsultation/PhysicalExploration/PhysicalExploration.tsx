@@ -33,12 +33,16 @@ type valuesTypes = {
 interface IPhysicalExplorationProps {
   values: valuesTypes;
   setValues: Dispatch<SetStateAction<valuesTypes>>;
+  width: number;
 }
 
 export default function PhysicalExploration({
   values,
   setValues,
+  width,
 }: IPhysicalExplorationProps) {
+  console.log(width);
+
   const [showBody, setShowBody] = useState(false);
 
   return (
@@ -84,15 +88,15 @@ export default function PhysicalExploration({
           </div>
         </div>
 
-        <div className="xl:flex items-center justify-between mb-4">
-          <div className="xl:flex items-center xl:mb-0 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full">
+        <div className="xl:block items-center justify-between mb-4">
+          <div className="xl:flex items-center xl:mb-3 mb-3">
+            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Aparato respiratorio
               </p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.respiratorySystem}
                 name="respiratorySystem"
@@ -100,19 +104,19 @@ export default function PhysicalExploration({
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }
-                className="h-[50px] xl:w-[350px] w-full"
+                className="h-[50px] xl:w-full w-full"
               />
             </div>
           </div>
 
-          <div className="xl:flex items-center xl:mb-0 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[185px] w-full">
+          <div className="xl:flex items-center xl:mb-3 mb-3">
+            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Aparato digestivo
               </p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.digestiveSystem}
                 name="digestiveSystem"
@@ -120,21 +124,21 @@ export default function PhysicalExploration({
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }
-                className="h-[50px] xl:w-[350px] w-full"
+                className="h-[50px] xl:w-full w-full"
               />
             </div>
           </div>
         </div>
 
-        <div className="xl:flex items-center justify-between mb-4">
-          <div className="xl:flex items-center xl:mb-0 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full">
+        <div className="xl:block items-center justify-between mb-4">
+          <div className="xl:flex items-center xl:mb-3 mb-3">
+            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Aparato cardiovascular
               </p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.cardiovascularSystem}
                 name="cardiovascularSystem"
@@ -142,19 +146,19 @@ export default function PhysicalExploration({
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }
-                className="h-[50px] xl:w-[350px] w-full"
+                className="h-[50px] xl:w-full w-full"
               />
             </div>
           </div>
 
-          <div className="xl:flex items-center xl:mb-0 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[185px] w-full">
+          <div className="xl:flex items-center xl:mb-3 mb-3">
+            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Aparato reproductor
               </p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.reproductiveSystem}
                 name="reproductiveSystem"
@@ -162,21 +166,21 @@ export default function PhysicalExploration({
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }
-                className="h-[50px] xl:w-[350px] w-full"
+                className="h-[50px] xl:w-full w-full"
               />
             </div>
           </div>
         </div>
 
-        <div className="xl:flex items-center justify-between mb-4">
-          <div className="xl:flex items-center xl:mb-0 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full">
+        <div className="xl:block items-center justify-between mb-4">
+          <div className="xl:flex items-center xl:mb-3 mb-3">
+            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Aparato urinario
               </p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.urinarySystem}
                 name="urinarySystem"
@@ -184,19 +188,19 @@ export default function PhysicalExploration({
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }
-                className="h-[50px] xl:w-[350px] w-full"
+                className="h-[50px] xl:w-full w-full"
               />
             </div>
           </div>
 
-          <div className="xl:flex items-center xl:mb-0 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[185px] w-full">
+          <div className="xl:flex items-center xl:mb-3 mb-3">
+            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Inspección oftalmológica
               </p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.ophthalmologicalSystem}
                 name="ophthalmologicalSystem"
@@ -204,21 +208,21 @@ export default function PhysicalExploration({
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }
-                className="h-[50px] xl:w-[350px] w-full"
+                className="h-[50px] xl:w-full w-full"
               />
             </div>
           </div>
         </div>
 
-        <div className="xl:flex items-center justify-between mb-4">
-          <div className="xl:flex items-center xl:mb-0 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full">
+        <div className="xl:block items-center justify-between mb-4">
+          <div className="xl:flex items-center xl:mb-3 mb-3">
+            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Aparato locomotor
               </p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.locomotorSystem}
                 name="locomotorSystem"
@@ -226,19 +230,19 @@ export default function PhysicalExploration({
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }
-                className="h-[50px] xl:w-[350px] w-full"
+                className="h-[50px] xl:w-full w-full"
               />
             </div>
           </div>
 
-          <div className="xl:flex items-center xl:mb-0 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[185px] w-full">
+          <div className="xl:flex items-center xl:mb-3 mb-3">
+            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Inspección oídos
               </p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.earInspection}
                 name="earInspection"
@@ -246,21 +250,21 @@ export default function PhysicalExploration({
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }
-                className="h-[50px] xl:w-[350px] w-full"
+                className="h-[50px] xl:w-full w-full"
               />
             </div>
           </div>
         </div>
 
-        <div className="xl:flex items-center justify-between mb-4">
-          <div className="xl:flex items-center xl:mb-0 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full">
+        <div className="xl:block items-center justify-between mb-4">
+          <div className="xl:flex items-center xl:mb-3 mb-3">
+            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Aparato neurológica
               </p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.neurologicalInspection}
                 name="neurologicalInspection"
@@ -268,19 +272,19 @@ export default function PhysicalExploration({
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }
-                className="h-[50px] xl:w-[350px] w-full"
+                className="h-[50px] xl:w-full w-full"
               />
             </div>
           </div>
 
-          <div className="xl:flex items-center xl:mb-0 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[185px] w-full">
+          <div className="xl:flex items-center xl:mb-3 mb-3">
+            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Inspección piel
               </p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.skinInspection}
                 name="skinInspection"
@@ -288,7 +292,7 @@ export default function PhysicalExploration({
                 onChange={(e: ChangeEvent<HTMLInputElement>) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }
-                className="h-[50px] xl:w-[350px] w-full"
+                className="h-[50px] xl:w-full w-full"
               />
             </div>
           </div>

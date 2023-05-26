@@ -4,7 +4,11 @@ import Orders from "./Orders/Orders";
 import Recipe from "./Recipe/Recipe";
 import Records from "./Records/Records";
 
-export default function RightSide() {
+interface IRightSideProps {
+  width: number;
+}
+
+export default function RightSide({ width }: IRightSideProps) {
   const [isLoading, setIsLoading] = useState(true);
 
   const setValuesLocalStorage = () => {
@@ -153,7 +157,7 @@ export default function RightSide() {
       </div>
 
       <div className="mb-8">
-        <CurrentConsultation />
+        <CurrentConsultation width={width} />
       </div>
 
       <div className="mb-8">

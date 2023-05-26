@@ -7,10 +7,11 @@ import { IUser } from "domain/core/entities/userEntity";
 import Navigation from "./nav";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext, IAuthContext } from "../AppLayout/context/AuthContext";
-import { redirect } from "next/navigation";
+import { redirect, usePathname } from "next/navigation";
 import StepByStep from "(presentation)/components/core/StepByStep/StepByStep";
 import PopupProvider from "(presentation)/components/core/BaseComponents/Popup/context/PopupContext";
 import Popup from "(presentation)/components/core/BaseComponents/Popup/PopupIndex";
+import Splash from "(presentation)/components/core/Splash/Splash";
 
 interface INavigation {
   title: string;
@@ -28,23 +29,39 @@ function SideMenu({
 }) {
   const { state, actions, dispatch } = useContext<IAuthContext>(AuthContext);
   const { getUserAuthenticated } = actions;
-
   const { data, loading, error, successful } = state.getUserAuthenticated;
 
-  const [loadedUser, setLoadedUser] = useState(false);
+  const pathname = usePathname();
 
   const loadUser = () => {
     getUserAuthenticated()(dispatch);
-    setLoadedUser(true);
+  };
+
+  const onHandleAuth = () => {
+    if (pathname === "/" && data.userId) {
+      redirect("/dashboard");
+    }
+
+    if (pathname === "/" && !data?.userId) {
+      redirect("/login");
+    }
   };
 
   useEffect(() => {
     loadUser();
-  }, [loadedUser]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (successful) onHandleAuth();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [successful]);
 
   useMemo(() => {
     if (error !== null) redirect("/login");
   }, [error]);
+
+  if ((loading || !data.userId) && pathname === "/") return <Splash />;
 
   return (
     <div className="py-5 md:py-0 -mx-3 px-3 sm:-mx-8 sm:px-8 bg-primary dark:bg-transparent">

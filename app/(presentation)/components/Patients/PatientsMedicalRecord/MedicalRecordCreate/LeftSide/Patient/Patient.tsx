@@ -27,14 +27,14 @@ export default function Patient({
       className={clsx([
         "relative zoom-in h-auto transition-all  z-50",
         "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
-        showCompleteDetails ? "w-full" : "w-[385px]",
+        showCompleteDetails ? "w-full" : "xl:w-[385px] w-full",
       ])}
     >
       <div className="p-4 box h-full">
         <div className="lg:flex block">
           <div className="text-center lg:border-r border-grey">
             <div className="flex w-full justify-center mb-4 mr-24">
-              {patient && patient?.pictureUrl.length > 0 ? (
+              {patient && patient?.pictureUrl?.length > 0 ? (
                 <Image
                   className="object-cover rounded-full"
                   src={patient.pictureUrl}
@@ -56,12 +56,12 @@ export default function Patient({
             </div>
           </div>
 
-          <div className="lg:pl-8 w-full flex justify-between">
+          <div className="lg:pl-8 w-full flex justify-between xl:mt-0 mt-4">
             <div
               className={clsx([
                 showCompleteDetails
                   ? "grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8"
-                  : "grid grid-cols-1 gap-4",
+                  : "grid xl:grid-cols-1 md:grid-cols-3 grid-cols-1 gap-8",
               ])}
             >
               <div>
@@ -71,7 +71,6 @@ export default function Patient({
                   {patient?.name} {patient?.lastName}
                 </span>
               </div>
-
               <div>
                 <p className="font-normal text-slate-500 mb-1">Edad</p>
 
@@ -88,66 +87,82 @@ export default function Patient({
                 </span>
               </div>
 
-              {showCompleteDetails && (
-                <>
-                  <div>
-                    <p className="font-normal text-slate-500 mb-1">
-                      Primer apellido
-                    </p>
+              <div
+                className={clsx([
+                  showCompleteDetails ? "block" : "xl:hidden block",
+                ])}
+              >
+                <p className="font-normal text-slate-500 mb-1">
+                  Primer apellido
+                </p>
 
-                    <span className="font-medium text-[16px]">
-                      {patient?.lastName}
-                    </span>
-                  </div>
+                <span className="font-medium text-[16px]">
+                  {patient?.lastName}
+                </span>
+              </div>
 
-                  <div>
-                    <p className="font-normal text-slate-500 mb-1">
-                      Segundo apellido
-                    </p>
+              <div
+                className={clsx([
+                  showCompleteDetails ? "block" : "xl:hidden block",
+                ])}
+              >
+                <p className="font-normal text-slate-500 mb-1">
+                  Segundo apellido
+                </p>
 
-                    <span className="font-medium text-[16px]">
-                      {patient && patient.motherLastName.length > 0
-                        ? patient.motherLastName
-                        : "No especificado"}
-                    </span>
-                  </div>
+                <span className="font-medium text-[16px]">
+                  {patient && patient.motherLastName?.length > 0
+                    ? patient.motherLastName
+                    : "No especificado"}
+                </span>
+              </div>
 
-                  <div>
-                    <p className="font-normal text-slate-500 mb-1">CURP</p>
+              <div
+                className={clsx([
+                  showCompleteDetails ? "block" : "xl:hidden block",
+                ])}
+              >
+                <p className="font-normal text-slate-500 mb-1">CURP</p>
 
-                    <span className="font-medium text-[16px]">
-                      {patient && patient.curp.length > 0
-                        ? patient.curp
-                        : "No especificado"}
-                    </span>
-                  </div>
+                <span className="font-medium text-[16px]">
+                  {patient && patient.curp?.length > 0
+                    ? patient.curp
+                    : "No especificado"}
+                </span>
+              </div>
 
-                  <div>
-                    <p className="font-normal text-slate-500 mb-1">Teléfono</p>
+              <div
+                className={clsx([
+                  showCompleteDetails ? "block" : "xl:hidden block",
+                ])}
+              >
+                <p className="font-normal text-slate-500 mb-1">Teléfono</p>
 
-                    <span className="font-medium text-[16px]">
-                      {patient && patient.phoneNumber.length > 0
-                        ? patient.phoneNumber
-                        : "No especificado"}
-                    </span>
-                  </div>
+                <span className="font-medium text-[16px]">
+                  {patient && patient.phoneNumber?.length > 0
+                    ? patient.phoneNumber
+                    : "No especificado"}
+                </span>
+              </div>
 
-                  <div>
-                    <p className="font-normal text-slate-500 mb-1">
-                      Correo electrónico
-                    </p>
+              <div
+                className={clsx([
+                  showCompleteDetails ? "block" : "xl:hidden block",
+                ])}
+              >
+                <p className="font-normal text-slate-500 mb-1">
+                  Correo electrónico
+                </p>
 
-                    <span className="font-medium text-[16px]">
-                      {patient && patient.email.length > 0
-                        ? patient.email
-                        : "No especificado"}
-                    </span>
-                  </div>
-                </>
-              )}
+                <span className="font-medium text-[16px]">
+                  {patient && patient.email?.length > 0
+                    ? patient.email
+                    : "No especificado"}
+                </span>
+              </div>
             </div>
 
-            <div className="h-full flex justify-center align-middle items-center -mr-6">
+            <div className="h-full justify-center align-middle items-center -mr-6 xl:flex hidden">
               <button
                 type="button"
                 className="rounded-full shadow-md bg-white"

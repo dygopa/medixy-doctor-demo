@@ -24,7 +24,7 @@ export default function StepByStep({ user }: { user: IUser }) {
   const { getSteps, createUserSteps } = actions;
   const { data, error, successful, loading } = state.getSteps;
 
-  const [activeHelper, setActiveHelper] = useState(true);
+  const [activeHelper, setActiveHelper] = useState(false);
   const [canShowHelp, setCanShowHelp] = useState(false);
 
   let [steps, setSteps] = useState([

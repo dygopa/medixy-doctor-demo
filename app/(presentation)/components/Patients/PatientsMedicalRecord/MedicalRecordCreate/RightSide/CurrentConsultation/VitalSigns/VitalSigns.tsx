@@ -311,20 +311,20 @@ export default function VitalSigns({
       </button>
 
       <div className={clsx([showBody ? "block" : "hidden"])}>
-        <div className="xl:flex items-center justify-between mb-4">
-          <div className="xl:flex items-center xl:mb-0 mb-4">
-            <div className="xl:mr-5 mb-1 w-[200px]">
+        <div className="xl:block items-center justify-between mb-4">
+          <div className="xl:flex items-center xl:mb-4 mb-4">
+            <div className="xl:mr-5 mb-1 w-[250px]">
               <p className="text-slate-900 font-lighter text-lg">Talla (mts)</p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.size}
                 name="size"
                 type="text"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e)}
                 className={clsx([
-                  "h-[50px] xl:w-[350px] w-full",
+                  "h-[50px] xl:w-full w-full",
                   errors.size.length > 0 && "border-danger hover:border-danger",
                 ])}
               />
@@ -335,19 +335,19 @@ export default function VitalSigns({
             </div>
           </div>
 
-          <div className="xl:flex items-center xl:mb-0 mb-4">
-            <div className="xl:mr-5 mb-1 xl:w-[185px] w-full">
+          <div className="xl:flex items-center xl:mb-4 mb-4">
+            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
               <p className="text-slate-900 font-lighter text-lg">Peso (Kg)</p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.weight}
                 name="weight"
                 type="text"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e)}
                 className={clsx([
-                  "h-[50px] xl:w-[350px] w-full",
+                  "h-[50px] xl:w-full w-full",
                   errors.weight.length > 0 &&
                     "border-danger hover:border-danger",
                 ])}
@@ -360,22 +360,22 @@ export default function VitalSigns({
           </div>
         </div>
 
-        <div className="xl:flex items-center justify-between mb-4">
-          <div className="xl:flex items-center xl:mb-0 mb-4">
-            <div className="xl:mr-5 mb-1 w-[200px]">
+        <div className="xl:block items-center justify-between mb-4">
+          <div className="xl:flex items-center xl:mb-4 mb-4">
+            <div className="xl:mr-5 mb-1 w-[250px]">
               <p className="text-slate-900 font-lighter text-lg">
                 Temperatura (°C)
               </p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.temperature}
                 name="temperature"
                 type="text"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e)}
                 className={clsx([
-                  "h-[50px] xl:w-[350px] w-full",
+                  "h-[50px] xl:w-full w-full",
                   errors.temperature.length > 0 &&
                     "border-danger hover:border-danger",
                 ])}
@@ -387,21 +387,21 @@ export default function VitalSigns({
             </div>
           </div>
 
-          <div className="xl:flex items-center xl:mb-0 mb-4">
-            <div className="xl:mr-5 mb-1 xl:w-[185px] w-full">
+          <div className="xl:flex items-center xl:mb-4 mb-4">
+            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Frecuencia respiratoria
               </p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.respiratoryFrequency}
                 name="respiratoryFrequency"
                 type="text"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e)}
                 className={clsx([
-                  "h-[50px] xl:w-[350px] w-full",
+                  "h-[50px] xl:w-full w-full",
                   errors.respiratoryFrequency.length > 0 &&
                     "border-danger hover:border-danger",
                 ])}
@@ -416,20 +416,20 @@ export default function VitalSigns({
           </div>
         </div>
 
-        <div className="xl:flex items-center justify-between mb-4">
-          <div className="xl:flex items-center xl:mb-0 mb-4">
-            <div className="xl:mr-5 mb-1 w-[200px]">
+        <div className="xl:block items-center justify-between mb-4">
+          <div className="xl:flex items-center xl:mb-4 mb-4">
+            <div className="xl:mr-5 mb-1 w-[250px]">
               <p className="text-slate-900 font-lighter text-lg">Oximetría</p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.oximetry}
                 name="oximetry"
                 type="text"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e)}
                 className={clsx([
-                  "h-[50px] xl:w-[350px] w-full",
+                  "h-[50px] xl:w-full w-full",
                   errors.oximetry.length > 0 &&
                     "border-danger hover:border-danger",
                 ])}
@@ -441,21 +441,21 @@ export default function VitalSigns({
             </div>
           </div>
 
-          <div className="xl:flex items-center xl:mb-0 mb-4">
-            <div className="xl:mr-5 mb-1 xl:w-[185px] w-full">
+          <div className="xl:flex items-center xl:mb-4 mb-4">
+            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Índice masa muscular
               </p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.muscleMass}
                 name="muscleMass"
                 type="text"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e)}
                 className={clsx([
-                  "h-[50px] xl:w-[350px] w-full",
+                  "h-[50px] xl:w-full w-full",
                   errors.muscleMass.length > 0 &&
                     "border-danger hover:border-danger",
                 ])}
@@ -468,20 +468,20 @@ export default function VitalSigns({
           </div>
         </div>
 
-        <div className="xl:flex items-center justify-between mb-4">
-          <div className="xl:flex items-center xl:mb-0 mb-4">
-            <div className="xl:mr-5 mb-1 w-[200px]">
+        <div className="xl:block items-center justify-between mb-4">
+          <div className="xl:flex items-center xl:mb-4 mb-4">
+            <div className="xl:mr-5 mb-1 w-[250px]">
               <p className="text-slate-900 font-lighter text-lg">Glicemia</p>
             </div>
 
-            <div>
+            <div className="w-full">
               <FormInput
                 value={values.glicemy}
                 name="glicemy"
                 type="text"
                 onChange={(e: ChangeEvent<HTMLInputElement>) => onChange(e)}
                 className={clsx([
-                  "h-[50px] xl:w-[350px] w-full",
+                  "h-[50px] xl:w-full w-full",
                   errors.glicemy.length > 0 &&
                     "border-danger hover:border-danger",
                 ])}
