@@ -3,6 +3,7 @@ import { ILocality } from '../../../../domain/core/entities/localityEntity';
 
 export interface ILocalitiesState {
   getMedicalCenters: ILocalitiesLocalitiesState;
+  getCountryStates: ILocalitiesLocalitiesState;
   getUserLocalities: ILocalitiesLocalitiesState;
   createUserLocality: ILocalitiesLocalitiesState;
   updateUserLocality: ILocalitiesLocalitiesState;
@@ -11,7 +12,7 @@ export interface ILocalitiesState {
 }
 
 interface ILocalitiesLocalitiesState {
-  data: Array<ILocality> | string | ILocality;
+  data: Array<ILocality> | Array<any> | string | ILocality;
   loading: boolean;
   successful: boolean;
   error: LocalityFailure | null; 
@@ -19,6 +20,12 @@ interface ILocalitiesLocalitiesState {
 
 export const initialState: ILocalitiesState = {
   getMedicalCenters: {
+    data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  getCountryStates: {
     data: [],
     loading: false,
     successful: false,

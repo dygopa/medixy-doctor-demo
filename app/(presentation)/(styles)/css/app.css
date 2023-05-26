@@ -58,4 +58,6 @@
 @import "./components/_tabulator.css";
 @import "./components/_svg.css";
 
-
+.leaflet-container {
+   height: 380px;
+ }

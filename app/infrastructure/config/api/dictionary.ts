@@ -15,6 +15,7 @@ export const GET_USER_LOCALITIES_ENDPOINT = (id:number) => process.env.NEXT_PUBL
 export const CREATE_USER_LOCALITY_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}/location`;
 export const UPDATE_USER_LOCALITY_ENDPOINT = (locality_id:number) => process.env.NEXT_PUBLIC_API_URL + `/location/${locality_id}`;
 export const ADD_MEDIA_LOCALITY_ENDPOINT = (locality_id:number) => process.env.NEXT_PUBLIC_API_URL + `/location/${locality_id}/media`;
+export const GET_COUNTRY_STATES_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL + `/state`;
 
 export const GET_CATEGORIES_SERVICES_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL + `/service_category`;
 export const GET_USER_SERVICES_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}/service`;
