@@ -36,43 +36,6 @@ export default function PatientsTable() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, searchQuery]);
 
-  if (loading) {
-    return (
-      <div className="w-full flex flex-col justify-center items-center">
-        <p className="font-bold text-slate-900 text-lg">Un momento...</p>
-        <p className="font-light text-slate-500 text-base">
-          Cargando tus Pacientes.
-        </p>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="w-full flex flex-col justify-center items-center">
-        <p className="font-bold text-slate-900 text-lg">
-          Vaya, algo no ha salido como se esperaba
-        </p>
-        <p className="font-light text-slate-500 text-base">
-          Lo sentimos, algo no ha salido bien. Vuelve a intentarlo
-        </p>
-      </div>
-    );
-  }
-
-  if (successful && patients.data && patients.data?.length === 0) {
-    return (
-      <div className="w-full flex flex-col justify-center items-center">
-        <p className="font-bold text-slate-900 text-lg">
-          Vaya, no tienes pacientes aún
-        </p>
-        <p className="font-light text-slate-500 text-base">
-          Lo sentimos, pero no tienes pacientes agregados todavia.
-        </p>
-      </div>
-    );
-  }
-
   return (
     <>
       <div className="col-span-12 overflow-auto lg:overflow-visible z-0 ">
@@ -202,6 +165,35 @@ export default function PatientsTable() {
               ))}
           </Table.Tbody>
         </Table>
+        {loading && 
+          <div className="w-full flex flex-col justify-center items-center">
+            <p className="font-bold text-slate-900 text-lg">Un momento...</p>
+            <p className="font-light text-slate-500 text-base">
+              Cargando tus servicios.
+            </p>
+          </div>
+        }
+
+        {successful && patients.data?.length === 0 && 
+          <div className="w-full flex flex-col justify-center items-center">
+          <p className="font-bold text-slate-900 text-lg">
+            Vaya, no tienes servicios aún
+          </p>
+          <p className="font-light text-slate-500 text-base">
+            Lo sentimos, pero no tienes servicios agregados todavia.
+          </p>
+        </div>
+        }
+        {error &&
+          <div className="w-full flex flex-col justify-center items-center">
+            <p className="font-bold text-slate-900 text-lg">
+              Vaya, algo no ha salido como se esperaba
+            </p>
+            <p className="font-light text-slate-500 text-base">
+              Lo sentimos, algo no ha salido bien. Vuelve a intentarlo
+            </p>
+          </div>
+        }
       </div>
 
       <div className="flex justify-end mt-8 overflow-x-hidden">
