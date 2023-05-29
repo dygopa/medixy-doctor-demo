@@ -75,7 +75,7 @@ export default function MedicalConsultationNext() {
             Nada por aquí aún
           </p>
           <p className="font-light text-sm text-slate-500">
-            No tienes proximas citas aún en la plataforma, te recomendamos crear{" "}
+            No tienes próximas citas aún en la plataforma, te recomendamos crear{" "}
             <Link href="/services" className="font-semibold text-primary">
               servicios
             </Link>{" "}

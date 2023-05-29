@@ -326,7 +326,7 @@ export default function Formulary() {
             Acepto los{" "}
             <Link
               target="_blank"
-              className="text-primary font-medium  pointer-events-none"
+              className="text-primary font-medium  pointer-events-none underline"
               href="#"
             >
               terminos y condiciones
@@ -345,7 +345,7 @@ export default function Formulary() {
             Acepto los{" "}
             <Link
               target="_blank"
-              className="text-primary font-medium  pointer-events-none"
+              className="text-primary font-medium  pointer-events-none underline"
               href="#"
             >
               politica de privacidad

@@ -4,7 +4,7 @@ import ServicesCreateIndex from "(presentation)/components/Services/ServicesCrea
 
 export default async function ServicesCreatePage() {
   return (
-    <AppLayout title="Crear servicio" pathname={ServicesRoutesEnum.ServicesCreate}>
+    <AppLayout showStepsBySteps={false} title="Crear servicio" pathname={ServicesRoutesEnum.ServicesCreate}>
       <ServicesCreateIndex/>
     </AppLayout>
   );

@@ -49,7 +49,7 @@ function Main({
         className="lg:w-[12rem] w-full h-full flex justify-end items-center gap-3"
       >
         <div className="w-[9rem] h-full flex flex-col justify-center items-end">
-          <p className="font-semibold text-sm text-slate-900">
+          <p className="font-semibold text-sm text-slate-900 capitalize">
             {user?.names} {user?.firstName}
           </p>
           <p className="font-light text-sm text-slate-500">Médico</p>

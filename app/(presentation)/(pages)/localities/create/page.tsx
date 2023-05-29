@@ -4,7 +4,7 @@ import LocalityCreateIndex from "(presentation)/components/Localities/Localities
 
 export default async function LocalityCreatePage() {
   return (
-    <AppLayout title="Nuevo consultorio" pathname={LocalitiesRoutesEnum.LocalitiesCreate}>
+    <AppLayout showStepsBySteps={false} title="Nuevo consultorio" pathname={LocalitiesRoutesEnum.LocalitiesCreate}>
       <LocalityCreateIndex/>
     </AppLayout>
   );

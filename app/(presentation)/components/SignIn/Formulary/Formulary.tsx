@@ -149,11 +149,11 @@ export default function Formulary() {
             icon="AtSign"
             className="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
           />
+        </div>
+        <div className="mt-2">
           {errors.email.length > 0 && (
             <span className="text-red-500">{errors.email}</span>
           )}
-        </div>
-        <div className="mt-2">
           <span className="text-danger"></span>
         </div>
       </div>
@@ -172,12 +172,12 @@ export default function Formulary() {
             icon="Lock"
             className="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
           />
-          {errors.password.length > 0 && (
-            <span className="text-red-500">{errors.password}</span>
-          )}
         </div>
         <div className="mt-2">
           <span className="text-danger"></span>
+          {errors.password.length > 0 && (
+            <span className="text-red-500">{errors.password}</span>
+          )}
         </div>
       </div>
       <div className="w-full flex flex-col justify-center items-center gap-4 text-center mt-8">

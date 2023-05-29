@@ -62,7 +62,7 @@ export default function MedicalConsultationCalendar() {
       <div className="w-full flex flex-col gap-1">
         <p className="font-semibold text-lg text-slate-900">Resumen</p>
         <p className="font-light text-sm text-slate-500">
-          Para mejorar tus estadisticas en la plataforma puedes configurar tus
+          Para mejorar tus estadísticas en la plataforma puedes configurar tus
           consultorios y asignarles servicios para de esa manera ser visible en
           el marketplace de pacientes
         </p>
