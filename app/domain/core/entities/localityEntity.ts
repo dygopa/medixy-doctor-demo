@@ -7,6 +7,7 @@ export interface ILocality {
     address: string;
     postal_code: number;
     state: IState;
+    state_id: number;
     city: string;
     image_url: string;
     latitude: number;
