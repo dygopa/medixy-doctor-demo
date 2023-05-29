@@ -56,7 +56,7 @@ export default function MedicalConsultationCalendar() {
   return (
     <div
       className={clsx([
-        "w-full h-full flex flex-col grid-cols-3 justify-start items-start p-5 gap-8 bg-white rounded-md shadow-md ",
+        "w-full lg:h-[320px] flex flex-col grid-cols-3 justify-start items-start px-4 py-2 gap-8 bg-white rounded-md shadow-md ",
       ])}
     >
       <div className="w-full flex flex-col gap-1">
