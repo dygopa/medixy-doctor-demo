@@ -76,13 +76,13 @@ export default function MedicalConsultationList() {
 
   if ([...(appointments as Array<any>)].length === 0 && successful)
     return (
-      <div className="w-full h-fit flex flex-col justify-between items-center bg-white rounded-md shadow-md px-4">
-        <div className="w-full h-[6vh] border-b flex justify-between items-center pb-1">
+      <div className="w-full lg:h-[320px] bg-white rounded-md shadow-md px-4">
+        <div className="w-full h-[6vh] flex justify-between items-center pb-1">
           <p className="font-semibold text-lg text-slate-900">
             Citas pendientes
           </p>
         </div>
-        <div className="w-full h-[30vh] flex flex-col justify-center items-center gap-2 rounded-md overflow-y-auto text-center">
+        <div className="w-full h-auto rounded-md overflow-y-auto text-center mt-8">
           <p className="font-medium text-lg text-slate-900">
             Nada por aquí aún
           </p>
@@ -99,11 +99,11 @@ export default function MedicalConsultationList() {
     );
 
   return (
-    <div className="w-full h-[58vh] flex flex-col justify-between items-center bg-white rounded-md shadow-md p-4">
-      <div className="w-full h-[6vh] border-b flex justify-between items-center pb-1">
+    <div className="w-full lg:h-[320px] flex flex-col justify-between items-center bg-white rounded-md shadow-md p-4">
+      <div className="w-full border-b flex justify-between items-center pb-1">
         <p className="font-semibold text-lg text-slate-900">Citas pendientes</p>
       </div>
-      <div className="w-full h-[40vh] flex flex-col justify-between items-center gap-4 rounded-md overflow-y-auto">
+      <div className="w-full  flex flex-col justify-between items-center gap-4 rounded-md overflow-y-auto">
         {[...(appointments as Array<any>)].map((date, i) => (
           <DateComponent data={date} key={i} />
         ))}
