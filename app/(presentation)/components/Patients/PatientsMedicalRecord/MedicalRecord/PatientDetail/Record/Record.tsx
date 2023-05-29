@@ -5,7 +5,7 @@ export default function Record() {
   return (
     <div
       className={clsx([
-        "relative lg-h[37vh] h-auto",
+        "relative lg:h-[43vh] h-auto",
         "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
       ])}
     >

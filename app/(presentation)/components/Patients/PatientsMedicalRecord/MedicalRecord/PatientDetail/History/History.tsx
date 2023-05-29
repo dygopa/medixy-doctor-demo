@@ -5,7 +5,7 @@ export default function History() {
   return (
     <div
       className={clsx([
-        "relative lg:h-[36vh] h-auto",
+        "relative lg:h-[40vh] h-auto",
         "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
       ])}
     >
@@ -22,7 +22,7 @@ export default function History() {
           </div>
         </div>
 
-        <div className="col-span-12 overflow-auto intro-y lg:overflow-visible z-0">
+        <div className="h-[90%] flex-grow-0 overflow-y-auto px-3">
           <HistoryTable />
         </div>
       </div>

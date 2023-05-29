@@ -20,7 +20,7 @@ export default function Treatments() {
           </div>
         </div>
 
-        <div className="col-span-12 overflow-auto intro-y lg:overflow-visible z-0 w-full">
+        <div className="col-span-12 overflow-x-auto intro-y lg:overflow-visible z-0">
           <TreatmentsTable />
         </div>
       </div>

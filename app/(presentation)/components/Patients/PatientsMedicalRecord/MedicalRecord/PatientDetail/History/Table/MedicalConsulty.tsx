@@ -19,7 +19,7 @@ export default function MedicalConsulty({
   return (
     <Table.Tr
       key={medicalConsulty.id}
-      className="intro-x cursor-pointer bg-white hover:bg-primary shadow-[20px_3px_20px_#0000000b] "
+      className="intro-x cursor-pointer bg-white hover:bg-primary shadow-md"
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       onClick={() => setIsOpen(true)}
