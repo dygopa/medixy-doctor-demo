@@ -117,7 +117,7 @@ export default function TableServices({ user }: { user: IUser }) {
                 <Table.Tr
                   key={service.id}
                   onClick={() => router.push(`/services/${service.id}`)}
-                  className="bg-white"
+                  className="bg-white cursor-pointer"
                 >
                   <Table.Td>
                     <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">

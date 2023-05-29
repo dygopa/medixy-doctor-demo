@@ -78,7 +78,7 @@ export default function FormularyCURP() {
           ¿Cuál es tú CURP?
         </p>
         <p className="text-gray-500 font-light lg:text-base md:text-base text-md">
-          Por favor, indicanos tu CURP para comenzar la creación de tu cuenta
+          Por favor, indícanos tu CURP para comenzar la creación de tu cuenta
         </p>
       </div>
       <div className="relative w-full text-slate-500">

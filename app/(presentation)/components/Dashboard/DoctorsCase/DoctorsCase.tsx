@@ -13,7 +13,7 @@ function DoctorsCase({ account }: { account: IUser }) {
             <p className="font-medium text-base text-slate-900">Tablero</p>
             <p className="font-light text-xl text-slate-900">
               Bienvenido a Prosit,{" "}
-              <b className="font-bold">
+              <b className="font-bold capitalize">
                 {account.names} {account.firstName}
               </b>
             </p>

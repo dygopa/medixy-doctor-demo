@@ -5,7 +5,7 @@ import LocalityUpdateIndex from "(presentation)/components/Localities/Localities
 
 export default async function LocalityCreatePage() {
   return (
-    <AppLayout title="Actualizar consultorio" pathname={LocalitiesRoutesEnum.LocalitiesView}>
+    <AppLayout showStepsBySteps={false} title="Actualizar consultorio" pathname={LocalitiesRoutesEnum.LocalitiesView}>
       <LocalityUpdateIndex/>
     </AppLayout>
   );

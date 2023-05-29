@@ -12,6 +12,7 @@ export default async function EditPatientPage({
     <AppLayout
       title="Informacion del paciente"
       pathname={PatientsRoutesEnum.PatientsEdit}
+      showStepsBySteps={false}
     >
       <Providers>
         <PatientsEditIndex patientId={parseInt(params.patientId, 10)} />
