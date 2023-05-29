@@ -220,7 +220,7 @@ export default function Navigator() {
 
   return (
     <>
-      <div className="w-full lg:flex justify-between items-center sticky top-[67px] z-[99]  bg-slate-100 pt-2">
+      <div className="md:grid md:grid-cols-2  w-full lg:flex justify-between items-center sticky top-[67px] z-[99]  bg-slate-100 pt-2">
         <div className="lg:w-[50%]">
           <h2 className="lg:mr-5 text-2xl font-bold truncate">
             Nueva consulta
@@ -229,13 +229,15 @@ export default function Navigator() {
             Información detallada del expediente del paciente
           </p>
         </div>
-        <Button
-          variant="primary"
-          disabled={isLoading}
-          onClick={() => onCreateMedicalRecord()}
-        >
-          {isLoading ? "Generando resumen..." : "Crear consulta"}
-        </Button>
+        <div className="flex justify-end items-center">
+          <Button
+            variant="primary"
+            disabled={isLoading}
+            onClick={() => onCreateMedicalRecord()}
+          >
+            {isLoading ? "Generando resumen..." : "Crear consulta"}
+          </Button>
+        </div>
       </div>
 
       <AlertComponent

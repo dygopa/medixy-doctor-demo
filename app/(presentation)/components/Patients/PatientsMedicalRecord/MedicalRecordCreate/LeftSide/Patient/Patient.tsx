@@ -25,9 +25,9 @@ export default function Patient({
   return (
     <div
       className={clsx([
-        "relative zoom-in h-auto transition-all  z-50",
+        "relative h-auto transition-all  z-50",
         "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
-        showCompleteDetails ? "w-full" : "xl:w-[385px] w-full",
+        showCompleteDetails ? "lg:w-[93%]" : "xl:w-[385px] w-full",
       ])}
     >
       <div className="p-4 box h-full">
@@ -56,11 +56,11 @@ export default function Patient({
             </div>
           </div>
 
-          <div className="lg:pl-8 w-full flex justify-between xl:mt-0 mt-4">
+          <div className="lg:pl-8 lg:flex w-full lg:justify-between xl:mt-0 mt-4">
             <div
               className={clsx([
                 showCompleteDetails
-                  ? "grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8"
+                  ? "grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8 w-full"
                   : "grid xl:grid-cols-1 md:grid-cols-3 grid-cols-1 gap-8",
               ])}
             >
