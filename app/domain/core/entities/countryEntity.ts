@@ -12,3 +12,7 @@ export interface ICountry {
     deletedOn: any | null;
 }
 
+export interface ICountriesISO {
+    iso: string;
+    name: string;
+}

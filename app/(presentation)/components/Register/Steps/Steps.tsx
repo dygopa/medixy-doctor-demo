@@ -33,7 +33,7 @@ export default function Steps() {
       >
         <p
           className={twMerge([
-            "lg:text-[14px] md:text-[14px] sm:text-[12px] text-[12px]",
+            "lg:text-[14px] md:text-[14px] sm:text-[12px] text-[12px] h-10 flex justify-center items-center",
             active > data.value && "cursor-pointer",
             "text-[12px] block relative text-gray-950",
             active === data.value ? "font-normal" : "font-light",
@@ -132,7 +132,7 @@ export default function Steps() {
         </div>
       </div>
 
-      <div className="w-full  grid-cols-3 items-center gap-[2px] lg:grid md:grid sm:grid hidden">
+      <div className="w-full  grid-cols-3 items-center gap-[5px] lg:grid md:grid sm:grid hidden">
         {steps_list.map((s, i) => (
           <StepComponent title={s.title} value={s.value} key={i} />
         ))}

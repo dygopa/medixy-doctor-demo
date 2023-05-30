@@ -66,7 +66,7 @@ export const EditPatientReducer = (state: any, action: any) => {
           successful: false,
           error: action.payload.error,
         },
-      }
+      };
 
     case 'EDIT_PATIENT_LOADING' :
       return {

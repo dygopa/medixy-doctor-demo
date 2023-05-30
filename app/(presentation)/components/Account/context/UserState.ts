@@ -1,5 +1,7 @@
 import { IUser } from '../../../../domain/core/entities/userEntity';
 import { UserFailure } from "domain/core/failures/user/userFailure";
+import { ICountriesISO } from 'domain/core/entities/countryEntity';
+import { CountryFailure} from 'domain/core/failures/country/countryFailure';
 
 export interface IUserState {
   updateUserData: IUserUserState;
@@ -9,6 +11,7 @@ export interface IUserState {
   updateMedicalSpeciality: IUserUserState;
   deleteMedicalSpeciality: IUserUserState;
   updateAvatar: IUserUserState;
+  getCountriesISO: IGetCountriesISOState;
 }
 
 interface IUserUserState {
@@ -16,6 +19,13 @@ interface IUserUserState {
   loading: boolean;
   successful: boolean;
   error: UserFailure | null; 
+}
+
+interface IGetCountriesISOState {
+  data: Array<ICountriesISO>;
+  loading: boolean;
+  successful: boolean;
+  error: CountryFailure| null;
 }
 
 export const initialState: IUserState = {
@@ -57,6 +67,12 @@ export const initialState: IUserState = {
   },
   updateAvatar: {
     data: "",
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  getCountriesISO: {
+    data: [],
     loading: false,
     successful: false,
     error: null,

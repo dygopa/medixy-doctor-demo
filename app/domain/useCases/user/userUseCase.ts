@@ -12,6 +12,8 @@ export default class UserUseCase {
 
       if (response instanceof UserFailure) throw response;
 
+      console.log(response);
+
       return response;
     } catch (error) {
       throw error;

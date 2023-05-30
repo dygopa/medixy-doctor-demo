@@ -42,6 +42,8 @@ export class UserRepository implements IUserRepository {
       let URL = UPDATE_USER_ENDPOINT(user["id"]) as RequestInfo
 
       const response = await fetch(URL, requestOptions)
+
+      console.log(response)
       
       return response.statusText;
     } catch (error) {
