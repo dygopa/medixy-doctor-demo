@@ -20,7 +20,6 @@ export function userAPIToMap(data: any): IUser {
     country: data?.birth_country ?? "",
     role: data?.role ?? "",
     createdOn: data?.creation_date ?? null,
-    phone: data?.phone_number ?? "",
     //sex: data?.sex ?? "",
   } as IUser;
 }

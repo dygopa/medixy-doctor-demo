@@ -167,11 +167,7 @@ export default function BasicData({ account, setAccount }: IFormularyProps) {
                   type={"date"}
                   placeholder="Escribe el nombre del consultorio..."
                   min={0}
-                  defaultValue={
-                    account?.birthDate !== ""
-                      ? moment(account?.birthDate).toDate().getDate()
-                      : Date.now()
-                  }
+                  defaultValue={account?.birthDate}
                   className="form-control w-full"
                   onChange={(e) =>
                     setAccount({ ...account, birthDate: e.target.value })
