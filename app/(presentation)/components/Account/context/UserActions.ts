@@ -1,4 +1,6 @@
+import { ICountriesISO } from "domain/core/entities/countryEntity";
 import { IUser } from "domain/core/entities/userEntity";
+import CountriesUseCase from "domain/useCases/country/countryUseCase";
 import UserUseCase from "domain/useCases/user/userUseCase";
 import { Dispatch } from "react";
 
@@ -10,6 +12,7 @@ export interface IUserActions {
   deleteMedicalSpeciality: Function;
   getUserMedicalSpecialities: Function;
   updateAvatar: Function;
+  getCountriesISO: Function;
 }
 
 const updateUserData = (obj:any) => async (dispatch: Dispatch<any>) => {
@@ -17,6 +20,8 @@ const updateUserData = (obj:any) => async (dispatch: Dispatch<any>) => {
     dispatch({ type: "UPDATE_USER_LOADING" });
 
     const res: string = await new UserUseCase().editUser(obj);
+
+    console.log(obj);
 
     dispatch({ type: "UPDATE_USER_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
@@ -102,6 +107,19 @@ const updateAvatar = (obj:any) => async (dispatch: Dispatch<any>) => {
   }
 }
 
+const getCountriesISO = () => async (dispatch: Dispatch<any>) => {
+  try {
+      dispatch({ type: "GET_COUNTRIES_LOADING" });
+
+      const res: Array<ICountriesISO> = await new CountriesUseCase().getCountriesISO();
+
+      dispatch({ type: "GET_COUNTRIES_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+      console.log("Error calling action", error)
+      dispatch({ type: "GET_COUNTRIES_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IUserActions = {
   updateUserData,
   getMedicalSpecialities,
@@ -110,4 +128,5 @@ export const actions: IUserActions = {
   updateMedicalSpeciality,
   deleteMedicalSpeciality,
   updateAvatar,
+  getCountriesISO,
 }

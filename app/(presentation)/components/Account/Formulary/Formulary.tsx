@@ -36,6 +36,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
       website_url: account.websiteUrl ?? "",
       address: account.address ?? "",
     };
+    console.log(obj);
     updateUserData(obj)(dispatch);
   };
 

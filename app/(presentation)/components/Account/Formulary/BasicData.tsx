@@ -3,7 +3,7 @@ import {
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
-import { ChangeEvent, useContext, useRef } from "react";
+import { ChangeEvent, useContext, useEffect, useRef } from "react";
 import { IUserContext, UserContext } from "../context/UserContext";
 import { twMerge } from "tailwind-merge";
 import { IUser } from "domain/core/entities/userEntity";
@@ -25,6 +25,10 @@ export default function BasicData({ account, setAccount }: IFormularyProps) {
 
   const { state, actions, dispatch } = useContext<IUserContext>(UserContext);
   const { updateAvatar } = actions;
+
+  
+  const { getCountriesISO } = actions;
+  const { data: countriesISO } = state.getCountriesISO;
 
   const { data, loading, error, successful } = state.updateAvatar;
 
@@ -56,8 +60,11 @@ export default function BasicData({ account, setAccount }: IFormularyProps) {
 
   const handleClickRef = () => avatarRef.current && avatarRef.current.click();
 
-  console.log(user);
-  console.log(account);
+  useEffect(() => {
+    getCountriesISO()(dispatch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-5">
       <div className="border w-full rounded-md p-5 flex">
@@ -161,7 +168,9 @@ export default function BasicData({ account, setAccount }: IFormularyProps) {
                   placeholder="Escribe el nombre del consultorio..."
                   min={0}
                   defaultValue={
-                    user?.birthDate 
+                    account?.birthDate !== ""
+                      ? moment(account?.birthDate).toDate().getDate()
+                      : Date.now()
                   }
                   className="form-control w-full"
                   onChange={(e) =>
@@ -197,7 +206,12 @@ export default function BasicData({ account, setAccount }: IFormularyProps) {
                   }
                 >
                   <option value="">Tu pais de nacimiento</option>
-                  <option value="MEX">México</option>
+                  {countriesISO.length > 0 &&
+                  countriesISO.map((elem) => (
+                    <option key={elem.iso} value={elem.iso}>
+                      {elem.iso} - {elem.name}
+                    </option>
+                  ))}
                 </FormSelect>
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
