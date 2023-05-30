@@ -46,10 +46,10 @@ function Main({
       </Breadcrumb>
       <Link
         href="/account"
-        className="lg:w-[12rem] w-full h-full flex justify-end items-center gap-3"
+        className="lg:w-fit w-full h-full flex justify-end items-center gap-3"
       >
-        <div className="w-[9rem] h-full flex flex-col justify-center items-end">
-          <p className="font-semibold text-sm text-slate-900 capitalize">
+        <div className="w-fit min-w-[9rem] h-full flex flex-col justify-center items-end">
+          <p className="font-semibold text-sm text-slate-900">
             {user?.names} {user?.firstName}
           </p>
           <p className="font-light text-sm text-slate-500">Médico</p>

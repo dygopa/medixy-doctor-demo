@@ -24,14 +24,10 @@ function Calendar({
       headerToolbar={{
         start: "prev,next today",
         center: "title",
-        end: "timeGridWeek",
+        end: "",
       }}
       buttonText={{
         today: "Hoy",
-      }}
-      buttonIcons={{
-        prev: "fa-solid fa-chevron-left",
-        next: "fa-solid fa-chevron-right",
       }}
       initialView="timeGridWeek"
       views={{ 

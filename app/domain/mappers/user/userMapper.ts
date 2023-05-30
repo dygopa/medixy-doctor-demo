@@ -12,6 +12,8 @@ export function userAPIToMap(data: any): IUser {
     email: data?.email ?? "",
     curp: data?.curp ?? "",
     birthDate: data?.birth_date ?? "",
+    sex: data?.sex ?? 0,
+    websiteUrl: data?.website_url ?? "",
     avatar: data?.avatar_url ?? "",
     address: data?.address ?? "",
     aboutMe: data?.about_me ?? "",
