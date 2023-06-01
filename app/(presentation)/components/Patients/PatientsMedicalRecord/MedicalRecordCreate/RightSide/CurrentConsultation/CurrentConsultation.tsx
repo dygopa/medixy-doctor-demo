@@ -65,7 +65,7 @@ export default function CurrentConsultation({
 
   const saveValuesInLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "prosit.storage.medical-record-create"
+      "noodus.storage.medical-record-create"
     );
 
     if (!valuesStorage) window.location.reload();
@@ -78,14 +78,14 @@ export default function CurrentConsultation({
     valuesJSON.currentConsultation = currentConsultation;
 
     localStorage.setItem(
-      "prosit.storage.medical-record-create",
+      "noodus.storage.medical-record-create",
       JSON.stringify(valuesJSON)
     );
   };
 
   const setValuesFromLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "prosit.storage.medical-record-create"
+      "noodus.storage.medical-record-create"
     );
 
     if (!valuesStorage) window.location.reload();
@@ -97,8 +97,12 @@ export default function CurrentConsultation({
         ? `${new Date().getFullYear()}-${
             new Date().getMonth() + 1 < 10
               ? `0${new Date().getMonth() + 1}`
-              : new Date().getMonth() + 1
-          }-${new Date().getDate()}`
+              : new Date().getMonth()
+          }-${
+            new Date().getDate() < 10
+              ? `0${new Date().getDate()}`
+              : new Date().getDate()
+          }`
         : valuesJSON.currentConsultation.consultationDate;
 
     setValues(valuesJSON.currentConsultation);

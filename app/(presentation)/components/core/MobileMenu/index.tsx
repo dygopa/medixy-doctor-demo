@@ -33,7 +33,7 @@ function Main() {
           "before:content-[''] before:absolute before:inset-0 before:z-[-1] before:w-full before:h-full before:bg-black/[0.15]",
           "after:content-[''] after:w-full after:h-screen after:z-10 after:fixed after:inset-0 after:bg-black/90 after:transition-opacity after:duration-200 after:ease-in-out",
           !activeMobileMenu && "after:invisible after:opacity-0",
-          activeMobileMenu && "after:visible after:opacity-100 z-[60]",
+          activeMobileMenu && "after:visible after:opacity-100 z-[99]",
         ])}
       >
         <div className="flex">

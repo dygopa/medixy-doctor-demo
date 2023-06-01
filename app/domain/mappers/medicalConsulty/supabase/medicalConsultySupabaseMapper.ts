@@ -1,10 +1,11 @@
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import { getDateFormatUTC } from "infrastructure/utils/dates/datesUtils";
 
 export function medicalConsultySupabaseToMap(data: any): IMedicalConsulty {
   return {
     id: data?.id ?? 0,
     patientId: data?.pacienteId ?? 0,
-    consultationDate: data?.fechaConsulta ? new Date(new Date(data.fechaConsulta).getFullYear(), new Date(data.fechaConsulta).getMonth() + 1, new Date(data.fechaConsulta).getDate() + 1) : new Date(),
+    consultationDate: data?.fechaConsulta ? getDateFormatUTC(data.fechaConsulta) : new Date(),
     consultationReason: data?.motivoConsulta ?? "",
     referrerBy: data?.referidoPor,
     sufferingDate: data?.inicioPadecimiento ? new Date(data.inicioPadecimiento) : null,
@@ -22,7 +23,7 @@ export function medicalConsultySupabaseToMap(data: any): IMedicalConsulty {
     diagnose: data?.diagnostico ?? "",
     observations: data?.observaciones,
     medicalMeasures: [],
-    createdOn: data?.fechaConsulta ? new Date(new Date(data.fechaConsulta).getFullYear(), new Date(data.fechaConsulta).getMonth() + 1, new Date(data.fechaConsulta).getDate() + 1) : new Date(),
+    createdOn: data?.fechaConsulta ? new Date(new Date(data.fechaConsulta).getFullYear(), new Date(data.fechaConsulta).getMonth() + 1, new Date(data.fechaConsulta).getDate()) : new Date(),
     updatedOn: data?.fechaActualizacion ? new Date(data.fechaActualizacion) : null,
     deletedOn: data?.fechaEliminacion ? new Date(data.fechaEliminacion) : null,
   } as IMedicalConsulty;
