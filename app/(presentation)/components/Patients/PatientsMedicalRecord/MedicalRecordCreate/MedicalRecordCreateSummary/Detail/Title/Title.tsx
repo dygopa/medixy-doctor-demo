@@ -11,9 +11,11 @@ export default function Title() {
     if (!valuesStorage) return;
 
     const valuesJSON = JSON.parse(valuesStorage ?? "");
-    setConsultationDate(
-      new Date(valuesJSON.currentConsultation.consultationDate)
-    );
+
+    const parts =
+      valuesJSON.currentConsultation.consultationDate.match(/(\d+)/g);
+
+    setConsultationDate(new Date(parts[0], parts[1] - 1, parts[2]));
   };
 
   useEffect(() => {
@@ -21,7 +23,7 @@ export default function Title() {
   }, []);
 
   return (
-    <div className="flex items-center justify-between py-3">
+    <div className="lg:flex md:flex items-center justify-between py-3">
       <div>
         <h1 className="text-slate-900 text-2xl font-bold">
           Resumen de la consulta
@@ -31,7 +33,7 @@ export default function Title() {
       {consultationDate && (
         <div>
           <h1 className="text-slate-400 text-lg">
-            {consultationDate.getDate() + 1}/{consultationDate.getMonth() + 1}/
+            {consultationDate.getDate()}/{consultationDate.getMonth() + 1}/
             {consultationDate.getFullYear()}
           </h1>
         </div>

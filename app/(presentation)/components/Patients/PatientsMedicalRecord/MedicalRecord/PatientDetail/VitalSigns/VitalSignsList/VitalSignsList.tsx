@@ -55,7 +55,7 @@ export default function VitalSignsList() {
       case MedicalMeasureTypesEnum.GLICEMY:
         return "Glicemia";
       case MedicalMeasureTypesEnum.MUSCLE_MASS_INDEX:
-        return "Indice masa muscular";
+        return "Masa muscular";
       case MedicalMeasureTypesEnum.OXIMETRY:
         return "Oximetria";
       case MedicalMeasureTypesEnum.RESPIRATORY_FREQUENCY:
@@ -135,10 +135,10 @@ export default function VitalSignsList() {
           key={medicalMeasure.id}
           className="flex justify-between items-center w-full mb-1"
         >
-          <p className="font-light text-lg text-slate-500">
+          <p className="font-light text-md text-slate-500">
             {getTitleByMeasureType(medicalMeasure.medicalMeasureType.type)}
           </p>
-          <p className="font-semibold text-lg text-secondary">
+          <p className="font-semibold text-md text-secondary">
             {medicalMeasure.value}
             {getLetterByMeasureType(medicalMeasure.medicalMeasureType.type)}
           </p>

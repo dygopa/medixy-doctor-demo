@@ -177,7 +177,7 @@ export default function Records() {
 
   const setValuesFromLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "noodus.storage.medical-record-create"
+      "prosit.storage.medical-record-create"
     );
 
     if (!valuesStorage) return;

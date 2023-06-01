@@ -11,11 +11,13 @@ import { FiUser } from "react-icons/fi";
 interface IPatientProps {
   showCompleteDetails: boolean;
   setShowCompleteDetails: Dispatch<SetStateAction<boolean>>;
+  windowWidth: number;
 }
 
 export default function Patient({
   showCompleteDetails,
   setShowCompleteDetails,
+  windowWidth,
 }: IPatientProps) {
   const { state } = useContext<IMedicalRecordCreateContext>(
     MedicalRecordCreateContext
@@ -25,9 +27,13 @@ export default function Patient({
   return (
     <div
       className={clsx([
-        "relative h-auto transition-all  z-50",
+        "relative zoom-in h-auto transition-all  z-50",
         "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
-        showCompleteDetails ? "lg:w-[93%]" : "xl:w-[385px] w-full",
+        windowWidth <= 1866
+          ? "w-full"
+          : showCompleteDetails
+          ? "w-full"
+          : "xl:w-[385px] w-full",
       ])}
     >
       <div className="p-4 box h-full">
@@ -56,11 +62,13 @@ export default function Patient({
             </div>
           </div>
 
-          <div className="lg:pl-8 lg:flex w-full lg:justify-between xl:mt-0 mt-4">
+          <div className="lg:pl-8 w-full flex justify-between xl:mt-0 mt-4">
             <div
               className={clsx([
-                showCompleteDetails
-                  ? "grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8 w-full"
+                windowWidth <= 1866
+                  ? "grid xl:grid-cols-3 md:grid-cols-3 grid-cols-1 gap-8"
+                  : showCompleteDetails
+                  ? "grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8"
                   : "grid xl:grid-cols-1 md:grid-cols-3 grid-cols-1 gap-8",
               ])}
             >
@@ -89,7 +97,11 @@ export default function Patient({
 
               <div
                 className={clsx([
-                  showCompleteDetails ? "block" : "xl:hidden block",
+                  windowWidth <= 1866
+                    ? "block"
+                    : showCompleteDetails
+                    ? "block"
+                    : "xl:hidden block",
                 ])}
               >
                 <p className="font-normal text-slate-500 mb-1">
@@ -103,7 +115,11 @@ export default function Patient({
 
               <div
                 className={clsx([
-                  showCompleteDetails ? "block" : "xl:hidden block",
+                  windowWidth <= 1866
+                    ? "block"
+                    : showCompleteDetails
+                    ? "block"
+                    : "xl:hidden block",
                 ])}
               >
                 <p className="font-normal text-slate-500 mb-1">
@@ -119,7 +135,11 @@ export default function Patient({
 
               <div
                 className={clsx([
-                  showCompleteDetails ? "block" : "xl:hidden block",
+                  windowWidth <= 1866
+                    ? "block"
+                    : showCompleteDetails
+                    ? "block"
+                    : "xl:hidden block",
                 ])}
               >
                 <p className="font-normal text-slate-500 mb-1">CURP</p>
@@ -133,7 +153,11 @@ export default function Patient({
 
               <div
                 className={clsx([
-                  showCompleteDetails ? "block" : "xl:hidden block",
+                  windowWidth <= 1866
+                    ? "block"
+                    : showCompleteDetails
+                    ? "block"
+                    : "xl:hidden block",
                 ])}
               >
                 <p className="font-normal text-slate-500 mb-1">Teléfono</p>
@@ -147,7 +171,11 @@ export default function Patient({
 
               <div
                 className={clsx([
-                  showCompleteDetails ? "block" : "xl:hidden block",
+                  windowWidth <= 1866
+                    ? "block"
+                    : showCompleteDetails
+                    ? "block"
+                    : "xl:hidden block",
                 ])}
               >
                 <p className="font-normal text-slate-500 mb-1">
@@ -162,7 +190,12 @@ export default function Patient({
               </div>
             </div>
 
-            <div className="h-full justify-center align-middle items-center -mr-6 xl:flex hidden">
+            <div
+              className={clsx([
+                "h-full justify-center align-middle items-center -mr-6 hidden",
+                windowWidth <= 1866 ? "hidden" : "xl:flex",
+              ])}
+            >
               <button
                 type="button"
                 className="rounded-full shadow-md bg-white"

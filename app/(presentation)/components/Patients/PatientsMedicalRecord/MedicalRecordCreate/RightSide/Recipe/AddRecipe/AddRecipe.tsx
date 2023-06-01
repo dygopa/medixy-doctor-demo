@@ -39,7 +39,7 @@ export default function AddRecipe({
     unit: "1",
     frequencyMeasure: "hours",
     frequencyValue: "",
-    duringMeasure: "hours",
+    duringMeasure: "days",
     duringValue: "",
     indication: "",
   });

@@ -20,12 +20,15 @@ export default function LeftSide({ windowWidth }: ILeftSideProps) {
       <div
         className={clsx([
           "xl:h-[18vh] h-auto mb-8",
-          showCompleteDetails ? "xl:w-[1200px]" : "w-full",
+          showCompleteDetails && windowWidth >= 1866
+            ? "xl:w-[1200px]"
+            : "w-full",
         ])}
       >
         <Patient
           showCompleteDetails={showCompleteDetails}
           setShowCompleteDetails={setShowCompleteDetails}
+          windowWidth={windowWidth}
         />
       </div>
 

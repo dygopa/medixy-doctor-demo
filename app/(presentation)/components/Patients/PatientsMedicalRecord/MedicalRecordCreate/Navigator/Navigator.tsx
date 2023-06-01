@@ -141,7 +141,7 @@ export default function Navigator() {
 
   const setValuesFromLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "noodus.storage.medical-record-create"
+      "prosit.storage.medical-record-create"
     );
 
     if (!valuesStorage) window.location.reload();
@@ -153,7 +153,7 @@ export default function Navigator() {
 
   const saveValuesInLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "noodus.storage.medical-record-create"
+      "prosit.storage.medical-record-create"
     );
 
     if (!valuesStorage) window.location.reload();
@@ -166,7 +166,7 @@ export default function Navigator() {
     valuesJSON.isValid = isValid;
 
     localStorage.setItem(
-      "noodus.storage.medical-record-create",
+      "prosit.storage.medical-record-create",
       JSON.stringify(valuesJSON)
     );
   };
