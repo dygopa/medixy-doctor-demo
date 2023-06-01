@@ -41,8 +41,6 @@ export default function PhysicalExploration({
   setValues,
   width,
 }: IPhysicalExplorationProps) {
-  console.log(width);
-
   const [showBody, setShowBody] = useState(false);
 
   return (

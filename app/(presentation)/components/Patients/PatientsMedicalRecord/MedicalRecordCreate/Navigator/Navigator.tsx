@@ -10,6 +10,7 @@ import {
   IMedicalRecordCreateContext,
   MedicalRecordCreateContext,
 } from "../context/MedicalRecordCreateContext";
+import UserMainPopup from "./UserMainPopup/UserMainPopup";
 import {
   handleConsultationDateErrors,
   handleConsultationReasonErrors,
@@ -31,6 +32,7 @@ export default function Navigator() {
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
 
   const validateCurrentConsultation = (values: any) => {
@@ -220,7 +222,7 @@ export default function Navigator() {
 
   return (
     <>
-      <div className="md:grid md:grid-cols-2  w-full lg:flex justify-between items-center sticky top-[67px] z-[99]  bg-slate-100 pt-2">
+      <div className="w-full lg:flex justify-between items-center sticky top-[67px] z-[97]  bg-slate-100 pt-2">
         <div className="lg:w-[50%]">
           <h2 className="lg:mr-5 text-2xl font-bold truncate">
             Nueva consulta
@@ -229,7 +231,16 @@ export default function Navigator() {
             Información detallada del expediente del paciente
           </p>
         </div>
-        <div className="flex justify-end items-center">
+        <div className="flex items-center">
+          <Button
+            variant="outline-primary"
+            disabled={isLoading}
+            onClick={() => setIsOpen(true)}
+            className="mr-4  px-5"
+          >
+            <i className="fa-solid fa-user text-xl" />
+          </Button>
+
           <Button
             variant="primary"
             disabled={isLoading}
@@ -245,6 +256,8 @@ export default function Navigator() {
         show={showAlertError}
         description="Debes completar la información requerida para generar un resumen de la consulta"
       />
+
+      <UserMainPopup isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   );
 }
