@@ -1,6 +1,4 @@
-import { get12HoursFormat } from "(presentation)/(helper)/dates/datesHelper";
 import useMedicalRecord from "(presentation)/(hooks)/useMedicalRecord";
-import Table from "(presentation)/components/core/BaseComponents/Table";
 import clsx from "clsx";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import { useState } from "react";
@@ -17,50 +15,30 @@ export default function MedicalConsulty({
   const [isHover, setIsHover] = useState(false);
 
   return (
-    <Table.Tr
+    <div
       key={medicalConsulty.id}
-      className="intro-x cursor-pointer bg-white hover:bg-primary shadow-md"
+      className="intro-x cursor-pointer lg:flex md:flex sm:flex justify-between rounded-md items-center p-4 bg-white hover:bg-primary shadow-[20px_3px_20px_#0000000b] "
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
       onClick={() => setIsOpen(true)}
     >
-      <Table.Td className="first:rounded-l-md last:rounded-r-md border-b-0 dark:bg-darkmode-600 py-5">
-        <div>
-          <div className="mb-2">
-            <p
-              className={clsx([
-                " lg:text-lg",
-                isHover ? "text-white" : "text-slate-900",
-              ])}
-            >
-              {new Date(medicalConsulty.consultationDate).getDate()}/
-              {new Date(medicalConsulty.consultationDate).getMonth()}/
-              {new Date(medicalConsulty.consultationDate).getFullYear()}
-            </p>
-          </div>
-
-          {/* <div>
-            <p
-              className={clsx([
-                "lg:text-base",
-                isHover ? "text-white" : "text-slate-500",
-              ])}
-            >
-              {get12HoursFormat(new Date(medicalConsulty.consultationDate))}
-            </p>
-            </div> */}
+      <div className="flex items-center overflow-y-hidden">
+        <div className="mr-10">
+          <p
+            className={clsx([
+              " lg:text-md",
+              isHover ? "text-white" : "text-slate-900",
+            ])}
+          >
+            {new Date(medicalConsulty.consultationDate).getDate()}/
+            {new Date(medicalConsulty.consultationDate).getMonth()}/
+            {new Date(medicalConsulty.consultationDate).getFullYear()}
+          </p>
         </div>
-      </Table.Td>
 
-      <Table.Td className="first:rounded-l-md last:rounded-r-md  border-b-0 dark:bg-darkmode-600 py-5">
         <div>
           <div>
-            <p
-              className={clsx([
-                "lg:text-base",
-                isHover ? "text-white" : "text-slate-500",
-              ])}
-            >
+            <p className={clsx([isHover ? "text-white" : "text-slate-500"])}>
               Diagnóstico
             </p>
           </div>
@@ -68,7 +46,7 @@ export default function MedicalConsulty({
           <div>
             <p
               className={clsx([
-                "lg:text-lg",
+                "lg:text-md",
                 isHover ? "text-white" : "text-slate-900",
               ])}
               style={{
@@ -84,17 +62,12 @@ export default function MedicalConsulty({
             </p>
           </div>
         </div>
-      </Table.Td>
+      </div>
 
-      <Table.Td className="first:rounded-l-md last:rounded-r-md  border-b-0 dark:bg-darkmode-600 py-5">
+      <div className="lg:mt-0 md:mt-0 sm:mt-0 mt-4">
         <div>
           <div>
-            <p
-              className={clsx([
-                "lg:text-base",
-                isHover ? "text-white" : "text-slate-500",
-              ])}
-            >
+            <p className={clsx([isHover ? "text-white" : "text-slate-500"])}>
               Servicio de atención
             </p>
           </div>
@@ -102,7 +75,7 @@ export default function MedicalConsulty({
           <div>
             <p
               className={clsx([
-                "lg:text-lg",
+                "lg:text-md",
                 isHover ? "text-white" : "text-slate-900",
               ])}
             >
@@ -110,7 +83,7 @@ export default function MedicalConsulty({
             </p>
           </div>
         </div>
-      </Table.Td>
-    </Table.Tr>
+      </div>
+    </div>
   );
 }

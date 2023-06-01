@@ -21,7 +21,7 @@ export default function Orders() {
 
   const saveOrdersInLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "noodus.storage.medical-record-create"
+      "prosit.storage.medical-record-create"
     );
 
     if (!valuesStorage) window.location.reload();
@@ -34,14 +34,14 @@ export default function Orders() {
     valuesJSON.orders = ordersStorage;
 
     localStorage.setItem(
-      "noodus.storage.medical-record-create",
+      "prosit.storage.medical-record-create",
       JSON.stringify(valuesJSON)
     );
   };
 
   const setOrdersFromLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "noodus.storage.medical-record-create"
+      "prosit.storage.medical-record-create"
     );
 
     if (!valuesStorage) window.location.reload();
@@ -73,7 +73,7 @@ export default function Orders() {
   return (
     <div
       className={clsx([
-        "h-auto relative z-40",
+        "h-auto relative z-40 w-full",
         "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
       ])}
     >

@@ -108,8 +108,10 @@ export default function MedicalRecordCreateIndex({
 
           <div
             className={clsx([
-              "xl:col-span-9 col-span-12",
-              screenSize.width <= 1866 ? "xl:col-span-12" : "xl:col-span-9",
+              "col-span-12",
+              screenSize.width <= 1866
+                ? "xl:col-span-12 xl:mt-14"
+                : "xl:col-span-9",
             ])}
           >
             <RightSide width={screenSize.width} />

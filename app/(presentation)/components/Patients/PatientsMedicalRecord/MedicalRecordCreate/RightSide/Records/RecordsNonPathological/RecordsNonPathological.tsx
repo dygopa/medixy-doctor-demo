@@ -134,7 +134,7 @@ export default function RecordsNonPathological({
                   value={values.smokingNonPathological.value}
                   name="smokingNonPathological"
                   type="text"
-                  placeholder="Desde cuando"
+                  placeholder="Desde cuando y con que frecuencia"
                   disabled={!values.smokingNonPathological.isChecked}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setValues({
@@ -189,7 +189,7 @@ export default function RecordsNonPathological({
                   value={values.alcoholicBeveragesNonPathological.value}
                   name="alcoholicBeveragesNonPathological"
                   type="text"
-                  placeholder="Desde cuando"
+                  placeholder="Desde cuando y con que frecuencia"
                   disabled={!values.alcoholicBeveragesNonPathological.isChecked}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setValues({
@@ -243,7 +243,7 @@ export default function RecordsNonPathological({
                   value={values.drugsNonPathological.value}
                   name="drugsNonPathological"
                   type="text"
-                  placeholder="Desde cuando, qué tipo"
+                  placeholder="Desde cuando, qué tipo y con que frecuencia"
                   disabled={!values.drugsNonPathological.isChecked}
                   onChange={(e: ChangeEvent<HTMLInputElement>) =>
                     setValues({

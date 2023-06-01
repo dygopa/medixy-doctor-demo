@@ -1,12 +1,12 @@
 export default function TreatmentsTable() {
   return (
-    <div className="overflow-auto w-full">
-      <div className="w-full cursor-pointer flex items-center justify-between gap-3 rounded-md p-[2%_0%] overflow-hidden">
+    <div className="overflow-x-auto w-full">
+      <div className="cursor-pointer flex items-center justify-between gap-3 rounded-md p-[2%_0%] lg:w-full md:w-full w-[500px]">
         <div className="flex flex-col justify-start items-start ">
           <p className="font-normal text-[0.9rem] text-slate-500 mb-3 h-[15px]">
             Estado
           </p>
-          <p className="font-normal py-1 px-3 w-[85px] text-center text-md rounded  bg-green-400 text-white">
+          <p className="font-normal py-1 px-2 w-[75px] text-center text-md rounded  bg-green-400 text-white">
             Activo
           </p>
         </div>
@@ -15,30 +15,30 @@ export default function TreatmentsTable() {
           <p className="font-normal text-[0.9rem] text-slate-500 mb-3 h-[15px]">
             Tratamiento
           </p>
-          <p className="text-slate-900 lg:text-lg">Acetaminofén en tabletas</p>
+          <p className="text-slate-900 text-md">Acetaminofén en tabletas</p>
         </div>
 
         <div className="flex flex-col justify-start items-start">
           <p className="font-normal text-[0.9rem] text-slate-500 mb-3 h-[15px]">
             Cantidad
           </p>
-          <p className="text-slate-900 lg:text-lg">300 mg</p>
+          <p className="text-slate-900 text-md">300 mg</p>
         </div>
 
         <div className="flex flex-col justify-start items-start">
           <p className="font-normal text-[0.9rem] text-slate-500 mb-3 h-[15px]">
             Durante
           </p>
-          <p className="text-slate-900 lg:text-lg">2 sem.</p>
+          <p className="text-slate-900 text-md">2 sem.</p>
         </div>
       </div>
 
-      <div className="w-full cursor-pointer flex items-center justify-between gap-3 rounded-md p-[2%_0%] overflow-hidden">
-        <div className="flex flex-col justify-start items-start">
+      <div className="cursor-pointer flex items-center justify-between gap-3 rounded-md p-[2%_0%] lg:w-full md:w-full w-[500px]">
+        <div className="flex flex-col justify-start items-start ">
           <p className="font-normal text-[0.9rem] text-slate-500 mb-3 h-[15px]">
             Estado
           </p>
-          <p className="font-normal py-1 px-3 w-[85px] text-center text-md rounded  bg-green-400 text-white">
+          <p className="font-normal py-1 px-2 w-[75px] text-center text-md rounded  bg-green-400 text-white">
             Activo
           </p>
         </div>
@@ -47,31 +47,31 @@ export default function TreatmentsTable() {
           <p className="font-normal text-[0.9rem] text-slate-500 mb-3 h-[15px]">
             Tratamiento
           </p>
-          <p className="text-slate-900 lg:text-lg">Naproxeno sódico</p>
+          <p className="text-slate-900 text-md">Acetaminofén en tabletas</p>
         </div>
 
         <div className="flex flex-col justify-start items-start">
           <p className="font-normal text-[0.9rem] text-slate-500 mb-3 h-[15px]">
             Cantidad
           </p>
-          <p className="text-slate-900 lg:text-lg">550 mg</p>
+          <p className="text-slate-900 text-md">300 mg</p>
         </div>
 
         <div className="flex flex-col justify-start items-start">
           <p className="font-normal text-[0.9rem] text-slate-500 mb-3 h-[15px]">
             Durante
           </p>
-          <p className="text-slate-900 lg:text-lg">2 sem.</p>
+          <p className="text-slate-900 text-md">2 sem.</p>
         </div>
       </div>
 
-      <div className="w-full cursor-pointer flex items-center justify-between gap-3 rounded-md p-[2%_0%] overflow-hidden">
-        <div className="flex flex-col justify-start items-start">
+      <div className="cursor-pointer flex items-center justify-between gap-3 rounded-md p-[2%_0%] lg:w-full md:w-full w-[500px]">
+        <div className="flex flex-col justify-start items-start ">
           <p className="font-normal text-[0.9rem] text-slate-500 mb-3 h-[15px]">
             Estado
           </p>
-          <p className="font-normal py-1 px-3 w-[85px] text-center text-md rounded bg-gray-400 text-slate-900">
-            Inactivo
+          <p className="font-normal py-1 px-2 w-[75px] text-center text-md rounded  bg-green-400 text-white">
+            Activo
           </p>
         </div>
 
@@ -79,21 +79,21 @@ export default function TreatmentsTable() {
           <p className="font-normal text-[0.9rem] text-slate-500 mb-3 h-[15px]">
             Tratamiento
           </p>
-          <p className="text-slate-900 lg:text-lg">Amoxicilina en suspensión</p>
+          <p className="text-slate-900 text-md">Acetaminofén en tabletas</p>
         </div>
 
         <div className="flex flex-col justify-start items-start">
           <p className="font-normal text-[0.9rem] text-slate-500 mb-3 h-[15px]">
             Cantidad
           </p>
-          <p className="text-slate-900 lg:text-lg">250 ml</p>
+          <p className="text-slate-900 text-md">300 mg</p>
         </div>
 
         <div className="flex flex-col justify-start items-start">
           <p className="font-normal text-[0.9rem] text-slate-500 mb-3 h-[15px]">
             Durante
           </p>
-          <p className="text-slate-900 lg:text-lg">3 días</p>
+          <p className="text-slate-900 text-md">2 sem.</p>
         </div>
       </div>
     </div>

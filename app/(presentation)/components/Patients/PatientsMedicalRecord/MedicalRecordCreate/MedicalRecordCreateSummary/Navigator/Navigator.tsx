@@ -46,7 +46,7 @@ export default function Navigator() {
 
   const getValuesFromLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "noodus.storage.medical-record-create"
+      "prosit.storage.medical-record-create"
     );
 
     if (!valuesStorage) {
@@ -339,7 +339,7 @@ export default function Navigator() {
   };
 
   const onCreateMedicalConsultySucessful = () => {
-    localStorage.removeItem("noodus.storage.medical-record-create");
+    localStorage.removeItem("prosit.storage.medical-record-create");
 
     setTimeout(() => {
       router.push(

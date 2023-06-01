@@ -9,17 +9,17 @@ export default function RecordList() {
 
       <div>
         <div className="mb-1">
-          <p className="text-slate-900 text-lg font-medium">Asma</p>
+          <p className="text-slate-900 text-md font-medium">Asma</p>
         </div>
 
         <div className="mb-1">
-          <p className="text-slate-900 text-lg font-medium">
+          <p className="text-slate-900 text-md font-medium">
             Problemas gastrointestinales
           </p>
         </div>
 
         <div className="mb-1">
-          <p className="text-slate-900 text-lg font-medium">Hepatitis</p>
+          <p className="text-slate-900 text-md font-medium">Hepatitis</p>
         </div>
       </div>
 
@@ -31,11 +31,11 @@ export default function RecordList() {
 
       <div>
         <div className="mb-1">
-          <p className="text-slate-900 text-lg font-medium">Cáncer - Abuelo</p>
+          <p className="text-slate-900 text-md font-medium">Cáncer - Abuelo</p>
         </div>
 
         <div className="mb-1">
-          <p className="text-slate-900 text-lg font-medium">Diábetes - Madre</p>
+          <p className="text-slate-900 text-md font-medium">Diábetes - Madre</p>
         </div>
       </div>
     </div>

@@ -15,7 +15,7 @@ export default function AboutPatient() {
   return (
     <div
       className={clsx([
-        "relative zoom-in lg:h-[40vh] h-auto",
+        "relative zoom-in xl:h-[300px] h-auto",
         "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
       ])}
     >
@@ -45,7 +45,7 @@ export default function AboutPatient() {
             </div>
           </div>
 
-          <div className="lg:pl-8 w-full">
+          <div className="lg:pl-8 w-full overflow-y-hidden lg:mt-0 mt-8">
             {/* <div className="w-full flex justify-end">
               <button
                 type="button"
@@ -57,29 +57,31 @@ export default function AboutPatient() {
 
             <div className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
               <div>
-                <p className="font-normal text-slate-500 mb-1">Nombre(s)</p>
+                <p className="font-normal text-slate-500 mb-1 text-[13px]">
+                  Nombre(s)
+                </p>
 
-                <span className="font-medium text-[16px]">
+                <span className="font-medium text-[14px]">
                   {patient?.name} {patient?.lastName}
                 </span>
               </div>
 
               <div>
-                <p className="font-normal text-slate-500 mb-1">
+                <p className="font-normal text-slate-500 mb-1 text-[13px]">
                   Primer apellido
                 </p>
 
-                <span className="font-medium text-[16px]">
+                <span className="font-medium text-[14px]">
                   {patient?.lastName}
                 </span>
               </div>
 
               <div>
-                <p className="font-normal text-slate-500 mb-1">
+                <p className="font-normal text-slate-500 mb-1 text-[13px]">
                   Segundo apellido
                 </p>
 
-                <span className="font-medium text-[16px]">
+                <span className="font-medium text-[14px]">
                   {patient && patient.motherLastName?.length > 0
                     ? patient?.motherLastName
                     : "No especificado"}
@@ -87,9 +89,11 @@ export default function AboutPatient() {
               </div>
 
               <div>
-                <p className="font-normal text-slate-500 mb-1">Edad</p>
+                <p className="font-normal text-slate-500 mb-1 text-[13px]">
+                  Edad
+                </p>
 
-                <span className="font-medium text-[16px]">
+                <span className="font-medium text-[14px]">
                   {patient?.age
                     ? patient.age > 1
                       ? `${patient.age} ${
@@ -103,9 +107,11 @@ export default function AboutPatient() {
               </div>
 
               <div>
-                <p className="font-normal text-slate-500 mb-1">CURP</p>
+                <p className="font-normal text-slate-500 mb-1 text-[13px]">
+                  CURP
+                </p>
 
-                <span className="font-medium text-[16px]">
+                <span className="font-medium text-[14px]">
                   {patient && patient.curp?.length > 0
                     ? patient?.curp
                     : "No especificado"}
@@ -113,19 +119,21 @@ export default function AboutPatient() {
               </div>
 
               <div>
-                <p className="font-normal text-slate-500 mb-1">Teléfono</p>
+                <p className="font-normal text-slate-500 mb-1 text-[13px]">
+                  Teléfono
+                </p>
 
-                <span className="font-medium text-[16px]">
+                <span className="font-medium text-[14px]">
                   {patient?.phoneNumber}
                 </span>
               </div>
 
               <div>
-                <p className="font-normal text-slate-500 mb-1">
+                <p className="font-normal text-slate-500 mb-1 text-[13px]">
                   Correo electrónico
                 </p>
 
-                <span className="font-medium text-[16px]">
+                <span className="font-medium text-[14px]">
                   {patient && patient.email?.length > 0
                     ? patient?.email
                     : "No especificado"}

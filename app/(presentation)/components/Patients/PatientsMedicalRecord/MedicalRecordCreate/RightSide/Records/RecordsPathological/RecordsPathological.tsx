@@ -130,7 +130,7 @@ export default function RecordsPathological({
                 </div>
               </div>
 
-              <div className="ml-[36px] w-full">
+              <div className="ml-[36px] max-w-full overflow-x-auto">
                 {values.allergiesPathological.values.length > 0 &&
                   values.allergiesPathological.values.map(
                     (value: string, i: number) => (
@@ -301,7 +301,7 @@ export default function RecordsPathological({
               </div>
             </div>
 
-            <div className="ml-[36px] w-full">
+            <div className="ml-[36px] max-w-full overflow-x-auto">
               {values.takeMedication.values.length > 0 &&
                 values.takeMedication.values.map((value: string, i: number) => (
                   <button

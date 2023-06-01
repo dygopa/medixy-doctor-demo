@@ -13,7 +13,7 @@ export default function Order({ text }: IOrderProps) {
         </div>
 
         <div className="lg:w-auto w-[250px]">
-          <p className="text-slate-900 lg:text-lg">{text}</p>
+          <p className="text-slate-900 lg:text-md">{text}</p>
         </div>
       </div>
 

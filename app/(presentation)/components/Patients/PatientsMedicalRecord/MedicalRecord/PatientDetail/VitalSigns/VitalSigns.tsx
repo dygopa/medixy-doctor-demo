@@ -5,7 +5,7 @@ export default function VitalSigns() {
   return (
     <div
       className={clsx([
-        "relative zoom-in lg:h-[40vh] md:h-[25vh] h-auto",
+        "relative zoom-in lg:h-[300px] md:h-[275px] h-auto",
         "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
       ])}
     >
