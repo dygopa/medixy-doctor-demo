@@ -18,7 +18,6 @@ export class StepByStepRepository implements IStepByStepRepository {
             const stepAlreadyExist = await supabase.from("EventosUsuarios").select().eq("usuarioId", parseInt(id)).eq("evento", event)
 
             if(stepAlreadyExist.data && stepAlreadyExist.data?.length > 0 ){
-                console.log("Already exists")
                 return;
             }
             

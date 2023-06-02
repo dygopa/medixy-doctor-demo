@@ -12,17 +12,15 @@ export default class UserUseCase {
 
       if (response instanceof UserFailure) throw response;
 
-      console.log(response);
-
       return response;
     } catch (error) {
       throw error;
     }
   }
 
-  async updateAvatar(obj:any): Promise<string> {
+  async updateAvatar(obj:any, doctorId: string): Promise<string> {
     try {
-      const response = await this._repository.updateAvatar(obj);
+      const response = await this._repository.updateAvatar(obj, doctorId);
 
       if (response instanceof UserFailure) throw response;
 

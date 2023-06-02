@@ -33,39 +33,6 @@ export const LocalitiesReducer = (state: any, action: any) => {
           error: action.payload.error,
         },
       };
-    case 'GET_COUNTRY_STATES_LOADING':
-      return {
-        ...state,
-        getCountryStates: {
-          ...state.getCountryStates,
-          data: null,
-          loading: true,
-          successful: false,
-          error: null,
-        },
-      };
-    case 'GET_COUNTRY_STATES_SUCCESSFUL':
-      return {
-        ...state,
-        getCountryStates: {
-          ...state.getCountryStates,
-          data: action.payload.data,
-          loading: false,
-          successful: true,
-          error: null,
-        },
-      };
-    case 'GET_COUNTRY_STATES_ERROR':
-      return {
-        ...state,
-        getCountryStates: {
-          ...state.getCountryStates,
-          data: null,
-          loading: false,
-          successful: false,
-          error: action.payload.error,
-        },
-      };
     case 'GET_USER_LOCALITIES_LOADING':
       return {
         ...state,

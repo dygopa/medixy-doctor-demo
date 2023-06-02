@@ -28,7 +28,7 @@ function Calendar({
       }}
       buttonText={{
         today: "Hoy",
-      }}
+      }} 
       initialView="timeGridWeek"
       views={{ 
         timeGridWeek: {

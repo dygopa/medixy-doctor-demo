@@ -111,7 +111,7 @@ export default function Formulary({ userId }: { userId: string }) {
             {loadingDelete ? "Eliminando..." : "Eliminar"}
           </Button>
           <Button
-            disabled={loadingUpdate}
+            disabled={loadingUpdate || formData?.name === "" || formData?.service_category_id === ""}
             onClick={() => {
               updateService(formData)(dispatch);
             }}

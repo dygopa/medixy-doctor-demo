@@ -198,39 +198,72 @@ export const UserReducer = (state: any, action: any) => {
           error: action.payload.error,
         },
       };
-    case 'GET_COUNTRIES_LOADING' :
+      case 'GET_COUNTRIES_LOADING' :
+        return {
+          ...state,
+          getCountriesISO: {
+            ...state.getCountriesISO,
+            data: [],
+            loading: true,
+            successful: false,
+            error: null,
+          },
+        };
+      case 'GET_COUNTRIES_SUCCESSFUL' :
+        return {
+          ...state,
+          getCountriesISO: {
+            ...state.getCountriesISO,
+            data: action.payload.data,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+        };
+      case 'GET_COUNTRIES_ERROR' :
+        return {
+          ...state,
+          getCountriesISO: {
+            ...state.getCountriesISO,
+            data: [],
+            loading: false,
+            successful: false,
+            error: action.payload.error,
+          },
+        };
+        case 'UPDATE_AVATAR_LOADING':
       return {
         ...state,
-        getCountriesISO: {
-          ...state.getCountriesISO,
-          data: [],
+        updateAvatar: {
+          ...state.updateAvatar,
+          data: null,
           loading: true,
           successful: false,
           error: null,
         },
       };
-    case 'GET_COUNTRIES_SUCCESSFUL' :
+    case 'UPDATE_AVATAR_SUCCESSFUL':
       return {
         ...state,
-        getCountriesISO: {
-          ...state.getCountriesISO,
+        updateAvatar: {
+          ...state.updateAvatar,
           data: action.payload.data,
           loading: false,
           successful: true,
           error: null,
         },
       };
-    case 'GET_COUNTRIES_ERROR' :
+    case 'UPDATE_AVATAR_ERROR':
       return {
         ...state,
-        getCountriesISO: {
-          ...state.getCountriesISO,
-          data: [],
+        updateAvatar: {
+          ...state.updateAvatar,
+          data: null,
           loading: false,
           successful: false,
           error: action.payload.error,
         },
-      }
+      };
     default:
       return state;
   }

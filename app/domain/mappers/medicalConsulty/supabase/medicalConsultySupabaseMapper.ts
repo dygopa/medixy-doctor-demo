@@ -51,8 +51,6 @@ export function fromMedicalConsultySupabaseDocumentData(medicalConsulty: IMedica
     observaciones: medicalConsulty.observations,
   } as any;
 
-  console.log(documentData)
-
   return documentData;
 }
 

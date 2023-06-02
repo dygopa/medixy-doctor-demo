@@ -10,6 +10,9 @@ import {
   UPDATE_MEDICAL_SPECIALITY_ENDPOINT, 
   UPDATE_USER_ENDPOINT 
 } from "infrastructure/config/api/dictionary";
+import { supabase } from "infrastructure/config/supabase/supabase-client";
+import { getFileFromBase64 } from "infrastructure/utils/files/filesUtils";
+import { nanoid } from "nanoid";
 import nookies from 'nookies';
 
 export default interface IUserRepository {
@@ -42,9 +45,12 @@ export class UserRepository implements IUserRepository {
       let URL = UPDATE_USER_ENDPOINT(user["id"]) as RequestInfo
 
       const response = await fetch(URL, requestOptions)
-
-      console.log(response)
+      let data = await response.json()
       
+      if (data?.detail?.meta === undefined) {
+        console.log(data?.detail)
+      }
+
       return response.statusText;
     } catch (error) {
       const exception = error as any;
@@ -52,10 +58,31 @@ export class UserRepository implements IUserRepository {
     }
   }
   
-  async updateAvatar(obj:any): Promise<string | UserFailure> {
+  async updateAvatar(obj:any, doctorId: string): Promise<string | UserFailure> {
     try {
+      const id = nanoid(11);
+      const fileName = `${id}.${obj["type"]}`;
 
-      var myHeaders = new Headers();
+      const file = getFileFromBase64(obj["data"], fileName);   
+
+      const { data, error } = await supabase.storage
+        .from("doctors")
+        .upload(`avatars/${fileName}`, file, {
+            cacheControl: '3600',
+            upsert: false
+        });
+
+      if (error) return new UserFailure(userFailuresEnum.serverError)
+
+      const res = supabase
+        .storage
+        .from("doctors")
+        .getPublicUrl(data.path);
+
+      await supabase.from("Doctores").update({ avatar: res.data.publicUrl }).match({ id: doctorId });
+
+      return res.data.publicUrl;
+      /* var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
 
       var raw = JSON.stringify({
@@ -74,7 +101,7 @@ export class UserRepository implements IUserRepository {
 
       const response = await fetch(URL, requestOptions)
       
-      return response?.text() ?? "";
+      return response?.text() ?? ""; */
     } catch (error) {
       const exception = error as any;
       return new UserFailure(userFailuresEnum.serverError);

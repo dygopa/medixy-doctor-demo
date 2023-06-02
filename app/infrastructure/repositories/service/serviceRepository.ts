@@ -9,6 +9,9 @@ import {
   DELETE_USER_SERVICE_ENDPOINT
 } from "infrastructure/config/api/dictionary";
 import nookies from 'nookies';
+import { supabase } from 'infrastructure/config/supabase/supabase-client';
+import { nanoid } from 'nanoid';
+import { getFileFromBase64 } from 'infrastructure/utils/files/filesUtils';
 
 export default interface IServiceRepository {
   getCategories(): Promise<Array<any> | ServiceFailure>;
@@ -16,6 +19,7 @@ export default interface IServiceRepository {
   addServiceToLocality(obj:any): Promise<any | ServiceFailure>;
   createUserService(obj:any): Promise<string | ServiceFailure>;
   updateService(obj:any): Promise<number | ServiceFailure>;
+  addMediaService(obj:any, serviceId: string): Promise<string | ServiceFailure>;
 }
 
 export class ServicesRepository implements IServiceRepository {
@@ -114,6 +118,67 @@ export class ServicesRepository implements IServiceRepository {
       console.log("CREATE_USER_SERVICE_ENDPOINT", data["data"])
 
       return "SUCCESS";
+    } catch (error) {
+      console.log("Error", error)
+      const exception = error as any;
+      return new ServiceFailure(serviceFailuresEnum.serverError);
+    }
+  }
+
+  async addMediaService(obj:any, serviceId: string): Promise<string | ServiceFailure> {
+    try {
+      const id = nanoid(11);
+      const fileName = `${id}.${obj["type"]}`;
+
+      const file = getFileFromBase64(obj["data"], fileName);   
+
+      const { data, error } = await supabase.storage
+        .from("services")
+        .upload(`media/${fileName}`, file, {
+            cacheControl: '3600',
+            upsert: false
+        });
+
+      if (error) return new ServiceFailure(serviceFailuresEnum.serverError)
+
+      const res = supabase
+        .storage
+        .from("services")
+        .getPublicUrl(data.path);
+
+      await supabase.from("Servicios").update({ fotoUrl: res.data.publicUrl }).match({ id: serviceId });
+
+      return res.data.publicUrl;
+      /* let cookies = nookies.get(undefined, 'access_token');
+
+      var myHeaders = new Headers();
+
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
+
+      var raw = JSON.stringify({
+        data: obj["data"] ?? "",
+        type: obj["type"] ?? ""
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      } as RequestInit;
+
+      let URL = ADD_MEDIA_LOCALITY_ENDPOINT(obj["id"]) as RequestInfo
+
+      const response = await fetch(URL, requestOptions)
+      console.log(response)
+      let data = await response.json()
+
+      console.log(data)
+
+      console.log("ADD_MEDIA_LOCALITY_ENDPOINT", data["data"])
+
+      return data["data"] ?? ""; */
     } catch (error) {
       console.log("Error", error)
       const exception = error as any;

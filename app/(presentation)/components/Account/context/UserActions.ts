@@ -1,8 +1,8 @@
 import { ICountriesISO } from "domain/core/entities/countryEntity";
 import { IUser } from "domain/core/entities/userEntity";
-import CountriesUseCase from "domain/useCases/country/countryUseCase";
 import UserUseCase from "domain/useCases/user/userUseCase";
 import { Dispatch } from "react";
+import CountriesUseCase from "domain/useCases/country/countryUseCase";
 
 export interface IUserActions {
   updateUserData: Function;
@@ -20,8 +20,6 @@ const updateUserData = (obj:any) => async (dispatch: Dispatch<any>) => {
     dispatch({ type: "UPDATE_USER_LOADING" });
 
     const res: string = await new UserUseCase().editUser(obj);
-
-    console.log(obj);
 
     dispatch({ type: "UPDATE_USER_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
@@ -94,11 +92,11 @@ const deleteMedicalSpeciality = (obj:any) => async (dispatch: Dispatch<any>) => 
   }
 }
 
-const updateAvatar = (obj:any) => async (dispatch: Dispatch<any>) => {
+const updateAvatar = (obj:any, doctorId: string) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "UPDATE_AVATAR_LOADING" });
     
-    const res: string = await new UserUseCase().updateAvatar(obj);
+    const res: string = await new UserUseCase().updateAvatar(obj, doctorId);
 
     dispatch({ type: "UPDATE_AVATAR_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

@@ -18,8 +18,8 @@ export function userAPIToMap(data: any): IUser {
     address: data?.address ?? "",
     aboutMe: data?.about_me ?? "",
     country: data?.birth_country ?? "",
+    personType: data?.person_type ?? 0,
     role: data?.role ?? "",
     createdOn: data?.creation_date ?? null,
-    //sex: data?.sex ?? "",
   } as IUser;
 }

@@ -11,6 +11,7 @@ export default class AuthUseCase {
       const response = await this._repository.registerUser(obj);
 
       if (response instanceof RegisterFailure) throw response;
+
       return response;
     } catch (error) {
       throw error;

@@ -8,5 +8,6 @@ export const enum registerFailuresEnum {
   serverError = "SERVER_ERROR",
   curpNotFound = "CURP_NOT_FOUND",
   emailAlreadyRegistered = "EMAIL_ALREADY_REGISTERED",
+  badGateway = "BAD_GATEWAY",
   curpAlreadyRegistered = "CURP_ALREADY_REGISTERED",
 }

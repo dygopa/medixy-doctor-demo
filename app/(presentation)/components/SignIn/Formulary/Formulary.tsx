@@ -93,14 +93,25 @@ export default function Formulary() {
           global: "Se ha excedido el limite de intentos de inicio de sesión",
         });
         break;
+      case authFailuresEnum.badGateway:
+        setErrors({
+          ...errors,
+          global:
+            "El servidor ha demorado mucho tiempo en responder, Vuelve a intentarlo más tarde.",
+        });
+        break;
       case authFailuresEnum.serverError:
         setErrors({
           ...errors,
           global: "Algo no ha salido como se esperaba. Vuelve a intentarlo.",
         });
         break;
-
       default:
+        setErrors({
+          ...errors,
+          global:
+            "El servidor ha demorado mucho tiempo en responder, Vuelve a intentarlo más tarde.",
+        });
         break;
     }
   };
@@ -149,11 +160,11 @@ export default function Formulary() {
             icon="AtSign"
             className="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
           />
-        </div>
-        <div className="mt-2">
           {errors.email.length > 0 && (
             <span className="text-red-500">{errors.email}</span>
           )}
+        </div>
+        <div className="mt-2">
           <span className="text-danger"></span>
         </div>
       </div>
@@ -173,6 +184,7 @@ export default function Formulary() {
             className="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
           />
         </div>
+
         <div className="mt-2">
           <span className="text-danger"></span>
           {errors.password.length > 0 && (

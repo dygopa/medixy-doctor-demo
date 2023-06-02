@@ -11,7 +11,7 @@ export interface IUser {
   sex: number;
   websiteUrl: string;
   phone: string;
-  personType: string;
+  personType: number;
   avatar: string;
   address: string;
   aboutMe: string;

@@ -15,7 +15,7 @@ export default function Navigator() {
   const { data: patient } = state.patient;
 
   return (
-    <div className="w-full sticky top-[67px] z-[99]  bg-slate-100 py-2">
+    <div className="w-full">
       <div className="lg:flex items-center justify-between">
         <div>
           <div className="mb-2">

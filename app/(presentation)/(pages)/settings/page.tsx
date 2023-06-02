@@ -1,10 +1,13 @@
 import AppLayout from "(presentation)/(layouts)/AppLayout/AppLayout";
-import ConfigurationIndex from "(presentation)/components/Configuration/ConfigurationIndex";
+import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
+import { OrdersRoutesEnum } from "(presentation)/(routes)/ordersRoutes";
+import AccountIndex from "(presentation)/components/Account/AccountIndex";
+import LocalitiesListIndex from "(presentation)/components/Localities/LocalitiesListIndex";
 
 export default async function LocalitiesPage() {
   return (
     <AppLayout title="Configuración" pathname={"/settings"}>
-      <ConfigurationIndex/>
+      <div></div>
     </AppLayout>
   );
 }

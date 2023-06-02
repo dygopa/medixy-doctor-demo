@@ -12,6 +12,7 @@ import StepByStep from "(presentation)/components/core/StepByStep/StepByStep";
 import PopupProvider from "(presentation)/components/core/BaseComponents/Popup/context/PopupContext";
 import Popup from "(presentation)/components/core/BaseComponents/Popup/PopupIndex";
 import Splash from "(presentation)/components/core/Splash/Splash";
+import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 
 interface INavigation {
   title: string;
@@ -32,6 +33,7 @@ function SideMenu({
   const { data, loading, error, successful } = state.getUserAuthenticated;
 
   const pathname = usePathname();
+  const [sessionExpired, setSessionExpired] = useState(false);
 
   const loadUser = () => {
     getUserAuthenticated()(dispatch);
@@ -67,9 +69,9 @@ function SideMenu({
     <div className="py-5 md:py-0 -mx-3 px-3 sm:-mx-8 sm:px-8 bg-primary dark:bg-transparent">
       <PopupProvider>
         <MobileMenu />
-        <div className="flex mt-[4.7rem] md:mt-0 overflow-hidden">
+        <div className="flex mt-[4.7rem] md:mt-0 overflow-hidden ">
           {/* BEGIN: Side Menu */}
-          <nav className="hidden  md:block md:w-[105px] xl:w-[250px] pl-5 pr-6 py-5 overflow-hidden z-10 h-[101vh] fixed">
+          <nav className="hidden md:block md:w-[105px] xl:w-[250px] pl-5 pr-6 py-5 overflow-hidden z-10  h-[101vh] fixed">
             <Navigation />
           </nav>
           {/* END: Side Menu */}
@@ -84,6 +86,13 @@ function SideMenu({
           >
             <TopBar navigation={navigation} user={data} />
             {children}
+            {sessionExpired && (
+              <AlertComponent
+                variant="warning"
+                show={sessionExpired}
+                description="Tu sesión se ha expirado, redireccionando..."
+              />
+            )}
             {showStepsBySteps && <StepByStep user={data} />}
           </div>
           {/* END: Content */}

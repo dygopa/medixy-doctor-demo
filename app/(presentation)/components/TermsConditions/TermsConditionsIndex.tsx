@@ -23,11 +23,11 @@ export default function TermsConditionsIndex() {
         <p className="c1"><span className="c0">Los presentes T&eacute;rminos y Condiciones de Servicios tienen como objeto regular
                 el uso y acceso a la Plataforma NOODUS (en adelante, la Plataforma) y los servicios que se suministran a
                 trav&eacute;s de la misma, que incluyen el sitio web </span><span className="c13"><a className="c15"
-                    href="https://www.google.com/url?q=&amp;sa=D&amp;source=editors&amp;ust=1682882889129447&amp;usg=AOvVaw3u4l5acO09YbV_cAuAaSbU"></a></span><span
+                    href="https://www.google.com/url?q=http://www.medhaus.com.mx&amp;sa=D&amp;source=editors&amp;ust=1682882889129447&amp;usg=AOvVaw3u4l5acO09YbV_cAuAaSbU">www.medhaus.com.mx</a></span><span
                 className="c0">&nbsp;, el Software NOODUS, cualesquiera portales, programas y servicios adicionales que funjan
                 como extensi&oacute;n de la Plataforma.</span></p>
         <p className="c1"><span className="c0">Los presentes T&eacute;rminos y Condiciones de Uso son un contrato entre el usuario
-                (tal como se define m&aacute;s adelante) y CERTUS PROJECT MANAGEMENT SA DE CV (en lo sucesivo PROSIT), por
+                (tal como se define m&aacute;s adelante) y CERTUS PROJECT MANAGEMENT SA DE CV (en lo sucesivo MEDHAUS), por
                 lo que constituyen un acuerdo legal y vinculante. Al aceptarlos y hacer uso de la Plataforma, el usuario se
                 obliga a regirse por los presentes, los cuales manifiesta haber le&iacute;do y comprender su alcance, y en
                 caso de no estar de acuerdo con los mismos, deber&aacute; abstenerse de usar y registrarse a la
@@ -40,7 +40,7 @@ export default function TermsConditionsIndex() {
         <p className="c1"><span className="c0"><br/></span><span className="c3">1. Definiciones</span></p>
         <p className="c1"><span className="c0">Los Servicios: Significa los de administraci&oacute;n de informaci&oacute;n ofrecidos
                 a trav&eacute;s del sitio de Internet </span><span className="c13"><a className="c15"
-                    href="https://www.google.com/url?q=&amp;sa=D&amp;source=editors&amp;ust=1682882889130627&amp;usg=AOvVaw1ZL90qs56bCJ3VathFFbu_"></a></span><span
+                    href="https://www.google.com/url?q=http://www.medhaus.com.mx&amp;sa=D&amp;source=editors&amp;ust=1682882889130627&amp;usg=AOvVaw1ZL90qs56bCJ3VathFFbu_">www.medhaus.com.mx</a></span><span
                 className="c0">&nbsp; y consisten -sin limitaci&oacute;n- en la autorizaci&oacute;n al Usuario de acceso y
                 utilizaci&oacute;n de herramientas electr&oacute;nicas de b&uacute;squeda y consulta de informaci&oacute;n
                 relacionada con los datos cl&iacute;nicos y/o documentaci&oacute;n m&eacute;dica de los pacientes del
@@ -55,7 +55,7 @@ export default function TermsConditionsIndex() {
         <p className="c1"><span className="c0">Paciente: Significa la persona no Usuario de los Servicios que se encuentra bajo la
                 atenci&oacute;n<br/>m&eacute;dica del Usuario de la Plataforma y que ha aceptado el Aviso de Privacidad que
                 al efecto se le ha puesto a disposici&oacute;n.</span></p>
-        <p className="c1"><span className="c0">Plataforma: Significa la plataforma de software NOODUS que es utilizada por PROSIT,
+        <p className="c1"><span className="c0">Plataforma: Significa la plataforma de software NOODUS que es utilizada por MEDHAUS,
                 que &nbsp;esta desarrollada por MKS Technology y que incluye el Software, el sitio web, las aplicaciones y
                 cualquier otro programa que sirva como extensi&oacute;n de la misma.</span></p>
         <p className="c1"><span className="c0">Expediente Cl&iacute;nico: Significa la recopilaci&oacute;n de datos cl&iacute;nicos
@@ -65,8 +65,8 @@ export default function TermsConditionsIndex() {
                 Usuario para efectos de<br/>registrarse y acceder a la plataforma.</span></p>
         <p className="c1"><span className="c0">&#8203;Las Partes MEDAUS y el Usuario.</span></p>
         <p className="c1"><span className="c3">2. Uso de la Plataforma</span></p>
-        <p className="c1"><span className="c0">PROSIT pone a disposici&oacute;n del Usuario el Software denominado NOODUS a
-                trav&eacute;s del sitio web  y para su descarga a trav&eacute;s de la aplicaci&oacute;n
+        <p className="c1"><span className="c0">MEDHAUS pone a disposici&oacute;n del Usuario el Software denominado NOODUS a
+                trav&eacute;s del sitio web www.medhaus.com.mx y para su descarga a trav&eacute;s de la aplicaci&oacute;n
                 m&oacute;vil misma que se encuentra disponible para los sistemas operativos IOS y Android.</span></p>
         <p className="c1"><span className="c0">Las Partes convienen en que a partir de la fecha en que el Usuario se registre a la
                 Plataforma ya sea en su versi&oacute;n web o m&oacute;vil, &eacute;ste podr&aacute; hacer uso del
@@ -82,10 +82,10 @@ export default function TermsConditionsIndex() {
                 trav&eacute;s de su cuenta se tendr&aacute; como realizada por este, y que ser&aacute; responsable de la
                 actividad derivada del uso de su cuenta cuando la haya autorizado o no.</span></p>
         <p className="c1"><span className="c0">El Usuario acepta que su cuenta personal es &uacute;nica e intransferible por lo que
-                est&aacute; prohibido el uso de la cuenta por personas distintas. En caso de que PROSIT identifique que la
+                est&aacute; prohibido el uso de la cuenta por personas distintas. En caso de que MEDHAUS identifique que la
                 cuenta est&aacute; siendo utilizada por diversos usuarios o se est&aacute; dando un uso indebido a la
-                Plataforma, PROSIT se reserva el derecho de suspender o eliminar la cuenta con previa notificaci&oacute;n.
-                En este evento, PROSIT no ser&aacute; responsable por concepto alguno de indemnizaci&oacute;n, ni
+                Plataforma, MEDHAUS se reserva el derecho de suspender o eliminar la cuenta con previa notificaci&oacute;n.
+                En este evento, MEDHAUS no ser&aacute; responsable por concepto alguno de indemnizaci&oacute;n, ni
                 devolver&aacute; las cantidades erogadas en los planes para el uso de la Plataforma.</span></p>
         <p className="c1"><span className="c0">Una vez registrado en la Plataforma, y con base a las modalidades de uso, el Usuario
                 podr&iacute;a tener un periodo de prueba por un per&iacute;odo de tiempo que podr&aacute; visualizarse en la
@@ -103,7 +103,7 @@ export default function TermsConditionsIndex() {
                 bot&oacute;n &ldquo;Reservar cita&rdquo; y autom&aacute;ticamente el Usuario recibir&aacute; una
                 notificaci&oacute;n con la confirmaci&oacute;n del registro y de su cita. Dicha cita podr&aacute;
                 consultarla, reprogramarla o cancelarla en el portal </span><span className="c13"><a className="c15"
-                    href="https://www.google.com/url?q=&amp;sa=D&amp;source=editors&amp;ust=1682882889132847&amp;usg=AOvVaw1JZqXWJ11CnGCg0rw3Nbxp"></a></span><span
+                    href="https://www.google.com/url?q=http://www.medhaus.com.mx&amp;sa=D&amp;source=editors&amp;ust=1682882889132847&amp;usg=AOvVaw1JZqXWJ11CnGCg0rw3Nbxp">www.medhaus.com.mx</a></span><span
                 className="c0">&nbsp; una vez que inicie sesi&oacute;n. </span></p>
         <p className="c1"><span className="c0">Una vez iniciada su sesi&oacute;n, el Paciente podr&aacute; acceder a sus datos
                 personales, historial de citas, promociones, contenidos, registros m&eacute;dicos (recetas, tratamientos,
@@ -156,16 +156,16 @@ export default function TermsConditionsIndex() {
                 profesional y<br/>acad&eacute;mico, la Plataforma se encarga de cotejar que dicha informaci&oacute;n que
                 acredita sus<br/>credenciales, coincida con la informaci&oacute;n p&uacute;blica establecida en la base de
                 datos que a su efecto el gobierno emita (en el caso que esto pueda realizase de forma autom&aacute;tica).
-                Sin embargo, PROSIT no se hace responsable de la falsedad o legitimidad de los documentos subidos a la
+                Sin embargo, MEDHAUS no se hace responsable de la falsedad o legitimidad de los documentos subidos a la
                 Plataforma por los Usuarios, incluidos su INE, t&iacute;tulo profesional, c&eacute;dula profesional,
                 c&eacute;dula de especialidad.</span></p>
-        <p className="c1"><span className="c0">PROSIT se reserva el derecho de hacer investigaciones encaminadas a indagar
+        <p className="c1"><span className="c0">MEDHAUS se reserva el derecho de hacer investigaciones encaminadas a indagar
                 cualquiera de las actividades enunciadas, as&iacute; como de iniciar cualquier procedimiento o acci&oacute;n
                 judicial contra el mal uso, infracciones, delitos y da&ntilde;os y perjuicios ocasionados por el
                 Usuario.</span></p>
         <p className="c1"><span className="c0"><br/></span><span className="c3">4. Licencia de uso del Software Plataforma</span></p>
         <p className="c1"><span className="c0">El Usuario acuerda que al momento de aceptar los presentes T&eacute;rminos y
-                Condiciones de Uso, PROSIT otorga al Usuario una licencia de uso (i) onerosa; (ii) no exclusiva; e (iii)
+                Condiciones de Uso, MEDHAUS otorga al Usuario una licencia de uso (i) onerosa; (ii) no exclusiva; e (iii)
                 intransferible sobre el Software NOODUS (en adelante, la Licencia). La Licencia se confiere con el fin de
                 que el Usuario tenga acceso a la informaci&oacute;n y servicios que la Plataforma presta.</span></p>
         <p className="c1"><span className="c0">El Usuario reconoce que el uso de la Plataforma comprendida en los presentes
@@ -184,7 +184,7 @@ export default function TermsConditionsIndex() {
             <li className="c1 c5 li-bullet-2"><span className="c0">Plan proveedores</span></li>
         </ul>
         <p className="c1"><span className="c0">Cada uno de los planes incluyen diferentes funcionalidades, mismas que pueden
-                consultarse directamente en la p&aacute;gina </span></p>
+                consultarse directamente en la p&aacute;gina www.medhaus.com.mx</span></p>
         <p className="c1"><span className="c3">6. Exclusi&oacute;n de Garant&iacute;as</span></p>
         <p className="c1"><span className="c0">NOODUS pone a disposici&oacute;n del Usuario la Plataforma en el estado en que se
                 encuentra y no asume responsabilidad alguna relacionada con la operaci&oacute;n satisfactoria y rendimiento
@@ -277,7 +277,7 @@ export default function TermsConditionsIndex() {
                 el Usuario capture su informaci&oacute;n fiscal en el apartado de &ldquo;Facturaci&oacute;n&rdquo; en la
                 Plataforma.</span></p>
         <p className="c1"><span className="c3">&#8203;11. Cambios de planes </span></p>
-        <p className="c1"><span className="c0">Un cambio de Plan PROSIT se puede realizar en cualquier momento tomando las
+        <p className="c1"><span className="c0">Un cambio de Plan MEDHAUS se puede realizar en cualquier momento tomando las
                 siguientes consideraciones:</span></p>
         <ol className="c7 lst-kix_list_3-0 start" start={1}>
             <li className="c1 c5 li-bullet-2"><span className="c0">Para cambios entre los planes mensuales; los pagos no son
@@ -316,7 +316,7 @@ export default function TermsConditionsIndex() {
                 o no uso de paquetes de Folios de facturaci&oacute;n. Pero s&iacute; pueden ser transferibles a la cuenta de
                 otro Usuario de la Plataforma. Para realizar la transferencia de los folios de facturaci&oacute;n es
                 necesario mandar un correo a </span><span className="c13"><a className="c15"
-                    href="mailto:"></a></span><span className="c0">&nbsp;
+                    href="mailto:soporte@medhaus.com.mx">soporte@medhaus.com.mx</a></span><span className="c0">&nbsp;
                 &nbsp;solicitando su deseo de transferir los Folios.</span></p>
         <p className="c1"><span className="c0">&#8203;</span><span className="c3">13. Condiciones de Facturaci&oacute;n y
                 Reembolsos</span></p>
@@ -462,12 +462,12 @@ export default function TermsConditionsIndex() {
                 a una persona f&iacute;sicas identificada o identificable, conforme a la Ley Federal de Protecci&oacute;n de
                 Datos Personales en Posesi&oacute;n de los Particulares
                 (https://www.diputados.gob.mx/LeyesBiblio/pdf/LFPDPPP.pdf) (en adelante Dato(s) Personal(es).</span></p>
-        <p className="c1"><span className="c0">Al llenar el formulario y enviarlo a PROSIT, el Usuario manifiesta expresamente
+        <p className="c1"><span className="c0">Al llenar el formulario y enviarlo a MEDHAUS, el Usuario manifiesta expresamente
                 haber tenido a la vista y haber le&iacute;do el aviso de privacidad de datos personales de la Plataforma a
                 trav&eacute;s del cual se prestan los servicios , por lo que acepta los t&eacute;rminos y condiciones de
                 dicho aviso de protecci&oacute;n de datos personales, mismo que acepta se encuentra a su disposici&oacute;n
                 para futuras consultas en el sitio de internet </span><span className="c13"><a className="c15"
-                    href="https://www.google.com/url?q=&amp;sa=D&amp;source=editors&amp;ust=1682882889145810&amp;usg=AOvVaw0QpLnfuqpKySe9qcA3CugJ"></a></span>
+                    href="https://www.google.com/url?q=http://www.medhaus.com.mx&amp;sa=D&amp;source=editors&amp;ust=1682882889145810&amp;usg=AOvVaw0QpLnfuqpKySe9qcA3CugJ">www.medhaus.com.mx</a></span>
         </p>
         <p className="c1"><span className="c0">El Usuario garantiza la veracidad, exactitud, vigencia y autenticidad de los Datos
                 Personales facilitados a efecto de tener acceso al Servicio, oblig&aacute;ndose el suscrito como Usuario a
@@ -500,7 +500,7 @@ export default function TermsConditionsIndex() {
                 utilizaci&oacute;n del Servicio.</span></p>
         <p className="c1"><span className="c0">&#8203;</span><span className="c3">17. Modificaciones a los T&eacute;rminos y Condiciones
                 de Uso</span></p>
-        <p className="c1"><span className="c0">PROSIT puede modificar los presentes T&eacute;rminos y Condiciones de Uso en
+        <p className="c1"><span className="c0">MEDHAUS puede modificar los presentes T&eacute;rminos y Condiciones de Uso en
                 cualquier momento, por lo cual el Usuario deber&aacute; revisar peri&oacute;dicamente el apartado
                 correspondiente en la Plataforma y mantenerse informado respecto de cualquier cambio o modificaci&oacute;n.
                 En caso de que no est&eacute; de acuerdo con cualquier modificaci&oacute;n a los T&eacute;rminos y

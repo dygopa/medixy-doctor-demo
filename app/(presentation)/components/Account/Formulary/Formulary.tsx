@@ -19,8 +19,34 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
   const { updateUserData } = actions;
 
   const { loading, successful, error } = state.updateUserData;
+  
+  const [errors, setErrors] = useState({
+    global: "",
+    name: "",
+    lastname: "",
+    age: '',
+  });
+
+  const validForm = () => {
+    let errorsFieldsCount = 0;
+
+    if (errors.global.length > 0) errorsFieldsCount++;
+
+    if (errors.name.length > 0) errorsFieldsCount++;
+
+    if (errors.lastname.length > 0) errorsFieldsCount++;
+    
+    if (errors.age.length > 0) errorsFieldsCount++;
+
+    return errorsFieldsCount;
+  };
 
   const updateAccount = () => {
+
+    const hasErrorsCount = validForm();
+
+    if (hasErrorsCount > 0) return;
+
     let obj = {
       id: account.userId,
       names: account.names ?? "",
@@ -28,7 +54,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
       second_lastname: account.lastName ?? "",
       curp: account.curp ?? "",
       phone_number: account.phone ?? "",
-      birthdate: account.birthDate ?? "",
+      birthdate: account.birthDate,
       birth_country: account.country ?? "",
       sex: account.sex ?? 0,
       person_type: account.personType ?? 0,
@@ -36,7 +62,6 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
       website_url: account.websiteUrl ?? "",
       address: account.address ?? "",
     };
-    console.log(obj);
     updateUserData(obj)(dispatch);
   };
 
@@ -56,8 +81,8 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
         show={successful === true}
         description="Cuenta actualizada exitosamente"
       />
-      <div className="w-full lg:flex justify-between items-center sticky top-[67px] z-[50] border-b lg:border-none bg-slate-100 py-2">
-        <div className="w-full lg:w-[50%]">
+      <div className="md:grid grid-cols-2 gap-5 w-full lg:flex justify-between items-center sticky top-[67px] z-[50] border-b bg-slate-100 pt-2">
+        <div className="lg:w-[70%]">
           <h2 className="lg:mr-5 text-2xl font-bold truncate">Mi cuenta</h2>
           <p className="font-light text-slate-500 text-base my-3">
             Completa la información de tu cuenta para poder desbloquear otras
@@ -70,12 +95,13 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
           onClick={() => {
             updateAccount();
           }}
+          className="px-16 mb-2 md:mb-0"
         >
           Actualizar
         </Button>
       </div>
       <div className="w-full relative flex flex-col gap-4 mt-8">
-        <BasicData account={account} setAccount={setAccount} />
+        <BasicData account={account} setAccount={setAccount} errors={errors} setErrors={setErrors} />
         <Credentials account={account} setAccount={setAccount} />
         <Contact account={account} setAccount={setAccount} />
         <AboutMe account={account} setAccount={setAccount} />

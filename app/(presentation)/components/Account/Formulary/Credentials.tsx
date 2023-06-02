@@ -271,7 +271,7 @@ export default function Credentials({
             </div>
             <div className="flex flex-col justify-between items-end relative">
               <Button
-                disabled={loadingRegister || account.userId === undefined}
+                disabled={loadingRegister || account.userId === undefined || formData.specialty_id === 0 }
                 onClick={createSpeciality}
                 className="w-full flex justify-center items-center gap-2 text-white font-base"
                 variant="success"
@@ -310,36 +310,6 @@ export default function Credentials({
             </div>
           )}
 
-          <div className="w-full grid lg:grid-cols-4 grid-cols-1 justify-start items-end gap-3 border-t border-slate-200 pt-5">
-            <div className="flex flex-col justify-between items-start relative gap-1">
-              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Cédula profesional (C1)
-              </p>
-              <FormInput
-                type={"text"}
-                placeholder="Escribe el nombre del consultorio..."
-                min={0}
-                className="form-control w-full"
-                onChange={(e) =>
-                  setAccount({ ...account, nombre: e.target.value })
-                }
-              />
-            </div>
-            <div className="flex flex-col justify-between items-start relative gap-1">
-              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Institución
-              </p>
-              <FormInput
-                type={"text"}
-                placeholder="Escribe el nombre del consultorio..."
-                min={0}
-                className="form-control w-full"
-                onChange={(e) =>
-                  setAccount({ ...account, nombre: e.target.value })
-                }
-              />
-            </div>
-          </div>
         </div>
       </div>
     </div>

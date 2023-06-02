@@ -1,14 +1,17 @@
 import { LocalityFailure, localityFailuresEnum } from './../../../domain/core/failures/locality/localityFailure';
 import { ILocality } from "domain/core/entities/localityEntity";
-import { ADD_MEDIA_LOCALITY_ENDPOINT, CREATE_USER_LOCALITY_ENDPOINT, GET_COUNTRY_STATES_ENDPOINT, GET_MEDICAL_CENTERS_ENDPOINT, GET_USER_LOCALITIES_ENDPOINT, UPDATE_USER_LOCALITY_ENDPOINT } from "infrastructure/config/api/dictionary";
+import { ADD_MEDIA_LOCALITY_ENDPOINT, CREATE_USER_LOCALITY_ENDPOINT, GET_MEDICAL_CENTERS_ENDPOINT, GET_USER_LOCALITIES_ENDPOINT, UPDATE_USER_LOCALITY_ENDPOINT } from "infrastructure/config/api/dictionary";
 import nookies from 'nookies';
+import { supabase } from 'infrastructure/config/supabase/supabase-client';
+import { nanoid } from 'nanoid'
+import { getFileFromBase64 } from 'infrastructure/utils/files/filesUtils';
 
 export default interface ILocalitiesRepository {
   getMedicalCenters(): Promise<Array<ILocality> | LocalityFailure>;
   getUserLocalities(id:number): Promise<Array<ILocality> | LocalityFailure>;
   createUserLocality(obj:any): Promise<string | LocalityFailure>;
   updateUserLocality(obj:any): Promise<string | LocalityFailure>;
-  addMediaLocality(obj:any): Promise<string | LocalityFailure>;
+  addMediaLocality(obj:any, localityId: string): Promise<string | LocalityFailure>;
 }
 
 export class LocalitiesRepository implements ILocalitiesRepository {
@@ -35,36 +38,6 @@ export class LocalitiesRepository implements ILocalitiesRepository {
       console.log("GET_MEDICAL_CENTERS_ENDPOINT", data["data"])
 
       return data["data"] as Array<ILocality> ?? [];
-    } catch (error) {
-      console.log("Error", error)
-      const exception = error as any;
-      return new LocalityFailure(localityFailuresEnum.serverError);
-    }
-  }
-  
-  async getCountryStates(): Promise<Array<any> | LocalityFailure> {
-    try {
-      let cookies = nookies.get(undefined, 'access_token');
-
-      var myHeaders = new Headers();
-
-      myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
-
-      var requestOptions = {
-        method: 'GET',
-        headers: myHeaders,
-        redirect: 'follow'
-      } as RequestInit;
-
-      let URL = GET_COUNTRY_STATES_ENDPOINT as RequestInfo
-
-      const response = await fetch(URL, requestOptions)
-      let data = await response.json()
-
-      console.log("GET_COUNTRY_STATES_ENDPOINT", data["data"])
-
-      return data["data"] as Array<any> ?? [];
     } catch (error) {
       console.log("Error", error)
       const exception = error as any;
@@ -115,13 +88,14 @@ export class LocalitiesRepository implements ILocalitiesRepository {
           name: obj["name"] ?? "",
           code: obj["code"] ?? "",
           clues: obj["clues"] ?? "",
-          type: "CONSULTING_ROOM",
+          type: obj["type"] ?? "",
           address: obj["address"] ?? "",
           postal_code: obj["postal_code"] ?? "",
           state_id: obj["state_id"] ?? 0,
           city: obj["city"] ?? "",
           latitude: obj["latitude"] ?? 0,
-          longitude: obj["longitude"] ?? 0
+          longitude: obj["longitude"] ?? 0,
+          parent_location_id:obj["parent_location_id"] ?? 0
       });
 
       var requestOptions = {
@@ -189,9 +163,33 @@ export class LocalitiesRepository implements ILocalitiesRepository {
     }
   }
 
-  async addMediaLocality(obj:any): Promise<string | LocalityFailure> {
+  
+
+  async addMediaLocality(obj:any, localityId: string): Promise<string | LocalityFailure> {
     try {
-      let cookies = nookies.get(undefined, 'access_token');
+      const id = nanoid(11);
+      const fileName = `${id}.${obj["type"]}`;
+
+      const file = getFileFromBase64(obj["data"], fileName);   
+
+      const { data, error } = await supabase.storage
+        .from("locations")
+        .upload(`media/${fileName}`, file, {
+            cacheControl: '3600',
+            upsert: false
+        });
+
+      if (error) return new LocalityFailure(localityFailuresEnum.serverError)
+
+      const res = supabase
+        .storage
+        .from("locations")
+        .getPublicUrl(data.path);
+
+      await supabase.from("Localidades").update({ fotoUrl: res.data.publicUrl }).match({ id: localityId });
+
+      return res.data.publicUrl;
+      /* let cookies = nookies.get(undefined, 'access_token');
 
       var myHeaders = new Headers();
 
@@ -213,11 +211,14 @@ export class LocalitiesRepository implements ILocalitiesRepository {
       let URL = ADD_MEDIA_LOCALITY_ENDPOINT(obj["id"]) as RequestInfo
 
       const response = await fetch(URL, requestOptions)
+      console.log(response)
       let data = await response.json()
+
+      console.log(data)
 
       console.log("ADD_MEDIA_LOCALITY_ENDPOINT", data["data"])
 
-      return data["data"] ?? "";
+      return data["data"] ?? ""; */
     } catch (error) {
       console.log("Error", error)
       const exception = error as any;

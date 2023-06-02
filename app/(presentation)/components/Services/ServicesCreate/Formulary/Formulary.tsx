@@ -7,7 +7,7 @@ import {
   FormSwitch,
 } from "(presentation)/components/core/BaseComponents/Form";
 import { IService } from "domain/core/entities/serviceEntity";
-import { useState, useEffect, useContext, useMemo } from "react";
+import { useState, useEffect, useContext, useMemo, ChangeEvent } from "react";
 import { FiCheck } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import {
@@ -16,7 +16,10 @@ import {
 } from "../../context/ServicesContext";
 import { ILocality } from "domain/core/entities/localityEntity";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
-import { IStepByStepContext, StepByStepContext } from "(presentation)/components/core/StepByStep/context/StepByStepContext";
+import {
+  IStepByStepContext,
+  StepByStepContext,
+} from "(presentation)/components/core/StepByStep/context/StepByStepContext";
 
 interface ILocalityService {
   service_id: number;
@@ -24,7 +27,13 @@ interface ILocalityService {
   price: number;
 }
 
-export default function Formulary({ userId, accountId }: { userId: string; accountId: string }) {
+export default function Formulary({
+  userId,
+  accountId,
+}: {
+  userId: string;
+  accountId: string;
+}) {
   const { state, actions, dispatch } =
     useContext<IServicesContext>(ServicesContext);
   const { createUserService, getCategories, getUserMedicalCenters } = actions;
@@ -45,7 +54,8 @@ export default function Formulary({ userId, accountId }: { userId: string; accou
 
   const { data: categories } = state.getCategories;
 
-  const { actions: actionsStep, dispatch: dispatchStep } = useContext<IStepByStepContext>(StepByStepContext);
+  const { actions: actionsStep, dispatch: dispatchStep } =
+    useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps } = actionsStep;
 
   const [loadedListOfTimes, setLoadedListOfTimes] = useState(false);
@@ -61,7 +71,31 @@ export default function Formulary({ userId, accountId }: { userId: string; accou
     conditions: "",
     base_price: 0,
     status: 1,
+    media: {},
   });
+
+  const toBase64 = (file: File) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
+
+  async function handleChangeMedia(e: ChangeEvent<HTMLInputElement>) {
+    let file = e.target.files![0] as File;
+
+    let base64 = await toBase64(file);
+    let splittedType = file!.type.split("/");
+    var base64result = base64?.toString().split(",")[1];
+
+    let obj = {
+      data: base64result ?? "",
+      type: `${splittedType[1] ?? ""}`,
+    };
+
+    setFormData({ ...formData, media: obj });
+  }
 
   function manageAddToList(data: ILocality) {
     let list: Array<ILocalityService> = [...localities];
@@ -130,18 +164,18 @@ export default function Formulary({ userId, accountId }: { userId: string; accou
     setLoadedAPI(true);
   };
 
-  useMemo(() => {
+  /* useMemo(() => {
     if (successFulCreationService){
       createUserSteps(accountId, "SERVICE_CREATED")(dispatchStep)
       setTimeout(() => {
         window.location.href = "/services"
       }, 1000);
     };
-  }, [successFulCreationService])
+  }, [successFulCreationService]) */
 
-  useMemo(()=>{
-    if(userId) getUserMedicalCenters(userId)(dispatch)
-  },[userId])
+  useMemo(() => {
+    if (userId) getUserMedicalCenters(userId)(dispatch);
+  }, [userId]);
 
   useEffect(() => {
     loadAPI();
@@ -250,7 +284,11 @@ export default function Formulary({ userId, accountId }: { userId: string; accou
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     Cargar imagen
                   </p>
-                  <FormInput type="file" className="form-control lg:w-[70%]" />
+                  <FormInput
+                    type="file"
+                    className="form-control lg:w-[70%]"
+                    onChange={(e) => handleChangeMedia(e)}
+                  />
                 </div>
                 {/* <div className="flex justify-between items-start relative w-full gap-3">
                                     <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">Etiquetas</p>
