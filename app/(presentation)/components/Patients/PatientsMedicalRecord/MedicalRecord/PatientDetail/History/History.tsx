@@ -12,7 +12,7 @@ export default function History() {
       <div className="p-4 box h-full overflow-y-hidden">
         <div>
           <div className="w-full flex justify-between items-center border-b pb-2">
-            <p className="font-bold text-lg text-slate-900">
+            <p className="text-left font-normal text-md text-slate-500 w-full">
               Historial de consultas
             </p>
 

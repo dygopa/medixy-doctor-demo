@@ -310,7 +310,7 @@ export default function Formulary({
         description="Tu consultorio se ha creado exitosamente"
       />
 
-      <div className="w-full lg:flex justify-between items-start">
+      <div className="w-full text-center md:flex md:justify-between items-start sticky top-[67px] z-[50] bg-slate-100 md:pt-5 py-3">
         <div className="lg:mr-5 mb-4 lg:mb-0">
           <h2 className=" text-2xl font-bold truncate">Nuevo consultorio</h2>
         </div>
