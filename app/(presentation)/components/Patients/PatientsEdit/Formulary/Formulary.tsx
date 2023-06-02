@@ -177,7 +177,13 @@ export default function Formulary() {
             datos.
           </p>
         </div>
-        <Button className="my-4 w-[100%] lg:w-auto" variant="primary" disabled={loading} onClick={() => onSubmit()}>
+        <Button className="my-4 w-[100%] lg:w-auto" variant="primary" disabled={
+          loading || 
+          values.name === "" ||
+          values.lastname === "" ||
+          values.birthDate === "" ||
+          values.phone === ""
+          } onClick={() => onSubmit()}>
           {loading ? "Actualizando paciente..." : "Actualizar paciente"}
         </Button>
       </div>

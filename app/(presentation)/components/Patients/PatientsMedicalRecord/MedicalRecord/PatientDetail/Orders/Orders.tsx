@@ -12,7 +12,7 @@ export default function Orders() {
       <div className="p-5 box h-full overflow-y-hidden">
         <div>
           <div className="w-full flex justify-between items-center border-b pb-2">
-            <p className="font-bold text-lg text-slate-900">Órdenes</p>
+            <p className="text-left font-normal text-md text-slate-500 w-full">Órdenes</p>
 
             {/* <p className="font-normal text-[15px] text-slate-500 cursor-pointer">
               Ver más

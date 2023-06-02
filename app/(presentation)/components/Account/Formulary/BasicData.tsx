@@ -337,7 +337,7 @@ export default function BasicData({
                     Tipo de persona
                   </p>
                   <FormSelect
-                    value={account?.personType}
+                    defaultValue={account?.personType}
                     className="form-control w-full"
                     onChange={(e) =>
                       setAccount({ ...account, personType: +e.target.value })
