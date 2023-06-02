@@ -11,13 +11,13 @@ export class CountriesISORepository implements ICountriesRepository {
   async getCountries(): Promise<ICountriesISO[] | CountryFailure> {
     try {
       let snapshots = countriesJSON;
-      
+
       const countries: ICountriesISO[] = [];
 
       if (snapshots.length > 0) {
         await Promise.all(snapshots.map(async (snapshot: any) => {
           const countriesMap: ICountriesISO = countriesToMap(snapshot);
-  
+
           if (countriesMap.iso.length >= 0) countries.push(countriesMap);
         }));
       }

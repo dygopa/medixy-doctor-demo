@@ -20,15 +20,12 @@ const createUserSteps = (id:string, event:string) => async (dispatch: Dispatch<a
 
 const getSteps = (id:string) => async (dispatch: Dispatch<any>) => {
   try {
-    console.log({ type: "GET_STEPS_LOADING" });
     dispatch({ type: "GET_STEPS_LOADING" });
 
     const res: string = await new StepByStepUseCase().getSteps(id);
 
-    console.log({ type: "GET_STEPS_SUCCESSFUL", payload: { data: res } });
     dispatch({ type: "GET_STEPS_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
-    console.log({ type: "GET_STEPS_ERROR", payload: { error: error } });
     dispatch({ type: "GET_STEPS_ERROR", payload: { error: error } });
   }
 }

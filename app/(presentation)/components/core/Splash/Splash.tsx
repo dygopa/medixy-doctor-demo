@@ -5,7 +5,7 @@ export default function Splash() {
     <div className="w-screen h-screen">
       <div className="flex justify-center items-center w-full h-full">
         <Image
-          src="/logo.png"
+          src="/images/logo.png"
           width={275}
           height={110}
           alt="App logo white"

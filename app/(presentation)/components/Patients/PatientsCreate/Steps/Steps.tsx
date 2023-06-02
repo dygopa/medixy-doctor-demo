@@ -127,7 +127,13 @@ export default function Steps() {
           </p>
         </div>
         <div className="flex justify-end items-center">
-          <Button className=" w-[100%] md:w-56" variant="primary" disabled={loading} onClick={() => onSubmit()}>
+          <Button className=" w-[100%] md:w-56" variant="primary" disabled={
+            loading || 
+            values.name === "" ||
+            values.lastname === "" ||
+            values.age === "" ||
+            values.phone === ""
+           } onClick={() => onSubmit()}>
             {loading ? "Creando paciente..." : "Crear paciente"}
           </Button>
         </div>

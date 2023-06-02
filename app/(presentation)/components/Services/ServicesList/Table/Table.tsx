@@ -49,7 +49,6 @@ export default function TableServices({ user }: { user: IUser }) {
   const CardData = ({ data }: { data: IService }) => {
     return (
       <>
-        
         <Link
           href={`/services/${data.id}`}
           className="bg-white border rounded-lg p-4 flex flex-col justify-between items-start gap-4 cursor-pointer"
@@ -109,10 +108,8 @@ export default function TableServices({ user }: { user: IUser }) {
           </Table.Thead>
 
           <Table.Tbody>
-            
-            
             {successful &&
-              [...(data as Array<IService>)].length > 0 &&
+              data.length > 0 &&
               [...(data as Array<IService>)].map((service, i) => (
                 <Table.Tr
                   key={service.id}
@@ -151,25 +148,17 @@ export default function TableServices({ user }: { user: IUser }) {
               ))}
           </Table.Tbody>
         </Table>
-        {loading && 
+
+        {successful && data.length === 0 && (
           <div className="w-full flex flex-col justify-center items-center">
-            <p className="font-bold text-slate-900 text-lg">Un momento...</p>
+            <p className="font-bold text-slate-900 text-lg">
+              Vaya, no tienes servicios aún
+            </p>
             <p className="font-light text-slate-500 text-base">
-              Cargando tus servicios.
+              Lo sentimos, pero no tienes servicios agregados todavia.
             </p>
           </div>
-        }
-
-        {successful && [...(data as Array<IService>)].length === 0 && 
-          <div className="w-full flex flex-col justify-center items-center">
-          <p className="font-bold text-slate-900 text-lg">
-            Vaya, no tienes servicios aún
-          </p>
-          <p className="font-light text-slate-500 text-base">
-            Lo sentimos, pero no tienes servicios agregados todavia.
-          </p>
-        </div>
-        }
+        )}
       </div>
     );
   };
@@ -183,26 +172,7 @@ export default function TableServices({ user }: { user: IUser }) {
             <div key={service.id}>
               <CardData data={service} />
             </div>
-        ))}
-        {loading && 
-          <div className="w-full flex flex-col justify-center items-center">
-            <p className="font-bold text-slate-900 text-lg">Un momento...</p>
-            <p className="font-light text-slate-500 text-base">
-              Cargando tus servicios.
-            </p>
-          </div>
-        }
-
-        {successful && [...(data as Array<IService>)].length === 0 && 
-          <div className="w-full flex flex-col justify-center items-center">
-          <p className="font-bold text-slate-900 text-lg">
-            Vaya, no tienes servicios aún
-          </p>
-          <p className="font-light text-slate-500 text-base">
-            Lo sentimos, pero no tienes servicios agregados todavia.
-          </p>
-        </div>
-        }
+          ))}
       </div>
     );
   };
@@ -210,6 +180,30 @@ export default function TableServices({ user }: { user: IUser }) {
   useMemo(() => {
     if (user.userId) getUserServices(user.userId)(dispatch);
   }, [user.userId]);
+
+  if (loading) {
+    return (
+      <div className="w-full flex flex-col justify-center items-center">
+        <p className="font-bold text-slate-900 text-lg">Un momento...</p>
+        <p className="font-light text-slate-500 text-base">
+          Cargando tus servicios.
+        </p>
+      </div>
+    );
+  }
+
+  if (successful && [...(data as Array<IService>)].length === 0) {
+    return (
+      <div className="w-full flex flex-col justify-center items-center">
+        <p className="font-bold text-slate-900 text-lg">
+          Vaya, no tienes servicios aún
+        </p>
+        <p className="font-light text-slate-500 text-base">
+          Lo sentimos, pero no tienes servicios agregados todavia.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div>
@@ -219,6 +213,25 @@ export default function TableServices({ user }: { user: IUser }) {
 
       <div className="lg:hidden md:hidden block">
         <CardsComponent />
+        {loading && (
+          <div className="w-full flex flex-col justify-center items-center">
+            <p className="font-bold text-slate-900 text-lg">Un momento...</p>
+            <p className="font-light text-slate-500 text-base">
+              Cargando tus servicios.
+            </p>
+          </div>
+        )}
+
+        {successful && [...(data as Array<IService>)].length === 0 && (
+          <div className="w-full flex flex-col justify-center items-center">
+            <p className="font-bold text-slate-900 text-lg">
+              Vaya, no tienes servicios aún
+            </p>
+            <p className="font-light text-slate-500 text-base text-center">
+              Lo sentimos, pero no tienes servicios agregados todavia.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

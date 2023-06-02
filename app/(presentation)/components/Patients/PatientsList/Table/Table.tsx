@@ -129,7 +129,7 @@ export default function PatientsTable() {
 
                   <Table.Td className="first:rounded-l-md last:rounded-r-md w-56 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400">
                     <div className="flex items-center justify-around mr-3">
-                      <Link
+                      {/* <Link
                         className="flex items-center"
                         href={{
                           pathname:
@@ -144,7 +144,7 @@ export default function PatientsTable() {
                         >
                           <Lucide icon="FileText" className="w-5 h-5" />
                         </Button>
-                      </Link>
+                      </Link> */}
                       <Link
                         className="flex items-center"
                         href={{
@@ -167,33 +167,23 @@ export default function PatientsTable() {
         </Table>
         {loading && 
           <div className="w-full flex flex-col justify-center items-center">
-            <p className="font-bold text-slate-900 text-lg">Un momento...</p>
-            <p className="font-light text-slate-500 text-base">
+            <p className="font-bold text-slate-900 text-lg text-center">Un momento...</p>
+            <p className="font-light text-slate-500 text-base text-center">
               Cargando tus servicios.
             </p>
           </div>
-        }
+          }
 
-        {successful && patients.data?.length === 0 && 
-          <div className="w-full flex flex-col justify-center items-center">
-          <p className="font-bold text-slate-900 text-lg">
-            Vaya, no tienes servicios aún
-          </p>
-          <p className="font-light text-slate-500 text-base">
-            Lo sentimos, pero no tienes servicios agregados todavia.
-          </p>
-        </div>
-        }
-        {error &&
-          <div className="w-full flex flex-col justify-center items-center">
+          {successful && [...(patients.data as Array<IPatient>)].length === 0 && 
+            <div className="w-full flex flex-col justify-center items-center text-center">
             <p className="font-bold text-slate-900 text-lg">
-              Vaya, algo no ha salido como se esperaba
+              Vaya, no tienes servicios aún
             </p>
-            <p className="font-light text-slate-500 text-base">
-              Lo sentimos, algo no ha salido bien. Vuelve a intentarlo
+            <p className="font-light text-slate-500 text-base text-center">
+              Lo sentimos, pero no tienes servicios agregados todavia.
             </p>
           </div>
-        }
+          }
       </div>
 
       <div className="flex justify-end mt-8 overflow-x-hidden">

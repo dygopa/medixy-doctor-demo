@@ -17,18 +17,6 @@ export default class LocalitiesUseCase {
         }
     }
 
-    async getCountryStates(): Promise<Array<any>> {
-        try {
-            const response = await this._repository.getCountryStates();
-  
-            if (response instanceof LocalityFailure) throw response;
-  
-            return response;
-        } catch (error) {
-            throw error;
-        }
-    }
-
     async getUserLocalities(id:number): Promise<Array<ILocality>> {
         try {
             const response = await this._repository.getUserLocalities(id);
@@ -43,10 +31,11 @@ export default class LocalitiesUseCase {
 
     async createUserLocality(obj:any): Promise<string> {
         try {
-            const response = await this._repository.createUserLocality(obj);
-            if(obj["media"]["data"] !== "") await this._repository.addMediaLocality({...obj["media"], id: obj["id"]});
+            const response: any = await this._repository.createUserLocality(obj);
 
             if (response instanceof LocalityFailure) throw response;
+            
+            if(obj["media"]["data"] !== "") await this._repository.addMediaLocality({...obj["media"], id: obj["id"]}, response.id);
   
             return response;
         } catch (error) {

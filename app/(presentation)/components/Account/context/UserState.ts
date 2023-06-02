@@ -14,18 +14,17 @@ export interface IUserState {
   getCountriesISO: IGetCountriesISOState;
 }
 
-interface IUserUserState {
-  data: string | null | Object | Array<any>;
-  loading: boolean;
-  successful: boolean;
-  error: UserFailure | null; 
-}
-
 interface IGetCountriesISOState {
   data: Array<ICountriesISO>;
   loading: boolean;
   successful: boolean;
   error: CountryFailure| null;
+}
+interface IUserUserState {
+  data: string | null | Object | Array<any>;
+  loading: boolean;
+  successful: boolean;
+  error: UserFailure | null; 
 }
 
 export const initialState: IUserState = {

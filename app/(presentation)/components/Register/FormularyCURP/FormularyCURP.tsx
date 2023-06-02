@@ -100,7 +100,7 @@ export default function FormularyCURP() {
           href="https://www.gob.mx/curp/"
           className="text-primary font-light lg:text-base md:text-base text-md"
         >
-          ¿No sabes cual es tu CURP? visita este sitio
+          ¿No sabes cual es tu CURP? Visita este sitio
         </Link>
         <Button
           onClick={() => onSubmit()}

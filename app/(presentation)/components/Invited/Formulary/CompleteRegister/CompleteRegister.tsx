@@ -151,7 +151,7 @@ export default function CompleteRegister() {
                         <Link
                         target="_blank"
                         className="text-primary font-medium"
-                        href="#"
+                        href="/register"
                         >
                         politica de privacidad
                         </Link>{" "}
@@ -168,7 +168,7 @@ export default function CompleteRegister() {
                         <Link
                         target="_blank"
                         className="text-primary font-medium"
-                        href="#"
+                        href="/register"
                         >
                         terminos y condiciones
                         </Link>{" "}

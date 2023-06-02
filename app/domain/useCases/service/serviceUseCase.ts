@@ -50,9 +50,14 @@ export default class ServiceUseCase {
         location_id: elem["location_id"],
         price: elem["price"]
       }))
-      const response = await this._repository.createUserService({...obj, locations: list});
+      const response: any = await this._repository.createUserService({...obj, locations: list});
+
+      console.log(response)
 
       if (response instanceof ServiceFailure) throw response;
+
+      if(obj["media"]["data"] !== "") await this._repository.addMediaService({...obj["media"], id: obj["id"]}, response.id);
+
       return response;
     } catch (error) {
       throw error;

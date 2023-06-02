@@ -15,7 +15,6 @@ import {
   AuthContext,
   IAuthContext,
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
-import WithoutSteps from "./WithoutSteps/WithoutSteps";
 
 export default function LocalityCreateIndex() {
   const { state } = useContext<IAuthContext>(AuthContext);
@@ -24,7 +23,10 @@ export default function LocalityCreateIndex() {
   return (
     <div className="py-5">
       <LocalitiesProvider>
-        <WithoutSteps userId={loading ? "" : data.userId} accountId={loading ? "" : data.accountId}/>
+        <Formulary
+          userId={loading ? "" : data.userId}
+          accountId={loading ? "" : data.accountId}
+        />
       </LocalitiesProvider>
     </div>
   );

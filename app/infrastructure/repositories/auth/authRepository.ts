@@ -41,15 +41,19 @@ export class AuthRepository implements IAuthRepository {
         method: 'POST',
         headers: myHeaders,
         body: raw,
-        redirect: 'follow'
+        redirect: 'follow',
+        timeout: 9000
       } as RequestInit;
 
       let URL = AUTH_ENDPOINT as RequestInfo
 
       const response = await fetch(URL, requestOptions)
+
+      if (response.status >= 500) return new AuthFailure(authFailuresEnum.serverError);
+
       let data = await response.json()
 
-      if(!data["meta"]["success"]) throw new AuthFailure(data["meta"]["error"]["type"]);
+      if(!data["meta"]["success"]) return new AuthFailure(data["meta"]["error"]["type"]);
 
       let access_token = data["data"]["access_token"] ?? ""
       
@@ -57,8 +61,11 @@ export class AuthRepository implements IAuthRepository {
 
       return "SUCCESS";
     } catch (error) {
-      const exception = error as AuthFailure;
-      return new AuthFailure(exception.code);
+      const exception = error as any;
+
+      if (exception.name === "AbortError") return new AuthFailure(authFailuresEnum.badGateway);
+
+      return new AuthFailure(authFailuresEnum.serverError);
     }
   }
 

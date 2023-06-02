@@ -145,37 +145,36 @@ export default function Formulary() {
   const handleErrors = () => {
     switch (error?.code) {
       case registerFailuresEnum.wrongPassword:
-        setErrors({ ...errors, global: "Las credenciales son invalidas" });
+        errors["global"] = "Las credenciales son invalidas";
         break;
       case registerFailuresEnum.tooManyRequest:
-        setErrors({
-          ...errors,
-          global:
-            "Se ha excedido el limite de intentos para registrar tu cuenta",
-        });
+        errors["global"] =
+          "Se ha excedido el limite de intentos para registrar tu cuenta";
         break;
       case registerFailuresEnum.serverError:
-        setErrors({
-          ...errors,
-          global: "Algo no ha salido como se esperaba. Vuelve a intentarlo.",
-        });
+        errors["global"] =
+          "Algo no ha salido como se esperaba. Vuelve a intentarlo.";
         break;
       case registerFailuresEnum.emailAlreadyRegistered:
-        setErrors({
-          ...errors,
-          global: "El email ya esta siendo usado por otro proveedor.",
-        });
+        errors["global"] =
+          "El email ya esta siendo usado por otro proveedor.";
+          break;
+      case registerFailuresEnum.badGateway:
+        errors["global"] =
+          "El servidor ha demorado mucho tiempo en responder, vuelve a intentarlo más tarde.";
         break;
       case registerFailuresEnum.curpAlreadyRegistered:
-        setErrors({
-          ...errors,
-          global: "El CURP ya esta registrado por otro proveedor.",
-        });
-        break;
+        errors["global"] =
+          "El CURP ya esta registrado por otro proveedor.";
+          break;
       default:
+        errors["global"] =
+          "El servidor ha demorado mucho tiempo en responder, Vuelve a intentarlo más tarde.";
         break;
     }
   };
+
+  console.log(formData);
 
   const setValuesFormData = () => {
     formData = { ...(formData as Object), ...values };
@@ -195,9 +194,6 @@ export default function Formulary() {
     if (error) handleErrors();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [error]);
-
-  console.log(error);
-  console.log(errors);
 
   return (
     <div className="lg:w-[60%] md:w-[70%] lg:px-20 md:px-14 sm:px-20 px-8 w-full h-fit flex flex-col justify-between items-center gap-6">
@@ -326,8 +322,8 @@ export default function Formulary() {
             Acepto los{" "}
             <Link
               target="_blank"
-              className="text-primary font-medium  pointer-events-none underline"
-              href="#"
+              className="text-primary font-medium underline"
+              href="/register"
             >
               terminos y condiciones
             </Link>{" "}
@@ -342,11 +338,11 @@ export default function Formulary() {
             }}
           />
           <p className="font-light text-sm text-slate-900">
-            Acepto los{" "}
+            Acepto la{" "}
             <Link
               target="_blank"
-              className="text-primary font-medium  pointer-events-none underline"
-              href="#"
+              className="text-primary font-medium underline"
+              href="/register"
             >
               politica de privacidad
             </Link>{" "}

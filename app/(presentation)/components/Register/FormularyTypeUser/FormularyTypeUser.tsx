@@ -91,11 +91,11 @@ export default function FormularyTypeUser() {
             setValues({ ...values, type_user: e.target.value })
           }
         >
-          <option value={""}>Selecciona el tipo de proveedor</option>
+          <option value={""}>Selecciona el tipo de Proveedor</option>
           <option value={"1"}>Médico</option>
           {/*<option value={"2"}>Clínica</option>
           <option value={"3"}>Laboratorio clínico</option>
-        <option value={"4"}>Centro de diagnóstico</option>*/}
+          <option value={"4"}>Centro de diagnóstico</option>*/}
         </FormSelect>
         {errors["type_user"] !== "" && (
           <p className="text-red-500">{errors["type_user"]}</p>
