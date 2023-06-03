@@ -12,7 +12,7 @@ import Formulary from "./Formulary/Formulary";
 export default function ServiceViewIndex() {
   const { state } = useContext<IAuthContext>(AuthContext);
   const { data, loading } = state.getUserAuthenticated;
-
+  if (!data?.userId) return <div />;
   return (
     <div className="py-5">
       <ServicesProvider>

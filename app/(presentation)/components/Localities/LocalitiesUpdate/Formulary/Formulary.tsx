@@ -12,6 +12,7 @@ import {
   SetStateAction,
   useContext,
   useMemo,
+  ChangeEvent,
 } from "react";
 import { FiCheck, FiCheckCircle, FiX } from "react-icons/fi";
 import { BiBuildingHouse } from "react-icons/bi";
@@ -25,7 +26,7 @@ import { ILocality } from "domain/core/entities/localityEntity";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { usePathname, useRouter } from "next/navigation";
 
-export default function Formulary({ userId }: { userId: string }) {
+export default function Formulary({ userId, localityId }: { userId: string, localityId:number },) {
   const pathname = usePathname();
 
   const { state, actions, dispatch } =
@@ -39,21 +40,87 @@ export default function Formulary({ userId }: { userId: string }) {
     error: errorUpdate,
   } = state.updateUserLocality;
 
-  let [formData, setFormData] = useState({} as ILocality);
+  let [formData, setFormData] = useState({
+    name: "",
+    code: "",
+    clues: "",
+    state: {
+      id: 0,
+      name: "",
+    },
+    address: "",
+    media: {
+      data: "",
+      type: "",
+    },
+  });
 
   useMemo(() => {
-    if (userId) {
-      const url = pathname?.split("/");
-      let id = url![url!.length - 1];
-      gettingUserLocality(parseInt(id), userId)(dispatch);
+    gettingUserLocality(localityId, userId)(dispatch);
+  }, []);
+
+  const setFormDataValues = () => {
+    setFormData({
+      ...formData,
+      name: data?.name ?? "",
+      code: data?.code ?? "",
+      clues: data?.clues ?? "",
+      state: {
+        id: data?.state.id ?? 0,
+        name: data?.state.name ?? 0,
+      },
+      address: data?.address ?? "",
+      media: {
+        data: data?.image_url ?? "",
+        type: data?.type,
+      },
+    })
+  }
+
+  useEffect(() => {
+    if (successful) {
+      setFormDataValues();
     }
-  }, [userId, pathname]);
+  },[successful])
 
-  useMemo(() => setFormData(data as unknown as ILocality), [successful]);
+  const toBase64 = (file: File) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
+  
+  async function handleChangeMedia(e: ChangeEvent<HTMLInputElement>) {
+    let file = e.target.files![0] as File;
 
+    let base64 = await toBase64(file);
+    let splittedType = file!.type.split("/");
+    var base64result = base64?.toString().split(",")[1];
+
+    let obj = {
+      data: base64result ?? "",
+      type: `${splittedType[1] ?? ""}`,
+    };
+
+    setFormData({ ...formData, media: obj });
+  }
+
+  
   useMemo(() => {
     if (successfulUpdate) window.location.href = "/localities";
   }, [successfulUpdate]);
+
+  if (loading) {
+    return (
+      <div className="w-full flex flex-col justify-center items-center">
+        <p className="font-bold text-slate-900 text-lg">Un momento...</p>
+        <p className="font-light text-slate-500 text-base">
+          Cargando la Localidad.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -76,7 +143,7 @@ export default function Formulary({ userId }: { userId: string }) {
           <Button
             disabled={loadingUpdate || formData?.name === "" || formData?.clues === "" }
             onClick={() => {
-              updateUserLocality({ ...formData, state: formData.state.name })(
+              updateUserLocality({ ...formData, state: formData.state.name }, data.id)(
                 dispatch
               );
               //console.log(formData)
@@ -165,7 +232,11 @@ export default function Formulary({ userId }: { userId: string }) {
                     Cargar imagen
                     <span className="text-primary font-bold">*</span>
                   </p>
-                  <FormInput type="file" className="form-control lg:w-[70%]" />
+                  <FormInput 
+                    onChange={(e) => handleChangeMedia(e)}
+                    type="file" 
+                    className="form-control lg:w-[70%]" 
+                  />
                 </div>
               </div>
             </div>

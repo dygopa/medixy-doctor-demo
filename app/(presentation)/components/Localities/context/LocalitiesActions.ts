@@ -50,11 +50,11 @@ const createUserLocality = (obj:any) => async (dispatch: Dispatch<any>) => {
   }
 }
 
-const updateUserLocality = (obj:any) => async (dispatch: Dispatch<any>) => {
+const updateUserLocality = (obj:any, id:number) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "UPDATE_USER_LOCALITY_LOADING" });
     
-    const res: string = await new LocalitiesUseCase().updateUserLocality(obj);
+    const res: string = await new LocalitiesUseCase().updateUserLocality(obj, id);
 
     dispatch({ type: "UPDATE_USER_LOCALITY_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

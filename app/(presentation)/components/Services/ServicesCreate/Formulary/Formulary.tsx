@@ -71,7 +71,10 @@ export default function Formulary({
     conditions: "",
     base_price: 0,
     status: 1,
-    media: {},
+    media: {
+      data: "",
+      type: "",
+    },
   });
 
   const toBase64 = (file: File) =>
@@ -164,14 +167,14 @@ export default function Formulary({
     setLoadedAPI(true);
   };
 
-  /* useMemo(() => {
+   useMemo(() => {
     if (successFulCreationService){
       createUserSteps(accountId, "SERVICE_CREATED")(dispatchStep)
       setTimeout(() => {
         window.location.href = "/services"
       }, 1000);
     };
-  }, [successFulCreationService]) */
+  }, [successFulCreationService]) 
 
   useMemo(() => {
     if (userId) getUserMedicalCenters(userId)(dispatch);

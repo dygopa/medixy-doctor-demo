@@ -167,7 +167,7 @@ export default function Formulary() {
         description="Paciente actualizado exitosamente"
       />
 
-      <div className="w-full lg:flex justify-between items-center sticky top-[67px] z-[50]  bg-slate-100 pt-2">
+      <div className="w-full md:flex justify-between items-center sticky top-[67px] z-[50]  bg-slate-100 pt-2">
         <div className="lg:w-[50%]">
           <h2 className="lg:mr-5 text-2xl font-bold truncate">
             Información del Paciente
