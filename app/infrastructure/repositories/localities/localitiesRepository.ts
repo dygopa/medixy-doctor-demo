@@ -10,7 +10,7 @@ export default interface ILocalitiesRepository {
   getMedicalCenters(): Promise<Array<ILocality> | LocalityFailure>;
   getUserLocalities(id:number): Promise<Array<ILocality> | LocalityFailure>;
   createUserLocality(obj:any): Promise<string | LocalityFailure>;
-  updateUserLocality(obj:any): Promise<string | LocalityFailure>;
+  updateUserLocality(obj:any, id:number): Promise<string | LocalityFailure>;
   addMediaLocality(obj:any, localityId: string): Promise<string | LocalityFailure>;
 }
 
@@ -120,7 +120,7 @@ export class LocalitiesRepository implements ILocalitiesRepository {
     }
   }
 
-  async updateUserLocality(obj:any): Promise<string | LocalityFailure> {
+  async updateUserLocality(obj:any, id:number): Promise<string | LocalityFailure> {
     try {
       let cookies = nookies.get(undefined, 'access_token');
 
@@ -148,9 +148,14 @@ export class LocalitiesRepository implements ILocalitiesRepository {
         redirect: 'follow'
       } as RequestInit;
 
-      let URL = UPDATE_USER_LOCALITY_ENDPOINT(obj["id"]) as RequestInfo
+      let URL = UPDATE_USER_LOCALITY_ENDPOINT(id) as RequestInfo
 
       const response = await fetch(URL, requestOptions)
+
+      if(response.status >= 400) {
+        return new LocalityFailure(localityFailuresEnum.serverError)
+      }
+      
       let data = await response.json()
 
       console.log("UPDATE_USER_LOCALITY_ENDPOINT", data["data"])

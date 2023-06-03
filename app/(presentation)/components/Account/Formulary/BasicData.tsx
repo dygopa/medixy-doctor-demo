@@ -79,7 +79,7 @@ export default function BasicData({
   const handleClickRef = () => avatarRef.current && avatarRef.current.click();
 
   const handleage = (value: string) => {
-    setAccount({ ...account, age: value });
+    setAccount({ ...account, birthDate: value });
     if (value.length < 2) {
       setErrors((previousState: any) => {
         return {

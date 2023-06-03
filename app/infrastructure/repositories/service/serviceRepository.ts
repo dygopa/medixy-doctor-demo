@@ -18,7 +18,7 @@ export default interface IServiceRepository {
   getUserServices(id:number): Promise<Array<IService> | ServiceFailure>;
   addServiceToLocality(obj:any): Promise<any | ServiceFailure>;
   createUserService(obj:any): Promise<string | ServiceFailure>;
-  updateService(obj:any): Promise<number | ServiceFailure>;
+  updateService(obj:any, id:number): Promise<number | ServiceFailure>;
   addMediaService(obj:any, serviceId: string): Promise<string | ServiceFailure>;
 }
 
@@ -117,7 +117,7 @@ export class ServicesRepository implements IServiceRepository {
 
       console.log("CREATE_USER_SERVICE_ENDPOINT", data["data"])
 
-      return "SUCCESS";
+      return data["data"];
     } catch (error) {
       console.log("Error", error)
       const exception = error as any;
@@ -125,7 +125,7 @@ export class ServicesRepository implements IServiceRepository {
     }
   }
 
-  async addMediaService(obj:any, serviceId: string): Promise<string | ServiceFailure> {
+  async addMediaService(obj:any, serviceId: string | number): Promise<string | ServiceFailure> {
     try {
       const id = nanoid(11);
       const fileName = `${id}.${obj["type"]}`;
@@ -186,7 +186,7 @@ export class ServicesRepository implements IServiceRepository {
     }
   }
 
-  async updateService(obj:any): Promise<number | ServiceFailure> {
+  async updateService(obj:any, id:number): Promise<number | ServiceFailure> {
     try {
       let cookies = nookies.get(undefined, 'access_token');
 
@@ -211,7 +211,7 @@ export class ServicesRepository implements IServiceRepository {
         redirect: 'follow'
       } as RequestInit;
 
-      let URL = UPDATE_USER_SERVICE_ENDPOINT(obj["id"] as number) as RequestInfo
+      let URL = UPDATE_USER_SERVICE_ENDPOINT(id as number) as RequestInfo
 
       const response = await fetch(URL, requestOptions)
       let data = await response.json()

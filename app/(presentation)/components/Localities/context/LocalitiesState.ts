@@ -5,13 +5,20 @@ export interface ILocalitiesState {
   getMedicalCenters: ILocalitiesLocalitiesState;
   getUserLocalities: ILocalitiesLocalitiesState;
   createUserLocality: ILocalitiesLocalitiesState;
-  updateUserLocality: ILocalitiesLocalitiesState;
-  gettingUserLocality: ILocalitiesLocalitiesState;
-  localityData: ILocalitiesLocalitiesState;
+  updateUserLocality: ILocalitiesLocalityState;
+  gettingUserLocality: ILocalitiesLocalityState;
+  localityData: ILocalitiesLocalityState;
 }
 
 interface ILocalitiesLocalitiesState {
-  data: Array<ILocality> | string | ILocality;
+  data: ILocality[];
+  loading: boolean;
+  successful: boolean;
+  error: LocalityFailure | null; 
+}
+
+interface ILocalitiesLocalityState {
+  data: ILocality;
   loading: boolean;
   successful: boolean;
   error: LocalityFailure | null; 
