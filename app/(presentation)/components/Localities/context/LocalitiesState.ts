@@ -6,13 +6,20 @@ export interface ILocalitiesState {
   getCountryStates: ILocalitiesLocalitiesState;
   getUserLocalities: ILocalitiesLocalitiesState;
   createUserLocality: ILocalitiesLocalitiesState;
-  updateUserLocality: ILocalitiesLocalitiesState;
-  gettingUserLocality: ILocalitiesLocalitiesState;
-  localityData: ILocalitiesLocalitiesState;
+  updateUserLocality: ILocalitiesLocalityState;
+  gettingUserLocality: ILocalitiesLocalityState;
+  localityData: ILocalitiesLocalityState;
 }
 
 interface ILocalitiesLocalitiesState {
-  data: Array<ILocality> | Array<any> | string | ILocality;
+  data: ILocality[];
+  loading: boolean;
+  successful: boolean;
+  error: LocalityFailure | null; 
+}
+
+interface ILocalitiesLocalityState {
+  data: ILocality;
   loading: boolean;
   successful: boolean;
   error: LocalityFailure | null; 

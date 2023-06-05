@@ -71,7 +71,10 @@ export default function Formulary({
     conditions: "",
     base_price: 0,
     status: 1,
-    media: {},
+    media: {
+      data: "",
+      type: "",
+    },
   });
 
   const toBase64 = (file: File) =>
@@ -164,14 +167,14 @@ export default function Formulary({
     setLoadedAPI(true);
   };
 
-  /* useMemo(() => {
+   useMemo(() => {
     if (successFulCreationService){
       createUserSteps(accountId, "SERVICE_CREATED")(dispatchStep)
       setTimeout(() => {
         window.location.href = "/services"
       }, 1000);
     };
-  }, [successFulCreationService]) */
+  }, [successFulCreationService]) 
 
   useMemo(() => {
     if (userId) getUserMedicalCenters(userId)(dispatch);
@@ -194,7 +197,7 @@ export default function Formulary({
         description="Tu servicio se ha creado exitosamente"
       />
 
-      <div className="w-full lg:flex justify-between items-start">
+      <div className="w-full md:flex justify-between items-start sticky top-[67px] z-[50] bg-slate-100 py-2">
         <h2 className="lg:mr-5 lg:mb-0 mb-4 text-2xl font-bold truncate">
           Nuevo servicio
         </h2>
@@ -225,7 +228,7 @@ export default function Formulary({
               //console.log(localities, {...formData, id: userId})
             }}
             variant="primary"
-            className="lg:w-1/2 w-[225px]"
+            className="lg:w-1/2 px-7"
           >
             {loadingCreationService ? "Creando..." : "Crear servicio"}
           </Button>

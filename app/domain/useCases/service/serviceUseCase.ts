@@ -64,11 +64,14 @@ export default class ServiceUseCase {
     }
   }
 
-  async updateService(obj:any): Promise<number> {
+  async updateService(obj:any, id:number): Promise<number> {
     try {
-      const response = await this._repository.updateService(obj);
+      const response = await this._repository.updateService(obj, id);
 
       if (response instanceof ServiceFailure) throw response;
+
+      if(obj["media"]["data"] !== "") await this._repository.addMediaService({...obj["media"], id: obj["id"]}, id);
+      
       return response;
     } catch (error) {
       throw error;

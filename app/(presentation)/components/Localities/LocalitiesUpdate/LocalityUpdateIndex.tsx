@@ -16,14 +16,14 @@ import {
   IAuthContext,
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 
-export default function LocalityUpdateIndex() {
+export default function LocalityUpdateIndex({localityId}:{localityId:number}) {
   const { state } = useContext<IAuthContext>(AuthContext);
   const { data, loading } = state.getUserAuthenticated;
-
+  if (!data?.userId) return <div />;
   return (
     <div className="py-5">
       <LocalitiesProvider>
-        <Formulary userId={loading ? "" : data.userId} />
+        <Formulary userId={loading ? "" : data.userId} localityId={localityId} />
       </LocalitiesProvider>
     </div>
   );

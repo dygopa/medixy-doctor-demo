@@ -54,7 +54,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
       second_lastname: account.lastName ?? "",
       curp: account.curp ?? "",
       phone_number: account.phone ?? "",
-      birthdate: account.birthDate,
+      birthdate: account.birthDate ?? null,
       birth_country: account.country ?? "",
       sex: account.sex ?? 0,
       person_type: account.personType ?? 0,
@@ -81,8 +81,8 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
         show={successful === true}
         description="Cuenta actualizada exitosamente"
       />
-      <div className="md:grid grid-cols-2 gap-5 w-full lg:flex justify-between items-center sticky top-[67px] z-[50] border-b bg-slate-100 pt-2">
-        <div className="lg:w-[70%]">
+      <div className="md:grid grid-cols-2 gap-5 w-full lg:flex justify-between items-center sticky top-[67px] z-[50] border-b lg:border-none bg-slate-100 py-2">
+        <div className="w-full lg:w-[70%]">
           <h2 className="lg:mr-5 text-2xl font-bold truncate">Mi cuenta</h2>
           <p className="font-light text-slate-500 text-base my-3">
             Completa la información de tu cuenta para poder desbloquear otras

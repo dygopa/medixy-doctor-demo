@@ -5,14 +5,21 @@ export interface IServicesState {
   getCategories: IServicesServicesState;
   getUserMedicalCenters: IServicesServicesState;
   getUserServices: IServicesServicesState;
-  getService: IServicesServicesState;
-  createUserService: IServicesServicesState;
-  updateService: IServicesServicesState;
-  deleteService: IServicesServicesState;
+  getService: IServiceServicesState;
+  createUserService: IServiceServicesState;
+  updateService: IServiceServicesState;
+  deleteService: IServiceServicesState;
 }
 
 interface IServicesServicesState {
   data: Array<any> | string;
+  loading: boolean;
+  successful: boolean;
+  error: ServiceFailure | null; 
+}
+
+interface IServiceServicesState {
+  data: IService;
   loading: boolean;
   successful: boolean;
   error: ServiceFailure | null; 
@@ -38,25 +45,25 @@ export const initialState: IServicesState = {
     error: null,
   },
   getService: {
-    data: "",
+    data: {} as IService,
     loading: false,
     successful: false,
     error: null,
   },
   createUserService: {
-    data: "",
+    data: {} as IService,
     loading: false,
     successful: false,
     error: null,
   },
   updateService: {
-    data: "",
+    data: {} as IService,
     loading: false,
     successful: false,
     error: null,
   },
   deleteService: {
-    data: "",
+    data: {} as IService,
     loading: false,
     successful: false,
     error: null,

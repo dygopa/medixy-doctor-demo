@@ -168,7 +168,7 @@ export default function AddRecipe({
     <div>
       <div className="xl:flex items-center justify-between mb-4 w-full">
         <div className="xl:flex items-center w-full">
-          <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[195px] w-full">
+          <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[150px] w-full">
             <p className="text-slate-900 font-lighter text-lg">Medicamento</p>
           </div>
 
@@ -196,13 +196,13 @@ export default function AddRecipe({
       <div className="mb-4 w-full">
         <div className="xl:flex items-center mb-4">
           <div className="xl:flex items-center w-full">
-            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[200px] w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[120px] w-full">
               <p className="text-slate-900 font-lighter text-lg">
                 Prescripción
               </p>
             </div>
 
-            <div className="xl:flex items-center w-full">
+            <div className="xl:flex items-center">
               <div className="xl:mr-3 xl:mb-0 mb-3">
                 <div className="mb-1">
                   <p className="text-md text-slate-500">Vía</p>
@@ -267,7 +267,7 @@ export default function AddRecipe({
 
                       setValues({ ...values, [e.target.name]: e.target.value });
                     }}
-                    className="xl:w-[150px] w-full"
+                    className="xl:w-16 w-full"
                   />
                 </div>
               </div>
@@ -312,109 +312,103 @@ export default function AddRecipe({
                   </FormSelect>
                 </div>
               </div>
-            </div>
-          </div>
-        </div>
-
-        <div>
-          <div className="xl:flex items-center w-full">
-            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[200px] w-full">
-              <p className="text-slate-900 font-lighter text-lg">Duración</p>
-            </div>
-
-            <div className="xl:flex items-center w-full">
-              <div className="xl:mr-3 xl:mb-0 mb-3">
-                <div className="mb-1">
-                  <p className="text-md text-slate-500">Cada</p>
-                </div>
-
-                <div>
-                  <FormInput
-                    value={values.frequencyValue}
-                    name="frequencyValue"
-                    type="number"
-                    min="1"
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      if (
-                        e.target.value.length > 0 &&
-                        parseInt(e.target.value, 10) <= 0
-                      )
-                        return;
-
-                      setValues({
-                        ...values,
-                        [e.target.name]: e.target.value,
-                      });
-                    }}
-                    className="xl:w-[150px] w-full"
-                  />
-                </div>
+              <div className="xl:mr-5 xl:mb-0 xl:w-[100px] w-full">
+                <p className="text-slate-900 font-lighter text-lg">Duración</p>
               </div>
+              <div className="xl:flex items-center">
+                <div className="xl:mr-3 xl:mb-0 mb-3">
+                  <div className="mb-1">
+                    <p className="text-md text-slate-500">Cada</p>
+                  </div>
 
-              <div className="xl:mr-3 xl:mb-0 mb-3">
-                <div className="mb-1">
-                  <p className="text-md text-white xl:h-[20px]" />
+                  <div>
+                    <FormInput
+                      value={values.frequencyValue}
+                      name="frequencyValue"
+                      type="number"
+                      min="1"
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        if (
+                          e.target.value.length > 0 &&
+                          parseInt(e.target.value, 10) <= 0
+                        )
+                          return;
+
+                        setValues({
+                          ...values,
+                          [e.target.name]: e.target.value,
+                        });
+                      }}
+                      className="xl:w-16 w-full"
+                    />
+                  </div>
                 </div>
 
-                <div>
-                  <FormSelect
-                    defaultValue={values.frequencyMeasure}
-                    name="frequencyMeasure"
-                    onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                      setValues({ ...values, [e.target.name]: e.target.value })
-                    }
-                  >
-                    <option value="hours">Horas</option>
-                    <option value="days">Días</option>
-                    <option value="weeks">Semanas</option>
-                    <option value="months">Meses</option>
-                  </FormSelect>
-                </div>
-              </div>
+                <div className="xl:mr-3 xl:mb-0 mb-3">
+                  <div className="mb-1">
+                    <p className="text-md text-white xl:h-[20px]" />
+                  </div>
 
-              <div className="xl:mr-3 xl:mb-0 mb-3">
-                <div className="mb-1">
-                  <p className="text-md text-slate-500">Durante</p>
-                </div>
-
-                <div>
-                  <FormInput
-                    value={values.duringValue}
-                    name="duringValue"
-                    type="number"
-                    min="1"
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      if (
-                        e.target.value.length > 0 &&
-                        parseInt(e.target.value, 10) <= 0
-                      )
-                        return;
-
-                      setValues({ ...values, [e.target.name]: e.target.value });
-                    }}
-                    className="xl:w-[150px] w-full"
-                  />
-                </div>
-              </div>
-
-              <div className="xl:mr-3 xl:mb-0 mb-3">
-                <div className="mb-1">
-                  <p className="text-md text-white xl:h-[20px]" />
+                  <div>
+                    <FormSelect
+                      defaultValue={values.frequencyMeasure}
+                      name="frequencyMeasure"
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                        setValues({ ...values, [e.target.name]: e.target.value })
+                      }
+                    >
+                      <option value="hours">Horas</option>
+                      <option value="days">Días</option>
+                      <option value="weeks">Semanas</option>
+                      <option value="months">Meses</option>
+                    </FormSelect>
+                  </div>
                 </div>
 
-                <div>
-                  <FormSelect
-                    defaultValue={values.duringMeasure}
-                    name="duringMeasure"
-                    onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                      setValues({ ...values, [e.target.name]: e.target.value })
-                    }
-                  >
-                    <option value="hours">Horas</option>
-                    <option value="days">Días</option>
-                    <option value="weeks">Semanas</option>
-                    <option value="months">Meses</option>
-                  </FormSelect>
+                <div className="xl:mr-3 xl:mb-0 mb-3">
+                  <div className="mb-1">
+                    <p className="text-md text-slate-500">Durante</p>
+                  </div>
+
+                  <div>
+                    <FormInput
+                      value={values.duringValue}
+                      name="duringValue"
+                      type="number"
+                      min="1"
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        if (
+                          e.target.value.length > 0 &&
+                          parseInt(e.target.value, 10) <= 0
+                        )
+                          return;
+
+                        setValues({ ...values, [e.target.name]: e.target.value });
+                      }}
+                      className="xl:w-16 w-full"
+                    />
+                  </div>
+                </div>
+
+                <div className="xl:mr-3 xl:mb-0 mb-3">
+                  <div className="mb-1">
+                    <p className="text-md text-white xl:h-[20px]" />
+                  </div>
+
+                  <div>
+                    <FormSelect
+                      defaultValue={values.duringMeasure}
+                      name="duringMeasure"
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                        setValues({ ...values, [e.target.name]: e.target.value })
+                      }
+                    >
+                      <option value="hours">Horas</option>
+                      <option value="days">Días</option>
+                      <option value="weeks">Semanas</option>
+                      <option value="months">Meses</option>
+                    </FormSelect>
+                  </div>
                 </div>
               </div>
             </div>

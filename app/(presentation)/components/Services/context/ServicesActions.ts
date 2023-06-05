@@ -79,11 +79,11 @@ const createUserService = (obj:any, list:Array<any>) => async (dispatch: Dispatc
   }
 }
 
-const updateService = (obj:any) => async (dispatch: Dispatch<any>) => {
+const updateService = (obj:any, id:number) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "UPDATE_USER_SERVICE_LOADING" });
     
-    const res: number = await new ServicesUseCase().updateService(obj);
+    const res: number = await new ServicesUseCase().updateService(obj, id);
 
     dispatch({ type: "UPDATE_USER_SERVICE_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

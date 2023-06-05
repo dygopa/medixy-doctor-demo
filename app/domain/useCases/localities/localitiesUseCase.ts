@@ -55,11 +55,13 @@ export default class LocalitiesUseCase {
         }
     }
 
-    async updateUserLocality(obj:any): Promise<string> {
+    async updateUserLocality(obj:any, id:number): Promise<string> {
         try {
-            const response = await this._repository.updateUserLocality(obj);
+            const response: any = await this._repository.updateUserLocality(obj, id);
   
             if (response instanceof LocalityFailure) throw response;
+            
+            if(obj["media"]["data"] !== "") await this._repository.addMediaLocality({...obj["media"], id: obj["id"]}, response.id);
   
             return response;
         } catch (error) {

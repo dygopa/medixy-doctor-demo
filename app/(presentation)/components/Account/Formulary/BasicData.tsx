@@ -79,7 +79,7 @@ export default function BasicData({
   const handleClickRef = () => avatarRef.current && avatarRef.current.click();
 
   const handleage = (value: string) => {
-    setAccount({ ...account, age: value });
+    setAccount({ ...account, birthDate: value });
     if (value.length < 2) {
       setErrors((previousState: any) => {
         return {
@@ -337,7 +337,7 @@ export default function BasicData({
                     Tipo de persona
                   </p>
                   <FormSelect
-                    value={account?.personType}
+                    defaultValue={account?.personType}
                     className="form-control w-full"
                     onChange={(e) =>
                       setAccount({ ...account, personType: +e.target.value })
