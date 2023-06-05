@@ -222,8 +222,8 @@ export default function Navigator() {
 
   return (
     <>
-      <div className="w-full lg:flex justify-between items-center sticky top-[67px] z-[97]  bg-slate-100 pt-2">
-        <div className="lg:w-[50%]">
+      <div className="w-full md:flex justify-between items-center sticky top-[67px] z-[97]  bg-slate-100 py-2 md:pb-0">
+        <div className="md:w-[50%]">
           <h2 className="lg:mr-5 text-2xl font-bold truncate">
             Nueva consulta
           </h2>

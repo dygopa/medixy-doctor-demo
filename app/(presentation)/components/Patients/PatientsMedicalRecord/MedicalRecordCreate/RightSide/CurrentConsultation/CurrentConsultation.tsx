@@ -11,10 +11,37 @@ interface ICurrentConsultationProps {
   width: number;
 }
 
+type valuesTypes = {
+  consultationDate: string;
+  referredBy: string;
+  consultationReason: string;
+  sufferingDate: string;
+  generalInspection: string;
+  respiratorySystem: string;
+  digestiveSystem: string;
+  cardiovascularSystem: string;
+  reproductiveSystem: string;
+  urinarySystem: string;
+  ophthalmologicalSystem: string;
+  locomotorSystem: string;
+  earInspection: string;
+  neurologicalInspection: string;
+  skinInspection: string;
+  size: string;
+  weight: string;
+  temperature: string;
+  respiratoryFrequency: string;
+  oximetry: string;
+  muscleMass: string;
+  glicemy: string;
+  diagnose: string[];
+  observations: string;
+};
+
 export default function CurrentConsultation({
   width,
 }: ICurrentConsultationProps) {
-  const [values, setValues] = useState({
+  const [values, setValues] = useState<valuesTypes>({
     consultationDate: "",
     referredBy: "",
     consultationReason: "",
@@ -37,7 +64,7 @@ export default function CurrentConsultation({
     oximetry: "",
     muscleMass: "",
     glicemy: "",
-    diagnose: "",
+    diagnose: [],
     observations: "",
   });
 

@@ -1,6 +1,7 @@
 import AboutPatient from "./AboutPatient/AboutPatient";
 import Allergies from "./Allergies/Allergies";
 import History from "./History/History";
+import MainPopup from "./MainPopup/MainPopup";
 // import MainPopup from "./MainPopup/MainPopup";
 import Orders from "./Orders/Orders";
 import Record from "./Record/Record";
@@ -40,7 +41,7 @@ export default function PatientDetails() {
         </div>
       </div>
 
-      {/* <MainPopup /> */}
+      <MainPopup />
     </>
   );
 }

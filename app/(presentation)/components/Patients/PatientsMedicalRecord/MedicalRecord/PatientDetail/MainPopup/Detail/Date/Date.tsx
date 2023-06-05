@@ -1,4 +1,8 @@
+import useMedicalRecord from "(presentation)/(hooks)/useMedicalRecord";
+
 export default function Diagnosis() {
+  const { medicalConsulty } = useMedicalRecord();
+
   return (
     <div>
       <div className="mb-2">
@@ -7,8 +11,9 @@ export default function Diagnosis() {
 
       <div>
         <h1 className="text-slate-900 font-bold text-lg">
-          {new Date().getDate()}/{new Date().getMonth() + 1}/
-          {new Date().getFullYear()}
+          {new Date(medicalConsulty.consultationDate).getDate()}/
+          {new Date(medicalConsulty.consultationDate).getMonth()}/
+          {new Date(medicalConsulty.consultationDate).getFullYear()}
         </h1>
       </div>
     </div>

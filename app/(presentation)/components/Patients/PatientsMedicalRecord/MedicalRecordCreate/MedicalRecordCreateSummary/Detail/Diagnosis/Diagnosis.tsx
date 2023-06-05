@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 export default function Diagnosis() {
-  const [diagnosis, setDiagnosis] = useState("");
+  const [diagnosis, setDiagnosis] = useState<string[]>([]);
 
   const setValueFromLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
@@ -21,13 +21,19 @@ export default function Diagnosis() {
   return (
     <div>
       <div className="mb-2">
-        <h3 className="text-slate-400 text-lg">Diagnóstico</h3>
+        <h3 className="text-slate-400 text-lg">Diagnósticos</h3>
       </div>
 
       <div>
-        <h1 className="text-slate-900 font-bold text-lg">
-          {diagnosis.length > 0 ? diagnosis : "Desconocido"}
-        </h1>
+        {diagnosis.length > 0 ? (
+          diagnosis.map((diagnose: string, i: number) => (
+            <div key={i} className="mb-2">
+              <h1 className="text-slate-900 font-bold text-lg">{diagnose}</h1>
+            </div>
+          ))
+        ) : (
+          <h1 className="text-slate-900 font-bold text-lg">Desconocido</h1>
+        )}
       </div>
     </div>
   );

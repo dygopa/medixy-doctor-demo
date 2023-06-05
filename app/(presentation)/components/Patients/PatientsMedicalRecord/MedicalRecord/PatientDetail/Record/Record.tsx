@@ -12,11 +12,11 @@ export default function Record() {
       <div className="p-5 box h-full overflow-y-hidden">
         <div>
           <div className="w-full flex justify-between items-center border-b pb-2">
-            <p className="text-left font-normal text-md text-slate-500 w-full">Antecedentes</p>
+            <p className="text-left font-bold text-md text-slate-900 w-full">Antecedentes</p>
 
             {/* <p className="font-normal text-[15px] text-slate-500 cursor-pointer">
               Ver más
-    </p> */}
+            </p> */}
           </div>
         </div>
 

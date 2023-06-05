@@ -1,13 +1,7 @@
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import clsx from "clsx";
 import { useSearchParams } from "next/navigation";
-import {
-  ChangeEvent,
-  Dispatch,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useEffect } from "react";
 
 type valuesTypes = {
   consultationDate: string;
@@ -32,7 +26,7 @@ type valuesTypes = {
   oximetry: string;
   muscleMass: string;
   glicemy: string;
-  diagnose: string;
+  diagnose: string[];
   observations: string;
 };
 
@@ -135,15 +129,15 @@ export default function BasicDetails({
 
   return (
     <div>
-      <div className="mb-4">
+      <div className="xl:flex justify-between mb-4">
         <div className="xl:flex lg:flex xl:mb-0 mb-4 items-center">
-          <div className="mr-5 xl:mb-0 lg:mb-0 mb-1 xl:w-[250px] w-[200px]">
+          <div className="mr-5 xl:w-[235px] lg:w-[200px] w-full xl:mb-0 lg:mb-0 mb-1">
             <p className="text-slate-900 font-lighter text-lg flex">
               Fecha de la consulta <p className="text-danger">*</p>
             </p>
           </div>
 
-          <div className="w-full">
+          <div className="xl:w-[340px] w-full">
             <FormInput
               value={values.consultationDate}
               name="consultationDate"
@@ -162,9 +156,9 @@ export default function BasicDetails({
           </div>
         </div>
 
-        <div className="xl:flex lg:flex items-center mt-4">
-          <div className="mr-5 xl:w-[250px] w-[200px] xl:mb-0 lg:mb-0 mb-1">
-            <p className="text-slate-900 font-lighter text-lg">Referido por</p>
+        <div className="xl:flex lg:flex items-center xl:mt-0 mt-4">
+          <div className="mr-5 xl:w-[300px] w-[200px] xl:mb-0 lg:mb-0 mb-1 xl:text-end">
+            <p className="text-lg">Referido por</p>
           </div>
 
           <div className="w-full">
@@ -181,7 +175,7 @@ export default function BasicDetails({
 
       <div className="xl:flex items-center justify-between w-full mb-4">
         <div className="xl:flex lg:flex items-center w-full">
-          <div className="mr-5 xl:w-[250px] lg:w-[200px] w-full xl:mb-0 lg:mb-0 mb-1">
+          <div className="mr-5 xl:w-[300px] lg:w-[200px] w-full xl:mb-0 lg:mb-0 mb-1">
             <p className="text-slate-900 font-lighter text-lg flex">
               Mótivo de la consulta <p className="text-danger">*</p>
             </p>
@@ -209,10 +203,8 @@ export default function BasicDetails({
 
       <div className="xl:flex items-center justify-between w-full mb-4">
         <div className="xl:flex lg:flex items-center w-full">
-          <div className="mr-5 xl:w-[250px] lg:w-[200px] xl:mb-0 lg:mb-0 mb-1">
-            <p className="text-slate-900 font-lighter text-lg">
-              Inicio del padecimiento
-            </p>
+          <div className="mr-5 xl:w-[300px] lg:w-[200px] xl:mb-0 lg:mb-0 mb-1">
+            <p className="text-lg">Inicio del padecimiento</p>
           </div>
 
           <div className="w-full">

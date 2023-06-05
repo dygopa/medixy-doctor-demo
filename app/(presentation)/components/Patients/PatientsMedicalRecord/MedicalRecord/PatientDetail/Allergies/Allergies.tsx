@@ -10,7 +10,7 @@ export default function Allergies() {
     >
       <div className="p-4 box h-full overflow-y-hidden">
         <div className="flex flex-col items-start w-full h-full">
-          <p className="w-full text-left font-normal text-md text-slate-500 pb-2 border-b mb-2">
+          <p className="w-full text-left font-bold text-md text-slate-900 pb-2 border-b mb-2">
             Alergias
           </p>
           <div className="flex justify-between items-center w-full mb-1">
