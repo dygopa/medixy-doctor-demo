@@ -159,11 +159,11 @@ export default function StepByStep({ user }: { user: IUser }) {
 
   return (
     <div className={twMerge([
-      "w-fit h-fit fixed bottom-5 right-5 flex flex-col justify-end items-center gap-4",
+      "w-fit h-fit fixed bottom-5 right-5 flex flex-col justify-end items-center gap-4 z-[100]",
       !canShowHelp && "hidden"
     ])}>
       {activeHelper && (
-        <div className="w-[20rem] max-h-[50vh] h-fit p-4 flex flex-col justify-start items-center gap-3 border border-slate-200 rounded-lg bg-white shadow-md overflow-hidden relative overflow-y-auto z-[100]">
+        <div className="w-[20rem] max-h-[50vh] h-fit p-4 flex flex-col justify-start items-center gap-3 border border-slate-200 rounded-lg bg-white shadow-md overflow-hidden relative overflow-y-auto">
           <div className="w-full bg-primary rounded-md flex flex-col justify-center items-center gap-2 p-3 sticky top-0 z-20">
             <p className="text-white text-center font-semibold text-base">
               Completemos tu cuenta
