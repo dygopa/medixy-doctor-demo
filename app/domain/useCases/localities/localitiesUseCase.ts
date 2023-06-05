@@ -17,6 +17,18 @@ export default class LocalitiesUseCase {
         }
     }
 
+    async getCountryStates(): Promise<Array<any>> {
+        try {
+            const response = await this._repository.getCountryStates();
+  
+            if (response instanceof LocalityFailure) throw response;
+  
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
+
     async getUserLocalities(id:number): Promise<Array<ILocality>> {
         try {
             const response = await this._repository.getUserLocalities(id);
