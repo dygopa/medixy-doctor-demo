@@ -168,8 +168,8 @@ export default function AddRecipe({
     <div>
       <div className="xl:flex items-center justify-between mb-4 w-full">
         <div className="xl:flex items-center w-full">
-          <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[150px] w-full">
-            <p className="text-slate-900 font-lighter text-lg">Medicamento</p>
+          <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[130px] w-full">
+            <p className="text-lg">Medicamento</p>
           </div>
 
           <div className="w-full">
@@ -196,126 +196,140 @@ export default function AddRecipe({
       <div className="mb-4 w-full">
         <div className="xl:flex items-center mb-4">
           <div className="xl:flex items-center w-full">
-            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[120px] w-full">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[130px] w-full md:grid grid-cols-2 md:gap-5 xl:gap-0">
               <p className="text-slate-900 font-lighter text-lg">
                 Prescripción
               </p>
+              <p className="text-slate-900 font-lighter text-lg xl:hidden hidden md:block">
+                Duración
+              </p>
             </div>
 
-            <div className="xl:flex items-center">
-              <div className="xl:mr-3 xl:mb-0 mb-3">
-                <div className="mb-1">
-                  <p className="text-md text-slate-500">Vía</p>
+            <div className="xl:flex items-center md:grid grid-cols-2 md:gap-5 xl:gap-0">
+              <div className="md:flex items-center md:gap-3 xl:gap-0">
+                <div className="xl:mr-3 xl:mb-0 mb-3">
+                  <div className="mb-1">
+                    <p className="text-md text-slate-500">Vía</p>
+                  </div>
+
+                  <div>
+                    <FormSelect
+                      defaultValue={values.via}
+                      name="via"
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                        setValues({
+                          ...values,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
+                    >
+                      <option value={TreatmentViaDosisEnum.ORAL}>
+                        {TreatmentViaDosisTextEnum.ORAL}
+                      </option>
+                      <option value={TreatmentViaDosisEnum.SUBLINGUAL}>
+                        {TreatmentViaDosisTextEnum.SUBLINGUAL}
+                      </option>
+                      <option value={TreatmentViaDosisEnum.TOPICA}>
+                        {TreatmentViaDosisTextEnum.TOPICA}
+                      </option>
+                      <option value={TreatmentViaDosisEnum.TRANSDERMIC}>
+                        {TreatmentViaDosisTextEnum.TRANSDERMIC}
+                      </option>
+                      <option value={TreatmentViaDosisEnum.OPHTHALMOLOGICAL}>
+                        {TreatmentViaDosisTextEnum.OPHTHALMOLOGICAL}
+                      </option>
+                      <option value={TreatmentViaDosisEnum.INHALATION}>
+                        {TreatmentViaDosisTextEnum.INHALATION}
+                      </option>
+                      <option value={TreatmentViaDosisEnum.RECTAL}>
+                        {TreatmentViaDosisTextEnum.RECTAL}
+                      </option>
+                      <option value={TreatmentViaDosisEnum.VAGINAL}>
+                        {TreatmentViaDosisTextEnum.VAGINAL}
+                      </option>
+                      <option value={TreatmentViaDosisEnum.PARENTAL}>
+                        {TreatmentViaDosisTextEnum.PARENTAL}
+                      </option>
+                    </FormSelect>
+                  </div>
                 </div>
 
-                <div>
-                  <FormSelect
-                    defaultValue={values.via}
-                    name="via"
-                    onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                      setValues({ ...values, [e.target.name]: e.target.value })
-                    }
-                  >
-                    <option value={TreatmentViaDosisEnum.ORAL}>
-                      {TreatmentViaDosisTextEnum.ORAL}
-                    </option>
-                    <option value={TreatmentViaDosisEnum.SUBLINGUAL}>
-                      {TreatmentViaDosisTextEnum.SUBLINGUAL}
-                    </option>
-                    <option value={TreatmentViaDosisEnum.TOPICA}>
-                      {TreatmentViaDosisTextEnum.TOPICA}
-                    </option>
-                    <option value={TreatmentViaDosisEnum.TRANSDERMIC}>
-                      {TreatmentViaDosisTextEnum.TRANSDERMIC}
-                    </option>
-                    <option value={TreatmentViaDosisEnum.OPHTHALMOLOGICAL}>
-                      {TreatmentViaDosisTextEnum.OPHTHALMOLOGICAL}
-                    </option>
-                    <option value={TreatmentViaDosisEnum.INHALATION}>
-                      {TreatmentViaDosisTextEnum.INHALATION}
-                    </option>
-                    <option value={TreatmentViaDosisEnum.RECTAL}>
-                      {TreatmentViaDosisTextEnum.RECTAL}
-                    </option>
-                    <option value={TreatmentViaDosisEnum.VAGINAL}>
-                      {TreatmentViaDosisTextEnum.VAGINAL}
-                    </option>
-                    <option value={TreatmentViaDosisEnum.PARENTAL}>
-                      {TreatmentViaDosisTextEnum.PARENTAL}
-                    </option>
-                  </FormSelect>
+                <div className="xl:mr-3 xl:mb-0 mb-3">
+                  <div className="mb-1">
+                    <p className="text-md text-slate-500">Cantidad</p>
+                  </div>
+
+                  <div>
+                    <FormInput
+                      value={values.quantity}
+                      name="quantity"
+                      type="number"
+                      min="1"
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                        if (
+                          e.target.value.length > 0 &&
+                          parseInt(e.target.value, 10) <= 0
+                        )
+                          return;
+
+                        setValues({
+                          ...values,
+                          [e.target.name]: e.target.value,
+                        });
+                      }}
+                      className="xl:w-16 md:w-14 w-full"
+                    />
+                  </div>
+                </div>
+
+                <div className="xl:mr-3 xl:mb-0 mb-3">
+                  <div className="mb-1">
+                    <p className="text-md text-slate-500">Unidad</p>
+                  </div>
+
+                  <div>
+                    <FormSelect
+                      defaultValue={values.unit}
+                      name="unit"
+                      onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                        setValues({
+                          ...values,
+                          [e.target.name]: e.target.value,
+                        })
+                      }
+                    >
+                      <option value={TreatmentDosisTypeEnum.CAPSULE}>
+                        {TreatmentDosisTypeTextEnum.CAPSULE}
+                      </option>
+                      <option value={TreatmentDosisTypeEnum.JARABE}>
+                        {TreatmentDosisTypeTextEnum.JARABE}
+                      </option>
+                      <option value={TreatmentDosisTypeEnum.POLVOS}>
+                        {TreatmentDosisTypeTextEnum.POLVOS}
+                      </option>
+                      <option value={TreatmentDosisTypeEnum.SUSPENTION}>
+                        {TreatmentDosisTypeTextEnum.SUSPENTION}
+                      </option>
+                      <option value={TreatmentDosisTypeEnum.COMPRIMITE}>
+                        {TreatmentDosisTypeTextEnum.COMPRIMITE}
+                      </option>
+                      <option value={TreatmentDosisTypeEnum.GRANULATE}>
+                        {TreatmentDosisTypeTextEnum.GRANULATE}
+                      </option>
+                      <option value={TreatmentDosisTypeEnum.EMULSION}>
+                        {TreatmentDosisTypeTextEnum.EMULSION}
+                      </option>
+                      <option value={TreatmentDosisTypeEnum.INYECTABLE}>
+                        {TreatmentDosisTypeTextEnum.INYECTABLE}
+                      </option>
+                    </FormSelect>
+                  </div>
                 </div>
               </div>
-
-              <div className="xl:mr-3 xl:mb-0 mb-3">
-                <div className="mb-1">
-                  <p className="text-md text-slate-500">Cantidad</p>
-                </div>
-
-                <div>
-                  <FormInput
-                    value={values.quantity}
-                    name="quantity"
-                    type="number"
-                    min="1"
-                    onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                      if (
-                        e.target.value.length > 0 &&
-                        parseInt(e.target.value, 10) <= 0
-                      )
-                        return;
-
-                      setValues({ ...values, [e.target.name]: e.target.value });
-                    }}
-                    className="xl:w-16 w-full"
-                  />
-                </div>
-              </div>
-
-              <div className="xl:mr-3 xl:mb-0 mb-3">
-                <div className="mb-1">
-                  <p className="text-md text-slate-500">Unidad</p>
-                </div>
-
-                <div>
-                  <FormSelect
-                    defaultValue={values.unit}
-                    name="unit"
-                    onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                      setValues({ ...values, [e.target.name]: e.target.value })
-                    }
-                  >
-                    <option value={TreatmentDosisTypeEnum.CAPSULE}>
-                      {TreatmentDosisTypeTextEnum.CAPSULE}
-                    </option>
-                    <option value={TreatmentDosisTypeEnum.JARABE}>
-                      {TreatmentDosisTypeTextEnum.JARABE}
-                    </option>
-                    <option value={TreatmentDosisTypeEnum.POLVOS}>
-                      {TreatmentDosisTypeTextEnum.POLVOS}
-                    </option>
-                    <option value={TreatmentDosisTypeEnum.SUSPENTION}>
-                      {TreatmentDosisTypeTextEnum.SUSPENTION}
-                    </option>
-                    <option value={TreatmentDosisTypeEnum.COMPRIMITE}>
-                      {TreatmentDosisTypeTextEnum.COMPRIMITE}
-                    </option>
-                    <option value={TreatmentDosisTypeEnum.GRANULATE}>
-                      {TreatmentDosisTypeTextEnum.GRANULATE}
-                    </option>
-                    <option value={TreatmentDosisTypeEnum.EMULSION}>
-                      {TreatmentDosisTypeTextEnum.EMULSION}
-                    </option>
-                    <option value={TreatmentDosisTypeEnum.INYECTABLE}>
-                      {TreatmentDosisTypeTextEnum.INYECTABLE}
-                    </option>
-                  </FormSelect>
-                </div>
-              </div>
-              <div className="xl:mr-5 xl:mb-0 xl:w-[100px] w-full">
+              <div className="xl:mr-5 xl:mb-0 xl:w-[80px] w-full md:hidden lg:hidden block xl:block">
                 <p className="text-slate-900 font-lighter text-lg">Duración</p>
               </div>
-              <div className="xl:flex items-center">
+              <div className="md:flex items-center md:gap-3 xl:gap-0">
                 <div className="xl:mr-3 xl:mb-0 mb-3">
                   <div className="mb-1">
                     <p className="text-md text-slate-500">Cada</p>
@@ -339,14 +353,14 @@ export default function AddRecipe({
                           [e.target.name]: e.target.value,
                         });
                       }}
-                      className="xl:w-16 w-full"
+                      className="xl:w-16 md:w-14 w-full"
                     />
                   </div>
                 </div>
 
                 <div className="xl:mr-3 xl:mb-0 mb-3">
                   <div className="mb-1">
-                    <p className="text-md text-white xl:h-[20px]" />
+                    <p className="text-md text-white md:h-[20px]" />
                   </div>
 
                   <div>
@@ -354,7 +368,10 @@ export default function AddRecipe({
                       defaultValue={values.frequencyMeasure}
                       name="frequencyMeasure"
                       onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                        setValues({ ...values, [e.target.name]: e.target.value })
+                        setValues({
+                          ...values,
+                          [e.target.name]: e.target.value,
+                        })
                       }
                     >
                       <option value="hours">Horas</option>
@@ -383,16 +400,19 @@ export default function AddRecipe({
                         )
                           return;
 
-                        setValues({ ...values, [e.target.name]: e.target.value });
+                        setValues({
+                          ...values,
+                          [e.target.name]: e.target.value,
+                        });
                       }}
-                      className="xl:w-16 w-full"
+                      className="xl:w-16 md:w-14 w-full"
                     />
                   </div>
                 </div>
 
                 <div className="xl:mr-3 xl:mb-0 mb-3">
                   <div className="mb-1">
-                    <p className="text-md text-white xl:h-[20px]" />
+                    <p className="text-md text-white md:h-[20px]" />
                   </div>
 
                   <div>
@@ -400,7 +420,10 @@ export default function AddRecipe({
                       defaultValue={values.duringMeasure}
                       name="duringMeasure"
                       onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                        setValues({ ...values, [e.target.name]: e.target.value })
+                        setValues({
+                          ...values,
+                          [e.target.name]: e.target.value,
+                        })
                       }
                     >
                       <option value="hours">Horas</option>
@@ -418,8 +441,8 @@ export default function AddRecipe({
 
       <div className="xl:flex items-center justify-between w-full mt-4">
         <div className="xl:flex items-center w-full">
-          <div className="xl:mr-5 xl:mb-0 mb-1 w-[195px]">
-            <p className="text-slate-900 font-lighter text-lg" />
+          <div className="xl:mr-5 xl:mb-0 mb-1 w-[145px]">
+            <p className="input-label" />
           </div>
 
           <div className="xl:flex items-center w-full">

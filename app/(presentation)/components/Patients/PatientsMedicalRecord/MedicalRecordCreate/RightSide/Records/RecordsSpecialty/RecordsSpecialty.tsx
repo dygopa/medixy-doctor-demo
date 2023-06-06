@@ -48,7 +48,7 @@ export default function RecordsSpecialty({
         <div className="flex items-center justify-between mb-4 w-full">
           <div className="flex items-center w-full">
             <div className="mr-5 w-[200px]">
-              <p className="text-slate-900 font-lighter text-lg">Alergías</p>
+              <p className="input-label">Alergías</p>
             </div>
 
             <div className="flex items-center w-full">
@@ -97,7 +97,7 @@ export default function RecordsSpecialty({
         <div className="flex items-center justify-between mb-4 w-full">
           <div className="flex items-center w-full">
             <div className="mr-5 w-[200px]">
-              <p className="text-slate-900 font-lighter text-lg">Diabéticos</p>
+              <p className="input-label">Diabéticos</p>
             </div>
 
             <div className="flex items-center w-full">
@@ -146,7 +146,7 @@ export default function RecordsSpecialty({
         <div className="flex items-center justify-between mb-4 w-full">
           <div className="flex items-center w-full">
             <div className="mr-5 w-[200px]">
-              <p className="text-slate-900 font-lighter text-lg">Cáncer</p>
+              <p className="input-label">Cáncer</p>
             </div>
 
             <div className="flex items-center w-full">
@@ -195,7 +195,7 @@ export default function RecordsSpecialty({
         <div className="flex items-center justify-between mb-4 w-full">
           <div className="flex items-center w-full">
             <div className="mr-5 w-[200px]">
-              <p className="text-slate-900 font-lighter text-lg">
+              <p className="input-label">
                 Hipertensión
               </p>
             </div>
@@ -246,7 +246,7 @@ export default function RecordsSpecialty({
         <div className="flex items-center justify-between mb-4 w-full">
           <div className="flex items-center w-full">
             <div className="mr-5 w-[200px]">
-              <p className="text-slate-900 font-lighter text-lg">
+              <p className="input-label">
                 Ingiere bebidas alcohólicas
               </p>
             </div>

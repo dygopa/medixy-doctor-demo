@@ -14,9 +14,11 @@ export default function RightSide({ width }: IRightSideProps) {
   const setValuesLocalStorage = () => {
     setIsLoading(true);
 
-    const values = localStorage.getItem("prosit.storage.medical-record-create");
+    const values: any = localStorage.getItem(
+      "prosit.storage.medical-record-create"
+    );
 
-    if (!values) {
+    if (!values || typeof values?.diagnose === "string") {
       const valuesFormulary = {
         currentConsultation: {
           consultationDate: "",
@@ -41,7 +43,7 @@ export default function RightSide({ width }: IRightSideProps) {
           oximetry: "",
           muscleMass: "",
           glicemy: "",
-          diagnose: "",
+          diagnose: [],
           observations: "",
         },
         records: {

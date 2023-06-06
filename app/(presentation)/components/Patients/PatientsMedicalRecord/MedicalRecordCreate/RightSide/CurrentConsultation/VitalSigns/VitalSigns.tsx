@@ -33,7 +33,7 @@ type valuesTypes = {
   oximetry: string;
   muscleMass: string;
   glicemy: string;
-  diagnose: string;
+  diagnose: string[];
   observations: string;
 };
 
@@ -311,10 +311,10 @@ export default function VitalSigns({
       </button>
 
       <div className={clsx([showBody ? "block" : "hidden"])}>
-        <div className="xl:block items-center justify-between mb-4">
+        <div className="xl:flex items-center justify-between mb-4">
           <div className="xl:flex items-center xl:mb-4 mb-4">
-            <div className="xl:mr-5 mb-1 w-[250px]">
-              <p className="text-slate-900 font-lighter text-lg">Talla (mts)</p>
+            <div className="xl:mr-5 mb-1 w-[400px]">
+              <p className="text-lg">Talla (mts)</p>
             </div>
 
             <div className="w-full">
@@ -336,8 +336,8 @@ export default function VitalSigns({
           </div>
 
           <div className="xl:flex items-center xl:mb-4 mb-4">
-            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
-              <p className="text-slate-900 font-lighter text-lg">Peso (Kg)</p>
+            <div className="xl:mr-5 mb-1 xl:w-[335px] w-full xl:text-end">
+              <p className="text-lg">Peso (Kg)</p>
             </div>
 
             <div className="w-full">
@@ -360,12 +360,10 @@ export default function VitalSigns({
           </div>
         </div>
 
-        <div className="xl:block items-center justify-between mb-4">
+        <div className="xl:flex items-center justify-between mb-4">
           <div className="xl:flex items-center xl:mb-4 mb-4">
-            <div className="xl:mr-5 mb-1 w-[250px]">
-              <p className="text-slate-900 font-lighter text-lg">
-                Temperatura (°C)
-              </p>
+            <div className="xl:mr-5 mb-1 w-[400px]">
+              <p className="text-lg">Temperatura (°C)</p>
             </div>
 
             <div className="w-full">
@@ -388,10 +386,8 @@ export default function VitalSigns({
           </div>
 
           <div className="xl:flex items-center xl:mb-4 mb-4">
-            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
-              <p className="text-slate-900 font-lighter text-lg">
-                Frecuencia respiratoria
-              </p>
+            <div className="xl:mr-5 mb-1 xl:w-[335px] w-full xl:text-end">
+              <p className="text-lg">Frecuencia respiratoria</p>
             </div>
 
             <div className="w-full">
@@ -416,10 +412,10 @@ export default function VitalSigns({
           </div>
         </div>
 
-        <div className="xl:block items-center justify-between mb-4">
+        <div className="xl:flex items-center justify-between mb-4">
           <div className="xl:flex items-center xl:mb-4 mb-4">
-            <div className="xl:mr-5 mb-1 w-[250px]">
-              <p className="text-slate-900 font-lighter text-lg">Oximetría</p>
+            <div className="xl:mr-5 mb-1 w-[400px]">
+              <p className="text-lg">Oximetría</p>
             </div>
 
             <div className="w-full">
@@ -442,10 +438,8 @@ export default function VitalSigns({
           </div>
 
           <div className="xl:flex items-center xl:mb-4 mb-4">
-            <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
-              <p className="text-slate-900 font-lighter text-lg">
-                Índice masa muscular
-              </p>
+            <div className="xl:mr-5 mb-1 xl:w-[335px] w-full xl:text-end">
+              <p className="text-lg">Índice masa muscular</p>
             </div>
 
             <div className="w-full">
@@ -468,10 +462,10 @@ export default function VitalSigns({
           </div>
         </div>
 
-        <div className="xl:block items-center justify-between mb-4">
+        <div className="xl:flex items-center justify-between mb-4">
           <div className="xl:flex items-center xl:mb-4 mb-4">
-            <div className="xl:mr-5 mb-1 w-[250px]">
-              <p className="text-slate-900 font-lighter text-lg">Glicemia</p>
+            <div className="xl:mr-5 mb-1 w-[400px]">
+              <p className="text-lg">Glicemia</p>
             </div>
 
             <div className="w-full">
@@ -490,6 +484,21 @@ export default function VitalSigns({
               {errors.glicemy.length > 0 && (
                 <p className="text-danger mt-1">{errors.glicemy}</p>
               )}
+            </div>
+          </div>
+
+          <div className="xl:flex items-center xl:mb-4 mb-4 opacity-0 h-0">
+            <div className="xl:mr-5 mb-1 xl:w-[335px] w-full xl:text-end">
+              <p className="text-lg">Índice masa muscular</p>
+            </div>
+
+            <div className="w-full">
+              <FormInput
+                value={values.muscleMass}
+                name="muscleMass"
+                type="text"
+                className={clsx(["h-[50px] xl:w-full w-full"])}
+              />
             </div>
           </div>
         </div>

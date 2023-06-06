@@ -1,24 +1,7 @@
-import { useEffect, useState } from "react";
+import useMedicalRecord from "(presentation)/(hooks)/useMedicalRecord";
 
 export default function Reason() {
-  const [reason, setReason] = useState("");
-  const [referrer, setReferrer] = useState("");
-
-  const setValueFromLocalStorage = () => {
-    const valuesStorage = localStorage.getItem(
-      "prosit.storage.medical-record-create"
-    );
-
-    if (!valuesStorage) window.location.reload();
-
-    const valuesJSON = JSON.parse(valuesStorage ?? "");
-    setReason(valuesJSON.currentConsultation.consultationReason);
-    setReferrer(valuesJSON.currentConsultation.referredBy);
-  };
-
-  useEffect(() => {
-    setValueFromLocalStorage();
-  }, []);
+  const { medicalConsulty } = useMedicalRecord();
 
   return (
     <div>
@@ -28,7 +11,10 @@ export default function Reason() {
 
       <div>
         <h1 className="text-slate-900 font-bold text-lg">
-          {reason} {referrer.length > 0 && `- Referido por ${referrer}`}
+          {medicalConsulty.consultationReason}{" "}
+          {medicalConsulty.referrerBy &&
+            medicalConsulty.referrerBy?.length > 0 &&
+            `- Referido por ${medicalConsulty.referrerBy}`}
         </h1>
       </div>
     </div>

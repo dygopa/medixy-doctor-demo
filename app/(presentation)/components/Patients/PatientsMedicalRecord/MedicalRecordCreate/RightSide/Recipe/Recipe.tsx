@@ -86,7 +86,7 @@ export default function Recipe() {
           }}
           className="w-full"
         >
-          <div className="w-full flex justify-between items-center brecipe-b pb-2">
+          <div className="w-full flex justify-between items-center border-b pb-2">
             <div>
               <p className="font-bold text-lg text-slate-900">Receta</p>
             </div>
@@ -102,7 +102,7 @@ export default function Recipe() {
         </button>
 
         <form className={clsx([showBody ? "block" : "hidden"])}>
-          <div className="py-4 brecipe-b">
+          <div className="py-4 border-b">
             <AddRecipe
               recipes={recipes}
               setRecipes={setRecipes}

@@ -10,8 +10,7 @@ interface IMedicalConsultyProps {
 export default function MedicalConsulty({
   medicalConsulty,
 }: IMedicalConsultyProps) {
-  const { setIsOpen } = useMedicalRecord();
-
+  const { setIsOpen, setMedicalConsulty } = useMedicalRecord();
   const [isHover, setIsHover] = useState(false);
 
   return (
@@ -20,7 +19,10 @@ export default function MedicalConsulty({
       className="intro-x cursor-pointer lg:flex md:flex sm:flex justify-between rounded-md items-center p-4 bg-white hover:bg-primary shadow-[20px_3px_20px_#0000000b] "
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
-      onClick={() => setIsOpen(true)}
+      onClick={() => {
+        setMedicalConsulty(medicalConsulty);
+        setIsOpen(true);
+      }}
     >
       <div className="flex items-center overflow-y-hidden">
         <div className="mr-10">

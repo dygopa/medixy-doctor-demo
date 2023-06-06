@@ -3,6 +3,7 @@ import {
   FormInput,
   FormTextarea,
 } from "(presentation)/components/core/BaseComponents/Form";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
 import { ICIE10 } from "domain/core/entities/cie10Entity";
 import { useSearchParams } from "next/navigation";
@@ -42,7 +43,7 @@ type valuesTypes = {
   oximetry: string;
   muscleMass: string;
   glicemy: string;
-  diagnose: string;
+  diagnose: string[];
   observations: string;
 };
 
@@ -58,6 +59,8 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
   const { getCIE10 } = actions;
   const { data: cie10, loading, successful, error } = state.cie10;
 
+  const [showBody, setShowBody] = useState(false);
+  const [value, setValue] = useState("");
   const [diagnoseError, setDiagnoseError] = useState(false);
 
   const params = useSearchParams();
@@ -77,7 +80,10 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
   };
 
   useEffect(() => {
-    if (diagnose === "true") setDiagnoseError(true);
+    if (diagnose === "true") {
+      setDiagnoseError(true);
+      setShowBody(true);
+    }
   }, [diagnose]);
 
   useEffect(() => {
@@ -87,76 +93,134 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
 
   return (
     <div>
-      <div className="xl:flex items-center justify-between mb-4 w-full">
-        <div className="xl:flex items-center w-full">
-          <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
-            <p className="text-slate-900 font-lighter text-lg">Diagnóstico</p>
-          </div>
+      <button
+        type="button"
+        onClick={() => setShowBody(!showBody)}
+        className="w-full flex justify-between items-center border-b mb-5 pb-2"
+      >
+        <div>
+          <p className="font-bold text-lg text-slate-900">Diagnóstico</p>
+        </div>
 
-          <div className="w-full">
-            {error ? (
-              <p>Algo no ha salido bien. Vuelve a intentarlo</p>
-            ) : (
-              <>
-                <AutocompleteInput
-                  disabled={loading || error !== null}
-                  defaultValue={
-                    loading ? "Obteniendo enfermedades CIE10" : values.diagnose
-                  }
-                  setDefaultValue
-                  items={
-                    successful && cie10.data.length > 0 ? getCIE10List() : []
-                  }
-                  placeholder="Nombre de la enfermedad - CIE10"
-                  className={clsx([
-                    "h-[50px] w-full",
-                    diagnoseError && "border-danger",
-                  ])}
-                  onlyItemsAdd
-                  onChange={(item: string) => {
-                    if (item.length === 0) {
-                      setValues({ ...values, diagnose: "" });
-                      setDiagnoseError(true);
+        <div>
+          <Lucide
+            icon={showBody ? "Minus" : "Plus"}
+            color="#22345F"
+            size={30}
+          />
+        </div>
+      </button>
+
+      <div className={clsx([showBody ? "block" : "hidden"])}>
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 mb-1 xl:w-[305px] w-full">
+              <p className="text-lg">Diagnóstico</p>
+            </div>
+
+            <div className="w-full">
+              {error ? (
+                <p>Algo no ha salido bien. Vuelve a intentarlo</p>
+              ) : (
+                <>
+                  <AutocompleteInput
+                    disabled={loading || error !== null}
+                    defaultValue={
+                      loading ? "Obteniendo enfermedades CIE10" : value
                     }
-                  }}
-                  onClick={(item: string) => {
-                    setValues({ ...values, diagnose: item });
-                    setDiagnoseError(false);
-                  }}
-                  onKeyDown={(item: string) => {
-                    setValues({ ...values, diagnose: item });
-                    setDiagnoseError(false);
-                  }}
-                />
+                    items={
+                      successful && cie10.data.length > 0 ? getCIE10List() : []
+                    }
+                    itemsAdded={values.diagnose}
+                    placeholder="Nombre de la enfermedad - CIE10"
+                    className={clsx([
+                      "h-[50px] w-full",
+                      diagnoseError && "border-danger",
+                    ])}
+                    onlyItemsAdd
+                    onClick={(item: string) => {
+                      if (values.diagnose.indexOf(item) < 0) {
+                        setValues({
+                          ...values,
+                          diagnose: [...values.diagnose, item],
+                        });
+                        setDiagnoseError(false);
+                        setValue("");
+                      }
+                    }}
+                    onKeyDown={(item: string) => {
+                      if (values.diagnose.indexOf(item) < 0) {
+                        setValues({
+                          ...values,
+                          diagnose: [...values.diagnose, item],
+                        });
+                        setDiagnoseError(false);
+                        setValue("");
+                      }
+                    }}
+                  />
 
-                {diagnoseError && (
-                  <p className="text-danger mt-1">
-                    Debe seleccionar el diagnóstico
-                  </p>
-                )}
-              </>
-            )}
+                  {diagnoseError && (
+                    <p className="text-danger mt-1">
+                      Debe agregar los diagnósticos
+                    </p>
+                  )}
+
+                  <div className="max-w-full overflow-x-auto">
+                    {values.diagnose.length > 0 &&
+                      values.diagnose.map((value: string, i: number) => (
+                        <button
+                          type="button"
+                          key={i}
+                          className="mt-3 mb-3 mr-3"
+                          onClick={() => {
+                            setValues({
+                              ...values,
+                              diagnose: values.diagnose.filter(
+                                (valueDiagnoseFilter) =>
+                                  valueDiagnoseFilter !== value
+                              ),
+                            });
+                          }}
+                        >
+                          <div className="bg-primary px-2 py-1 w-auto rounded-md flex justify-between items-center">
+                            <div className="mr-2">
+                              <p className="text-white text-md font-semibold">
+                                {value}
+                              </p>
+                            </div>
+
+                            <div className="mt-1">
+                              <Lucide icon="XCircle" color="#fff" size={20} />
+                            </div>
+                          </div>
+                        </button>
+                      ))}
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="xl:flex items-center justify-between mb-4 w-full">
-        <div className="xl:flex items-center w-full">
-          <div className="xl:mr-5 mb-1 xl:w-[250px] w-full">
-            <p className="text-slate-900 font-lighter text-lg">Observaciones</p>
-          </div>
+        <div className="xl:flex items-center justify-between mb-4 w-full">
+          <div className="xl:flex items-center w-full">
+            <div className="xl:mr-5 mb-1 xl:w-[305px] w-full">
+              <p className="text-lg">Observaciones</p>
+            </div>
 
-          <div className="w-full">
-            <FormTextarea
-              value={values.observations}
-              name="observations"
-              placeholder="Notas"
-              onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
-                setValues({ ...values, [e.target.name]: e.target.value })
-              }
-              className="h-[50px] w-full"
-              rows={5}
-            />
+            <div className="w-full">
+              <FormTextarea
+                value={values.observations}
+                name="observations"
+                placeholder="Notas"
+                onChange={(e: ChangeEvent<HTMLTextAreaElement>) =>
+                  setValues({ ...values, [e.target.name]: e.target.value })
+                }
+                className="h-[50px] w-full"
+                rows={5}
+              />
+            </div>
           </div>
         </div>
       </div>

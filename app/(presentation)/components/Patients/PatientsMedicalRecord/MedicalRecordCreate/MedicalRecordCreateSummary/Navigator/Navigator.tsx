@@ -327,7 +327,7 @@ export default function Navigator() {
       patientId: patient?.patientId ?? 0,
     };
 
-    createMedicalConsulty(medicalConsulty)(dispatch);
+    // createMedicalConsulty(medicalConsulty)(dispatch);
   };
 
   const onShowAlertError = () => {
