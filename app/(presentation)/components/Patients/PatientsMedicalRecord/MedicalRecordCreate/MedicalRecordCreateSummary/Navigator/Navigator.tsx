@@ -235,13 +235,13 @@ export default function Navigator() {
         id: 0,
         viaDosis:
           recipe?.via?.length > 0
-            ? parseInt(recipe.via)
+            ? parseInt(recipe.via, 10)
             : TreatmentViaDosisEnum.ORAL,
         medicine: recipe.medicine,
         dosisQuantity: recipe.quantity,
         dosisType:
           recipe?.unit?.length > 0
-            ? parseInt(recipe.unit)
+            ? parseInt(recipe.unit, 10)
             : TreatmentDosisTypeEnum.CAPSULE,
         takeUntilMeasure: recipe.duringMeasure,
         takeUntilValue:
@@ -252,6 +252,7 @@ export default function Navigator() {
         createdOn: new Date(),
         treatmentId: 0,
         status: 1,
+        observations: recipe?.indication ?? "",
       };
 
       treatmentMedicines.push(treatmentMedicine);
@@ -908,7 +909,7 @@ export default function Navigator() {
   };
 
   const onCreateMedicalConsultySucessful = () => {
-    localStorage.removeItem("noodus.storage.medical-record-create");
+    // localStorage.removeItem("noodus.storage.medical-record-create");
 
     setTimeout(() => {
       router.push(

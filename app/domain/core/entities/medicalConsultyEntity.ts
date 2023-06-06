@@ -21,7 +21,7 @@ export interface IMedicalConsulty {
     earInspection?: string | null;
     neurologicalInspection?: string | null;
     skinInspection?: string | null;
-    diagnose: IDiagnosis[];
+    diagnose?: IDiagnosis[];
     observations?: string | null;
     medicalMeasures?: IMedicalMeasure[];
     treatments?: ITreatment[];

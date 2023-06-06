@@ -34,9 +34,9 @@ export default function AddRecipe({
 }: IAddRecipeProps) {
   const [values, setValues] = useState({
     medicine: "",
-    via: "1",
+    via: TreatmentViaDosisEnum.ORAL,
     quantity: "",
-    unit: "1",
+    unit: TreatmentDosisTypeEnum.CAPSULE,
     frequencyMeasure: "hours",
     frequencyValue: "",
     duringMeasure: "days",
@@ -67,9 +67,9 @@ export default function AddRecipe({
     setValues({
       ...values,
       medicine: "",
-      via: "oral",
+      via: TreatmentViaDosisEnum.ORAL,
       quantity: "",
-      unit: "capsule",
+      unit: TreatmentDosisTypeEnum.CAPSULE,
       frequencyMeasure: "hours",
       frequencyValue: "",
       duringMeasure: "hours",
@@ -112,9 +112,9 @@ export default function AddRecipe({
     setValues({
       ...values,
       medicine: "",
-      via: "oral",
+      via: TreatmentViaDosisEnum.ORAL,
       quantity: "",
-      unit: "capsule",
+      unit: TreatmentDosisTypeEnum.CAPSULE,
       frequencyMeasure: "hours",
       frequencyValue: "",
       duringMeasure: "hours",
@@ -127,9 +127,9 @@ export default function AddRecipe({
     setValues({
       ...values,
       medicine: recipeEdit?.medicine ?? "",
-      via: recipeEdit?.via ?? "",
+      via: recipeEdit?.via ?? TreatmentViaDosisEnum.ORAL,
       quantity: recipeEdit?.quantity ? recipeEdit.quantity.toString() : "",
-      unit: recipeEdit?.unit ?? "",
+      unit: recipeEdit?.unit ?? TreatmentDosisTypeEnum.CAPSULE,
       frequencyMeasure: recipeEdit?.frequencyMeasure ?? "",
       frequencyValue: recipeEdit?.frequencyValue
         ? recipeEdit.frequencyValue.toString()
@@ -145,9 +145,7 @@ export default function AddRecipe({
   const isValidForm = (): boolean => {
     if (
       values.medicine.length > 0 &&
-      values.via.length > 0 &&
       values.quantity.length > 0 &&
-      values.unit.length > 0 &&
       values.frequencyMeasure.length > 0 &&
       values.frequencyValue.length > 0 &&
       values.duringMeasure.length > 0 &&

@@ -45,15 +45,15 @@ export default class MedicalConsultyUseCase {
         })))
       }
 
-      /* if (medicalConsulty.treatments && medicalConsulty.treatments.length > 0) {
+      if (medicalConsulty.treatments && medicalConsulty.treatments.length > 0) {
         await Promise.all((medicalConsulty.treatments.map(async (treatment) => {
           treatment.medicalConsultyId = response.data.id;
 
           await this._treatmentRepository.createTreatment(treatment);
         })))
-      } */
+      } 
 
-      if (medicalConsulty.diagnose && medicalConsulty.diagnose.length > 0) {
+      /* if (medicalConsulty.diagnose && medicalConsulty.diagnose.length > 0) {
         await Promise.all((medicalConsulty.diagnose.map(async (diagnosis) => {
           diagnosis.medicalConsultyId = response.data.id;
           await this._diagnosisRepository.createDiagnosis(diagnosis);
@@ -66,7 +66,7 @@ export default class MedicalConsultyUseCase {
 
           await this._medicalRecordRepository.createMedicalRecord(medicalRecord);
         })))
-      }
+      } */
 
       return response
     } catch (error) {

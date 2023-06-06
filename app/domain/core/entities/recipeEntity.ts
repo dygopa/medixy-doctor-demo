@@ -1,9 +1,9 @@
 export interface IRecipe {
     recipeId: number;
     medicine: string;
-    via: string;
+    via: number;
     quantity: number;
-    unit: string;
+    unit: number;
     frequencyMeasure: string;
     frequencyValue: number;
     duringMeasure: string;

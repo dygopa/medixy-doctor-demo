@@ -38,32 +38,34 @@ export default function MedicalConsulty({
           </p>
         </div>
 
-        <div>
+        {medicalConsulty.diagnose && medicalConsulty.diagnose?.length > 0 && (
           <div>
-            <p className={clsx([isHover ? "text-white" : "text-slate-500"])}>
-              Diagnóstico
-            </p>
-          </div>
+            <div>
+              <p className={clsx([isHover ? "text-white" : "text-slate-500"])}>
+                Diagnóstico
+              </p>
+            </div>
 
-          <div>
-            <p
-              className={clsx([
-                "lg:text-md",
-                isHover ? "text-white" : "text-slate-900",
-              ])}
-              style={{
-                display: "block",
-                textOverflow: "ellipsis",
-                wordWrap: "break-word",
-                overflow: "hidden",
-                maxHeight: "3.6rem",
-                maxWidth: "450px",
-              }}
-            >
-              {medicalConsulty.diagnose}
-            </p>
+            <div>
+              <p
+                className={clsx([
+                  "lg:text-md",
+                  isHover ? "text-white" : "text-slate-900",
+                ])}
+                style={{
+                  display: "block",
+                  textOverflow: "ellipsis",
+                  wordWrap: "break-word",
+                  overflow: "hidden",
+                  maxHeight: "3.6rem",
+                  maxWidth: "450px",
+                }}
+              >
+                {medicalConsulty.diagnose[0].description}
+              </p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <div className="lg:mt-0 md:mt-0 sm:mt-0 mt-4">

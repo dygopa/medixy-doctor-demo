@@ -20,7 +20,7 @@ export function medicalConsultySupabaseToMap(data: any): IMedicalConsulty {
     earInspection: data?.inspeccionOidos,
     neurologicalInspection: data?.aparatoNeurologico,
     skinInspection: data?.inspeccionPiel,
-    diagnose: data?.diagnostico ?? "",
+    diagnose: [],
     observations: data?.observaciones,
     medicalMeasures: [],
     createdOn: data?.fechaConsulta ? new Date(new Date(data.fechaConsulta).getFullYear(), new Date(data.fechaConsulta).getMonth() + 1, new Date(data.fechaConsulta).getDate()) : new Date(),
@@ -47,7 +47,7 @@ export function fromMedicalConsultySupabaseDocumentData(medicalConsulty: IMedica
     inspeccionOidos: medicalConsulty.earInspection,
     aparatoNeurologico: medicalConsulty.neurologicalInspection,
     inspeccionPiel: medicalConsulty.skinInspection,
-    diagnostico: medicalConsulty.diagnose,
+    diagnostico: null,
     observaciones: medicalConsulty.observations,
   } as any;
 
