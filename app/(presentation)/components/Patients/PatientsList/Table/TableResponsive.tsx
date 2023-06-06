@@ -113,7 +113,7 @@ export default function TableResponsive() {
                   leaveTo="transform opacity-0 scale-95"
                 >
                   <Menu.Items className="absolute right-0 z-15 mt-1 w-36 origin-top-right rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5">
-                    {/* <Menu.Item>
+                    <Menu.Item>
                       {({ active }) => (
                         <div>
                           <Link
@@ -130,7 +130,7 @@ export default function TableResponsive() {
                           </Link>
                         </div>
                       )}
-                          </Menu.Item> */}
+                    </Menu.Item>
                     <Menu.Item>
                       {({ active }) => (
                         <div>

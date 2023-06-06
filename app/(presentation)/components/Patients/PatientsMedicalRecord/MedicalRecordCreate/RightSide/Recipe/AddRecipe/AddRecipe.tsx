@@ -168,8 +168,8 @@ export default function AddRecipe({
     <div>
       <div className="xl:flex items-center justify-between mb-4 w-full">
         <div className="xl:flex items-center w-full">
-          <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[130px] w-full">
-            <p className="text-lg">Medicamento</p>
+          <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[100px] w-full">
+            <p className="text-md">Medicamento</p>
           </div>
 
           <div className="w-full">
@@ -196,8 +196,8 @@ export default function AddRecipe({
       <div className="mb-4 w-full">
         <div className="xl:flex items-center mb-4">
           <div className="xl:flex items-center w-full">
-            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[130px] w-full md:grid grid-cols-2 md:gap-5 xl:gap-0">
-              <p className="text-slate-900 font-lighter text-lg">
+            <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[100px] w-full md:grid grid-cols-2 md:gap-5 xl:gap-0">
+              <p className="text-slate-900 font-lighter text-md">
                 Prescripción
               </p>
               <p className="text-slate-900 font-lighter text-lg xl:hidden hidden md:block">
@@ -327,7 +327,7 @@ export default function AddRecipe({
                 </div>
               </div>
               <div className="xl:mr-5 xl:mb-0 xl:w-[80px] w-full md:hidden lg:hidden block xl:block">
-                <p className="text-slate-900 font-lighter text-lg">Duración</p>
+                <p className="text-slate-900 font-lighter text-md">Duración</p>
               </div>
               <div className="md:flex items-center md:gap-3 xl:gap-0">
                 <div className="xl:mr-3 xl:mb-0 mb-3">

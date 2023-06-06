@@ -1,5 +1,6 @@
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
+import { ICIE10 } from "domain/core/entities/cie10Entity";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import BasicDetails from "./BasicDetails/BasicDetails";
@@ -34,7 +35,7 @@ type valuesTypes = {
   oximetry: string;
   muscleMass: string;
   glicemy: string;
-  diagnose: string[];
+  diagnose: ICIE10[];
   observations: string;
 };
 
@@ -92,7 +93,7 @@ export default function CurrentConsultation({
 
   const saveValuesInLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "prosit.storage.medical-record-create"
+      "noodus.storage.medical-record-create"
     );
 
     if (!valuesStorage) window.location.reload();
@@ -105,14 +106,14 @@ export default function CurrentConsultation({
     valuesJSON.currentConsultation = currentConsultation;
 
     localStorage.setItem(
-      "prosit.storage.medical-record-create",
+      "noodus.storage.medical-record-create",
       JSON.stringify(valuesJSON)
     );
   };
 
   const setValuesFromLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "prosit.storage.medical-record-create"
+      "noodus.storage.medical-record-create"
     );
 
     if (!valuesStorage) window.location.reload();

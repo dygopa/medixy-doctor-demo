@@ -1,11 +1,12 @@
+import { ICIE10 } from "domain/core/entities/cie10Entity";
 import { useEffect, useState } from "react";
 
 export default function Diagnosis() {
-  const [diagnosis, setDiagnosis] = useState<string[]>([]);
+  const [diagnosis, setDiagnosis] = useState<ICIE10[]>([]);
 
   const setValueFromLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "prosit.storage.medical-record-create"
+      "noodus.storage.medical-record-create"
     );
 
     if (!valuesStorage) return;
@@ -26,9 +27,11 @@ export default function Diagnosis() {
 
       <div>
         {diagnosis.length > 0 ? (
-          diagnosis.map((diagnose: string, i: number) => (
-            <div key={i} className="mb-2">
-              <h1 className="text-slate-900 font-bold text-lg">{diagnose}</h1>
+          diagnosis.map((diagnose: ICIE10) => (
+            <div key={diagnose.id} className="mb-2">
+              <h1 className="text-slate-900 font-bold text-lg">
+                {diagnose.code4} - {diagnose.description4}
+              </h1>
             </div>
           ))
         ) : (

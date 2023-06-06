@@ -332,7 +332,7 @@ export default function BasicData({
                       ))}
                   </FormSelect>
                 </div>
-                <div className="flex flex-col justify-between items-start relative gap-1">
+                {/* <div className="flex flex-col justify-between items-start relative gap-1">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     Tipo de persona
                   </p>
@@ -348,7 +348,7 @@ export default function BasicData({
                     <option value={1}>Moral</option>
                     <option value={2}>Física</option>
                   </FormSelect>
-                </div>
+                  </div> */}
               </div>
             </div>
           </div>

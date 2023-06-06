@@ -167,14 +167,14 @@ export default function Formulary({
     setLoadedAPI(true);
   };
 
-   useMemo(() => {
-    if (successFulCreationService){
-      createUserSteps(accountId, "SERVICE_CREATED")(dispatchStep)
+  useMemo(() => {
+    if (successFulCreationService) {
+      createUserSteps(accountId, "SERVICE_CREATED")(dispatchStep);
       setTimeout(() => {
-        window.location.href = "/services"
+        window.location.href = "/services";
       }, 1000);
-    };
-  }, [successFulCreationService]) 
+    }
+  }, [successFulCreationService]);
 
   useMemo(() => {
     if (userId) getUserMedicalCenters(userId)(dispatch);
@@ -201,18 +201,7 @@ export default function Formulary({
         <h2 className="lg:mr-5 lg:mb-0 mb-4 text-2xl font-bold truncate">
           Nuevo servicio
         </h2>
-        <div className="lg:w-[40%] flex justify-center items-center lg:gap-8 gap-2">
-          <FormSelect
-            value={formData.status}
-            className="form-control w-1/2"
-            onChange={(e) =>
-              setFormData({ ...formData, status: +e.target.value })
-            }
-          >
-            <option value="">Estado del servicio</option>
-            <option value={1}>Activo</option>
-            <option value={2}>Borrador</option>
-          </FormSelect>
+        <div className="lg:w-[40%] flex justify-end items-center lg:gap-8 gap-2">
           <Button
             disabled={
               loadingCreationService ||
@@ -355,6 +344,22 @@ export default function Formulary({
                       setFormData({ ...formData, conditions: e.target.value })
                     }
                   />
+                </div>
+                <div className="lg:flex justify-between items-start relative w-full gap-3">
+                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                    Estado
+                  </p>
+                  <FormSelect
+                    value={formData.status}
+                    className="form-control lg:w-[70%]"
+                    onChange={(e) =>
+                      setFormData({ ...formData, status: +e.target.value })
+                    }
+                  >
+                    <option value="">Estado del servicio</option>
+                    <option value={1}>Activo</option>
+                    <option value={2}>Borrador</option>
+                  </FormSelect>
                 </div>
               </div>
             </div>

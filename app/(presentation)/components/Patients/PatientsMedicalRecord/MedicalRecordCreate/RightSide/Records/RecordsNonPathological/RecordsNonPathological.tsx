@@ -1,3 +1,4 @@
+import AutocompleteInput from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInput";
 import {
   FormCheck,
   FormInput,
@@ -50,50 +51,118 @@ export default function RecordsNonPathological({
       >
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[350px] md:w-[200px] w-full">
-              <p className="text-lg">Grupo sanguíneo y RH</p>
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+              <p className="text-md">Grupo sanguíneo y RH</p>
             </div>
 
-            <div className="flex items-center w-full">
-              <div className="w-[20px] h-[20px] mr-4">
-                <FormInput
-                  type="checkbox"
-                  checked={values.bloodTypeNonPathological.isChecked}
-                  defaultChecked={values.bloodTypeNonPathological.isChecked}
-                  name="bloodTypeNonPathological"
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setValues({
-                      ...values,
-                      [e.target.name]: {
-                        isChecked: e.target.checked,
-                        value: e.target.checked
-                          ? values.bloodTypeNonPathological.value
-                          : "",
-                      },
-                    })
-                  }
-                  className="w-[20px] h-[20px]"
-                />
+            <div className="w-full">
+              <div className="flex items-center">
+                <div className="w-[20px] h-[20px] mr-4">
+                  <FormInput
+                    type="checkbox"
+                    checked={values.bloodTypeNonPathological.isChecked}
+                    defaultChecked={values.bloodTypeNonPathological.isChecked}
+                    name="bloodTypeNonPathological"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setValues({
+                        ...values,
+                        [e.target.name]: {
+                          isChecked: e.target.checked,
+                          values: e.target.checked
+                            ? values.bloodTypeNonPathological.values
+                            : [],
+                        },
+                      })
+                    }
+                    className="w-[20px] h-[20px]"
+                  />
+                </div>
+
+                <div className="w-full">
+                  <AutocompleteInput
+                    disabled={!values.bloodTypeNonPathological.isChecked || values.bloodTypeNonPathological.values.length > 0}
+                    items={["AB+", "AB-", "A+", "A-", "B+", "B-", "O+", "O-"]}
+                    itemsAdded={values.bloodTypeNonPathological.values}
+                    placeholder="Grupo Saguíneo (AB+, AB-, A+, A-, B+, B-, O+, O-)"
+                    className="h-[50px] w-full"
+                    onClick={(item: string) => {
+                      if (
+                        values.bloodTypeNonPathological.isChecked &&
+                        item.length > 0 &&
+                        values.bloodTypeNonPathological.values.indexOf(item) < 0
+                      ) {
+                        const valuesAllergies =
+                          values.bloodTypeNonPathological.values;
+                        valuesAllergies.push(item);
+
+                        setValues({
+                          ...values,
+                          bloodTypeNonPathological: {
+                            isChecked: true,
+                            values: valuesAllergies,
+                          },
+                        });
+                      }
+                    }}
+                    onKeyDown={(item: string) => {
+                      if (
+                        values.bloodTypeNonPathological.isChecked &&
+                        item.length > 0 &&
+                        values.bloodTypeNonPathological.values.indexOf(item) < 0
+                      ) {
+                        const valuesAllergies =
+                          values.bloodTypeNonPathological.values;
+                        valuesAllergies.push(item);
+
+                        setValues({
+                          ...values,
+                          bloodTypeNonPathological: {
+                            isChecked: true,
+                            values: valuesAllergies,
+                          },
+                        });
+                      }
+                    }}
+                  />
+                </div>
               </div>
 
-              <div className="w-full">
-                <FormInput
-                  value={values.bloodTypeNonPathological.value}
-                  name="bloodTypeNonPathological"
-                  type="text"
-                  placeholder="A, B, AB, O"
-                  disabled={!values.bloodTypeNonPathological.isChecked}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setValues({
-                      ...values,
-                      [e.target.name]: {
-                        isChecked: values.bloodTypeNonPathological.isChecked,
-                        value: e.target.value,
-                      },
-                    })
-                  }
-                  className="h-[50px] w-full"
-                />
+              <div className="ml-[36px] max-w-full overflow-x-auto">
+                {values.bloodTypeNonPathological.values.length > 0 &&
+                  values.bloodTypeNonPathological.values.map(
+                    (value: string, i: number) => (
+                      <button
+                        type="button"
+                        key={i}
+                        className="mt-3 mr-3"
+                        onClick={() => {
+                          setValues({
+                            ...values,
+                            bloodTypeNonPathological: {
+                              isChecked: true,
+                              values:
+                                values.bloodTypeNonPathological.values.filter(
+                                  (valueInterventionsFilter) =>
+                                    valueInterventionsFilter !== value
+                                ),
+                            },
+                          });
+                        }}
+                      >
+                        <div className="bg-primary px-2 py-1 w-auto rounded-md flex justify-between items-center">
+                          <div className="mr-2">
+                            <p className="text-white text-md font-semibold">
+                              {value}
+                            </p>
+                          </div>
+
+                          <div className="mt-1">
+                            <Lucide icon="XCircle" color="#fff" size={20} />
+                          </div>
+                        </div>
+                      </button>
+                    )
+                  )}
               </div>
             </div>
           </div>
@@ -101,8 +170,8 @@ export default function RecordsNonPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[350px] md:w-[200px] w-full">
-              <p className="text-lg">Tabaquismo</p>
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+              <p className="text-md">Tabaquismo</p>
             </div>
 
             <div className="flex items-center w-full">
@@ -152,8 +221,8 @@ export default function RecordsNonPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[350px] md:w-[200px] w-full">
-              <p className="text-lg">Toma bébidas alcohólicas</p>
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+              <p className="text-md">Toma bébidas alcohólicas</p>
             </div>
 
             <div className="flex items-center w-full">
@@ -206,8 +275,8 @@ export default function RecordsNonPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[350px] md:w-[200px] w-full">
-              <p className="text-lg">Consume drogas</p>
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+              <p className="text-md">Consume drogas</p>
             </div>
 
             <div className="flex items-center w-full">
@@ -257,8 +326,8 @@ export default function RecordsNonPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[350px] md:w-[200px] w-full">
-              <p className="text-lg">Realiza ejercicio</p>
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+              <p className="text-md">Realiza ejercicio</p>
             </div>
 
             <div className="flex items-center w-full">
@@ -308,8 +377,8 @@ export default function RecordsNonPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[350px] md:w-[200px] w-full">
-              <p className="text-lg">Hás sido contagiado de COVID</p>
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+              <p className="text-md">Hás sido contagiado de COVID</p>
             </div>
 
             <div className="flex items-center w-full">

@@ -7,7 +7,7 @@ export type valuesTypes = {
   };
   surgicalInterventions: {
     isChecked: boolean;
-    value: string;
+    values: string[];
   };
   takeMedication: {
     isChecked: boolean;
@@ -43,7 +43,7 @@ export type valuesTypes = {
   };
   bloodTypeNonPathological: {
     isChecked: boolean;
-    value: string;
+    values: string[];
   };
   smokingNonPathological: {
     isChecked: boolean;
@@ -67,23 +67,23 @@ export type valuesTypes = {
   };
   diabetesFamily: {
     isChecked: boolean;
-    value: string;
+    values: string[];
   };
   cancerFamily: {
     isChecked: boolean;
-    value: string;
+    values: string[];
   };
   hypertensionFamily: {
     isChecked: boolean;
-    value: string;
+    values: string[];
   };
   sidaFamily: {
     isChecked: boolean;
-    value: string;
+    values: string[];
   };
   otherFamily: {
     isChecked: boolean;
-    value: string;
+    values: string[];
   };
 };
 
@@ -95,7 +95,7 @@ export default function Records() {
     },
     surgicalInterventions: {
       isChecked: false,
-      value: "",
+      values: [],
     },
     takeMedication: {
       isChecked: false,
@@ -131,7 +131,7 @@ export default function Records() {
     },
     bloodTypeNonPathological: {
       isChecked: false,
-      value: "",
+      values: [],
     },
     smokingNonPathological: {
       isChecked: false,
@@ -155,29 +155,29 @@ export default function Records() {
     },
     diabetesFamily: {
       isChecked: false,
-      value: "",
+      values: [],
     },
     cancerFamily: {
       isChecked: false,
-      value: "",
+      values: [],
     },
     hypertensionFamily: {
       isChecked: false,
-      value: "",
+      values: [],
     },
     sidaFamily: {
       isChecked: false,
-      value: "",
+      values: [],
     },
     otherFamily: {
       isChecked: false,
-      value: "",
+      values: [],
     },
   });
 
   const setValuesFromLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "prosit.storage.medical-record-create"
+      "noodus.storage.medical-record-create"
     );
 
     if (!valuesStorage) return;
@@ -200,9 +200,9 @@ export default function Records() {
       {values.allergiesPathological.isChecked && (
         <div>
           <h1 className="text-slate-900 font-bold text-lg flex">
-            Alergias{values.allergiesPathological.values.length > 0 ? "," : ""}
+            Alergias -{" "}
             {values.allergiesPathological.values.map((alergy, i) => (
-              <p key={i} className="text-slate-900 font-bold text-lg ml-2">
+              <p key={i} className="text-slate-900 font-bold text-lg ml-1">
                 {alergy}
               </p>
             ))}
@@ -211,23 +211,28 @@ export default function Records() {
       )}
 
       {values.surgicalInterventions.isChecked && (
-        <div>
+        <div className="flex">
           <h1 className="text-slate-900 font-bold text-lg flex">
-            Intervenciones quirúrgicas
-            {values.surgicalInterventions.value.length > 0
-              ? `, ${values.surgicalInterventions.value}`
-              : ""}
+            Intervenciones quirúrgicas -
           </h1>
+
+          {values.surgicalInterventions.values.length > 0 &&
+            values.surgicalInterventions.values.map(
+              (value: string, i: number) => (
+                <p key={i} className="text-slate-900 font-bold text-lg ml-1">
+                  {value}
+                </p>
+              )
+            )}
         </div>
       )}
 
       {values.takeMedication.isChecked && (
         <div>
           <h1 className="text-slate-900 font-bold text-lg flex">
-            Medicamentos que consume
-            {values.takeMedication.values.length > 0 ? "," : ""}
+            Medicamentos que consume -
             {values.takeMedication.values.map((medication, i) => (
-              <p key={i} className="text-slate-900 font-bold text-lg ml-2">
+              <p key={i} className="text-slate-900 font-bold text-lg ml-1">
                 {medication}
               </p>
             ))}
@@ -294,13 +299,19 @@ export default function Records() {
       )}
 
       {values.bloodTypeNonPathological.isChecked && (
-        <div>
+        <div className="flex">
           <h1 className="text-slate-900 font-bold text-lg flex">
-            Grupo sanguíneo y RH
-            {values.bloodTypeNonPathological.value.length > 0
-              ? `, ${values.bloodTypeNonPathological.value}`
-              : ""}
+            Grupo sanguineo y RH -
           </h1>
+
+          {values.bloodTypeNonPathological.values.length > 0 &&
+            values.bloodTypeNonPathological.values.map(
+              (value: string, i: number) => (
+                <p key={i} className="text-slate-900 font-bold text-lg ml-1">
+                  {value}
+                </p>
+              )
+            )}
         </div>
       )}
 
@@ -349,57 +360,75 @@ export default function Records() {
       )}
 
       {values.diabetesFamily.isChecked && (
-        <div>
+        <div className="flex">
           <h1 className="text-slate-900 font-bold text-lg flex">
-            Diabetes
-            {values.diabetesFamily.value.length > 0
-              ? `, ${values.diabetesFamily.value}`
-              : ""}
+            Diabéticos en la familia -
           </h1>
+
+          {values.diabetesFamily.values.length > 0 &&
+            values.diabetesFamily.values.map((value: string, i: number) => (
+              <p key={i} className="text-slate-900 font-bold text-lg ml-1">
+                {value}
+              </p>
+            ))}
         </div>
       )}
 
       {values.cancerFamily.isChecked && (
-        <div>
+        <div className="flex">
           <h1 className="text-slate-900 font-bold text-lg flex">
-            Cáncer
-            {values.cancerFamily.value.length > 0
-              ? `, ${values.cancerFamily.value}`
-              : ""}
+            Cáncer en la familia -
           </h1>
+
+          {values.cancerFamily.values.length > 0 &&
+            values.cancerFamily.values.map((value: string, i: number) => (
+              <p key={i} className="text-slate-900 font-bold text-lg ml-1">
+                {value}
+              </p>
+            ))}
         </div>
       )}
 
       {values.hypertensionFamily.isChecked && (
-        <div>
+        <div className="flex">
           <h1 className="text-slate-900 font-bold text-lg flex">
-            Hipertensión
-            {values.hypertensionFamily.value.length > 0
-              ? `, ${values.hypertensionFamily.value}`
-              : ""}
+            Hipertensión en la familia -
           </h1>
+
+          {values.hypertensionFamily.values.length > 0 &&
+            values.hypertensionFamily.values.map((value: string, i: number) => (
+              <p key={i} className="text-slate-900 font-bold text-lg ml-1">
+                {value}
+              </p>
+            ))}
         </div>
       )}
 
       {values.sidaFamily.isChecked && (
-        <div>
+        <div className="flex">
           <h1 className="text-slate-900 font-bold text-lg flex">
-            Sida
-            {values.sidaFamily.value.length > 0
-              ? `, ${values.sidaFamily.value}`
-              : ""}
+            SIDA en la familia -
           </h1>
+
+          {values.sidaFamily.values.length > 0 &&
+            values.sidaFamily.values.map((value: string, i: number) => (
+              <p key={i} className="text-slate-900 font-bold text-lg ml-1">
+                {value}
+              </p>
+            ))}
         </div>
       )}
 
       {values.otherFamily.isChecked && (
-        <div>
-          <h1 className="text-slate-900 font-bold text-lg flex">
-            Otras
-            {values.otherFamily.value.length > 0
-              ? `, ${values.otherFamily.value}`
-              : ""}
-          </h1>
+        <div className="flex">
+          <h1 className="text-slate-900 font-bold text-lg flex">Otras -</h1>
+
+          {values.otherFamily.values.length > 0 &&
+            values.otherFamily.values.map((value: string, i: number) => (
+              <p key={i} className="text-slate-900 font-bold text-lg ml-1">
+                {value}
+              </p>
+            ))}
         </div>
       )}
     </div>

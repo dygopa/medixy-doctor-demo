@@ -41,7 +41,7 @@ export default function PatientDetails() {
         </div>
       </div>
 
-      <MainPopup />
+      {/*<MainPopup />*/}
     </>
   );
 }

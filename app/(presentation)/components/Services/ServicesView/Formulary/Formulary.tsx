@@ -1,5 +1,12 @@
 import { usePathname } from "next/navigation";
-import React, { ChangeEvent, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  ChangeEvent,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  Fragment,
+} from "react";
 import {
   IServicesContext,
   ServicesContext,
@@ -12,6 +19,8 @@ import {
   FormTextarea,
 } from "(presentation)/components/core/BaseComponents/Form";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
+import { Menu, Transition } from "@headlessui/react";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 export default function Formulary({ userId }: { userId: string }) {
   const pathname = usePathname();
@@ -52,22 +61,24 @@ export default function Formulary({ userId }: { userId: string }) {
     setFormData({
       ...formData,
       name: data?.name ?? "",
-      service_category_id: data?.service_category_id ? parseInt(data.service_category_id,10) : 0,
+      service_category_id: data?.service_category_id
+        ? parseInt(data.service_category_id, 10)
+        : 0,
       description: data?.description ?? "",
       conditions: data?.conditions ?? "",
-      base_price: data?.base_price?? "",
-      status: data?.status?? "",
+      base_price: data?.base_price ?? "",
+      status: data?.status ?? "",
       media: {
         data: "",
         type: "",
       },
-    })
-  }
+    });
+  };
   useEffect(() => {
     if (successful) {
       setFormDataValues();
     }
-  },[successful])
+  }, [successful]);
 
   useMemo(() => {
     if (userId) {
@@ -152,37 +163,31 @@ export default function Formulary({ userId }: { userId: string }) {
         <h2 className="lg:mr-5 lg:mb-0 mb-8 text-2xl font-bold truncate">
           Actualizar servicio
         </h2>
-        <div className="md:w-[50%] grid grid-cols-3 justify-center items-center gap-3">
-          <FormSelect
-            value={formData?.status}
-            className="form-control"
-            onChange={(e) =>
-              setFormData({ ...formData, status: +e.target.value })
+        <div className="md:w-[50%] flex justify-end items-center gap-3">
+          <Button
+            disabled={
+              loadingUpdate ||
+              formData?.name === "" ||
+              formData?.service_category_id === 0
             }
+            onClick={() => {
+              updateService(formData, data.id)(dispatch);
+            }}
+            variant="primary"
+            className="w-[275px]"
           >
-            <option value="">Estado del servicio</option>
-            <option value={1}>Activo</option>
-            <option value={2}>Borrador</option>
-          </FormSelect>
+            {loadingUpdate ? "Actualizando..." : "Actualizar"}
+          </Button>
+
           <Button
             disabled={loadingDelete}
             onClick={() => {
               deleteService(data?.id, userId)(dispatch);
             }}
-            variant="danger"
+            variant="outline-primary"
             className=""
           >
             {loadingDelete ? "Eliminando..." : "Eliminar"}
-          </Button>
-          <Button
-            disabled={loadingUpdate || formData?.name === "" || formData?.service_category_id === 0}
-            onClick={() => {
-              updateService(formData, data.id)(dispatch);
-            }}
-            variant="primary"
-            className=""
-          >
-            {loadingUpdate ? "Actualizando..." : "Actualizar"}
           </Button>
         </div>
       </div>
@@ -240,10 +245,10 @@ export default function Formulary({ userId }: { userId: string }) {
                     Cargar imagen
                     <span className="text-primary font-bold">*</span>
                   </p>
-                  <FormInput 
-                    type="file" 
-                    className="form-control lg:w-[70%]" 
-                    onChange={(e) => handleChangeMedia(e)}  
+                  <FormInput
+                    type="file"
+                    className="form-control lg:w-[70%]"
+                    onChange={(e) => handleChangeMedia(e)}
                   />
                 </div>
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
@@ -291,6 +296,24 @@ export default function Formulary({ userId }: { userId: string }) {
                       setFormData({ ...formData, conditions: e.target.value })
                     }
                   />
+                </div>
+                <div className="lg:flex justify-between items-start relative w-full gap-3">
+                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                    Estado
+                  </p>
+                  <div className="lg:w-[70%]">
+                    <FormSelect
+                      value={formData?.status}
+                      className="form-control"
+                      onChange={(e) =>
+                        setFormData({ ...formData, status: +e.target.value })
+                      }
+                    >
+                      <option value="">Estado del servicio</option>
+                      <option value={1}>Activo</option>
+                      <option value={2}>Borrador</option>
+                    </FormSelect>
+                  </div>
                 </div>
               </div>
             </div>

@@ -54,8 +54,16 @@ function Main({
           </p>
           <p className="font-light text-sm text-slate-500">Médico</p>
         </div>
-        <div className="w-[3rem] h-[3rem] flex flex-col justify-center items-center rounded-xl overflow-hidden bg-slate-300">
-          <FiUser />
+        <div className="w-[3rem] h-[3rem] flex flex-col justify-center items-center rounded-xl overflow-hidden p-0 bg-slate-300">
+          {user?.avatar?.length > 0 ? (
+            <Image
+            src={user?.avatar}
+            alt=""
+            width={200}
+            height={200}
+            className="w-[3rem] h-[3rem] rounded-md"
+            />) : <FiUser />
+          }
         </div>
       </Link>
     </div>

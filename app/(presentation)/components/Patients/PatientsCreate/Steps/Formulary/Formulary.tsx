@@ -1,11 +1,21 @@
-import { Dispatch, SetStateAction, useContext, useEffect, useMemo, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { PatientsRoutesEnum } from "(presentation)/(routes)/patientsRoutes";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
   FormInput,
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
-import { CreatePatientContext, ICreatePatientContext } from "../../context/CreatePatientContext";
+import {
+  CreatePatientContext,
+  ICreatePatientContext,
+} from "../../context/CreatePatientContext";
 import { IPatient } from "domain/core/entities/patientEntity";
 import { patientFailuresEnum } from "domain/core/failures/patient/patientFailure";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
@@ -66,63 +76,62 @@ export default function Formulary({
   errors,
   setErrors,
 }: IBasicDataProps) {
-
-  const handlename = (value:string) => {
-    setValues({ ...values, name: value })
+  const handlename = (value: string) => {
+    setValues({ ...values, name: value });
     if (value.length < 2) {
       setErrors((previousState) => {
         return {
           ...previousState,
           name: "El nombre del paciente es obligatorio",
-        }
-      })
+        };
+      });
       return true;
     }
     setErrors({ ...errors, name: "" });
     return false;
   };
-  
-  const handlelastname = (value:string) => {
-    setValues({ ...values, lastname: value })
+
+  const handlelastname = (value: string) => {
+    setValues({ ...values, lastname: value });
     if (value.length < 2) {
       setErrors((previousState) => {
         return {
           ...previousState,
           lastname: "El apellido del paciente es obligatorio",
-        }
-      })
+        };
+      });
       return true;
-    } 
+    }
     setErrors({ ...errors, lastname: "" });
     return false;
   };
 
-  const handleage = (value:string) => {
-    setValues({ ...values, age: value })
+  const handleage = (value: string) => {
+    setValues({ ...values, age: value });
     if (value.length < 2) {
       setErrors((previousState) => {
         return {
           ...previousState,
           age: "La fecha de nacimiento es obligatorio",
-        }
-      })
+        };
+      });
       return true;
-    } 
+    }
     setErrors({ ...errors, age: "" });
     return false;
   };
 
-  const handlephone = (value:string) => {
-    setValues({ ...values, phone: value })
+  const handlephone = (value: string) => {
+    setValues({ ...values, phone: value });
     if (value.length < 2) {
       setErrors((previousState) => {
         return {
           ...previousState,
           phone: "El teléfono del paciente es obligatorio",
-        }
-      })
+        };
+      });
       return true;
-    } 
+    }
     setErrors({ ...errors, phone: "" });
     return false;
   };
@@ -130,11 +139,18 @@ export default function Formulary({
   return (
     <div className="w-full bg-white shadow-slate-100 rounded-md h-fit">
       <div className="relative flex flex-col border w-full rounded-md p-5">
+        <div className="w-full border-b mb-2">
+          <p className="font-medium text-base text-slate-900 pb-2">
+            Nuevo paciente
+          </p>
+        </div>
         <div className="input-group w-full">
-          <p className="input-label pb-2">Nombre <span className="text-red-500">*</span></p>
+          <p className="input-label pb-2">
+            Nombre <span className="text-primary font-bold">*</span>
+          </p>
           <FormInput
             type="text"
-            onChange={(e: any) => handlename(e.target.value) }
+            onChange={(e: any) => handlename(e.target.value)}
             placeholder="Nombre"
           />
           {errors.name.length > 0 && (
@@ -143,12 +159,12 @@ export default function Formulary({
         </div>
         <div className="md:flex gap-3 w-full">
           <div className="input-group md:w-[50%]">
-            <p className="input-label py-2">Apellido Paterno <span className="text-red-500">*</span></p>
+            <p className="input-label py-2">
+              Apellido Paterno <span className="text-primary font-bold">*</span>
+            </p>
             <FormInput
               type="text"
-              onChange={(e: any) =>
-                handlelastname(e.target.value)
-              }
+              onChange={(e: any) => handlelastname(e.target.value)}
               placeholder="Primer apellido"
             />
             {errors.lastname.length > 0 && (
@@ -168,13 +184,13 @@ export default function Formulary({
         </div>
 
         <div className="input-group w-full">
-          <p className="input-label py-2">Fecha de nacimiento <span className="text-red-500">*</span></p>
+          <p className="input-label py-2">
+            Fecha de nacimiento <span className="text-primary font-bold">*</span>
+          </p>
           <FormInput
             type={"date"}
             min={0}
-            onChange={(e: any) =>
-              handleage(e.target.value)
-            }
+            onChange={(e: any) => handleage(e.target.value)}
             className="form-control w-full"
           />
           {errors.age.length > 0 && (
@@ -195,15 +211,17 @@ export default function Formulary({
         </div>
 
         <div className="input-group w-full">
-          <p className="input-label py-2">Teléfono <span className="text-red-500">*</span></p>
+          <p className="input-label py-2">
+            Teléfono <span className="text-primary font-bold">*</span>
+          </p>
           <FormInput
             type="text"
             onChange={(e) => handlephone(e.target.value)}
             placeholder="Teléfono"
           />
           {errors.phone.length > 0 && (
-              <span className="text-red-500">{errors.phone}</span>
-            )}
+            <span className="text-red-500">{errors.phone}</span>
+          )}
         </div>
 
         <div className="input-group w-full">
@@ -226,10 +244,8 @@ export default function Formulary({
           />
         </div>
 
-        <div className="input-group w-full">
-        </div>
+        <div className="input-group w-full"></div>
       </div>
-    
     </div>
   );
 }

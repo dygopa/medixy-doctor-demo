@@ -1,8 +1,5 @@
-import AutocompleteInput from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInput";
-import {
-  FormInput,
-  FormTextarea,
-} from "(presentation)/components/core/BaseComponents/Form";
+import AutocompleteInputCIE10 from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputCIE10";
+import { FormTextarea } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
 import { ICIE10 } from "domain/core/entities/cie10Entity";
@@ -19,6 +16,7 @@ import {
   IMedicalRecordCreateContext,
   MedicalRecordCreateContext,
 } from "../../../context/MedicalRecordCreateContext";
+import TableDiagnosis from "./Table/Table";
 
 type valuesTypes = {
   consultationDate: string;
@@ -43,7 +41,7 @@ type valuesTypes = {
   oximetry: string;
   muscleMass: string;
   glicemy: string;
-  diagnose: string[];
+  diagnose: ICIE10[];
   observations: string;
 };
 
@@ -66,18 +64,6 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
   const params = useSearchParams();
 
   const diagnose = params.get("diagnose");
-
-  const getCIE10List = (): string[] => {
-    const cie10List: string[] = [];
-
-    if (cie10.data.length > 0) {
-      cie10.data.forEach((cie10Item: ICIE10) => {
-        cie10List.push(cie10Item.description4);
-      });
-    }
-
-    return cie10List;
-  };
 
   useEffect(() => {
     if (diagnose === "true") {
@@ -114,8 +100,8 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
       <div className={clsx([showBody ? "block" : "hidden"])}>
         <div className="xl:flex items-center justify-between mb-4 w-full">
           <div className="xl:flex items-center w-full">
-            <div className="xl:mr-5 mb-1 xl:w-[305px] w-full">
-              <p className="text-lg">Diagnóstico</p>
+            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full">
+              <p className="text-md">Diagnóstico <span className="text-primary font-bold">*</span></p>
             </div>
 
             <div className="w-full">
@@ -123,13 +109,13 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
                 <p>Algo no ha salido bien. Vuelve a intentarlo</p>
               ) : (
                 <>
-                  <AutocompleteInput
+                  <AutocompleteInputCIE10
                     disabled={loading || error !== null}
                     defaultValue={
                       loading ? "Obteniendo enfermedades CIE10" : value
                     }
                     items={
-                      successful && cie10.data.length > 0 ? getCIE10List() : []
+                      successful && cie10.data.length > 0 ? cie10.data : []
                     }
                     itemsAdded={values.diagnose}
                     placeholder="Nombre de la enfermedad - CIE10"
@@ -137,19 +123,12 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
                       "h-[50px] w-full",
                       diagnoseError && "border-danger",
                     ])}
-                    onlyItemsAdd
-                    onClick={(item: string) => {
-                      if (values.diagnose.indexOf(item) < 0) {
-                        setValues({
-                          ...values,
-                          diagnose: [...values.diagnose, item],
-                        });
-                        setDiagnoseError(false);
-                        setValue("");
-                      }
-                    }}
-                    onKeyDown={(item: string) => {
-                      if (values.diagnose.indexOf(item) < 0) {
+                    onClick={(item: ICIE10) => {
+                      if (
+                        values.diagnose.findIndex(
+                          (itemFind) => itemFind.id === item.id
+                        ) < 0
+                      ) {
                         setValues({
                           ...values,
                           diagnose: [...values.diagnose, item],
@@ -166,36 +145,12 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
                     </p>
                   )}
 
-                  <div className="max-w-full overflow-x-auto">
-                    {values.diagnose.length > 0 &&
-                      values.diagnose.map((value: string, i: number) => (
-                        <button
-                          type="button"
-                          key={i}
-                          className="mt-3 mb-3 mr-3"
-                          onClick={() => {
-                            setValues({
-                              ...values,
-                              diagnose: values.diagnose.filter(
-                                (valueDiagnoseFilter) =>
-                                  valueDiagnoseFilter !== value
-                              ),
-                            });
-                          }}
-                        >
-                          <div className="bg-primary px-2 py-1 w-auto rounded-md flex justify-between items-center">
-                            <div className="mr-2">
-                              <p className="text-white text-md font-semibold">
-                                {value}
-                              </p>
-                            </div>
-
-                            <div className="mt-1">
-                              <Lucide icon="XCircle" color="#fff" size={20} />
-                            </div>
-                          </div>
-                        </button>
-                      ))}
+                  <div className="max-w-full overflow-x-auto mt-3">
+                    <TableDiagnosis
+                      cie10={values.diagnose}
+                      values={values}
+                      setValues={setValues}
+                    />
                   </div>
                 </>
               )}
@@ -205,8 +160,8 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
 
         <div className="xl:flex items-center justify-between mb-4 w-full">
           <div className="xl:flex items-center w-full">
-            <div className="xl:mr-5 mb-1 xl:w-[305px] w-full">
-              <p className="text-lg">Observaciones</p>
+            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full">
+              <p className="text-md">Observaciones</p>
             </div>
 
             <div className="w-full">

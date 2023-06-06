@@ -1,6 +1,7 @@
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
+import { ICIE10 } from "domain/core/entities/cie10Entity";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 
 type valuesTypes = {
@@ -26,7 +27,7 @@ type valuesTypes = {
   oximetry: string;
   muscleMass: string;
   glicemy: string;
-  diagnose: string[];
+  diagnose: ICIE10[];
   observations: string;
 };
 
@@ -66,8 +67,8 @@ export default function PhysicalExploration({
       <div className={clsx([showBody ? "block" : "hidden"])}>
         <div className="flex items-center justify-between mb-4 w-full">
           <div className="xl:flex items-center w-full">
-            <div className="mr-5 w-[300px]">
-              <p className="text-lg">Inspección general</p>
+            <div className="mr-5 w-[200px]">
+              <p className="text-md">Inspección general</p>
             </div>
 
             <div className="w-full">
@@ -86,8 +87,8 @@ export default function PhysicalExploration({
 
         <div className="xl:flex items-center justify-between mb-4">
           <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[400px] w-full">
-              <p className="text-lg">Aparato respiratorio</p>
+            <div className="xl:mr-5 mb-1 xl:w-[260px] w-full">
+              <p className="text-md">Aparato respiratorio</p>
             </div>
 
             <div className="w-full">
@@ -104,8 +105,8 @@ export default function PhysicalExploration({
           </div>
 
           <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[335px] w-full xl:text-end">
-              <p className="text-lg">Aparato digestivo</p>
+            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full xl:text-star">
+              <p className="text-md">Aparato digestivo</p>
             </div>
 
             <div className="w-full">
@@ -124,8 +125,8 @@ export default function PhysicalExploration({
 
         <div className="xl:flex items-center justify-between mb-4">
           <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[400px] w-full">
-              <p className="text-lg">Aparato cardiovascular</p>
+            <div className="xl:mr-5 mb-1 xl:w-[260px] w-full">
+              <p className="text-md">Aparato cardiovascular</p>
             </div>
 
             <div className="w-full">
@@ -142,8 +143,8 @@ export default function PhysicalExploration({
           </div>
 
           <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[335px] w-full xl:text-end">
-              <p className="text-lg">Aparato reproductor</p>
+            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full xl:text-star">
+              <p className="text-md">Aparato reproductor</p>
             </div>
 
             <div className="w-full">
@@ -162,8 +163,8 @@ export default function PhysicalExploration({
 
         <div className="xl:flex items-center justify-between mb-4">
           <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[400px] w-full">
-              <p className="text-lg">Aparato urinario</p>
+            <div className="xl:mr-5 mb-1 xl:w-[260px] w-full">
+              <p className="text-md">Aparato urinario</p>
             </div>
 
             <div className="w-full">
@@ -180,8 +181,8 @@ export default function PhysicalExploration({
           </div>
 
           <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[335px] w-full xl:text-end">
-              <p className="text-lg">Inspección oftalmológica</p>
+            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full xl:text-star">
+              <p className="text-md">Inspección oftalmológica</p>
             </div>
 
             <div className="w-full">
@@ -200,8 +201,8 @@ export default function PhysicalExploration({
 
         <div className="xl:flex items-center justify-between mb-4">
           <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[400px] w-full">
-              <p className="text-lg">Aparato locomotor</p>
+            <div className="xl:mr-5 mb-1 xl:w-[260px] w-full">
+              <p className="text-md">Aparato locomotor</p>
             </div>
 
             <div className="w-full">
@@ -218,8 +219,8 @@ export default function PhysicalExploration({
           </div>
 
           <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[335px] w-full xl:text-end">
-              <p className="text-lg">Inspección oídos</p>
+            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full xl:text-star">
+              <p className="text-md">Inspección oídos</p>
             </div>
 
             <div className="w-full">
@@ -238,8 +239,8 @@ export default function PhysicalExploration({
 
         <div className="xl:flex items-center justify-between mb-4">
           <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[400px] w-full">
-              <p className="text-lg">Aparato neurológica</p>
+            <div className="xl:mr-5 mb-1 xl:w-[260px] w-full">
+              <p className="text-md">Aparato neurológica</p>
             </div>
 
             <div className="w-full">
@@ -256,8 +257,8 @@ export default function PhysicalExploration({
           </div>
 
           <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[335px] w-full xl:text-end">
-              <p className="text-lg">Inspección piel</p>
+            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full xl:text-star">
+              <p className="text-md">Inspección piel</p>
             </div>
 
             <div className="w-full">
