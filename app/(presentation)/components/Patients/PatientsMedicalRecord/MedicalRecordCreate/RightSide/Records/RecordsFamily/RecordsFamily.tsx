@@ -48,8 +48,8 @@ export default function RecordsFamily({
       >
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[350px] md:w-[200px] w-full">
-              <p className="text-lg">Diabéticos en la familia</p>
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+              <p className="text-md">Diabéticos en la familia</p>
             </div>
 
             <div className="w-full">
@@ -167,8 +167,8 @@ export default function RecordsFamily({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[350px] md:w-[200px] w-full">
-              <p className="text-lg">Cáncer en la familia</p>
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+              <p className="text-md">Cáncer en la familia</p>
             </div>
 
             <div className="w-full">
@@ -286,8 +286,8 @@ export default function RecordsFamily({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[350px] md:w-[200px] w-full">
-              <p className="text-lg">Hipertensión en la familia</p>
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+              <p className="text-md">Hipertensión en la familia</p>
             </div>
 
             <div className="w-full">
@@ -405,8 +405,8 @@ export default function RecordsFamily({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[350px] md:w-[200px] w-full">
-              <p className="text-lg">Sida en la familia</p>
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+              <p className="text-md">Sida en la familia</p>
             </div>
 
             <div className="w-full">
@@ -524,8 +524,8 @@ export default function RecordsFamily({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[350px] md:w-[200px] w-full">
-              <p className="text-lg">Otra</p>
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+              <p className="text-md">Otra</p>
             </div>
 
             <div className="w-full">

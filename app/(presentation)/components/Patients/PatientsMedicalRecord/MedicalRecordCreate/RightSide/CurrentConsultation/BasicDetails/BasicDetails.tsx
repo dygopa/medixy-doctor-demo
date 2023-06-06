@@ -132,13 +132,13 @@ export default function BasicDetails({
     <div>
       <div className="xl:flex justify-between mb-4">
         <div className="xl:flex lg:flex xl:mb-0 mb-4 items-center">
-          <div className="mr-5 xl:w-[235px] lg:w-[200px] w-full xl:mb-0 lg:mb-0 mb-1">
-            <p className="text-slate-900 font-lighter text-lg flex">
-              Fecha de la consulta <p className="text-danger">*</p>
+          <div className="mr-5 xl:w-[160px] lg:w-[150px] w-full xl:mb-0 lg:mb-0 mb-1">
+            <p className="text-slate-900 font-lighter text-md flex">
+              Fecha de la consulta <span className="text-danger">*</span>
             </p>
           </div>
 
-          <div className="xl:w-[340px] w-full">
+          <div className="xl:w-[400px] w-full">
             <FormInput
               value={values.consultationDate}
               name="consultationDate"
@@ -158,8 +158,8 @@ export default function BasicDetails({
         </div>
 
         <div className="xl:flex lg:flex items-center xl:mt-0 mt-4">
-          <div className="mr-5 xl:w-[300px] w-[200px] xl:mb-0 lg:mb-0 mb-1 xl:text-end">
-            <p className="text-lg">Referido por</p>
+          <div className="mr-5 xl:w-[150px] w-[150px] xl:mb-0 lg:mb-0 mb-1 xl:text-end">
+            <p className="text-md">Referido por</p>
           </div>
 
           <div className="w-full">
@@ -176,8 +176,8 @@ export default function BasicDetails({
 
       <div className="xl:flex items-center justify-between w-full mb-4">
         <div className="xl:flex lg:flex items-center w-full">
-          <div className="mr-5 xl:w-[300px] lg:w-[200px] w-full xl:mb-0 lg:mb-0 mb-1">
-            <p className="text-slate-900 font-lighter text-lg flex">
+          <div className="mr-5 lg:w-[200px] w-full xl:mb-0 lg:mb-0 mb-1">
+            <p className="text-slate-900 font-lighter text-md flex">
               Mótivo de la consulta <p className="text-danger">*</p>
             </p>
           </div>
@@ -204,8 +204,8 @@ export default function BasicDetails({
 
       <div className="xl:flex items-center justify-between w-full mb-4">
         <div className="xl:flex lg:flex items-center w-full">
-          <div className="mr-5 xl:w-[300px] lg:w-[200px] xl:mb-0 lg:mb-0 mb-1">
-            <p className="text-lg">Inicio del padecimiento</p>
+          <div className="mr-5 lg:w-[200px] xl:mb-0 lg:mb-0 mb-1">
+            <p className="text-md">Inicio del padecimiento</p>
           </div>
 
           <div className="w-full">

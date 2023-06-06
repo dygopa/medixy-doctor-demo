@@ -100,8 +100,8 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
       <div className={clsx([showBody ? "block" : "hidden"])}>
         <div className="xl:flex items-center justify-between mb-4 w-full">
           <div className="xl:flex items-center w-full">
-            <div className="xl:mr-5 mb-1 xl:w-[305px] w-full">
-              <p className="text-lg">Diagnóstico</p>
+            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full">
+              <p className="text-md">Diagnóstico</p>
             </div>
 
             <div className="w-full">
@@ -160,8 +160,8 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
 
         <div className="xl:flex items-center justify-between mb-4 w-full">
           <div className="xl:flex items-center w-full">
-            <div className="xl:mr-5 mb-1 xl:w-[305px] w-full">
-              <p className="text-lg">Observaciones</p>
+            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full">
+              <p className="text-md">Observaciones</p>
             </div>
 
             <div className="w-full">
