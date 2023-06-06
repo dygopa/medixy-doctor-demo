@@ -146,7 +146,7 @@ export default function Formulary({
         </div>
         <div className="input-group w-full">
           <p className="input-label pb-2">
-            Nombre <span className="text-red-500">*</span>
+            Nombre <span className="text-primary font-bold">*</span>
           </p>
           <FormInput
             type="text"
@@ -160,7 +160,7 @@ export default function Formulary({
         <div className="md:flex gap-3 w-full">
           <div className="input-group md:w-[50%]">
             <p className="input-label py-2">
-              Apellido Paterno <span className="text-red-500">*</span>
+              Apellido Paterno <span className="text-primary font-bold">*</span>
             </p>
             <FormInput
               type="text"
@@ -185,7 +185,7 @@ export default function Formulary({
 
         <div className="input-group w-full">
           <p className="input-label py-2">
-            Fecha de nacimiento <span className="text-red-500">*</span>
+            Fecha de nacimiento <span className="text-primary font-bold">*</span>
           </p>
           <FormInput
             type={"date"}
@@ -212,7 +212,7 @@ export default function Formulary({
 
         <div className="input-group w-full">
           <p className="input-label py-2">
-            Teléfono <span className="text-red-500">*</span>
+            Teléfono <span className="text-primary font-bold">*</span>
           </p>
           <FormInput
             type="text"

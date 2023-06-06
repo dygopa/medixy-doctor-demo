@@ -172,10 +172,10 @@ export default function Formulary() {
           <h2 className="lg:mr-5 text-2xl font-bold truncate">
             Información del Paciente
           </h2>
-          <p className="font-light text-slate-500 text-base my-3 lg:block md:block hidden">
+          {/*<p className="font-light text-slate-500 text-base my-3 lg:block md:block hidden">
             Completa la información de tu paciente para registrar todos sus
             datos.
-          </p>
+          </p>*/}
         </div>
         <Button className="my-4 w-[100%] lg:w-auto" variant="primary" disabled={
           loading || 

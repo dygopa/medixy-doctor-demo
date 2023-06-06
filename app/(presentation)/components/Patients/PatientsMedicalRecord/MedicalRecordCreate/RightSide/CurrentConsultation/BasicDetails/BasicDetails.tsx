@@ -134,7 +134,7 @@ export default function BasicDetails({
         <div className="xl:flex lg:flex xl:mb-0 mb-4 items-center">
           <div className="mr-5 xl:w-[160px] lg:w-[150px] w-full xl:mb-0 lg:mb-0 mb-1">
             <p className="text-slate-900 font-lighter text-md flex">
-              Fecha de la consulta <span className="text-danger">*</span>
+              Fecha de la consulta <span className="text-primary font-bold">*</span>
             </p>
           </div>
 
@@ -178,7 +178,7 @@ export default function BasicDetails({
         <div className="xl:flex lg:flex items-center w-full">
           <div className="mr-5 lg:w-[200px] w-full xl:mb-0 lg:mb-0 mb-1">
             <p className="text-slate-900 font-lighter text-md flex">
-              Mótivo de la consulta <p className="text-danger">*</p>
+              Mótivo de la consulta <span className="text-primary font-bold">*</span>
             </p>
           </div>
 

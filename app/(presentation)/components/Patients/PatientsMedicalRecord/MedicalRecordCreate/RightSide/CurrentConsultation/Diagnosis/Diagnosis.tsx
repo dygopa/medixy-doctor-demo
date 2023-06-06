@@ -101,7 +101,7 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
         <div className="xl:flex items-center justify-between mb-4 w-full">
           <div className="xl:flex items-center w-full">
             <div className="xl:mr-5 mb-1 xl:w-[200px] w-full">
-              <p className="text-md">Diagnóstico</p>
+              <p className="text-md">Diagnóstico <span className="text-primary font-bold">*</span></p>
             </div>
 
             <div className="w-full">

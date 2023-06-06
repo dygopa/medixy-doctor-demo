@@ -164,7 +164,10 @@ export default function Formulary({
         </h2>
         <div className="lg:w-[20%] w-[40%] flex justify-center items-center">
           <Button
-            disabled={loadingUpdate}
+            disabled={loadingUpdate ||
+              formData?.address === "" ||
+              formData?.name === ""
+            }
             onClick={() => {
               updateUserLocality(
                 { ...formData, state: formData.state.name },
@@ -201,7 +204,7 @@ export default function Formulary({
                   </div>
                   <div className="lg:flex justify-between items-start relative w-full gap-3">
                     <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                      Nombre del consultorio
+                      Nombre del consultorio<span className="text-primary font-bold">*</span>
                     </p>
                     <FormInput
                       type={"text"}
@@ -345,7 +348,7 @@ export default function Formulary({
                   </div>
                   <div className="lg:flex justify-between items-start relative w-full gap-3">
                     <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                      Dirección
+                      Dirección<span className="text-primary font-bold">*</span>
                     </p>
                     <FormInput
                       type={"text"}
@@ -362,7 +365,6 @@ export default function Formulary({
                   <div className="lg:flex justify-between items-start relative w-full gap-3">
                     <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                       Cargar imagen
-                      <span className="text-primary font-bold">*</span>
                     </p>
                     <FormInput
                       onChange={(e) => handleChangeMedia(e)}

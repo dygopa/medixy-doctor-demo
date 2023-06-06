@@ -224,14 +224,14 @@ export default function Navigator() {
     <>
       <div className="w-full md:flex justify-between items-center sticky top-[67px] z-[97]  bg-slate-100 py-2 md:pb-0">
         <div className="md:w-[50%]">
-          <h2 className="lg:mr-5 text-2xl font-bold truncate">
+          <h2 className="lg:mr-5 text-2xl font-bold truncate py-3">
             Nueva consulta
           </h2>
-          <p className="font-light text-slate-500 text-base my-3">
+          {/*<p className="font-light text-slate-500 text-base my-3">
             Información detallada del expediente del paciente
-          </p>
+          </p>*/}
         </div>
-        <div className="flex items-center">
+        <div className="flex items-center justify-center md:justify-end">
           <Button
             variant="outline-primary"
             disabled={isLoading}
