@@ -15,7 +15,7 @@ export default function RightSide({ width }: IRightSideProps) {
     setIsLoading(true);
 
     const values: any = localStorage.getItem(
-      "prosit.storage.medical-record-create"
+      "noodus.storage.medical-record-create"
     );
 
     if (!values || typeof values?.diagnose === "string") {
@@ -53,7 +53,7 @@ export default function RightSide({ width }: IRightSideProps) {
           },
           surgicalInterventions: {
             isChecked: false,
-            value: "",
+            values: [],
           },
           takeMedication: {
             isChecked: false,
@@ -89,7 +89,7 @@ export default function RightSide({ width }: IRightSideProps) {
           },
           bloodTypeNonPathological: {
             isChecked: false,
-            value: "",
+            values: [],
           },
           smokingNonPathological: {
             isChecked: false,
@@ -113,23 +113,23 @@ export default function RightSide({ width }: IRightSideProps) {
           },
           diabetesFamily: {
             isChecked: false,
-            value: "",
+            values: [],
           },
           cancerFamily: {
             isChecked: false,
-            value: "",
+            values: [],
           },
           hypertensionFamily: {
             isChecked: false,
-            value: "",
+            values: [],
           },
           sidaFamily: {
             isChecked: false,
-            value: "",
+            values: [],
           },
           otherFamily: {
             isChecked: false,
-            value: "",
+            values: [],
           },
         },
         orders: [],
@@ -138,7 +138,7 @@ export default function RightSide({ width }: IRightSideProps) {
       };
 
       localStorage.setItem(
-        "prosit.storage.medical-record-create",
+        "noodus.storage.medical-record-create",
         JSON.stringify(valuesFormulary)
       );
     }

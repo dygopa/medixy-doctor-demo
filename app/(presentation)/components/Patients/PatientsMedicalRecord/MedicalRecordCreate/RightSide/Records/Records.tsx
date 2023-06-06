@@ -14,7 +14,7 @@ export type valuesTypes = {
   };
   surgicalInterventions: {
     isChecked: boolean;
-    value: string;
+    values: string[];
   };
   takeMedication: {
     isChecked: boolean;
@@ -50,7 +50,7 @@ export type valuesTypes = {
   };
   bloodTypeNonPathological: {
     isChecked: boolean;
-    value: string;
+    values: string[];
   };
   smokingNonPathological: {
     isChecked: boolean;
@@ -74,23 +74,23 @@ export type valuesTypes = {
   };
   diabetesFamily: {
     isChecked: boolean;
-    value: string;
+    values: string[];
   };
   cancerFamily: {
     isChecked: boolean;
-    value: string;
+    values: string[];
   };
   hypertensionFamily: {
     isChecked: boolean;
-    value: string;
+    values: string[];
   };
   sidaFamily: {
     isChecked: boolean;
-    value: string;
+    values: string[];
   };
   otherFamily: {
     isChecked: boolean;
-    value: string;
+    values: string[];
   };
 };
 
@@ -102,7 +102,7 @@ export default function Records() {
     },
     surgicalInterventions: {
       isChecked: false,
-      value: "",
+      values: [],
     },
     takeMedication: {
       isChecked: false,
@@ -138,7 +138,7 @@ export default function Records() {
     },
     bloodTypeNonPathological: {
       isChecked: false,
-      value: "",
+      values: [],
     },
     smokingNonPathological: {
       isChecked: false,
@@ -162,23 +162,23 @@ export default function Records() {
     },
     diabetesFamily: {
       isChecked: false,
-      value: "",
+      values: [],
     },
     cancerFamily: {
       isChecked: false,
-      value: "",
+      values: [],
     },
     hypertensionFamily: {
       isChecked: false,
-      value: "",
+      values: [],
     },
     sidaFamily: {
       isChecked: false,
-      value: "",
+      values: [],
     },
     otherFamily: {
       isChecked: false,
-      value: "",
+      values: [],
     },
   });
 
@@ -194,7 +194,7 @@ export default function Records() {
 
   const saveValuesInLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "prosit.storage.medical-record-create"
+      "noodus.storage.medical-record-create"
     );
 
     if (!valuesStorage) window.location.reload();
@@ -207,14 +207,14 @@ export default function Records() {
     valuesJSON.records = records;
 
     localStorage.setItem(
-      "prosit.storage.medical-record-create",
+      "noodus.storage.medical-record-create",
       JSON.stringify(valuesJSON)
     );
   };
 
   const setValuesFromLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "prosit.storage.medical-record-create"
+      "noodus.storage.medical-record-create"
     );
 
     if (!valuesStorage) window.location.reload();

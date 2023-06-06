@@ -1,5 +1,9 @@
 import { MedicalMeasureTypesEnum } from "(presentation)/(enum)/medicalMeasure/medicalMeasureEnums";
 import {
+  MedicalRecordTypesEnum,
+  MedicalRecordValueTypesEnum,
+} from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
+import {
   TreatmentDosisTypeEnum,
   TreatmentViaDosisEnum,
 } from "(presentation)/(enum)/treatment/treatmentEnums";
@@ -9,11 +13,18 @@ import {
 } from "(presentation)/(routes)/patientsRoutes";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
+import { ICIE10 } from "domain/core/entities/cie10Entity";
+import { IDiagnosis } from "domain/core/entities/diagnosis";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import {
   IMedicalMeasure,
   IMedicalMeasureType,
 } from "domain/core/entities/medicalMeasureEntity";
+import {
+  IMedicalRecord,
+  IMedicalRecordType,
+  IMedicalRecordValueType,
+} from "domain/core/entities/medicalRecordEntity";
 import {
   ITreatment,
   ITreatmentMedicine,
@@ -46,7 +57,7 @@ export default function Navigator() {
 
   const getValuesFromLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "prosit.storage.medical-record-create"
+      "noodus.storage.medical-record-create"
     );
 
     if (!valuesStorage) {
@@ -189,6 +200,23 @@ export default function Navigator() {
     return medicalMeasures;
   };
 
+  const getDiagnosis = (values: any) => {
+    if (values?.diagnose?.length === 0) return;
+
+    let diagnoses: IDiagnosis[] = [];
+
+    values.diagnose.forEach((cie10: ICIE10) => {
+      let diagnosis: IDiagnosis = {
+        id: 0,
+        description: cie10.description4,
+        cie10Id: cie10.id,
+        medicalConsultyId: 0,
+      };
+      diagnoses.push(diagnosis);
+    });
+    return diagnoses;
+  };
+
   const getTreatment = (values: any) => {
     if (values?.recipes?.length === 0) return;
 
@@ -234,12 +262,552 @@ export default function Navigator() {
     return treatment;
   };
 
+  const getMedicalRecords = (values: any) => {
+    const medicalRecords: IMedicalRecord[] = [];
+
+    if (
+      values?.allergiesPathological?.isChecked &&
+      values?.allergiesPathological?.values?.length > 0
+    ) {
+      values?.allergiesPathological?.values.forEach((allergy: any) => {
+        medicalRecords.push({
+          id: 0,
+          medicalRecordTypeId: 0,
+          medicalRecordType: {
+            id: 0,
+            name: MedicalRecordTypesEnum.ALLERGIES,
+          } as IMedicalRecordType,
+          medicalRecordValues: [
+            {
+              id: 0,
+              value: allergy,
+              medicalRecordValueType: {
+                id: 0,
+                name: MedicalRecordValueTypesEnum.ALLERGIES_NAME,
+              } as IMedicalRecordValueType,
+            },
+          ],
+          medicalConsultyId: 0,
+          medicalConsulty: {},
+        } as IMedicalRecord);
+      });
+    }
+
+    if (values?.alcoholicBeveragesNonPathological?.isChecked) {
+      medicalRecords.push({
+        id: 0,
+        medicalRecordTypeId: 0,
+        medicalRecordType: {
+          id: 0,
+          name: MedicalRecordTypesEnum.ALCOCHOLIC_BEVERAGES,
+        } as IMedicalRecordType,
+        medicalRecordValues: [
+          {
+            id: 0,
+            value: values?.alcoholicBeveragesNonPathological?.value,
+            medicalRecordValueType: {
+              id: 0,
+              name: MedicalRecordValueTypesEnum.ALCOCHOLIC_BEVERAGES_DESCRIPTION,
+            } as IMedicalRecordValueType,
+          },
+        ],
+        medicalConsultyId: 0,
+        medicalConsulty: {},
+      } as IMedicalRecord);
+    }
+
+    if (values?.anemia?.isChecked) {
+      medicalRecords.push({
+        id: 0,
+        medicalRecordTypeId: 0,
+        medicalRecordType: {
+          id: 0,
+          name: MedicalRecordTypesEnum.ANEMIA,
+        } as IMedicalRecordType,
+        medicalRecordValues: [
+          {
+            id: 0,
+            value: values?.anemia?.value,
+            medicalRecordValueType: {
+              id: 0,
+              name: MedicalRecordValueTypesEnum.ANEMIA_DESCRIPTION,
+            } as IMedicalRecordValueType,
+          },
+        ],
+        medicalConsultyId: 0,
+        medicalConsulty: {},
+      } as IMedicalRecord);
+    }
+
+    if (values?.arthritis?.isChecked) {
+      medicalRecords.push({
+        id: 0,
+        medicalRecordTypeId: 0,
+        medicalRecordType: {
+          id: 0,
+          name: MedicalRecordTypesEnum.ARTHRITIS,
+        } as IMedicalRecordType,
+        medicalRecordValues: [
+          {
+            id: 0,
+            value: values?.arthritis?.value,
+            medicalRecordValueType: {
+              id: 0,
+              name: MedicalRecordValueTypesEnum.ARTHRITIS_DESCRIPTION,
+            } as IMedicalRecordValueType,
+          },
+        ],
+        medicalConsultyId: 0,
+        medicalConsulty: {},
+      } as IMedicalRecord);
+    }
+
+    if (values?.asma?.isChecked) {
+      medicalRecords.push({
+        id: 0,
+        medicalRecordTypeId: 0,
+        medicalRecordType: {
+          id: 0,
+          name: MedicalRecordTypesEnum.ASMA,
+        } as IMedicalRecordType,
+        medicalRecordValues: [
+          {
+            id: 0,
+            value: values?.asma?.value,
+            medicalRecordValueType: {
+              id: 0,
+              name: MedicalRecordValueTypesEnum.ASMA_DESCRIPTION,
+            } as IMedicalRecordValueType,
+          },
+        ],
+        medicalConsultyId: 0,
+        medicalConsulty: {},
+      } as IMedicalRecord);
+    }
+
+    if (values?.bloodClots?.isChecked) {
+      medicalRecords.push({
+        id: 0,
+        medicalRecordTypeId: 0,
+        medicalRecordType: {
+          id: 0,
+          name: MedicalRecordTypesEnum.BLOODS_CLOTS,
+        } as IMedicalRecordType,
+        medicalRecordValues: [
+          {
+            id: 0,
+            value: values?.bloodClots?.value,
+            medicalRecordValueType: {
+              id: 0,
+              name: MedicalRecordValueTypesEnum.BLOODS_CLOTS_DESCRIPTION,
+            } as IMedicalRecordValueType,
+          },
+        ],
+        medicalConsultyId: 0,
+        medicalConsulty: {},
+      } as IMedicalRecord);
+    }
+
+    if (
+      values?.bloodTypeNonPathological?.isChecked &&
+      values?.bloodTypeNonPathological?.values?.length > 0
+    ) {
+      values?.bloodTypeNonPathological?.values.forEach((bloodType: any) => {
+        medicalRecords.push({
+          id: 0,
+          medicalRecordTypeId: 0,
+          medicalRecordType: {
+            id: 0,
+            name: MedicalRecordTypesEnum.BLOOD_TYPE,
+          } as IMedicalRecordType,
+          medicalRecordValues: [
+            {
+              id: 0,
+              value: bloodType,
+              medicalRecordValueType: {
+                id: 0,
+                name: MedicalRecordValueTypesEnum.BLOOD_TYPE_NAME,
+              } as IMedicalRecordValueType,
+            },
+          ],
+          medicalConsultyId: 0,
+          medicalConsulty: {},
+        } as IMedicalRecord);
+      });
+    }
+
+    if (values?.cancer?.isChecked) {
+      medicalRecords.push({
+        id: 0,
+        medicalRecordTypeId: 0,
+        medicalRecordType: {
+          id: 0,
+          name: MedicalRecordTypesEnum.CANCER,
+        } as IMedicalRecordType,
+        medicalRecordValues: [
+          {
+            id: 0,
+            value: values?.cancer?.value,
+            medicalRecordValueType: {
+              id: 0,
+              name: MedicalRecordValueTypesEnum.CANCER_DESCRIPTION,
+            } as IMedicalRecordValueType,
+          },
+        ],
+        medicalConsultyId: 0,
+        medicalConsulty: {},
+      } as IMedicalRecord);
+    }
+
+    if (
+      values?.cancerFamily?.isChecked &&
+      values?.cancerFamily?.values?.length > 0
+    ) {
+      values?.cancerFamily?.values.forEach((cancer: any) => {
+        medicalRecords.push({
+          id: 0,
+          medicalRecordTypeId: 0,
+          medicalRecordType: {
+            id: 0,
+            name: MedicalRecordTypesEnum.CANCER_FAMILY,
+          } as IMedicalRecordType,
+          medicalRecordValues: [
+            {
+              id: 0,
+              value: cancer,
+              medicalRecordValueType: {
+                id: 0,
+                name: MedicalRecordValueTypesEnum.CANCER_FAMILY,
+              } as IMedicalRecordValueType,
+            },
+          ],
+          medicalConsultyId: 0,
+          medicalConsulty: {},
+        } as IMedicalRecord);
+      });
+    }
+
+    if (values?.colitis?.isChecked) {
+      medicalRecords.push({
+        id: 0,
+        medicalRecordTypeId: 0,
+        medicalRecordType: {
+          id: 0,
+          name: MedicalRecordTypesEnum.COLITIS,
+        } as IMedicalRecordType,
+        medicalRecordValues: [
+          {
+            id: 0,
+            value: values?.colitis?.value,
+            medicalRecordValueType: {
+              id: 0,
+              name: MedicalRecordValueTypesEnum.COLITIS_DESCRIPTION,
+            } as IMedicalRecordValueType,
+          },
+        ],
+        medicalConsultyId: 0,
+        medicalConsulty: {},
+      } as IMedicalRecord);
+    }
+
+    if (values?.covidNonPathological?.isChecked) {
+      medicalRecords.push({
+        id: 0,
+        medicalRecordTypeId: 0,
+        medicalRecordType: {
+          id: 0,
+          name: MedicalRecordTypesEnum.COVID,
+        } as IMedicalRecordType,
+        medicalRecordValues: [
+          {
+            id: 0,
+            value: values?.covidNonPathological?.value,
+            medicalRecordValueType: {
+              id: 0,
+              name: MedicalRecordValueTypesEnum.COVID_DESCRIPTION,
+            } as IMedicalRecordValueType,
+          },
+        ],
+        medicalConsultyId: 0,
+        medicalConsulty: {},
+      } as IMedicalRecord);
+    }
+
+    if (
+      values?.diabetesFamily?.isChecked &&
+      values?.diabetesFamily?.values?.length > 0
+    ) {
+      values?.diabetesFamily?.values.forEach((diabetes: any) => {
+        medicalRecords.push({
+          id: 0,
+          medicalRecordTypeId: 0,
+          medicalRecordType: {
+            id: 0,
+            name: MedicalRecordTypesEnum.DIABETES,
+          } as IMedicalRecordType,
+          medicalRecordValues: [
+            {
+              id: 0,
+              value: diabetes,
+              medicalRecordValueType: {
+                id: 0,
+                name: MedicalRecordValueTypesEnum.DIABETES_FAMILY,
+              } as IMedicalRecordValueType,
+            },
+          ],
+          medicalConsultyId: 0,
+          medicalConsulty: {},
+        } as IMedicalRecord);
+      });
+    }
+
+    if (values?.drugsNonPathological?.isChecked) {
+      medicalRecords.push({
+        id: 0,
+        medicalRecordTypeId: 0,
+        medicalRecordType: {
+          id: 0,
+          name: MedicalRecordTypesEnum.DRUGS,
+        } as IMedicalRecordType,
+        medicalRecordValues: [
+          {
+            id: 0,
+            value: values?.drugsNonPathological?.value,
+            medicalRecordValueType: {
+              id: 0,
+              name: MedicalRecordValueTypesEnum.DRUGS_DESCRIPTION,
+            } as IMedicalRecordValueType,
+          },
+        ],
+        medicalConsultyId: 0,
+        medicalConsulty: {},
+      } as IMedicalRecord);
+    }
+
+    if (values?.exerciseNonPathological?.isChecked) {
+      medicalRecords.push({
+        id: 0,
+        medicalRecordTypeId: 0,
+        medicalRecordType: {
+          id: 0,
+          name: MedicalRecordTypesEnum.EXERCISE,
+        } as IMedicalRecordType,
+        medicalRecordValues: [
+          {
+            id: 0,
+            value: values?.exerciseNonPathological?.value,
+            medicalRecordValueType: {
+              id: 0,
+              name: MedicalRecordValueTypesEnum.EXERCISE_DESCRIPTION,
+            } as IMedicalRecordValueType,
+          },
+        ],
+        medicalConsultyId: 0,
+        medicalConsulty: {},
+      } as IMedicalRecord);
+    }
+
+    if (
+      values?.hypertensionFamily?.isChecked &&
+      values?.hypertensionFamily?.values?.length > 0
+    ) {
+      values?.hypertensionFamily?.values.forEach((hypertension: any) => {
+        medicalRecords.push({
+          id: 0,
+          medicalRecordTypeId: 0,
+          medicalRecordType: {
+            id: 0,
+            name: MedicalRecordTypesEnum.HIPERTENSION,
+          } as IMedicalRecordType,
+          medicalRecordValues: [
+            {
+              id: 0,
+              value: hypertension,
+              medicalRecordValueType: {
+                id: 0,
+                name: MedicalRecordValueTypesEnum.HIPERTENSION_FAMILY,
+              } as IMedicalRecordValueType,
+            },
+          ],
+          medicalConsultyId: 0,
+          medicalConsulty: {},
+        } as IMedicalRecord);
+      });
+    }
+
+    if (
+      values?.otherFamily?.isChecked &&
+      values?.otherFamily?.values?.length > 0
+    ) {
+      values?.otherFamily?.values.forEach((other: any) => {
+        medicalRecords.push({
+          id: 0,
+          medicalRecordTypeId: 0,
+          medicalRecordType: {
+            id: 0,
+            name: MedicalRecordTypesEnum.OTHER,
+          } as IMedicalRecordType,
+          medicalRecordValues: [
+            {
+              id: 0,
+              value: other,
+              medicalRecordValueType: {
+                id: 0,
+                name: MedicalRecordValueTypesEnum.OTHER_FAMILY,
+              } as IMedicalRecordValueType,
+            },
+          ],
+          medicalConsultyId: 0,
+          medicalConsulty: {},
+        } as IMedicalRecord);
+      });
+    }
+
+    if (
+      values?.sidaFamily?.isChecked &&
+      values?.sidaFamily?.values?.length > 0
+    ) {
+      values?.sidaFamily?.values.forEach((sida: any) => {
+        medicalRecords.push({
+          id: 0,
+          medicalRecordTypeId: 0,
+          medicalRecordType: {
+            id: 0,
+            name: MedicalRecordTypesEnum.SIDA,
+          } as IMedicalRecordType,
+          medicalRecordValues: [
+            {
+              id: 0,
+              value: sida,
+              medicalRecordValueType: {
+                id: 0,
+                name: MedicalRecordValueTypesEnum.SIDA_FAMILY,
+              } as IMedicalRecordValueType,
+            },
+          ],
+          medicalConsultyId: 0,
+          medicalConsulty: {},
+        } as IMedicalRecord);
+      });
+    }
+
+    if (values?.smokingNonPathological?.isChecked) {
+      medicalRecords.push({
+        id: 0,
+        medicalRecordTypeId: 0,
+        medicalRecordType: {
+          id: 0,
+          name: MedicalRecordTypesEnum.SMOKING,
+        } as IMedicalRecordType,
+        medicalRecordValues: [
+          {
+            id: 0,
+            value: values?.smokingNonPathological?.value,
+            medicalRecordValueType: {
+              id: 0,
+              name: MedicalRecordValueTypesEnum.SMOKING_DESCRIPTION,
+            } as IMedicalRecordValueType,
+          },
+        ],
+        medicalConsultyId: 0,
+        medicalConsulty: {},
+      } as IMedicalRecord);
+    }
+
+    if (
+      values?.surgicalInterventions?.isChecked &&
+      values?.surgicalInterventions?.values?.length > 0
+    ) {
+      values?.surgicalInterventions?.values.forEach(
+        (surgicalIntervention: any) => {
+          medicalRecords.push({
+            id: 0,
+            medicalRecordTypeId: 0,
+            medicalRecordType: {
+              id: 0,
+              name: MedicalRecordTypesEnum.SURGICAL_INTERVENTIONS,
+            } as IMedicalRecordType,
+            medicalRecordValues: [
+              {
+                id: 0,
+                value: surgicalIntervention,
+                medicalRecordValueType: {
+                  id: 0,
+                  name: MedicalRecordValueTypesEnum.SURGICAL_INTERVENTIONS_NAME,
+                } as IMedicalRecordValueType,
+              },
+            ],
+            medicalConsultyId: 0,
+            medicalConsulty: {},
+          } as IMedicalRecord);
+        }
+      );
+    }
+
+    if (
+      values?.takeMedication?.isChecked &&
+      values?.takeMedication?.values?.length > 0
+    ) {
+      values?.takeMedication?.values.forEach((medication: any) => {
+        medicalRecords.push({
+          id: 0,
+          medicalRecordTypeId: 0,
+          medicalRecordType: {
+            id: 0,
+            name: MedicalRecordTypesEnum.TAKE_MEDICATIONS,
+          } as IMedicalRecordType,
+          medicalRecordValues: [
+            {
+              id: 0,
+              value: medication,
+              medicalRecordValueType: {
+                id: 0,
+                name: MedicalRecordValueTypesEnum.TAKE_MEDICATIONS_NAME,
+              } as IMedicalRecordValueType,
+            },
+          ],
+          medicalConsultyId: 0,
+          medicalConsulty: {},
+        } as IMedicalRecord);
+      });
+    }
+
+    if (values?.transfusions?.isChecked) {
+      medicalRecords.push({
+        id: 0,
+        medicalRecordTypeId: 0,
+        medicalRecordType: {
+          id: 0,
+          name: MedicalRecordTypesEnum.TRANSFUSIONS,
+        } as IMedicalRecordType,
+        medicalRecordValues: [
+          {
+            id: 0,
+            value: values?.transfusions?.value,
+            medicalRecordValueType: {
+              id: 0,
+              name: MedicalRecordValueTypesEnum.TRANSFUSIONS_DESCRIPTION,
+            } as IMedicalRecordValueType,
+          },
+        ],
+        medicalConsultyId: 0,
+        medicalConsulty: {},
+      } as IMedicalRecord);
+    }
+
+    return medicalRecords;
+  };
+
   const onCreateMedicalConsulty = () => {
     const values = getValuesFromLocalStorage();
 
     const medicalMeasures = getMedicalMeasures(values);
 
     const treatment = getTreatment(values);
+
+    const diagnoses = getDiagnosis(values.currentConsultation);
+
+    const medicalRecords = getMedicalRecords(values.records);
 
     const medicalConsulty: IMedicalConsulty = {
       id: 0,
@@ -314,12 +882,13 @@ export default function Navigator() {
         values.currentConsultation.skinInspection.length > 0
           ? values.currentConsultation.skinInspection
           : null,
-      diagnose: values.currentConsultation.diagnose,
+      diagnose: diagnoses ?? [],
       observations:
         values.currentConsultation.observations.length > 0
           ? values.currentConsultation.observations
           : null,
       medicalMeasures: medicalMeasures,
+      medicalRecords: medicalRecords,
       treatments: treatment ? [treatment] : [],
       createdOn: new Date(),
       updatedOn: null,
@@ -327,7 +896,7 @@ export default function Navigator() {
       patientId: patient?.patientId ?? 0,
     };
 
-    // createMedicalConsulty(medicalConsulty)(dispatch);
+    createMedicalConsulty(medicalConsulty)(dispatch);
   };
 
   const onShowAlertError = () => {
@@ -339,7 +908,7 @@ export default function Navigator() {
   };
 
   const onCreateMedicalConsultySucessful = () => {
-    localStorage.removeItem("prosit.storage.medical-record-create");
+    localStorage.removeItem("noodus.storage.medical-record-create");
 
     setTimeout(() => {
       router.push(

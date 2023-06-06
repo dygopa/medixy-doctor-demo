@@ -1,4 +1,6 @@
+import { IDiagnosis } from "./diagnosis";
 import { IMedicalMeasure } from "./medicalMeasureEntity";
+import { IMedicalRecord } from "./medicalRecordEntity";
 import { ITreatment } from "./treatmentEntity";
 
 export interface IMedicalConsulty {
@@ -19,10 +21,11 @@ export interface IMedicalConsulty {
     earInspection?: string | null;
     neurologicalInspection?: string | null;
     skinInspection?: string | null;
-    diagnose: string;
+    diagnose: IDiagnosis[];
     observations?: string | null;
     medicalMeasures?: IMedicalMeasure[];
     treatments?: ITreatment[];
+    medicalRecords?: IMedicalRecord[];
     createdOn: Date;
     updatedOn: Date | null;
     deletedOn: Date | null;

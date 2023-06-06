@@ -177,46 +177,114 @@ export default function RecordsPathological({
               <p className="text-lg">Intervenciones quirúrgicas</p>
             </div>
 
-            <div className="flex items-center w-full">
-              <div className="w-[20px] h-[20px] mr-4">
-                <FormInput
-                  type="checkbox"
-                  checked={values.surgicalInterventions.isChecked}
-                  defaultChecked={values.surgicalInterventions.isChecked}
-                  name="surgicalInterventions"
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setValues({
-                      ...values,
-                      [e.target.name]: {
-                        isChecked: e.target.checked,
-                        value: e.target.checked
-                          ? values.surgicalInterventions.value
-                          : "",
-                      },
-                    })
-                  }
-                  className="w-[20px] h-[20px]"
-                />
+            <div className="w-full">
+              <div className="flex items-center">
+                <div className="w-[20px] h-[20px] mr-4">
+                  <FormInput
+                    type="checkbox"
+                    checked={values.surgicalInterventions.isChecked}
+                    defaultChecked={values.surgicalInterventions.isChecked}
+                    name="surgicalInterventions"
+                    onChange={(e: ChangeEvent<HTMLInputElement>) =>
+                      setValues({
+                        ...values,
+                        [e.target.name]: {
+                          isChecked: e.target.checked,
+                          values: e.target.checked
+                            ? values.surgicalInterventions.values
+                            : [],
+                        },
+                      })
+                    }
+                    className="w-[20px] h-[20px]"
+                  />
+                </div>
+
+                <div className="w-full">
+                  <AutocompleteInput
+                    disabled={!values.surgicalInterventions.isChecked}
+                    items={["Cesarea", "Apendicectomía", "Laparotomía Exploratoria"]}
+                    itemsAdded={values.surgicalInterventions.values}
+                    placeholder="Tipo, cuando, ejem: Amígdalas 2013 (ENTER para agregar)"
+                    className="h-[50px] w-full"
+                    onClick={(item: string) => {
+                      if (
+                        values.surgicalInterventions.isChecked &&
+                        item.length > 0 &&
+                        values.surgicalInterventions.values.indexOf(item) < 0
+                      ) {
+                        const valuesAllergies =
+                          values.surgicalInterventions.values;
+                        valuesAllergies.push(item);
+
+                        setValues({
+                          ...values,
+                          surgicalInterventions: {
+                            isChecked: true,
+                            values: valuesAllergies,
+                          },
+                        });
+                      }
+                    }}
+                    onKeyDown={(item: string) => {
+                      if (
+                        values.surgicalInterventions.isChecked &&
+                        item.length > 0 &&
+                        values.surgicalInterventions.values.indexOf(item) < 0
+                      ) {
+                        const valuesAllergies =
+                          values.surgicalInterventions.values;
+                        valuesAllergies.push(item);
+
+                        setValues({
+                          ...values,
+                          surgicalInterventions: {
+                            isChecked: true,
+                            values: valuesAllergies,
+                          },
+                        });
+                      }
+                    }}
+                  />
+                </div>
               </div>
 
-              <div className="w-full">
-                <FormInput
-                  value={values.surgicalInterventions.value}
-                  name="surgicalInterventions"
-                  placeholder="Tipo, cuando, ejem: Amígdalas 2013"
-                  type="text"
-                  disabled={!values.surgicalInterventions.isChecked}
-                  onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                    setValues({
-                      ...values,
-                      [e.target.name]: {
-                        isChecked: values.surgicalInterventions.isChecked,
-                        value: e.target.value,
-                      },
-                    })
-                  }
-                  className="h-[50px] w-full"
-                />
+              <div className="ml-[36px] max-w-full overflow-x-auto">
+                {values.surgicalInterventions.values.length > 0 &&
+                  values.surgicalInterventions.values.map(
+                    (value: string, i: number) => (
+                      <button
+                        type="button"
+                        key={i}
+                        className="mt-3 mr-3"
+                        onClick={() => {
+                          setValues({
+                            ...values,
+                            surgicalInterventions: {
+                              isChecked: true,
+                              values:
+                                values.surgicalInterventions.values.filter(
+                                  (valueInterventionsFilter) =>
+                                    valueInterventionsFilter !== value
+                                ),
+                            },
+                          });
+                        }}
+                      >
+                        <div className="bg-primary px-2 py-1 w-auto rounded-md flex justify-between items-center">
+                          <div className="mr-2">
+                            <p className="text-white text-md font-semibold">
+                              {value}
+                            </p>
+                          </div>
+
+                          <div className="mt-1">
+                            <Lucide icon="XCircle" color="#fff" size={20} />
+                          </div>
+                        </div>
+                      </button>
+                    )
+                  )}
               </div>
             </div>
           </div>

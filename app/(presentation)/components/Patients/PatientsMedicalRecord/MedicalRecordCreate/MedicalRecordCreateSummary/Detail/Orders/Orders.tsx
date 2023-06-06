@@ -6,7 +6,7 @@ export default function Orders() {
 
   const setValueFromLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "prosit.storage.medical-record-create"
+      "noodus.storage.medical-record-create"
     );
 
     if (!valuesStorage) return;

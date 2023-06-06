@@ -1,5 +1,6 @@
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import clsx from "clsx";
+import { ICIE10 } from "domain/core/entities/cie10Entity";
 import { useSearchParams } from "next/navigation";
 import { ChangeEvent, Dispatch, SetStateAction, useEffect } from "react";
 
@@ -26,7 +27,7 @@ type valuesTypes = {
   oximetry: string;
   muscleMass: string;
   glicemy: string;
-  diagnose: string[];
+  diagnose: ICIE10[];
   observations: string;
 };
 
