@@ -24,13 +24,22 @@ import {
 } from "../../context/LocalitiesContext";
 import { ILocality } from "domain/core/entities/localityEntity";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
-import { IStepByStepContext, StepByStepContext } from "(presentation)/components/core/StepByStep/context/StepByStepContext";
+import {
+  IStepByStepContext,
+  StepByStepContext,
+} from "(presentation)/components/core/StepByStep/context/StepByStepContext";
 
-export default function WithoutSteps({ userId, accountId }: { userId: string; accountId: string }) {
+export default function WithoutSteps({
+  userId,
+  accountId,
+}: {
+  userId: string;
+  accountId: string;
+}) {
   const { state, actions, dispatch } =
     useContext<ILocalitiesContext>(LocalitiesContext);
 
-  const { createUserLocality, getCountryStates} = actions;
+  const { createUserLocality, getCountryStates } = actions;
 
   const {
     loading: createUserLocalityLoading,
@@ -45,7 +54,8 @@ export default function WithoutSteps({ userId, accountId }: { userId: string; ac
     error: statesError,
   } = state.getCountryStates;
 
-  const { actions: actionsStep, dispatch: dispatchStep } = useContext<IStepByStepContext>(StepByStepContext);
+  const { actions: actionsStep, dispatch: dispatchStep } =
+    useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps } = actionsStep;
 
   const [formData, setFormData] = useState({
@@ -64,7 +74,7 @@ export default function WithoutSteps({ userId, accountId }: { userId: string; ac
     },
   });
 
-  const [loadedStates, setLoadedStates] = useState(false)
+  const [loadedStates, setLoadedStates] = useState(false);
 
   const toBase64 = (file: File) =>
     new Promise((resolve, reject) => {
@@ -89,18 +99,18 @@ export default function WithoutSteps({ userId, accountId }: { userId: string; ac
     setFormData({ ...formData, media: obj });
   }
 
-  useEffect(()=>{
-    getCountryStates()(dispatch)
-    setLoadedStates(true)
-  },[loadedStates])
+  useEffect(() => {
+    getCountryStates()(dispatch);
+    setLoadedStates(true);
+  }, [loadedStates]);
 
   useMemo(() => {
-    if (createUserLocalitySuccess){
-      createUserSteps(accountId, "LOCATION_CREATED")(dispatchStep)
+    if (createUserLocalitySuccess) {
+      createUserSteps(accountId, "LOCATION_CREATED")(dispatchStep);
       setTimeout(() => {
-        window.location.href = "/localities"
+        window.location.href = "/localities";
       }, 1000);
-    };
+    }
   }, [createUserLocalitySuccess]);
 
   return (
@@ -124,8 +134,7 @@ export default function WithoutSteps({ userId, accountId }: { userId: string; ac
           className="w-full lg:w-fit"
           disabled={
             createUserLocalityLoading ||
-            formData?.name === "" || 
-            formData?.clues === "" || 
+            formData?.name === "" ||
             formData?.address === ""
           }
           onClick={() => {
@@ -139,7 +148,6 @@ export default function WithoutSteps({ userId, accountId }: { userId: string; ac
       </div>
       <div className="flex lg:mt-5 mt-8">
         <div className="relative lg:flex gap-4 w-full lg:w-[70%]">
-
           <div className="bg-white w-full shadow-xl shadow-slate-100 rounded-md h-fit p-5">
             <div className="border w-full rounded-md p-5 flex">
               <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
@@ -182,7 +190,6 @@ export default function WithoutSteps({ userId, accountId }: { userId: string; ac
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     CLUES
-                    <span className="text-primary font-bold">*</span>
                   </p>
                   <FormInput
                     type={"text"}
@@ -228,8 +235,7 @@ export default function WithoutSteps({ userId, accountId }: { userId: string; ac
                           <option key={i} value={elem["id"]}>
                             {elem["name"]}
                           </option>
-                        ))
-                      }
+                        ))}
                     </FormSelect>
                   </div>
                   <div className="lg:flex justify-between items-center relative w-full gap-3">
@@ -275,7 +281,10 @@ export default function WithoutSteps({ userId, accountId }: { userId: string; ac
                       value={formData.longitude}
                       className="form-control lg:w-[70%]"
                       onChange={(e: any) => {
-                        setFormData({ ...formData, longitude: +e.target.value });
+                        setFormData({
+                          ...formData,
+                          longitude: +e.target.value,
+                        });
                       }}
                     />
                   </div>
@@ -310,7 +319,6 @@ export default function WithoutSteps({ userId, accountId }: { userId: string; ac
               </div>
             </div>
           </div>
-
         </div>
       </div>
     </>
