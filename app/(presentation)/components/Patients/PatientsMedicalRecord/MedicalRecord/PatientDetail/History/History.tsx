@@ -1,7 +1,23 @@
 import clsx from "clsx";
+import { Dispatch, SetStateAction, useContext } from "react";
+import {
+  IMedicalRecordContext,
+  MedicalRecordContext,
+} from "../../context/MedicalRecordContext";
 import HistoryTable from "./Table/Table";
 
-export default function History() {
+interface IHistoryProps {
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  setPopupSectionActive: Dispatch<SetStateAction<number>>;
+}
+
+export default function History({
+  setIsOpen,
+  setPopupSectionActive,
+}: IHistoryProps) {
+  const { state } = useContext<IMedicalRecordContext>(MedicalRecordContext);
+  const { data } = state.medicalConsulties;
+
   return (
     <div
       className={clsx([
@@ -11,14 +27,29 @@ export default function History() {
     >
       <div className="p-4 box h-full overflow-y-hidden">
         <div>
-          <div className="w-full flex justify-between items-center border-b pb-2">
-            <p className="text-left font-bold text-md text-slate-900 w-full">
-              Historial de consultas
-            </p>
+          <div className="flex items-center justify-between pb-1 border-b mb-2 w-full h-[36px]">
+            <div>
+              <p className="w-full text-left font-bold text-md text-slate-900">
+                Historial de consultas
+              </p>
+            </div>
 
-            {/* <p className="font-normal text-[15px] text-slate-500 cursor-pointer">
-              Ver más
-    </p> */}
+            {data.data?.length > 0 && (
+              <div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPopupSectionActive(0);
+                    setIsOpen(true);
+                  }}
+                  className="hover:bg-dark hover:bg-opacity-10 px-2 py-1 rounded-md"
+                >
+                  <p className="font-normal text-[13px] text-slate-500 cursor-pointer">
+                    Ver más
+                  </p>
+                </button>
+              </div>
+            )}
           </div>
         </div>
 

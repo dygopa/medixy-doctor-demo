@@ -1,9 +1,12 @@
 import { IPatient } from "domain/core/entities/patientEntity";
 import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
 import { MedicalMeasureFailure } from "domain/core/failures/medicalMeasure/medicalMeasureFailure";
+import { MedicalRecordFailure } from "domain/core/failures/medicalRecord/medicalRecordFailure";
 import { PatientFailure } from "domain/core/failures/patient/patientFailure";
+import { TreatmentFailure } from "domain/core/failures/treatment/treatmentFailure";
 import { IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
+import { IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
 import { IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
 
 export interface IMedicalRecordState {
@@ -11,6 +14,8 @@ export interface IMedicalRecordState {
     medicalMeasures: IGetMedicalMeasuresState;
     medicalConsulties: IGetMedicalConsultiesState;
     treatments: IGetTreatmentsState;
+    allergies: IGetAllergiesState;
+    medicalRecords: IGetMedicalRecordsState;
 }
 
 interface IGetPatientState {
@@ -38,7 +43,21 @@ interface IGetTreatmentsState {
     data: IGetTreatmentsResponse;
     loading: boolean;
     successful: boolean;
-    error: MedicalConsultyFailure | null; 
+    error: TreatmentFailure | null; 
+}
+
+interface IGetAllergiesState {
+    data: IGetMedicalRecordsResponse;
+    loading: boolean;
+    successful: boolean;
+    error: MedicalRecordFailure | null; 
+}
+
+interface IGetMedicalRecordsState {
+    data: IGetMedicalRecordsResponse;
+    loading: boolean;
+    successful: boolean;
+    error: MedicalRecordFailure | null; 
 }
 
 export const initialState: IMedicalRecordState = {
@@ -62,6 +81,18 @@ export const initialState: IMedicalRecordState = {
     },
     treatments: {
         data: {} as IGetTreatmentsResponse,
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    allergies: {
+        data: {} as IGetMedicalRecordsResponse,
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    medicalRecords: {
+        data: {} as IGetMedicalRecordsResponse,
         loading: false,
         successful: false,
         error: null,

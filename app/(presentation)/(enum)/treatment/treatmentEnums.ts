@@ -43,3 +43,18 @@ export enum TreatmentDosisTypeTextEnum {
     EMULSION = "Emulsión",
     INYECTABLE = "Inyectable",
 }
+
+type TTreatmentDosisTypeEnum = {
+    [key: number]: string
+}
+
+export const treatmentDosisTypeEnum: TTreatmentDosisTypeEnum = {
+    1: "Capsula",
+    2: "Jarabe",
+    3: "Polvos",
+    4: "Suspensión",
+    5: "Comprimido",
+    6: "Granulado",
+    7: "Emulsión",
+    8: "Inyectable",
+}

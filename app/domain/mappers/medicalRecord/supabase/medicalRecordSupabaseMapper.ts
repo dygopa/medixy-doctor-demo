@@ -21,6 +21,9 @@ export function medicalRecordSupabaseToMap(data: any): IMedicalRecord {
       id: data?.id ?? 0,
       medicalRecordTypeId: data?.tipoAntecedenteId ?? 0,
       medicalConsultyId: data?.consultaMedicaId ?? 0,
+      patientId: data?.pacienteId ?? 0,
+      medicalRecordType: {} as IMedicalRecordType,
+      medicalRecordValues: [] as IMedicalRecordValue[],
     } as IMedicalRecord;
 }
 
@@ -28,6 +31,7 @@ export function fromMedicalRecordSupabaseDocumentData(medicalRecord: IMedicalRec
     const documentData = {
       tipoAntecedenteId: medicalRecord.medicalRecordTypeId,
       consultaMedicaId: medicalRecord.medicalConsultyId, 
+      pacienteId: medicalRecord.patientId,
     } as any;
   
     return documentData;

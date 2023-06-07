@@ -21,7 +21,7 @@ export default function Recipe() {
 
   const saveRecipesInLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "noodus.storage.medical-record-create"
+      "prosit.storage.medical-record-create"
     );
 
     if (!valuesStorage) window.location.reload();
@@ -34,14 +34,14 @@ export default function Recipe() {
     valuesJSON.recipes = recipesStorage;
 
     localStorage.setItem(
-      "noodus.storage.medical-record-create",
+      "prosit.storage.medical-record-create",
       JSON.stringify(valuesJSON)
     );
   };
 
   const setRecipesFromLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "noodus.storage.medical-record-create"
+      "prosit.storage.medical-record-create"
     );
 
     if (!valuesStorage) window.location.reload();

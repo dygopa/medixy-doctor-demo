@@ -75,7 +75,7 @@ export default function MedicalRecordIndex({
 
       <div className="mt-10">
         <div className="mt-4">
-          <PatientDetails />
+          <PatientDetails patientId={patientId} />
         </div>
       </div>
     </div>

@@ -57,7 +57,7 @@ export default function Navigator() {
 
   const getValuesFromLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "noodus.storage.medical-record-create"
+      "prosit.storage.medical-record-create"
     );
 
     if (!valuesStorage) {
@@ -273,6 +273,7 @@ export default function Navigator() {
       values?.allergiesPathological?.values.forEach((allergy: any) => {
         medicalRecords.push({
           id: 0,
+          patientId: patient?.patientId,
           medicalRecordTypeId: 0,
           medicalRecordType: {
             id: 0,
@@ -297,6 +298,7 @@ export default function Navigator() {
     if (values?.alcoholicBeveragesNonPathological?.isChecked) {
       medicalRecords.push({
         id: 0,
+        patientId: patient?.patientId,
         medicalRecordTypeId: 0,
         medicalRecordType: {
           id: 0,
@@ -320,6 +322,7 @@ export default function Navigator() {
     if (values?.anemia?.isChecked) {
       medicalRecords.push({
         id: 0,
+        patientId: patient?.patientId,
         medicalRecordTypeId: 0,
         medicalRecordType: {
           id: 0,
@@ -343,6 +346,7 @@ export default function Navigator() {
     if (values?.arthritis?.isChecked) {
       medicalRecords.push({
         id: 0,
+        patientId: patient?.patientId,
         medicalRecordTypeId: 0,
         medicalRecordType: {
           id: 0,
@@ -366,6 +370,7 @@ export default function Navigator() {
     if (values?.asma?.isChecked) {
       medicalRecords.push({
         id: 0,
+        patientId: patient?.patientId,
         medicalRecordTypeId: 0,
         medicalRecordType: {
           id: 0,
@@ -389,6 +394,7 @@ export default function Navigator() {
     if (values?.bloodClots?.isChecked) {
       medicalRecords.push({
         id: 0,
+        patientId: patient?.patientId,
         medicalRecordTypeId: 0,
         medicalRecordType: {
           id: 0,
@@ -416,6 +422,7 @@ export default function Navigator() {
       values?.bloodTypeNonPathological?.values.forEach((bloodType: any) => {
         medicalRecords.push({
           id: 0,
+          patientId: patient?.patientId,
           medicalRecordTypeId: 0,
           medicalRecordType: {
             id: 0,
@@ -440,6 +447,7 @@ export default function Navigator() {
     if (values?.cancer?.isChecked) {
       medicalRecords.push({
         id: 0,
+        patientId: patient?.patientId,
         medicalRecordTypeId: 0,
         medicalRecordType: {
           id: 0,
@@ -467,6 +475,7 @@ export default function Navigator() {
       values?.cancerFamily?.values.forEach((cancer: any) => {
         medicalRecords.push({
           id: 0,
+          patientId: patient?.patientId,
           medicalRecordTypeId: 0,
           medicalRecordType: {
             id: 0,
@@ -491,6 +500,7 @@ export default function Navigator() {
     if (values?.colitis?.isChecked) {
       medicalRecords.push({
         id: 0,
+        patientId: patient?.patientId,
         medicalRecordTypeId: 0,
         medicalRecordType: {
           id: 0,
@@ -514,6 +524,7 @@ export default function Navigator() {
     if (values?.covidNonPathological?.isChecked) {
       medicalRecords.push({
         id: 0,
+        patientId: patient?.patientId,
         medicalRecordTypeId: 0,
         medicalRecordType: {
           id: 0,
@@ -541,6 +552,7 @@ export default function Navigator() {
       values?.diabetesFamily?.values.forEach((diabetes: any) => {
         medicalRecords.push({
           id: 0,
+          patientId: patient?.patientId,
           medicalRecordTypeId: 0,
           medicalRecordType: {
             id: 0,
@@ -565,6 +577,7 @@ export default function Navigator() {
     if (values?.drugsNonPathological?.isChecked) {
       medicalRecords.push({
         id: 0,
+        patientId: patient?.patientId,
         medicalRecordTypeId: 0,
         medicalRecordType: {
           id: 0,
@@ -588,6 +601,7 @@ export default function Navigator() {
     if (values?.exerciseNonPathological?.isChecked) {
       medicalRecords.push({
         id: 0,
+        patientId: patient?.patientId,
         medicalRecordTypeId: 0,
         medicalRecordType: {
           id: 0,
@@ -615,6 +629,7 @@ export default function Navigator() {
       values?.hypertensionFamily?.values.forEach((hypertension: any) => {
         medicalRecords.push({
           id: 0,
+          patientId: patient?.patientId,
           medicalRecordTypeId: 0,
           medicalRecordType: {
             id: 0,
@@ -643,6 +658,7 @@ export default function Navigator() {
       values?.otherFamily?.values.forEach((other: any) => {
         medicalRecords.push({
           id: 0,
+          patientId: patient?.patientId,
           medicalRecordTypeId: 0,
           medicalRecordType: {
             id: 0,
@@ -671,6 +687,7 @@ export default function Navigator() {
       values?.sidaFamily?.values.forEach((sida: any) => {
         medicalRecords.push({
           id: 0,
+          patientId: patient?.patientId,
           medicalRecordTypeId: 0,
           medicalRecordType: {
             id: 0,
@@ -695,6 +712,7 @@ export default function Navigator() {
     if (values?.smokingNonPathological?.isChecked) {
       medicalRecords.push({
         id: 0,
+        patientId: patient?.patientId,
         medicalRecordTypeId: 0,
         medicalRecordType: {
           id: 0,
@@ -723,6 +741,7 @@ export default function Navigator() {
         (surgicalIntervention: any) => {
           medicalRecords.push({
             id: 0,
+            patientId: patient?.patientId,
             medicalRecordTypeId: 0,
             medicalRecordType: {
               id: 0,
@@ -752,6 +771,7 @@ export default function Navigator() {
       values?.takeMedication?.values.forEach((medication: any) => {
         medicalRecords.push({
           id: 0,
+          patientId: patient?.patientId,
           medicalRecordTypeId: 0,
           medicalRecordType: {
             id: 0,
@@ -776,6 +796,7 @@ export default function Navigator() {
     if (values?.transfusions?.isChecked) {
       medicalRecords.push({
         id: 0,
+        patientId: patient?.patientId,
         medicalRecordTypeId: 0,
         medicalRecordType: {
           id: 0,
@@ -909,7 +930,7 @@ export default function Navigator() {
   };
 
   const onCreateMedicalConsultySucessful = () => {
-    // localStorage.removeItem("noodus.storage.medical-record-create");
+    localStorage.removeItem("prosit.storage.medical-record-create");
 
     setTimeout(() => {
       router.push(

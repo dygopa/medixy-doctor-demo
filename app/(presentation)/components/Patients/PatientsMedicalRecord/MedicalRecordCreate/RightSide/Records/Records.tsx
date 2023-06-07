@@ -194,7 +194,7 @@ export default function Records() {
 
   const saveValuesInLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "noodus.storage.medical-record-create"
+      "prosit.storage.medical-record-create"
     );
 
     if (!valuesStorage) window.location.reload();
@@ -207,14 +207,14 @@ export default function Records() {
     valuesJSON.records = records;
 
     localStorage.setItem(
-      "noodus.storage.medical-record-create",
+      "prosit.storage.medical-record-create",
       JSON.stringify(valuesJSON)
     );
   };
 
   const setValuesFromLocalStorage = () => {
     const valuesStorage = localStorage.getItem(
-      "noodus.storage.medical-record-create"
+      "prosit.storage.medical-record-create"
     );
 
     if (!valuesStorage) window.location.reload();

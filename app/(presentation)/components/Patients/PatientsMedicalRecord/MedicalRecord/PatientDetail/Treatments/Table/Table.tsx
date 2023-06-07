@@ -1,26 +1,24 @@
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import { ITreatment } from "domain/core/entities/treatmentEntity";
 import { useContext, useEffect } from "react";
-import { IMedicalRecordContext, MedicalRecordContext } from "../../../context/MedicalRecordContext";
-import Treatment from "./Treatment"
+import {
+  IMedicalRecordContext,
+  MedicalRecordContext,
+} from "../../../context/MedicalRecordContext";
+import Treatment from "./Treatment";
 
 export default function TreatmentsTable() {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { getTreatments } = actions;
   const { data: patient } = state.patient;
-  const {
-    data: treatments,
-    loading,
-    error,
-    successful,
-  } = state.treatments;
+  const { data: treatments, loading, error, successful } = state.treatments;
 
   const onGetTreatmentsDispatch = () => {
     if (patient?.patientId) {
       getTreatments({
         patientId: patient.patientId,
-        limit: 4,
+        limit: 3,
       })(dispatch);
     }
   };
@@ -30,13 +28,11 @@ export default function TreatmentsTable() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  console.log(treatments)
-
   if (loading) {
     return (
       <div className="w-full flex flex-col justify-center items-center mt-8">
         <p className="font-light text-slate-500 text-base">
-          Cargando los Tratamientos...
+          Cargando los tratamientos...
         </p>
       </div>
     );
@@ -51,25 +47,18 @@ export default function TreatmentsTable() {
         <p className="font-light text-slate-500 text-base mb-4">
           Lo sentimos, algo no ha salido bien. Vuelve a intentarlo
         </p>
-        <Button
-          variant="primary"
-          onClick={() => onGetTreatmentsDispatch()}
-        >
+        <Button variant="primary" onClick={() => onGetTreatmentsDispatch()}>
           Volver a intentar
         </Button>
       </div>
     );
   }
 
-  if (
-    successful &&
-    treatments?.data &&
-    treatments.data?.length === 0
-  ) {
+  if (successful && treatments?.data && treatments.data?.length === 0) {
     return (
       <div className="w-full flex flex-col justify-center items-center mt-8">
         <p className="font-light text-slate-500 text-base">
-          El paciente no posee Tratamientos.
+          El paciente no posee tratamientos.
         </p>
       </div>
     );
@@ -81,10 +70,9 @@ export default function TreatmentsTable() {
     <div className="">
       {treatments.data.map((treatment: ITreatment) => (
         <div key={treatment.id} className="overflow-x-auto w-full">
-          <Treatment treatment={treatment}/>
+          <Treatment treatment={treatment} />
         </div>
       ))}
-      
     </div>
   );
 }

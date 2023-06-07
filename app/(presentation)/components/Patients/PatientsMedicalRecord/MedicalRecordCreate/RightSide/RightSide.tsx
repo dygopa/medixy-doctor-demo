@@ -15,7 +15,7 @@ export default function RightSide({ width }: IRightSideProps) {
     setIsLoading(true);
 
     const values: any = localStorage.getItem(
-      "noodus.storage.medical-record-create"
+      "prosit.storage.medical-record-create"
     );
 
     if (!values || typeof values?.diagnose === "string") {
@@ -138,7 +138,7 @@ export default function RightSide({ width }: IRightSideProps) {
       };
 
       localStorage.setItem(
-        "noodus.storage.medical-record-create",
+        "prosit.storage.medical-record-create",
         JSON.stringify(valuesFormulary)
       );
     }

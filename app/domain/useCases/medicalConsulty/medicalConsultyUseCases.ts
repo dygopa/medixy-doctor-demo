@@ -33,25 +33,6 @@ export default class MedicalConsultyUseCase {
     }
   }
 
-  async getTreatments(obj: { skip?: number | null; sort?: any; limit?: number | null; patientId?: number | null }): Promise<IGetTreatmentsResponse> {
-    try {
-      const response = await this._treatmentRepository.getTreatments({
-        skip: obj.skip,
-        sort: obj.sort,
-        limit: obj.limit,
-        patientId: obj.patientId
-      });
-
-      if (response instanceof TreatmentFailure) throw response;
-
-      console.log(response)
-
-      return response;
-    } catch (error) {
-      throw error;
-    }
-  }
-
   async createMedicalConsulty(medicalConsulty: IMedicalConsulty): Promise<ICreateMedicalConsultyResponse> {
     try {
       const response = await this._repository.createMedicalConsulty(medicalConsulty);
@@ -74,7 +55,7 @@ export default class MedicalConsultyUseCase {
         })))
       } 
 
-      /* if (medicalConsulty.diagnose && medicalConsulty.diagnose.length > 0) {
+      if (medicalConsulty.diagnose && medicalConsulty.diagnose.length > 0) {
         await Promise.all((medicalConsulty.diagnose.map(async (diagnosis) => {
           diagnosis.medicalConsultyId = response.data.id;
           await this._diagnosisRepository.createDiagnosis(diagnosis);
@@ -87,7 +68,7 @@ export default class MedicalConsultyUseCase {
 
           await this._medicalRecordRepository.createMedicalRecord(medicalRecord);
         })))
-      } */
+      } 
 
       return response
     } catch (error) {

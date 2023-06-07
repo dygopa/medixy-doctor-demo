@@ -22,6 +22,30 @@ export enum MedicalRecordTypesEnum {
     OTHER = "OTHER"
 }
 
+export enum MedicalRecordTypesNumberEnum {
+    ALLERGIES = 1,
+    SURGICAL_INTERVENTIONS = 2,
+    TAKE_MEDICATIONS = 3,
+    TRANSFUSIONS = 4,
+    ANEMIA = 5,
+    ARTHRITIS = 6,
+    ASMA = 7,
+    CANCER = 8,
+    BLOODS_CLOTS = 9,
+    COLITIS = 10,
+    BLOOD_TYPE = 11,
+    SMOKING = 12,
+    ALCOCHOLIC_BEVERAGES = 13,
+    DRUGS = 14,
+    EXERCISE = 15,
+    COVID = 16,
+    DIABETES = 17,
+    CANCER_FAMILY = 18,
+    HIPERTENSION = 19,
+    SIDA = 20,
+    OTHER = 21
+}
+
 export enum MedicalRecordValueTypesEnum {
     ALLERGIES_NAME = "NAME",
     SURGICAL_INTERVENTIONS_NAME = "NAME",
@@ -46,4 +70,32 @@ export enum MedicalRecordValueTypesEnum {
     HIPERTENSION_FAMILY = "FAMILY",
     SIDA_FAMILY = "FAMILY",
     OTHER_FAMILY = "FAMILY"
+}
+
+type TMedicalRecordTypeEnum = {
+    [key: string]: string
+}
+
+export const medicalRecordTypeEnum: TMedicalRecordTypeEnum = {
+    "ALLERGIES": "Alergia",
+    "SURGICAL_INTERVENTIONS": "Intervención quirurgica",
+    "TAKE_MEDICATIONS": "Medicamentos",
+    "TRANSFUSIONS": "Transfusiones",
+    "ANEMIA": "Anemia",
+    "ARTHRITIS": "Artritis",
+    "ASMA": "Asma",
+    "CANCER": "Cáncer",
+    "BLOODS_CLOTS": "Coágulos sanguíneos",
+    "COLITIS": "Colitis",
+    "BLOOD_TYPE": "Grupo sanguíneo y RH",
+    "SMOKING": "Tabaquismo",
+    "ALCOCHOLIC_BEVERAGES": "Bebidas alcoholicas",
+    "DRUGS": "Drogas",
+    "EXERCISE": "Ejercicio",
+    "COVID": "COVID",
+    "DIABETES": "Diabetes",
+    "CANCER_FAMILY": "Cáncer en la familia",
+    "HIPERTENSION": "Hipertensión",
+    "SIDA": "Sida",
+    "OTHER": "Otras"
 }

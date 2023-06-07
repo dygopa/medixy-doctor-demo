@@ -101,6 +101,7 @@ export const MedicalRecordReducer = (state: any, action: any) => {
             error: action.payload.error,
           },
         }
+
         case "GET_TREATMENTS_LOADING" :
           return {
             ...state,
@@ -128,6 +129,74 @@ export const MedicalRecordReducer = (state: any, action: any) => {
             ...state,
             treatments: {
               ...state.treatments,
+              data: {},
+              loading: false,
+              successful: false,
+              error: action.payload.error,
+            },
+          }
+
+        case "GET_ALLERGIES_LOADING" :
+          return {
+            ...state,
+            allergies: {
+              ...state.allergies,
+              data: {},
+              loading: true,
+              successful: false,
+              error: null,
+            },
+          };
+        case "GET_ALLERGIES_SUCCESSFUL" :
+          return {
+            ...state,
+            allergies: {
+              ...state.allergies,
+              data: action.payload.data,
+              loading: false,
+              successful: true,
+              error: null,
+            },
+          }
+        case "GET_ALLERGIES_ERROR" :
+          return {
+            ...state,
+            allergies: {
+              ...state.allergies,
+              data: {},
+              loading: false,
+              successful: false,
+              error: action.payload.error,
+            },
+          }
+
+        case "GET_MEDICAL_RECORDS_LOADING" :
+          return {
+            ...state,
+            medicalRecords: {
+              ...state.medicalRecords,
+              data: {},
+              loading: true,
+              successful: false,
+              error: null,
+            },
+          };
+        case "GET_MEDICAL_RECORDS_SUCCESSFUL" :
+          return {
+            ...state,
+            medicalRecords: {
+              ...state.medicalRecords,
+              data: action.payload.data,
+              loading: false,
+              successful: true,
+              error: null,
+            },
+          }
+        case "GET_MEDICAL_RECORDS_ERROR" :
+          return {
+            ...state,
+            medicalRecords: {
+              ...state.medicalRecords,
               data: {},
               loading: false,
               successful: false,

@@ -1,8 +1,10 @@
-import useMedicalRecord from "(presentation)/(hooks)/useMedicalRecord";
+import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 
-export default function Reason() {
-  const { medicalConsulty } = useMedicalRecord();
+interface IReasonProps {
+  medicalConsulty: IMedicalConsulty;
+}
 
+export default function Reason({ medicalConsulty }: IReasonProps) {
   return (
     <div>
       <div className="mb-2">
@@ -13,7 +15,7 @@ export default function Reason() {
         <h1 className="text-slate-900 font-bold text-lg">
           {medicalConsulty.consultationReason}{" "}
           {medicalConsulty.referrerBy &&
-            medicalConsulty.referrerBy?.length > 0 &&
+            medicalConsulty.referrerBy.length > 0 &&
             `- Referido por ${medicalConsulty.referrerBy}`}
         </h1>
       </div>

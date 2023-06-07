@@ -9,7 +9,7 @@ export default function Recipes() {
       "prosit.storage.medical-record-create"
     );
 
-    if (!valuesStorage) window.location.reload();
+    if (!valuesStorage) return;
 
     const valuesJSON = JSON.parse(valuesStorage ?? "");
     setRecipes(valuesJSON.recipes);

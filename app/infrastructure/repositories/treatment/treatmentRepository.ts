@@ -29,9 +29,9 @@ export class TreatmentRepository implements ITreatmentRepository {
       { count: "exact" });
 
       if (obj.sort) {
-          query = query.order(obj.sort.field, {
-              ascending: obj.sort.ascending
-          });
+        query = query.order(obj.sort.field, {
+            ascending: obj.sort.ascending
+        });
       }
 
       if (obj.patientId) {
@@ -62,8 +62,8 @@ export class TreatmentRepository implements ITreatmentRepository {
                   if (medicines.id >= 0) treatmentMap?.treatmentMedicines?.push(medicines);
                 });
               }
+
               treatments.push(treatmentMap);
-              console.log(treatments)
           }));
       }
 

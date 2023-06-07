@@ -1,4 +1,5 @@
 import { IMedicalConsulty } from "./medicalConsultyEntity";
+import { IPatient } from "./patientEntity";
 
 export interface IMedicalRecordType {
     id: number;
@@ -20,6 +21,8 @@ export interface IMedicalRecord {
     medicalRecordValues: IMedicalRecordValue[];
     medicalConsultyId: number;
     medicalConsulty: IMedicalConsulty;
+    patientId: number;
+    patient: IPatient;
 }
 
 export interface IMedicalRecordValue {
