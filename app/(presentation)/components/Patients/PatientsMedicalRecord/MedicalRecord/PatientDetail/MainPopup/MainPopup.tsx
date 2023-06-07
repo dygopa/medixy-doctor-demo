@@ -91,12 +91,12 @@ function MainPopup({
         isOpen ? "flex" : "hidden",
       ])}
     >
-      <div className="bg-white w-1/2 h-screen block relative box-border ">
+      <div className="bg-white xl:w-1/2 lg:w-1/2 md:w-[700px] w-full h-screen block relative box-border">
         <div>
           <Header patientId={patientId} setIsOpen={setIsOpen} />
         </div>
 
-        <div className="p-4">
+        <div className="p-4 overflow-y-auto h-screen">
           <Detail
             patientId={patientId}
             popupSectionActive={popupSectionActive}

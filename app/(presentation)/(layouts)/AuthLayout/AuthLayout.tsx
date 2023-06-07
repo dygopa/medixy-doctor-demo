@@ -2,6 +2,7 @@
 
 import AuthHandler from "./AuthHandler/AuthHandler";
 import AuthProvider from "./context/AuthContext";
+import VersionHandler from "./VersionHandler/VersionHandler";
 
 export default function AuthLayout({
   children,
@@ -9,8 +10,10 @@ export default function AuthLayout({
   children: React.ReactNode;
 }) {
   return (
-    <AuthProvider>
-      <AuthHandler>{children}</AuthHandler>
-    </AuthProvider>
+    <VersionHandler>
+      <AuthProvider>
+        <AuthHandler>{children}</AuthHandler>
+      </AuthProvider>
+    </VersionHandler>
   );
 }

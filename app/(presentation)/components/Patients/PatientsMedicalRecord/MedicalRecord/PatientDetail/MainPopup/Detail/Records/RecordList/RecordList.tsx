@@ -77,29 +77,30 @@ export default function RecordList() {
     <div className="mt-4">
       <div>
         {medicalRecords.data.map((medicalRecord: IMedicalRecord) => (
-          <div key={medicalRecord.id} className="flex items-center mb-3">
-            <div className="mr-1">
+          <div key={medicalRecord.id} className="mb-3 border-b py-2">
+            <div>
               <p className="text-slate-900 text-lg font-medium">
-                {medicalRecordTypeEnum[medicalRecord.medicalRecordType.name]}{" "}
-                {medicalRecord.medicalRecordValues.length > 0 && "-"}
+                {medicalRecordTypeEnum[medicalRecord.medicalRecordType.name]}:
               </p>
             </div>
 
-            {medicalRecord.medicalRecordValues.length > 0 && (
-              <div>
-                {medicalRecord.medicalRecordValues.map(
-                  (medicalRecordValue: IMedicalRecordValue) => (
-                    <p
-                      key={medicalRecordValue.id}
-                      className="text-slate-900 text-lg font-medium overflow-hidden block text-ellipsis"
-                      style={{ wordBreak: "break-word", maxHeight: "3em" }}
-                    >
-                      {medicalRecordValue.value}
-                    </p>
-                  )
-                )}
-              </div>
-            )}
+            <div>
+              {medicalRecord.medicalRecordValues.length > 0 && (
+                <div>
+                  {medicalRecord.medicalRecordValues.map(
+                    (medicalRecordValue: IMedicalRecordValue) => (
+                      <p
+                        key={medicalRecordValue.id}
+                        className="text-slate-900 text-lg font-medium overflow-hidden block text-ellipsis"
+                        style={{ wordBreak: "break-word", maxHeight: "3em" }}
+                      >
+                        {medicalRecordValue.value}
+                      </p>
+                    )
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         ))}
       </div>

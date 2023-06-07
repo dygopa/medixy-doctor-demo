@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import MedicalRecordProvider from "../context/MedicalRecordContext";
 import AboutPatient from "./AboutPatient/AboutPatient";
 import Allergies from "./Allergies/Allergies";
@@ -16,6 +17,13 @@ interface IPatientDetailsProps {
 export default function PatientDetails({ patientId }: IPatientDetailsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [popupSectionActive, setPopupSectionActive] = useState(0);
+
+  const searchParams = useSearchParams();
+  const viewMedicalRecord = searchParams.get("view_medical_record");
+
+  useEffect(() => {
+    if (viewMedicalRecord === "true") setPopupSectionActive(0);
+  }, [viewMedicalRecord]);
 
   return (
     <>

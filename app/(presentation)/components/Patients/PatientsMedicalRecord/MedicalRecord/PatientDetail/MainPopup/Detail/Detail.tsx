@@ -31,13 +31,13 @@ export default function Detail({
         onClick={() => {
           setPopupSectionActive(index);
         }}
-        className={`w-fit text-[0.9rem] p-4 cursor-pointer hover:border-primary hover:border-b-[3px] text-center hover:text-slate-900 hover:font-bold
-        ${
-          popupSectionActive === index
-            ? "border-primary border-b-[3px] font-bold text-slate-900"
-            : "text-slate-400 font-normal border-b-[3px] border-transparent"
-        }
-      `}
+        className={`lg:text-[0.9rem] md:text-[0.9rem] text-[12px] w-fit p-4 cursor-pointer hover:border-primary hover:border-b-[3px] text-center hover:text-slate-900 hover:font-bold
+    ${
+      popupSectionActive === index
+        ? "border-primary border-b-[3px] font-bold text-slate-900"
+        : "text-slate-400 font-normal border-b-[3px] border-transparent"
+    }
+  `}
       >
         {title}
       </div>
@@ -63,21 +63,19 @@ export default function Detail({
   };
 
   return (
-    <div>
-      <div className="h-[15vh]">
+    <div className="h-screen">
+      <div>
         <PatientDetail patientId={patientId} />
       </div>
 
-      <div className="relative w-full  bg-white h-[85vh]">
-        <div className="w-full flex justify-start items-center h-[5vh]">
+      <div className="relative w-full bg-white h-full">
+        <div className="w-full flex justify-start items-center overflow-x-auto overflow-y-hidden">
           {listTabs.map((tab, i) => (
             <TabComponent title={tab} index={i} key={i} />
           ))}
         </div>
 
-        <div className="bg-white p-4 h-[70vh] overflow-y-auto">
-          {getComponentByTabActive()}
-        </div>
+        <div className="bg-white p-4 h-full">{getComponentByTabActive()}</div>
       </div>
     </div>
   );

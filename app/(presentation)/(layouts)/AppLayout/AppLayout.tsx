@@ -3,6 +3,7 @@
 import StepByStepProvider from "(presentation)/components/core/StepByStep/context/StepByStepContext";
 import SideMenu from "../SideMenu";
 import AuthProvider from "./context/AuthContext";
+import VersionHandler from "./VersionHandler/VersionHandler";
 
 interface INavigation {
   title: string;
@@ -23,12 +24,14 @@ export default function AppLayout({
   const navigation: INavigation[] = [{ title, pathname }];
 
   return (
-    <AuthProvider>
-      <StepByStepProvider>
-        <SideMenu navigation={navigation} showStepsBySteps={showStepsBySteps}>
-          {children}
-        </SideMenu>
-      </StepByStepProvider>
-    </AuthProvider>
+    <VersionHandler>
+      <AuthProvider>
+        <StepByStepProvider>
+          <SideMenu navigation={navigation} showStepsBySteps={showStepsBySteps}>
+            {children}
+          </SideMenu>
+        </StepByStepProvider>
+      </AuthProvider>
+    </VersionHandler>
   );
 }

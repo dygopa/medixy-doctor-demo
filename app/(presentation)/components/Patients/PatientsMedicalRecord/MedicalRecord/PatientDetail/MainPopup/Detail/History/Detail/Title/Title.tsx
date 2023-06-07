@@ -46,7 +46,7 @@ export default function Title({
           </button>
         </div>
 
-        <div>
+        <div className="lg:text-left md:text-left text-center">
           <h1 className="text-slate-900 text-2xl font-bold">
             Resumen de la consulta
           </h1>
@@ -54,7 +54,7 @@ export default function Title({
       </div>
 
       {medicalConsulty.consultationDate && (
-        <div>
+        <div className="lg:text-left md:text-left text-center">
           <h1 className="text-slate-400 text-lg">
             {new Date(medicalConsulty.consultationDate).getDate()}/
             {new Date(medicalConsulty.consultationDate).getMonth()}/

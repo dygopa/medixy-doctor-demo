@@ -17,7 +17,7 @@ export default function Header({ patientId, setIsOpen }: IHeaderProps) {
   return (
     <div className="flex items-center justify-between bg-primary p-4">
       <div>
-        <h3 className="text-white text-lg font-bold">Detalle de la consulta</h3>
+        <h3 className="text-white text-lg font-bold">Información detallada</h3>
       </div>
 
       <div>
