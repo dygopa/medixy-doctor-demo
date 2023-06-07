@@ -1,6 +1,8 @@
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
+import { TreatmentFailure } from "domain/core/failures/treatment/treatmentFailure";
 import { ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
+import { IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
 import IDiagnosisRepository, { DiagnosisRepository } from "infrastructure/repositories/diagnosis/diagnosisRepository";
 import { MedicalConsultyRepository } from "infrastructure/repositories/medicalConsulty/medicalConsultyRepository";
 import IMedicalMeasureRepository, { MedicalMeasureRepository } from "infrastructure/repositories/medicalMeasure/medicalMeasureRepository";
@@ -24,6 +26,25 @@ export default class MedicalConsultyUseCase {
       });
 
       if (response instanceof MedicalConsultyFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getTreatments(obj: { skip?: number | null; sort?: any; limit?: number | null; patientId?: number | null }): Promise<IGetTreatmentsResponse> {
+    try {
+      const response = await this._treatmentRepository.getTreatments({
+        skip: obj.skip,
+        sort: obj.sort,
+        limit: obj.limit,
+        patientId: obj.patientId
+      });
+
+      if (response instanceof TreatmentFailure) throw response;
+
+      console.log(response)
 
       return response;
     } catch (error) {

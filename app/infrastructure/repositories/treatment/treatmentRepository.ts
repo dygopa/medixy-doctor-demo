@@ -1,7 +1,7 @@
-import { ITreatment } from 'domain/core/entities/treatmentEntity';
+import { ITreatment, ITreatmentMedicine } from 'domain/core/entities/treatmentEntity';
 import { TreatmentFailure, treatmentFailuresEnum } from 'domain/core/failures/treatment/treatmentFailure';
 import { ICreateTreatmentResponse, IGetTreatmentsResponse } from 'domain/core/response/treatmentResponses';
-import { fromTreatmentMedicineSupabaseDocumentData, fromTreatmentSupabaseDocumentData, treatmentSupabaseToMap } from 'domain/mappers/treatment/supabase/treatmentSupabaseMapper';
+import { fromTreatmentMedicineSupabaseDocumentData, fromTreatmentSupabaseDocumentData, treatmentMedicineSupabaseToMap, treatmentSupabaseToMap } from 'domain/mappers/treatment/supabase/treatmentSupabaseMapper';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 
 export default interface ITreatmentRepository {
@@ -9,6 +9,7 @@ export default interface ITreatmentRepository {
     skip?: number | string | null; 
     sort?: any; 
     limit?: number | null; 
+    patientId?: number | null;
   }): Promise<IGetTreatmentsResponse | TreatmentFailure>;
   createTreatment(treatment: ITreatment): Promise<ICreateTreatmentResponse | TreatmentFailure>;
 }
@@ -18,10 +19,12 @@ export class TreatmentRepository implements ITreatmentRepository {
     skip?: number | string | null; 
     sort?: any; 
     limit?: number | null; 
+    patientId?: number | null;
   }): Promise<IGetTreatmentsResponse | TreatmentFailure> {
     try {
       let query = supabase.from("Tratamientos").select(`
         *,
+        MedicamentosTratamiento (*)
       `,
       { count: "exact" });
 
@@ -29,6 +32,10 @@ export class TreatmentRepository implements ITreatmentRepository {
           query = query.order(obj.sort.field, {
               ascending: obj.sort.ascending
           });
+      }
+
+      if (obj.patientId) {
+        query = query.eq("pacienteId", obj.patientId);
       }
 
       if (obj.skip && typeof obj.skip === "number" && obj.limit) {
@@ -47,7 +54,16 @@ export class TreatmentRepository implements ITreatmentRepository {
           await Promise.all(res.data.map(async (data: any) => {
               const treatmentMap: ITreatment = treatmentSupabaseToMap(data);
 
+              if (data?.MedicamentosTratamiento?.length > 0) {
+                data.MedicamentosTratamiento.forEach((medicineData: any) => {
+                  const medicines: ITreatmentMedicine = treatmentMedicineSupabaseToMap(medicineData);
+                  
+      
+                  if (medicines.id >= 0) treatmentMap?.treatmentMedicines?.push(medicines);
+                });
+              }
               treatments.push(treatmentMap);
+              console.log(treatments)
           }));
       }
 

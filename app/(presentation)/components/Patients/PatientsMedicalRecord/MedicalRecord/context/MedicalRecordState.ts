@@ -4,11 +4,13 @@ import { MedicalMeasureFailure } from "domain/core/failures/medicalMeasure/medic
 import { PatientFailure } from "domain/core/failures/patient/patientFailure";
 import { IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
+import { IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
 
 export interface IMedicalRecordState {
     patient: IGetPatientState;
     medicalMeasures: IGetMedicalMeasuresState;
     medicalConsulties: IGetMedicalConsultiesState;
+    treatments: IGetTreatmentsState;
 }
 
 interface IGetPatientState {
@@ -32,6 +34,13 @@ interface IGetMedicalConsultiesState {
     error: MedicalConsultyFailure | null; 
 }
 
+interface IGetTreatmentsState {
+    data: IGetTreatmentsResponse;
+    loading: boolean;
+    successful: boolean;
+    error: MedicalConsultyFailure | null; 
+}
+
 export const initialState: IMedicalRecordState = {
     patient: {
         data: null,
@@ -47,6 +56,12 @@ export const initialState: IMedicalRecordState = {
     },
     medicalConsulties: {
         data: {} as IGetMedicalConsultiesResponse,
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    treatments: {
+        data: {} as IGetTreatmentsResponse,
         loading: false,
         successful: false,
         error: null,

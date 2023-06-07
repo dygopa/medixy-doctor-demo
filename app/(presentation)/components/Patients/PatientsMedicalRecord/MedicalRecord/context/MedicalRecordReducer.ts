@@ -101,5 +101,38 @@ export const MedicalRecordReducer = (state: any, action: any) => {
             error: action.payload.error,
           },
         }
+        case "GET_TREATMENTS_LOADING" :
+          return {
+            ...state,
+            treatments: {
+              ...state.treatments,
+              data: {},
+              loading: true,
+              successful: false,
+              error: null,
+            },
+          };
+        case "GET_TREATMENTS_SUCCESSFUL" :
+          return {
+            ...state,
+            treatments: {
+              ...state.treatments,
+              data: action.payload.data,
+              loading: false,
+              successful: true,
+              error: null,
+            },
+          }
+        case "GET_TREATMENTS_ERROR" :
+          return {
+            ...state,
+            treatments: {
+              ...state.treatments,
+              data: {},
+              loading: false,
+              successful: false,
+              error: action.payload.error,
+            },
+          }
       }
   }
