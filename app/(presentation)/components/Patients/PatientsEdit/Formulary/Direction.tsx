@@ -61,64 +61,62 @@ export default function Contact({ values, setValues }: IContactProps) {
   }, []);
 
   return (
-    <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-5">
-      <div className="border w-full rounded-md p-5 flex">
-        <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
-          <div className="w-full border-b mb-2">
-            <p className="font-medium text-base text-slate-900 pb-2">
-              Dirección
+    <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">
+      <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
+        <div className="w-full border-b mb-2">
+          <p className="font-medium text-base text-slate-900 pb-2">
+            Dirección
+          </p>
+        </div>
+        <div className="w-full md:grid md:grid-cols-2 grid-cols-1 justify-start items-center gap-3">
+          <div className="md:flex md:flex-col justify-between items-start relative gap-1">
+            <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+              Entidad Federativa
             </p>
+            <FormSelect
+              className="form-control w-full"
+              defaultValue={values.federalEntity}
+              value={values.federalEntity}
+              onChange={(e: ChangeEvent<HTMLSelectElement>) => {
+                setValues({ ...values, federalEntity: +e.target.value });
+              }}
+            >
+              {federalEntities.length > 0 &&
+                federalEntities.map((elem) => (
+                  <option key={elem.entityId} value={elem.entityId}>
+                    {elem.nameEntity} - {elem.abbrevation}
+                  </option>
+                ))}
+            </FormSelect>
           </div>
-          <div className="w-full md:grid md:grid-cols-2 grid-cols-1 justify-start items-center gap-3">
-            <div className="md:flex md:flex-col justify-between items-start relative gap-1">
-              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Entidad Federativa
-              </p>
-              <FormSelect
-                className="form-control w-full"
-                defaultValue={values.federalEntity}
-                value={values.federalEntity}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                  setValues({ ...values, federalEntity: +e.target.value });
-                }}
-              >
-                {federalEntities.length > 0 &&
-                  federalEntities.map((elem) => (
-                    <option key={elem.entityId} value={elem.entityId}>
-                      {elem.nameEntity} - {elem.abbrevation}
-                    </option>
-                  ))}
-              </FormSelect>
-            </div>
-            <div className="my-3 md:my-0 md:flex md:flex-col justify-between items-start relative gap-1">
-              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Ciudad
-              </p>
-              <FormInput
-                type={"text"}
-                placeholder="Ciudad"
-                min={0}
-                value={values.city}
-                className="form-control w-full"
-                onChange={(e: any) => {
-                  setValues({ ...values, city: e.target.value });
-                }}
-              />
-            </div>
-            <div className="flex col-span-2 flex-col justify-between items-start relative gap-1">
-              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Dirección Completa
-              </p>
-              <FormInput
-                type={"text"}
-                value={values.direction}
-                placeholder="Dirección completa de su residencia"
-                className="form-control w-full"
-                onChange={(e: any) => {
-                  setValues({ ...values, direction: e.target.value });
-                }}
-              />
-            </div>
+          <div className="my-3 md:my-0 md:flex md:flex-col justify-between items-start relative gap-1">
+            <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+              Ciudad
+            </p>
+            <FormInput
+              type={"text"}
+              placeholder="Ciudad"
+              min={0}
+              value={values.city}
+              className="form-control w-full"
+              onChange={(e: any) => {
+                setValues({ ...values, city: e.target.value });
+              }}
+            />
+          </div>
+          <div className="flex col-span-2 flex-col justify-between items-start relative gap-1">
+            <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+              Dirección Completa
+            </p>
+            <FormInput
+              type={"text"}
+              value={values.direction}
+              placeholder="Dirección completa de su residencia"
+              className="form-control w-full"
+              onChange={(e: any) => {
+                setValues({ ...values, direction: e.target.value });
+              }}
+            />
           </div>
         </div>
       </div>
