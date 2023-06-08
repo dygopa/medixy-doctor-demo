@@ -193,127 +193,125 @@ export default function Formulary({ userId }: { userId: string }) {
       </div>
       <div className="flex mt-5">
         <div className="relative flex justify-center items-start gap-4 w-full">
-          <div className="bg-white lg:w-[60%] shadow-xl shadow-slate-100 rounded-md h-fit p-5">
-            <div className="border w-full rounded-md p-5 flex">
-              <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
-                <div className="w-full border-b mb-2">
-                  <p className="font-medium text-base text-slate-900 pb-2">
-                    Definición del servicio
-                  </p>
-                </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Categoría
-                    <span className="text-primary font-bold">*</span>
-                  </p>
-                  <FormSelect
-                    value={formData?.service_category_id}
-                    className="form-control lg:w-[70%]"
+          <div className="bg-white lg:w-[60%] shadow-xl shadow-slate-100 rounded-md h-fit p-7">
+            <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
+              <div className="w-full border-b mb-2">
+                <p className="font-medium text-base text-slate-900 pb-2">
+                  Definición del servicio
+                </p>
+              </div>
+              <div className="lg:flex justify-between items-start relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Categoría
+                  <span className="text-primary font-bold">*</span>
+                </p>
+                <FormSelect
+                  value={formData?.service_category_id}
+                  className="form-control lg:w-[70%]"
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      service_category_id: +e.target.value,
+                    })
+                  }
+                >
+                  <option value="">Seleccione la categoria</option>
+                  {categories &&
+                    [...(categories as Array<any>)].map((elem, i) => (
+                      <option key={i} value={elem["id"]}>
+                        {elem["name"]}
+                      </option>
+                    ))}
+                </FormSelect>
+              </div>
+              <div className="lg:flex justify-between items-start relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Servicio
+                  <span className="text-primary font-bold">*</span>
+                </p>
+                <FormInput
+                  type="text"
+                  value={formData?.name}
+                  placeholder="Nombre del servicio..."
+                  className="form-control lg:w-[70%]"
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                />
+              </div>
+              <div className="lg:flex justify-between items-start relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Cargar imagen
+                  <span className="text-primary font-bold">*</span>
+                </p>
+                <FormInput
+                  type="file"
+                  className="form-control lg:w-[70%]"
+                  onChange={(e) => handleChangeMedia(e)}
+                />
+              </div>
+              <div className="lg:flex justify-between items-start relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Precio
+                </p>
+                <FormInput
+                  type={"number"}
+                  placeholder="0.0"
+                  min={0}
+                  value={formData?.base_price}
+                  className="form-control lg:w-[70%]"
+                  onChange={(e) =>
+                    setFormData({ ...formData, base_price: +e.target.value })
+                  }
+                />
+              </div>
+              <div className="lg:flex justify-between items-start relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Descripción
+                </p>
+                <div className="lg:w-[70%]">
+                  <FormTextarea
+                    placeholder="Descripcion el servicio..."
+                    value={formData?.description}
+                    className="form-control w-full"
                     onChange={(e) =>
                       setFormData({
                         ...formData,
-                        service_category_id: +e.target.value,
+                        description: e.target.value,
                       })
                     }
+                  />
+                </div>
+              </div>
+              <div className="lg:flex justify-between items-start relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Condiciones
+                </p>
+                <FormTextarea
+                  placeholder="Condiciones el servicio..."
+                  value={formData?.conditions}
+                  className="form-control lg:w-[70%]"
+                  onChange={(e) =>
+                    setFormData({ ...formData, conditions: e.target.value })
+                  }
+                />
+              </div>
+              <div className="lg:flex justify-between items-start relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Estado
+                </p>
+                <div className="lg:w-[70%]">
+                  <FormSelect
+                    value={formData?.status}
+                    className="form-control"
+                    onChange={(e) =>
+                      setFormData({ ...formData, status: +e.target.value })
+                    }
                   >
-                    <option value="">Seleccione la categoria</option>
-                    {categories &&
-                      [...(categories as Array<any>)].map((elem, i) => (
-                        <option key={i} value={elem["id"]}>
-                          {elem["name"]}
-                        </option>
-                      ))}
+                    <option value="">Estado del servicio</option>
+                    <option value={1}>Activo</option>
+                    <option value={2}>Borrador</option>
                   </FormSelect>
-                </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Servicio
-                    <span className="text-primary font-bold">*</span>
-                  </p>
-                  <FormInput
-                    type="text"
-                    value={formData?.name}
-                    placeholder="Nombre del servicio..."
-                    className="form-control lg:w-[70%]"
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Cargar imagen
-                    <span className="text-primary font-bold">*</span>
-                  </p>
-                  <FormInput
-                    type="file"
-                    className="form-control lg:w-[70%]"
-                    onChange={(e) => handleChangeMedia(e)}
-                  />
-                </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Precio
-                  </p>
-                  <FormInput
-                    type={"number"}
-                    placeholder="0.0"
-                    min={0}
-                    value={formData?.base_price}
-                    className="form-control lg:w-[70%]"
-                    onChange={(e) =>
-                      setFormData({ ...formData, base_price: +e.target.value })
-                    }
-                  />
-                </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Descripción
-                  </p>
-                  <div className="lg:w-[70%]">
-                    <FormTextarea
-                      placeholder="Descripcion el servicio..."
-                      value={formData?.description}
-                      className="form-control w-full"
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          description: e.target.value,
-                        })
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Condiciones
-                  </p>
-                  <FormTextarea
-                    placeholder="Condiciones el servicio..."
-                    value={formData?.conditions}
-                    className="form-control lg:w-[70%]"
-                    onChange={(e) =>
-                      setFormData({ ...formData, conditions: e.target.value })
-                    }
-                  />
-                </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Estado
-                  </p>
-                  <div className="lg:w-[70%]">
-                    <FormSelect
-                      value={formData?.status}
-                      className="form-control"
-                      onChange={(e) =>
-                        setFormData({ ...formData, status: +e.target.value })
-                      }
-                    >
-                      <option value="">Estado del servicio</option>
-                      <option value={1}>Activo</option>
-                      <option value={2}>Borrador</option>
-                    </FormSelect>
-                  </div>
                 </div>
               </div>
             </div>
