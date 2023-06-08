@@ -219,7 +219,7 @@ export default function Formulary() {
       <div className="relative w-full">
         <FormInput
           type="text"
-          className="w-full py-3 pr-10"
+          className="w-full py-3 pr-10 bg-white"
           placeholder="Jose"
           value={values.names}
           onChange={(e: any) => setValues({ ...values, names: e.target.value })}
@@ -237,7 +237,7 @@ export default function Formulary() {
         <div className="relative w-full">
           <FormInput
             type="text"
-            className="w-full py-3 pr-10"
+            className="w-full py-3 pr-10 bg-white"
             placeholder="Ramirez"
             value={values.first_lastname}
             onChange={(e: any) =>
@@ -256,7 +256,7 @@ export default function Formulary() {
         <div className="relative w-full">
           <FormInput
             type="text"
-            className="w-full py-3 pr-10"
+            className="w-full py-3 pr-10 bg-white"
             placeholder="Ortiz"
             value={values.second_lastname}
             onChange={(e: any) =>
@@ -268,7 +268,7 @@ export default function Formulary() {
       <div className="relative w-full">
         <FormInput
           type="text"
-          className="w-full py-3 pr-10"
+          className="w-full py-3 pr-10 bg-white"
           placeholder="+00 000-000-0000"
           value={values.phone_number}
           onChange={(e: any) =>
@@ -282,7 +282,7 @@ export default function Formulary() {
       <div className="relative w-full">
         <FormInput
           type="text"
-          className="w-full py-3 pr-10"
+          className="w-full py-3 pr-10 bg-white"
           placeholder="Correo electrónico"
           value={values.email}
           onChange={(e: any) => setValues({ ...values, email: e.target.value })}
@@ -298,7 +298,7 @@ export default function Formulary() {
       <div className="relative w-full">
         <FormInput
           type="password"
-          className="w-full py-3 pr-10"
+          className="w-full py-3 pr-10 bg-white"
           placeholder="Contraseña"
           value={values.password}
           onChange={(e: any) =>

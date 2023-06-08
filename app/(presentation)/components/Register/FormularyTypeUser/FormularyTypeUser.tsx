@@ -84,7 +84,7 @@ export default function FormularyTypeUser() {
       </div>
       <div className="relative w-full text-slate-500">
         <FormSelect
-          className="w-full py-3 pr-10"
+          className="w-full py-3 pr-10 bg-white"
           placeholder="Especialista"
           value={values.type_user}
           onChange={(e: any) =>
