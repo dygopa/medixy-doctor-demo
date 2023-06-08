@@ -139,8 +139,8 @@ export default function PatientsTable() {
                         }}
                       >
                         <Button
-                          variant="outline-primary"
-                          className="p-3 text-center"
+                          variant="primary"
+                          className="p-2 text-center"
                         >
                           <Lucide icon="FileText" className="w-4 h-4" />
                         </Button>
