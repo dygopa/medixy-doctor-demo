@@ -148,174 +148,172 @@ export default function WithoutSteps({
       </div>
       <div className="flex lg:mt-5 mt-8">
         <div className="relative lg:flex gap-4 w-full lg:w-[70%]">
-          <div className="bg-white w-full shadow-xl shadow-slate-100 rounded-md h-fit p-5">
-            <div className="border w-full rounded-md p-5 flex">
-              <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
-                <div className="w-full border-b mb-2">
-                  <p className="font-medium text-base text-slate-900 pb-2">
-                    Definición del consultorio
-                  </p>
-                </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
+          <div className="bg-white w-full shadow-xl shadow-slate-100 rounded-md h-fit p-7">
+            <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
+              <div className="w-full border-b mb-2">
+                <p className="font-medium text-base text-slate-900 pb-2">
+                  Definición del consultorio
+                </p>
+              </div>
+              <div className="lg:flex justify-between items-start relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Nombre del consultorio
+                  <span className="text-primary font-bold">*</span>
+                </p>
+                <FormInput
+                  type={"text"}
+                  placeholder="Escribe el nombre del consultorio..."
+                  min={0}
+                  value={formData.name}
+                  className="form-control lg:w-[70%]"
+                  onChange={(e: any) => {
+                    setFormData({ ...formData, name: e.target.value });
+                  }}
+                />
+              </div>
+              <div className="lg:flex justify-between items-start relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Nro. de consultorio
+                </p>
+                <FormInput
+                  type={"text"}
+                  placeholder="Escribe el número del consultorio..."
+                  min={0}
+                  value={formData.code}
+                  className="form-control lg:w-[70%]"
+                  onChange={(e: any) => {
+                    setFormData({ ...formData, code: e.target.value });
+                  }}
+                />
+              </div>
+              <div className="lg:flex justify-between items-start relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  CLUES
+                </p>
+                <FormInput
+                  type={"text"}
+                  placeholder="Escribe el CLUES del consultorio..."
+                  min={0}
+                  value={formData.clues}
+                  className="form-control lg:w-[70%]"
+                  onChange={(e: any) => {
+                    setFormData({ ...formData, clues: e.target.value });
+                  }}
+                />
+              </div>
+              <div className="lg:flex justify-between items-start relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Código postal
+                </p>
+                <FormInput
+                  type={"text"}
+                  placeholder="Escribe el código postal del consultorio..."
+                  min={0}
+                  value={formData.postal_code}
+                  className="form-control lg:w-[70%]"
+                  onChange={(e: any) => {
+                    setFormData({ ...formData, postal_code: e.target.value });
+                  }}
+                />
+              </div>
+              <div className="w-full flex justify-start items-center gap-5">
+                <div className="lg:flex justify-between items-center relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Nombre del consultorio
-                    <span className="text-primary font-bold">*</span>
+                    Estado
+                  </p>
+                  <FormSelect
+                    value={formData.state_id}
+                    className="form-control lg:w-[70%]"
+                    onChange={(e: any) => {
+                      setFormData({ ...formData, state_id: e.target.value });
+                    }}
+                  >
+                    <option>Estado del consultorio...</option>
+                    {states &&
+                      [...(states as Array<any>)].map((elem, i) => (
+                        <option key={i} value={elem["id"]}>
+                          {elem["name"]}
+                        </option>
+                      ))}
+                  </FormSelect>
+                </div>
+                <div className="lg:flex justify-between items-center relative w-full gap-3">
+                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                    Ciudad
                   </p>
                   <FormInput
                     type={"text"}
-                    placeholder="Escribe el nombre del consultorio..."
+                    placeholder="Escribe la ciudad del consultorio..."
                     min={0}
-                    value={formData.name}
+                    value={formData.city}
                     className="form-control lg:w-[70%]"
                     onChange={(e: any) => {
-                      setFormData({ ...formData, name: e.target.value });
+                      setFormData({ ...formData, city: e.target.value });
                     }}
                   />
                 </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
+              </div>
+              <div className="w-full flex justify-start items-center gap-5">
+                <div className="lg:flex justify-between items-center relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Nro. de consultorio
+                    Latitud
                   </p>
                   <FormInput
-                    type={"text"}
-                    placeholder="Escribe el número del consultorio..."
+                    type={"number"}
+                    placeholder="0"
                     min={0}
-                    value={formData.code}
+                    value={formData.latitude}
                     className="form-control lg:w-[70%]"
                     onChange={(e: any) => {
-                      setFormData({ ...formData, code: e.target.value });
+                      setFormData({ ...formData, latitude: +e.target.value });
                     }}
                   />
                 </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
+                <div className="lg:flex justify-between items-center relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    CLUES
+                    Longitud
                   </p>
                   <FormInput
-                    type={"text"}
-                    placeholder="Escribe el CLUES del consultorio..."
+                    type={"number"}
+                    placeholder="0"
                     min={0}
-                    value={formData.clues}
+                    value={formData.longitude}
                     className="form-control lg:w-[70%]"
                     onChange={(e: any) => {
-                      setFormData({ ...formData, clues: e.target.value });
+                      setFormData({
+                        ...formData,
+                        longitude: +e.target.value,
+                      });
                     }}
                   />
                 </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Código postal
-                  </p>
-                  <FormInput
-                    type={"text"}
-                    placeholder="Escribe el código postal del consultorio..."
-                    min={0}
-                    value={formData.postal_code}
-                    className="form-control lg:w-[70%]"
-                    onChange={(e: any) => {
-                      setFormData({ ...formData, postal_code: e.target.value });
-                    }}
-                  />
-                </div>
-                <div className="w-full flex justify-start items-center gap-5">
-                  <div className="lg:flex justify-between items-center relative w-full gap-3">
-                    <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                      Estado
-                    </p>
-                    <FormSelect
-                      value={formData.state_id}
-                      className="form-control lg:w-[70%]"
-                      onChange={(e: any) => {
-                        setFormData({ ...formData, state_id: e.target.value });
-                      }}
-                    >
-                      <option>Estado del consultorio...</option>
-                      {states &&
-                        [...(states as Array<any>)].map((elem, i) => (
-                          <option key={i} value={elem["id"]}>
-                            {elem["name"]}
-                          </option>
-                        ))}
-                    </FormSelect>
-                  </div>
-                  <div className="lg:flex justify-between items-center relative w-full gap-3">
-                    <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                      Ciudad
-                    </p>
-                    <FormInput
-                      type={"text"}
-                      placeholder="Escribe la ciudad del consultorio..."
-                      min={0}
-                      value={formData.city}
-                      className="form-control lg:w-[70%]"
-                      onChange={(e: any) => {
-                        setFormData({ ...formData, city: e.target.value });
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="w-full flex justify-start items-center gap-5">
-                  <div className="lg:flex justify-between items-center relative w-full gap-3">
-                    <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                      Latitud
-                    </p>
-                    <FormInput
-                      type={"number"}
-                      placeholder="0"
-                      min={0}
-                      value={formData.latitude}
-                      className="form-control lg:w-[70%]"
-                      onChange={(e: any) => {
-                        setFormData({ ...formData, latitude: +e.target.value });
-                      }}
-                    />
-                  </div>
-                  <div className="lg:flex justify-between items-center relative w-full gap-3">
-                    <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                      Longitud
-                    </p>
-                    <FormInput
-                      type={"number"}
-                      placeholder="0"
-                      min={0}
-                      value={formData.longitude}
-                      className="form-control lg:w-[70%]"
-                      onChange={(e: any) => {
-                        setFormData({
-                          ...formData,
-                          longitude: +e.target.value,
-                        });
-                      }}
-                    />
-                  </div>
-                </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Dirección
-                    <span className="text-primary font-bold">*</span>
-                  </p>
-                  <FormInput
-                    type={"text"}
-                    placeholder="Escribe la dirección del consultorio..."
-                    min={0}
-                    value={formData.address}
-                    className="form-control lg:w-[70%]"
-                    onChange={(e: any) => {
-                      setFormData({ ...formData, address: e.target.value });
-                    }}
-                  />
-                </div>
-                <div className="flex justify-between items-center relative w-full gap-3"></div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Cargar imagen
-                  </p>
-                  <FormInput
-                    onChange={(e) => handleChangeMedia(e)}
-                    type="file"
-                    className="form-control lg:w-[70%]"
-                  />
-                </div>
+              </div>
+              <div className="lg:flex justify-between items-start relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Dirección
+                  <span className="text-primary font-bold">*</span>
+                </p>
+                <FormInput
+                  type={"text"}
+                  placeholder="Escribe la dirección del consultorio..."
+                  min={0}
+                  value={formData.address}
+                  className="form-control lg:w-[70%]"
+                  onChange={(e: any) => {
+                    setFormData({ ...formData, address: e.target.value });
+                  }}
+                />
+              </div>
+              <div className="flex justify-between items-center relative w-full gap-3"></div>
+              <div className="lg:flex justify-between items-start relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Cargar imagen
+                </p>
+                <FormInput
+                  onChange={(e) => handleChangeMedia(e)}
+                  type="file"
+                  className="form-control lg:w-[70%]"
+                />
               </div>
             </div>
           </div>

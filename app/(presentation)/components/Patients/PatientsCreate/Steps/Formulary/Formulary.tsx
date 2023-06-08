@@ -137,115 +137,113 @@ export default function Formulary({
   };
 
   return (
-    <div className="w-full bg-white shadow-slate-100 rounded-md h-fit">
-      <div className="relative flex flex-col border w-full rounded-md p-5">
-        <div className="w-full border-b mb-2">
-          <p className="font-medium text-base text-slate-900 pb-2">
-            Nuevo paciente
-          </p>
-        </div>
-        <div className="input-group w-full">
-          <p className="input-label pb-2">
-            Nombre <span className="text-primary font-bold">*</span>
+    <div className="w-full bg-white shadow-xl lg:w-[60%] shadow-slate-100 rounded-md h-fit p-7">
+      <div className="w-full border-b mb-2">
+        <p className="font-medium text-base text-slate-900 pb-2">
+          Nuevo paciente
+        </p>
+      </div>
+      <div className="input-group w-full">
+        <p className="input-label pb-2">
+          Nombre <span className="text-primary font-bold">*</span>
+        </p>
+        <FormInput
+          type="text"
+          onChange={(e: any) => handlename(e.target.value)}
+          placeholder="Nombre"
+        />
+        {errors.name.length > 0 && (
+          <span className="text-red-500">{errors.name}</span>
+        )}
+      </div>
+      <div className="md:flex gap-3 w-full">
+        <div className="input-group md:w-[50%]">
+          <p className="input-label py-2">
+            Apellido Paterno <span className="text-primary font-bold">*</span>
           </p>
           <FormInput
             type="text"
-            onChange={(e: any) => handlename(e.target.value)}
-            placeholder="Nombre"
+            onChange={(e: any) => handlelastname(e.target.value)}
+            placeholder="Primer apellido"
           />
-          {errors.name.length > 0 && (
-            <span className="text-red-500">{errors.name}</span>
+          {errors.lastname.length > 0 && (
+            <span className="text-red-500">{errors.lastname}</span>
           )}
         </div>
-        <div className="md:flex gap-3 w-full">
-          <div className="input-group md:w-[50%]">
-            <p className="input-label py-2">
-              Apellido Paterno <span className="text-primary font-bold">*</span>
-            </p>
-            <FormInput
-              type="text"
-              onChange={(e: any) => handlelastname(e.target.value)}
-              placeholder="Primer apellido"
-            />
-            {errors.lastname.length > 0 && (
-              <span className="text-red-500">{errors.lastname}</span>
-            )}
-          </div>
-          <div className="input-group mt-3 md:mt-0 md:w-[50%]">
-            <p className="input-label py-2">Apellido Materno</p>
-            <FormInput
-              type="text"
-              onChange={(e: any) =>
-                setValues({ ...values, motherlastname: e.target.value })
-              }
-              placeholder="Segundo apellido"
-            />
-          </div>
-        </div>
-
-        <div className="input-group w-full">
-          <p className="input-label py-2">
-            Fecha de nacimiento <span className="text-primary font-bold">*</span>
-          </p>
-          <FormInput
-            type={"date"}
-            min={0}
-            onChange={(e: any) => handleage(e.target.value)}
-            className="form-control w-full"
-          />
-          {errors.age.length > 0 && (
-            <span className="text-red-500">{errors.age}</span>
-          )}
-        </div>
-
-        <div className="input-group w-full">
-          <p className="input-label py-2">Sexo</p>
-          <FormSelect
-            className="form-control"
-            onChange={(e) => setValues({ ...values, sex: +e.target.value })}
-          >
-            <option value={0}>No Especificado</option>
-            <option value={1}>Masculino</option>
-            <option value={2}>Femenino</option>
-          </FormSelect>
-        </div>
-
-        <div className="input-group w-full">
-          <p className="input-label py-2">
-            Teléfono <span className="text-primary font-bold">*</span>
-          </p>
-          <FormInput
-            type="text"
-            onChange={(e) => handlephone(e.target.value)}
-            placeholder="Teléfono"
-          />
-          {errors.phone.length > 0 && (
-            <span className="text-red-500">{errors.phone}</span>
-          )}
-        </div>
-
-        <div className="input-group w-full">
-          <p className="input-label py-2">Email</p>
-          <FormInput
-            type="email"
-            onChange={(e) => setValues({ ...values, email: e.target.value })}
-            placeholder="Email"
-          />
-        </div>
-
-        <div className="input-group w-full">
-          <p className="input-label py-2">CURP</p>
+        <div className="input-group mt-3 md:mt-0 md:w-[50%]">
+          <p className="input-label py-2">Apellido Materno</p>
           <FormInput
             type="text"
             onChange={(e: any) =>
-              setValues({ ...values, curp: e.target.value })
+              setValues({ ...values, motherlastname: e.target.value })
             }
-            placeholder="CURP"
+            placeholder="Segundo apellido"
           />
         </div>
-
-        <div className="input-group w-full"></div>
       </div>
+
+      <div className="input-group w-full">
+        <p className="input-label py-2">
+          Fecha de nacimiento <span className="text-primary font-bold">*</span>
+        </p>
+        <FormInput
+          type={"date"}
+          min={0}
+          onChange={(e: any) => handleage(e.target.value)}
+          className="form-control w-full"
+        />
+        {errors.age.length > 0 && (
+          <span className="text-red-500">{errors.age}</span>
+        )}
+      </div>
+
+      <div className="input-group w-full">
+        <p className="input-label py-2">Sexo</p>
+        <FormSelect
+          className="form-control"
+          onChange={(e) => setValues({ ...values, sex: +e.target.value })}
+        >
+          <option value={0}>No Especificado</option>
+          <option value={1}>Masculino</option>
+          <option value={2}>Femenino</option>
+        </FormSelect>
+      </div>
+
+      <div className="input-group w-full">
+        <p className="input-label py-2">
+          Teléfono <span className="text-primary font-bold">*</span>
+        </p>
+        <FormInput
+          type="text"
+          onChange={(e) => handlephone(e.target.value)}
+          placeholder="Teléfono"
+        />
+        {errors.phone.length > 0 && (
+          <span className="text-red-500">{errors.phone}</span>
+        )}
+      </div>
+
+      <div className="input-group w-full">
+        <p className="input-label py-2">Email</p>
+        <FormInput
+          type="email"
+          onChange={(e) => setValues({ ...values, email: e.target.value })}
+          placeholder="Email"
+        />
+      </div>
+
+      <div className="input-group w-full">
+        <p className="input-label py-2">CURP</p>
+        <FormInput
+          type="text"
+          onChange={(e: any) =>
+            setValues({ ...values, curp: e.target.value })
+          }
+          placeholder="CURP"
+        />
+      </div>
+
+      <div className="input-group w-full"></div>
     </div>
   );
 }

@@ -146,8 +146,7 @@ export default function BasicData({
         description="¡Su foto de perfil ha sido actualizada con éxito!"
       />
 
-      <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-5">
-        <div className="border w-full rounded-md p-5 flex">
+      <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">
           <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
             <div className="w-full border-b mb-2">
               <p className="font-medium text-base text-slate-900 pb-2">
@@ -352,7 +351,6 @@ export default function BasicData({
               </div>
             </div>
           </div>
-        </div>
       </div>
     </>
   );

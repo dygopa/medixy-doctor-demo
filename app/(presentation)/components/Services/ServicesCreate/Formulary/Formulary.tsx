@@ -225,8 +225,8 @@ export default function Formulary({
       </div>
       <div className="flex mt-5">
         <div className="relative lg:flex gap-4 w-full ">
-          <div className="bg-white lg:w-[60%] shadow-xl shadow-slate-100 rounded-md h-fit p-5 lg:mb-0 mb-8">
-            <div className="border w-full rounded-md p-5 flex">
+          <div className="bg-white lg:w-[60%] shadow-xl shadow-slate-100 rounded-md h-fit p-7 lg:mb-0 mb-8">
+            <div className=" w-full flex">
               <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
                 <div className="w-full border-b mb-2">
                   <p className="font-medium text-base text-slate-900 pb-2">
@@ -364,35 +364,33 @@ export default function Formulary({
               </div>
             </div>
           </div>
-          <div className="bg-white lg:w-[40%] shadow-xl shadow-slate-100 rounded-md h-fit p-5">
-            <div className="border w-full rounded-md p-5 flex">
-              <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
-                <div className="w-full border-b mb-2 flex flex-col justify-between items-start gap-1 pb-3">
-                  <p className="font-medium text-base text-slate-900">
-                    Consultorios(*)
+          <div className="bg-white lg:w-[40%] shadow-xl shadow-slate-100 rounded-md h-fit p-7">
+            <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
+              <div className="w-full border-b mb-2 flex flex-col justify-between items-start gap-1 pb-3">
+                <p className="font-medium text-base text-slate-900">
+                  Consultorios(*)
+                </p>
+                <p className="font-light text-sm text-slate-500">
+                  Indica los consultorios donde prestas este servicio y ajusta
+                  el precio si es requerido
+                </p>
+              </div>
+              {medicalCenters?.length === 0 && successFulMedicalCenters && (
+                <div className="w-full flex flex-col justify-center items-center text-center">
+                  <p className="font-bold text-slate-900 text-lg">
+                    Vaya, no tienes consultorios aún
                   </p>
-                  <p className="font-light text-sm text-slate-500">
-                    Indica los consultorios donde prestas este servicio y ajusta
-                    el precio si es requerido
+                  <p className="font-light text-slate-500 text-base">
+                    Lo sentimos, pero en la plataforma no hay centros médicos
+                    todavia.
                   </p>
                 </div>
-                {medicalCenters?.length === 0 && successFulMedicalCenters && (
-                  <div className="w-full flex flex-col justify-center items-center text-center">
-                    <p className="font-bold text-slate-900 text-lg">
-                      Vaya, no tienes consultorios aún
-                    </p>
-                    <p className="font-light text-slate-500 text-base">
-                      Lo sentimos, pero en la plataforma no hay centros médicos
-                      todavia.
-                    </p>
-                  </div>
-                )}
-                {medicalCenters?.length > 0 &&
-                  successFulMedicalCenters &&
-                  [...(medicalCenters as Array<ILocality>)].map((l, i) => (
-                    <LocalityComponent data={l} key={i} />
-                  ))}
-              </div>
+              )}
+              {medicalCenters?.length > 0 &&
+                successFulMedicalCenters &&
+                [...(medicalCenters as Array<ILocality>)].map((l, i) => (
+                  <LocalityComponent data={l} key={i} />
+                ))}
             </div>
           </div>
         </div>

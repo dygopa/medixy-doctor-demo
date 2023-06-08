@@ -134,179 +134,177 @@ export default function BasicData({
   };
 
   return (
-    <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-5">
-      <div className="border w-full rounded-md p-5 flex">
-        <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
-          <div className="w-full border-b mb-2">
-            <p className="font-medium text-base text-slate-900 pb-2">
-              Datos generales
+    <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">
+      <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
+        <div className="w-full border-b mb-2">
+          <p className="font-medium text-base text-slate-900 pb-2">
+            Datos generales
+          </p>
+        </div>
+        <div className="w-full lg:flex justify-between items-center gap-4">
+          <div className="lg:w-[30%] flex flex-col justify-center items-center text-center gap-3">
+            <input
+              accept="image/png, image/jpeg, application/pdf"
+              type="file"
+              className="hidden"
+            />
+            <div
+              className={twMerge([
+                "transition w-[10rem] h-[10rem] rounded-full border flex flex-col justify-center items-center cursor-pointer",
+                "hover:bg-slate-200",
+              ])}
+            >
+              <FiUser size={60} />
+            </div>
+            <p className="text-[13px] text-slate-500 font-medium">
+              Recomendado (.png, .jpg, .jpeg)
             </p>
           </div>
-          <div className="w-full lg:flex justify-between items-center gap-4">
-            <div className="lg:w-[30%] flex flex-col justify-center items-center text-center gap-3">
-              <input
-                accept="image/png, image/jpeg, application/pdf"
-                type="file"
-                className="hidden"
-              />
-              <div
-                className={twMerge([
-                  "transition w-[10rem] h-[10rem] rounded-full border flex flex-col justify-center items-center cursor-pointer",
-                  "hover:bg-slate-200",
-                ])}
-              >
-                <FiUser size={60} />
-              </div>
-              <p className="text-[13px] text-slate-500 font-medium">
-                Recomendado (.png, .jpg, .jpeg)
+          <div className="lg:w-[70%] grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 justify-start items-center gap-3 lg:mt-0 mt-6">
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Nombre(s)
               </p>
+              <FormInput
+                type={"text"}
+                placeholder="Nombre..."
+                defaultValue={values.name}
+                min={0}
+                className="form-control w-full"
+                onChange={(e: any) => handlename(e.target.value)}
+              />
+              {errors.name.length > 0 && (
+                <span className="text-red-500">{errors.name}</span>
+              )}
             </div>
-            <div className="lg:w-[70%] grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 justify-start items-center gap-3 lg:mt-0 mt-6">
-              <div className="flex flex-col justify-between items-start relative gap-1">
-                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Nombre(s)
-                </p>
-                <FormInput
-                  type={"text"}
-                  placeholder="Nombre..."
-                  defaultValue={values.name}
-                  min={0}
-                  className="form-control w-full"
-                  onChange={(e: any) => handlename(e.target.value)}
-                />
-                {errors.name.length > 0 && (
-                  <span className="text-red-500">{errors.name}</span>
-                )}
-              </div>
-              <div className="flex flex-col justify-between items-start relative gap-1">
-                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Apellido paterno
-                </p>
-                <FormInput
-                  type={"text"}
-                  placeholder="Apellido paterno..."
-                  defaultValue={values.lastname}
-                  min={0}
-                  className="form-control w-full"
-                  onChange={(e: any) => handlelastname(e.target.value)}
-                />
-                {errors.lastname.length > 0 && (
-                  <span className="text-red-500">{errors.lastname}</span>
-                )}
-              </div>
-              <div className="flex flex-col justify-between items-start relative gap-1">
-                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Apellido materno
-                </p>
-                <FormInput
-                  type={"text"}
-                  placeholder="Apellido materno..."
-                  defaultValue={values.motherlastname}
-                  min={0}
-                  className="form-control w-full"
-                  onChange={(e: any) =>
-                    setValues({ ...values, motherlastname: e.target.value })
-                  }
-                />
-              </div>
-              <div className="flex flex-col justify-between items-start relative gap-1">
-                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  CURP
-                </p>
-                <FormInput
-                  type={"text"}
-                  placeholder="CURP..."
-                  defaultValue={values.curp}
-                  onChange={(e: any) =>
-                    setValues({ ...values, curp: e.target.value })
-                  }
-                  className="form-control w-full"
-                />
-              </div>
-              <div className="flex flex-col justify-between items-start relative gap-1">
-                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Fecha de nacimiento
-                </p>
-                <FormInput
-                  type={"date"}
-                  min={0}
-                  /*defaultValue={
-                    account?.birthDate !== ""
-                      ? moment(account?.birthDate).toDate().getDate()
-                      : Date.now()
-                  }*/
-                  defaultValue={values.birthDate}
-                  className="form-control w-full"
-                  onChange={(e: any) => handleage(e.target.value)}
-                />
-                {errors.age.length > 0 && (
-                  <span className="text-red-500">{errors.age}</span>
-                )}
-              </div>
-              <div className="flex flex-col justify-between items-start relative gap-1">
-                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Sexo
-                </p>
-                <FormSelect
-                  className="form-control w-full"
-                  defaultValue={values.sex}
-                  value={values.sex}
-                  onChange={(e: any) =>
-                    setValues({ ...values, sex: parseInt(e.target.value, 10) })
-                  }
-                >
-                  <option value={0}>No Especificado</option>
-                  <option value={1}>Femenino</option>
-                  <option value={2}>Masculino</option>
-                </FormSelect>
-              </div>
-              <div className="flex flex-col justify-between items-start relative gap-1">
-                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  País nacimiento
-                </p>
-                <FormSelect
-                  className="form-control w-full"
-                  defaultValue={values.country}
-                  value={values.country}
-                  onChange={(e: any) =>
-                    setValues({ ...values, country: e.target.value })
-                  }
-                >
-                  <option value="">Tu pais de nacimiento</option>
-                  <option value="MEX">México</option>
-                </FormSelect>
-              </div>
-              <div className="flex flex-col justify-between items-start relative gap-1">
-                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Email
-                </p>
-                <FormInput
-                  type="email"
-                  defaultValue={values.email}
-                  placeholder="Correo Electrónico"
-                  min={0}
-                  className="form-control w-full"
-                  onChange={(e: any) =>
-                    setValues({ ...values, email: e.target.value })
-                  }
-                />
-              </div>
-              <div className="flex flex-col justify-between items-start relative gap-1">
-                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Teléfono
-                </p>
-                <FormInput
-                  type="tel"
-                  placeholder="Número de teléfono"
-                  min={0}
-                  defaultValue={values.phone}
-                  className="form-control w-full"
-                  onChange={(e) => handlephone(e.target.value)}
-                />
-                {errors.phone.length > 0 && (
-                  <span className="text-red-500">{errors.phone}</span>
-                )}
-              </div>
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Apellido paterno
+              </p>
+              <FormInput
+                type={"text"}
+                placeholder="Apellido paterno..."
+                defaultValue={values.lastname}
+                min={0}
+                className="form-control w-full"
+                onChange={(e: any) => handlelastname(e.target.value)}
+              />
+              {errors.lastname.length > 0 && (
+                <span className="text-red-500">{errors.lastname}</span>
+              )}
+            </div>
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Apellido materno
+              </p>
+              <FormInput
+                type={"text"}
+                placeholder="Apellido materno..."
+                defaultValue={values.motherlastname}
+                min={0}
+                className="form-control w-full"
+                onChange={(e: any) =>
+                  setValues({ ...values, motherlastname: e.target.value })
+                }
+              />
+            </div>
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                CURP
+              </p>
+              <FormInput
+                type={"text"}
+                placeholder="CURP..."
+                defaultValue={values.curp}
+                onChange={(e: any) =>
+                  setValues({ ...values, curp: e.target.value })
+                }
+                className="form-control w-full"
+              />
+            </div>
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Fecha de nacimiento
+              </p>
+              <FormInput
+                type={"date"}
+                min={0}
+                /*defaultValue={
+                  account?.birthDate !== ""
+                    ? moment(account?.birthDate).toDate().getDate()
+                    : Date.now()
+                }*/
+                defaultValue={values.birthDate}
+                className="form-control w-full"
+                onChange={(e: any) => handleage(e.target.value)}
+              />
+              {errors.age.length > 0 && (
+                <span className="text-red-500">{errors.age}</span>
+              )}
+            </div>
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Sexo
+              </p>
+              <FormSelect
+                className="form-control w-full"
+                defaultValue={values.sex}
+                value={values.sex}
+                onChange={(e: any) =>
+                  setValues({ ...values, sex: parseInt(e.target.value, 10) })
+                }
+              >
+                <option value={0}>No Especificado</option>
+                <option value={1}>Femenino</option>
+                <option value={2}>Masculino</option>
+              </FormSelect>
+            </div>
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                País nacimiento
+              </p>
+              <FormSelect
+                className="form-control w-full"
+                defaultValue={values.country}
+                value={values.country}
+                onChange={(e: any) =>
+                  setValues({ ...values, country: e.target.value })
+                }
+              >
+                <option value="">Tu pais de nacimiento</option>
+                <option value="MEX">México</option>
+              </FormSelect>
+            </div>
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Email
+              </p>
+              <FormInput
+                type="email"
+                defaultValue={values.email}
+                placeholder="Correo Electrónico"
+                min={0}
+                className="form-control w-full"
+                onChange={(e: any) =>
+                  setValues({ ...values, email: e.target.value })
+                }
+              />
+            </div>
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Teléfono
+              </p>
+              <FormInput
+                type="tel"
+                placeholder="Número de teléfono"
+                min={0}
+                defaultValue={values.phone}
+                className="form-control w-full"
+                onChange={(e) => handlephone(e.target.value)}
+              />
+              {errors.phone.length > 0 && (
+                <span className="text-red-500">{errors.phone}</span>
+              )}
             </div>
           </div>
         </div>
