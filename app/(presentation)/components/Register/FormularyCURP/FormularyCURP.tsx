@@ -84,7 +84,7 @@ export default function FormularyCURP() {
       <div className="relative w-full text-slate-500">
         <FormInput
           type="text"
-          className="w-full py-3 pr-10"
+          className="w-full py-3 pr-10 bg-white"
           placeholder="CURP"
           value={values.curp}
           onChange={(e: any) => setValues({ ...values, curp: e.target.value })}
