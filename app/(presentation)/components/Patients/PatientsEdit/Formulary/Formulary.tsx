@@ -36,6 +36,7 @@ export default function Formulary() {
     age: "",
     curp: "",
     sex: 0,
+    gender: 0,
     phone: "",
     country: "",
     email: "",
@@ -66,6 +67,7 @@ export default function Formulary() {
       motherlastname: patient?.motherLastName ?? "",
       curp: patient?.curp ?? "",
       sex: patient?.sex ?? 0,
+      gender: patient?.gender ?? 0,
       email: patient?.email ?? "",
       birthDate: patient?.birthDate
         ? `${new Date(patient.birthDate).getFullYear()}-${
@@ -126,6 +128,7 @@ export default function Formulary() {
       curp: values.curp,
       email: values.email,
       sex: values.sex,
+      gender: values.gender,
       phoneNumber: values.phone,
       federativeEntityId: values.federalEntity,
       country: values.country,

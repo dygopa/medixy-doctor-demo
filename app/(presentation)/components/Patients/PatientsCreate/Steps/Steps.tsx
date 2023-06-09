@@ -28,6 +28,7 @@ export default function Steps() {
     age: '',
     curp: "",
     sex: 0,
+    gender: 0,
     phone: "",
     email: "",
   });
@@ -80,6 +81,7 @@ export default function Steps() {
       curp: values.curp,
       email: values.email,
       sex: values.sex,
+      gender: values.gender,
       phoneNumber: values.phone,
       state: 0,
       pictureUrl: "",
