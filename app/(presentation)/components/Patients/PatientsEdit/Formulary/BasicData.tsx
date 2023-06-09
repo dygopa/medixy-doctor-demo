@@ -14,6 +14,7 @@ interface IBasicDataProps {
     age: string;
     curp: string;
     sex: number;
+    gender: number;
     phone: string;
     country: string;
     email: string;
@@ -30,6 +31,7 @@ interface IBasicDataProps {
       age: string;
       curp: string;
       sex: number;
+      gender: number;
       birthDate: string;
       phone: string;
       country: string;
@@ -132,6 +134,8 @@ export default function BasicData({
     setErrors({ ...errors, phone: "" });
     return false;
   };
+
+  console.log(values)
 
   return (
     <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">
@@ -257,6 +261,27 @@ export default function BasicData({
                 <option value={0}>No Especificado</option>
                 <option value={1}>Femenino</option>
                 <option value={2}>Masculino</option>
+              </FormSelect>
+            </div>
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Género
+              </p>
+              <FormSelect
+                value={values?.gender}
+                className="form-control w-full"
+                onChange={(e) =>
+                  setValues({ ...values, gender: +e.target.value })
+                }
+              >
+                <option value={0}>No especificado</option>
+                <option value={1}>Masculino</option>
+                <option value={2}>Femenino</option>
+                <option value={3}>Transegénero</option>
+                <option value={4}>Transexual</option>
+                <option value={5}>Travesti</option>
+                <option value={6}>Intersexial</option>
+                <option value={7}>Otro</option>
               </FormSelect>
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1">

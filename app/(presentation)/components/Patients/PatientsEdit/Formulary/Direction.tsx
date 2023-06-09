@@ -23,6 +23,7 @@ interface IContactProps {
     age: string;
     curp: string;
     sex: number;
+    gender: number;
     phone: string;
     country: string;
     birthDate: string;
@@ -39,6 +40,7 @@ interface IContactProps {
       age: string;
       curp: string;
       sex: number;
+      gender: number;
       birthDate: string;
       phone: string;
       country: string;

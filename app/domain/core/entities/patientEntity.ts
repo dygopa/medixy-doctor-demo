@@ -6,6 +6,7 @@ export interface IPatient {
     curp: string;
     email: string;
     sex: number;
+    gender: number;
     age?: number | null;
     ageType?: string;
     phoneNumber: string;

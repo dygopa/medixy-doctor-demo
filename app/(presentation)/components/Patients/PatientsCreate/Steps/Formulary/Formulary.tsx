@@ -29,6 +29,7 @@ interface IBasicDataProps {
     age: string;
     curp: string;
     sex: number;
+    gender: number;
     phone: string;
     email: string;
   };
@@ -40,6 +41,7 @@ interface IBasicDataProps {
       age: string;
       curp: string;
       sex: number;
+      gender: number;
       phone: string;
       email: string;
     }>
@@ -206,6 +208,28 @@ export default function Formulary({
           <option value={0}>No Especificado</option>
           <option value={1}>Masculino</option>
           <option value={2}>Femenino</option>
+        </FormSelect>
+      </div>
+
+      <div className="input-group w-full">
+        <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+          Género
+        </p>
+        <FormSelect
+          value={values?.gender}
+          className="form-control w-full"
+          onChange={(e) =>
+            setValues({ ...values, gender: +e.target.value })
+          }
+        >
+          <option value={0}>No especificado</option>
+          <option value={1}>Masculino</option>
+          <option value={2}>Femenino</option>
+          <option value={3}>Transegénero</option>
+          <option value={4}>Transexual</option>
+          <option value={5}>Travesti</option>
+          <option value={6}>Intersexial</option>
+          <option value={7}>Otro</option>
         </FormSelect>
       </div>
 
