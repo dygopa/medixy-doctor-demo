@@ -305,7 +305,6 @@ export default function BasicData({
                       setAccount({ ...account, sex: +e.target.value })
                     }
                   >
-                    <option value="">Seleciona tu sexo</option>
                     <option value={0}>No especificado</option>
                     <option value={1}>Femenino</option>
                     <option value={2}>Masculino</option>
