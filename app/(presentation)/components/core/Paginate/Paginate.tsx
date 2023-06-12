@@ -96,12 +96,12 @@ export default function Paginate({
   useEffect(() => {
     getNextPages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, [currentPage, total]);
 
   useEffect(() => {
     getPreviousPages();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentPage]);
+  }, [currentPage, total]);
 
   if (currentPage === 1 && total < limit) return <div />;
 
