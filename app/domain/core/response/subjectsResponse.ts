@@ -1,4 +1,4 @@
-import { ISubject } from "../entities/subjectEntity";
+import { IRelationSubject, ISubject } from "../entities/subjectEntity";
 
 export interface IGetSubjectsResponse {
     data: ISubject[];
@@ -6,4 +6,14 @@ export interface IGetSubjectsResponse {
         total: number;
         limit: number | null;
     }
+}
+
+export interface ICreateSubjectResponse {
+    data: ISubject;
+    metadata: {}
+}
+
+export interface IGetSubjectRelationsResponse {
+    data: IRelationSubject[];
+    metadata: {}
 }

@@ -1,14 +1,20 @@
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import Table from "./Table/Table";
-import { useContext, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import CompanionsListProvider, { ICompanionsListContext } from "./context/companionListContext";
+import { ISubject } from "domain/core/entities/subjectEntity";
 
+interface ITableProps {
+  setCompanionEdit: Dispatch<SetStateAction<ISubject | null>>;
+  idPatient: number | undefined
+}
 
-
-export default function CompanionsList ({idPatient} : {idPatient : number | undefined}) {
+export default function CompanionsList ({idPatient, setCompanionEdit} : ITableProps) {
 
   const [values, setValues] = useState("")
+
+  setCompanionEdit(null);
 
   return (
     <CompanionsListProvider>
@@ -33,7 +39,7 @@ export default function CompanionsList ({idPatient} : {idPatient : number | unde
           />
         </div>
       </div>
-      <Table patientId={idPatient} />
+      <Table idPatient={idPatient} setCompanionEdit={setCompanionEdit} />
     </CompanionsListProvider>
   )
 }

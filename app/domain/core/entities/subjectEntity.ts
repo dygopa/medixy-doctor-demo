@@ -23,3 +23,11 @@ export interface ISubject {
     deletedOn: Date | null;
 }
 
+export interface IRelationSubject {
+    id: number,
+    type: number,
+    subjectIdPrincipal: number,
+    subjectPrincipal: ISubject,
+    subjectIdSecondary: number,
+    subjectSecondary: ISubject,
+}

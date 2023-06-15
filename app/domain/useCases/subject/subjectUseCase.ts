@@ -2,7 +2,7 @@ import { ISubject } from "domain/core/entities/subjectEntity";
 import { IPoints } from "domain/core/entities/pointsEntity";
 import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
 import { PointFailure } from "domain/core/failures/point/pointFailure";
-import { IGetSubjectsResponse } from "domain/core/response/subjectsResponse";
+import { ICreateSubjectResponse, IGetSubjectsResponse } from "domain/core/response/subjectsResponse";
 import { SubjectRepository } from "infrastructure/repositories/subject/subjectRepository";
 
 export default class SubjectsUseCase {
@@ -25,18 +25,18 @@ export default class SubjectsUseCase {
     }
   }
 
-  async getSubjectsComponions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined}): Promise<IGetSubjectsResponse> {
+  async getSubjectsComponions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; patientId?: number | undefined; typeRelation?: number | undefined}): Promise<IGetSubjectsResponse> {
     try {
       const response = await this._repository.getSubjectsCompanions({
         skip: obj.skip,
         sort: obj.sort,
         limit: obj.limit,
-        searchQuery: obj.searchQuery
+        searchQuery: obj.searchQuery,
+        patientId: obj.patientId,
+        typeRelation: obj.typeRelation,
       });
 
       if (response instanceof SubjectFailure) throw response;
-
-      console.log(response)
 
       return response;
     } catch (error) {
@@ -93,9 +93,22 @@ export default class SubjectsUseCase {
     }
   }
 
-  async createSubject(patient: ISubject): Promise<boolean> {
+  async createSubject(subject: ISubject): Promise<ISubject> {
     try {
-      const response = await this._repository.createSubject(patient);
+      const res = await this._repository.createSubject(subject);
+
+      if (res instanceof SubjectFailure) throw res;
+
+     
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createSubjectRelations(subjectPrimayId: number, subjectSecundaryId: number): Promise<boolean> {
+    try {
+      const response = await this._repository.createRelationSubject(subjectPrimayId, subjectSecundaryId);
 
       if (response instanceof SubjectFailure) throw response;
 

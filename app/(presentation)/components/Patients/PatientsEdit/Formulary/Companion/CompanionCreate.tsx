@@ -112,7 +112,7 @@ export default function ({
           Volver a la lista de Acompañantes
         </p>
       </div>
-      <div className="w-full bg-white shadow-xl lg:w-[60%] shadow-slate-100 rounded-md h-fit p-7">
+      <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">
         <div className="w-full border-b mb-2">
           <p className="font-medium text-lg text-slate-900 pb-2">
             Nuevo Acompañante

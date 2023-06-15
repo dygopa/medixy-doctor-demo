@@ -6,10 +6,15 @@ import Paginate from "(presentation)/components/core/Paginate/Paginate";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import { CompanionsListContext, ICompanionsListContext } from "../context/companionListContext";
 
-export default function CompanionsTable ({patientId} : {patientId:number | undefined}) {
+interface ITableProps {
+  setCompanionEdit: Dispatch<SetStateAction<ISubject | null>>;
+  idPatient: number | undefined
+}
+
+export default function CompanionsTable ({idPatient, setCompanionEdit} : ITableProps) {
 
   const { state, actions, dispatch } =
     useContext<ICompanionsListContext>(CompanionsListContext);
@@ -27,10 +32,12 @@ export default function CompanionsTable ({patientId} : {patientId:number | undef
       page: page && page?.length > 0 ? parseInt(page.toString(), 10) : "1",
       searchQuery: searchQuery,
       limit: 10,
-      patientId: patientId,
+      patientId: idPatient,
     })(dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [page, searchQuery]);
+
+  console.log(companions)
 
   return(
     <div className="col-span-12 overflow-auto lg:overflow-visible z-0 ">
@@ -95,7 +102,10 @@ export default function CompanionsTable ({patientId} : {patientId:number | undef
                 </Table.Td>
 
                 <Table.Td className="first:rounded-l-md last:rounded-r-md w-56 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400">
-                  <div className="flex items-center justify-center">
+                  <div 
+                    className="flex items-center justify-center"
+                    onClick={() => setCompanionEdit(companion)}
+                  >
                     <Button
                       variant="primary"
                       className="p-2 text-center"

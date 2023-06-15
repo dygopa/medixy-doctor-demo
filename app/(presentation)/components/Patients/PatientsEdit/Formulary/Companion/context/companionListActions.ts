@@ -1,6 +1,6 @@
 import { getSkipPagination } from "(presentation)/(helper)/paginate/paginateHelper";
 import { ISubject } from "domain/core/entities/subjectEntity";
-import { IGetSubjectsResponse } from "domain/core/response/subjectsResponse";
+import { ICreateSubjectResponse, IGetSubjectsResponse } from "domain/core/response/subjectsResponse";
 import SubjectsUseCase from "domain/useCases/subject/subjectUseCase";
 import { Dispatch } from "react";
 
@@ -19,6 +19,8 @@ const getCompanions = (obj: { page?: number | null; limit: number; searchQuery?:
       skip: skip,
       limit: obj.limit,
       searchQuery: obj.searchQuery,
+      patientId: obj.patientId,
+      typeRelation: 1,
     });
 
     dispatch({ type: "GET_COMPONIONS_SUCCESSFUL", payload: { data: res } });
@@ -28,11 +30,13 @@ const getCompanions = (obj: { page?: number | null; limit: number; searchQuery?:
   }
 }
 
-const createCompanion = (companion:ISubject) => async (dispatch: Dispatch<any>) => {
+const createCompanion = (patientId:number, companion:ISubject) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "CREATE_COMPANION_LOADING" });
     
-    const res: boolean = await new SubjectsUseCase().createSubject(companion);
+    const res: ISubject = await new SubjectsUseCase().createSubject(companion);
+
+    await new SubjectsUseCase().createSubjectRelations(patientId, res.subjectId);
 
     dispatch({ type: "CREATE_COMPANION_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

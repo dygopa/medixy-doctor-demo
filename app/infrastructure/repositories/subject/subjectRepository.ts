@@ -1,28 +1,29 @@
-import { ISubject } from 'domain/core/entities/subjectEntity';
+import { IRelationSubject, ISubject } from 'domain/core/entities/subjectEntity';
 import { IPoints } from 'domain/core/entities/pointsEntity';
 import { SubjectFailure, subjectFailuresEnum } from 'domain/core/failures/subject/subjectFailure';
 import { PointFailure } from 'domain/core/failures/point/pointFailure';
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
-import { fromSubjectSupabaseDocumentData, subjectSupabaseToMap } from "domain/mappers/patient/supabase/subjectSupabaseMapper";
+import { fromRelationsSubjectsSupabaseDocumentData, fromSubjectSupabaseDocumentData, relationsSubjectSupabaseToMap, subjectSupabaseToMap } from "domain/mappers/patient/supabase/subjectSupabaseMapper";
 import { pointsSupabaseToMap } from "domain/mappers/points/supabase/pointsSupabaseMapper";
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
-import { IGetSubjectsResponse } from 'domain/core/response/subjectsResponse';
+import { ICreateSubjectResponse, IGetSubjectRelationsResponse, IGetSubjectsResponse } from 'domain/core/response/subjectsResponse';
 
 export default interface ISubjectRepository {
   getSubjects(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure>;
-  getSubjectsCompanions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure>;
+  getSubjectsCompanions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; patientId?: number | undefined; typeRelation?: number | undefined }): Promise<IGetSubjectsResponse | SubjectFailure>;
   getSubjectById(subjectId: number): Promise<ISubject | SubjectFailure>;
   getSubjectsPoints(obj: { country?: string | undefined }): Promise<IPoints | PointFailure>;
   createSubjects(subjects: ISubject[]): Promise<boolean | SubjectFailure>;
   editSubject(subject: ISubject): Promise<boolean | SubjectFailure>;
+  createRelationSubject(subjectId: number, copmpanionId: number): Promise<boolean | SubjectFailure>;
   exportSubjectsToCSV(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; country?: string | undefined, startDate?: Date | undefined; endDate?: Date | undefined; }): Promise<boolean | SubjectFailure>;
 }
 
 export class SubjectRepository implements ISubjectRepository {
     async getSubjects(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure> {
       try {
-          let query = supabase.from("Sujetos").select("*", { count: "exact" });
+          let query = supabase.from("Sujetos").select("*", { count: "exact" }).eq("esPaciente", true);
     
           if (obj.sort) {
             query = query.order(obj.sort.field, {
@@ -71,10 +72,22 @@ export class SubjectRepository implements ISubjectRepository {
       }
     }
 
-    async getSubjectsCompanions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure> {
+    async getSubjectsCompanions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; patientId?: number | undefined; typeRelation?: number | undefined}): Promise<IGetSubjectsResponse | SubjectFailure> {
       try {
-          let query = supabase.from("Sujetos").select("*", { count: "exact" }).eq("esPaciente", false);
-    
+          let query = supabase.from("RelacionesSujetos").select(`
+          *
+        `, { count: "exact" });
+
+        console.log(obj.patientId, obj.typeRelation)
+          
+          if (obj.typeRelation) {
+            query = query.eq("tipo", obj.typeRelation);
+          }
+
+          if (obj.patientId) {
+            query = query.eq("sujetoPrincipalId", obj.patientId);
+          }
+          
           if (obj.sort) {
             query = query.order(obj.sort.field, {
               ascending: obj.sort.ascending
@@ -96,26 +109,32 @@ export class SubjectRepository implements ISubjectRepository {
           }
   
           const res = await query;
+
+          console.log(res)
           
-          const subjects: ISubject[] = [];
+          const subjects: IRelationSubject[] = [];
   
           if (res.data && res.data.length > 0) {
               await Promise.all(res.data.map(async (data: any) => {
-                  const subjectMap: ISubject = subjectSupabaseToMap(data);
+                  const subjectRelationsMap: IRelationSubject = relationsSubjectSupabaseToMap(data);
+
+                  /*if (data?.sujetoPrincipalId) {
+                    const companion: ISubject = relationsSubjectSupabaseToMap(data.sujetoPrincipalId);
+          
+                    if (companions.id >= 0) subjectMap.subjectIdSecundary = companion;
+                  }*/
       
-                  subjects.push(subjectMap);
+                  subjects.push(subjectRelationsMap);
               }));
           }
 
-          const response: IGetSubjectsResponse = {
+          const response: IGetSubjectRelationsResponse = {
             data: subjects,
             metadata: {
               total: res.count ?? 0,
               limit: obj.limit ?? 0,
             }
           }
-
-          console.log(res)
   
           return JSON.parse(JSON.stringify(response));
       } catch (error) { 
@@ -185,11 +204,21 @@ export class SubjectRepository implements ISubjectRepository {
       }
     }
 
-    async createSubject(subject: ISubject): Promise<boolean | SubjectFailure> {
+    async createSubject(subject: ISubject): Promise<ICreateSubjectResponse | SubjectFailure> {
       try {
-        await supabase.from("Sujetos").insert(fromSubjectSupabaseDocumentData(subject));
-        console.log(subject)
-        return true;
+        const res = await supabase.from("Sujetos").insert(fromSubjectSupabaseDocumentData(subject)).select();
+
+        if (res.error) return new SubjectFailure(subjectFailuresEnum.serverError);
+
+        if (res.data && res.data.length > 0) subject.subjectId = res.data[0].id;
+
+        const response: ICreateSubjectResponse = {
+          data: subject,
+          metadata: {}
+        }
+
+        console.log(res)
+        return JSON.parse(JSON.stringify(response));
       } catch (error) {
         const exception = error as any;
         return new SubjectFailure(subjectFailuresEnum.serverError);
@@ -201,6 +230,26 @@ export class SubjectRepository implements ISubjectRepository {
         subject.updatedOn = new Date();
 
         await supabase.from("Sujetos").update(fromSubjectSupabaseDocumentData(subject)).match({ id: subject.subjectId });
+
+        return true;
+      } catch (error) {
+        const exception = error as any;
+        return new SubjectFailure(subjectFailuresEnum.serverError);
+      }
+    }
+
+    async createRelationSubject(subjectId: number, companionId: number): Promise<boolean | SubjectFailure> {
+      try {
+
+        console.log(subjectId, companionId)
+
+        const relationSubject = {
+          type: 1,
+          subjectId: subjectId,
+          companionId: companionId,
+        }
+
+        await supabase.from("RelacionesSujetos").insert(fromRelationsSubjectsSupabaseDocumentData(relationSubject))
 
         return true;
       } catch (error) {

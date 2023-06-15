@@ -1,4 +1,4 @@
-import { ISubject } from "domain/core/entities/subjectEntity";
+import { IRelationSubject, ISubject } from "domain/core/entities/subjectEntity";
 
 export function subjectSupabaseToMap(data: any): ISubject {
   return {
@@ -82,3 +82,23 @@ export function fromSubjectSupabaseDocumentData(subject: ISubject): any {
   return documentData;
 }
 
+export function relationsSubjectSupabaseToMap ( data:any ): IRelationSubject {
+  const documentData = {
+    id: data?.id ?? 0,
+    type: data?.tipo ?? "",
+    subjectIdPrincipal: data?.sujetoPrincipalId ?? "",
+    subjectIdSecondary: data?.sujetoSecundarioId ?? "",
+  }as IRelationSubject
+
+  return documentData;
+}
+
+export function fromRelationsSubjectsSupabaseDocumentData (relationSubject: any): any {
+  const documentData = {
+    tipo: relationSubject.type,
+    sujetoPrincipalId: relationSubject.subjectId,
+    sujetoSecundarioId: relationSubject.companionId,
+  }as any
+
+  return documentData;
+}

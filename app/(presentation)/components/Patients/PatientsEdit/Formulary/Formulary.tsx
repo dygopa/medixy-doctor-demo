@@ -22,6 +22,7 @@ import { ISubject } from "domain/core/entities/subjectEntity";
 import CompanionsList from "./Companion/CompanionsList";
 import CompanionCreate from "./Companion/CompanionCreate";
 import { CompanionsListContext, ICompanionsListContext } from "./Companion/context/companionListContext";
+import CompanionEdit from "./Companion/CompanionEdit";
 
 export default function Formulary() {
   const { state, actions, dispatch } =
@@ -54,6 +55,36 @@ export default function Formulary() {
   });
 
   const [errors, setErrors] = useState({
+    global: "",
+    name: "",
+    lastname: "",
+    motherlastname: "",
+    age: "",
+    curp: "",
+    sex: "",
+    country: "",
+    email: "",
+    phone: "",
+  });
+
+  const [valuesEditCompanion, setValuesEditCompanion] = useState({
+    name: "",
+    lastname: "",
+    motherlastname: "",
+    age: "",
+    curp: "",
+    sex: 0,
+    gender: 0,
+    phone: "",
+    country: "",
+    email: "",
+    birthDate: "",
+    federalEntity: 0,
+    city: "",
+    direction: "",
+  });
+
+  const [errorsEditCompanion, setErrorsEditCompanion] = useState({
     global: "",
     name: "",
     lastname: "",
@@ -184,12 +215,44 @@ export default function Formulary() {
     editSubject(patientEdit)(dispatch);
   };
 
+  const onSubmitEditCompanion = (e:any) => {
+    const hasErrorsCount = validForm();
+
+    if (hasErrorsCount > 0) return;
+
+    const companionNewEdit: ISubject = {
+      subjectId: companionEdit?.subjectId ?? 0,
+      name: valuesEditCompanion.name,
+      lastName: valuesEditCompanion.lastname,
+      motherLastName: valuesEditCompanion.motherlastname,
+      curp: valuesEditCompanion.curp,
+      email: valuesEditCompanion.email,
+      sex: valuesEditCompanion.sex,
+      gender: valuesEditCompanion.gender,
+      phoneNumber: valuesEditCompanion.phone,
+      federativeEntityId: valuesEditCompanion.federalEntity,
+      country: valuesEditCompanion.country,
+      state: 0,
+      address: valuesEditCompanion.direction,
+      city: valuesEditCompanion.city,
+      pictureUrl: "",
+      isPatient: false,
+      birthDate:
+        valuesEditCompanion.birthDate.length > 0 ? new Date(values.birthDate) : null,
+      createdOn: patient?.createdOn ?? new Date(),
+      updatedOn: new Date(),
+      deletedOn: null,
+    };
+
+    editSubject(companionNewEdit)(dispatch);
+  };
+
   useEffect(() => {
-    if (successful) {
+    /*if (successful) {
       setTimeout(() => {
         router.push(PatientsRoutesEnum.PatientsList);
       }, 3500);
-    }
+    }*/
     if (successfulCompanion) {
       setTimeout(() => {
         setNewCompanion(false);
@@ -226,6 +289,8 @@ export default function Formulary() {
 
   const [newCompanion, setNewCompanion] = useState(false);
 
+  const [companionEdit, setCompanionEdit] = useState<ISubject | null>(null)
+
   const onNewPatient = (e:any) => {
     if (!newCompanion) {
       setNewCompanion(true)
@@ -255,7 +320,7 @@ export default function Formulary() {
 
       console.log(companionNew);
 
-      createCompanion(companionNew)(dispatchCompanions);
+      createCompanion(patient?.subjectId, companionNew)(dispatchCompanions);
     }
   }
 
@@ -274,7 +339,11 @@ export default function Formulary() {
       case 1:
         return <>
           { !newCompanion ? 
-            <CompanionsList idPatient={patient?.subjectId} />
+            <>{ companionEdit ?
+              <CompanionEdit companionEdit={companionEdit} setCompanionEdit={setCompanionEdit} values={valuesEditCompanion} setValues={setValuesEditCompanion} errors={errorsEditCompanion} setErrors={setErrorsEditCompanion} />
+              :
+              <CompanionsList idPatient={patient?.subjectId} setCompanionEdit={setCompanionEdit} />
+            }</>
             :
             <CompanionCreate setNewCompanion={setNewCompanion} values={valuesNewCompanion} setValues={setValuesNewCompanion} errors={errorsNewCompanion} setErrors={setErrorsNewCompanion} />
           }
@@ -337,12 +406,24 @@ export default function Formulary() {
             {loading ? "Actualizando paciente..." : "Actualizar paciente"}
           </Button>
           :
-          <Button 
-            className="my-4 w-[100%] lg:w-auto" 
-            variant="primary" 
-            onClick={(e:any) => onNewPatient(e)}>
-            {!newCompanion ? "Nuevo acompañante" : "Agregar acompañante"}
-          </Button>
+          <>{ companionEdit ? 
+            <Button 
+              disabled={loading}
+              className="my-4 w-[100%] lg:w-auto"
+              variant="primary" 
+              onClick={(e:any) => onSubmitEditCompanion(e)}
+            >
+              Actualizar acompañante
+            </Button>
+          :
+            <Button 
+              disabled={loadingCompanion}
+              className="my-4 w-[100%] lg:w-auto"
+              variant="primary" 
+              onClick={(e:any) => onNewPatient(e)}>
+              {!newCompanion ? "Nuevo acompañante" : "Agregar acompañante"}
+            </Button>
+          }</>
           }
         </div>
         <div className="w-full flex justify-start items-center overflow-x-auto overflow-y-hidden">
