@@ -1,5 +1,7 @@
 import AutocompleteInput from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInput";
+import AutocompleteInputMedicalProfiles from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMedicalProfiles/AutocompleteInputMedicalProfiles";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
+import { IMedicalProfile } from "domain/core/entities/medicalProfileEntity";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 import { valuesTypes } from "../../AddOrder";
 
@@ -12,15 +14,19 @@ export default function Laboratory({ values, setValues }: ILaboratoryProps) {
   return (
     <div className="w-full">
       <div className="mb-4 w-full">
-        <AutocompleteInput
-          defaultValue={values.category}
-          setDefaultValue
-          items={["Hematología completa"]}
+        <AutocompleteInputMedicalProfiles
+          defaultValue={values.medicalProfile.name}
           placeholder="Escribe el examen a realizarse"
           className="w-full"
-          onChange={(item: string) => setValues({ ...values, category: item })}
-          onClick={(item: string) => setValues({ ...values, category: item })}
-          onKeyDown={(item: string) => setValues({ ...values, category: item })}
+          onChange={(item: IMedicalProfile) =>
+            setValues({ ...values, medicalProfile: item })
+          }
+          onClick={(item: IMedicalProfile) =>
+            setValues({ ...values, medicalProfile: item })
+          }
+          onKeyDown={(item: IMedicalProfile) =>
+            setValues({ ...values, medicalProfile: item })
+          }
         />
       </div>
 

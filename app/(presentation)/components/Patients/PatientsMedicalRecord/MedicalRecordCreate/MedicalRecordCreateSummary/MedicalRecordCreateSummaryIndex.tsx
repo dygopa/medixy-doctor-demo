@@ -9,23 +9,23 @@ import Detail from "./Detail/Detail";
 import Navigator from "./Navigator/Navigator";
 
 interface IMedicalRecordCreateSummaryIndexProps {
-  patientId: number;
+  subjectId: number;
 }
 
 export default function MedicalRecordCreateSummaryIndex({
-  patientId,
+  subjectId,
 }: IMedicalRecordCreateSummaryIndexProps) {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordCreateSummaryContext>(
       MedicalRecordCreateSummaryContext
     );
-  const { getPatientById } = actions;
-  const { data: patient, loading, successful, error } = state.patient;
+  const { getSubjectById } = actions;
+  const { data: subject, loading, successful, error } = state.subject;
 
   useEffect(() => {
     let isCleanup = true;
 
-    if (isCleanup) getPatientById(patientId)(dispatch);
+    if (isCleanup) getSubjectById(subjectId)(dispatch);
 
     return () => {
       isCleanup = false;
@@ -52,7 +52,7 @@ export default function MedicalRecordCreateSummaryIndex({
       </div>
     );
 
-  if (!patient?.patientId && successful) {
+  if (!subject?.subjectId && successful) {
     return (
       <div className="w-full flex flex-col justify-center items-center py-8">
         <p className="font-bold text-slate-900 text-lg">
@@ -65,7 +65,7 @@ export default function MedicalRecordCreateSummaryIndex({
     );
   }
 
-  if (!patient?.patientId && !successful)
+  if (!subject?.subjectId && !successful)
     return <div className="mt-5" style={{ height: "80vh" }} />;
 
   return (

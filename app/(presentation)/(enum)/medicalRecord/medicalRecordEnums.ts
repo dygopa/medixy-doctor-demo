@@ -1,3 +1,15 @@
+export enum MedicalRecordCategoriesEnum {
+    RECORDS = "ANTECEDENTES",
+    PHYSICAL = "FISICO",
+    ORDERS = "ORDENES",
+}
+
+export enum MedicalRecordCategoriesIdEnum {
+    RECORDS = 1,
+    PHYSICAL = 2,
+    ORDERS = 3,
+}
+
 export enum MedicalRecordTypesEnum {
     ALLERGIES = "ALLERGIES",
     SURGICAL_INTERVENTIONS = "SURGICAL_INTERVENTIONS",
@@ -19,7 +31,7 @@ export enum MedicalRecordTypesEnum {
     CANCER_FAMILY = "CANCER_FAMILY",
     HIPERTENSION = "HIPERTENSION",
     SIDA = "SIDA",
-    OTHER = "OTHER"
+    OTHER = "OTHER",
 }
 
 export enum MedicalRecordTypesNumberEnum {
@@ -72,6 +84,74 @@ export enum MedicalRecordValueTypesEnum {
     OTHER_FAMILY = "FAMILY"
 }
 
+export enum MedicalRecordTypesPhysicalEnum {
+    ABNORMAL_APPEREANCE = "ABNORMAL_APPEREANCE",
+    DISNEA = "DISNEA",
+    DEFORMITY = "DEFORMITY",
+    AMPUTATION = "AMPUTATION",
+    PARALISYS = "PARALISYS",
+    ABNORMAL_MOVEMENTS = "ABNORMAL_MOVEMENTS",
+    ABNORMAL_GAIT = "ABNORMAL_GAIT",
+    MENTAL_DISORDER = "MENTAL_DISORDER",
+    ABNORMALITY = "ABNORMALITY",
+    ANATOMICAL_STATE_EYES = "ANATOMICAL_STATE_EYES",
+    EYE_VISION = "EYE_VISION",
+    HEARING_EARS = "HEARING_EARS",
+    BUCCAL_PHARYNX = "BUCCAL_PHARYNX",
+    NECK = "NECK",
+    CHEST = "CHEST",
+    SPINE = "SPINE",
+    ABDOMEN = "ABDOMEN",
+    EXTREMITIES = "EXTREMITIES",
+    SMOKING_PHYSICAL = "SMOKING_PHYSICAL",
+}
+
+export enum MedicalRecordValueTypesPhysicalEnum {
+    ABNORMAL_APPEREANCE_DESCRIPTION = "DESCRIPTION",
+    DISNEA_DESCRIPTION = "DESCRIPTION",
+    DEFORMITY_DESCRIPTION = "DESCRIPTION",
+    AMPUTATION_DESCRIPTION = "DESCRIPTION",
+    PARALISYS_DESCRIPTION = "DESCRIPTION",
+    ABNORMAL_MOVEMENTS_DESCRIPTION = "DESCRIPTION",
+    ABNORMAL_GAIT_DESCRIPTION = "DESCRIPTION",
+    MENTAL_DISORDER_DESCRIPTION = "DESCRIPTION",
+    ABNORMALITY_DESCRIPTION = "DESCRIPTION",
+    ANATOMICAL_STATE_EYES_DESCRIPTION = "DESCRIPTION",
+    EYE_VISION_DESCRIPTION = "DESCRIPTION",
+    HEARING_EARS_DESCRIPTION = "DESCRIPTION",
+    BUCCAL_PHARYNX_DESCRIPTION = "DESCRIPTION",
+    NECK_DESCRIPTION = "DESCRIPTION",
+    CHEST_DESCRIPTION = "DESCRIPTION",
+    SPINE_DESCRIPTION = "DESCRIPTION",
+    ABDOMEN_DESCRIPTION = "DESCRIPTION",
+    EXTREMITIES_DESCRIPTION = "DESCRIPTION",
+    SMOKING_PHYSICAL_DESCRIPTION = "DESCRIPTION",
+}
+
+export enum MedicalRecordTypesOrdersEnum {
+    ORDER_LABORATORY = "ORDER_LABORATORY",
+    ORDER_DIAGNOSIS = "ORDER_DIAGNOSIS",
+    ORDER_SPECIALTY = "ORDER_SPECIALTY",
+    ORDER_MEDICAL_PROOF = "ORDER_MEDICAL_PROOF",
+    ORDER_MEDICAL_CERTIFICATE = "ORDER_MEDICAL_CERTIFICATE",
+    ORDER_HOSPITALIZATION = "ORDER_HOSPITALIZATION",
+    ORDER_OPENING = "ORDER_OPENING"
+}
+
+export enum MedicalRecordValueTypesOrdersEnum {
+    ORDER_LABORATORY_MEDICAL_EXAM = "MEDICAL_EXAM",
+    ORDER_LABORATORY_INDICATION = "INDICATION",
+    ORDER_DIAGNOSIS_MEDICAL_EXAM = "MEDICAL_EXAM",
+    ORDER_DIAGNOSIS_INDICATION = "INDICATION",
+    ORDER_SPECIALTY = "SPECIALTY",
+    ORDER_SPECIALTY_DOCTOR_NAME = "DOCTOR_NAME",
+    ORDER_SPECIALTY_OTHER_DOCTOR_NAME = "OTHER_DOCTOR_NAME",
+    ORDER_MEDICAL_PROOF = "MEDICAL_PROOF",
+    ORDER_MEDICAL_CERTIFICATE = "MEDICAL_CERTIFICATE",
+    ORDER_HOSPITALIZATION = "HOSPITALIZATION",
+    ORDER_OPENING = "OPENING",
+}
+
 type TMedicalRecordTypeEnum = {
     [key: string]: string
 }
@@ -97,5 +177,45 @@ export const medicalRecordTypeEnum: TMedicalRecordTypeEnum = {
     "CANCER_FAMILY": "Cáncer en la familia",
     "HIPERTENSION": "Hipertensión",
     "SIDA": "Sida",
-    "OTHER": "Otras"
+    "OTHER": "Otros antecedentes"
+}
+
+type TMedicalRecordTypePhysicalEnum = {
+    [key: string]: string
+}
+
+export const medicalRecordTypePhysicalEnum: TMedicalRecordTypePhysicalEnum = {
+    "ABNORMAL_APPEREANCE": "¿Existe alguna anormalidad en su aspecto?",
+    "DISNEA": "¿Existe disnea?",
+    "DEFORMITY": "¿Existe alguna deformidad?",
+    "AMPUTATION": "¿Falta algún miembro o parte de él?",
+    "PARALISYS": "¿Hay parálisis o paresias?",
+    "ABNORMAL_MOVEMENTS": "¿Hay movimientos anormales?",
+    "ABNORMAL_GAIT": "¿La marcha es anormal?",
+    "MENTAL_DISORDER": "¿Se aprecia algún transtorno psíquico?",
+    "ABNORMALITY": "¿Existe cualquier anormalidad?",
+    "ANATOMICAL_STATE_EYES": "En el estado anatómico de los ojos",
+    "EYE_VISION": "En la visión de cada ojo",
+    "HEARING_EARS": "En la audición de cada oído",
+    "BUCCAL_PHARYNX": "En la cavidad bucal y la faringe",
+    "NECK": "En el cuello (ganglios, tiroides, ingurgitación yugular, arterias)",
+    "CHEST": "En el tórax (inspección, auscultación)",
+    "SPINE": "En la columna vertebral (deformidad, dolor, limitación)",
+    "ABDOMEN": "En el abdomen (inspeccion, palpación, dolor, visceromeglias, ascitis)",
+    "EXTREMITIES": "En las extremidades (várices, úlceras, edema, articulaciones, arterias, reflejo patelar)",
+    "SMOKING_PHYSICAL": "¿Existe algún dato en el aliento, dientes, dedos del solicitante que señale que fume?",
+}
+
+type TMedicalRecordTypeOrderEnum = {
+    [key: string]: string
+}
+
+export const medicalRecordTypeOrderEnum: TMedicalRecordTypeOrderEnum = {
+    "ORDER_LABORATORY": "Laboratorio",
+    "ORDER_DIAGNOSIS": "Estudios diagnósticos",
+    "ORDER_SPECIALTY": "Especialista",
+    "ORDER_MEDICAL_PROOF": "Justificativo médico",
+    "ORDER_MEDICAL_CERTIFICATE": "Certificado médico",
+    "ORDER_HOSPITALIZATION": "Hospitalización",
+    "ORDER_OPENING": "Abierta",
 }

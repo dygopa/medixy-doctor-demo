@@ -16,7 +16,7 @@ export const handleConsultationDateErrors = (value: string) => {
   };
 
   export const handleSizeErrors = (value: string) => {
-    if (!/^\d*\.?\d*$/.test(value)) {
+    if (value.length > 0 && !/^\d*\.?\d*$/.test(value)) {
         return true;
     }
 
@@ -24,7 +24,7 @@ export const handleConsultationDateErrors = (value: string) => {
   };
 
   export const handleWeightErrors = (value: string) => {
-    if (!/^\d*\.?\d*$/.test(value)) {
+    if (value?.length > 0 && !/^\d*\.?\d*$/.test(value)) {
         return true;
     }
 
@@ -32,7 +32,7 @@ export const handleConsultationDateErrors = (value: string) => {
   };
 
   export const handleTemperatureErrors = (value: string) => {
-    if (!/^\d*\.?\d*$/.test(value)) {
+    if (value?.length > 0 && !/^\d*\.?\d*$/.test(value)) {
         return true;
     }
 
@@ -40,7 +40,7 @@ export const handleConsultationDateErrors = (value: string) => {
   };
 
   export const handleRespiratoryFrequencyErrors = (value: string) => {
-    if (!/^\d*\.?\d*$/.test(value)) {
+    if (value?.length > 0 && !/^\d*\.?\d*$/.test(value)) {
         return true;
     }
 
@@ -48,7 +48,7 @@ export const handleConsultationDateErrors = (value: string) => {
   };
 
   export const handleOximetryErrors = (value: string) => {
-    if (!/^\d*\.?\d*$/.test(value)) {
+    if (value?.length > 0 && !/^\d*\.?\d*$/.test(value)) {
         return true;
     }
 
@@ -56,7 +56,7 @@ export const handleConsultationDateErrors = (value: string) => {
   };
 
   export const handleMuscleMassErrors = (value: string) => {
-    if (!/^\d*\.?\d*$/.test(value)) {
+    if (value?.length > 0 && !/^\d*\.?\d*$/.test(value)) {
         return true;
     }
 
@@ -64,7 +64,7 @@ export const handleConsultationDateErrors = (value: string) => {
   };
 
   export const handleGlicemyErrors = (value: string) => {
-    if (!/^\d*\.?\d*$/.test(value)) {
+    if (value?.length > 0 && !/^\d*\.?\d*$/.test(value)) {
         return true;
     }
 

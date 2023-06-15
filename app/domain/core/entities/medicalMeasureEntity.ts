@@ -15,6 +15,6 @@ export interface IMedicalMeasure {
     medicalMeasureType: IMedicalMeasureType;
     medicalConsultyId?: number | null;
     medicalConsulty?: IMedicalConsulty | null;
-    patientId: number;
+    subjectId: number;
     createdOn: Date;
 }

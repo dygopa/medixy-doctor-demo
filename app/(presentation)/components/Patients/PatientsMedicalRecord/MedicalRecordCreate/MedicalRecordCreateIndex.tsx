@@ -1,8 +1,8 @@
 "use client";
 
 import clsx from "clsx";
-import { useContext, useEffect, useRef, useState } from "react";
-import {
+import { useContext, useEffect, useState } from "react";
+import MedicalRecordCreateProvider, {
   IMedicalRecordCreateContext,
   MedicalRecordCreateContext,
 } from "./context/MedicalRecordCreateContext";
@@ -13,19 +13,21 @@ import Navigator from "./Navigator/Navigator";
 import RightSide from "./RightSide/RightSide";
 
 interface IMedicalRecordCreateIndexProps {
-  patientId: number;
+  subjectId: number;
 }
 
 export default function MedicalRecordCreateIndex({
-  patientId,
+  subjectId,
 }: IMedicalRecordCreateIndexProps) {
   const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
     MedicalRecordCreateContext
   );
-  const { getPatientById } = actions;
-  const { data: patient, loading, successful, error } = state.patient;
+  const { getSubjectById } = actions;
+  const { data: subject, loading, successful, error } = state.subject;
 
   const [screenSize, setScreenSize] = useState(getCurrentDimension());
+  const [isOpen, setIsOpen] = useState(false);
+  const [popupSectionActive, setPopupSectionActive] = useState(0);
 
   function getCurrentDimension() {
     return {
@@ -48,7 +50,7 @@ export default function MedicalRecordCreateIndex({
   useEffect(() => {
     let isCleanup = true;
 
-    if (isCleanup) getPatientById(patientId)(dispatch);
+    if (isCleanup) getSubjectById(subjectId)(dispatch);
 
     return () => {
       isCleanup = false;
@@ -75,7 +77,7 @@ export default function MedicalRecordCreateIndex({
       </div>
     );
 
-  /* if (!patient?.patientId && successful) {
+  if (!subject?.subjectId && successful) {
     return (
       <div className="w-full flex flex-col justify-center items-center py-8">
         <p className="font-bold text-slate-900 text-lg">
@@ -86,15 +88,18 @@ export default function MedicalRecordCreateIndex({
         </p>
       </div>
     );
-  }  */
+  }
 
-  if (!patient?.patientId && !successful)
+  if (!subject?.subjectId && !successful)
     return <div className="mt-5" style={{ height: "80vh" }} />;
 
   return (
     <>
       <div className="py-5">
-        <Navigator />
+        <Navigator
+          setIsOpen={setIsOpen}
+          setPopupSectionActive={setPopupSectionActive}
+        />
 
         <div className="mt-10 grid grid-cols-12 gap-4">
           <div
@@ -116,12 +121,25 @@ export default function MedicalRecordCreateIndex({
           </div>
         </div>
 
-        {/* <div>
-          <History />
-          </div> */}
+        <div>
+          <History
+            setIsOpen={setIsOpen}
+            setPopupSectionActive={setPopupSectionActive}
+          />
+        </div>
       </div>
 
-      {/* <MainPopup /> */}
+      {isOpen && (
+        <MedicalRecordCreateProvider>
+          <MainPopup
+            subjectId={subjectId}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            popupSectionActive={popupSectionActive}
+            setPopupSectionActive={setPopupSectionActive}
+          />
+        </MedicalRecordCreateProvider>
+      )}
     </>
   );
 }

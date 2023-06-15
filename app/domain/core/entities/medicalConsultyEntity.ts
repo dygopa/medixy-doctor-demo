@@ -5,7 +5,7 @@ import { ITreatment } from "./treatmentEntity";
 
 export interface IMedicalConsulty {
     id: number;
-    patientId: number;
+    subjectId: number;
     consultationDate: Date;
     consultationReason: string;
     referrerBy?: string | null;

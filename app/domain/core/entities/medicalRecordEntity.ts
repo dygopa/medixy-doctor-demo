@@ -1,9 +1,16 @@
 import { IMedicalConsulty } from "./medicalConsultyEntity";
-import { IPatient } from "./patientEntity";
+import { ISubject } from "./subjectEntity";
+
+export interface IMedicalRecordCategory {
+    id: number;
+    name: string;
+}
 
 export interface IMedicalRecordType {
     id: number;
     name: string;
+    medicalRecordCategoryId: number;
+    medicalRecordCategory: IMedicalRecordCategory;
 }
 
 export interface IMedicalRecordValueType {
@@ -21,8 +28,8 @@ export interface IMedicalRecord {
     medicalRecordValues: IMedicalRecordValue[];
     medicalConsultyId: number;
     medicalConsulty: IMedicalConsulty;
-    patientId: number;
-    patient: IPatient;
+    subjectId: number;
+    subject: ISubject;
 }
 
 export interface IMedicalRecordValue {

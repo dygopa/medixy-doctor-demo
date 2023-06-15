@@ -1,8 +1,10 @@
-import { IPatient } from "domain/core/entities/subjectEntity";
+import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
+import { ISubject } from "domain/core/entities/subjectEntity";
+import { FederalEntityFailure } from "domain/core/failures/federalEntity/federalEntityFailure";
 import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
 import { MedicalMeasureFailure } from "domain/core/failures/medicalMeasure/medicalMeasureFailure";
 import { MedicalRecordFailure } from "domain/core/failures/medicalRecord/medicalRecordFailure";
-import { PatientFailure } from "domain/core/failures/patient/patientFailure";
+import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
 import { TreatmentFailure } from "domain/core/failures/treatment/treatmentFailure";
 import { IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
@@ -10,19 +12,21 @@ import { IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordRe
 import { IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
 
 export interface IMedicalRecordState {
-    patient: IGetPatientState;
+    subject: IGetSubjectState;
     medicalMeasures: IGetMedicalMeasuresState;
     medicalConsulties: IGetMedicalConsultiesState;
     treatments: IGetTreatmentsState;
     allergies: IGetAllergiesState;
     medicalRecords: IGetMedicalRecordsState;
+    getFederalEntities: IGetFederalEntitiesState;
+    editSubject: IUpdateSubjectState;
 }
 
-interface IGetPatientState {
-    data: IPatient | null;
+interface IGetSubjectState {
+    data: ISubject | null;
     loading: boolean;
     successful: boolean;
-    error: PatientFailure | null; 
+    error: SubjectFailure | null; 
 }
 
 interface IGetMedicalMeasuresState {
@@ -60,8 +64,22 @@ interface IGetMedicalRecordsState {
     error: MedicalRecordFailure | null; 
 }
 
+interface IGetFederalEntitiesState {
+    data: Array<IFederalEntity>;
+    loading: boolean;
+    successful: boolean;
+    error: FederalEntityFailure | null; 
+}
+
+interface IUpdateSubjectState {
+    data: boolean;
+    loading: boolean;
+    successful: boolean;
+    error: SubjectFailure | null;
+}
+
 export const initialState: IMedicalRecordState = {
-    patient: {
+    subject: {
         data: null,
         loading: false,
         successful: false,
@@ -97,4 +115,16 @@ export const initialState: IMedicalRecordState = {
         successful: false,
         error: null,
     },
+    getFederalEntities: {
+        data: [],
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    editSubject: {
+        data: false,
+        loading: false,
+        successful: false,
+        error: null,
+    }
 }

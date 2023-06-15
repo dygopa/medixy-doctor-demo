@@ -5,19 +5,22 @@ import {
   MedicalRecordContext,
 } from "../../../../../context/MedicalRecordContext";
 
-export default function AllergiesList() {
+interface IAllergiesListProps {
+  subjectId: number;
+}
+
+export default function AllergiesList({ subjectId }: IAllergiesListProps) {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { getAllergies } = actions;
-  const { data: patient } = state.patient;
   const { data, loading, error, successful } = state.allergies;
 
   const [allergies, setAllergies] = useState<string[]>([]);
 
   const onGetAllergiesDispatch = () => {
-    if (patient?.patientId) {
+    if (subjectId) {
       getAllergies({
-        patientId: patient.patientId,
+        subjectId: subjectId,
       })(dispatch);
     }
   };

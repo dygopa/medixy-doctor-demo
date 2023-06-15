@@ -39,7 +39,7 @@ export default function Allergies({
                 <button
                   type="button"
                   onClick={() => {
-                    setPopupSectionActive(1);
+                    setPopupSectionActive(3);
                     setIsOpen(true);
                   }}
                   className="hover:bg-dark hover:bg-opacity-10 px-2 py-1 rounded-md"

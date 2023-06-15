@@ -19,7 +19,7 @@ export default function MedicalConsulty({
   medicalConsulty,
 }: IMedicalConsultyProps) {
   const { state } = useContext<IMedicalRecordContext>(MedicalRecordContext);
-  const { data: patient } = state.patient;
+  const { data: subject } = state.subject;
 
   const router = useRouter();
 
@@ -34,7 +34,7 @@ export default function MedicalConsulty({
       onClick={() =>
         router.push(
           PatientsRoutesEnum.PatientsView +
-            patient?.patientId +
+            subject?.subjectId +
             PatientsMedicalRecordRoutesEnum.MedicalRecord +
             `?view_medical_record=true&medical_record_id=${medicalConsulty.id}`
         )

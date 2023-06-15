@@ -1,13 +1,13 @@
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
-import { IPatient } from "domain/core/entities/subjectEntity";
+import { ISubject } from "domain/core/entities/subjectEntity";
 import { ICreateMedicalConsultyResponse } from "domain/core/response/medicalConsultyResponse";
 import MedicalConsultyUseCase from "domain/useCases/medicalConsulty/medicalConsultyUseCases";
-import PatientsUseCase from "domain/useCases/subject/subjectUseCase";
+import SubjectsUseCase from "domain/useCases/subject/subjectUseCase";
 import { Dispatch } from "react";
 
 export interface IMedicalRecordCreateSummaryActions {
     createMedicalConsulty: (medicalConsulty: IMedicalConsulty) => (dispatch: Dispatch<any>) => {};
-    getPatientById: (patientId: number) => (dispatch: Dispatch<any>) => {};
+    getSubjectById: (subjectId: number) => (dispatch: Dispatch<any>) => {};
 }
 
 const createMedicalConsulty = (medicalConsulty: IMedicalConsulty) => async (dispatch: Dispatch<any>) => {
@@ -23,19 +23,19 @@ const createMedicalConsulty = (medicalConsulty: IMedicalConsulty) => async (disp
     }
 }
 
-const getPatientById = (patientId: number) => async (dispatch: Dispatch<any>) => {
+const getSubjectById = (subjectId: number) => async (dispatch: Dispatch<any>) => {
     try {
-        dispatch({ type: "GET_PATIENT_LOADING" });
+        dispatch({ type: "GET_SUBJECT_LOADING" });
 
-        const res: IPatient = await new PatientsUseCase().getPatientById(patientId);
+        const res: ISubject = await new SubjectsUseCase().getSubjectById(subjectId);
 
-        dispatch({ type: "GET_PATIENT_SUCCESSFUL", payload: { data: res } });
+        dispatch({ type: "GET_SUBJECT_SUCCESSFUL", payload: { data: res } });
     } catch (error) {
-        dispatch({ type: "GET_PATIENT_ERROR", payload: { error: error } });
+        dispatch({ type: "GET_SUBJECT_ERROR", payload: { error: error } });
     }
 }
 
 export const actions: IMedicalRecordCreateSummaryActions = {
-    getPatientById,
+    getSubjectById,
     createMedicalConsulty,
 }

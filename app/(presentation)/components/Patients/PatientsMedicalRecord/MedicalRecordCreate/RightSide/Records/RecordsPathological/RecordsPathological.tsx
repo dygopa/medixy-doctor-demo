@@ -54,7 +54,7 @@ export default function RecordsPathological({
       >
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Alergías</p>
             </div>
 
@@ -173,7 +173,7 @@ export default function RecordsPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Intervenciones quirúrgicas</p>
             </div>
 
@@ -203,7 +203,11 @@ export default function RecordsPathological({
                 <div className="w-full">
                   <AutocompleteInput
                     disabled={!values.surgicalInterventions.isChecked}
-                    items={["Cesarea", "Apendicectomía", "Laparotomía Exploratoria"]}
+                    items={[
+                      "Cesarea",
+                      "Apendicectomía",
+                      "Laparotomía Exploratoria",
+                    ]}
                     itemsAdded={values.surgicalInterventions.values}
                     placeholder="Tipo, cuando, ejem: Amígdalas 2013 (ENTER para agregar)"
                     className="h-[50px] w-full"
@@ -291,7 +295,7 @@ export default function RecordsPathological({
         </div>
 
         <div className="md:flex items-center mb-4 w-full">
-          <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+          <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
             <p className="text-md">Toma medicamentos actualmente</p>
           </div>
 
@@ -404,7 +408,7 @@ export default function RecordsPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Transfusiones</p>
             </div>
 
@@ -455,7 +459,7 @@ export default function RecordsPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Anemia</p>
             </div>
 
@@ -504,7 +508,7 @@ export default function RecordsPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Artritis</p>
             </div>
 
@@ -553,7 +557,7 @@ export default function RecordsPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Asma</p>
             </div>
 
@@ -602,7 +606,7 @@ export default function RecordsPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Cáncer</p>
             </div>
 
@@ -651,7 +655,7 @@ export default function RecordsPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Coágulos sanguíneos</p>
             </div>
 
@@ -700,7 +704,7 @@ export default function RecordsPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Colitis</p>
             </div>
 

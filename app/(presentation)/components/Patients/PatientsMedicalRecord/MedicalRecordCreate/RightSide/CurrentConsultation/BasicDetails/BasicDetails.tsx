@@ -9,24 +9,6 @@ type valuesTypes = {
   referredBy: string;
   consultationReason: string;
   sufferingDate: string;
-  generalInspection: string;
-  respiratorySystem: string;
-  digestiveSystem: string;
-  cardiovascularSystem: string;
-  reproductiveSystem: string;
-  urinarySystem: string;
-  ophthalmologicalSystem: string;
-  locomotorSystem: string;
-  earInspection: string;
-  neurologicalInspection: string;
-  skinInspection: string;
-  size: string;
-  weight: string;
-  temperature: string;
-  respiratoryFrequency: string;
-  oximetry: string;
-  muscleMass: string;
-  glicemy: string;
   diagnose: ICIE10[];
   observations: string;
 };
@@ -34,13 +16,6 @@ type valuesTypes = {
 type errorsTypes = {
   consultationDate: string;
   consultationReason: string;
-  size: string;
-  weight: string;
-  temperature: string;
-  respiratoryFrequency: string;
-  oximetry: string;
-  muscleMass: string;
-  glicemy: string;
 };
 
 interface IBasicDetailsProps {
@@ -132,13 +107,14 @@ export default function BasicDetails({
     <div>
       <div className="xl:flex justify-between mb-4">
         <div className="xl:flex lg:flex xl:mb-0 mb-4 items-center">
-          <div className="mr-5 xl:w-[160px] lg:w-[150px] w-full xl:mb-0 lg:mb-0 mb-1">
+          <div className="mr-5 xl:w-[170px] lg:w-[150px] w-full xl:mb-0 lg:mb-0 mb-1">
             <p className="text-slate-900 font-lighter text-md flex">
-              Fecha de la consulta <span className="text-primary font-bold">*</span>
+              Fecha de la consulta{" "}
+              <span className="text-primary font-bold">*</span>
             </p>
           </div>
 
-          <div className="xl:w-[400px] w-full">
+          <div className="xl:w-[300px] w-full">
             <FormInput
               value={values.consultationDate}
               name="consultationDate"
@@ -178,7 +154,8 @@ export default function BasicDetails({
         <div className="xl:flex lg:flex items-center w-full">
           <div className="mr-5 lg:w-[200px] w-full xl:mb-0 lg:mb-0 mb-1">
             <p className="text-slate-900 font-lighter text-md flex">
-              Mótivo de la consulta <span className="text-primary font-bold">*</span>
+              Mótivo de la consulta{" "}
+              <span className="text-primary font-bold">*</span>
             </p>
           </div>
 

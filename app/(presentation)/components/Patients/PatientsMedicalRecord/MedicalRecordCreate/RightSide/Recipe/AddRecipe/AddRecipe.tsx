@@ -439,7 +439,7 @@ export default function AddRecipe({
 
       <div className="xl:flex items-center justify-between w-full mt-4">
         <div className="xl:flex items-center w-full">
-          <div className="xl:mr-5 xl:mb-0 mb-1 w-[145px]">
+          <div className="xl:mr-5 xl:mb-0 mb-1 w-[110px]">
             <p className="input-label" />
           </div>
 

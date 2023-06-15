@@ -1,6 +1,5 @@
 import { MedicalMeasureTypesEnum } from "(presentation)/(enum)/medicalMeasure/medicalMeasureEnums";
 import Button from "(presentation)/components/core/BaseComponents/Button";
-import clsx from "clsx";
 import { IMedicalMeasure } from "domain/core/entities/medicalMeasureEntity";
 import { useContext, useEffect, useState } from "react";
 import {
@@ -12,7 +11,7 @@ export default function VitalSignsList() {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { getMedicalMeasures } = actions;
-  const { data: patient } = state.patient;
+  const { data: subject } = state.subject;
   const { data, loading, error, successful } = state.medicalMeasures;
 
   const [medicalMeasures, setMedicalMeasures] = useState<IMedicalMeasure[]>([]);
@@ -36,9 +35,9 @@ export default function VitalSignsList() {
   };
 
   const onGetMedicalMeasures = () => {
-    if (patient?.patientId) {
+    if (subject?.subjectId) {
       getMedicalMeasures({
-        patientId: patient.patientId,
+        subjectId: subject.subjectId,
         sort: { field: "fechaCreacion", ascending: false },
       })(dispatch);
     }
@@ -139,7 +138,7 @@ export default function VitalSignsList() {
             {getTitleByMeasureType(medicalMeasure.medicalMeasureType.type)}
           </p>
           <p className="font-semibold text-md text-secondary">
-            {medicalMeasure.value}
+            {medicalMeasure.value.toFixed(2)}
             {getLetterByMeasureType(medicalMeasure.medicalMeasureType.type)}
           </p>
         </div>

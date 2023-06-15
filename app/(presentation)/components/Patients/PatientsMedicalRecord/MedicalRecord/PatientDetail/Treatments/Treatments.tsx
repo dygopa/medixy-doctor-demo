@@ -38,7 +38,7 @@ export default function Treatments({
               <button
                 type="button"
                 onClick={() => {
-                  setPopupSectionActive(3);
+                  setPopupSectionActive(5);
                   setIsOpen(true);
                 }}
                 className="hover:bg-dark hover:bg-opacity-10 px-2 py-1 rounded-md"

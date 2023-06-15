@@ -9,7 +9,7 @@ export default interface IMedicalMeasureRepository {
     skip?: number | string | null; 
     sort?: any; 
     limit?: number | null; 
-    patientId?: number | null;
+    subjectId?: number | null;
   }): Promise<IGetMedicalMeasuresResponse | MedicalMeasureFailure>;
   createMedicalMeasure(medicalMeasure: IMedicalMeasure): Promise<ICreateMedicalMeasureResponse | MedicalMeasureFailure>;
 }
@@ -19,7 +19,7 @@ export class MedicalMeasureRepository implements IMedicalMeasureRepository {
     skip?: number | string | null; 
     sort?: any; 
     limit?: number | null; 
-    patientId?: number | null;
+    subjectId?: number | null;
   }): Promise<IGetMedicalMeasuresResponse | MedicalMeasureFailure> {
     try {
       let query = supabase.from("SignosVitales").select(`
@@ -34,8 +34,8 @@ export class MedicalMeasureRepository implements IMedicalMeasureRepository {
           });
       }
 
-      if (obj.patientId) {
-        query = query.eq("pacienteId", obj.patientId);
+      if (obj.subjectId) {
+        query = query.eq("sujetoId", obj.subjectId);
       }
 
       if (obj.skip && typeof obj.skip === "number" && obj.limit) {
@@ -52,15 +52,15 @@ export class MedicalMeasureRepository implements IMedicalMeasureRepository {
 
       if (res.data && res.data.length > 0) {
           await Promise.all(res.data.map(async (data: any) => {
-              const medicalConsultyMap: IMedicalMeasure = medicalMeasureSupabaseToMap(data);
+              const medicalMeasureMap: IMedicalMeasure = medicalMeasureSupabaseToMap(data);
 
               if (data?.TiposSignosVitales) {
                 const medicalMeasureType: IMedicalMeasureType = medicalMeasureTypeSupabaseToMap(data.TiposSignosVitales);
       
-                if (medicalMeasureType.id >= 0) medicalConsultyMap.medicalMeasureType = medicalMeasureType;
+                if (medicalMeasureType.id >= 0) medicalMeasureMap.medicalMeasureType = medicalMeasureType;
               }
 
-              medicalMeasures.push(medicalConsultyMap);
+              medicalMeasures.push(medicalMeasureMap);
           }));
       }
 

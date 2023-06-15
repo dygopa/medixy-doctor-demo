@@ -5,12 +5,11 @@ import {
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import { useRouter } from "next/navigation";
-import { useContext, useState } from "react";
+import { Dispatch, SetStateAction, useContext, useState } from "react";
 import {
   IMedicalRecordCreateContext,
   MedicalRecordCreateContext,
 } from "../context/MedicalRecordCreateContext";
-import UserMainPopup from "./UserMainPopup/UserMainPopup";
 import {
   handleConsultationDateErrors,
   handleConsultationReasonErrors,
@@ -23,16 +22,23 @@ import {
   handleWeightErrors,
 } from "./Validators/Validators";
 
-export default function Navigator() {
+interface INavigatorProps {
+  setIsOpen: Dispatch<SetStateAction<boolean>>;
+  setPopupSectionActive: Dispatch<SetStateAction<number>>;
+}
+
+export default function Navigator({
+  setIsOpen,
+  setPopupSectionActive,
+}: INavigatorProps) {
   const { state } = useContext<IMedicalRecordCreateContext>(
     MedicalRecordCreateContext
   );
-  const { data: patient } = state.patient;
+  const { data: subject } = state.subject;
 
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
-  const [isOpen, setIsOpen] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
 
   const validateCurrentConsultation = (values: any) => {
@@ -40,22 +46,17 @@ export default function Navigator() {
       consultationDate: false,
       consultationReason: false,
       diagnose: false,
-      size: false,
-      weight: false,
-      temperature: false,
-      respiratoryFrequency: false,
-      oximetry: false,
-      muscleMass: false,
-      glicemy: false,
-      count: 0,
+      currentConsultationCount: 0,
     };
 
     errors = {
       ...errors,
       consultationDate: handleConsultationDateErrors(values.consultationDate),
-      count: handleConsultationDateErrors(values.consultationDate)
-        ? errors.count + 1
-        : errors.count,
+      currentConsultationCount: handleConsultationDateErrors(
+        values.consultationDate
+      )
+        ? errors.currentConsultationCount + 1
+        : errors.currentConsultationCount,
     };
 
     errors = {
@@ -63,31 +64,59 @@ export default function Navigator() {
       consultationReason: handleConsultationReasonErrors(
         values.consultationReason
       ),
-      count: handleConsultationReasonErrors(values.consultationReason)
-        ? errors.count + 1
-        : errors.count,
+      currentConsultationCount: handleConsultationReasonErrors(
+        values.consultationReason
+      )
+        ? errors.currentConsultationCount + 1
+        : errors.currentConsultationCount,
+    };
+
+    errors = {
+      ...errors,
+      diagnose: values.diagnose.length === 0 ? true : false,
+      currentConsultationCount:
+        values.diagnose.length === 0
+          ? errors.currentConsultationCount + 1
+          : errors.currentConsultationCount,
+    };
+
+    return errors;
+  };
+
+  const validateVitalSigns = (values: any) => {
+    let errors = {
+      size: false,
+      weight: false,
+      temperature: false,
+      respiratoryFrequency: false,
+      oximetry: false,
+      muscleMass: false,
+      glicemy: false,
+      vitalSignsCount: 0,
     };
 
     errors = {
       ...errors,
       size: handleSizeErrors(values.size),
-      count: handleSizeErrors(values.size) ? errors.count + 1 : errors.count,
+      vitalSignsCount: handleSizeErrors(values.size)
+        ? errors.vitalSignsCount + 1
+        : errors.vitalSignsCount,
     };
 
     errors = {
       ...errors,
       weight: handleWeightErrors(values.weight),
-      count: handleWeightErrors(values.weight)
-        ? errors.count + 1
-        : errors.count,
+      vitalSignsCount: handleWeightErrors(values.weight)
+        ? errors.vitalSignsCount + 1
+        : errors.vitalSignsCount,
     };
 
     errors = {
       ...errors,
       temperature: handleTemperatureErrors(values.temperature),
-      count: handleTemperatureErrors(values.temperature)
-        ? errors.count + 1
-        : errors.count,
+      vitalSignsCount: handleTemperatureErrors(values.temperature)
+        ? errors.vitalSignsCount + 1
+        : errors.vitalSignsCount,
     };
 
     errors = {
@@ -95,39 +124,35 @@ export default function Navigator() {
       respiratoryFrequency: handleRespiratoryFrequencyErrors(
         values.respiratoryFrequency
       ),
-      count: handleRespiratoryFrequencyErrors(values.respiratoryFrequency)
-        ? errors.count + 1
-        : errors.count,
+      vitalSignsCount: handleRespiratoryFrequencyErrors(
+        values.respiratoryFrequency
+      )
+        ? errors.vitalSignsCount + 1
+        : errors.vitalSignsCount,
     };
 
     errors = {
       ...errors,
       oximetry: handleOximetryErrors(values.oximetry),
-      count: handleOximetryErrors(values.oximetry)
-        ? errors.count + 1
-        : errors.count,
+      vitalSignsCount: handleOximetryErrors(values.oximetry)
+        ? errors.vitalSignsCount + 1
+        : errors.vitalSignsCount,
     };
 
     errors = {
       ...errors,
       muscleMass: handleMuscleMassErrors(values.muscleMass),
-      count: handleMuscleMassErrors(values.muscleMass)
-        ? errors.count + 1
-        : errors.count,
+      vitalSignsCount: handleMuscleMassErrors(values.muscleMass)
+        ? errors.vitalSignsCount + 1
+        : errors.vitalSignsCount,
     };
 
     errors = {
       ...errors,
       glicemy: handleGlicemyErrors(values.glicemy),
-      count: handleGlicemyErrors(values.glicemy)
-        ? errors.count + 1
-        : errors.count,
-    };
-
-    errors = {
-      ...errors,
-      diagnose: values.diagnose.length === 0 ? true : false,
-      count: values.diagnose.length === 0 ? errors.count + 1 : errors.count,
+      vitalSignsCount: handleGlicemyErrors(values.glicemy)
+        ? errors.vitalSignsCount + 1
+        : errors.vitalSignsCount,
     };
 
     return errors;
@@ -135,10 +160,14 @@ export default function Navigator() {
 
   const validateForm = (values: any) => {
     let currentConsultationErrors = {};
+    let vitalSignsErrors = {};
 
-    currentConsultationErrors = validateCurrentConsultation(values);
+    currentConsultationErrors = validateCurrentConsultation(
+      values.currentConsultation
+    );
+    vitalSignsErrors = validateVitalSigns(values.vitalSigns);
 
-    return { currentConsultationErrors };
+    return { currentConsultationErrors, vitalSignsErrors };
   };
 
   const setValuesFromLocalStorage = () => {
@@ -178,13 +207,12 @@ export default function Navigator() {
 
     const valuesStorage = setValuesFromLocalStorage();
 
-    const { currentConsultationErrors }: any = validateForm(
-      valuesStorage.currentConsultation
-    );
+    const { currentConsultationErrors, vitalSignsErrors }: any =
+      validateForm(valuesStorage);
 
     let queryErrors = "";
 
-    if (currentConsultationErrors.count > 0) {
+    if (currentConsultationErrors.currentConsultationCount > 0) {
       queryErrors = queryErrors + `currentConsultationExpanded=true&`;
 
       Object.entries(currentConsultationErrors).map(([key, val]) => {
@@ -192,10 +220,18 @@ export default function Navigator() {
       });
     }
 
+    if (vitalSignsErrors.vitalSignsCount > 0) {
+      queryErrors = queryErrors + `vitalSignsExpanded=true&`;
+
+      Object.entries(vitalSignsErrors).map(([key, val]) => {
+        if (val) queryErrors = queryErrors + `${key}=${val}&`;
+      });
+    }
+
     if (queryErrors.length > 0) {
       router.push(
         PatientsRoutesEnum.PatientsView +
-          patient?.patientId +
+          subject?.subjectId +
           PatientsMedicalRecordRoutesEnum.MedicalRecord +
           PatientsMedicalRecordRoutesEnum.MedicalRecordCreate +
           `?${queryErrors}`
@@ -213,7 +249,7 @@ export default function Navigator() {
 
     router.push(
       PatientsRoutesEnum.PatientsView +
-        patient?.patientId +
+        subject?.subjectId +
         PatientsMedicalRecordRoutesEnum.MedicalRecord +
         PatientsMedicalRecordRoutesEnum.MedicalRecordCreate +
         PatientsMedicalRecordRoutesEnum.MedicalRecordCreateSummary
@@ -235,7 +271,10 @@ export default function Navigator() {
           <Button
             variant="outline-primary"
             disabled={isLoading}
-            onClick={() => setIsOpen(true)}
+            onClick={() => {
+              setPopupSectionActive(0);
+              setIsOpen(true);
+            }}
             className="mr-4  px-5"
           >
             <i className="fa-solid fa-user text-xl" />
@@ -256,8 +295,6 @@ export default function Navigator() {
         show={showAlertError}
         description="Debes completar la información requerida para generar un resumen de la consulta"
       />
-
-      <UserMainPopup isOpen={isOpen} setIsOpen={setIsOpen} />
     </>
   );
 }

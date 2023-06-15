@@ -9,21 +9,21 @@ import Navigator from "./Navigator/Navigator";
 import PatientDetails from "./PatientDetail/PatientDetail";
 
 interface IMedicalRecordIndexProps {
-  patientId: number;
+  subjectId: number;
 }
 
 export default function MedicalRecordIndex({
-  patientId,
+  subjectId,
 }: IMedicalRecordIndexProps) {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordContext>(MedicalRecordContext);
-  const { getPatientById } = actions;
-  const { data: patient, loading, successful, error } = state.patient;
+  const { getSubjectById } = actions;
+  const { data: subject, loading, successful, error } = state.subject;
 
   useEffect(() => {
     let isCleanup = true;
 
-    if (isCleanup) getPatientById(patientId)(dispatch);
+    if (isCleanup) getSubjectById(subjectId)(dispatch);
 
     return () => {
       isCleanup = false;
@@ -53,7 +53,7 @@ export default function MedicalRecordIndex({
       </div>
     );
 
-  if (!patient?.patientId && successful) {
+  if (!subject?.subjectId && successful) {
     return (
       <div className="w-full flex flex-col justify-center items-center py-8">
         <p className="font-bold text-slate-900 text-lg">
@@ -66,7 +66,7 @@ export default function MedicalRecordIndex({
     );
   }
 
-  if (!patient?.patientId && !successful)
+  if (!subject?.subjectId && !successful)
     return <div className="mt-5" style={{ height: "80vh" }} />;
 
   return (
@@ -75,7 +75,7 @@ export default function MedicalRecordIndex({
 
       <div className="mt-10">
         <div className="mt-4">
-          <PatientDetails patientId={patientId} />
+          <PatientDetails subjectId={subjectId} />
         </div>
       </div>
     </div>

@@ -18,7 +18,7 @@ export interface ITreatmentMedicine {
 export interface ITreatment {
     id: number;
     status: number;
-    patientId: number;
+    subjectId: number;
     medicalConsultyId: number;
     treatmentMedicines: ITreatmentMedicine[];
 }

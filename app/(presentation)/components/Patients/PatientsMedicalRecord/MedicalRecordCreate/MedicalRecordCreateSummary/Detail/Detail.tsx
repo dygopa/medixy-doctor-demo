@@ -21,7 +21,7 @@ export default function Detail() {
   const { state } = useContext<IMedicalRecordCreateSummaryContext>(
     MedicalRecordCreateSummaryContext
   );
-  const { data: patient } = state.patient;
+  const { data: subject } = state.subject;
 
   const router = useRouter();
 
@@ -33,7 +33,7 @@ export default function Detail() {
     if (!valuesStorage) {
       router.push(
         PatientsRoutesEnum.PatientsView +
-          patient?.patientId +
+          subject?.subjectId +
           PatientsMedicalRecordRoutesEnum.MedicalRecord +
           PatientsMedicalRecordRoutesEnum.MedicalRecordCreate
       );
@@ -45,7 +45,7 @@ export default function Detail() {
     if (!valuesJSON.isValid) {
       router.push(
         PatientsRoutesEnum.PatientsView +
-          patient?.patientId +
+          subject?.subjectId +
           PatientsMedicalRecordRoutesEnum.MedicalRecord +
           PatientsMedicalRecordRoutesEnum.MedicalRecordCreate
       );

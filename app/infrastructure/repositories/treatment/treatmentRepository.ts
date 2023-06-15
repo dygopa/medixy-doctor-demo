@@ -9,7 +9,7 @@ export default interface ITreatmentRepository {
     skip?: number | string | null; 
     sort?: any; 
     limit?: number | null; 
-    patientId?: number | null;
+    subjectId?: number | null;
   }): Promise<IGetTreatmentsResponse | TreatmentFailure>;
   createTreatment(treatment: ITreatment): Promise<ICreateTreatmentResponse | TreatmentFailure>;
 }
@@ -19,7 +19,7 @@ export class TreatmentRepository implements ITreatmentRepository {
     skip?: number | string | null; 
     sort?: any; 
     limit?: number | null; 
-    patientId?: number | null;
+    subjectId?: number | null;
   }): Promise<IGetTreatmentsResponse | TreatmentFailure> {
     try {
       let query = supabase.from("Tratamientos").select(`
@@ -34,8 +34,8 @@ export class TreatmentRepository implements ITreatmentRepository {
         });
       }
 
-      if (obj.patientId) {
-        query = query.eq("pacienteId", obj.patientId);
+      if (obj.subjectId) {
+        query = query.eq("sujetoId", obj.subjectId);
       }
 
       if (obj.skip && typeof obj.skip === "number" && obj.limit) {

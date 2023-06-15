@@ -8,16 +8,17 @@ import {
 import MedicalConsulty from "./MedicalConsulty";
 
 interface IHistoryTableProps {
+  subjectId: number;
   setMedicalConsulty: Dispatch<SetStateAction<IMedicalConsulty | null>>;
 }
 
 export default function HistoryTable({
+  subjectId,
   setMedicalConsulty,
 }: IHistoryTableProps) {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { getMedicalConsulties } = actions;
-  const { data: patient } = state.patient;
   const {
     data: medicalConsulties,
     loading,
@@ -26,9 +27,9 @@ export default function HistoryTable({
   } = state.medicalConsulties;
 
   const onGetMedicalConsultiesDispatch = () => {
-    if (patient?.patientId) {
+    if (subjectId) {
       getMedicalConsulties({
-        patientId: patient.patientId,
+        subjectId: subjectId,
         sort: { field: "fechaConsulta", ascending: false },
       })(dispatch);
     }

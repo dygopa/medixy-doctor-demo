@@ -6,7 +6,6 @@ import { useEffect, useState } from "react";
 import BasicDetails from "./BasicDetails/BasicDetails";
 import Diagnosis from "./Diagnosis/Diagnosis";
 import PhysicalExploration from "./PhysicalExploration/PhysicalExploration";
-import VitalSigns from "./VitalSigns/VitalSigns";
 
 interface ICurrentConsultationProps {
   width: number;
@@ -17,24 +16,6 @@ type valuesTypes = {
   referredBy: string;
   consultationReason: string;
   sufferingDate: string;
-  generalInspection: string;
-  respiratorySystem: string;
-  digestiveSystem: string;
-  cardiovascularSystem: string;
-  reproductiveSystem: string;
-  urinarySystem: string;
-  ophthalmologicalSystem: string;
-  locomotorSystem: string;
-  earInspection: string;
-  neurologicalInspection: string;
-  skinInspection: string;
-  size: string;
-  weight: string;
-  temperature: string;
-  respiratoryFrequency: string;
-  oximetry: string;
-  muscleMass: string;
-  glicemy: string;
   diagnose: ICIE10[];
   observations: string;
 };
@@ -47,24 +28,6 @@ export default function CurrentConsultation({
     referredBy: "",
     consultationReason: "",
     sufferingDate: "",
-    generalInspection: "",
-    respiratorySystem: "",
-    digestiveSystem: "",
-    cardiovascularSystem: "",
-    reproductiveSystem: "",
-    urinarySystem: "",
-    ophthalmologicalSystem: "",
-    locomotorSystem: "",
-    earInspection: "",
-    neurologicalInspection: "",
-    skinInspection: "",
-    size: "",
-    weight: "",
-    temperature: "",
-    respiratoryFrequency: "",
-    oximetry: "",
-    muscleMass: "",
-    glicemy: "",
     diagnose: [],
     observations: "",
   });
@@ -72,13 +35,6 @@ export default function CurrentConsultation({
   const [errors, setErrors] = useState({
     consultationDate: "",
     consultationReason: "",
-    size: "",
-    weight: "",
-    temperature: "",
-    respiratoryFrequency: "",
-    oximetry: "",
-    muscleMass: "",
-    glicemy: "",
   });
 
   const router = useRouter();
@@ -88,7 +44,7 @@ export default function CurrentConsultation({
   const view = params.get("view");
   const currentConsultationExpanded = params.get("currentConsultationExpanded");
 
-  const [showBody, setShowBody] = useState(true);
+  const [showBody, setShowBody] = useState(false);
   const [initialRender, setInitialRender] = useState(true);
 
   const saveValuesInLocalStorage = () => {
@@ -148,16 +104,15 @@ export default function CurrentConsultation({
   }, []);
 
   useEffect(() => {
-    if (currentConsultationExpanded === "true") setShowBody(true);
-  }, [currentConsultationExpanded]);
-
-  useEffect(() => {
-    if (!view || view === "current-consultation") {
+    if (
+      view === "current-consultation" ||
+      currentConsultationExpanded === "true"
+    ) {
       setShowBody(true);
     } else {
       setShowBody(false);
     }
-  }, [view]);
+  }, [view, currentConsultationExpanded]);
 
   return (
     <div
@@ -203,20 +158,7 @@ export default function CurrentConsultation({
           </div>
 
           <div className="py-4">
-            <PhysicalExploration
-              values={values}
-              setValues={setValues}
-              width={width}
-            />
-          </div>
-
-          <div className="py-4">
-            <VitalSigns
-              values={values}
-              setValues={setValues}
-              errors={errors}
-              setErrors={setErrors}
-            />
+            <PhysicalExploration />
           </div>
 
           <div className="py-4">

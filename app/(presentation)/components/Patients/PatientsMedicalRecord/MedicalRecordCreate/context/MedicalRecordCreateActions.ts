@@ -1,39 +1,173 @@
-import { IPatient } from "domain/core/entities/subjectEntity";
-import { IGetCIE10ListResponse } from "domain/core/response/cie10Response";
-import CIE10UseCase from "domain/useCases/cie10/cie10UseCases";
-import PatientsUseCase from "domain/useCases/subject/subjectUseCase";
+import { ISubject } from "domain/core/entities/subjectEntity";
+import SubjectsUseCase from "domain/useCases/subject/subjectUseCase";
 import { Dispatch } from "react";
+import {  MedicalRecordTypesNumberEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
+import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
+import { IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
+import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
+import { IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
+import { IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
+import FederalEntitiesUseCase from "domain/useCases/federalEntity/federalEntityUseCase";
+import MedicalConsultyUseCase from "domain/useCases/medicalConsulty/medicalConsultyUseCases";
+import MedicalMeasureUseCase from "domain/useCases/medicalMeasure/medicalMeasureUseCases";
+import MedicalRecordUseCase from "domain/useCases/medicalRecord/medicalRecordUseCases";
+import TreatmentUseCase from "domain/useCases/treatments/treatmentsUseCase";
+import { IGetSpecialtiesResponse } from "domain/core/response/specialtiesResponse";
+import SpecialtyUseCase from "domain/useCases/specialty/specialtyUseCases";
 
 export interface IMedicalRecordCreateActions {
-    getPatientById: (patientId: number) => (dispatch: Dispatch<any>) => {};
-    getCIE10: () => (dispatch: Dispatch<any>) => {};
+    getSubjectById: (subjectId: number) => (dispatch: Dispatch<any>) => {};
+    getSpecialties: () => (dispatch: Dispatch<any>) => {};
+    getMedicalMeasures: (obj: { subjectId: number; sort?: Object | null; }) => (dispatch: Dispatch<any>) => {};
+    getMedicalConsulties: (obj: { subjectId: number, sort: Object; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
+    getTreatments: (obj: { subjectId: number, sort?: Object; limit?: number | null }) => (dispatch: Dispatch<any>) => {};
+    getAllergies: (obj: { subjectId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
+    getMedicalRecords: (obj: { subjectId: number; medicalRecordCategoryId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
+    getFederalEntities: () => (dispatch: Dispatch<any>) => {};
+    editSubject: (subject: ISubject) => (dispatch: Dispatch<any>) => {};
 }
 
-const getPatientById = (patientId: number) => async (dispatch: Dispatch<any>) => {
+const getSubjectById = (subjectId: number) => async (dispatch: Dispatch<any>) => {
     try {
-        dispatch({ type: "GET_PATIENT_LOADING" });
+        dispatch({ type: "GET_SUBJECT_LOADING" });
 
-        const res: IPatient = await new PatientsUseCase().getPatientById(patientId);
+        const res: ISubject = await new SubjectsUseCase().getSubjectById(subjectId);
 
-        dispatch({ type: "GET_PATIENT_SUCCESSFUL", payload: { data: res } });
+        dispatch({ type: "GET_SUBJECT_SUCCESSFUL", payload: { data: res } });
     } catch (error) {
-        dispatch({ type: "GET_PATIENT_ERROR", payload: { error: error } });
+        dispatch({ type: "GET_SUBJECT_ERROR", payload: { error: error } });
     }
 }
 
-const getCIE10 = () => async (dispatch: Dispatch<any>) => {
+const getSpecialties = () => async (dispatch: Dispatch<any>) => {
+  try {
+      dispatch({ type: "GET_SPECIALTIES_LOADING" });
+
+      const res: IGetSpecialtiesResponse = await new SpecialtyUseCase().getSpecialties({});
+
+      dispatch({ type: "GET_SPECIALTIES_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+      dispatch({ type: "GET_SPECIALTIES_ERROR", payload: { error: error } });
+  }
+}
+
+const getMedicalMeasures = (obj: { subjectId: number; sort?: Object | null; }) => async (dispatch: Dispatch<any>) => {
     try {
-        dispatch({ type: "GET_CIE10_LOADING" });
+        dispatch({ type: "GET_MEDICAL_MEASURES_LOADING" });
+        
+        const res: IGetMedicalMeasuresResponse = await new MedicalMeasureUseCase().getMedicalMeasures({
+          subjectId: obj.subjectId,
+          sort: obj.sort,
+        });
+    
+        dispatch({ type: "GET_MEDICAL_MEASURES_SUCCESSFUL", payload: { data: res } });
+      } catch (error) {
+        dispatch({ type: "GET_MEDICAL_MEASURES_ERROR", payload: { error: error } });
+      }
+}
 
-        const res: IGetCIE10ListResponse = await new CIE10UseCase().getCIE10();
+const getMedicalConsulties = (obj: { subjectId: number; sort?: Object | null; limit?: number | null; }) => async (dispatch: Dispatch<any>) => {
+    try {
+        dispatch({ type: "GET_MEDICAL_CONSULTIES_LOADING" });
+        
+        const res: IGetMedicalConsultiesResponse = await new MedicalConsultyUseCase().getMedicalConsulties({
+          limit: obj.limit,
+          subjectId: obj.subjectId,
+          sort: obj.sort,
+        });
+    
+        dispatch({ type: "GET_MEDICAL_CONSULTIES_SUCCESSFUL", payload: { data: res } });
+      } catch (error) {
+        dispatch({ type: "GET_MEDICAL_CONSULTIES_ERROR", payload: { error: error } });
+      }
+}
 
-        dispatch({ type: "GET_CIE10_SUCCESSFUL", payload: { data: res } });
+const getTreatments = (obj: { subjectId: number; limit?: number | null; }) => async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch({ type: "GET_TREATMENTS_LOADING"});
+
+      const sort: Object = {
+        field: "estado",
+        ascending: true,
+      }
+
+      const res: IGetTreatmentsResponse = await new TreatmentUseCase().getTreatments({
+        limit: obj.limit,
+        subjectId: obj.subjectId,
+        sort: sort,
+      });
+  
+      dispatch({ type: "GET_TREATMENTS_SUCCESSFUL", payload: { data: res } });
     } catch (error) {
-        dispatch({ type: "GET_CIE10_ERROR", payload: { error: error } });
+      dispatch({ type: "GET_TREATMENTS_ERROR", payload: { error: error } });
     }
+}
+
+const getAllergies = (obj: { subjectId: number; limit?: number | null; }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_ALLERGIES_LOADING"});
+
+    const res: IGetMedicalRecordsResponse = await new MedicalRecordUseCase().getMedicalRecords({
+      limit: obj.limit,
+      subjectId: obj.subjectId,
+      medicalRecordType: MedicalRecordTypesNumberEnum.ALLERGIES,
+    });
+
+    dispatch({ type: "GET_ALLERGIES_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "GET_ALLERGIES_ERROR", payload: { error: error } });
+  }
+}
+
+const getMedicalRecords = (obj: { subjectId: number; medicalRecordCategoryId: number; limit?: number | null; }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_MEDICAL_RECORDS_LOADING"});
+
+    const res: IGetMedicalRecordsResponse = await new MedicalRecordUseCase().getMedicalRecords({
+      limit: obj.limit,
+      subjectId: obj.subjectId,
+      medicalRecordCategory: obj.medicalRecordCategoryId,
+    });
+
+    dispatch({ type: "GET_MEDICAL_RECORDS_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "GET_MEDICAL_RECORDS_ERROR", payload: { error: error } });
+  }
+}
+
+const getFederalEntities = () => async (dispatch: Dispatch<any>) => {
+  try {
+      dispatch({ type: "GET_FEDERAL_ENTITIES_LOADING" });
+
+      const res: Array<IFederalEntity> = await new FederalEntitiesUseCase().getFederalEntities();
+
+      dispatch({ type: "GET_FEDERAL_ENTITIES_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+      console.log("Error calling action", error)
+      dispatch({ type: "GET_FEDERAL_ENTITIES_ERROR", payload: { error: error } });
+  }
+}
+
+const editSubject = (subject: ISubject) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "EDIT_SUBJECT_LOADING" });
+    
+    const res: boolean = await new SubjectsUseCase().editSubject(subject);
+
+    dispatch({ type: "EDIT_SUBJECT_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "EDIT_SUBJECT_ERROR", payload: { error: error } });
+  }
 }
 
 export const actions: IMedicalRecordCreateActions = {
-    getPatientById,
-    getCIE10,
+    getSubjectById,
+    getSpecialties,
+    getMedicalMeasures,
+    getMedicalConsulties,
+    getTreatments,
+    getAllergies,
+    getMedicalRecords,
+    getFederalEntities,
+    editSubject,
 }

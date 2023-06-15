@@ -1,3 +1,4 @@
+import { APP_VERSION } from "(presentation)/(config)/versions/versions";
 import { useEffect } from "react";
 
 export default function VersionHandler({
@@ -18,7 +19,7 @@ export default function VersionHandler({
 
     if (!appConf) {
       const config = {
-        version: process.env.NEXT_PUBLIC_APP_VERSION,
+        version: APP_VERSION,
       };
 
       handleDiferrentVersion();
@@ -29,13 +30,10 @@ export default function VersionHandler({
 
     const appConfJSON = JSON.parse(appConf);
 
-    if (
-      appConfJSON?.version &&
-      appConfJSON.version !== process.env.NEXT_PUBLIC_APP_VERSION
-    ) {
+    if (appConfJSON?.version && appConfJSON.version !== APP_VERSION) {
       handleDiferrentVersion();
 
-      appConfJSON.version = process.env.NEXT_PUBLIC_APP_VERSION;
+      appConfJSON.version = APP_VERSION;
 
       localStorage.setItem(
         "prosit.storage.app-config",

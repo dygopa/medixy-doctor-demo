@@ -1,16 +1,25 @@
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
 import Image from "next/image";
-import { useContext } from "react";
+import { Dispatch, Fragment, SetStateAction, useContext } from "react";
 import { FiUser } from "react-icons/fi";
 import {
   IMedicalRecordContext,
   MedicalRecordContext,
 } from "../../context/MedicalRecordContext";
+import { Menu, Transition } from "@headlessui/react";
+import { useRouter } from "next/navigation";
+import {
+  PatientsMedicalRecordRoutesEnum,
+  PatientsRoutesEnum,
+} from "(presentation)/(routes)/patientsRoutes";
+import { getFirstLetter } from "(presentation)/(helper)/strings/strings";
 
 export default function AboutPatient() {
   const { state } = useContext<IMedicalRecordContext>(MedicalRecordContext);
-  const { data: patient } = state.patient;
+  const { data: subject } = state.subject;
+
+  const router = useRouter();
 
   return (
     <div
@@ -23,16 +32,20 @@ export default function AboutPatient() {
         <div className="lg:flex block">
           <div className="text-center lg:border-r border-grey">
             <div className="flex w-full justify-center mb-4 mr-24">
-              {patient && patient?.pictureUrl.length > 0 ? (
+              {subject && subject?.pictureUrl.length > 0 ? (
                 <Image
                   className="object-cover rounded-full"
-                  src={patient.pictureUrl}
+                  src={subject.pictureUrl}
                   alt=""
                   width={100}
                   height={100}
                 />
               ) : (
-                <FiUser size={60} />
+                <div className="w-[60px] h-[60px] bg-primary rounded-full flex justify-center items-center">
+                  <span className="text-white font-semibold text-2xl">
+                    {getFirstLetter(subject?.name ?? "").toUpperCase()}
+                  </span>
+                </div>
               )}
             </div>
 
@@ -46,14 +59,71 @@ export default function AboutPatient() {
           </div>
 
           <div className="lg:pl-8 w-full overflow-y-hidden lg:mt-0 mt-8">
-            {/* <div className="w-full flex justify-end">
-              <button
-                type="button"
-                className="hover:bg-dark rounded-md hover:bg-opacity-10 py-1 px-1"
-              >
-                <Lucide icon="MoreVertical" />
-              </button>
-              </div> */}
+            <div className="w-full flex justify-end">
+              <Menu as="div" className="relative inline-block text-left">
+                <Menu.Button className="rounded-lg hover:bg-gray-100 p-1">
+                  <Lucide icon="MoreVertical" className="h-5" />
+                </Menu.Button>
+                <Transition
+                  as={Fragment}
+                  enter="transition ease-out duration-100"
+                  enterFrom="transform opacity-0 scale-95"
+                  enterTo="transform opacity-100 scale-100"
+                  leave="transition ease-in duration-75"
+                  leaveFrom="transform opacity-100 scale-100"
+                  leaveTo="transform opacity-0 scale-95"
+                >
+                  <Menu.Items className="absolute right-0 z-15 mt-1 w-40 origin-top-right rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5">
+                    <Menu.Item>
+                      {({ active }) => (
+                        <div>
+                          <button
+                            type="button"
+                            className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
+                            onClick={() => {
+                              router.push(
+                                PatientsRoutesEnum.PatientsView +
+                                  subject?.subjectId +
+                                  PatientsMedicalRecordRoutesEnum.MedicalRecord +
+                                  `?view_edit_subject=true`
+                              );
+                            }}
+                          >
+                            <Lucide icon="Pen" size={20} />
+                            Editar
+                          </button>
+                        </div>
+                      )}
+                    </Menu.Item>
+
+                    <Menu.Item>
+                      {({ active }) => (
+                        <div>
+                          <button
+                            type="button"
+                            className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
+                            onClick={() => {
+                              router.push(
+                                PatientsRoutesEnum.PatientsView +
+                                  subject?.subjectId +
+                                  PatientsMedicalRecordRoutesEnum.MedicalRecord +
+                                  `?view_companion=true`
+                              );
+                            }}
+                          >
+                            <div>
+                              <Lucide icon="Users" size={20} />
+                            </div>
+
+                            <div>Acompañante</div>
+                          </button>
+                        </div>
+                      )}
+                    </Menu.Item>
+                  </Menu.Items>
+                </Transition>
+              </Menu>
+            </div>
 
             <div className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
               <div>
@@ -62,7 +132,7 @@ export default function AboutPatient() {
                 </p>
 
                 <span className="font-medium text-[14px]">
-                  {patient?.name} {patient?.lastName}
+                  {subject?.name} {subject?.lastName}
                 </span>
               </div>
 
@@ -72,7 +142,7 @@ export default function AboutPatient() {
                 </p>
 
                 <span className="font-medium text-[14px]">
-                  {patient?.lastName}
+                  {subject?.lastName}
                 </span>
               </div>
 
@@ -82,8 +152,8 @@ export default function AboutPatient() {
                 </p>
 
                 <span className="font-medium text-[14px]">
-                  {patient && patient.motherLastName?.length > 0
-                    ? patient?.motherLastName
+                  {subject && subject.motherLastName?.length > 0
+                    ? subject?.motherLastName
                     : "No especificado"}
                 </span>
               </div>
@@ -94,13 +164,13 @@ export default function AboutPatient() {
                 </p>
 
                 <span className="font-medium text-[14px]">
-                  {patient?.age
-                    ? patient.age > 1
-                      ? `${patient.age} ${
-                          patient?.ageType === "years" ? "años" : "meses"
+                  {subject?.age
+                    ? subject.age > 1
+                      ? `${subject.age} ${
+                          subject?.ageType === "years" ? "años" : "meses"
                         }`
-                      : `${patient.age} ${
-                          patient?.ageType === "years" ? "año" : "mes"
+                      : `${subject.age} ${
+                          subject?.ageType === "years" ? "año" : "mes"
                         }`
                     : "No especificado"}{" "}
                 </span>
@@ -112,8 +182,8 @@ export default function AboutPatient() {
                 </p>
 
                 <span className="font-medium text-[14px]">
-                  {patient && patient.curp?.length > 0
-                    ? patient?.curp
+                  {subject && subject.curp?.length > 0
+                    ? subject?.curp
                     : "No especificado"}
                 </span>
               </div>
@@ -124,7 +194,7 @@ export default function AboutPatient() {
                 </p>
 
                 <span className="font-medium text-[14px]">
-                  {patient?.phoneNumber}
+                  {subject?.phoneNumber}
                 </span>
               </div>
 
@@ -134,8 +204,8 @@ export default function AboutPatient() {
                 </p>
 
                 <span className="font-medium text-[14px]">
-                  {patient && patient.email?.length > 0
-                    ? patient?.email
+                  {subject && subject.email?.length > 0
+                    ? subject?.email
                     : "No especificado"}
                 </span>
               </div>

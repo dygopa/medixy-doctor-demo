@@ -10,17 +10,19 @@ export default function Nav() {
 
   const getTopLineByView = (): string => {
     switch (view?.toLowerCase()) {
-      case "records":
+      case "vital-signs":
         return "top-0";
+      case "records":
+        return "top-16";
       case "current-consultation":
-        return "top-20";
+        return "top-32";
       case "orders":
-        return "top-48";
+        return "top-60";
       case "recipe":
-        return "top-72";
+        return "top-[350px]";
 
       default:
-        return "top-20";
+        return "top-0";
     }
   };
 
@@ -46,6 +48,14 @@ export default function Nav() {
       <div className="ml-8 w-full">
         <div className="py-1">
           <NavItem
+            text="Signos vítales"
+            href={`${pathname}?view=vital-signs`}
+            isActive={getNavIsActive("vital-signs")}
+          />
+        </div>
+
+        <div className="py-1">
+          <NavItem
             text="Antecedentes"
             href={`${pathname}?view=records`}
             isActive={getNavIsActive("records")}
@@ -60,7 +70,7 @@ export default function Nav() {
               {
                 text: "Exploración física",
               },
-              { text: "Signos vítales" },
+              { text: "Diagnósticos" },
             ]}
             isActive={getNavIsActive("current-consultation")}
           />
@@ -72,7 +82,7 @@ export default function Nav() {
             href={`${pathname}?view=orders`}
             subItems={[
               {
-                text: "Estudios y diagnósticos",
+                text: "Estudios",
               },
               { text: "Especialidad" },
             ]}

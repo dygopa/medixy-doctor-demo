@@ -1,48 +1,242 @@
-import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
-import { ICIE10 } from "domain/core/entities/cie10Entity";
-import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import PhysicalExplorationForm from "./PhysicalExplorationForm/PhysicalExplorationForm";
 
 type valuesTypes = {
-  consultationDate: string;
-  referredBy: string;
-  consultationReason: string;
-  sufferingDate: string;
-  generalInspection: string;
-  respiratorySystem: string;
-  digestiveSystem: string;
-  cardiovascularSystem: string;
-  reproductiveSystem: string;
-  urinarySystem: string;
-  ophthalmologicalSystem: string;
-  locomotorSystem: string;
-  earInspection: string;
-  neurologicalInspection: string;
-  skinInspection: string;
-  size: string;
-  weight: string;
-  temperature: string;
-  respiratoryFrequency: string;
-  oximetry: string;
-  muscleMass: string;
-  glicemy: string;
-  diagnose: ICIE10[];
-  observations: string;
+  abnormalAppearance: {
+    isChecked: boolean;
+    value: string;
+  };
+  disnea: {
+    isChecked: boolean;
+    value: string;
+  };
+  deformity: {
+    isChecked: boolean;
+    value: string;
+  };
+  amputation: {
+    isChecked: boolean;
+    value: string;
+  };
+  paralysis: {
+    isChecked: boolean;
+    value: string;
+  };
+  abnormalMovements: {
+    isChecked: boolean;
+    value: string;
+  };
+  normalGait: {
+    isChecked: boolean;
+    value: string;
+  };
+  mentalDisorder: {
+    isChecked: boolean;
+    value: string;
+  };
+  abnormality: {
+    isChecked: boolean;
+    value: string;
+    values: {
+      anatomicalStateEyes: {
+        isChecked: boolean;
+        value: string;
+      };
+      eyeVision: {
+        isChecked: boolean;
+        value: string;
+      };
+      hearingEars: {
+        isChecked: boolean;
+        value: string;
+      };
+      buccalPharynx: {
+        isChecked: boolean;
+        value: string;
+      };
+      neck: {
+        isChecked: boolean;
+        value: string;
+      };
+      chest: {
+        isChecked: boolean;
+        value: string;
+      };
+      spine: {
+        isChecked: boolean;
+        value: string;
+      };
+      abdomen: {
+        isChecked: boolean;
+        value: string;
+      };
+      extremities: {
+        isChecked: boolean;
+        value: string;
+      };
+    };
+  };
+  smokingPhysical: {
+    isChecked: boolean;
+    value: string;
+  };
 };
 
-interface IPhysicalExplorationProps {
-  values: valuesTypes;
-  setValues: Dispatch<SetStateAction<valuesTypes>>;
-  width: number;
-}
+export default function PhysicalExploration() {
+  const [values, setValues] = useState<valuesTypes>({
+    abnormalAppearance: {
+      isChecked: false,
+      value: "",
+    },
+    disnea: {
+      isChecked: false,
+      value: "",
+    },
+    deformity: {
+      isChecked: false,
+      value: "",
+    },
+    amputation: {
+      isChecked: false,
+      value: "",
+    },
+    paralysis: {
+      isChecked: false,
+      value: "",
+    },
+    abnormalMovements: {
+      isChecked: false,
+      value: "",
+    },
+    normalGait: {
+      isChecked: false,
+      value: "",
+    },
+    mentalDisorder: {
+      isChecked: false,
+      value: "",
+    },
+    abnormality: {
+      isChecked: false,
+      value: "",
+      values: {
+        anatomicalStateEyes: {
+          isChecked: false,
+          value: "",
+        },
+        eyeVision: {
+          isChecked: false,
+          value: "",
+        },
+        hearingEars: {
+          isChecked: false,
+          value: "",
+        },
+        buccalPharynx: {
+          isChecked: false,
+          value: "",
+        },
+        neck: {
+          isChecked: false,
+          value: "",
+        },
+        chest: {
+          isChecked: false,
+          value: "",
+        },
+        spine: {
+          isChecked: false,
+          value: "",
+        },
+        abdomen: {
+          isChecked: false,
+          value: "",
+        },
+        extremities: {
+          isChecked: false,
+          value: "",
+        },
+      },
+    },
+    smokingPhysical: {
+      isChecked: false,
+      value: "",
+    },
+  });
 
-export default function PhysicalExploration({
-  values,
-  setValues,
-  width,
-}: IPhysicalExplorationProps) {
+  const [errors, setErrors] = useState({
+    consultationDate: "",
+    consultationReason: "",
+  });
+
+  const router = useRouter();
+  const params = useSearchParams();
+  const pathname = usePathname();
+
+  const view = params.get("view");
+  const physicalExpanded = params.get("physicalExpanded");
+
   const [showBody, setShowBody] = useState(false);
+  const [initialRender, setInitialRender] = useState(true);
+
+  const saveValuesInLocalStorage = () => {
+    const valuesStorage = localStorage.getItem(
+      "prosit.storage.medical-record-create"
+    );
+
+    if (!valuesStorage) window.location.reload();
+
+    let valuesJSON = JSON.parse(valuesStorage ?? "");
+
+    let physical = valuesJSON.physical;
+    physical = values;
+
+    valuesJSON.physical = physical;
+
+    localStorage.setItem(
+      "prosit.storage.medical-record-create",
+      JSON.stringify(valuesJSON)
+    );
+  };
+
+  const setValuesFromLocalStorage = () => {
+    const valuesStorage = localStorage.getItem(
+      "prosit.storage.medical-record-create"
+    );
+
+    if (!valuesStorage) window.location.reload();
+
+    const valuesJSON = JSON.parse(valuesStorage ?? "");
+
+    setValues(valuesJSON.physical);
+  };
+
+  useEffect(() => {
+    if (!initialRender) saveValuesInLocalStorage();
+
+    setInitialRender(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values]);
+
+  useEffect(() => {
+    setValuesFromLocalStorage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (physicalExpanded === "true") setShowBody(true);
+  }, [physicalExpanded]);
+
+  useEffect(() => {
+    if (view === "physical") {
+      setShowBody(true);
+    } else {
+      setShowBody(false);
+    }
+  }, [view]);
 
   return (
     <div>
@@ -65,215 +259,7 @@ export default function PhysicalExploration({
       </button>
 
       <div className={clsx([showBody ? "block" : "hidden"])}>
-        <div className="flex items-center justify-between mb-4 w-full">
-          <div className="xl:flex items-center w-full">
-            <div className="mr-5 w-[200px]">
-              <p className="text-md">Inspección general</p>
-            </div>
-
-            <div className="w-full">
-              <FormInput
-                value={values.generalInspection}
-                name="generalInspection"
-                type="text"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }
-                className="h-[50px] w-full"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="xl:flex items-center justify-between mb-4">
-          <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[260px] w-full">
-              <p className="text-md">Aparato respiratorio</p>
-            </div>
-
-            <div className="w-full">
-              <FormInput
-                value={values.respiratorySystem}
-                name="respiratorySystem"
-                type="text"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }
-                className="h-[50px] xl:w-full w-full"
-              />
-            </div>
-          </div>
-
-          <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full xl:text-star">
-              <p className="text-md">Aparato digestivo</p>
-            </div>
-
-            <div className="w-full">
-              <FormInput
-                value={values.digestiveSystem}
-                name="digestiveSystem"
-                type="text"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }
-                className="h-[50px] xl:w-full w-full"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="xl:flex items-center justify-between mb-4">
-          <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[260px] w-full">
-              <p className="text-md">Aparato cardiovascular</p>
-            </div>
-
-            <div className="w-full">
-              <FormInput
-                value={values.cardiovascularSystem}
-                name="cardiovascularSystem"
-                type="text"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }
-                className="h-[50px] xl:w-full w-full"
-              />
-            </div>
-          </div>
-
-          <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full xl:text-star">
-              <p className="text-md">Aparato reproductor</p>
-            </div>
-
-            <div className="w-full">
-              <FormInput
-                value={values.reproductiveSystem}
-                name="reproductiveSystem"
-                type="text"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }
-                className="h-[50px] xl:w-full w-full"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="xl:flex items-center justify-between mb-4">
-          <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[260px] w-full">
-              <p className="text-md">Aparato urinario</p>
-            </div>
-
-            <div className="w-full">
-              <FormInput
-                value={values.urinarySystem}
-                name="urinarySystem"
-                type="text"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }
-                className="h-[50px] xl:w-full w-full"
-              />
-            </div>
-          </div>
-
-          <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full xl:text-star">
-              <p className="text-md">Inspección oftalmológica</p>
-            </div>
-
-            <div className="w-full">
-              <FormInput
-                value={values.ophthalmologicalSystem}
-                name="ophthalmologicalSystem"
-                type="text"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }
-                className="h-[50px] xl:w-full w-full"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="xl:flex items-center justify-between mb-4">
-          <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[260px] w-full">
-              <p className="text-md">Aparato locomotor</p>
-            </div>
-
-            <div className="w-full">
-              <FormInput
-                value={values.locomotorSystem}
-                name="locomotorSystem"
-                type="text"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }
-                className="h-[50px] xl:w-full w-full"
-              />
-            </div>
-          </div>
-
-          <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full xl:text-star">
-              <p className="text-md">Inspección oídos</p>
-            </div>
-
-            <div className="w-full">
-              <FormInput
-                value={values.earInspection}
-                name="earInspection"
-                type="text"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }
-                className="h-[50px] xl:w-full w-full"
-              />
-            </div>
-          </div>
-        </div>
-
-        <div className="xl:flex items-center justify-between mb-4">
-          <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[260px] w-full">
-              <p className="text-md">Aparato neurológica</p>
-            </div>
-
-            <div className="w-full">
-              <FormInput
-                value={values.neurologicalInspection}
-                name="neurologicalInspection"
-                type="text"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }
-                className="h-[50px] xl:w-full w-full"
-              />
-            </div>
-          </div>
-
-          <div className="xl:flex items-center xl:mb-3 mb-3">
-            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full xl:text-star">
-              <p className="text-md">Inspección piel</p>
-            </div>
-
-            <div className="w-full">
-              <FormInput
-                value={values.skinInspection}
-                name="skinInspection"
-                type="text"
-                onChange={(e: ChangeEvent<HTMLInputElement>) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }
-                className="h-[50px] xl:w-full w-full"
-              />
-            </div>
-          </div>
-        </div>
+        <PhysicalExplorationForm values={values} setValues={setValues} />
       </div>
     </div>
   );

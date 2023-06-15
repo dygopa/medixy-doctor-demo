@@ -5,14 +5,22 @@ import IMedicalRecordRepository, { MedicalRecordRepository } from "infrastructur
 export default class MedicalRecordUseCase {
     private _repository: IMedicalRecordRepository = new MedicalRecordRepository();
 
-    async getMedicalRecords(obj: { skip?: number | null; sort?: any; limit?: number | null; patientId?: number | null; medicalRecordType?: number | null }): Promise<IGetMedicalRecordsResponse> {
+    async getMedicalRecords(obj: { 
+        skip?: number | null; 
+        sort?: any; 
+        limit?: number | null; 
+        subjectId?: number | null; 
+        medicalRecordType?: number | null;
+        medicalRecordCategory?: number | null;
+    }): Promise<IGetMedicalRecordsResponse> {
         try {
             const response = await this._repository.getMedicalRecords({
                 skip: obj.skip,
                 sort: obj.sort,
                 limit: obj.limit,
-                patientId: obj.patientId,
-                medicalRecordType: obj.medicalRecordType
+                subjectId: obj.subjectId,
+                medicalRecordType: obj.medicalRecordType,
+                medicalRecordCategory: obj.medicalRecordCategory
             });
 
             if (response instanceof MedicalRecordFailure) throw response;

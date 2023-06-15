@@ -12,7 +12,7 @@ import {
 
 export default function Navigator() {
   const { state } = useContext<IMedicalRecordContext>(MedicalRecordContext);
-  const { data: patient } = state.patient;
+  const { data: subject } = state.subject;
 
   return (
     <div className="w-full">
@@ -35,7 +35,7 @@ export default function Navigator() {
           <Link
             href={
               PatientsRoutesEnum.PatientsView +
-              patient?.patientId +
+              subject?.subjectId +
               PatientsMedicalRecordRoutesEnum.MedicalRecord +
               PatientsMedicalRecordRoutesEnum.MedicalRecordCreate
             }

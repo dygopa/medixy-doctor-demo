@@ -33,7 +33,7 @@ export default function Orders() {
         {orders.map((order: IOrderMedical) => (
           <div key={order.orderId} className="mb-1">
             <h1 className="text-slate-900 font-bold text-lg">
-              {order.specialty ? order.specialty : order.medicalExam}
+              {order.specialty ? order.specialty : order.medicalProfile.name}
             </h1>
           </div>
         ))}

@@ -17,15 +17,13 @@ export default function VitalSigns() {
     if (!valuesStorage) return;
 
     const valuesJSON = JSON.parse(valuesStorage ?? "");
-    setWeight(valuesJSON.currentConsultation.weight);
-    setTemperature(valuesJSON.currentConsultation.temperature);
-    setRespiratoryFrequency(
-      valuesJSON.currentConsultation.respiratoryFrequency
-    );
-    setSize(valuesJSON.currentConsultation.size);
-    setOximetry(valuesJSON.currentConsultation.oximetry);
-    setMuscleMass(valuesJSON.currentConsultation.muscleMass);
-    setGlicemy(valuesJSON.currentConsultation.glicemy);
+    setWeight(valuesJSON.vitalSigns.weight);
+    setTemperature(valuesJSON.vitalSigns.temperature);
+    setRespiratoryFrequency(valuesJSON.vitalSigns.respiratoryFrequency);
+    setSize(valuesJSON.vitalSigns.size);
+    setOximetry(valuesJSON.vitalSigns.oximetry);
+    setMuscleMass(valuesJSON.vitalSigns.muscleMass);
+    setGlicemy(valuesJSON.vitalSigns.glicemy);
   };
 
   useEffect(() => {

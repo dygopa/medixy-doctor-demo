@@ -7,11 +7,11 @@ import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
 
 interface IHeaderProps {
-  patientId: number;
+  subjectId: number;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Header({ patientId, setIsOpen }: IHeaderProps) {
+export default function Header({ subjectId, setIsOpen }: IHeaderProps) {
   const router = useRouter();
 
   return (
@@ -27,7 +27,7 @@ export default function Header({ patientId, setIsOpen }: IHeaderProps) {
             setIsOpen(false);
             router.push(
               PatientsRoutesEnum.PatientsView +
-                patientId +
+                subjectId +
                 PatientsMedicalRecordRoutesEnum.MedicalRecord
             );
           }}

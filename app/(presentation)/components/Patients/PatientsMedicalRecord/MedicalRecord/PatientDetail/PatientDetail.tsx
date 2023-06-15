@@ -11,19 +11,34 @@ import Treatments from "./Treatments/Treatments";
 import VitalSigns from "./VitalSigns/VitalSigns";
 
 interface IPatientDetailsProps {
-  patientId: number;
+  subjectId: number;
 }
 
-export default function PatientDetails({ patientId }: IPatientDetailsProps) {
+export default function PatientDetails({ subjectId }: IPatientDetailsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [popupSectionActive, setPopupSectionActive] = useState(0);
 
   const searchParams = useSearchParams();
   const viewMedicalRecord = searchParams.get("view_medical_record");
+  const viewEditSubject = searchParams.get("view_edit_subject");
+  const viewCompanion = searchParams.get("view_companion");
 
   useEffect(() => {
-    if (viewMedicalRecord === "true") setPopupSectionActive(0);
-  }, [viewMedicalRecord]);
+    if (viewMedicalRecord === "true") {
+      setPopupSectionActive(2);
+      setIsOpen(true);
+    }
+
+    if (viewEditSubject === "true") {
+      setPopupSectionActive(0);
+      setIsOpen(true);
+    }
+
+    if (viewCompanion === "true") {
+      setPopupSectionActive(1);
+      setIsOpen(true);
+    }
+  }, [viewMedicalRecord, viewEditSubject, viewCompanion]);
 
   return (
     <>
@@ -72,15 +87,17 @@ export default function PatientDetails({ patientId }: IPatientDetailsProps) {
         </div>
       </div>
 
-      <MedicalRecordProvider>
-        <MainPopup
-          patientId={patientId}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          popupSectionActive={popupSectionActive}
-          setPopupSectionActive={setPopupSectionActive}
-        />
-      </MedicalRecordProvider>
+      {isOpen && (
+        <MedicalRecordProvider>
+          <MainPopup
+            subjectId={subjectId}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            popupSectionActive={popupSectionActive}
+            setPopupSectionActive={setPopupSectionActive}
+          />
+        </MedicalRecordProvider>
+      )}
     </>
   );
 }

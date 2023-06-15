@@ -1,32 +1,32 @@
 export const MedicalRecordCreateSummaryReducer = (state: any, action: any) => {
     switch (action.type) {  
-      case 'GET_PATIENT_LOADING':
+      case 'GET_SUBJECT_LOADING':
         return {
           ...state,
-          patient: {
-            ...state.patient,
+          subject: {
+            ...state.subject,
             data: null,
             loading: true,
             successful: false,
             error: null,
           },
         };
-      case 'GET_PATIENT_SUCCESSFUL':
+      case 'GET_SUBJECT_SUCCESSFUL':
         return {
           ...state,
-          patient: {
-            ...state.patient,
+          subject: {
+            ...state.subject,
             data: action.payload.data,
             loading: false,
             successful: true,
             error: null,
           },
         };
-      case 'GET_PATIENT_ERROR':
+      case 'GET_SUBJECT_ERROR':
         return {
           ...state,
-          patient: {
-            ...state.patient,
+          subject: {
+            ...state.subject,
             data: null,
             loading: false,
             successful: false,

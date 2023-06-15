@@ -1,10 +1,4 @@
-import React, {
-  Dispatch,
-  useReducer,
-  createContext,
-  useState,
-  SetStateAction,
-} from "react";
+import React, { Dispatch, useReducer, createContext } from "react";
 import {
   IMedicalRecordCreateActions,
   actions,
@@ -19,16 +13,6 @@ export interface IMedicalRecordCreateContext {
   state: IMedicalRecordCreateState;
   actions: IMedicalRecordCreateActions;
   dispatch: Dispatch<any>;
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<boolean>>;
-  setActive: Dispatch<SetStateAction<number>>;
-  active: number;
-  popupActive: boolean;
-  setPopupActive: Dispatch<SetStateAction<boolean>>;
-  popupSectionActive: number;
-  setPopupSectionActive: Dispatch<SetStateAction<number>>;
-  title: string;
-  setTitle: Dispatch<SetStateAction<string>>;
 }
 
 interface IProps {
@@ -44,28 +28,12 @@ const MedicalRecordCreateProvider = ({ children }: IProps) => {
     initialState
   );
 
-  const [isOpen, setIsOpen] = useState(false);
-  const [active, setActive] = useState(0);
-  const [popupActive, setPopupActive] = useState(false);
-  const [popupSectionActive, setPopupSectionActive] = useState(0);
-  const [title, setTitle] = useState("Historial de consultas");
-
   return (
     <MedicalRecordCreateContext.Provider
       value={{
         state,
         actions,
         dispatch,
-        isOpen,
-        setIsOpen,
-        setActive,
-        active,
-        popupActive,
-        setPopupActive,
-        popupSectionActive,
-        setPopupSectionActive,
-        title,
-        setTitle,
       }}
     >
       {children}

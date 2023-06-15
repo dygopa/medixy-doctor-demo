@@ -9,15 +9,15 @@ export default function AllergiesList() {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { getAllergies } = actions;
-  const { data: patient } = state.patient;
+  const { data: subject } = state.subject;
   const { data, loading, error, successful } = state.allergies;
 
   const [allergies, setAllergies] = useState<string[]>([]);
 
   const onGetAllergiesDispatch = () => {
-    if (patient?.patientId) {
+    if (subject?.subjectId) {
       getAllergies({
-        patientId: patient.patientId,
+        subjectId: subject.subjectId,
         limit: 10,
       })(dispatch);
     }

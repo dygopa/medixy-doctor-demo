@@ -37,8 +37,8 @@ export default function Order({
         <p className="text-md text-slate-900 font-normal">
           {order.orderType.toLowerCase() === "specialty"
             ? order.specialty
-            : order.medicalExam.length > 0
-            ? order.medicalExam
+            : order.medicalProfile.name.length > 0
+            ? order.medicalProfile.name
             : order.indications}
         </p>
       </div>

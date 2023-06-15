@@ -48,7 +48,7 @@ export default function RecordsFamily({
       >
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Diabéticos en la familia</p>
             </div>
 
@@ -78,7 +78,14 @@ export default function RecordsFamily({
                 <div className="w-full">
                   <AutocompleteInput
                     disabled={!values.diabetesFamily.isChecked}
-                    items={["Padre", "Madre", "Hermano", "Hermana", "Abuelo", "Abuela"]}
+                    items={[
+                      "Padre",
+                      "Madre",
+                      "Hermano",
+                      "Hermana",
+                      "Abuelo",
+                      "Abuela",
+                    ]}
                     itemsAdded={values.diabetesFamily.values}
                     placeholder="Padre, Madre, Hermanos, Abuelos (ENTER para agregar)"
                     className="h-[50px] w-full"
@@ -88,8 +95,7 @@ export default function RecordsFamily({
                         item.length > 0 &&
                         values.diabetesFamily.values.indexOf(item) < 0
                       ) {
-                        const valuesAllergies =
-                          values.diabetesFamily.values;
+                        const valuesAllergies = values.diabetesFamily.values;
                         valuesAllergies.push(item);
 
                         setValues({
@@ -107,8 +113,7 @@ export default function RecordsFamily({
                         item.length > 0 &&
                         values.diabetesFamily.values.indexOf(item) < 0
                       ) {
-                        const valuesAllergies =
-                          values.diabetesFamily.values;
+                        const valuesAllergies = values.diabetesFamily.values;
                         valuesAllergies.push(item);
 
                         setValues({
@@ -137,11 +142,10 @@ export default function RecordsFamily({
                             ...values,
                             diabetesFamily: {
                               isChecked: true,
-                              values:
-                                values.diabetesFamily.values.filter(
-                                  (valueInterventionsFilter) =>
-                                    valueInterventionsFilter !== value
-                                ),
+                              values: values.diabetesFamily.values.filter(
+                                (valueInterventionsFilter) =>
+                                  valueInterventionsFilter !== value
+                              ),
                             },
                           });
                         }}
@@ -167,7 +171,7 @@ export default function RecordsFamily({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Cáncer en la familia</p>
             </div>
 
@@ -197,7 +201,14 @@ export default function RecordsFamily({
                 <div className="w-full">
                   <AutocompleteInput
                     disabled={!values.cancerFamily.isChecked}
-                    items={["Padre", "Madre", "Hermano", "Hermana", "Abuelo", "Abuela"]}
+                    items={[
+                      "Padre",
+                      "Madre",
+                      "Hermano",
+                      "Hermana",
+                      "Abuelo",
+                      "Abuela",
+                    ]}
                     itemsAdded={values.cancerFamily.values}
                     placeholder="Padre, Madre, Hermanos, Abuelos (ENTER para agregar)"
                     className="h-[50px] w-full"
@@ -207,8 +218,7 @@ export default function RecordsFamily({
                         item.length > 0 &&
                         values.cancerFamily.values.indexOf(item) < 0
                       ) {
-                        const valuesAllergies =
-                          values.cancerFamily.values;
+                        const valuesAllergies = values.cancerFamily.values;
                         valuesAllergies.push(item);
 
                         setValues({
@@ -226,8 +236,7 @@ export default function RecordsFamily({
                         item.length > 0 &&
                         values.cancerFamily.values.indexOf(item) < 0
                       ) {
-                        const valuesAllergies =
-                          values.cancerFamily.values;
+                        const valuesAllergies = values.cancerFamily.values;
                         valuesAllergies.push(item);
 
                         setValues({
@@ -245,40 +254,37 @@ export default function RecordsFamily({
 
               <div className="ml-[36px] max-w-full overflow-x-auto">
                 {values.cancerFamily.values.length > 0 &&
-                  values.cancerFamily.values.map(
-                    (value: string, i: number) => (
-                      <button
-                        type="button"
-                        key={i}
-                        className="mt-3 mr-3"
-                        onClick={() => {
-                          setValues({
-                            ...values,
-                            cancerFamily: {
-                              isChecked: true,
-                              values:
-                                values.cancerFamily.values.filter(
-                                  (valueInterventionsFilter) =>
-                                    valueInterventionsFilter !== value
-                                ),
-                            },
-                          });
-                        }}
-                      >
-                        <div className="bg-primary px-2 py-1 w-auto rounded-md flex justify-between items-center">
-                          <div className="mr-2">
-                            <p className="text-white text-md font-semibold">
-                              {value}
-                            </p>
-                          </div>
-
-                          <div className="mt-1">
-                            <Lucide icon="XCircle" color="#fff" size={20} />
-                          </div>
+                  values.cancerFamily.values.map((value: string, i: number) => (
+                    <button
+                      type="button"
+                      key={i}
+                      className="mt-3 mr-3"
+                      onClick={() => {
+                        setValues({
+                          ...values,
+                          cancerFamily: {
+                            isChecked: true,
+                            values: values.cancerFamily.values.filter(
+                              (valueInterventionsFilter) =>
+                                valueInterventionsFilter !== value
+                            ),
+                          },
+                        });
+                      }}
+                    >
+                      <div className="bg-primary px-2 py-1 w-auto rounded-md flex justify-between items-center">
+                        <div className="mr-2">
+                          <p className="text-white text-md font-semibold">
+                            {value}
+                          </p>
                         </div>
-                      </button>
-                    )
-                  )}
+
+                        <div className="mt-1">
+                          <Lucide icon="XCircle" color="#fff" size={20} />
+                        </div>
+                      </div>
+                    </button>
+                  ))}
               </div>
             </div>
           </div>
@@ -286,7 +292,7 @@ export default function RecordsFamily({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Hipertensión en la familia</p>
             </div>
 
@@ -316,7 +322,14 @@ export default function RecordsFamily({
                 <div className="w-full">
                   <AutocompleteInput
                     disabled={!values.hypertensionFamily.isChecked}
-                    items={["Padre", "Madre", "Hermano", "Hermana", "Abuelo", "Abuela"]}
+                    items={[
+                      "Padre",
+                      "Madre",
+                      "Hermano",
+                      "Hermana",
+                      "Abuelo",
+                      "Abuela",
+                    ]}
                     itemsAdded={values.hypertensionFamily.values}
                     placeholder="Padre, Madre, Hermanos, Abuelos (ENTER para agregar)"
                     className="h-[50px] w-full"
@@ -375,11 +388,10 @@ export default function RecordsFamily({
                             ...values,
                             hypertensionFamily: {
                               isChecked: true,
-                              values:
-                                values.hypertensionFamily.values.filter(
-                                  (valueInterventionsFilter) =>
-                                    valueInterventionsFilter !== value
-                                ),
+                              values: values.hypertensionFamily.values.filter(
+                                (valueInterventionsFilter) =>
+                                  valueInterventionsFilter !== value
+                              ),
                             },
                           });
                         }}
@@ -405,7 +417,7 @@ export default function RecordsFamily({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Sida en la familia</p>
             </div>
 
@@ -435,7 +447,14 @@ export default function RecordsFamily({
                 <div className="w-full">
                   <AutocompleteInput
                     disabled={!values.sidaFamily.isChecked}
-                    items={["Padre", "Madre", "Hermano", "Hermana", "Abuelo", "Abuela"]}
+                    items={[
+                      "Padre",
+                      "Madre",
+                      "Hermano",
+                      "Hermana",
+                      "Abuelo",
+                      "Abuela",
+                    ]}
                     itemsAdded={values.sidaFamily.values}
                     placeholder="Padre, Madre, Hermanos, Abuelos (ENTER para agregar)"
                     className="h-[50px] w-full"
@@ -445,8 +464,7 @@ export default function RecordsFamily({
                         item.length > 0 &&
                         values.sidaFamily.values.indexOf(item) < 0
                       ) {
-                        const valuesAllergies =
-                          values.sidaFamily.values;
+                        const valuesAllergies = values.sidaFamily.values;
                         valuesAllergies.push(item);
 
                         setValues({
@@ -464,8 +482,7 @@ export default function RecordsFamily({
                         item.length > 0 &&
                         values.sidaFamily.values.indexOf(item) < 0
                       ) {
-                        const valuesAllergies =
-                          values.sidaFamily.values;
+                        const valuesAllergies = values.sidaFamily.values;
                         valuesAllergies.push(item);
 
                         setValues({
@@ -483,40 +500,37 @@ export default function RecordsFamily({
 
               <div className="ml-[36px] max-w-full overflow-x-auto">
                 {values.sidaFamily.values.length > 0 &&
-                  values.sidaFamily.values.map(
-                    (value: string, i: number) => (
-                      <button
-                        type="button"
-                        key={i}
-                        className="mt-3 mr-3"
-                        onClick={() => {
-                          setValues({
-                            ...values,
-                            sidaFamily: {
-                              isChecked: true,
-                              values:
-                                values.sidaFamily.values.filter(
-                                  (valueInterventionsFilter) =>
-                                    valueInterventionsFilter !== value
-                                ),
-                            },
-                          });
-                        }}
-                      >
-                        <div className="bg-primary px-2 py-1 w-auto rounded-md flex justify-between items-center">
-                          <div className="mr-2">
-                            <p className="text-white text-md font-semibold">
-                              {value}
-                            </p>
-                          </div>
-
-                          <div className="mt-1">
-                            <Lucide icon="XCircle" color="#fff" size={20} />
-                          </div>
+                  values.sidaFamily.values.map((value: string, i: number) => (
+                    <button
+                      type="button"
+                      key={i}
+                      className="mt-3 mr-3"
+                      onClick={() => {
+                        setValues({
+                          ...values,
+                          sidaFamily: {
+                            isChecked: true,
+                            values: values.sidaFamily.values.filter(
+                              (valueInterventionsFilter) =>
+                                valueInterventionsFilter !== value
+                            ),
+                          },
+                        });
+                      }}
+                    >
+                      <div className="bg-primary px-2 py-1 w-auto rounded-md flex justify-between items-center">
+                        <div className="mr-2">
+                          <p className="text-white text-md font-semibold">
+                            {value}
+                          </p>
                         </div>
-                      </button>
-                    )
-                  )}
+
+                        <div className="mt-1">
+                          <Lucide icon="XCircle" color="#fff" size={20} />
+                        </div>
+                      </div>
+                    </button>
+                  ))}
               </div>
             </div>
           </div>
@@ -524,7 +538,7 @@ export default function RecordsFamily({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Otra</p>
             </div>
 
@@ -554,7 +568,14 @@ export default function RecordsFamily({
                 <div className="w-full">
                   <AutocompleteInput
                     disabled={!values.otherFamily.isChecked}
-                    items={["Padre", "Madre", "Hermano", "Hermana", "Abuelo", "Abuela"]}
+                    items={[
+                      "Padre",
+                      "Madre",
+                      "Hermano",
+                      "Hermana",
+                      "Abuelo",
+                      "Abuela",
+                    ]}
                     itemsAdded={values.otherFamily.values}
                     placeholder="Padre, Madre, Hermanos, Abuelos (ENTER para agregar)"
                     className="h-[50px] w-full"
@@ -564,8 +585,7 @@ export default function RecordsFamily({
                         item.length > 0 &&
                         values.otherFamily.values.indexOf(item) < 0
                       ) {
-                        const valuesAllergies =
-                          values.otherFamily.values;
+                        const valuesAllergies = values.otherFamily.values;
                         valuesAllergies.push(item);
 
                         setValues({
@@ -583,8 +603,7 @@ export default function RecordsFamily({
                         item.length > 0 &&
                         values.otherFamily.values.indexOf(item) < 0
                       ) {
-                        const valuesAllergies =
-                          values.otherFamily.values;
+                        const valuesAllergies = values.otherFamily.values;
                         valuesAllergies.push(item);
 
                         setValues({
@@ -602,40 +621,37 @@ export default function RecordsFamily({
 
               <div className="ml-[36px] max-w-full overflow-x-auto">
                 {values.otherFamily.values.length > 0 &&
-                  values.otherFamily.values.map(
-                    (value: string, i: number) => (
-                      <button
-                        type="button"
-                        key={i}
-                        className="mt-3 mr-3"
-                        onClick={() => {
-                          setValues({
-                            ...values,
-                            otherFamily: {
-                              isChecked: true,
-                              values:
-                                values.otherFamily.values.filter(
-                                  (valueInterventionsFilter) =>
-                                    valueInterventionsFilter !== value
-                                ),
-                            },
-                          });
-                        }}
-                      >
-                        <div className="bg-primary px-2 py-1 w-auto rounded-md flex justify-between items-center">
-                          <div className="mr-2">
-                            <p className="text-white text-md font-semibold">
-                              {value}
-                            </p>
-                          </div>
-
-                          <div className="mt-1">
-                            <Lucide icon="XCircle" color="#fff" size={20} />
-                          </div>
+                  values.otherFamily.values.map((value: string, i: number) => (
+                    <button
+                      type="button"
+                      key={i}
+                      className="mt-3 mr-3"
+                      onClick={() => {
+                        setValues({
+                          ...values,
+                          otherFamily: {
+                            isChecked: true,
+                            values: values.otherFamily.values.filter(
+                              (valueInterventionsFilter) =>
+                                valueInterventionsFilter !== value
+                            ),
+                          },
+                        });
+                      }}
+                    >
+                      <div className="bg-primary px-2 py-1 w-auto rounded-md flex justify-between items-center">
+                        <div className="mr-2">
+                          <p className="text-white text-md font-semibold">
+                            {value}
+                          </p>
                         </div>
-                      </button>
-                    )
-                  )}
+
+                        <div className="mt-1">
+                          <Lucide icon="XCircle" color="#fff" size={20} />
+                        </div>
+                      </div>
+                    </button>
+                  ))}
               </div>
             </div>
           </div>

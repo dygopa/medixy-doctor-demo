@@ -1,10 +1,13 @@
-import { medicalRecordTypeEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
+import {
+  MedicalRecordCategoriesIdEnum,
+  medicalRecordTypeEnum,
+} from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
   IMedicalRecord,
   IMedicalRecordValue,
 } from "domain/core/entities/medicalRecordEntity";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   IMedicalRecordContext,
   MedicalRecordContext,
@@ -14,18 +17,34 @@ export default function RecordList() {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { getMedicalRecords } = actions;
-  const { data: patient } = state.patient;
-  const {
-    data: medicalRecords,
-    loading,
-    error,
-    successful,
-  } = state.medicalRecords;
+  const { data: subject } = state.subject;
+  const { data, loading, error, successful } = state.medicalRecords;
+
+  const [medicalRecords, setMedicalRecords] = useState<IMedicalRecord[]>([]);
+
+  const setMedicalRecordsMap = () => {
+    const medicalRecordsList: IMedicalRecord[] = [];
+
+    if (data.data && data.data.length > 0) {
+      data.data.forEach((medicalRecord: IMedicalRecord) => {
+        const index = medicalRecordsList.findIndex(
+          (medicalRecordFind) =>
+            medicalRecordFind.medicalRecordTypeId ===
+            medicalRecord.medicalRecordTypeId
+        );
+
+        if (index < 0) medicalRecordsList.push(medicalRecord);
+      });
+    }
+
+    setMedicalRecords(medicalRecordsList);
+  };
 
   const onGetMedicalRecordsDispatch = () => {
-    if (patient?.patientId) {
+    if (subject?.subjectId) {
       getMedicalRecords({
-        patientId: patient.patientId,
+        subjectId: subject.subjectId,
+        medicalRecordCategoryId: MedicalRecordCategoriesIdEnum.RECORDS,
         limit: 6,
       })(dispatch);
     }
@@ -35,6 +54,11 @@ export default function RecordList() {
     onGetMedicalRecordsDispatch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (successful) setMedicalRecordsMap();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [successful]);
 
   if (loading) {
     return (
@@ -62,22 +86,22 @@ export default function RecordList() {
     );
   }
 
-  if (successful && medicalRecords?.data && medicalRecords.data?.length === 0) {
+  if (successful && medicalRecords.length === 0) {
     return (
       <div className="w-full flex flex-col justify-center items-center mt-8">
         <p className="font-light text-slate-500 text-base">
-          El paciente no posee tratamientos.
+          El paciente no posee antecedentes.
         </p>
       </div>
     );
   }
 
-  if (!medicalRecords.data) return <div />;
+  if (!data.data) return <div />;
 
   return (
     <div className="mt-4">
       <div>
-        {medicalRecords.data.map((medicalRecord: IMedicalRecord) => (
+        {medicalRecords.map((medicalRecord: IMedicalRecord) => (
           <div key={medicalRecord.id} className="flex items-center mb-2">
             <div className="mr-1">
               <p className="text-slate-900 text-md font-medium">

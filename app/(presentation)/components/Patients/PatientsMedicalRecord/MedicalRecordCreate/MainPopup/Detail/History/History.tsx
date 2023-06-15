@@ -1,0 +1,64 @@
+import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import { useSearchParams } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import {
+  IMedicalRecordCreateContext,
+  MedicalRecordCreateContext,
+} from "../../../context/MedicalRecordCreateContext";
+import Detail from "./Detail/Detail";
+import HistoryTable from "./Table/Table";
+
+interface IHistoryProps {
+  subjectId: number;
+}
+
+export default function History({ subjectId }: IHistoryProps) {
+  const { state } = useContext<IMedicalRecordCreateContext>(
+    MedicalRecordCreateContext
+  );
+  const { data: medicalConsulties, successful } = state.medicalConsulties;
+
+  const [medicalConsulty, setMedicalConsulty] =
+    useState<IMedicalConsulty | null>(null);
+
+  const searchParams = useSearchParams();
+
+  const medicalRecordId = searchParams.get("medical_record_id");
+
+  const getMedicalConsulty = () => {
+    if (medicalConsulties.data?.length === 0 || !medicalRecordId) return;
+
+    const id = parseInt(medicalRecordId.toString(), 10);
+
+    const medicalConsultyFind = medicalConsulties.data.find(
+      (element) => element.id === id
+    );
+
+    if (medicalConsultyFind) setMedicalConsulty(medicalConsultyFind);
+  };
+
+  useEffect(() => {
+    if (successful && medicalRecordId && medicalRecordId?.length > 0) {
+      getMedicalConsulty();
+    } else {
+      setMedicalConsulty(null);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [successful, medicalRecordId]);
+
+  return (
+    <div className="overflow-x-hidden">
+      {medicalConsulty ? (
+        <Detail
+          medicalConsulty={medicalConsulty}
+          setMedicalConsulty={setMedicalConsulty}
+        />
+      ) : (
+        <HistoryTable
+          subjectId={subjectId}
+          setMedicalConsulty={setMedicalConsulty}
+        />
+      )}
+    </div>
+  );
+}

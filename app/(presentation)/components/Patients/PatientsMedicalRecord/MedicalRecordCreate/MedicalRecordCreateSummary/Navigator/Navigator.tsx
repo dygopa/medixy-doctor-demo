@@ -1,12 +1,12 @@
 import { MedicalMeasureTypesEnum } from "(presentation)/(enum)/medicalMeasure/medicalMeasureEnums";
 import {
-  MedicalRecordTypesEnum,
-  MedicalRecordValueTypesEnum,
-} from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
-import {
   TreatmentDosisTypeEnum,
   TreatmentViaDosisEnum,
 } from "(presentation)/(enum)/treatment/treatmentEnums";
+import {
+  getMedicalRecordsHistory,
+  getMedicalRecordsPhysical,
+} from "(presentation)/(helper)/medicalRecords/medicalRecordsHelper";
 import {
   PatientsMedicalRecordRoutesEnum,
   PatientsRoutesEnum,
@@ -20,11 +20,7 @@ import {
   IMedicalMeasure,
   IMedicalMeasureType,
 } from "domain/core/entities/medicalMeasureEntity";
-import {
-  IMedicalRecord,
-  IMedicalRecordType,
-  IMedicalRecordValueType,
-} from "domain/core/entities/medicalRecordEntity";
+import { IMedicalRecord } from "domain/core/entities/medicalRecordEntity";
 import {
   ITreatment,
   ITreatmentMedicine,
@@ -43,7 +39,7 @@ export default function Navigator() {
       MedicalRecordCreateSummaryContext
     );
   const { createMedicalConsulty } = actions;
-  const { data: patient } = state.patient;
+  const { data: subject } = state.subject;
   const {
     data: medicalConsulty,
     loading,
@@ -63,7 +59,7 @@ export default function Navigator() {
     if (!valuesStorage) {
       router.push(
         PatientsRoutesEnum.PatientsView +
-          patient?.patientId +
+          subject?.subjectId +
           PatientsMedicalRecordRoutesEnum.MedicalRecord +
           PatientsMedicalRecordRoutesEnum.MedicalRecordCreate
       );
@@ -78,119 +74,119 @@ export default function Navigator() {
   const getMedicalMeasures = (values: any): IMedicalMeasure[] => {
     const medicalMeasures: IMedicalMeasure[] = [];
 
-    if (values.currentConsultation.size?.length > 0) {
+    if (values.vitalSigns.size?.length > 0) {
       const medicalMeasureSize: IMedicalMeasure = {
         id: 0,
-        value: parseFloat(values.currentConsultation.size),
+        value: parseFloat(values.vitalSigns.size),
         medicalMeasureTypeId: 0,
         medicalMeasureType: {
           id: 0,
           type: MedicalMeasureTypesEnum.SIZE,
           createdOn: new Date(),
         } as IMedicalMeasureType,
-        patientId: patient?.patientId ?? 0,
+        subjectId: subject?.subjectId ?? 0,
         createdOn: new Date(),
       };
 
       medicalMeasures.push(medicalMeasureSize);
     }
 
-    if (values.currentConsultation.weight?.length > 0) {
+    if (values.vitalSigns.weight?.length > 0) {
       const medicalMeasureWeight: IMedicalMeasure = {
         id: 0,
-        value: parseFloat(values.currentConsultation.weight),
+        value: parseFloat(values.vitalSigns.weight),
         medicalMeasureTypeId: 0,
         medicalMeasureType: {
           id: 0,
           type: MedicalMeasureTypesEnum.WEIGHT,
           createdOn: new Date(),
         } as IMedicalMeasureType,
-        patientId: patient?.patientId ?? 0,
+        subjectId: subject?.subjectId ?? 0,
         createdOn: new Date(),
       };
 
       medicalMeasures.push(medicalMeasureWeight);
     }
 
-    if (values.currentConsultation.temperature?.length > 0) {
+    if (values.vitalSigns.temperature?.length > 0) {
       const medicalMeasureTemperature: IMedicalMeasure = {
         id: 0,
-        value: parseFloat(values.currentConsultation.temperature),
+        value: parseFloat(values.vitalSigns.temperature),
         medicalMeasureTypeId: 0,
         medicalMeasureType: {
           id: 0,
           type: MedicalMeasureTypesEnum.TEMPERATURE,
           createdOn: new Date(),
         } as IMedicalMeasureType,
-        patientId: patient?.patientId ?? 0,
+        subjectId: subject?.subjectId ?? 0,
         createdOn: new Date(),
       };
 
       medicalMeasures.push(medicalMeasureTemperature);
     }
 
-    if (values.currentConsultation.respiratoryFrequency?.length > 0) {
+    if (values.vitalSigns.respiratoryFrequency?.length > 0) {
       const medicalMeasureRespiratoryFrequency: IMedicalMeasure = {
         id: 0,
-        value: parseFloat(values.currentConsultation.respiratoryFrequency),
+        value: parseFloat(values.vitalSigns.respiratoryFrequency),
         medicalMeasureTypeId: 0,
         medicalMeasureType: {
           id: 0,
           type: MedicalMeasureTypesEnum.RESPIRATORY_FREQUENCY,
           createdOn: new Date(),
         } as IMedicalMeasureType,
-        patientId: patient?.patientId ?? 0,
+        subjectId: subject?.subjectId ?? 0,
         createdOn: new Date(),
       };
 
       medicalMeasures.push(medicalMeasureRespiratoryFrequency);
     }
 
-    if (values.currentConsultation.oximetry?.length > 0) {
+    if (values.vitalSigns.oximetry?.length > 0) {
       const medicalMeasureOximetry: IMedicalMeasure = {
         id: 0,
-        value: parseFloat(values.currentConsultation.oximetry),
+        value: parseFloat(values.vitalSigns.oximetry),
         medicalMeasureTypeId: 0,
         medicalMeasureType: {
           id: 0,
           type: MedicalMeasureTypesEnum.OXIMETRY,
           createdOn: new Date(),
         } as IMedicalMeasureType,
-        patientId: patient?.patientId ?? 0,
+        subjectId: subject?.subjectId ?? 0,
         createdOn: new Date(),
       };
 
       medicalMeasures.push(medicalMeasureOximetry);
     }
 
-    if (values.currentConsultation.muscleMass?.length > 0) {
+    if (values.vitalSigns.muscleMass?.length > 0) {
       const medicalMeasureMuscleMass: IMedicalMeasure = {
         id: 0,
-        value: parseFloat(values.currentConsultation.muscleMass),
+        value: parseFloat(values.vitalSigns.muscleMass),
         medicalMeasureTypeId: 0,
         medicalMeasureType: {
           id: 0,
           type: MedicalMeasureTypesEnum.MUSCLE_MASS_INDEX,
           createdOn: new Date(),
         } as IMedicalMeasureType,
-        patientId: patient?.patientId ?? 0,
+        subjectId: subject?.subjectId ?? 0,
         createdOn: new Date(),
       };
 
       medicalMeasures.push(medicalMeasureMuscleMass);
     }
 
-    if (values.currentConsultation.glicemy?.length > 0) {
+    if (values.vitalSigns.glicemy?.length > 0) {
       const medicalMeasureGlicemy: IMedicalMeasure = {
         id: 0,
-        value: parseFloat(values.currentConsultation.glicemy),
+        value: parseFloat(values.vitalSigns.glicemy),
         medicalMeasureTypeId: 0,
         medicalMeasureType: {
           id: 0,
           type: MedicalMeasureTypesEnum.GLICEMY,
           createdOn: new Date(),
         } as IMedicalMeasureType,
-        patientId: patient?.patientId ?? 0,
+        subjectId: subject?.subjectId ?? 0,
         createdOn: new Date(),
       };
 
@@ -223,7 +219,7 @@ export default function Navigator() {
     let treatment: ITreatment = {
       id: 0,
       status: 1,
-      patientId: patient?.patientId ?? 0,
+      subjectId: subject?.subjectId ?? 0,
       medicalConsultyId: 0,
       treatmentMedicines: [],
     };
@@ -266,555 +262,22 @@ export default function Navigator() {
   const getMedicalRecords = (values: any) => {
     const medicalRecords: IMedicalRecord[] = [];
 
-    if (
-      values?.allergiesPathological?.isChecked &&
-      values?.allergiesPathological?.values?.length > 0
-    ) {
-      values?.allergiesPathological?.values.forEach((allergy: any) => {
-        medicalRecords.push({
-          id: 0,
-          patientId: patient?.patientId,
-          medicalRecordTypeId: 0,
-          medicalRecordType: {
-            id: 0,
-            name: MedicalRecordTypesEnum.ALLERGIES,
-          } as IMedicalRecordType,
-          medicalRecordValues: [
-            {
-              id: 0,
-              value: allergy,
-              medicalRecordValueType: {
-                id: 0,
-                name: MedicalRecordValueTypesEnum.ALLERGIES_NAME,
-              } as IMedicalRecordValueType,
-            },
-          ],
-          medicalConsultyId: 0,
-          medicalConsulty: {},
-        } as IMedicalRecord);
-      });
+    const medicalRecordsHistory = getMedicalRecordsHistory(
+      values.records,
+      subject?.subjectId ?? 0
+    );
+
+    if (medicalRecordsHistory.length > 0) {
+      medicalRecords.push(...medicalRecordsHistory);
     }
 
-    if (values?.alcoholicBeveragesNonPathological?.isChecked) {
-      medicalRecords.push({
-        id: 0,
-        patientId: patient?.patientId,
-        medicalRecordTypeId: 0,
-        medicalRecordType: {
-          id: 0,
-          name: MedicalRecordTypesEnum.ALCOCHOLIC_BEVERAGES,
-        } as IMedicalRecordType,
-        medicalRecordValues: [
-          {
-            id: 0,
-            value: values?.alcoholicBeveragesNonPathological?.value,
-            medicalRecordValueType: {
-              id: 0,
-              name: MedicalRecordValueTypesEnum.ALCOCHOLIC_BEVERAGES_DESCRIPTION,
-            } as IMedicalRecordValueType,
-          },
-        ],
-        medicalConsultyId: 0,
-        medicalConsulty: {},
-      } as IMedicalRecord);
-    }
+    const medicalRecordsPhysical = getMedicalRecordsPhysical(
+      values.physical,
+      subject?.subjectId ?? 0
+    );
 
-    if (values?.anemia?.isChecked) {
-      medicalRecords.push({
-        id: 0,
-        patientId: patient?.patientId,
-        medicalRecordTypeId: 0,
-        medicalRecordType: {
-          id: 0,
-          name: MedicalRecordTypesEnum.ANEMIA,
-        } as IMedicalRecordType,
-        medicalRecordValues: [
-          {
-            id: 0,
-            value: values?.anemia?.value,
-            medicalRecordValueType: {
-              id: 0,
-              name: MedicalRecordValueTypesEnum.ANEMIA_DESCRIPTION,
-            } as IMedicalRecordValueType,
-          },
-        ],
-        medicalConsultyId: 0,
-        medicalConsulty: {},
-      } as IMedicalRecord);
-    }
-
-    if (values?.arthritis?.isChecked) {
-      medicalRecords.push({
-        id: 0,
-        patientId: patient?.patientId,
-        medicalRecordTypeId: 0,
-        medicalRecordType: {
-          id: 0,
-          name: MedicalRecordTypesEnum.ARTHRITIS,
-        } as IMedicalRecordType,
-        medicalRecordValues: [
-          {
-            id: 0,
-            value: values?.arthritis?.value,
-            medicalRecordValueType: {
-              id: 0,
-              name: MedicalRecordValueTypesEnum.ARTHRITIS_DESCRIPTION,
-            } as IMedicalRecordValueType,
-          },
-        ],
-        medicalConsultyId: 0,
-        medicalConsulty: {},
-      } as IMedicalRecord);
-    }
-
-    if (values?.asma?.isChecked) {
-      medicalRecords.push({
-        id: 0,
-        patientId: patient?.patientId,
-        medicalRecordTypeId: 0,
-        medicalRecordType: {
-          id: 0,
-          name: MedicalRecordTypesEnum.ASMA,
-        } as IMedicalRecordType,
-        medicalRecordValues: [
-          {
-            id: 0,
-            value: values?.asma?.value,
-            medicalRecordValueType: {
-              id: 0,
-              name: MedicalRecordValueTypesEnum.ASMA_DESCRIPTION,
-            } as IMedicalRecordValueType,
-          },
-        ],
-        medicalConsultyId: 0,
-        medicalConsulty: {},
-      } as IMedicalRecord);
-    }
-
-    if (values?.bloodClots?.isChecked) {
-      medicalRecords.push({
-        id: 0,
-        patientId: patient?.patientId,
-        medicalRecordTypeId: 0,
-        medicalRecordType: {
-          id: 0,
-          name: MedicalRecordTypesEnum.BLOODS_CLOTS,
-        } as IMedicalRecordType,
-        medicalRecordValues: [
-          {
-            id: 0,
-            value: values?.bloodClots?.value,
-            medicalRecordValueType: {
-              id: 0,
-              name: MedicalRecordValueTypesEnum.BLOODS_CLOTS_DESCRIPTION,
-            } as IMedicalRecordValueType,
-          },
-        ],
-        medicalConsultyId: 0,
-        medicalConsulty: {},
-      } as IMedicalRecord);
-    }
-
-    if (
-      values?.bloodTypeNonPathological?.isChecked &&
-      values?.bloodTypeNonPathological?.values?.length > 0
-    ) {
-      values?.bloodTypeNonPathological?.values.forEach((bloodType: any) => {
-        medicalRecords.push({
-          id: 0,
-          patientId: patient?.patientId,
-          medicalRecordTypeId: 0,
-          medicalRecordType: {
-            id: 0,
-            name: MedicalRecordTypesEnum.BLOOD_TYPE,
-          } as IMedicalRecordType,
-          medicalRecordValues: [
-            {
-              id: 0,
-              value: bloodType,
-              medicalRecordValueType: {
-                id: 0,
-                name: MedicalRecordValueTypesEnum.BLOOD_TYPE_NAME,
-              } as IMedicalRecordValueType,
-            },
-          ],
-          medicalConsultyId: 0,
-          medicalConsulty: {},
-        } as IMedicalRecord);
-      });
-    }
-
-    if (values?.cancer?.isChecked) {
-      medicalRecords.push({
-        id: 0,
-        patientId: patient?.patientId,
-        medicalRecordTypeId: 0,
-        medicalRecordType: {
-          id: 0,
-          name: MedicalRecordTypesEnum.CANCER,
-        } as IMedicalRecordType,
-        medicalRecordValues: [
-          {
-            id: 0,
-            value: values?.cancer?.value,
-            medicalRecordValueType: {
-              id: 0,
-              name: MedicalRecordValueTypesEnum.CANCER_DESCRIPTION,
-            } as IMedicalRecordValueType,
-          },
-        ],
-        medicalConsultyId: 0,
-        medicalConsulty: {},
-      } as IMedicalRecord);
-    }
-
-    if (
-      values?.cancerFamily?.isChecked &&
-      values?.cancerFamily?.values?.length > 0
-    ) {
-      values?.cancerFamily?.values.forEach((cancer: any) => {
-        medicalRecords.push({
-          id: 0,
-          patientId: patient?.patientId,
-          medicalRecordTypeId: 0,
-          medicalRecordType: {
-            id: 0,
-            name: MedicalRecordTypesEnum.CANCER_FAMILY,
-          } as IMedicalRecordType,
-          medicalRecordValues: [
-            {
-              id: 0,
-              value: cancer,
-              medicalRecordValueType: {
-                id: 0,
-                name: MedicalRecordValueTypesEnum.CANCER_FAMILY,
-              } as IMedicalRecordValueType,
-            },
-          ],
-          medicalConsultyId: 0,
-          medicalConsulty: {},
-        } as IMedicalRecord);
-      });
-    }
-
-    if (values?.colitis?.isChecked) {
-      medicalRecords.push({
-        id: 0,
-        patientId: patient?.patientId,
-        medicalRecordTypeId: 0,
-        medicalRecordType: {
-          id: 0,
-          name: MedicalRecordTypesEnum.COLITIS,
-        } as IMedicalRecordType,
-        medicalRecordValues: [
-          {
-            id: 0,
-            value: values?.colitis?.value,
-            medicalRecordValueType: {
-              id: 0,
-              name: MedicalRecordValueTypesEnum.COLITIS_DESCRIPTION,
-            } as IMedicalRecordValueType,
-          },
-        ],
-        medicalConsultyId: 0,
-        medicalConsulty: {},
-      } as IMedicalRecord);
-    }
-
-    if (values?.covidNonPathological?.isChecked) {
-      medicalRecords.push({
-        id: 0,
-        patientId: patient?.patientId,
-        medicalRecordTypeId: 0,
-        medicalRecordType: {
-          id: 0,
-          name: MedicalRecordTypesEnum.COVID,
-        } as IMedicalRecordType,
-        medicalRecordValues: [
-          {
-            id: 0,
-            value: values?.covidNonPathological?.value,
-            medicalRecordValueType: {
-              id: 0,
-              name: MedicalRecordValueTypesEnum.COVID_DESCRIPTION,
-            } as IMedicalRecordValueType,
-          },
-        ],
-        medicalConsultyId: 0,
-        medicalConsulty: {},
-      } as IMedicalRecord);
-    }
-
-    if (
-      values?.diabetesFamily?.isChecked &&
-      values?.diabetesFamily?.values?.length > 0
-    ) {
-      values?.diabetesFamily?.values.forEach((diabetes: any) => {
-        medicalRecords.push({
-          id: 0,
-          patientId: patient?.patientId,
-          medicalRecordTypeId: 0,
-          medicalRecordType: {
-            id: 0,
-            name: MedicalRecordTypesEnum.DIABETES,
-          } as IMedicalRecordType,
-          medicalRecordValues: [
-            {
-              id: 0,
-              value: diabetes,
-              medicalRecordValueType: {
-                id: 0,
-                name: MedicalRecordValueTypesEnum.DIABETES_FAMILY,
-              } as IMedicalRecordValueType,
-            },
-          ],
-          medicalConsultyId: 0,
-          medicalConsulty: {},
-        } as IMedicalRecord);
-      });
-    }
-
-    if (values?.drugsNonPathological?.isChecked) {
-      medicalRecords.push({
-        id: 0,
-        patientId: patient?.patientId,
-        medicalRecordTypeId: 0,
-        medicalRecordType: {
-          id: 0,
-          name: MedicalRecordTypesEnum.DRUGS,
-        } as IMedicalRecordType,
-        medicalRecordValues: [
-          {
-            id: 0,
-            value: values?.drugsNonPathological?.value,
-            medicalRecordValueType: {
-              id: 0,
-              name: MedicalRecordValueTypesEnum.DRUGS_DESCRIPTION,
-            } as IMedicalRecordValueType,
-          },
-        ],
-        medicalConsultyId: 0,
-        medicalConsulty: {},
-      } as IMedicalRecord);
-    }
-
-    if (values?.exerciseNonPathological?.isChecked) {
-      medicalRecords.push({
-        id: 0,
-        patientId: patient?.patientId,
-        medicalRecordTypeId: 0,
-        medicalRecordType: {
-          id: 0,
-          name: MedicalRecordTypesEnum.EXERCISE,
-        } as IMedicalRecordType,
-        medicalRecordValues: [
-          {
-            id: 0,
-            value: values?.exerciseNonPathological?.value,
-            medicalRecordValueType: {
-              id: 0,
-              name: MedicalRecordValueTypesEnum.EXERCISE_DESCRIPTION,
-            } as IMedicalRecordValueType,
-          },
-        ],
-        medicalConsultyId: 0,
-        medicalConsulty: {},
-      } as IMedicalRecord);
-    }
-
-    if (
-      values?.hypertensionFamily?.isChecked &&
-      values?.hypertensionFamily?.values?.length > 0
-    ) {
-      values?.hypertensionFamily?.values.forEach((hypertension: any) => {
-        medicalRecords.push({
-          id: 0,
-          patientId: patient?.patientId,
-          medicalRecordTypeId: 0,
-          medicalRecordType: {
-            id: 0,
-            name: MedicalRecordTypesEnum.HIPERTENSION,
-          } as IMedicalRecordType,
-          medicalRecordValues: [
-            {
-              id: 0,
-              value: hypertension,
-              medicalRecordValueType: {
-                id: 0,
-                name: MedicalRecordValueTypesEnum.HIPERTENSION_FAMILY,
-              } as IMedicalRecordValueType,
-            },
-          ],
-          medicalConsultyId: 0,
-          medicalConsulty: {},
-        } as IMedicalRecord);
-      });
-    }
-
-    if (
-      values?.otherFamily?.isChecked &&
-      values?.otherFamily?.values?.length > 0
-    ) {
-      values?.otherFamily?.values.forEach((other: any) => {
-        medicalRecords.push({
-          id: 0,
-          patientId: patient?.patientId,
-          medicalRecordTypeId: 0,
-          medicalRecordType: {
-            id: 0,
-            name: MedicalRecordTypesEnum.OTHER,
-          } as IMedicalRecordType,
-          medicalRecordValues: [
-            {
-              id: 0,
-              value: other,
-              medicalRecordValueType: {
-                id: 0,
-                name: MedicalRecordValueTypesEnum.OTHER_FAMILY,
-              } as IMedicalRecordValueType,
-            },
-          ],
-          medicalConsultyId: 0,
-          medicalConsulty: {},
-        } as IMedicalRecord);
-      });
-    }
-
-    if (
-      values?.sidaFamily?.isChecked &&
-      values?.sidaFamily?.values?.length > 0
-    ) {
-      values?.sidaFamily?.values.forEach((sida: any) => {
-        medicalRecords.push({
-          id: 0,
-          patientId: patient?.patientId,
-          medicalRecordTypeId: 0,
-          medicalRecordType: {
-            id: 0,
-            name: MedicalRecordTypesEnum.SIDA,
-          } as IMedicalRecordType,
-          medicalRecordValues: [
-            {
-              id: 0,
-              value: sida,
-              medicalRecordValueType: {
-                id: 0,
-                name: MedicalRecordValueTypesEnum.SIDA_FAMILY,
-              } as IMedicalRecordValueType,
-            },
-          ],
-          medicalConsultyId: 0,
-          medicalConsulty: {},
-        } as IMedicalRecord);
-      });
-    }
-
-    if (values?.smokingNonPathological?.isChecked) {
-      medicalRecords.push({
-        id: 0,
-        patientId: patient?.patientId,
-        medicalRecordTypeId: 0,
-        medicalRecordType: {
-          id: 0,
-          name: MedicalRecordTypesEnum.SMOKING,
-        } as IMedicalRecordType,
-        medicalRecordValues: [
-          {
-            id: 0,
-            value: values?.smokingNonPathological?.value,
-            medicalRecordValueType: {
-              id: 0,
-              name: MedicalRecordValueTypesEnum.SMOKING_DESCRIPTION,
-            } as IMedicalRecordValueType,
-          },
-        ],
-        medicalConsultyId: 0,
-        medicalConsulty: {},
-      } as IMedicalRecord);
-    }
-
-    if (
-      values?.surgicalInterventions?.isChecked &&
-      values?.surgicalInterventions?.values?.length > 0
-    ) {
-      values?.surgicalInterventions?.values.forEach(
-        (surgicalIntervention: any) => {
-          medicalRecords.push({
-            id: 0,
-            patientId: patient?.patientId,
-            medicalRecordTypeId: 0,
-            medicalRecordType: {
-              id: 0,
-              name: MedicalRecordTypesEnum.SURGICAL_INTERVENTIONS,
-            } as IMedicalRecordType,
-            medicalRecordValues: [
-              {
-                id: 0,
-                value: surgicalIntervention,
-                medicalRecordValueType: {
-                  id: 0,
-                  name: MedicalRecordValueTypesEnum.SURGICAL_INTERVENTIONS_NAME,
-                } as IMedicalRecordValueType,
-              },
-            ],
-            medicalConsultyId: 0,
-            medicalConsulty: {},
-          } as IMedicalRecord);
-        }
-      );
-    }
-
-    if (
-      values?.takeMedication?.isChecked &&
-      values?.takeMedication?.values?.length > 0
-    ) {
-      values?.takeMedication?.values.forEach((medication: any) => {
-        medicalRecords.push({
-          id: 0,
-          patientId: patient?.patientId,
-          medicalRecordTypeId: 0,
-          medicalRecordType: {
-            id: 0,
-            name: MedicalRecordTypesEnum.TAKE_MEDICATIONS,
-          } as IMedicalRecordType,
-          medicalRecordValues: [
-            {
-              id: 0,
-              value: medication,
-              medicalRecordValueType: {
-                id: 0,
-                name: MedicalRecordValueTypesEnum.TAKE_MEDICATIONS_NAME,
-              } as IMedicalRecordValueType,
-            },
-          ],
-          medicalConsultyId: 0,
-          medicalConsulty: {},
-        } as IMedicalRecord);
-      });
-    }
-
-    if (values?.transfusions?.isChecked) {
-      medicalRecords.push({
-        id: 0,
-        patientId: patient?.patientId,
-        medicalRecordTypeId: 0,
-        medicalRecordType: {
-          id: 0,
-          name: MedicalRecordTypesEnum.TRANSFUSIONS,
-        } as IMedicalRecordType,
-        medicalRecordValues: [
-          {
-            id: 0,
-            value: values?.transfusions?.value,
-            medicalRecordValueType: {
-              id: 0,
-              name: MedicalRecordValueTypesEnum.TRANSFUSIONS_DESCRIPTION,
-            } as IMedicalRecordValueType,
-          },
-        ],
-        medicalConsultyId: 0,
-        medicalConsulty: {},
-      } as IMedicalRecord);
+    if (medicalRecordsPhysical.length > 0) {
+      medicalRecords.push(...medicalRecordsPhysical);
     }
 
     return medicalRecords;
@@ -829,7 +292,7 @@ export default function Navigator() {
 
     const diagnoses = getDiagnosis(values.currentConsultation);
 
-    const medicalRecords = getMedicalRecords(values.records);
+    const medicalRecords = getMedicalRecords(values);
 
     const medicalConsulty: IMedicalConsulty = {
       id: 0,
@@ -860,50 +323,6 @@ export default function Navigator() {
             0
           )
         : null,
-      generalInspection:
-        values.currentConsultation.generalInspection.length > 0
-          ? values.currentConsultation.generalInspection
-          : null,
-      respiratorySystem:
-        values.currentConsultation.respiratorySystem.length > 0
-          ? values.currentConsultation.respiratorySystem
-          : null,
-      digestiveSystem:
-        values.currentConsultation.digestiveSystem.length > 0
-          ? values.currentConsultation.digestiveSystem
-          : null,
-      cardiovascularSystem:
-        values.currentConsultation.cardiovascularSystem.length > 0
-          ? values.currentConsultation.cardiovascularSystem
-          : null,
-      reproductiveSystem:
-        values.currentConsultation.reproductiveSystem.length > 0
-          ? values.currentConsultation.reproductiveSystem
-          : null,
-      urinarySystem:
-        values.currentConsultation.urinarySystem.length > 0
-          ? values.currentConsultation.urinarySystem
-          : null,
-      ophthalmologicalSystem:
-        values.currentConsultation.ophthalmologicalSystem.length > 0
-          ? values.currentConsultation.ophthalmologicalSystem
-          : null,
-      locomotorSystem:
-        values.currentConsultation.locomotorSystem.length > 0
-          ? values.currentConsultation.locomotorSystem
-          : null,
-      earInspection:
-        values.currentConsultation.earInspection.length > 0
-          ? values.currentConsultation.earInspection
-          : null,
-      neurologicalInspection:
-        values.currentConsultation.neurologicalInspection.length > 0
-          ? values.currentConsultation.neurologicalInspection
-          : null,
-      skinInspection:
-        values.currentConsultation.skinInspection.length > 0
-          ? values.currentConsultation.skinInspection
-          : null,
       diagnose: diagnoses ?? [],
       observations:
         values.currentConsultation.observations.length > 0
@@ -915,7 +334,7 @@ export default function Navigator() {
       createdOn: new Date(),
       updatedOn: null,
       deletedOn: null,
-      patientId: patient?.patientId ?? 0,
+      subjectId: subject?.subjectId ?? 0,
     };
 
     createMedicalConsulty(medicalConsulty)(dispatch);
@@ -935,7 +354,7 @@ export default function Navigator() {
     setTimeout(() => {
       router.push(
         PatientsRoutesEnum.PatientsView +
-          patient?.patientId +
+          subject?.subjectId +
           PatientsMedicalRecordRoutesEnum.MedicalRecord +
           `?view_medical_record=true&medical_record_id=${medicalConsulty.data?.id}&from=medical-consulty-summary`
       );
@@ -987,7 +406,7 @@ export default function Navigator() {
                 <Link
                   href={
                     PatientsRoutesEnum.PatientsView +
-                    patient?.patientId +
+                    subject?.subjectId +
                     PatientsMedicalRecordRoutesEnum.MedicalRecord +
                     PatientsMedicalRecordRoutesEnum.MedicalRecordCreate
                   }

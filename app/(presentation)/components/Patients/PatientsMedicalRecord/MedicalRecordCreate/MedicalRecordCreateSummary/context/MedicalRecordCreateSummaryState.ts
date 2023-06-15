@@ -1,18 +1,18 @@
-import { IPatient } from "domain/core/entities/subjectEntity";
+import { ISubject } from "domain/core/entities/subjectEntity";
 import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
-import { PatientFailure } from "domain/core/failures/subject/subjectFailure";
+import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
 import { ICreateMedicalConsultyResponse } from "domain/core/response/medicalConsultyResponse";
 
 export interface IMedicalRecordCreateSummaryState {
-    patient: IGetPatientState;
+    subject: IGetSubjectState;
     createMedicalConsulty: ICreateMedicalConsultyState;
 }
 
-interface IGetPatientState {
-    data: IPatient | null;
+interface IGetSubjectState {
+    data: ISubject | null;
     loading: boolean;
     successful: boolean;
-    error: PatientFailure | null; 
+    error: SubjectFailure | null; 
 }
 
 interface ICreateMedicalConsultyState {
@@ -23,7 +23,7 @@ interface ICreateMedicalConsultyState {
 }
 
 export const initialState: IMedicalRecordCreateSummaryState = {
-    patient: {
+    subject: {
         data: null,
         loading: false,
         successful: false,

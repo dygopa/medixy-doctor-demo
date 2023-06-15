@@ -1,5 +1,6 @@
 import { IAlly } from "./allyEntity";
 import { ILocality } from "./localityEntity";
+import { IMedicalProfile } from "./medicalProfileEntity";
 import { ISubject } from "./subjectEntity";
 import { IService } from "./serviceEntity";
 
@@ -49,7 +50,7 @@ export interface IOrder {
 export interface IOrderMedical {
     orderId: number;
     orderType: string;
-    medicalExam: string;
+    medicalProfile: IMedicalProfile;
     indications: string;
     specialty?: string | null;
     doctorName?: string | null;

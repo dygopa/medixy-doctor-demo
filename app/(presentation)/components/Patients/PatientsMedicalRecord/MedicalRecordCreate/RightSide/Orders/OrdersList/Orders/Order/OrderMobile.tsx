@@ -34,8 +34,8 @@ export default function OrderMobile({
               {" "}
               {order.orderType.toLowerCase() === "specialty"
                 ? order.specialty
-                : order.medicalExam.length > 0
-                ? order.medicalExam
+                : order.medicalProfile.name.length > 0
+                ? order.medicalProfile.name
                 : order.indications}
             </p>
           </div>

@@ -7,11 +7,14 @@ import {
   MedicalRecordContext,
 } from "../../../../../context/MedicalRecordContext";
 
-export default function VitalSignsList() {
+interface IVitalSignsListProps {
+  subjectId: number;
+}
+
+export default function VitalSignsList({ subjectId }: IVitalSignsListProps) {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { getMedicalMeasures } = actions;
-  const { data: patient } = state.patient;
   const { data, loading, error, successful } = state.medicalMeasures;
 
   const [medicalMeasures, setMedicalMeasures] = useState<IMedicalMeasure[]>([]);
@@ -35,9 +38,9 @@ export default function VitalSignsList() {
   };
 
   const onGetMedicalMeasures = () => {
-    if (patient?.patientId) {
+    if (subjectId) {
       getMedicalMeasures({
-        patientId: patient.patientId,
+        subjectId: subjectId,
         sort: { field: "fechaCreacion", ascending: false },
       })(dispatch);
     }
@@ -138,7 +141,7 @@ export default function VitalSignsList() {
             {getTitleByMeasureType(medicalMeasure.medicalMeasureType.type)}
           </p>
           <p className="font-semibold text-lg text-secondary">
-            {medicalMeasure.value}
+            {medicalMeasure.value.toFixed(2)}
             {getLetterByMeasureType(medicalMeasure.medicalMeasureType.type)}
           </p>
         </div>

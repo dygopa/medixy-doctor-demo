@@ -1,4 +1,4 @@
-import AutocompleteInputCIE10 from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputCIE10";
+import AutocompleteInputCIE10 from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputCIE10/AutocompleteInputCIE10";
 import { FormTextarea } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
@@ -8,14 +8,9 @@ import {
   ChangeEvent,
   Dispatch,
   SetStateAction,
-  useContext,
   useEffect,
   useState,
 } from "react";
-import {
-  IMedicalRecordCreateContext,
-  MedicalRecordCreateContext,
-} from "../../../context/MedicalRecordCreateContext";
 import TableDiagnosis from "./Table/Table";
 
 type valuesTypes = {
@@ -23,24 +18,6 @@ type valuesTypes = {
   referredBy: string;
   consultationReason: string;
   sufferingDate: string;
-  generalInspection: string;
-  respiratorySystem: string;
-  digestiveSystem: string;
-  cardiovascularSystem: string;
-  reproductiveSystem: string;
-  urinarySystem: string;
-  ophthalmologicalSystem: string;
-  locomotorSystem: string;
-  earInspection: string;
-  neurologicalInspection: string;
-  skinInspection: string;
-  size: string;
-  weight: string;
-  temperature: string;
-  respiratoryFrequency: string;
-  oximetry: string;
-  muscleMass: string;
-  glicemy: string;
   diagnose: ICIE10[];
   observations: string;
 };
@@ -51,12 +28,6 @@ interface IDiagnosisProps {
 }
 
 export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
-  const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
-    MedicalRecordCreateContext
-  );
-  const { getCIE10 } = actions;
-  const { data: cie10, loading, successful, error } = state.cie10;
-
   const [showBody, setShowBody] = useState(false);
   const [value, setValue] = useState("");
   const [diagnoseError, setDiagnoseError] = useState(false);
@@ -71,11 +42,6 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
       setShowBody(true);
     }
   }, [diagnose]);
-
-  useEffect(() => {
-    getCIE10()(dispatch);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div>
@@ -100,67 +66,57 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
       <div className={clsx([showBody ? "block" : "hidden"])}>
         <div className="xl:flex items-center justify-between mb-4 w-full">
           <div className="xl:flex items-center w-full">
-            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full">
-              <p className="text-md">Diagnóstico <span className="text-primary font-bold">*</span></p>
+            <div className="xl:mr-5 mb-1 lg:w-[300px] w-full">
+              <p className="text-md">
+                Diagnóstico <span className="text-primary font-bold">*</span>
+              </p>
             </div>
 
             <div className="w-full">
-              {error ? (
-                <p>Algo no ha salido bien. Vuelve a intentarlo</p>
-              ) : (
-                <>
-                  <AutocompleteInputCIE10
-                    disabled={loading || error !== null}
-                    defaultValue={
-                      loading ? "Obteniendo enfermedades CIE10" : value
-                    }
-                    items={
-                      successful && cie10.data.length > 0 ? cie10.data : []
-                    }
-                    itemsAdded={values.diagnose}
-                    placeholder="Nombre de la enfermedad - CIE10"
-                    className={clsx([
-                      "h-[50px] w-full",
-                      diagnoseError && "border-danger",
-                    ])}
-                    onClick={(item: ICIE10) => {
-                      if (
-                        values.diagnose.findIndex(
-                          (itemFind) => itemFind.id === item.id
-                        ) < 0
-                      ) {
-                        setValues({
-                          ...values,
-                          diagnose: [...values.diagnose, item],
-                        });
-                        setDiagnoseError(false);
-                        setValue("");
-                      }
-                    }}
-                  />
+              <AutocompleteInputCIE10
+                defaultValue={value}
+                itemsAdded={values.diagnose}
+                placeholder="Nombre de la enfermedad - CIE10"
+                className={clsx([
+                  "h-[50px] w-full",
+                  diagnoseError && "border-danger",
+                ])}
+                onClick={(item: ICIE10) => {
+                  if (
+                    values.diagnose.findIndex(
+                      (itemFind) => itemFind.id === item.id
+                    ) < 0
+                  ) {
+                    setValues({
+                      ...values,
+                      diagnose: [...values.diagnose, item],
+                    });
+                    setDiagnoseError(false);
+                    setValue("");
+                  }
+                }}
+              />
 
-                  {diagnoseError && (
-                    <p className="text-danger mt-1">
-                      Debe agregar los diagnósticos
-                    </p>
-                  )}
-
-                  <div className="max-w-full overflow-x-auto mt-3">
-                    <TableDiagnosis
-                      cie10={values.diagnose}
-                      values={values}
-                      setValues={setValues}
-                    />
-                  </div>
-                </>
+              {diagnoseError && (
+                <p className="text-danger mt-1">
+                  Debe agregar los diagnósticos
+                </p>
               )}
+
+              <div className="max-w-full overflow-x-auto mt-3">
+                <TableDiagnosis
+                  cie10={values.diagnose}
+                  values={values}
+                  setValues={setValues}
+                />
+              </div>
             </div>
           </div>
         </div>
 
         <div className="xl:flex items-center justify-between mb-4 w-full">
           <div className="xl:flex items-center w-full">
-            <div className="xl:mr-5 mb-1 xl:w-[200px] w-full">
+            <div className="xl:mr-5 mb-1 lg:w-[300px] w-full">
               <p className="text-md">Observaciones</p>
             </div>
 

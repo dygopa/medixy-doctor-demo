@@ -7,17 +7,20 @@ import {
 } from "../../../../../context/MedicalRecordContext";
 import Treatment from "./Treatment";
 
-export default function TreatmentsTable() {
+interface ITreatmentsTableProps {
+  subjectId: number;
+}
+
+export default function TreatmentsTable({ subjectId }: ITreatmentsTableProps) {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { getTreatments } = actions;
-  const { data: patient } = state.patient;
   const { data: treatments, loading, error, successful } = state.treatments;
 
   const onGetTreatmentsDispatch = () => {
-    if (patient?.patientId) {
+    if (subjectId) {
       getTreatments({
-        patientId: patient.patientId,
+        subjectId: subjectId,
       })(dispatch);
     }
   };

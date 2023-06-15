@@ -3,13 +3,14 @@ import {
   ordersTypeNumberEnEnum,
 } from "(presentation)/(enum)/orders/ordersEnum";
 import Button from "(presentation)/components/core/BaseComponents/Button";
+import { IMedicalProfile } from "domain/core/entities/medicalProfileEntity";
 import { IOrderMedical } from "domain/core/entities/orderEntity";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Formulary from "./Formulary/Formulary";
 import OrderType from "./OrderType/OrderType";
 
 export interface valuesTypes {
-  category: string;
+  medicalProfile: IMedicalProfile;
   indication: string;
   specialty: string;
   doctor: string;
@@ -31,7 +32,10 @@ export default function AddOrder({
 }: IAddOrderProps) {
   const [orderType, setOrderType] = useState<number | null>(null);
   const [values, setValues] = useState({
-    category: "",
+    medicalProfile: {
+      id: 0,
+      name: "",
+    } as IMedicalProfile,
     indication: "",
     specialty: "",
     doctor: "",
@@ -42,7 +46,7 @@ export default function AddOrder({
     const orderMedical: IOrderMedical = {
       orderId: orders.length + 1,
       orderType: ordersTypeNumberEnEnum[orderType ?? 1],
-      medicalExam: values.category,
+      medicalProfile: values.medicalProfile,
       indications: values.indication,
       specialty: orderType === 3 ? values.specialty : null,
       doctorName: orderType === 3 ? values.doctor : null,
@@ -56,7 +60,10 @@ export default function AddOrder({
     setOrders([...orders, orderMedical]);
     setValues({
       ...values,
-      category: "",
+      medicalProfile: {
+        id: 0,
+        name: "",
+      },
       indication: "",
       specialty: "",
       doctor: "",
@@ -74,7 +81,7 @@ export default function AddOrder({
     const orderEditMedical: IOrderMedical = {
       orderId: orderEdit?.orderId ?? 0,
       orderType: ordersTypeNumberEnEnum[orderType ?? 1],
-      medicalExam: values.category,
+      medicalProfile: values.medicalProfile,
       indications: values.indication,
       specialty: orderType === 3 ? values.specialty : null,
       doctorName: orderType === 3 ? values.doctor : null,
@@ -93,7 +100,10 @@ export default function AddOrder({
 
     setValues({
       ...values,
-      category: "",
+      medicalProfile: {
+        id: 0,
+        name: "",
+      } as IMedicalProfile,
       indication: "",
       specialty: "",
       doctor: "",
@@ -106,7 +116,12 @@ export default function AddOrder({
 
     setValues({
       ...values,
-      category: orderEdit?.medicalExam ?? "",
+      medicalProfile:
+        orderEdit?.medicalProfile ??
+        ({
+          id: 0,
+          name: "",
+        } as IMedicalProfile),
       indication: orderEdit?.indications ?? "",
       specialty: orderEdit?.specialty ?? "",
       doctor: orderEdit?.doctorName ?? "",
@@ -121,7 +136,10 @@ export default function AddOrder({
       return false;
     }
 
-    if ((orderType === 1 || orderType === 2) && values.category.length > 0) {
+    if (
+      (orderType === 1 || orderType === 2) &&
+      values.medicalProfile.name.length > 0
+    ) {
       return false;
     }
 
@@ -140,7 +158,10 @@ export default function AddOrder({
   useEffect(() => {
     setValues({
       ...values,
-      category: "",
+      medicalProfile: {
+        id: 0,
+        name: "",
+      } as IMedicalProfile,
       indication: "",
       specialty: "",
       doctor: "",

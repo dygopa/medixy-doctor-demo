@@ -51,7 +51,7 @@ export default function RecordsNonPathological({
       >
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Grupo sanguíneo y RH</p>
             </div>
 
@@ -80,7 +80,10 @@ export default function RecordsNonPathological({
 
                 <div className="w-full">
                   <AutocompleteInput
-                    disabled={!values.bloodTypeNonPathological.isChecked || values.bloodTypeNonPathological.values.length > 0}
+                    disabled={
+                      !values.bloodTypeNonPathological.isChecked ||
+                      values.bloodTypeNonPathological.values.length > 0
+                    }
                     items={["AB+", "AB-", "A+", "A-", "B+", "B-", "O+", "O-"]}
                     itemsAdded={values.bloodTypeNonPathological.values}
                     placeholder="Grupo Saguíneo (AB+, AB-, A+, A-, B+, B-, O+, O-)"
@@ -170,7 +173,7 @@ export default function RecordsNonPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Tabaquismo</p>
             </div>
 
@@ -221,7 +224,7 @@ export default function RecordsNonPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Toma bébidas alcohólicas</p>
             </div>
 
@@ -275,7 +278,7 @@ export default function RecordsNonPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Consume drogas</p>
             </div>
 
@@ -326,7 +329,7 @@ export default function RecordsNonPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Realiza ejercicio</p>
             </div>
 
@@ -377,7 +380,7 @@ export default function RecordsNonPathological({
 
         <div className="md:flex items-center justify-between mb-4 w-full">
           <div className="md:flex items-center w-full">
-            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[150px] md:w-[100px] w-full">
+            <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
               <p className="text-md">Hás sido contagiado de COVID</p>
             </div>
 

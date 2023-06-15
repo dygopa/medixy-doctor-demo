@@ -3,6 +3,7 @@ import CurrentConsultation from "./CurrentConsultation/CurrentConsultation";
 import Orders from "./Orders/Orders";
 import Recipe from "./Recipe/Recipe";
 import Records from "./Records/Records";
+import VitalSigns from "./VitalSigns/VitalSigns";
 
 interface IRightSideProps {
   width: number;
@@ -14,28 +15,108 @@ export default function RightSide({ width }: IRightSideProps) {
   const setValuesLocalStorage = () => {
     setIsLoading(true);
 
-    const values: any = localStorage.getItem(
+    let values: any = localStorage.getItem(
       "prosit.storage.medical-record-create"
     );
 
-    if (!values || typeof values?.diagnose === "string") {
+    values = JSON.parse(values);
+
+    if (
+      !values ||
+      typeof values?.currentConsultation?.diagnose === "string" ||
+      typeof values?.vitalSigns === "undefined" ||
+      typeof values?.physical === "undefined"
+    ) {
       const valuesFormulary = {
         currentConsultation: {
           consultationDate: "",
           referredBy: "",
           consultationReason: "",
           sufferingDate: "",
-          generalInspection: "",
-          respiratorySystem: "",
-          digestiveSystem: "",
-          cardiovascularSystem: "",
-          reproductiveSystem: "",
-          urinarySystem: "",
-          ophthalmologicalSystem: "",
-          locomotorSystem: "",
-          earInspection: "",
-          neurologicalInspection: "",
-          skinInspection: "",
+          diagnose: [],
+          observations: "",
+        },
+        physical: {
+          abnormalAppearance: {
+            isChecked: false,
+            value: "",
+          },
+          disnea: {
+            isChecked: false,
+            value: "",
+          },
+          deformity: {
+            isChecked: false,
+            value: "",
+          },
+          amputation: {
+            isChecked: false,
+            value: "",
+          },
+          paralysis: {
+            isChecked: false,
+            value: "",
+          },
+          abnormalMovements: {
+            isChecked: false,
+            value: "",
+          },
+          normalGait: {
+            isChecked: false,
+            value: "",
+          },
+          mentalDisorder: {
+            isChecked: false,
+            value: "",
+          },
+          abnormality: {
+            isChecked: false,
+            value: "",
+            values: {
+              anatomicalStateEyes: {
+                isChecked: false,
+                value: "",
+              },
+              eyeVision: {
+                isChecked: false,
+                value: "",
+              },
+              hearingEars: {
+                isChecked: false,
+                value: "",
+              },
+              buccalPharynx: {
+                isChecked: false,
+                value: "",
+              },
+              neck: {
+                isChecked: false,
+                value: "",
+              },
+              chest: {
+                isChecked: false,
+                value: "",
+              },
+              spine: {
+                isChecked: false,
+                value: "",
+              },
+              abdomen: {
+                isChecked: false,
+                value: "",
+              },
+              extremities: {
+                isChecked: false,
+                value: "",
+              },
+            },
+          },
+          smokingPhysical: {
+            isChecked: false,
+            value: "",
+          },
+        },
+        vitalSigns: {
           size: "",
           weight: "",
           temperature: "",
@@ -43,8 +124,6 @@ export default function RightSide({ width }: IRightSideProps) {
           oximetry: "",
           muscleMass: "",
           glicemy: "",
-          diagnose: [],
-          observations: "",
         },
         records: {
           allergiesPathological: {
@@ -154,6 +233,10 @@ export default function RightSide({ width }: IRightSideProps) {
 
   return (
     <div className="w-full">
+      <div className="w-full mb-8">
+        <VitalSigns />
+      </div>
+
       <div className="w-full mb-8">
         <Records />
       </div>

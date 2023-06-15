@@ -5,13 +5,13 @@ import ITreatmentRepository, { TreatmentRepository } from "infrastructure/reposi
 export default class TreatmentUseCase {
     private _repository: ITreatmentRepository = new TreatmentRepository();
 
-    async getTreatments(obj: { skip?: number | null; sort?: any; limit?: number | null; patientId?: number | null }): Promise<IGetTreatmentsResponse> {
+    async getTreatments(obj: { skip?: number | null; sort?: any; limit?: number | null; subjectId?: number | null }): Promise<IGetTreatmentsResponse> {
         try {
             const response = await this._repository.getTreatments({
                 skip: obj.skip,
                 sort: obj.sort,
                 limit: obj.limit,
-                patientId: obj.patientId
+                subjectId: obj.subjectId
             });
 
             if (response instanceof TreatmentFailure) throw response;

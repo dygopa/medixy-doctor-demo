@@ -8,7 +8,11 @@ import {
 import Detail from "./Detail/Detail";
 import HistoryTable from "./Table/Table";
 
-export default function History() {
+interface IHistoryProps {
+  subjectId: number;
+}
+
+export default function History({ subjectId }: IHistoryProps) {
   const { state } = useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { data: medicalConsulties, successful } = state.medicalConsulties;
 
@@ -48,7 +52,10 @@ export default function History() {
           setMedicalConsulty={setMedicalConsulty}
         />
       ) : (
-        <HistoryTable setMedicalConsulty={setMedicalConsulty} />
+        <HistoryTable
+          subjectId={subjectId}
+          setMedicalConsulty={setMedicalConsulty}
+        />
       )}
     </div>
   );

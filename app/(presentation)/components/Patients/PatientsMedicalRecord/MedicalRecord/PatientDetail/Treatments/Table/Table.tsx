@@ -11,13 +11,13 @@ export default function TreatmentsTable() {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { getTreatments } = actions;
-  const { data: patient } = state.patient;
+  const { data: subject } = state.subject;
   const { data: treatments, loading, error, successful } = state.treatments;
 
   const onGetTreatmentsDispatch = () => {
-    if (patient?.patientId) {
+    if (subject?.subjectId) {
       getTreatments({
-        patientId: patient.patientId,
+        subjectId: subject.subjectId,
         limit: 3,
       })(dispatch);
     }

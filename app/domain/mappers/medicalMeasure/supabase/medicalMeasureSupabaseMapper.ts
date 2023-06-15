@@ -24,7 +24,7 @@ export function medicalMeasureSupabaseToMap(data: any): IMedicalMeasure {
     medicalMeasureType: {} as IMedicalMeasureType,
     medicalConsultyId: data?.consultaMedicaId, 
     medicalConsulty: {} as IMedicalConsulty,
-    patientId: data?.pacienteId,
+    subjectId: data?.sujetoId,
     createdOn: data?.fechaCreacion ? new Date(new Date(data.fechaCreacion).getFullYear(), new Date(data.fechaCreacion).getMonth() + 1, new Date(data.fechaCreacion).getDate() + 1) : new Date(),
     updatedOn: data?.fechaActualizacion ? new Date(data.fechaActualizacion) : null,
     deletedOn: data?.fechaEliminacion ? new Date(data.fechaEliminacion) : null,
@@ -36,7 +36,7 @@ export function fromMedicalMeasureSupabaseDocumentData(medicalMeasure: IMedicalM
     valor: medicalMeasure.value,
     tipoSignoVitalId: medicalMeasure.medicalMeasureTypeId,
     consultaMedicaId: medicalMeasure.medicalConsultyId, 
-    pacienteId: medicalMeasure.patientId,
+    sujetoId: medicalMeasure.subjectId,
     fechaCreacion: medicalMeasure.createdOn,
   } as any;
 

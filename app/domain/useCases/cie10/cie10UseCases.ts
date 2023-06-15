@@ -5,9 +5,9 @@ import { CIE10Repository } from "infrastructure/repositories/cie10/cie10Reposito
 export default class CIE10UseCase {
     private _repository: CIE10Repository = new CIE10Repository();
 
-    async getCIE10(): Promise<IGetCIE10ListResponse> {
+    async getCIE10(obj: { searchQuery: string; limit?: number | null }): Promise<IGetCIE10ListResponse> {
         try {
-            const response = await this._repository.getCIE10();
+            const response = await this._repository.getCIE10({ searchQuery: obj.searchQuery, limit: obj.limit });
 
             if (response instanceof CIE10Failure) throw response;
 

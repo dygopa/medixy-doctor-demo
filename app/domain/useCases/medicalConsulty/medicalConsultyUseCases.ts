@@ -1,8 +1,6 @@
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
-import { TreatmentFailure } from "domain/core/failures/treatment/treatmentFailure";
 import { ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
-import { IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
 import IDiagnosisRepository, { DiagnosisRepository } from "infrastructure/repositories/diagnosis/diagnosisRepository";
 import { MedicalConsultyRepository } from "infrastructure/repositories/medicalConsulty/medicalConsultyRepository";
 import IMedicalMeasureRepository, { MedicalMeasureRepository } from "infrastructure/repositories/medicalMeasure/medicalMeasureRepository";
@@ -16,13 +14,13 @@ export default class MedicalConsultyUseCase {
   private _diagnosisRepository: IDiagnosisRepository = new DiagnosisRepository();
   private _medicalRecordRepository: IMedicalRecordRepository = new MedicalRecordRepository();
 
-  async getMedicalConsulties(obj: { skip?: number | null; sort?: any; limit?: number | null; patientId?: number | null }): Promise<IGetMedicalConsultiesResponse> {
+  async getMedicalConsulties(obj: { skip?: number | null; sort?: any; limit?: number | null; subjectId?: number | null }): Promise<IGetMedicalConsultiesResponse> {
     try {
       const response = await this._repository.getMedicalConsulties({
         skip: obj.skip,
         sort: obj.sort,
         limit: obj.limit,
-        patientId: obj.patientId
+        subjectId: obj.subjectId
       });
 
       if (response instanceof MedicalConsultyFailure) throw response;

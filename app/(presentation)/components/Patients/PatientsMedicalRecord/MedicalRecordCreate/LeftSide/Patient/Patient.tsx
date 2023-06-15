@@ -7,6 +7,7 @@ import {
   MedicalRecordCreateContext,
 } from "../../context/MedicalRecordCreateContext";
 import { FiUser } from "react-icons/fi";
+import { getFirstLetter } from "(presentation)/(helper)/strings/strings";
 
 interface IPatientProps {
   showCompleteDetails: boolean;
@@ -22,7 +23,7 @@ export default function Patient({
   const { state } = useContext<IMedicalRecordCreateContext>(
     MedicalRecordCreateContext
   );
-  const { data: patient } = state.patient;
+  const { data: subject } = state.subject;
 
   return (
     <div
@@ -40,16 +41,20 @@ export default function Patient({
         <div className="lg:flex block">
           <div className="text-center lg:border-r border-grey">
             <div className="flex w-full justify-center mb-4 mr-24">
-              {patient && patient?.pictureUrl?.length > 0 ? (
+              {subject && subject?.pictureUrl?.length > 0 ? (
                 <Image
                   className="object-cover rounded-full"
-                  src={patient.pictureUrl}
+                  src={subject.pictureUrl}
                   alt=""
                   width={100}
                   height={100}
                 />
               ) : (
-                <FiUser size={80} />
+                <div className="w-[60px] h-[60px] bg-primary rounded-full flex justify-center items-center">
+                  <span className="text-white font-semibold text-2xl">
+                    {getFirstLetter(subject?.name ?? "").toUpperCase()}
+                  </span>
+                </div>
               )}
             </div>
 
@@ -76,20 +81,20 @@ export default function Patient({
                 <p className="font-normal text-slate-500 mb-1">Nombre(s)</p>
 
                 <span className="font-medium text-[16px]">
-                  {patient?.name} {patient?.lastName}
+                  {subject?.name} {subject?.lastName}
                 </span>
               </div>
               <div>
                 <p className="font-normal text-slate-500 mb-1">Edad</p>
 
                 <span className="font-medium text-[16px]">
-                  {patient?.age
-                    ? patient.age > 1
-                      ? `${patient.age} ${
-                          patient?.ageType === "years" ? "años" : "meses"
+                  {subject?.age
+                    ? subject.age > 1
+                      ? `${subject.age} ${
+                          subject?.ageType === "years" ? "años" : "meses"
                         }`
-                      : `${patient.age} ${
-                          patient?.ageType === "years" ? "año" : "mes"
+                      : `${subject.age} ${
+                          subject?.ageType === "years" ? "año" : "mes"
                         }`
                     : "No especificado"}{" "}
                 </span>
@@ -109,7 +114,7 @@ export default function Patient({
                 </p>
 
                 <span className="font-medium text-[16px]">
-                  {patient?.lastName}
+                  {subject?.lastName}
                 </span>
               </div>
 
@@ -127,8 +132,8 @@ export default function Patient({
                 </p>
 
                 <span className="font-medium text-[16px]">
-                  {patient && patient.motherLastName?.length > 0
-                    ? patient.motherLastName
+                  {subject && subject.motherLastName?.length > 0
+                    ? subject.motherLastName
                     : "No especificado"}
                 </span>
               </div>
@@ -145,8 +150,8 @@ export default function Patient({
                 <p className="font-normal text-slate-500 mb-1">CURP</p>
 
                 <span className="font-medium text-[16px]">
-                  {patient && patient.curp?.length > 0
-                    ? patient.curp
+                  {subject && subject.curp?.length > 0
+                    ? subject.curp
                     : "No especificado"}
                 </span>
               </div>
@@ -163,8 +168,8 @@ export default function Patient({
                 <p className="font-normal text-slate-500 mb-1">Teléfono</p>
 
                 <span className="font-medium text-[16px]">
-                  {patient && patient.phoneNumber?.length > 0
-                    ? patient.phoneNumber
+                  {subject && subject.phoneNumber?.length > 0
+                    ? subject.phoneNumber
                     : "No especificado"}
                 </span>
               </div>
@@ -183,8 +188,8 @@ export default function Patient({
                 </p>
 
                 <span className="font-medium text-[16px]">
-                  {patient && patient.email?.length > 0
-                    ? patient.email
+                  {subject && subject.email?.length > 0
+                    ? subject.email
                     : "No especificado"}
                 </span>
               </div>

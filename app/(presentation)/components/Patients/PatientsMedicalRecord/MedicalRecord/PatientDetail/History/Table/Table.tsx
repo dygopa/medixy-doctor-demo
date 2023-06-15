@@ -12,7 +12,7 @@ export default function HistoryTable() {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { getMedicalConsulties } = actions;
-  const { data: patient } = state.patient;
+  const { data: subject } = state.subject;
   const {
     data: medicalConsulties,
     loading,
@@ -21,9 +21,9 @@ export default function HistoryTable() {
   } = state.medicalConsulties;
 
   const onGetMedicalConsultiesDispatch = () => {
-    if (patient?.patientId) {
+    if (subject?.subjectId) {
       getMedicalConsulties({
-        patientId: patient.patientId,
+        subjectId: subject.subjectId,
         sort: { field: "fechaConsulta", ascending: false },
         limit: 3,
       })(dispatch);

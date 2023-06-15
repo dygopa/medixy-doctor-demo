@@ -39,7 +39,7 @@ export default function History({
                 <button
                   type="button"
                   onClick={() => {
-                    setPopupSectionActive(0);
+                    setPopupSectionActive(2);
                     setIsOpen(true);
                   }}
                   className="hover:bg-dark hover:bg-opacity-10 px-2 py-1 rounded-md"

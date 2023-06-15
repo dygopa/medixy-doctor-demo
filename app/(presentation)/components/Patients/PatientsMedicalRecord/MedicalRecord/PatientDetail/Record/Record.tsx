@@ -38,7 +38,7 @@ export default function Records({
               <button
                 type="button"
                 onClick={() => {
-                  setPopupSectionActive(4);
+                  setPopupSectionActive(6);
                   setIsOpen(true);
                 }}
                 className="hover:bg-dark hover:bg-opacity-10 px-2 py-1 rounded-md"

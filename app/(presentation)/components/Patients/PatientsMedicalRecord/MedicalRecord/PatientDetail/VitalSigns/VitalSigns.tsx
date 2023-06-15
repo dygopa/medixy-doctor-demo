@@ -38,7 +38,7 @@ export default function VitalSigns({
               <button
                 type="button"
                 onClick={() => {
-                  setPopupSectionActive(2);
+                  setPopupSectionActive(4);
                   setIsOpen(true);
                 }}
                 className="hover:bg-dark hover:bg-opacity-10 px-2 py-1 rounded-md"

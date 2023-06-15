@@ -28,7 +28,7 @@ export default function Title({
 
     router.push(
       PatientsRoutesEnum.PatientsView +
-        medicalConsulty.patientId +
+        medicalConsulty.subjectId +
         PatientsMedicalRecordRoutesEnum.MedicalRecord
     );
   };

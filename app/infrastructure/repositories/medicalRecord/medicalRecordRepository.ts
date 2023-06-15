@@ -9,8 +9,9 @@ export default interface IMedicalRecordRepository {
     skip?: number | string | null; 
     sort?: any; 
     limit?: number | null; 
-    patientId?: number | null;
+    subjectId?: number | null;
     medicalRecordType?: number | null;
+    medicalRecordCategory?: number | null;
   }): Promise<IGetMedicalRecordsResponse | MedicalRecordFailure>;
   createMedicalRecord(medicalRecord: IMedicalRecord): Promise<ICreateMedicalRecordResponse | MedicalRecordFailure>;
 }
@@ -20,15 +21,16 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
     skip?: number | string | null; 
     sort?: any; 
     limit?: number | null; 
-    patientId?: number | null;
+    subjectId?: number | null;
     medicalRecordType?: number | null;
+    medicalRecordCategory?: number | null;
   }): Promise<IGetMedicalRecordsResponse | MedicalRecordFailure> {
     try {
-      let query = supabase.from("Antecedentes").select(`
+      let query = supabase.from("RegistrosMedicos").select(`
         *,
         ConsultasMedicas (*),
-        TiposAntecedentes (*),
-        ValoresAntecedentes (*)
+        TiposRegistrosMedicos!inner(*),
+        ValoresRegistrosMedicos (*)
       `,
       { count: "exact" });
 
@@ -40,12 +42,16 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
         query = query.order('fechaConsulta', { foreignTable: 'ConsultasMedicas', ascending: false });
       }
 
-      if (obj.patientId) {
-        query = query.eq("pacienteId", obj.patientId);
+      if (obj.subjectId) {
+        query = query.eq("sujetoId", obj.subjectId);
       }
 
       if (obj.medicalRecordType) {
-        query = query.eq("tipoAntecedenteId", obj.medicalRecordType);
+        query = query.eq("tipoRegistroMedicoId", obj.medicalRecordType);
+      }
+      
+      if (obj.medicalRecordCategory) {
+        query = query.eq('TiposRegistrosMedicos.categoriaRegistroMedicoId', obj.medicalRecordCategory);
       }
 
       if (obj.skip && typeof obj.skip === "number" && obj.limit) {
@@ -64,14 +70,14 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
           await Promise.all(res.data.map(async (data: any) => {
               const medicalRecordMap: IMedicalRecord = medicalRecordSupabaseToMap(data);
 
-              if (data?.TiposAntecedentes) {
-                const medicalRecordType: IMedicalRecordType = medicalRecordTypeSupabaseToMap(data.TiposAntecedentes);
+              if (data?.TiposRegistrosMedicos) {
+                const medicalRecordType: IMedicalRecordType = medicalRecordTypeSupabaseToMap(data.TiposRegistrosMedicos);
 
                 medicalRecordMap.medicalRecordType = medicalRecordType;
               }
 
-              if (data?.ValoresAntecedentes?.length > 0) {
-                data.ValoresAntecedentes.forEach((medicalRecordValueData: any) => {
+              if (data?.ValoresRegistrosMedicos?.length > 0) {
+                data.ValoresRegistrosMedicos.forEach((medicalRecordValueData: any) => {
                   const medicalRecordValue: IMedicalRecordValue = medicalRecordValueSupabaseToMap(medicalRecordValueData);
 
                   if (medicalRecordValue.id >= 0) medicalRecordMap.medicalRecordValues.push(medicalRecordValue)
@@ -99,33 +105,28 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
     async createMedicalRecord(medicalRecord: IMedicalRecord): Promise<ICreateMedicalRecordResponse | MedicalRecordFailure> {
       try {
-        const resRecordTypes = await supabase.from("TiposAntecedentes").select("*").eq("nombre", medicalRecord.medicalRecordType.name).limit(1);
+        const resRecordTypes = await supabase.from("TiposRegistrosMedicos").select("*").eq("nombre", medicalRecord.medicalRecordType.name).limit(1);
 
         if (resRecordTypes.error) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
 
         if (resRecordTypes.data && resRecordTypes.data.length > 0) medicalRecord.medicalRecordTypeId = resRecordTypes.data[0].id;
 
-        const res = await supabase.from("Antecedentes").insert(fromMedicalRecordSupabaseDocumentData(medicalRecord)).select();
+        const res = await supabase.from("RegistrosMedicos").insert(fromMedicalRecordSupabaseDocumentData(medicalRecord)).select();
 
         if (res.error) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
 
         if (res.data && res.data.length > 0) medicalRecord.id = res.data[0].id;
 
-        console.log(medicalRecord.medicalRecordValues.length)
-
         if (medicalRecord.medicalRecordValues.length > 0) {
-            console.log("aca")
             await Promise.all((medicalRecord.medicalRecordValues.map(async (medicalRecordValue: IMedicalRecordValue) => {
                 medicalRecordValue.medicalRecordId = medicalRecord.id;
 
-                const res = await supabase.from("TiposValorAntecedentes").select("*").eq("nombre", medicalRecordValue.medicalRecordValueType.name).eq("tipoAntecedenteId", medicalRecord.medicalRecordTypeId).limit(1);
+                const res = await supabase.from("TiposValorRegistrosMedicos").select("*").eq("nombre", medicalRecordValue.medicalRecordValueType.name).eq("tipoRegistroMedicoId", medicalRecord.medicalRecordTypeId).limit(1);
 
                 if (res.data && res.data.length > 0) {
                     medicalRecordValue.medicalRecordValueTypeId = res.data[0].id;
 
-                    console.log(medicalRecordValue)
-
-                    await supabase.from("ValoresAntecedentes").insert(fromMedicalRecordValueSupabaseDocumentData(medicalRecordValue));
+                    await supabase.from("ValoresRegistrosMedicos").insert(fromMedicalRecordValueSupabaseDocumentData(medicalRecordValue));
                 }
             })));
         }
