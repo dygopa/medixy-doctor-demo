@@ -1,8 +1,8 @@
-import { IPatient } from "domain/core/entities/patientEntity";
+import { ISubject } from "domain/core/entities/subjectEntity";
 
-export function patientSupabaseToMap(data: any): IPatient {
+export function subjectSupabaseToMap(data: any): ISubject {
   return {
-    patientId: data?.id ?? "",
+    subjectId: data?.id ?? "",
     name: data?.nombres ?? "",
     lastName: data?.primerApellido ?? "",
     motherLastName: data?.segundoApellido ?? "",
@@ -19,11 +19,12 @@ export function patientSupabaseToMap(data: any): IPatient {
     federativeEntityId: data?.entidadFederativaId ?? null,
     city: data?.ciudad ?? "",
     pictureUrl: data?.avatar ?? "",
+    isPatient: data?.esPaciente ?? "",
     birthDate: data?.fechaNacimiento ?? new Date(),
     createdOn: data?.fechaRegistro ? new Date(data.fechaRegistro) : new Date(),
     //updatedOn: data?.fechaActualizacion ? new Date(data.fechaActualizacion) : new Date(),
     //deletedOn: data?.fechaEliminacion ? new Date(data.fechaEliminacion) : new Date(),
-  } as IPatient;
+  } as ISubject;
 }
 
 function getPatientAgeMonths(birthDate: Date): number {
@@ -54,27 +55,28 @@ function getPatientAgeType(birthDate: Date): string {
 }
 
 
-export function fromPatientSupabaseDocumentData(patient: IPatient): any {
-  console.log(patient)
+export function fromSubjectSupabaseDocumentData(subject: ISubject): any {
+  console.log(subject)
   const documentData = {
-    nombres: patient.name,
-    primerApellido: patient.lastName,
-    segundoApellido: patient.motherLastName,
-    curp: patient.curp === "" ? null: patient.curp,
-    email: patient.email === "" ? null: patient.email,
-    sexo: patient.sex,
-    genero: patient.gender,
-    telefono: patient.phoneNumber,
-    paisNacimiento: patient.country,
-    entidadFederativaId: patient.federativeEntityId,
-    estado: patient.state,
-    direccion: patient.address,
-    ciudad: patient.city,
-    avatar: patient.pictureUrl === "" ? null: patient.pictureUrl,
-    fechaNacimiento: patient.birthDate,
-    fechaRegistro: patient.createdOn,
-    //fechaActualizacion: patient.updatedOn,
-    //fechaEliminado: patient.deletedOn,
+    nombres: subject.name,
+    primerApellido: subject.lastName,
+    segundoApellido: subject.motherLastName,
+    curp: subject.curp === "" ? null: subject.curp,
+    email: subject.email === "" ? null: subject.email,
+    sexo: subject.sex,
+    genero: subject.gender,
+    telefono: subject.phoneNumber,
+    paisNacimiento: subject.country,
+    entidadFederativaId: subject.federativeEntityId,
+    estado: subject.state,
+    direccion: subject.address,
+    ciudad: subject.city,
+    esPaciente: subject.isPatient,
+    avatar: subject.pictureUrl === "" ? null: subject.pictureUrl,
+    fechaNacimiento: subject.birthDate,
+    fechaRegistro: subject.createdOn,
+    //fechaActualizacion: subject.updatedOn,
+    //fechaEliminado: subject.deletedOn,
   } as any;
 
   return documentData;

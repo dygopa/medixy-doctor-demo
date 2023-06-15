@@ -16,13 +16,13 @@ export default function EditPatientIndex({
 }: IEditPatientIndexProps) {
   const { state, actions, dispatch } =
     useContext<IEditPatientContext>(EditPatientContext);
-  const { getPatientById } = actions;
-  const { data: patient, loading, successful, error } = state.patient;
+  const { getSubjectById } = actions;
+  const { data: patient, loading, successful, error } = state.subject;
 
   useEffect(() => {
     let isCleanup = true;
 
-    if (isCleanup) getPatientById(patientId)(dispatch);
+    if (isCleanup) getSubjectById(patientId)(dispatch);
 
     return () => {
       isCleanup = false;
@@ -52,7 +52,7 @@ export default function EditPatientIndex({
       </div>
     );
 
-  if (!patient?.patientId && successful) {
+  if (!patient?.subjectId && successful) {
     return (
       <div className="w-full flex flex-col justify-center items-center py-8">
         <p className="font-bold text-slate-900 text-lg">
@@ -65,7 +65,7 @@ export default function EditPatientIndex({
     );
   }
 
-  if (!patient?.patientId && !successful)
+  if (!patient?.subjectId && !successful)
     return <div className="mt-5" style={{ height: "80vh" }} />;
 
   return (

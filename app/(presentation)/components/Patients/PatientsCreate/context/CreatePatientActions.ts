@@ -1,16 +1,16 @@
 import { Dispatch } from "react";
-import PatientsUseCase from "domain/useCases/patient/patientUseCase";
-import { IPatient } from "domain/core/entities/patientEntity";
+import SubjectsUseCase from "domain/useCases/subject/subjectUseCase";
+import { ISubject } from "domain/core/entities/subjectEntity";
 
-export interface ICreatePatientActions {
-    createPatient: Function,
+export interface ICreateSubjectActions {
+    createSubject: Function,
 }
 
-const createPatient = (patient:IPatient) => async (dispatch: Dispatch<any>) => {
+const createSubject = (subject:ISubject) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "CREATE_PATIENT_LOADING" });
       
-      const res: boolean = await new PatientsUseCase().createPatient(patient);
+      const res: boolean = await new SubjectsUseCase().createSubject(subject);
   
       dispatch({ type: "CREATE_PATIENT_SUCCESSFUL", payload: { data: res } });
     } catch (error) {
@@ -19,6 +19,6 @@ const createPatient = (patient:IPatient) => async (dispatch: Dispatch<any>) => {
     }
 }
 
-export const actions: ICreatePatientActions = {
-    createPatient,
+export const actions: ICreateSubjectActions = {
+    createSubject,
 }

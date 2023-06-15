@@ -1,11 +1,11 @@
 import React, { createContext, Dispatch, useReducer } from "react";
-import { actions, ICreatePatientActions } from "./CreatePatientActions";
+import { actions, ICreateSubjectActions } from "./CreatePatientActions";
 import { CreatePatientReducer } from "./CreatePatientReducer";
-import { ICreatePatientState, initialState } from "./CreatePatientState";
+import { ICreateSubjectState, initialState } from "./CreatePatientState";
 
 export interface ICreatePatientContext {
-    state: ICreatePatientState,
-    actions: ICreatePatientActions,
+    state: ICreateSubjectState,
+    actions: ICreateSubjectActions,
     dispatch: Dispatch<any>;
 }
 

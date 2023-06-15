@@ -1,8 +1,8 @@
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
-import { IPatient } from "domain/core/entities/patientEntity";
+import { IPatient } from "domain/core/entities/subjectEntity";
 import { CIE10Failure } from "domain/core/failures/cie10/cie10Failure";
 import { FederalEntityFailure } from "domain/core/failures/federalEntity/federalEntityFailure";
-import { PatientFailure } from "domain/core/failures/patient/patientFailure";
+import { PatientFailure } from "domain/core/failures/subject/subjectFailure";
 import { IGetCIE10ListResponse } from "domain/core/response/cie10Response";
 
 export interface IMedicalRecordCreateState {

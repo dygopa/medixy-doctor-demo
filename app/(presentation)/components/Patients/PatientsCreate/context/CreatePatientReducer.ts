@@ -3,8 +3,8 @@ export const CreatePatientReducer = (state: any, action: any) => {
     case 'CREATE_PATIENT_LOADING' :
       return {
         ...state,
-        createPatient: {
-          ...state.createPatient,
+        createSubject: {
+          ...state.createSubject,
           data: false,
           loading: true,
           successful: false,
@@ -14,8 +14,8 @@ export const CreatePatientReducer = (state: any, action: any) => {
     case 'CREATE_PATIENT_SUCCESSFUL' :
       return {
         ...state,
-        createPatient: {
-          ...state.createPatient,
+        createSubject: {
+          ...state.createSubject,
           data: true,
           loading: false,
           successful: true,
@@ -25,8 +25,8 @@ export const CreatePatientReducer = (state: any, action: any) => {
     case 'CREATE_PATIENT_ERROR' :
       return {
         ...state,
-        createPatient: {
-          ...state.createPatient,
+        createSubject: {
+          ...state.createSubject,
           data: false,
           loading: false,
           successful: false,

@@ -1,4 +1,4 @@
-import { IPatient } from "./patientEntity";
+import { ISubject } from "./subjectEntity";
 
 export interface IPet {
     petId: string;
@@ -7,8 +7,8 @@ export interface IPet {
     specie: string;
     breed: string;
     gender: string;
-    patientId: string;
-    patient?: IPatient | null;
+    SubjectId: string;
+    Subject?: ISubject | null;
     imageUrl: string;
     birthDate: any | null;
     createdOn: any | null;

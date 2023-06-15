@@ -16,8 +16,8 @@ import {
   CreatePatientContext,
   ICreatePatientContext,
 } from "../../context/CreatePatientContext";
-import { IPatient } from "domain/core/entities/patientEntity";
-import { patientFailuresEnum } from "domain/core/failures/patient/patientFailure";
+import { ISubject } from "domain/core/entities/subjectEntity";
+import { subjectFailuresEnum } from "domain/core/failures/subject/subjectFailure";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { useRouter } from "next/navigation";
 

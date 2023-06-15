@@ -1,19 +1,19 @@
 import { getSkipPagination } from "(presentation)/(helper)/paginate/paginateHelper";
-import { IGetPatientsResponse } from "domain/core/response/patientsResponse";
-import PatientsUseCase from "domain/useCases/patient/patientUseCase";
+import { IGetSubjectsResponse } from "domain/core/response/subjectsResponse";
+import SubjectsUseCase from "domain/useCases/subject/subjectUseCase";
 import { Dispatch } from "react";
 
-export interface IPatientListActions {
-    getPatients: Function;
+export interface ISubjectListActions {
+    getSubjects: Function;
 }
 
-const getPatients = (obj: { page?: number | null; limit: number; searchQuery?: string | undefined }) => async (dispatch: Dispatch<any>) => {
+const getSubjects = (obj: { page?: number | null; limit: number; searchQuery?: string | undefined }) => async (dispatch: Dispatch<any>) => {
     try {
         dispatch({ type: "GET_PATIENTS_LOADING" });
 
         const skip: number | null = getSkipPagination({ page: obj.page ?? 1, limit: obj.limit })
         
-        const res: IGetPatientsResponse = await new PatientsUseCase().getPatients({
+        const res: IGetSubjectsResponse = await new SubjectsUseCase().getSubjects({
           skip: skip,
           limit: obj.limit,
           searchQuery: obj.searchQuery
@@ -26,6 +26,6 @@ const getPatients = (obj: { page?: number | null; limit: number; searchQuery?: s
       }
 }
 
-export const actions : IPatientListActions = {
-    getPatients,
+export const actions : ISubjectListActions = {
+    getSubjects,
 }

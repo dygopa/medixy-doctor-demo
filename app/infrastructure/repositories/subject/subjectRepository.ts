@@ -1,27 +1,27 @@
-import { IPatient } from 'domain/core/entities/patientEntity';
+import { ISubject } from 'domain/core/entities/subjectEntity';
 import { IPoints } from 'domain/core/entities/pointsEntity';
-import { PatientFailure, patientFailuresEnum } from 'domain/core/failures/patient/patientFailure';
+import { SubjectFailure, subjectFailuresEnum } from 'domain/core/failures/subject/subjectFailure';
 import { PointFailure } from 'domain/core/failures/point/pointFailure';
 import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
-import { fromPatientSupabaseDocumentData, patientSupabaseToMap } from "domain/mappers/patient/supabase/patientSupabaseMapper";
+import { fromSubjectSupabaseDocumentData, subjectSupabaseToMap } from "domain/mappers/patient/supabase/subjectSupabaseMapper";
 import { pointsSupabaseToMap } from "domain/mappers/points/supabase/pointsSupabaseMapper";
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
-import { IGetPatientsResponse } from 'domain/core/response/patientsResponse';
+import { IGetSubjectsResponse } from 'domain/core/response/subjectsResponse';
 
-export default interface IPatientRepository {
-  getPatients(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetPatientsResponse | PatientFailure>;
-  getPatientById(patientId: number): Promise<IPatient | PatientFailure>;
-  getPatientsPoints(obj: { country?: string | undefined }): Promise<IPoints | PointFailure>;
-  createPatients(patients: IPatient[]): Promise<boolean | PatientFailure>;
-  editPatient(patient: IPatient): Promise<boolean | PatientFailure>;
-  exportPatientsToCSV(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; country?: string | undefined, startDate?: Date | undefined; endDate?: Date | undefined; }): Promise<boolean | PatientFailure>;
+export default interface ISubjectRepository {
+  getSubjects(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure>;
+  getSubjectById(subjectId: number): Promise<ISubject | SubjectFailure>;
+  getSubjectsPoints(obj: { country?: string | undefined }): Promise<IPoints | PointFailure>;
+  createSubjects(subjects: ISubject[]): Promise<boolean | SubjectFailure>;
+  editSubject(subject: ISubject): Promise<boolean | SubjectFailure>;
+  exportSubjectsToCSV(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; country?: string | undefined, startDate?: Date | undefined; endDate?: Date | undefined; }): Promise<boolean | SubjectFailure>;
 }
 
-export class PatientRepository implements IPatientRepository {
-    async getPatients(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetPatientsResponse | PatientFailure> {
+export class SubjectRepository implements ISubjectRepository {
+    async getSubjects(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure> {
       try {
-          let query = supabase.from("Pacientes").select("*", { count: "exact" });
+          let query = supabase.from("Sujetos").select("*", { count: "exact" });
     
           if (obj.sort) {
             query = query.order(obj.sort.field, {
@@ -45,18 +45,18 @@ export class PatientRepository implements IPatientRepository {
   
           const res = await query;
           
-          const patients: IPatient[] = [];
+          const subjects: ISubject[] = [];
   
           if (res.data && res.data.length > 0) {
               await Promise.all(res.data.map(async (data: any) => {
-                  const patientMap: IPatient = patientSupabaseToMap(data);
+                  const subjectMap: ISubject = subjectSupabaseToMap(data);
       
-                  patients.push(patientMap);
+                  subjects.push(subjectMap);
               }));
           }
 
-          const response: IGetPatientsResponse = {
-            data: patients,
+          const response: IGetSubjectsResponse = {
+            data: subjects,
             metadata: {
               total: res.count ?? 0,
               limit: obj.limit ?? 0,
@@ -66,26 +66,26 @@ export class PatientRepository implements IPatientRepository {
           return JSON.parse(JSON.stringify(response));
       } catch (error) { 
         const exception = error as any;
-        return new PatientFailure(patientFailuresEnum.serverError);
+        return new SubjectFailure(subjectFailuresEnum.serverError);
       }
     }
   
-    async getPatientById(patientId: number): Promise<IPatient | PatientFailure> {
+    async getSubjectById(subjectId: number): Promise<ISubject | SubjectFailure> {
       try {
-        const res = await supabase.from("Pacientes").select().eq("id", patientId).limit(1);
+        const res = await supabase.from("Sujetos").select().eq("id", subjectId).limit(1);
 
-        let patient: IPatient = {} as IPatient;
+        let subject: ISubject = {} as ISubject;
 
-        if (res.data && res.data.length > 0) patient = patientSupabaseToMap(res.data[0]);
+        if (res.data && res.data.length > 0) subject = subjectSupabaseToMap(res.data[0]);
 
-        return patient;
+        return subject;
       } catch (error) { 
         const exception = error as any;
-        return new PatientFailure(patientFailuresEnum.serverError);
+        return new SubjectFailure(subjectFailuresEnum.serverError);
       }
     }
   
-    async getPatientsPoints(obj: { country?: string | undefined }): Promise<IPoints | PointFailure> {
+    async getSubjectsPoints(obj: { country?: string | undefined }): Promise<IPoints | PointFailure> {
       try {
           let query = supabase.from("Punto").select().neq("pacienteId", false);
   
@@ -114,47 +114,48 @@ export class PatientRepository implements IPatientRepository {
           return points;
       } catch (error) { 
         const exception = error as any;
-        return new PatientFailure(patientFailuresEnum.serverError);
+        return new SubjectFailure(subjectFailuresEnum.serverError);
       }
     }
   
-    async createPatients(patients: IPatient[]): Promise<boolean | PatientFailure> {
+    async createSubjects(subjects: ISubject[]): Promise<boolean | SubjectFailure> {
       try {
-      await Promise.all(patients.map(async (patient: IPatient) => {
-          supabase.from("Paciente").insert(fromPatientSupabaseDocumentData(patient));
+      await Promise.all(subjects.map(async (subject: ISubject) => {
+          supabase.from("Paciente").insert(fromSubjectSupabaseDocumentData(subject));
       }));
   
         return true;
       } catch (error) { 
         const exception = error as any;
-        return new PatientFailure(patientFailuresEnum.serverError);
+        return new SubjectFailure(subjectFailuresEnum.serverError);
       }
     }
 
-    async createPatient(patient: IPatient): Promise<boolean | PatientFailure> {
+    async createSubject(subject: ISubject): Promise<boolean | SubjectFailure> {
       try {
-        await supabase.from("Pacientes").insert(fromPatientSupabaseDocumentData(patient));
+        await supabase.from("Sujetos").insert(fromSubjectSupabaseDocumentData(subject));
+        console.log(subject)
         return true;
       } catch (error) {
         const exception = error as any;
-        return new PatientFailure(patientFailuresEnum.serverError);
+        return new SubjectFailure(subjectFailuresEnum.serverError);
       }
     }
 
-    async editPatient(patient: IPatient): Promise<boolean | PatientFailure> {
+    async editSubject(subject: ISubject): Promise<boolean | SubjectFailure> {
       try {
-        patient.updatedOn = new Date();
+        subject.updatedOn = new Date();
 
-        await supabase.from("Pacientes").update(fromPatientSupabaseDocumentData(patient)).match({ id: patient.patientId });
+        await supabase.from("Sujetos").update(fromSubjectSupabaseDocumentData(subject)).match({ id: subject.subjectId });
 
         return true;
       } catch (error) {
         const exception = error as any;
-        return new PatientFailure(patientFailuresEnum.serverError);
+        return new SubjectFailure(subjectFailuresEnum.serverError);
       }
     }
   
-    async exportPatientsToCSV(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; country?: string | undefined, startDate?: Date | undefined; endDate?: Date | undefined; }): Promise<boolean | PatientFailure> {
+    async exportSubjectsToCSV(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; country?: string | undefined, startDate?: Date | undefined; endDate?: Date | undefined; }): Promise<boolean | SubjectFailure> {
       try {
           let query = supabase.from("Paciente").select();
       
@@ -182,39 +183,39 @@ export class PatientRepository implements IPatientRepository {
   
           const snapshots = await query;
   
-          const patients: IPatient[] = [];
+          const subjects: ISubject[] = [];
   
           if (snapshots.data && snapshots.data.length > 0) {
               await Promise.all(snapshots.data.map(async (snapshot: any) => {
-                  const patientMap: IPatient = patientSupabaseToMap(snapshot);
+                  const subjectMap: ISubject = subjectSupabaseToMap(snapshot);
   
-                  const snapshotsPoints = await supabase.from("Punto").select().eq("pacienteId", patientMap.patientId).limit(1);
+                  const snapshotsPoints = await supabase.from("Punto").select().eq("pacienteId", subjectMap.subjectId).limit(1);
       
                   /*if (snapshotsPoints.data && snapshotsPoints.data.length > 0) {
                       const petPointMap: IPoints = pointsSupabaseToMap(snapshotsPoints.data[0]);
-                      patientMap.points = petPointMap;
+                      subjectMap.points = petPointMap;
                   }*/
       
-                  patients.push(patientMap);
+                  subjects.push(subjectMap);
               }));
           }
   
-          if (patients.length === 0) throw new Error("patients/not-found");
+          if (subjects.length === 0) throw new Error("subjects/not-found");
   
           const header: string[] = ["Usuario", "Correo", "URL", "Registro completado", "ID del paciente", "Fecha de nacimiento", "Tipo de documento", "Nombre", "País", "Número de documento", "Apellido", "Dirección", "Genero", "Token", "Teléfono", "ID de Stripe"];
   
-          const dataToCSV = patients.map((patient: IPatient) => {
+          const dataToCSV = subjects.map((subject: ISubject) => {
             return { 
-              Correo: patient.email,
-              'ID del paciente': patient.patientId,
-              'Fecha de nacimiento': patient.birthDate ?? "",
-              Nombre: patient.name,
-              País: patient.country,
-              'CURP': patient.curp,
-              Apellido: patient.lastName,
-              Dirección: patient.address,
-              Sexo: patient.sex,
-              Teléfono: patient.phoneNumber,
+              Correo: subject.email,
+              'ID del paciente': subject.subjectId,
+              'Fecha de nacimiento': subject.birthDate ?? "",
+              Nombre: subject.name,
+              País: subject.country,
+              'CURP': subject.curp,
+              Apellido: subject.lastName,
+              Dirección: subject.address,
+              Sexo: subject.sex,
+              Teléfono: subject.phoneNumber,
             }
           });
   
@@ -225,17 +226,17 @@ export class PatientRepository implements IPatientRepository {
         const wb = { Sheets: { data: ws }, SheetNames: ["data"], };
         const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
         const data = new Blob([excelBuffer], { type: fileType });
-        FileSaver.saveAs(data, `Pacientes` + fileExtension);
+        FileSaver.saveAs(data, `Sujetos` + fileExtension);
   
         return true;
       } catch (error) { 
         const exception = error as any;
 
-        if (exception.message === "patients/not-found") {
-          return new PatientFailure(patientFailuresEnum.patientsNotFound);
+        if (exception.message === "subjects/not-found") {
+          return new SubjectFailure(subjectFailuresEnum.subjectsNotFound);
         }
 
-        return new PatientFailure(patientFailuresEnum.serverError);
+        return new SubjectFailure(subjectFailuresEnum.serverError);
       }
     }
   }
