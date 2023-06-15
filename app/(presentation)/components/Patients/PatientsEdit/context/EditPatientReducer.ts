@@ -1,10 +1,10 @@
-export const EditPatientReducer = (state: any, action: any) => {
+export const EditSubjectReducer = (state: any, action: any) => {
   switch (action.type) {
     case 'GET_PATIENT_LOADING' :
       return {
         ...state,
-        patient: {
-          ...state.patient,
+        subject: {
+          ...state.subject,
           data: null,
           loading: true,
           successful: false,
@@ -14,8 +14,8 @@ export const EditPatientReducer = (state: any, action: any) => {
     case 'GET_PATIENT_SUCCESSFUL' :
       return {
         ...state,
-        patient: {
-          ...state.patient,
+        subject: {
+          ...state.subject,
           data: action.payload.data,
           loading: false,
           successful: true,
@@ -25,8 +25,8 @@ export const EditPatientReducer = (state: any, action: any) => {
     case 'GET_PATIENT_ERROR' :
       return {
         ...state,
-        patient: {
-          ...state.patient,
+        subject: {
+          ...state.subject,
           data: null,
           loading: false,
           successful: false,
@@ -71,8 +71,8 @@ export const EditPatientReducer = (state: any, action: any) => {
     case 'EDIT_PATIENT_LOADING' :
       return {
         ...state,
-        editPatient: {
-          ...state.editPatient,
+        editSubject: {
+          ...state.editSubject,
           data: false,
           loading: true,
           successful: false,
@@ -82,8 +82,8 @@ export const EditPatientReducer = (state: any, action: any) => {
     case 'EDIT_PATIENT_SUCCESSFUL' :
       return {
         ...state,
-        editPatient: {
-          ...state.editPatient,
+        editSubject: {
+          ...state.editSubject,
           data: true,
           loading: false,
           successful: true,
@@ -93,8 +93,8 @@ export const EditPatientReducer = (state: any, action: any) => {
     case 'EDIT_PATIENT_ERROR' :
       return {
         ...state,
-        editPatient: {
-          ...state.editPatient,
+        editSubject: {
+          ...state.editSubject,
           data: false,
           loading: false,
           successful: false,

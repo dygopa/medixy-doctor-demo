@@ -1,11 +1,11 @@
 import { Dispatch, createContext, useReducer } from "react";
-import { IPatientListActions, actions } from "./PatientsListActions";
-import { IPatientsListState, initialState } from "./PatientsListState";
+import { ISubjectListActions, actions } from "./PatientsListActions";
+import { ISubjectsListState, initialState } from "./PatientsListState";
 import { PatientListReducer } from "./PatientsListReducer";
 
 export interface IPatientsListContext {
-  state: IPatientsListState;
-  actions: IPatientListActions;
+  state: ISubjectsListState;
+  actions: ISubjectListActions;
   dispatch: Dispatch<any>;
 }
 

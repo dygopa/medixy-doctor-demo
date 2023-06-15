@@ -1,11 +1,11 @@
 import React, { Dispatch, useReducer, createContext } from "react";
-import { IEditPatientActions, actions } from "./EditPatientActions";
-import { IEditPatientState, initialState } from "./EditPatientState";
-import { EditPatientReducer } from "./EditPatientReducer";
+import { IEditSubjectActions, actions } from "./EditPatientActions";
+import { IEditSubjectState, initialState } from "./EditPatientState";
+import { EditSubjectReducer } from "./EditPatientReducer";
 
 export interface IEditPatientContext {
-    state: IEditPatientState;
-    actions: IEditPatientActions;
+    state: IEditSubjectState;
+    actions: IEditSubjectActions;
     dispatch: Dispatch<any>;
 }
 
@@ -18,7 +18,7 @@ export const EditPatientContext = createContext<IEditPatientContext>(
 );
 
 const EditPatientProvider = ({ children }: IProps) => {
-    const [state, dispatch] = useReducer(EditPatientReducer, initialState);
+    const [state, dispatch] = useReducer(EditSubjectReducer, initialState);
 
     return (
         <EditPatientContext.Provider value={{ state, actions, dispatch }}>

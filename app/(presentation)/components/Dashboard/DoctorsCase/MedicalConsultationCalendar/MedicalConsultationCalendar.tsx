@@ -11,12 +11,12 @@ import { useContext, useEffect, useState } from "react";
 export default function MedicalConsultationCalendar() {
   const { state, actions, dispatch } =
     useContext<IDashboardContext>(DashboardContext);
-  const { getCompletedAppointments, getPatients, getPendingAppointments } =
+  const { getCompletedAppointments, getSubject, getPendingAppointments } =
     actions;
 
   const { data: completedAppointments, loading: loadingCompletedAppointments } =
     state.getCompletedAppointments;
-  const { data: patients, loading: loadingPatients } = state.getPatients;
+  const { data: patients, loading: loadingSubjects } = state.getSubjects;
   const { data: pendingAppointments, loading: loadingPendingAppointments } =
     state.getPendingAppointments;
 
@@ -44,7 +44,7 @@ export default function MedicalConsultationCalendar() {
 
   function loadData() {
     getCompletedAppointments()(dispatch);
-    getPatients()(dispatch);
+    getSubject()(dispatch);
     getPendingAppointments()(dispatch);
     setLoadedData(true);
   }

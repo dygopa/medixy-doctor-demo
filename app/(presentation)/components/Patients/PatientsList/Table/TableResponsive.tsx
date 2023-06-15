@@ -10,15 +10,15 @@ import {
   IPatientsListContext,
   PatientsListContext,
 } from "../context/PatientsListContext";
-import { IPatient } from "domain/core/entities/patientEntity";
+import { ISubject } from "domain/core/entities/subjectEntity";
 import Paginate from "(presentation)/components/core/Paginate/Paginate";
 import { useSearchParams } from "next/navigation";
 
 export default function TableResponsive() {
   const { state, actions, dispatch } =
     useContext<IPatientsListContext>(PatientsListContext);
-  const { data: patients, loading, successful, error } = state.getPatients;
-  const { getPatients } = actions;
+  const { data: patients, loading, successful, error } = state.getSubjects;
+  const { getSubjects } = actions;
 
   const searchParams = useSearchParams();
 
@@ -26,7 +26,7 @@ export default function TableResponsive() {
   const searchQuery = searchParams.get("search_query");
 
   useEffect(() => {
-    getPatients({
+    getSubjects({
       page: page && page?.length > 0 ? parseInt(page.toString(), 10) : "1",
       searchQuery: searchQuery,
       limit: 10,
@@ -74,15 +74,15 @@ export default function TableResponsive() {
   return (
     <>
       {patients.data?.length > 0 &&
-        patients.data.map((patient: IPatient) => (
+        patients.data.map((patient: ISubject) => (
           <div
-            key={patient.patientId}
+            key={patient.subjectId}
             className="mt-2 overflow-auto bg-white border rounded-lg p-4 flex flex-col justify-between items-start gap-4"
           >
             <div className="w-full flex justify-between items-center gap-4">
               <Link
                 href={{
-                  pathname: PatientsRoutesEnum.PatientsEdit + patient.patientId,
+                  pathname: PatientsRoutesEnum.PatientsEdit + patient.subjectId,
                 }}
                 className="w-full flex items-center gap-4 cursor-pointer"
               >
@@ -121,7 +121,7 @@ export default function TableResponsive() {
                             href={{
                               pathname:
                                 PatientsRoutesEnum.PatientsView +
-                                patient.patientId +
+                                patient.subjectId +
                                 PatientsMedicalRecordRoutesEnum.MedicalRecord,
                             }}
                           >
@@ -139,7 +139,7 @@ export default function TableResponsive() {
                             href={{
                               pathname:
                                 PatientsRoutesEnum.PatientsEdit +
-                                patient.patientId,
+                                patient.subjectId,
                             }}
                           >
                             <Lucide icon="Edit" className="w-5 h-5" />

@@ -1,4 +1,4 @@
-import { IPatient } from "domain/core/entities/patientEntity";
+import { IPatient } from "domain/core/entities/subjectEntity";
 import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
 import { MedicalMeasureFailure } from "domain/core/failures/medicalMeasure/medicalMeasureFailure";
 import { MedicalRecordFailure } from "domain/core/failures/medicalRecord/medicalRecordFailure";

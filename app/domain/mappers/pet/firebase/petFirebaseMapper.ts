@@ -1,4 +1,4 @@
-import { IPatient } from "domain/core/entities/patientEntity";
+import { IPatient } from "domain/core/entities/subjectEntity";
 import { IPet } from "domain/core/entities/petEntity";
 
 export function petFirebaseToMap(data: any, patient?: IPatient): IPet {

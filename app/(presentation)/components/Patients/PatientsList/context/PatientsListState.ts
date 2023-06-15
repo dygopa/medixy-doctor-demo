@@ -1,20 +1,20 @@
-import { PatientFailure } from "domain/core/failures/patient/patientFailure";
-import { IGetPatientsResponse } from "domain/core/response/patientsResponse";
+import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
+import { IGetSubjectsResponse } from "domain/core/response/subjectsResponse";
 
-export interface IPatientsListState {
-    getPatients: IPatientsListPatientsListState;
+export interface ISubjectsListState {
+    getSubjects: ISubjectsListSubjectsListState;
 }
 
-interface IPatientsListPatientsListState {
-    data: IGetPatientsResponse;
+interface ISubjectsListSubjectsListState {
+    data: IGetSubjectsResponse;
     loading: boolean;
     successful: boolean;
-    error: PatientFailure | null; 
+    error: SubjectFailure | null; 
 }
 
-export const initialState: IPatientsListState= {
-    getPatients: {
-      data: {} as IGetPatientsResponse,
+export const initialState: ISubjectsListState= {
+    getSubjects: {
+      data: {} as IGetSubjectsResponse,
       loading: false,
       successful: false,
       error: null,

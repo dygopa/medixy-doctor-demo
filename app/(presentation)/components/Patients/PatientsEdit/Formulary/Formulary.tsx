@@ -18,14 +18,14 @@ import {
 } from "../context/EditPatientContext";
 import { useRouter } from "next/navigation";
 import { PatientsRoutesEnum } from "(presentation)/(routes)/patientsRoutes";
-import { IPatient } from "domain/core/entities/patientEntity";
+import { ISubject } from "domain/core/entities/subjectEntity";
 
 export default function Formulary() {
   const { state, actions, dispatch } =
     useContext<IEditPatientContext>(EditPatientContext);
-  const { editPatient } = actions;
-  const { data: patient } = state.patient;
-  const { loading, successful, error } = state.editPatient;
+  const { editSubject } = actions;
+  const { data: patient } = state.subject;
+  const { loading, successful, error } = state.editSubject;
 
   const router = useRouter();
 
@@ -120,8 +120,8 @@ export default function Formulary() {
 
     if (hasErrorsCount > 0) return;
 
-    const patientEdit: IPatient = {
-      patientId: patient?.patientId ?? 0,
+    const patientEdit: ISubject = {
+      subjectId: patient?.subjectId ?? 0,
       name: values.name,
       lastName: values.lastname,
       motherLastName: values.motherlastname,
@@ -136,6 +136,7 @@ export default function Formulary() {
       address: values.direction,
       city: values.city,
       pictureUrl: "",
+      isPatient: true,
       birthDate:
         values.birthDate.length > 0 ? new Date(values.birthDate) : null,
       createdOn: patient?.createdOn ?? new Date(),
@@ -143,7 +144,7 @@ export default function Formulary() {
       deletedOn: null,
     };
 
-    editPatient(patientEdit)(dispatch);
+    editSubject(patientEdit)(dispatch);
   };
 
   useEffect(() => {

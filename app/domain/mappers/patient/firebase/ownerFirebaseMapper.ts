@@ -1,4 +1,4 @@
-import { IPatient } from "domain/core/entities/patientEntity";
+import { IPatient } from "domain/core/entities/subjectEntity";
 import { IPoints } from "domain/core/entities/pointsEntity";
 import firebase from "firebase/app";
 

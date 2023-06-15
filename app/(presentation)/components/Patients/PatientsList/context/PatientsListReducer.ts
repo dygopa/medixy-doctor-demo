@@ -3,8 +3,8 @@ export const PatientListReducer = (state: any, action: any) => {
     case "GET_PATIENTS_LOADING" :
       return {
         ...state,
-        getPatients: {
-          ...state.getPatients,
+        getSubjects: {
+          ...state.getSubjects,
           data: {},
           loading: true,
           successful: false,
@@ -14,8 +14,8 @@ export const PatientListReducer = (state: any, action: any) => {
     case "GET_PATIENTS_SUCCESSFUL" :
       return {
         ...state,
-        getPatients: {
-          ...state.getPatients,
+        getSubjects: {
+          ...state.getSubjects,
           data: action.payload.data,
           loading: false,
           successful: true,
@@ -25,8 +25,8 @@ export const PatientListReducer = (state: any, action: any) => {
     case "GET_PATIENTS_ERROR" :
       return {
         ...state,
-        getPatients: {
-          ...state.getPatients,
+        getSubjects: {
+          ...state.getSubjects,
           data: {},
           loading: false,
           successful: false,

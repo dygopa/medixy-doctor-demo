@@ -1,12 +1,12 @@
 import { IAlly } from "./allyEntity";
 import { IOrder } from "./orderEntity";
-import { IPatient } from "./patientEntity";
+import { ISubject } from "./subjectEntity";
 
 export interface IClaim {
     claimId: string;
     claimNumber: string;
-    patientId: string;
-    patient?: IPatient | null;
+    subjectId: string;
+    subject?: ISubject | null;
     allyId: string;
     ally?: IAlly | null;
     orderId: string;

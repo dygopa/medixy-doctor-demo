@@ -13,9 +13,9 @@ import AlertComponent from "(presentation)/components/core/BaseComponents/Alert"
 export default function Steps() {
 
   const { state, actions, dispatch } = useContext<ICreatePatientContext>(CreatePatientContext);
-  const { createPatient } = actions;
+  const { createSubject } = actions;
 
-  const { data, loading, error, successful } = state.createPatient;
+  const { data, loading, error, successful } = state.createSubject;
 
   const [loadedUser, setLoadedUser] = useState(false);
 
@@ -92,7 +92,7 @@ export default function Steps() {
       deletedOn: null,
     };
 
-    createPatient(patient)(dispatch);
+    createSubject(patient)(dispatch);
   };
 
   useEffect(() => {

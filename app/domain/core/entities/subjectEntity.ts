@@ -1,5 +1,5 @@
-export interface IPatient {
-    patientId: number;
+export interface ISubject {
+    subjectId: number;
     name: string;
     lastName: string;
     motherLastName: string;
@@ -16,6 +16,7 @@ export interface IPatient {
     city: string;
     pictureUrl: string;
     federativeEntityId?: number | null;
+    isPatient: boolean;
     birthDate: Date | null;
     createdOn: Date;
     updatedOn: Date | null;
