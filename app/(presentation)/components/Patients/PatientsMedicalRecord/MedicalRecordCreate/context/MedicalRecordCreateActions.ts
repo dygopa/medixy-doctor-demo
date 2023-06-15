@@ -14,6 +14,7 @@ import MedicalRecordUseCase from "domain/useCases/medicalRecord/medicalRecordUse
 import TreatmentUseCase from "domain/useCases/treatments/treatmentsUseCase";
 import { IGetSpecialtiesResponse } from "domain/core/response/specialtiesResponse";
 import SpecialtyUseCase from "domain/useCases/specialty/specialtyUseCases";
+import { IGetSubjectRelationsResponse } from "domain/core/response/subjectsResponse";
 
 export interface IMedicalRecordCreateActions {
     getSubjectById: (subjectId: number) => (dispatch: Dispatch<any>) => {};
@@ -25,6 +26,8 @@ export interface IMedicalRecordCreateActions {
     getMedicalRecords: (obj: { subjectId: number; medicalRecordCategoryId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getFederalEntities: () => (dispatch: Dispatch<any>) => {};
     editSubject: (subject: ISubject) => (dispatch: Dispatch<any>) => {};
+    getCompanions: (obj: { patientId: number }) => (dispatch: Dispatch<any>) => {};
+    createCompanion: (patientId:number, companion:ISubject) => (dispatch: Dispatch<any>) => {};
 }
 
 const getSubjectById = (subjectId: number) => async (dispatch: Dispatch<any>) => {
@@ -160,6 +163,37 @@ const editSubject = (subject: ISubject) => async (dispatch: Dispatch<any>) => {
   }
 }
 
+const getCompanions = (obj: { patientId: number }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_COMPONIONS_LOADING" });
+    
+    const res: IGetSubjectRelationsResponse = await new SubjectsUseCase().getSubjectsComponions({
+      patientId: obj.patientId,
+      typeRelation: 1,
+    });
+
+    dispatch({ type: "GET_COMPONIONS_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "GET_COMPONIONS_ERROR", payload: { error: error } });
+  }
+}
+
+const createCompanion = (patientId:number, companion:ISubject) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "CREATE_COMPANION_LOADING" });
+    
+    const res: ISubject = await new SubjectsUseCase().createSubject(companion);
+
+    await new SubjectsUseCase().createSubjectRelations(patientId, res.subjectId);
+
+    dispatch({ type: "CREATE_COMPANION_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "CREATE_COMPANION_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IMedicalRecordCreateActions = {
     getSubjectById,
     getSpecialties,
@@ -170,4 +204,6 @@ export const actions: IMedicalRecordCreateActions = {
     getMedicalRecords,
     getFederalEntities,
     editSubject,
+    getCompanions,
+    createCompanion,
 }

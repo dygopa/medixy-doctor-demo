@@ -1,9 +1,11 @@
-import {  MedicalRecordTypesNumberEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
+import { MedicalRecordCategoriesIdEnum, MedicalRecordTypesNumberEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
+import { getSkipPagination } from "(presentation)/(helper)/paginate/paginateHelper";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import { IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
 import { IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
+import { IGetSubjectRelationsResponse } from "domain/core/response/subjectsResponse";
 import { IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
 import FederalEntitiesUseCase from "domain/useCases/federalEntity/federalEntityUseCase";
 import MedicalConsultyUseCase from "domain/useCases/medicalConsulty/medicalConsultyUseCases";
@@ -19,9 +21,12 @@ export interface IMedicalRecordActions {
     getMedicalConsulties: (obj: { subjectId: number, sort: Object; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getTreatments: (obj: { subjectId: number, sort?: Object; limit?: number | null }) => (dispatch: Dispatch<any>) => {};
     getAllergies: (obj: { subjectId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
+    getOrders: (obj: { subjectId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getMedicalRecords: (obj: { subjectId: number; medicalRecordCategoryId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getFederalEntities: () => (dispatch: Dispatch<any>) => {};
     editSubject: (subject: ISubject) => (dispatch: Dispatch<any>) => {};
+    getCompanions: (obj: { patientId: number }) => (dispatch: Dispatch<any>) => {};
+    createCompanion: (patientId:number, companion:ISubject) => (dispatch: Dispatch<any>) => {};
 }
 
 const getSubjectById = (subjectId: number) => async (dispatch: Dispatch<any>) => {
@@ -121,6 +126,38 @@ const getMedicalRecords = (obj: { subjectId: number; medicalRecordCategoryId: nu
   }
 }
 
+const getOrders = (obj: { subjectId: number; limit?: number | null; }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_ORDERS_LOADING"});
+
+    const res: IGetMedicalRecordsResponse = await new MedicalRecordUseCase().getMedicalRecords({
+      limit: obj.limit,
+      subjectId: obj.subjectId,
+      medicalRecordCategory: MedicalRecordCategoriesIdEnum.ORDERS,
+    });
+
+    dispatch({ type: "GET_ORDERS_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "GET_ORDERS_ERROR", payload: { error: error } });
+  }
+}
+
+const getCompanions = (obj: { patientId: number }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_COMPONIONS_LOADING" });
+    
+    const res: IGetSubjectRelationsResponse = await new SubjectsUseCase().getSubjectsComponions({
+      patientId: obj.patientId,
+      typeRelation: 1,
+    });
+
+    dispatch({ type: "GET_COMPONIONS_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "GET_COMPONIONS_ERROR", payload: { error: error } });
+  }
+}
+
 const getFederalEntities = () => async (dispatch: Dispatch<any>) => {
   try {
       dispatch({ type: "GET_FEDERAL_ENTITIES_LOADING" });
@@ -148,6 +185,21 @@ const editSubject = (subject: ISubject) => async (dispatch: Dispatch<any>) => {
   }
 }
 
+const createCompanion = (patientId:number, companion:ISubject) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "CREATE_COMPANION_LOADING" });
+    
+    const res: ISubject = await new SubjectsUseCase().createSubject(companion);
+
+    await new SubjectsUseCase().createSubjectRelations(patientId, res.subjectId);
+
+    dispatch({ type: "CREATE_COMPANION_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "CREATE_COMPANION_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IMedicalRecordActions = {
     getSubjectById,
     getMedicalMeasures,
@@ -155,6 +207,9 @@ export const actions: IMedicalRecordActions = {
     getTreatments,
     getAllergies,
     getMedicalRecords,
+    getOrders,
+    getCompanions,
     getFederalEntities,
     editSubject,
+    createCompanion,
 }

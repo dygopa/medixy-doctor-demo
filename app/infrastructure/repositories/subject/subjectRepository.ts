@@ -11,7 +11,7 @@ import { ICreateSubjectResponse, IGetSubjectRelationsResponse, IGetSubjectsRespo
 
 export default interface ISubjectRepository {
   getSubjects(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure>;
-  getSubjectsCompanions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; patientId?: number | undefined; typeRelation?: number | undefined }): Promise<IGetSubjectsResponse | SubjectFailure>;
+  getSubjectsCompanions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; patientId?: number | undefined; typeRelation?: number | undefined }): Promise<IGetSubjectRelationsResponse | SubjectFailure>;
   getSubjectById(subjectId: number): Promise<ISubject | SubjectFailure>;
   getSubjectsPoints(obj: { country?: string | undefined }): Promise<IPoints | PointFailure>;
   createSubjects(subjects: ISubject[]): Promise<boolean | SubjectFailure>;
@@ -72,13 +72,11 @@ export class SubjectRepository implements ISubjectRepository {
       }
     }
 
-    async getSubjectsCompanions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; patientId?: number | undefined; typeRelation?: number | undefined}): Promise<IGetSubjectsResponse | SubjectFailure> {
+    async getSubjectsCompanions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; patientId?: number | undefined; typeRelation?: number | undefined}): Promise<IGetSubjectRelationsResponse | SubjectFailure> {
       try {
           let query = supabase.from("RelacionesSujetos").select(`
           *
         `, { count: "exact" });
-
-        console.log(obj.patientId, obj.typeRelation)
           
           if (obj.typeRelation) {
             query = query.eq("tipo", obj.typeRelation);
@@ -109,8 +107,6 @@ export class SubjectRepository implements ISubjectRepository {
           }
   
           const res = await query;
-
-          console.log(res)
           
           const subjects: IRelationSubject[] = [];
   
@@ -118,11 +114,23 @@ export class SubjectRepository implements ISubjectRepository {
               await Promise.all(res.data.map(async (data: any) => {
                   const subjectRelationsMap: IRelationSubject = relationsSubjectSupabaseToMap(data);
 
-                  /*if (data?.sujetoPrincipalId) {
-                    const companion: ISubject = relationsSubjectSupabaseToMap(data.sujetoPrincipalId);
-          
-                    if (companions.id >= 0) subjectMap.subjectIdSecundary = companion;
-                  }*/
+                  console.log(subjectRelationsMap)
+
+                  const resSubjectPrincipal = await supabase.from("Sujetos").select("*").eq("id", subjectRelationsMap.subjectIdPrincipal).limit(1);
+
+                  if (resSubjectPrincipal.data && resSubjectPrincipal.data.length > 0) {
+                    const subjectPrincipalMap: ISubject = subjectSupabaseToMap(resSubjectPrincipal.data[0]);
+
+                    subjectRelationsMap.subjectPrincipal = subjectPrincipalMap;
+                  }
+
+                  const resSubjectSecondary = await supabase.from("Sujetos").select("*").eq("id", subjectRelationsMap.subjectIdSecondary).limit(1);
+
+                  if (resSubjectSecondary.data && resSubjectSecondary.data.length > 0) {
+                    const subjectSecondaryMap: ISubject = subjectSupabaseToMap(resSubjectSecondary.data[0]);
+
+                    subjectRelationsMap.subjectSecondary = subjectSecondaryMap;
+                  }
       
                   subjects.push(subjectRelationsMap);
               }));

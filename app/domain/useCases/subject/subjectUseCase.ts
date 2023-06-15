@@ -2,7 +2,7 @@ import { ISubject } from "domain/core/entities/subjectEntity";
 import { IPoints } from "domain/core/entities/pointsEntity";
 import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
 import { PointFailure } from "domain/core/failures/point/pointFailure";
-import { ICreateSubjectResponse, IGetSubjectsResponse } from "domain/core/response/subjectsResponse";
+import { ICreateSubjectResponse, IGetSubjectRelationsResponse, IGetSubjectsResponse } from "domain/core/response/subjectsResponse";
 import { SubjectRepository } from "infrastructure/repositories/subject/subjectRepository";
 
 export default class SubjectsUseCase {
@@ -25,7 +25,7 @@ export default class SubjectsUseCase {
     }
   }
 
-  async getSubjectsComponions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; patientId?: number | undefined; typeRelation?: number | undefined}): Promise<IGetSubjectsResponse> {
+  async getSubjectsComponions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; patientId?: number | undefined; typeRelation?: number | undefined}): Promise<IGetSubjectRelationsResponse> {
     try {
       const response = await this._repository.getSubjectsCompanions({
         skip: obj.skip,

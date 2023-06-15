@@ -15,5 +15,8 @@ export interface ICreateSubjectResponse {
 
 export interface IGetSubjectRelationsResponse {
     data: IRelationSubject[];
-    metadata: {}
+    metadata: {
+        total: number;
+        limit: number | null;
+    }
 }

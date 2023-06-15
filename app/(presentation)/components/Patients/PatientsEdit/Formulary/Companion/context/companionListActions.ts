@@ -1,6 +1,6 @@
 import { getSkipPagination } from "(presentation)/(helper)/paginate/paginateHelper";
 import { ISubject } from "domain/core/entities/subjectEntity";
-import { ICreateSubjectResponse, IGetSubjectsResponse } from "domain/core/response/subjectsResponse";
+import { ICreateSubjectResponse, IGetSubjectRelationsResponse, IGetSubjectsResponse } from "domain/core/response/subjectsResponse";
 import SubjectsUseCase from "domain/useCases/subject/subjectUseCase";
 import { Dispatch } from "react";
 
@@ -15,7 +15,7 @@ const getCompanions = (obj: { page?: number | null; limit: number; searchQuery?:
 
     const skip: number | null = getSkipPagination({ page: obj.page ?? 1, limit: obj.limit })
     
-    const res: IGetSubjectsResponse = await new SubjectsUseCase().getSubjectsComponions({
+    const res: IGetSubjectRelationsResponse = await new SubjectsUseCase().getSubjectsComponions({
       skip: skip,
       limit: obj.limit,
       searchQuery: obj.searchQuery,

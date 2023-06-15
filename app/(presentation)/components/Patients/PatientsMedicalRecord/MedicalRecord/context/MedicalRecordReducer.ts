@@ -204,6 +204,40 @@ export const MedicalRecordReducer = (state: any, action: any) => {
             },
           }
 
+        case "GET_ORDERS_LOADING" :
+          return {
+            ...state,
+            orders: {
+              ...state.orders,
+              data: {},
+              loading: true,
+              successful: false,
+              error: null,
+            },
+          };
+        case "GET_ORDERS_SUCCESSFUL" :
+          return {
+            ...state,
+            orders: {
+              ...state.orders,
+              data: action.payload.data,
+              loading: false,
+              successful: true,
+              error: null,
+            },
+          }
+        case "GET_ORDERS_ERROR" :
+          return {
+            ...state,
+            orders: {
+              ...state.orders,
+              data: {},
+              loading: false,
+              successful: false,
+              error: action.payload.error,
+            },
+          }
+
           case 'GET_FEDERAL_ENTITIES_LOADING' :
             return {
               ...state,
@@ -270,6 +304,74 @@ export const MedicalRecordReducer = (state: any, action: any) => {
                 successful: false,
                 error: action.payload.error,
               },
-            }
+           }
+
+      case "GET_COMPONIONS_LOADING" :
+        return {
+          ...state,
+          companions: {
+            ...state.getComponions,
+            data: {},
+            loading: true,
+            successful: false,
+            error: null,
+          },
+        };
+      case "GET_COMPONIONS_SUCCESSFUL" :
+        return {
+          ...state,
+          companions: {
+            ...state.companions,
+            data: action.payload.data,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+        }
+      case "GET_COMPONIONS_ERROR" :
+        return {
+          ...state,
+          companions: {
+            ...state.companions,
+            data: {},
+            loading: false,
+            successful: false,
+            error: action.payload.error,
+          },
+        }
+
+        case 'CREATE_COMPANION_LOADING' :
+          return {
+            ...state,
+            createCompanion: {
+              ...state.createCompanion,
+              data: false,
+              loading: true,
+              successful: false,
+              error: null,
+            },
+          };
+        case 'CREATE_COMPANION_SUCCESSFUL' :
+          return {
+            ...state,
+            createCompanion: {
+              ...state.createCompanion,
+              data: true,
+              loading: false,
+              successful: true,
+              error: null,
+            },
+          }
+        case 'CREATE_COMPANION_ERROR' :
+          return {
+            ...state,
+            createCompanion: {
+              ...state.createCompanion,
+              data: false,
+              loading: false,
+              successful: false,
+              error: action.payload.error,
+            },
+          }
       }
   }

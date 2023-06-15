@@ -88,6 +88,8 @@ export function relationsSubjectSupabaseToMap ( data:any ): IRelationSubject {
     type: data?.tipo ?? "",
     subjectIdPrincipal: data?.sujetoPrincipalId ?? "",
     subjectIdSecondary: data?.sujetoSecundarioId ?? "",
+    subjectPrincipal: {} as ISubject,
+    subjectSecondary: {} as ISubject
   }as IRelationSubject
 
   return documentData;

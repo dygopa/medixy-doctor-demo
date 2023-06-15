@@ -9,6 +9,7 @@ import { TreatmentFailure } from "domain/core/failures/treatment/treatmentFailur
 import { IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
 import { IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
+import { IGetSubjectRelationsResponse } from "domain/core/response/subjectsResponse";
 import { IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
 
 export interface IMedicalRecordState {
@@ -18,8 +19,11 @@ export interface IMedicalRecordState {
     treatments: IGetTreatmentsState;
     allergies: IGetAllergiesState;
     medicalRecords: IGetMedicalRecordsState;
+    orders: IGetOrdersState;
     getFederalEntities: IGetFederalEntitiesState;
     editSubject: IUpdateSubjectState;
+    companions: IGetCompanionsState;
+    createCompanion: ICompanionCreateCompanionState;
 }
 
 interface IGetSubjectState {
@@ -64,6 +68,13 @@ interface IGetMedicalRecordsState {
     error: MedicalRecordFailure | null; 
 }
 
+interface IGetOrdersState {
+    data: IGetMedicalRecordsResponse;
+    loading: boolean;
+    successful: boolean;
+    error: MedicalRecordFailure | null; 
+}
+
 interface IGetFederalEntitiesState {
     data: Array<IFederalEntity>;
     loading: boolean;
@@ -72,6 +83,20 @@ interface IGetFederalEntitiesState {
 }
 
 interface IUpdateSubjectState {
+    data: boolean;
+    loading: boolean;
+    successful: boolean;
+    error: SubjectFailure | null;
+}
+
+interface IGetCompanionsState {
+    data: IGetSubjectRelationsResponse;
+    loading: boolean;
+    successful: boolean;
+    error: SubjectFailure | null; 
+}
+
+interface ICompanionCreateCompanionState {
     data: boolean;
     loading: boolean;
     successful: boolean;
@@ -115,6 +140,12 @@ export const initialState: IMedicalRecordState = {
         successful: false,
         error: null,
     },
+    orders: {
+        data: {} as IGetMedicalRecordsResponse,
+        loading: false,
+        successful: false,
+        error: null,
+    },
     getFederalEntities: {
         data: [],
         loading: false,
@@ -126,5 +157,17 @@ export const initialState: IMedicalRecordState = {
         loading: false,
         successful: false,
         error: null,
-    }
+    },
+    companions: {
+        data: {} as IGetSubjectRelationsResponse,
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    createCompanion: {
+        data: false,
+        loading: false,
+        successful: false,
+        error: null,
+    },
 }

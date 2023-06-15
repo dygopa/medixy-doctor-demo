@@ -1,6 +1,8 @@
+import { IMedicalConsulty } from 'domain/core/entities/medicalConsultyEntity';
 import { IMedicalRecord, IMedicalRecordType, IMedicalRecordValue } from 'domain/core/entities/medicalRecordEntity';
 import { MedicalRecordFailure, medicalRecordFailuresEnum } from 'domain/core/failures/medicalRecord/medicalRecordFailure';
 import { ICreateMedicalRecordResponse, IGetMedicalRecordsResponse } from 'domain/core/response/medicalRecordResponse';
+import { medicalConsultySupabaseToMap } from 'domain/mappers/medicalConsulty/supabase/medicalConsultySupabaseMapper';
 import { fromMedicalRecordSupabaseDocumentData, fromMedicalRecordValueSupabaseDocumentData, medicalRecordSupabaseToMap, medicalRecordTypeSupabaseToMap, medicalRecordValueSupabaseToMap } from 'domain/mappers/medicalRecord/supabase/medicalRecordSupabaseMapper';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 
@@ -69,6 +71,12 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       if (res.data && res.data.length > 0) {
           await Promise.all(res.data.map(async (data: any) => {
               const medicalRecordMap: IMedicalRecord = medicalRecordSupabaseToMap(data);
+
+              if (data?.ConsultasMedicas) {
+                const medicalConsulty: IMedicalConsulty = medicalConsultySupabaseToMap(data.ConsultasMedicas);
+
+                medicalRecordMap.medicalConsulty = medicalConsulty;
+              }
 
               if (data?.TiposRegistrosMedicos) {
                 const medicalRecordType: IMedicalRecordType = medicalRecordTypeSupabaseToMap(data.TiposRegistrosMedicos);

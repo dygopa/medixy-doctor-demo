@@ -1,17 +1,47 @@
+import { ISubject } from "domain/core/entities/subjectEntity";
 import { useState } from "react";
-import CompanionDetail from "./CompanionDetail/CompanionDetail";
+import AddCompanion from "./AddCompanion/AddCompanion";
+import CompanionList from "./CompanionList/CompanionList";
 import EditCompanion from "./EditCompanion/EditCompanion";
 
-export default function Companion() {
-  const [showEditCompanion, setShowEditCompanion] = useState(false);
+interface ICompanionProps {
+  subjectId: number;
+}
 
-  return (
-    <div>
-      {showEditCompanion ? (
-        <EditCompanion setShowEditCompanion={setShowEditCompanion} />
-      ) : (
-        <CompanionDetail setShowEditCompanion={setShowEditCompanion} />
-      )}
-    </div>
+export default function Companion({ subjectId }: ICompanionProps) {
+  const [showAddCompanion, setShowAddCompanion] = useState(false);
+  const [showEditCompanion, setShowEditCompanion] = useState<ISubject | null>(
+    null
   );
+
+  const getComponentByState = () => {
+    if (showAddCompanion) {
+      return (
+        <AddCompanion
+          patientId={subjectId}
+          setShowAddCompanion={setShowAddCompanion}
+        />
+      );
+    }
+
+    if (showEditCompanion) {
+      return (
+        <EditCompanion
+          patientId={subjectId}
+          companion={showEditCompanion}
+          setShowEditCompanion={setShowEditCompanion}
+        />
+      );
+    }
+
+    return (
+      <CompanionList
+        patientId={subjectId}
+        setCompanionEdit={setShowEditCompanion}
+        setShowAddCompanion={setShowAddCompanion}
+      />
+    );
+  };
+
+  return <div>{getComponentByState()}</div>;
 }

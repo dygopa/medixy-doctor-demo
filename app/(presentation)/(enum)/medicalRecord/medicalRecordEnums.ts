@@ -212,7 +212,7 @@ type TMedicalRecordTypeOrderEnum = {
 
 export const medicalRecordTypeOrderEnum: TMedicalRecordTypeOrderEnum = {
     "ORDER_LABORATORY": "Laboratorio",
-    "ORDER_DIAGNOSIS": "Estudios diagnósticos",
+    "ORDER_DIAGNOSIS": "Estudio diagnóstico",
     "ORDER_SPECIALTY": "Especialista",
     "ORDER_MEDICAL_PROOF": "Justificativo médico",
     "ORDER_MEDICAL_CERTIFICATE": "Certificado médico",

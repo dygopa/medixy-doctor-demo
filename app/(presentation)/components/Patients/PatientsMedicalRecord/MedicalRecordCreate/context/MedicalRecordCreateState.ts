@@ -12,6 +12,7 @@ import { IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordRe
 import { IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
 import { IGetSpecialtiesResponse } from "domain/core/response/specialtiesResponse";
 import { SpecialtyFailure } from "domain/core/failures/specialty/specialtyFailure";
+import { IGetSubjectRelationsResponse } from "domain/core/response/subjectsResponse";
 
 export interface IMedicalRecordCreateState {
     subject: IGetSubjectState;
@@ -23,6 +24,8 @@ export interface IMedicalRecordCreateState {
     medicalRecords: IGetMedicalRecordsState;
     getFederalEntities: IGetFederalEntitiesState;
     editSubject: IUpdateSubjectState;
+    companions: IGetCompanionsState;
+    createCompanion: ICompanionCreateCompanionState;
 }
 
 interface IGetSubjectState {
@@ -88,6 +91,19 @@ interface IUpdateSubjectState {
     error: SubjectFailure | null;
 }
 
+interface IGetCompanionsState {
+    data: IGetSubjectRelationsResponse;
+    loading: boolean;
+    successful: boolean;
+    error: SubjectFailure | null; 
+}
+
+interface ICompanionCreateCompanionState {
+    data: boolean;
+    loading: boolean;
+    successful: boolean;
+    error: SubjectFailure | null;
+}
 
 export const initialState: IMedicalRecordCreateState = {
     subject: {
@@ -143,5 +159,17 @@ export const initialState: IMedicalRecordCreateState = {
         loading: false,
         successful: false,
         error: null,
-    }
+    },
+    companions: {
+        data: {} as IGetSubjectRelationsResponse,
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    createCompanion: {
+        data: false,
+        loading: false,
+        successful: false,
+        error: null,
+    },
 }

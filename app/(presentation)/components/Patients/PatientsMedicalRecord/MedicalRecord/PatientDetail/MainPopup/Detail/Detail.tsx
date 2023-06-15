@@ -22,7 +22,7 @@ export default function Detail({
 }: IDetailProps) {
   let listTabs = [
     "Paciente",
-    "Acompañante",
+    "Contactos",
     "Historial",
     "Alergias",
     "Signos vítales",
@@ -78,7 +78,7 @@ export default function Detail({
       case 0:
         return <Patient subjectId={subjectId} />;
       case 1:
-        return <Companion />;
+        return <Companion subjectId={subjectId} />;
       case 2:
         return <History subjectId={subjectId} />;
       case 3:

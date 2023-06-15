@@ -5,6 +5,7 @@ import {
 } from "(presentation)/(enum)/treatment/treatmentEnums";
 import {
   getMedicalRecordsHistory,
+  getMedicalRecordsOrders,
   getMedicalRecordsPhysical,
 } from "(presentation)/(helper)/medicalRecords/medicalRecordsHelper";
 import {
@@ -278,6 +279,15 @@ export default function Navigator() {
 
     if (medicalRecordsPhysical.length > 0) {
       medicalRecords.push(...medicalRecordsPhysical);
+    }
+
+    const medicalRecordsOrders = getMedicalRecordsOrders(
+      values.orders,
+      subject?.subjectId ?? 0
+    );
+
+    if (medicalRecordsOrders.length > 0) {
+      medicalRecords.push(...medicalRecordsOrders);
     }
 
     return medicalRecords;

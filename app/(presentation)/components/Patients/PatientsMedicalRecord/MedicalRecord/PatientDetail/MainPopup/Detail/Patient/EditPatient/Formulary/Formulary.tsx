@@ -136,6 +136,7 @@ export default function Formulary() {
       updatedOn: new Date(),
       deletedOn: null,
       gender: values.gender,
+      isPatient: true,
     };
 
     editSubject(subjectEdit)(dispatch);

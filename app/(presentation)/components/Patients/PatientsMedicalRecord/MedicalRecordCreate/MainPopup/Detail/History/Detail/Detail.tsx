@@ -51,9 +51,9 @@ export default function Detail({
         <Recipes medicalConsulty={medicalConsulty} />
       </div>
 
-      {/* <div>
+      <div>
         <Orders medicalConsulty={medicalConsulty} />
-  </div> */}
+      </div>
     </div>
   );
 }

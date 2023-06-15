@@ -1,45 +1,69 @@
+import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
+import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
   FormInput,
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
-import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
-import React from "react";
+import {
+  IMedicalRecordCreateContext,
+  MedicalRecordCreateContext,
+} from "(presentation)/components/Patients/PatientsMedicalRecord/MedicalRecordCreate/context/MedicalRecordCreateContext";
+import { ISubject } from "domain/core/entities/subjectEntity";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
-interface IBasicDataProps {
-  setNewCompanion: any;
-  values: {
-    name: string;
-    lastname: string;
-    motherlastname: string;
-    age: string;
-    curp: string;
-    sex: number;
-    gender: number;
-    phone: string;
-    email: string;
-  };
-  setValues: any;
-  errors: {
-    global: string;
-    name: string;
-    lastname: string;
-    motherlastname: string;
-    age: string;
-    curp: string;
-    sex: string;
-    email: string;
-    phone: string;
-  };
-  setErrors: any;
+interface ICompanionCreateProps {
+  patientId: number;
+  setShowAddCompanion: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function CompanionCreate({
-  setNewCompanion,
-  values,
-  setValues,
-  errors,
-  setErrors,
-}: IBasicDataProps) {
+  patientId,
+  setShowAddCompanion,
+}: ICompanionCreateProps) {
+  const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
+    MedicalRecordCreateContext
+  );
+  const { createCompanion } = actions;
+  const { loading, error, successful } = state.createCompanion;
+
+  const [values, setValues] = useState({
+    name: "",
+    lastname: "",
+    motherlastname: "",
+    age: "",
+    curp: "",
+    sex: 0,
+    gender: 0,
+    phone: "",
+    country: "",
+    email: "",
+    birthDate: "",
+    federalEntity: 0,
+    city: "",
+    direction: "",
+  });
+
+  const [errors, setErrors] = useState({
+    global: "",
+    name: "",
+    lastname: "",
+    motherlastname: "",
+    age: "",
+    curp: "",
+    sex: "",
+    country: "",
+    email: "",
+    phone: "",
+  });
+
+  const [hasSucessful, setHasSucessful] = useState(false);
+
   const handlename = (value: string) => {
     setValues({ ...values, name: value });
     if (value.length < 2) {
@@ -100,21 +124,99 @@ export default function CompanionCreate({
     return false;
   };
 
+  const onNewCompanion = (e: any) => {
+    const companionNew: ISubject = {
+      name: values.name,
+      lastName: values.lastname,
+      motherLastName: values.motherlastname,
+      curp: values.curp,
+      email: values.email,
+      sex: values.sex,
+      gender: values.gender,
+      phoneNumber: values.phone,
+      federativeEntityId: values.federalEntity,
+      country: values.country,
+      state: 0,
+      address: values.direction,
+      city: values.city,
+      pictureUrl: "",
+      isPatient: false,
+      birthDate:
+        values.birthDate.length > 0 ? new Date(values.birthDate) : null,
+      createdOn: new Date(),
+      updatedOn: null,
+      deletedOn: null,
+      subjectId: 0,
+    };
+
+    createCompanion(patientId, companionNew)(dispatch);
+  };
+
+  useEffect(() => {
+    if (successful) {
+      setHasSucessful(true);
+
+      setTimeout(() => {
+        setHasSucessful(false);
+        setShowAddCompanion(false);
+      }, 3000);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [successful]);
+
   return (
     <>
-      <div
-        className="flex justify-start gap-3 items-center lg:w-[40%] cursor-pointer"
-        onClick={() => setNewCompanion(false)}
-      >
-        <Lucide icon="ChevronLeft" className="w-4 h-4" />
-        <p className="text-base text-slate-500 pb-2">
-          Volver a la lista de Acompañantes
-        </p>
+      <AlertComponent
+        variant="error"
+        show={error !== null}
+        description={
+          "Ha ocurrido un error al crear al contacto. Vuelve a intentarlo"
+        }
+      />
+
+      {hasSucessful && (
+        <AlertComponent
+          variant="success"
+          show={successful}
+          description="Contacto creado exitosamente"
+        />
+      )}
+
+      <div className="flex items-center justify-between">
+        <div className="flex items-center">
+          <div className="mr-4">
+            <button
+              type="button"
+              className="hover:bg-dark hover:bg-opacity-10 w-[35px] h-[35px] rounded-full"
+              onClick={() => setShowAddCompanion(false)}
+            >
+              <i className="fa-solid fa-arrow-left text-xl" />
+            </button>
+          </div>
+
+          <div className="lg:text-left md:text-left text-center">
+            <h1 className="text-slate-900 text-2xl font-bold">
+              Crear contacto
+            </h1>
+          </div>
+        </div>
+
+        <div>
+          <Button
+            disabled={loading}
+            className="my-4 w-[100%] lg:w-auto"
+            variant="primary"
+            onClick={(e: any) => onNewCompanion(e)}
+          >
+            {loading ? "Cargando" : "Agregar contacto"}
+          </Button>
+        </div>
       </div>
+
       <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">
         <div className="w-full border-b mb-2">
           <p className="font-medium text-lg text-slate-900 pb-2">
-            Nuevo Acompañante
+            Nuevo contacto
           </p>
         </div>
         <div className="input-group w-full">

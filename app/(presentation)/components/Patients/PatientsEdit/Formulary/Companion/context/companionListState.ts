@@ -1,5 +1,5 @@
 import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
-import { IGetSubjectsResponse } from "domain/core/response/subjectsResponse";
+import { IGetSubjectRelationsResponse } from "domain/core/response/subjectsResponse";
 
 export interface ICompanionsListState {
     getCompanions: ICompanionsListCompanionsListState;
@@ -7,7 +7,7 @@ export interface ICompanionsListState {
 }
 
 interface ICompanionsListCompanionsListState {
-    data: IGetSubjectsResponse;
+    data: IGetSubjectRelationsResponse;
     loading: boolean;
     successful: boolean;
     error: SubjectFailure | null; 
@@ -22,7 +22,7 @@ interface ICompanionCreateCompanionState {
 
 export const initialState: ICompanionsListState= {
     getCompanions: {
-      data: {} as IGetSubjectsResponse,
+      data: {} as IGetSubjectRelationsResponse,
       loading: false,
       successful: false,
       error: null,

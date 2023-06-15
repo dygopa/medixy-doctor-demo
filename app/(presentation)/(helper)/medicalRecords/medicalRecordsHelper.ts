@@ -1,5 +1,6 @@
-import { MedicalRecordTypesEnum, MedicalRecordTypesPhysicalEnum, MedicalRecordValueTypesEnum, MedicalRecordValueTypesPhysicalEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
+import { MedicalRecordTypesEnum, MedicalRecordTypesOrdersEnum, MedicalRecordTypesPhysicalEnum, MedicalRecordValueTypesEnum, MedicalRecordValueTypesOrdersEnum, MedicalRecordValueTypesPhysicalEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import { IMedicalRecord, IMedicalRecordType, IMedicalRecordValueType } from "domain/core/entities/medicalRecordEntity";
+import { IOrderMedical } from "domain/core/entities/orderEntity";
 
 export const getMedicalRecordsHistory = (values: any, subjectId: number) => {
     const medicalRecords: IMedicalRecord[] = [];
@@ -995,4 +996,229 @@ export const getMedicalRecordsPhysical = (values: any, subjectId: number) => {
       }
 
     return medicalRecords;
+}
+
+
+export const getMedicalRecordsOrders = (values: any, subjectId: number) => {
+  const medicalRecords: IMedicalRecord[] = [];
+
+  if (values.length > 0) {
+    values.forEach((value: IOrderMedical) => {
+      switch (value.orderType) {
+        case "laboratory":
+          medicalRecords.push({
+            id: 0,
+            subjectId: subjectId,
+            medicalRecordTypeId: 0,
+            medicalRecordType: {
+              id: 0,
+              name: MedicalRecordTypesOrdersEnum.ORDER_LABORATORY,
+            } as IMedicalRecordType,
+            medicalRecordValues: [
+              {
+                id: 0,
+                value: value.medicalProfile.name,
+                medicalRecordValueType: {
+                  id: 0,
+                  name: MedicalRecordValueTypesOrdersEnum.ORDER_LABORATORY_MEDICAL_EXAM,
+                } as IMedicalRecordValueType,
+              },
+              {
+                id: 1,
+                value: value.indications,
+                medicalRecordValueType: {
+                  id: 0,
+                  name: MedicalRecordValueTypesOrdersEnum.ORDER_LABORATORY_INDICATION,
+                } as IMedicalRecordValueType,
+              },
+            ],
+            medicalConsultyId: 0,
+            medicalConsulty: {},
+          } as IMedicalRecord);
+          break;
+
+        case "diagnosis":
+          medicalRecords.push({
+            id: 0,
+            subjectId: subjectId,
+            medicalRecordTypeId: 0,
+            medicalRecordType: {
+              id: 0,
+              name: MedicalRecordTypesOrdersEnum.ORDER_DIAGNOSIS,
+            } as IMedicalRecordType,
+            medicalRecordValues: [
+              {
+                id: 0,
+                value: value.medicalProfile.name,
+                medicalRecordValueType: {
+                  id: 0,
+                  name: MedicalRecordValueTypesOrdersEnum.ORDER_DIAGNOSIS_MEDICAL_EXAM,
+                } as IMedicalRecordValueType,
+              },
+              {
+                id: 1,
+                value: value.indications,
+                medicalRecordValueType: {
+                  id: 0,
+                  name: MedicalRecordValueTypesOrdersEnum.ORDER_DIAGNOSIS_INDICATION,
+                } as IMedicalRecordValueType,
+              },
+            ],
+            medicalConsultyId: 0,
+            medicalConsulty: {},
+          } as IMedicalRecord);
+          break;
+
+          
+        case "specialty":
+          medicalRecords.push({
+            id: 0,
+            subjectId: subjectId,
+            medicalRecordTypeId: 0,
+            medicalRecordType: {
+              id: 0,
+              name: MedicalRecordTypesOrdersEnum.ORDER_SPECIALTY,
+            } as IMedicalRecordType,
+            medicalRecordValues: [
+              {
+                id: 0,
+                value: value.specialty,
+                medicalRecordValueType: {
+                  id: 0,
+                  name: MedicalRecordValueTypesOrdersEnum.ORDER_SPECIALTY,
+                } as IMedicalRecordValueType,
+              },
+              {
+                id: 1,
+                value: value.doctorName,
+                medicalRecordValueType: {
+                  id: 0,
+                  name: MedicalRecordValueTypesOrdersEnum.ORDER_SPECIALTY_DOCTOR_NAME,
+                } as IMedicalRecordValueType,
+              },
+              {
+                id: 2,
+                value: value.otherDoctorName,
+                medicalRecordValueType: {
+                  id: 0,
+                  name: MedicalRecordValueTypesOrdersEnum.ORDER_SPECIALTY_OTHER_DOCTOR_NAME,
+                } as IMedicalRecordValueType,
+              },
+            ],
+            medicalConsultyId: 0,
+            medicalConsulty: {},
+          } as IMedicalRecord);
+          break;
+
+          case "justificative":
+          medicalRecords.push({
+            id: 0,
+            subjectId: subjectId,
+            medicalRecordTypeId: 0,
+            medicalRecordType: {
+              id: 0,
+              name: MedicalRecordTypesOrdersEnum.ORDER_MEDICAL_PROOF,
+            } as IMedicalRecordType,
+            medicalRecordValues: [
+              {
+                id: 0,
+                value: value.indications,
+                medicalRecordValueType: {
+                  id: 0,
+                  name: MedicalRecordValueTypesOrdersEnum.ORDER_MEDICAL_PROOF,
+                } as IMedicalRecordValueType,
+              },
+            ],
+            medicalConsultyId: 0,
+            medicalConsulty: {},
+          } as IMedicalRecord);
+
+         
+          break;
+
+          case "certificate":
+            medicalRecords.push({
+              id: 0,
+              subjectId: subjectId,
+              medicalRecordTypeId: 0,
+              medicalRecordType: {
+                id: 0,
+                name: MedicalRecordTypesOrdersEnum.ORDER_MEDICAL_CERTIFICATE,
+              } as IMedicalRecordType,
+              medicalRecordValues: [
+                {
+                  id: 0,
+                  value: value.indications,
+                  medicalRecordValueType: {
+                    id: 0,
+                    name: MedicalRecordValueTypesOrdersEnum.ORDER_MEDICAL_CERTIFICATE,
+                  } as IMedicalRecordValueType,
+                },
+              ],
+              medicalConsultyId: 0,
+              medicalConsulty: {},
+            } as IMedicalRecord);
+  
+           
+            break;
+
+            case "hospitalitation":
+              medicalRecords.push({
+                id: 0,
+                subjectId: subjectId,
+                medicalRecordTypeId: 0,
+                medicalRecordType: {
+                  id: 0,
+                  name: MedicalRecordTypesOrdersEnum.ORDER_HOSPITALIZATION,
+                } as IMedicalRecordType,
+                medicalRecordValues: [
+                  {
+                    id: 0,
+                    value: value.indications,
+                    medicalRecordValueType: {
+                      id: 0,
+                      name: MedicalRecordValueTypesOrdersEnum.ORDER_HOSPITALIZATION,
+                    } as IMedicalRecordValueType,
+                  },
+                ],
+                medicalConsultyId: 0,
+                medicalConsulty: {},
+              } as IMedicalRecord);
+    
+             
+              break;
+
+              case "opening":
+                medicalRecords.push({
+                  id: 0,
+                  subjectId: subjectId,
+                  medicalRecordTypeId: 0,
+                  medicalRecordType: {
+                    id: 0,
+                    name: MedicalRecordTypesOrdersEnum.ORDER_OPENING,
+                  } as IMedicalRecordType,
+                  medicalRecordValues: [
+                    {
+                      id: 0,
+                      value: value.indications,
+                      medicalRecordValueType: {
+                        id: 0,
+                        name: MedicalRecordValueTypesOrdersEnum.ORDER_OPENING,
+                      } as IMedicalRecordValueType,
+                    },
+                  ],
+                  medicalConsultyId: 0,
+                  medicalConsulty: {},
+                } as IMedicalRecord);
+      
+               
+                break;
+      
+        default:
+          break;
+      }
+    });
+  }
+
+  return medicalRecords;
 }
