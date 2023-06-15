@@ -1,7 +1,7 @@
-import { IPatient } from "domain/core/entities/patientEntity";
+import { IPatient } from "domain/core/entities/subjectEntity";
 import { IGetCIE10ListResponse } from "domain/core/response/cie10Response";
 import CIE10UseCase from "domain/useCases/cie10/cie10UseCases";
-import PatientsUseCase from "domain/useCases/patient/patientUseCase";
+import PatientsUseCase from "domain/useCases/subject/subjectUseCase";
 import { Dispatch } from "react";
 
 export interface IMedicalRecordCreateActions {

@@ -1,18 +1,18 @@
-import { PatientFailure } from "domain/core/failures/patient/patientFailure";
+import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
 
-export interface ICreatePatientState {
-    createPatient: IPatientCreatePatientState;
+export interface ICreateSubjectState {
+    createSubject: ISubjectCreateSubjectState;
 }
 
-interface IPatientCreatePatientState {
+interface ISubjectCreateSubjectState {
     data: boolean;
     loading: boolean;
     successful: boolean;
-    error: PatientFailure | null;
+    error: SubjectFailure | null;
 }
 
-export const initialState: ICreatePatientState = {
-    createPatient: {
+export const initialState: ICreateSubjectState = {
+    createSubject: {
         data: false,
         loading: false,
         successful: false,

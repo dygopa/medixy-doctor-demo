@@ -12,14 +12,14 @@ import {
   PatientsListContext,
 } from "../context/PatientsListContext";
 import { useRouter, useSearchParams } from "next/navigation";
-import { IPatient } from "domain/core/entities/patientEntity";
+import { ISubject } from "domain/core/entities/subjectEntity";
 import Paginate from "(presentation)/components/core/Paginate/Paginate";
 
 export default function PatientsTable() {
   const { state, actions, dispatch } =
     useContext<IPatientsListContext>(PatientsListContext);
-  const { data: patients, loading, successful, error } = state.getPatients;
-  const { getPatients } = actions;
+  const { data: patients, loading, successful, error } = state.getSubjects;
+  const { getSubjects } = actions;
 
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -28,7 +28,7 @@ export default function PatientsTable() {
   const searchQuery = searchParams.get("search_query");
 
   useEffect(() => {
-    getPatients({
+    getSubjects({
       page: page && page?.length > 0 ? parseInt(page.toString(), 10) : "1",
       searchQuery: searchQuery,
       limit: 10,
@@ -66,23 +66,23 @@ export default function PatientsTable() {
 
           <Table.Tbody className="z-0">
             {patients.data?.length > 0 &&
-              patients.data.map((patient: IPatient) => (
+              patients.data.map((patient: ISubject) => (
                 <Table.Tr
-                  key={patient.patientId}
+                  key={patient.subjectId}
                   className="hover:cursor-pointer"
                 >
                   <Table.Td
                     className="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5"
                     onClick={() =>
                       router.push(
-                        PatientsRoutesEnum.PatientsEdit + patient.patientId
+                        PatientsRoutesEnum.PatientsEdit + patient.subjectId
                       )
                     }
                   >
                     <Link
                       href={{
                         pathname:
-                          PatientsRoutesEnum.PatientsEdit + patient.patientId,
+                          PatientsRoutesEnum.PatientsEdit + patient.subjectId,
                       }}
                     >
                       {patient.name} {patient.lastName}
@@ -93,7 +93,7 @@ export default function PatientsTable() {
                     className="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5"
                     onClick={() =>
                       router.push(
-                        PatientsRoutesEnum.PatientsEdit + patient.patientId
+                        PatientsRoutesEnum.PatientsEdit + patient.subjectId
                       )
                     }
                   >
@@ -104,7 +104,7 @@ export default function PatientsTable() {
                     className="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5"
                     onClick={() =>
                       router.push(
-                        PatientsRoutesEnum.PatientsEdit + patient.patientId
+                        PatientsRoutesEnum.PatientsEdit + patient.subjectId
                       )
                     }
                   >
@@ -115,7 +115,7 @@ export default function PatientsTable() {
                     className="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5"
                     onClick={() =>
                       router.push(
-                        PatientsRoutesEnum.PatientsEdit + patient.patientId
+                        PatientsRoutesEnum.PatientsEdit + patient.subjectId
                       )
                     }
                   >
@@ -134,7 +134,7 @@ export default function PatientsTable() {
                         href={{
                           pathname:
                             PatientsRoutesEnum.PatientsView +
-                            patient.patientId +
+                            patient.subjectId +
                             PatientsMedicalRecordRoutesEnum.MedicalRecord,
                         }}
                       >
@@ -149,7 +149,7 @@ export default function PatientsTable() {
                         className="flex items-center"
                         href={{
                           pathname:
-                            PatientsRoutesEnum.PatientsEdit + patient.patientId,
+                            PatientsRoutesEnum.PatientsEdit + patient.subjectId,
                         }}
                       >
                         <Button
@@ -176,7 +176,7 @@ export default function PatientsTable() {
           </div>
         )}
 
-        {successful && [...(patients.data as Array<IPatient>)].length === 0 && (
+        {successful && [...(patients.data as Array<ISubject>)].length === 0 && (
           <div className="w-full flex flex-col justify-center items-center text-center">
             <p className="font-bold text-slate-900 text-lg">
               Vaya, no tienes servicios aún

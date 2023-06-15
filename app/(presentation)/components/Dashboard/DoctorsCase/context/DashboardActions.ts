@@ -1,4 +1,4 @@
-import { IGetPatientsResponse } from "domain/core/response/patientsResponse";
+import { IGetSubjectsResponse } from "domain/core/response/subjectsResponse";
 import DashboardUseCase from "domain/useCases/dashboard/DashboardUseCase";
 import { Dispatch } from "react";
 
@@ -6,7 +6,7 @@ export interface IDashboardActions {
   getPendingAppointments: Function;
   getCompletedAppointments: Function;
   getLatestAppointment: Function;
-  getPatients: Function;
+  getSubject: Function;
 }
 
 const getPendingAppointments = (obj:any) => async (dispatch: Dispatch<any>) => {
@@ -45,11 +45,11 @@ const getLatestAppointment = (obj:any) => async (dispatch: Dispatch<any>) => {
   }
 }
 
-const getPatients = (obj:{ skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; country?: string | undefined, startDate?: Date | undefined; endDate?: Date | undefined; }) => async (dispatch: Dispatch<any>) => {
+const getSubject = (obj:{ skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; country?: string | undefined, startDate?: Date | undefined; endDate?: Date | undefined; }) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "GET_PATIENTS_LOADING" });
 
-    const res: IGetPatientsResponse = await new DashboardUseCase().getPatients(obj);
+    const res: IGetSubjectsResponse = await new DashboardUseCase().getSubjects(obj);
     
 
     dispatch({ type: "GET_PATIENTS_SUCCESSFUL", payload: { data: res.data } });
@@ -62,5 +62,5 @@ export const actions: IDashboardActions = {
   getPendingAppointments,
   getCompletedAppointments,
   getLatestAppointment,
-  getPatients,
+  getSubject,
 }

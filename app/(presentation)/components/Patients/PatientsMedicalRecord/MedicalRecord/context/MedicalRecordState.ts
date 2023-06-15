@@ -1,7 +1,7 @@
-import { IPatient } from "domain/core/entities/patientEntity";
+import { IPatient } from "domain/core/entities/subjectEntity";
 import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
 import { MedicalMeasureFailure } from "domain/core/failures/medicalMeasure/medicalMeasureFailure";
-import { PatientFailure } from "domain/core/failures/patient/patientFailure";
+import { PatientFailure } from "domain/core/failures/subject/subjectFailure";
 import { IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
 

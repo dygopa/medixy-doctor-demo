@@ -1,20 +1,20 @@
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
-import { IPatient } from "domain/core/entities/patientEntity";
+import { ISubject } from "domain/core/entities/subjectEntity";
 import FederalEntitiesUseCase from "domain/useCases/federalEntity/federalEntityUseCase";
-import PatientsUseCase from "domain/useCases/patient/patientUseCase";
+import SubjectsUseCase from "domain/useCases/subject/subjectUseCase";
 import { Dispatch } from "react";
 
-export interface IEditPatientActions {
-    getPatientById: (patientId: number) => (dispatch: Dispatch<any>) => {};
+export interface IEditSubjectActions {
+    getSubjectById: (subjectId: number) => (dispatch: Dispatch<any>) => {};
     getFederalEntities: Function;
-    editPatient: (patient: IPatient) => (dispatch: Dispatch<any>) => {};
+    editSubject: (subject: ISubject) => (dispatch: Dispatch<any>) => {};
 }
 
-const getPatientById = (patientId: number) => async (dispatch: Dispatch<any>) => {
+const getSubjectById = (subjectId: number) => async (dispatch: Dispatch<any>) => {
     try {
         dispatch({ type: "GET_PATIENT_LOADING" });
 
-        const res: IPatient = await new PatientsUseCase().getPatientById(patientId);
+        const res: ISubject = await new SubjectsUseCase().getSubjectById(subjectId);
 
         dispatch({ type: "GET_PATIENT_SUCCESSFUL", payload: { data: res } });
     } catch (error) {
@@ -36,13 +36,11 @@ const getFederalEntities = () => async (dispatch: Dispatch<any>) => {
     }
 }
 
-const editPatient = (patient: IPatient) => async (dispatch: Dispatch<any>) => {
+const editSubject = (subject: ISubject) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "EDIT_PATIENT_LOADING" });
-      
-        console.log(patient)
 
-      const res: boolean = await new PatientsUseCase().editPatient(patient);
+      const res: boolean = await new SubjectsUseCase().editSubject(subject);
   
       dispatch({ type: "EDIT_PATIENT_SUCCESSFUL", payload: { data: res } });
     } catch (error) {
@@ -50,8 +48,8 @@ const editPatient = (patient: IPatient) => async (dispatch: Dispatch<any>) => {
     }
 }
 
-export const actions: IEditPatientActions = {
-    getPatientById,
+export const actions: IEditSubjectActions = {
+    getSubjectById,
     getFederalEntities,
-    editPatient,
+    editSubject,
 }

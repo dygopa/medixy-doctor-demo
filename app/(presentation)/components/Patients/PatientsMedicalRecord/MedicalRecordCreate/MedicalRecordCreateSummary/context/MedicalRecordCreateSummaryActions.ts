@@ -1,8 +1,8 @@
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
-import { IPatient } from "domain/core/entities/patientEntity";
+import { IPatient } from "domain/core/entities/subjectEntity";
 import { ICreateMedicalConsultyResponse } from "domain/core/response/medicalConsultyResponse";
 import MedicalConsultyUseCase from "domain/useCases/medicalConsulty/medicalConsultyUseCases";
-import PatientsUseCase from "domain/useCases/patient/patientUseCase";
+import PatientsUseCase from "domain/useCases/subject/subjectUseCase";
 import { Dispatch } from "react";
 
 export interface IMedicalRecordCreateSummaryActions {

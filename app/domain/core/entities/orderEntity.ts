@@ -1,12 +1,12 @@
 import { IAlly } from "./allyEntity";
 import { ILocality } from "./localityEntity";
-import { IPatient } from "./patientEntity";
+import { ISubject } from "./subjectEntity";
 import { IService } from "./serviceEntity";
 
 export interface IOrder {
     orderId: string;
-    patientId: string;
-    patient?: IPatient | null;
+    subjectId: string;
+    subject?: ISubject | null;
     allyId: string;
     ally?: IAlly | null;
     title: string;

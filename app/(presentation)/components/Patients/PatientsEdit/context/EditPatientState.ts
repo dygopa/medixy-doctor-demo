@@ -1,37 +1,37 @@
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
-import { IPatient } from "domain/core/entities/patientEntity";
+import { ISubject } from "domain/core/entities/subjectEntity";
 import { FederalEntityFailure } from "domain/core/failures/federalEntity/federalEntityFailure";
-import { PatientFailure } from "domain/core/failures/patient/patientFailure";
+import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
 
-export interface IEditPatientState {
-    patient: IGetPatientState;
-    getFederalEntities: IEditPatientEditPatientState;
-    editPatient: IUpdatePatientState;
+export interface IEditSubjectState {
+    subject: IGetSubjectState;
+    getFederalEntities: IEditSubjectEditSubjectState;
+    editSubject: IUpdateSubjectState;
 }
 
-interface IGetPatientState {
-    data: IPatient | null;
+interface IGetSubjectState {
+    data: ISubject | null;
     loading: boolean;
     successful: boolean;
-    error: PatientFailure| null; 
+    error: SubjectFailure| null; 
 }
 
-interface IEditPatientEditPatientState {
+interface IEditSubjectEditSubjectState {
     data: Array<IFederalEntity>;
     loading: boolean;
     successful: boolean;
     error: FederalEntityFailure| null; 
 }
 
-interface IUpdatePatientState {
+interface IUpdateSubjectState {
     data: boolean;
     loading: boolean;
     successful: boolean;
-    error: PatientFailure | null;
+    error: SubjectFailure | null;
 }
 
-export const initialState: IEditPatientState = {
-    patient: {
+export const initialState: IEditSubjectState = {
+    subject: {
         data: null,
         loading: false,
         successful: false,
@@ -43,7 +43,7 @@ export const initialState: IEditPatientState = {
         successful: false,
         error: null,
     },
-    editPatient: {
+    editSubject: {
         data: false,
         loading: false,
         successful: false,

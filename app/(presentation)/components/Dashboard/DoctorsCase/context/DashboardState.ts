@@ -4,7 +4,7 @@ export interface IDashboardState {
   getPendingAppointments: IState;
   getCompletedAppointments: IState;
   getLatestAppointment: IState;
-  getPatients: IState;
+  getSubjects: IState;
 }
 
 interface IState {
@@ -33,7 +33,7 @@ export const initialState: IDashboardState = {
     successful: false,
     error: null,
   },
-  getPatients: {
+  getSubjects: {
     data: [],
     loading: false,
     successful: false,

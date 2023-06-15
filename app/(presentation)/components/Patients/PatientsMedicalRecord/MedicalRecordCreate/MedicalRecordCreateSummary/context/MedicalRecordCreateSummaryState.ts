@@ -1,6 +1,6 @@
-import { IPatient } from "domain/core/entities/patientEntity";
+import { IPatient } from "domain/core/entities/subjectEntity";
 import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
-import { PatientFailure } from "domain/core/failures/patient/patientFailure";
+import { PatientFailure } from "domain/core/failures/subject/subjectFailure";
 import { ICreateMedicalConsultyResponse } from "domain/core/response/medicalConsultyResponse";
 
 export interface IMedicalRecordCreateSummaryState {

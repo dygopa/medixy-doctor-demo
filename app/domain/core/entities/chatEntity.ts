@@ -1,5 +1,5 @@
 import { IAlly } from "./allyEntity";
-import { IPatient } from "./patientEntity";
+import { ISubject } from "./subjectEntity";
 import { IUser } from "./userEntity";
 
 export interface IChat {
@@ -10,8 +10,8 @@ export interface IChat {
     admin?: IUser;
     allyId: string;
     ally?: IAlly;
-    patientId: string;
-    patient?: IPatient;
+    subjectId: string;
+    subject?: ISubject;
     messagesForRead: number;
     chatType: string;
     createdOn: any | null;
@@ -35,8 +35,8 @@ export interface IMessage {
     admin?: IUser;
     allyId: string;
     ally?: IAlly;
-    patientId: string;
-    patient?: IPatient;
+    subjectId: string;
+    subject?: ISubject;
     userDestId: string;
     text: string;
     file: IFile;
