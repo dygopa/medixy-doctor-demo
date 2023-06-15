@@ -54,7 +54,7 @@ export default function CompanionsTable({
         <Table.Thead>
           <Table.Tr>
             <Table.Th className="border-b-0 whitespace-nowrap text-base">
-              Acompañante
+              Contacto
             </Table.Th>
 
             <Table.Th className="border-b-0 whitespace-nowrap text-base">

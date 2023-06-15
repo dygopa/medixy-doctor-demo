@@ -183,14 +183,14 @@ export default function CompanionEdit ({companionEdit, setCompanionEdit, values,
           className="w-4 h-4"
         />
         <p className="text-base text-slate-500 pb-2">
-          Volver a la lista de Acompañantes
+          Volver a la lista de Contactos
         </p>
       </div>
       <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">
         <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
           <div className="w-full border-b mb-2">
             <p className="font-medium text-base text-slate-900 pb-2">
-              Datos generales del Acompañantes
+              Datos generales del Contacto
             </p>
           </div>
           <div className="w-full lg:flex justify-between items-center gap-4">

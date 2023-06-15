@@ -263,7 +263,7 @@ export default function Formulary() {
 
   let listTabs = [
     "Información básica",
-    "Acompañantes",
+    "Contactos",
   ];
 
   const TabComponent = ({ title, index }: { title: string; index: number }) => {
@@ -413,7 +413,7 @@ export default function Formulary() {
               variant="primary" 
               onClick={(e:any) => onSubmitEditCompanion(e)}
             >
-              Actualizar acompañante
+              Actualizar Contacto
             </Button>
           :
             <Button 
@@ -421,7 +421,7 @@ export default function Formulary() {
               className="my-4 w-[100%] lg:w-auto"
               variant="primary" 
               onClick={(e:any) => onNewPatient(e)}>
-              {!newCompanion ? "Nuevo acompañante" : "Agregar acompañante"}
+              {!newCompanion ? "Nuevo contacto" : "Agregar contacto"}
             </Button>
           }</>
           }

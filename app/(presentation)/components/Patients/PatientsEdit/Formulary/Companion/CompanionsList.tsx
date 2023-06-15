@@ -19,7 +19,7 @@ export default function CompanionsList ({idPatient, setCompanionEdit} : ITablePr
   return (
     <CompanionsListProvider>
       <div className="w-full flex justify-between">
-        <h2 className="mr-5 text-xl font-bold">Acompañantes</h2>
+        <h2 className="mr-5 text-xl font-bold">Contactos</h2>
         <div className="w-56 text-slate-500">
           <FormInput
             type="text"

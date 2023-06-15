@@ -108,13 +108,13 @@ export default function CompanionCreate({
       >
         <Lucide icon="ChevronLeft" className="w-4 h-4" />
         <p className="text-base text-slate-500 pb-2">
-          Volver a la lista de Acompañantes
+          Volver a la lista de Contactos
         </p>
       </div>
       <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">
         <div className="w-full border-b mb-2">
           <p className="font-medium text-lg text-slate-900 pb-2">
-            Nuevo Acompañante
+            Nuevo Constacto
           </p>
         </div>
         <div className="input-group w-full">
