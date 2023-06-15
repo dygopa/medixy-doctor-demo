@@ -19,6 +19,9 @@ import {
 import { useRouter } from "next/navigation";
 import { PatientsRoutesEnum } from "(presentation)/(routes)/patientsRoutes";
 import { ISubject } from "domain/core/entities/subjectEntity";
+import CompanionsList from "./Companion/CompanionsList";
+import CompanionCreate from "./Companion/CompanionCreate";
+import { CompanionsListContext, ICompanionsListContext } from "./Companion/context/companionListContext";
 
 export default function Formulary() {
   const { state, actions, dispatch } =
@@ -26,6 +29,10 @@ export default function Formulary() {
   const { editSubject } = actions;
   const { data: patient } = state.subject;
   const { loading, successful, error } = state.editSubject;
+  const { state: stateCompanions, actions: actionsCompanions, dispatch: dispatchCompanions } =
+    useContext<ICompanionsListContext>(CompanionsListContext);
+  const { data: createCompanionResult, loading: loadingCompanion, successful: successfulCompanion, error: errorCompanion } = stateCompanions.createCompanion;
+  const { createCompanion } = actionsCompanions;
 
   const router = useRouter();
 
@@ -47,6 +54,36 @@ export default function Formulary() {
   });
 
   const [errors, setErrors] = useState({
+    global: "",
+    name: "",
+    lastname: "",
+    motherlastname: "",
+    age: "",
+    curp: "",
+    sex: "",
+    country: "",
+    email: "",
+    phone: "",
+  });
+
+  const [valuesNewCompanion, setValuesNewCompanion] = useState({
+    name: "",
+    lastname: "",
+    motherlastname: "",
+    age: "",
+    curp: "",
+    sex: 0,
+    gender: 0,
+    phone: "",
+    country: "",
+    email: "",
+    birthDate: "",
+    federalEntity: 0,
+    city: "",
+    direction: "",
+  });
+
+  const [errorsNewCompanion, setErrorsNewCompanion] = useState({
     global: "",
     name: "",
     lastname: "",
@@ -153,8 +190,102 @@ export default function Formulary() {
         router.push(PatientsRoutesEnum.PatientsList);
       }, 3500);
     }
+    if (successfulCompanion) {
+      setTimeout(() => {
+        setNewCompanion(false);
+      }, 3500);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [successful]);
+  }, [successful, successfulCompanion]);
+
+  let listTabs = [
+    "Información básica",
+    "Acompañantes",
+  ];
+
+  const TabComponent = ({ title, index }: { title: string; index: number }) => {
+    return (
+      <div
+        onClick={() => {
+          setTabsActive(index);
+        }}
+        className={`lg:text-[0.9rem] md:text-[0.9rem] text-[12px] w-fit p-4 cursor-pointer hover:border-primary hover:border-b-[3px] text-center hover:text-slate-900 hover:font-bold
+    ${
+      tabsActive === index
+        ? "border-primary border-b-[3px] font-bold text-slate-900"
+        : "text-slate-400 font-normal border-b-[3px] border-transparent"
+    }
+  `}
+      >
+        {title}
+      </div>
+    );
+  };
+
+  const [tabsActive, setTabsActive] = useState(0);
+
+  const [newCompanion, setNewCompanion] = useState(false);
+
+  const onNewPatient = (e:any) => {
+    if (!newCompanion) {
+      setNewCompanion(true)
+    } else {
+      const companionNew = {
+        name: valuesNewCompanion.name,
+        lastName: valuesNewCompanion.lastname,
+        motherLastName: valuesNewCompanion.motherlastname,
+        curp: valuesNewCompanion.curp,
+        email: valuesNewCompanion.email,
+        sex: valuesNewCompanion.sex,
+        gender: valuesNewCompanion.gender,
+        phoneNumber: valuesNewCompanion.phone,
+        federativeEntityId: valuesNewCompanion.federalEntity,
+        country: valuesNewCompanion.country,
+        state: 0,
+        address: valuesNewCompanion.direction,
+        city: valuesNewCompanion.city,
+        pictureUrl: "",
+        isPatient: false,
+        birthDate:
+          valuesNewCompanion.birthDate.length > 0 ? new Date(valuesNewCompanion.birthDate) : null,
+        createdOn: patient?.createdOn ?? new Date(),
+        updatedOn: new Date(),
+        deletedOn: null,
+      };
+
+      console.log(companionNew);
+
+      createCompanion(companionNew)(dispatchCompanions);
+    }
+  }
+
+  const getComponentByTabActive = () => {
+    switch (tabsActive) {
+      case 0:
+        return <>
+            <BasicData 
+              values={values} 
+              setValues={setValues} 
+              errors={errors} 
+              setErrors={setErrors}
+            /> 
+            <Direction values={values} setValues={setValues} />
+          </>;
+      case 1:
+        return <>
+          { !newCompanion ? 
+            <CompanionsList idPatient={patient?.subjectId} />
+            :
+            <CompanionCreate setNewCompanion={setNewCompanion} values={valuesNewCompanion} setValues={setValuesNewCompanion} errors={errorsNewCompanion} setErrors={setErrorsNewCompanion} />
+          }
+          </>;
+      case 2:
+        return;
+      
+      default:
+        return <div />;
+    }
+  }
 
   return (
     <div>
@@ -170,36 +301,58 @@ export default function Formulary() {
         show={successful}
         description="Paciente actualizado exitosamente"
       />
+      <AlertComponent
+        variant="error"
+        show={errorCompanion !== null}
+        description={
+          "Ha ocurrido un error creando el acompañante. Vuelve a intentarlo"
+        }
+      />
+      <AlertComponent
+        variant="success"
+        show={successfulCompanion}
+        description="Acompañante actualizado exitosamente"
+      />
 
-      <div className="w-full md:flex justify-between items-center sticky top-[67px] z-[50]  bg-slate-100 pt-2">
-        <div className="lg:w-[50%]">
-          <h2 className="lg:mr-5 text-2xl font-bold truncate">
-            {patient?.name} {patient?.lastName}
-          </h2>
-          {/*<p className="font-light text-slate-500 text-base my-3 lg:block md:block hidden">
-            Completa la información de tu paciente para registrar todos sus
-            datos.
-          </p>*/}
+      <div className="w-full sticky top-[67px] z-[50]  bg-slate-100 pt-2">
+        <div className="md:flex justify-between items-center">
+          <div className="lg:w-[50%]">
+            <h2 className="lg:mr-5 text-2xl font-bold truncate">
+              {patient?.name} {patient?.lastName}
+            </h2>
+            {/*<p className="font-light text-slate-500 text-base my-3 lg:block md:block hidden">
+              Completa la información de tu paciente para registrar todos sus
+              datos.
+            </p>*/}
+          </div>
+
+          { tabsActive != 1 ?
+          <Button className="my-4 w-[100%] lg:w-auto" variant="primary" disabled={
+            loading || 
+            values.name === "" ||
+            values.lastname === "" ||
+            values.birthDate === "" ||
+            values.phone === ""
+            } onClick={() => onSubmit()}>
+            {loading ? "Actualizando paciente..." : "Actualizar paciente"}
+          </Button>
+          :
+          <Button 
+            className="my-4 w-[100%] lg:w-auto" 
+            variant="primary" 
+            onClick={(e:any) => onNewPatient(e)}>
+            {!newCompanion ? "Nuevo acompañante" : "Agregar acompañante"}
+          </Button>
+          }
         </div>
-        <Button className="my-4 w-[100%] lg:w-auto" variant="primary" disabled={
-          loading || 
-          values.name === "" ||
-          values.lastname === "" ||
-          values.birthDate === "" ||
-          values.phone === ""
-          } onClick={() => onSubmit()}>
-          {loading ? "Actualizando paciente..." : "Actualizar paciente"}
-        </Button>
+        <div className="w-full flex justify-start items-center overflow-x-auto overflow-y-hidden">
+          {listTabs.map((tab, i) => (
+            <TabComponent title={tab} index={i} key={i} />
+          ))}
+        </div>
       </div>
       <div className="w-full relative flex flex-col gap-4 mt-8">
-        <BasicData
-          values={values}
-          setValues={setValues}
-          errors={errors}
-          setErrors={setErrors}
-        />
-        {/*<Credentials />*/}
-        <Direction values={values} setValues={setValues} />
+        {getComponentByTabActive()}
       </div>
     </div>
   );

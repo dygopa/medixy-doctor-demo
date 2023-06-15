@@ -25,6 +25,25 @@ export default class SubjectsUseCase {
     }
   }
 
+  async getSubjectsComponions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined}): Promise<IGetSubjectsResponse> {
+    try {
+      const response = await this._repository.getSubjectsCompanions({
+        skip: obj.skip,
+        sort: obj.sort,
+        limit: obj.limit,
+        searchQuery: obj.searchQuery
+      });
+
+      if (response instanceof SubjectFailure) throw response;
+
+      console.log(response)
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getSubjectById(patientId: number): Promise<ISubject> {
     try {
       const response = await this._repository.getSubjectById(patientId);

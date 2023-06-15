@@ -11,6 +11,7 @@ import { IGetSubjectsResponse } from 'domain/core/response/subjectsResponse';
 
 export default interface ISubjectRepository {
   getSubjects(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure>;
+  getSubjectsCompanions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure>;
   getSubjectById(subjectId: number): Promise<ISubject | SubjectFailure>;
   getSubjectsPoints(obj: { country?: string | undefined }): Promise<IPoints | PointFailure>;
   createSubjects(subjects: ISubject[]): Promise<boolean | SubjectFailure>;
@@ -62,6 +63,59 @@ export class SubjectRepository implements ISubjectRepository {
               limit: obj.limit ?? 0,
             }
           }
+  
+          return JSON.parse(JSON.stringify(response));
+      } catch (error) { 
+        const exception = error as any;
+        return new SubjectFailure(subjectFailuresEnum.serverError);
+      }
+    }
+
+    async getSubjectsCompanions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure> {
+      try {
+          let query = supabase.from("Sujetos").select("*", { count: "exact" }).eq("esPaciente", false);
+    
+          if (obj.sort) {
+            query = query.order(obj.sort.field, {
+              ascending: obj.sort.ascending
+            });
+          }
+
+          if (obj.searchQuery) {
+   
+
+            query = query.or(`or(nombres.ilike.%${obj.searchQuery.trim().toLowerCase()}%,primerApellido.ilike.%${obj.searchQuery.trim().toLowerCase()}%,curp.ilike.%${obj.searchQuery.trim().toLowerCase()}%,telefono.ilike.%${obj.searchQuery.trim().toLowerCase()}%),and(nombres.ilike.%${obj.searchQuery.trim().toLowerCase()}%,primerApellido.ilike.%${obj.searchQuery.trim().toLowerCase()}%,curp.ilike.%${obj.searchQuery.trim().toLowerCase()}%,telefono.ilike.%${obj.searchQuery.trim().toLowerCase()}%)`);
+          }
+
+          if (obj.skip && typeof obj.skip === "number" && obj.limit) {
+            query = query.range(obj.skip, obj.skip + obj.limit);
+          }
+
+          if (obj.limit) {
+            query = query.limit(obj.limit);
+          }
+  
+          const res = await query;
+          
+          const subjects: ISubject[] = [];
+  
+          if (res.data && res.data.length > 0) {
+              await Promise.all(res.data.map(async (data: any) => {
+                  const subjectMap: ISubject = subjectSupabaseToMap(data);
+      
+                  subjects.push(subjectMap);
+              }));
+          }
+
+          const response: IGetSubjectsResponse = {
+            data: subjects,
+            metadata: {
+              total: res.count ?? 0,
+              limit: obj.limit ?? 0,
+            }
+          }
+
+          console.log(res)
   
           return JSON.parse(JSON.stringify(response));
       } catch (error) { 

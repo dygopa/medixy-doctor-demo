@@ -5,6 +5,7 @@ import {
   EditPatientContext,
   IEditPatientContext,
 } from "./context/EditPatientContext";
+import CompanionsListProvider from "./Formulary/Companion/context/companionListContext";
 import Formulary from "./Formulary/Formulary";
 
 interface IEditPatientIndexProps {
@@ -70,7 +71,9 @@ export default function EditPatientIndex({
 
   return (
     <div className="py-5">
-      <Formulary />
+      <CompanionsListProvider>
+        <Formulary />
+      </CompanionsListProvider>
     </div>
   );
 }
