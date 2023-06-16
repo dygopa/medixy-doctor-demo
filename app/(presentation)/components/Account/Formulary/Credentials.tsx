@@ -50,6 +50,17 @@ export default function Credentials({
   const { actions: actionsStep, dispatch: dispatchStep } = useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps } = actionsStep;
 
+  let profesions = [
+    {id: 1, name: "Médico"},
+    {id: 2, name: "Odontólogo"},
+    {id: 3, name: "Fisioterapeuta"},
+    {id: 4, name: "Farmaceuta"},
+    {id: 5, name: "Técnico radiólogo"},
+    {id: 6, name: "Nutriólogo"},
+    {id: 7, name: "Enfermero/a"},
+    {id: 8, name: "Bioanalista"}
+  ]
+
   const [formData, setFormData] = useState({
     id: account.userId,
     specialty_id: 0,
@@ -210,104 +221,156 @@ export default function Credentials({
         show={successFulRegister}
         description="Especialidad cargada exitosamente"
       />
-      <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
-        <div className="w-full border-b mb-2">
-          <p className="font-medium text-base text-slate-900 pb-2">
-            Credenciales
-          </p>
-        </div>
-        <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-start items-end gap-3">
-          <div className="flex flex-col justify-between items-start relative gap-1">
-            <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-              Especialidad
+
+      <div className="w-full rounded-md flex">
+        <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
+          <div className="w-full border-b mb-2">
+            <p className="font-medium text-base text-slate-900 pb-2">
+              Credenciales
             </p>
-            <FormSelect
-              value={formData["specialty_id"]}
-              className="form-control w-full"
-              onChange={(e) =>
-                setFormData({ ...formData, specialty_id: +e.target.value })
-              }
-            >
-              <option value="">-</option>
-              {specialities &&
-                [...(specialities as Array<any>)].map((elem, i) => (
+          </div>
+          <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-start items-end gap-3 border-b pb-6">
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="input-label mb-2">
+                Profesional de la salud
+              </p>
+              <FormSelect
+                defaultValue={account?.pwaProfressionId}
+                className="form-control w-full"
+                onChange={(e) =>
+                  setAccount({ ...account,  pwaProfressionId: +e.target.value })
+                }
+              >
+                <option value="">-</option>
+                { profesions.map((elem, i) => (
                   <option key={i} value={elem["id"]}>
                     {elem["name"]}
                   </option>
                 ))}
-            </FormSelect>
+              </FormSelect>
+            </div>
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="input-label mb-2">
+                Cédula profesional
+              </p>
+              <FormInput
+                defaultValue={account?.professionalLicense}
+                type={"text"}
+                placeholder="Escribe tu cédula profesional..."
+                className="form-control w-full"
+                onChange={(e) =>
+                  setAccount({ ...account, professionalLicense: e.target.value })
+                }
+              />
+            </div>
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="input-label mb-2">
+                Institución
+              </p>
+              <FormInput
+                defaultValue={account?.professionalLicenseInstitution}
+                type={"text"}
+                placeholder="Escribe el nombre de la institución..."
+                className="form-control w-full"
+                onChange={(e) =>
+                  setAccount({ ...account, professionalLicenseInstitution: e.target.value })
+                }
+              />
+            </div>
           </div>
-          <div className="flex flex-col justify-between items-start relative gap-1">
-            <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-              Cédula de la especialidad
-            </p>
-            <FormInput
-              type={"text"}
-              placeholder="Escribe la cédula de la especialidad..."
-              min={0}
-              value={formData["code"]}
-              className="form-control w-full"
-              onChange={(e) =>
-                setFormData({ ...formData, code: e.target.value })
-              }
-            />
+          <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-start items-end gap-3">
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="input-label mb-2">
+                Especialidad
+              </p>
+              <FormSelect
+                value={formData["specialty_id"]}
+                className="form-control w-full"
+                onChange={(e) =>
+                  setFormData({ ...formData, specialty_id: +e.target.value })
+                }
+              >
+                <option value="">-</option>
+                {specialities &&
+                  [...(specialities as Array<any>)].map((elem, i) => (
+                    <option key={i} value={elem["id"]}>
+                      {elem["name"]}
+                    </option>
+                  ))}
+              </FormSelect>
+            </div>
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="input-label mb-2">
+                Cédula de la especialidad
+              </p>
+              <FormInput
+                type={"text"}
+                placeholder="Escribe la cédula de la especialidad..."
+                min={0}
+                value={formData["code"]}
+                className="form-control w-full"
+                onChange={(e) =>
+                  setFormData({ ...formData, code: e.target.value })
+                }
+              />
+            </div>
+            <div className="flex flex-col justify-between items-start relative gap-1">
+              <p className="input-label mb-2">
+                Institución
+              </p>
+              <FormInput
+                type={"text"}
+                placeholder="Escribe el nombre de la institución..."
+                min={0}
+                value={formData["institution_name"]}
+                className="form-control w-full"
+                onChange={(e) =>
+                  setFormData({ ...formData, institution_name: e.target.value })
+                }
+              />
+            </div>
+            <div className="flex flex-col justify-between items-end relative">
+              <Button
+                disabled={loadingRegister || account.userId === undefined || formData.specialty_id === 0 }
+                onClick={createSpeciality}
+                className="w-full flex justify-center items-center gap-2 text-white font-base"
+                variant="success"
+              >
+                <FiPlus />
+                <p>Agregar</p>
+              </Button>
+            </div>
           </div>
-          <div className="flex flex-col justify-between items-start relative gap-1">
-            <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-              Institución
-            </p>
-            <FormInput
-              type={"text"}
-              placeholder="Escribe el nombre de la institución..."
-              min={0}
-              value={formData["institution_name"]}
-              className="form-control w-full"
-              onChange={(e) =>
-                setFormData({ ...formData, institution_name: e.target.value })
-              }
-            />
-          </div>
-          <div className="flex flex-col justify-between items-end relative">
-            <Button
-              disabled={loadingRegister || account.userId === undefined || formData.specialty_id === 0 }
-              onClick={createSpeciality}
-              className="w-full flex justify-center items-center gap-2 text-white font-base"
-              variant="success"
-            >
-              <FiPlus />
-              <p>Agregar</p>
-            </Button>
-          </div>
+
+          {loadingRegister ? (
+            <div className="w-full flex justify-center items-center">
+              <p className="font-semibold text-center text-base text-slate-900">
+                Cargando...
+              </p>
+            </div>
+          ) : data && [...(data as Array<any>)].length > 0 ? (
+            [...(data as Array<any>)].map((elem, i) => (
+              <SpecialityCard
+                key={i}
+                name={elem["name"]}
+                id={elem["id"]}
+                institution_name={elem["institution_name"]}
+                main_specialty={elem["main_specialty"]}
+                code={elem["code"]}
+              />
+            ))
+          ) : (
+            <div className="w-full flex flex-col justify-center items-center">
+              <p className="font-semibold text-center text-base text-slate-900">
+                Nada por aquí
+              </p>
+              <p className="font-light text-center text-sm text-slate-500">
+                No tienes especialidades agregadas
+              </p>
+            </div>
+          )}
+
         </div>
-
-        {loadingRegister ? (
-          <div className="w-full flex justify-center items-center">
-            <p className="font-semibold text-center text-base text-slate-900">
-              Cargando...
-            </p>
-          </div>
-        ) : data && [...(data as Array<any>)].length > 0 ? (
-          [...(data as Array<any>)].map((elem, i) => (
-            <SpecialityCard
-              key={i}
-              name={elem["name"]}
-              id={elem["id"]}
-              institution_name={elem["institution_name"]}
-              main_specialty={elem["main_specialty"]}
-              code={elem["code"]}
-            />
-          ))
-        ) : (
-          <div className="w-full flex flex-col justify-center items-center">
-            <p className="font-semibold text-center text-base text-slate-900">
-              Nada por aquí
-            </p>
-            <p className="font-light text-center text-sm text-slate-500">
-              No tienes especialidades agregadas
-            </p>
-          </div>
-        )}
-
       </div>
     </div>
   );

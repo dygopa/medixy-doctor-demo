@@ -6,6 +6,7 @@ import Popup from "../Popup/Popup";
 import ScheduleProvider from "../context/ScheduleContext";
 import Calendar from "(presentation)/components/core/Calendar";
 import Navigator from "./Navigator/Navigator";
+import CalendarIndex from "./Calendar/CalendarIndex";
 
 
 export default function ConfigurationIndex() {
@@ -15,13 +16,7 @@ export default function ConfigurationIndex() {
       <ScheduleProvider>
         <Navigator/>
         <Popup/>
-        <div className="mt-8 flex justify-between items-start gap-5">
-          {/* BEGIN: Calendar Content */}
-          <div className='w-full h-[64vh]'>
-            <Calendar initialEvent={""} handleClick={()=>{}}/>
-          </div>
-          {/* END: Calendar Content */}
-        </div>
+        <CalendarIndex/>
       </ScheduleProvider>
     </div>
   );

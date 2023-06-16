@@ -1,12 +1,33 @@
+import { LocalityFailure } from 'domain/core/failures/locality/localityFailure';
+import { SubjectFailure } from 'domain/core/failures/subject/subjectFailure';
 import { ScheduleFailure } from 'domain/core/failures/schedule/scheduleFailure';
+import { ServiceFailure } from 'domain/core/failures/service/serviceFailure';
+import { IGetSubjectsResponse } from 'domain/core/response/subjectsResponse';
+import { LocalitiesRepository } from 'infrastructure/repositories/localities/localitiesRepository';
+import { SubjectRepository } from 'infrastructure/repositories/subject/subjectRepository';
 import { ScheduleRepository } from 'infrastructure/repositories/schedule/scheduleRepository';
+import { ServicesRepository } from 'infrastructure/repositories/service/serviceRepository';
+import moment from 'moment';
 
 export default class ScheduleUseCase {
   private _repository: ScheduleRepository = new ScheduleRepository();
+  private _repositoryLocalities: LocalitiesRepository = new LocalitiesRepository();
+  private _repositorySubjects: SubjectRepository = new SubjectRepository();
+  private _repositoryServices: ServicesRepository = new ServicesRepository();
       
-  async getAppointments(): Promise<Array<any>> {
+  async getCalendarEvents(id:number, serviceId:number, sinceDate:any, untilDate:any): Promise<any[]> {
     try {
-      const response = await this._repository.getAppointments();
+      const response = await this._repository.getCalendarEvents(id, serviceId, sinceDate, untilDate);
+      if (response instanceof ScheduleFailure) throw response;
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+      
+  async getAppointments(id:number, date?:string): Promise<any[]> {
+    try {
+      const response = await this._repository.getAppointments(id, date);
       if (response instanceof ScheduleFailure) throw response;
       return response;
     } catch (error) {
@@ -14,9 +35,9 @@ export default class ScheduleUseCase {
     }
   }
 
-  async getAttentionWindows(): Promise<Array<any>> {
+  async getAttentionWindows(id:number): Promise<Array<any>> {
     try {
-      const response = await this._repository.getAttentionWindows();
+      const response = await this._repository.getAttentionWindows(id);
       if (response instanceof ScheduleFailure) throw response;
       return response;
     } catch (error) {
@@ -24,9 +45,39 @@ export default class ScheduleUseCase {
     }
   }
 
-  async createAppointment(): Promise<any> {
+  async getServices(id:number): Promise<any[]> {
     try {
-      const response = await this._repository.createAppointment();
+      const response = await this._repositoryServices.getUserServices(id);
+      if (response instanceof ServiceFailure) throw response;
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getLocalites(id:number): Promise<any[]> {
+    try {
+      const response = await this._repositoryLocalities.getUserLocalities(id);
+      if (response instanceof LocalityFailure) throw response;
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getSubjects(): Promise<IGetSubjectsResponse> {
+    try {
+      const response = await this._repositorySubjects.getSubjects({});
+      if (response instanceof SubjectFailure) throw response;
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createAppointment(obj:any): Promise<any> {
+    try {
+      const response = await this._repository.createAppointment(obj);
       if (response instanceof ScheduleFailure) throw response;
       return response;
     } catch (error) {
@@ -34,9 +85,9 @@ export default class ScheduleUseCase {
     }
   }
 
-  async getAttentionWindowsByService(): Promise<Array<any>> {
+  async getAttentionWindowsByService(id:number, date?:string): Promise<Array<any>> {
     try {
-      const response = await this._repository.getAttentionWindowsByService();
+      const response = await this._repository.getAttentionWindowsByService(id, date);
       if (response instanceof ScheduleFailure) throw response;
       return response;
     } catch (error) {
@@ -44,9 +95,27 @@ export default class ScheduleUseCase {
     }
   }
 
-  async createWindowAttention(): Promise<any> {
+  async createWindowAttention(obj:any): Promise<any> {
     try {
-      const response = await this._repository.createWindowAttention();
+
+      let initialValue = 0;
+      let days = [...obj["daysRepeated"] as any[]].map(elem => elem["value"]).reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        initialValue
+      )
+      
+      let typeUntil = obj["typeEnd"] === 1 ? 
+        moment().add(1, "year").toDate() : 
+        moment(obj["until"], "YYYY-MM-DD").toDate()
+
+      obj = {
+        ...obj,
+        days,
+        startDate: moment(obj["startDate"], "YYYY-MM-DD").toDate(),
+        until: typeUntil
+      }
+
+      const response = await this._repository.createWindowAttention(obj);
       if (response instanceof ScheduleFailure) throw response;
       return response;
     } catch (error) {

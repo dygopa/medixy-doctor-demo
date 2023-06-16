@@ -58,4 +58,6 @@
 @import "./components/_tabulator.css";
 @import "./components/_svg.css";
 
-
+.fc-timegrid-event-harness{
+   cursor: pointer!important;
+}

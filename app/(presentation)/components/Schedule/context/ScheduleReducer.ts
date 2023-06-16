@@ -1,5 +1,88 @@
 export const ScheduleReducer = (state: any, action: any) => {
   switch (action.type) {
+    case 'GET_CALENDAR_EVENTS_LOADING':
+      return {
+        ...state,
+        getCalendarEvents: {
+          ...state.getCalendarEvents,
+          data: null,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'GET_CALENDAR_EVENTS_SUCCESSFUL':
+      return {
+        ...state,
+        getCalendarEvents: {
+          ...state.getCalendarEvents,
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'GET_CALENDAR_EVENTS_ERROR':
+      return {
+        ...state,
+        getCalendarEvents: {
+          ...state.getCalendarEvents,
+          data: null,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
+    case 'CHANGE_PREDIFINED_RESERVATION':
+      return {
+        ...state,
+        predifinedReservationData: {
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'CHANGE_TYPE_OF_APPOINTMENT_CREATION':
+      return {
+        ...state,
+        typeOfAppointmentCreation: {
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'CHANGE_APPOINTMENT_DETAIL':
+      return {
+        ...state,
+        appointmentDetail: {
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'CHANGE_ACTIVE_LOCALITY':
+      return {
+        ...state,
+        activeLocality: {
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'CHANGE_ACTIVE_SERVICE':
+      return {
+        ...state,
+        activeService: {
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
     case 'CHANGE_STATUS_POPUP':
       return {
         ...state,
@@ -190,6 +273,105 @@ export const ScheduleReducer = (state: any, action: any) => {
         ...state,
         createWindowAttention: {
           ...state.createWindowAttention,
+          data: null,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
+    case 'GET_SERVICES_LOADING':
+      return {
+        ...state,
+        getServices: {
+          ...state.getServices,
+          data: null,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'GET_SERVICES_SUCCESSFUL':
+      return {
+        ...state,
+        getServices: {
+          ...state.getServices,
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'GET_SERVICES_ERROR':
+      return {
+        ...state,
+        getServices: {
+          ...state.getServices,
+          data: null,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
+    case 'GET_LOCALITIES_LOADING':
+      return {
+        ...state,
+        getLocalities: {
+          ...state.getLocalities,
+          data: null,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'GET_LOCALITIES_SUCCESSFUL':
+      return {
+        ...state,
+        getLocalities: {
+          ...state.getLocalities,
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'GET_LOCALITIES_ERROR':
+      return {
+        ...state,
+        getLocalities: {
+          ...state.getLocalities,
+          data: null,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
+    case 'GET_PATIENTS_LOADING':
+      return {
+        ...state,
+        getPatients: {
+          ...state.getPatients,
+          data: null,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'GET_PATIENTS_SUCCESSFUL':
+      return {
+        ...state,
+        getPatients: {
+          ...state.getPatients,
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'GET_PATIENTS_ERROR':
+      return {
+        ...state,
+        getPatients: {
+          ...state.getPatients,
           data: null,
           loading: false,
           successful: false,

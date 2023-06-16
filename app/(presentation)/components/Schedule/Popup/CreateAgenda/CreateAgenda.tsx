@@ -1,84 +1,90 @@
 import Button from '(presentation)/components/core/BaseComponents/Button'
 import { FormInput, FormSelect } from '(presentation)/components/core/BaseComponents/Form'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { FiCheck, FiHelpCircle } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge'
 import { IScheduleContext, ScheduleContext } from '../../context/ScheduleContext';
+import { AuthContext, IAuthContext } from '(presentation)/(layouts)/AppLayout/context/AuthContext';
+import moment from 'moment';
 
 function CreateAgenda({cancelFuntion, customRef}:{
   cancelFuntion: Function;
   customRef: React.LegacyRef<HTMLDivElement>;
 }) {
 
+  const { state: auth} = useContext<IAuthContext>(AuthContext);
+  const { data: user, successful: loadedUser} = auth.getUserAuthenticated;
+
   const { state, actions, dispatch } = useContext<IScheduleContext>(ScheduleContext);
-  const { changeTypePopup, changeStatusPopup } = actions;
-  const { data } = state.typePopupActive;
+  const { changeTypePopup, changeStatusPopup, getServices, createWindowAttention, getAttentionWindows} = actions;
+  const { data: services } = state.getServices;
+  const { loading, successful, error,  } = state.createWindowAttention;
 
   let type_agenda = [
     {
       title: "Por espacio",
-      value: 0
-    },
-    {
-      title: "Libre",
-      value: 1
-    },
+      value: 2
+    }
   ]
 
   let days_in_week = [
     {
       title: "L",
-      value: 0
-    },
-    {
-      title: "M",
       value: 1
     },
     {
-      title: "X",
+      title: "M",
       value: 2
     },
     {
-      title: "J",
-      value: 3
-    },
-    {
-      title: "V",
+      title: "X",
       value: 4
     },
     {
+      title: "J",
+      value: 8
+    },
+    {
+      title: "V",
+      value: 16
+    },
+    {
       title: "S",
-      value: 5
+      value: 32
     },
     {
       title: "D",
-      value: 6
+      value: 64
     }
   ]
 
   const [daysRepeatedList, setDaysRepeatedList] = useState<Array<any>>([])
+  const [listOfHours, setListOfHours] = useState<Array<any>>([])
 
   let type_of_ends:any[] = [
     {
-      value: 0,
+      value: 1,
       title: "Nunca",
       description: "La agenda no tiene fecha de culminación"
     },
     {
-      value: 1,
+      value: 2,
       title: "El",
       description: "31 de Abril 2023"
     },
   ]
 
   let [formData, setFormData] = useState({
-    typeEnd: 0,
+    typeEnd: 1,
     daysRepeated: daysRepeatedList,
-    type: 0,
-    service: "",
-    curp: "",
-    date: "",
-    hour: ""
+    type: 2,
+    serviceId: 0,
+    availableSpots: 0,
+    startDate: moment().format("YYYY-MM-DD"),
+    until: moment().add(1, "month").format("YYYY-MM-DD"),
+    spanTime: 0,
+    fromHour: "",
+    toHour: ""
   })
 
   function handleAddInDay(day:any){
@@ -107,22 +113,44 @@ function CreateAgenda({cancelFuntion, customRef}:{
     )
   }
 
-  const TypeEndComponent = ({elem, index}:{elem:any; index:number;}) => {
-    let isSelected = formData["typeEnd"] === elem["value"]
-    return(
-      <div 
-      onClick={()=>{ setFormData({...formData, typeEnd: elem["value"]}) }}
-      className={twMerge([
-        "transition cursor-pointer w-1/2 h-[10vh] p-3 flex flex-col justify-center items-start border rounded-md relative",
-        isSelected ? "border-green-500" : "border-slate-300"
-      ])}
-      key={index}>
-        {isSelected && <span className='w-5 h-5 bg-green-500 rounded-full flex justify-center items-center text-white text-xs absolute top-2 right-2'><FiCheck/></span>}
-        <p className="font-medium text-sm text-slate-900">{elem["title"]}</p>
-        <p className="font-medium text-xs text-slate-500">{elem["description"]}</p>
-      </div>
-    )
+  function formatHoursFromSpan(){
+    let list = []
+
+    let endOfDay = moment().utc().add(1, "day").startOf("day")
+    let start = moment().utc().startOf("day")
+
+    start = start.add(formData.spanTime, "minutes")
+    list.push({
+      value: parseInt(start.format("HH:mm").split(":").join("")),
+      label: start.format("hh:mm a")
+    })
+
+    do {
+      start = start.add(formData.spanTime, "minutes")
+      list.push({
+        value: parseInt(start.format("HH:mm").split(":").join("")),
+        label: start.format("hh:mm a")
+      })
+    } while (start.isBefore(endOfDay));
+
+    setListOfHours(list)
   }
+
+  useMemo(()=>{
+    if(successful){
+      getAttentionWindows(formData.serviceId, "")(dispatch)
+      changeStatusPopup(false)(dispatch)
+    }
+  },[successful])
+
+  useMemo(()=>{
+    if(formData.spanTime > 0) formatHoursFromSpan()
+  },[formData.spanTime])
+
+  useMemo(() => {
+    if (loadedUser) getServices(user.userId)(dispatch)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadedUser]);
 
   return (
     <div ref={customRef} className='w-full md:w-[60%] lg:w-[40%] h-screen  md:min-h-[60vh] md:max-h-[90vh] lg:min-h-[60vh] lg:max-h-[90vh] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8'>
@@ -136,80 +164,108 @@ function CreateAgenda({cancelFuntion, customRef}:{
       <div className="w-full flex flex-col justify-center items-center gap-5">
         <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className='font-normal text-sm text-slate-600'>Para que servicio</p>
-          <FormInput
-            type={"text"}
-            placeholder={"Servicio de odontología..."}
-            value={""}
+          <FormSelect
+            value={formData.serviceId}
             className="form-control"
-            onChange={(e)=> console.log(e.target.value)}
-          />
+            onChange={(e)=> setFormData({...formData, serviceId: +e.target.value}) }
+          >
+            <option>-</option>
+            {services &&
+              [...(services as Array<any>)].map((elem, i) => (
+                <option key={i} value={elem["id"]}>
+                  {elem["name"]}
+                </option>
+              ))
+            }
+          </FormSelect>
         </div>
         <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className='font-normal text-sm text-slate-600'>Tipo</p>
           <div className="w-full flex justify-start items-center gap-3">
             {type_agenda.map((elem, i) => <div className={twMerge([
-              "cursor-pointer w-fit border border-secondary px-5 py-2 font-light text-sm rounded-md",
-              formData["type"] === elem["value"] ? "bg-secondary text-white" : "bg-transparent text-secondary"
+              "cursor-pointer w-fit border px-5 py-2 font-light text-sm rounded-md flex justify-center items-center gap-2",
+              formData["type"] === elem["value"] ? "bg-green-500 text-white border-green-500" : "bg-transparent text-secondary border-secondary"
             ])} 
             onClick={()=>{ setFormData({...formData, type: elem["value"]}) }}
             key={i}>
               {elem["title"]}
+              {formData["type"] === elem["value"] && <FiCheck/>}
             </div>
             )}
           </div>
         </div>
-        <div className="w-full flex justify-between items-center gap-2">
-          <div className="w-3/5">
-            <p className='font-normal text-sm text-slate-600'>Tiempo promedio de atención</p>
+        { formData["type"] === 1 ? 
+          <div className="w-full flex justify-between items-center gap-2">
+            <div className="w-3/5">
+              <p className='font-normal text-sm text-slate-600'>Cupos disponibles</p>
+            </div>
+            <div className="w-1/5">
+              <FormInput
+                type='number'
+                value={formData.availableSpots}
+                className="form-control"
+                onChange={(e)=> setFormData({...formData, availableSpots: +e.target.value }) }
+              />
+            </div>
+            <div className="w-1/5">
+              <p className='text-sm font-light text-slate-500'>Disponibles</p>
+            </div>
           </div>
-          <div className="w-1/5">
-            <FormSelect
-              value={""}
-              className="form-control"
-              onChange={(e)=> console.log(e.target.value)}
-            >
-              <option>60:00</option>
-            </FormSelect>
+        : 
+          <div className="w-full flex justify-between items-center gap-2">
+            <div className="w-3/5">
+              <p className='font-normal text-sm text-slate-600'>Tiempo promedio de atención</p>
+            </div>
+            <div className="w-1/5">
+              <FormSelect
+                value={formData.spanTime}
+                className="form-control"
+                onChange={(e)=> setFormData({...formData, spanTime: +e.target.value }) }
+              >
+                <option>-</option>
+                <option value={15}>15</option>
+                <option value={30}>30</option>
+                <option value={45}>45</option>
+                <option value={60}>60</option>
+                <option value={90}>90</option>
+              </FormSelect>
+            </div>
+            <div className="w-1/5">
+              <p className='text-sm font-light text-slate-500'>Minutos</p>
+            </div>
           </div>
-          <div className="w-1/5">
-            <FormSelect
-              value={""}
-              className="form-control"
-              onChange={(e)=> console.log(e.target.value)}
-            >
-              <option>Minutos</option>
-            </FormSelect>
-          </div>
-        </div>
+        }
         <div className="w-full flex gap-3 justify-start items-center">
           <div className="w-3/5 flex flex-col justify-center items-start gap-2">
             <p className='font-normal text-sm text-slate-600'>Apartir de</p>
             <FormInput
               type={"date"}
-              value={formData.date}
+              value={formData.startDate}
               min={Date.now()}
               className="form-control"
-              onChange={(e)=> setFormData({...formData, date: e.target.value})}
+              onChange={(e)=> setFormData({...formData, startDate: e.target.value})}
             />
           </div>
           <div className="w-1/5 flex flex-col justify-center items-start gap-2">
             <p className='font-normal text-sm text-slate-600'>Desde</p>
             <FormSelect
-              value={""}
+              value={formData.fromHour}
               className="form-control"
-              onChange={(e)=> console.log(e.target.value)}
+              onChange={(e)=> setFormData({...formData, fromHour: e.target.value}) }
             >
-              <option>10:00 AM</option>
+              <option value={0}>-</option>
+              {listOfHours.map((elem:any)=> <option value={elem["value"]}>{elem["label"]}</option> ) }
             </FormSelect>
           </div>
           <div className="w-1/5 flex flex-col justify-center items-start gap-2">
             <p className='font-normal text-sm text-slate-600'>Hasta</p>
             <FormSelect
-              value={""}
+              value={formData.toHour}
               className="form-control"
-              onChange={(e)=> console.log(e.target.value)}
+              onChange={(e)=> setFormData({...formData, toHour: e.target.value}) }
             >
-              <option>08:00 PM</option>
+              <option value={0}>-</option>
+              {listOfHours.filter(elem => elem["value"] > formData.fromHour).map((elem:any)=> <option value={elem["value"]}>{elem["label"]}</option> ) }
             </FormSelect>
           </div>
         </div>
@@ -222,13 +278,41 @@ function CreateAgenda({cancelFuntion, customRef}:{
         <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className='font-normal text-sm text-slate-600'>Termina</p>
           <div className="w-full flex justify-between items-center gap-3">
-            {type_of_ends.map((elem, i) => <TypeEndComponent elem={elem} index={i}/>)}
+            {type_of_ends.map((elem, i) => {
+
+              let isSelected = formData["typeEnd"] === elem["value"]
+              return(
+                <div 
+                onClick={()=>{ setFormData({...formData, typeEnd: elem["value"]}) }}
+                className={twMerge([
+                  "transition cursor-pointer w-1/2 h-[10vh] p-3 flex flex-col justify-center items-start border rounded-md relative",
+                  isSelected ? "border-green-500" : "border-slate-300"
+                ])}
+                key={i}>
+                  {isSelected && <span className='w-5 h-5 bg-green-500 rounded-full flex justify-center items-center text-white text-xs absolute top-2 right-2'><FiCheck/></span>}
+                  <p className="font-medium text-sm text-slate-900">{elem["title"]}</p>
+                  {elem["value"] === 2 ? 
+                    <FormInput type={"date"} className="form-control" onChange={(e)=>{ setFormData({...formData, until: e.target.value}) }}/>
+                  : 
+                    <p className="font-medium text-xs text-slate-500">{elem["description"]}</p>
+                  }
+                </div>
+              )
+              
+            })}
           </div>
         </div>
 
       </div>
       <div className="w-full flex flex-col justify-center items-center gap-4">
-        <Button onClick={()=>{ cancelFuntion() }} variant="primary" type="button" className="w-full">Guardar</Button>
+        <Button disabled={
+          loading ||
+          daysRepeatedList.length === 0 ||
+          formData.serviceId === 0 ||
+          formData.startDate === "" ||
+          formData.fromHour === "" ||
+          formData.toHour === ""
+        } onClick={()=>{ createWindowAttention({...formData, daysRepeated: daysRepeatedList})(dispatch) }} variant="primary" type="button" className="w-full">{loading ? "Creando..." : "Guardar"}</Button>
         <p onClick={()=>{ cancelFuntion() }} className='cursor-pointer font-normal text-sm text-primary text-center'>Cancelar</p>
       </div>
     </div>
