@@ -137,7 +137,9 @@ export class LocalitiesRepository implements ILocalitiesRepository {
       let URL = CREATE_USER_LOCALITY_ENDPOINT(obj["id"] as number) as RequestInfo
 
       const response = await fetch(URL, requestOptions)
+      console.log(response)
       let data = await response.json()
+      console.log(data)
 
       console.log("CREATE_USER_LOCALITY_ENDPOINT", data["data"])
 
@@ -164,11 +166,16 @@ export class LocalitiesRepository implements ILocalitiesRepository {
           clues: obj["clues"] ?? "",
           address: obj["address"] ?? "",
           postal_code: obj["postal_code"] ?? "",
-          state: obj["state"] ?? "",
+          state: obj["state"]["entityId"] ?? "",
+          municipality: obj["municipality"]["id"] ?? null,
+          countryLocation: obj["countryLocation"]["id"] ?? null,
+          street: obj["street"] ?? null,
           city: obj["city"] ?? "",
           latitude: obj["latitude"] ?? 0,
           longitude: obj["longitude"] ?? 0
       });
+
+      console.log(raw)
 
       var requestOptions = {
         method: 'PUT',

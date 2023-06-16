@@ -162,7 +162,7 @@ const getFederalEntities = () => async (dispatch: Dispatch<any>) => {
   try {
       dispatch({ type: "GET_FEDERAL_ENTITIES_LOADING" });
 
-      const res: Array<IFederalEntity> = await new FederalEntitiesUseCase().getFederalEntities();
+      const res: Array<IFederalEntity> = await new FederalEntitiesUseCase().getFederalEntities({});
 
       dispatch({ type: "GET_FEDERAL_ENTITIES_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

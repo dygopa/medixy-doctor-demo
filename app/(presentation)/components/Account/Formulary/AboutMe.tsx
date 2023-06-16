@@ -15,13 +15,14 @@ export default function AboutMe ({account, setAccount}: IFormularyProps){
           <p className="font-medium text-base text-slate-900 pb-2">Sobre mí y mis servicios</p>
         </div>
         <div className="w-full">
+                    
           <FormTextarea
             placeholder="Escribe un breve resumen sobre ti y los servicios que ofreces"
             value={account?.aboutMe}
             className="form-control w-full"
             onChange={(e) => setAccount({ ...account, aboutMe: e.target.value })}
-          />
-        </div>
+          /> 
+        </div> 
       </div>
     </div>
   )

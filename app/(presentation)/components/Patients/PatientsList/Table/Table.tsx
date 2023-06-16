@@ -138,10 +138,7 @@ export default function PatientsTable() {
                             PatientsMedicalRecordRoutesEnum.MedicalRecord,
                         }}
                       >
-                        <Button
-                          variant="primary"
-                          className="p-2 text-center"
-                        >
+                        <Button variant="primary" className="p-2 text-center">
                           <Lucide icon="FileText" className="w-4 h-4" />
                         </Button>
                       </Link>

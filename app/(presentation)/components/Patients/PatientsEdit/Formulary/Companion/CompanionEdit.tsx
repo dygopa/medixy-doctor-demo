@@ -1,10 +1,25 @@
-import { FormInput, FormSelect } from "(presentation)/components/core/BaseComponents/Form";
+import AutocompleteInputStates from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputStates/AutocompleteInputStates";
+import {
+  FormInput,
+  FormSelect,
+} from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
+import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
+import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import { ISubject } from "domain/core/entities/subjectEntity";
-import { ChangeEvent, Dispatch, SetStateAction, useContext, useEffect } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+} from "react";
 import { FiUser } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
-import { EditPatientContext, IEditPatientContext } from "../../context/EditPatientContext";
+import {
+  EditPatientContext,
+  IEditPatientContext,
+} from "../../context/EditPatientContext";
 
 interface IEditProps {
   companionEdit: ISubject;
@@ -71,12 +86,19 @@ interface IEditProps {
   >;
 }
 
-export default function CompanionEdit ({companionEdit, setCompanionEdit, values, setValues, errors, setErrors} : IEditProps) {
+export default function CompanionEdit({
+  companionEdit,
+  setCompanionEdit,
+  values,
+  setValues,
+  errors,
+  setErrors,
+}: IEditProps) {
   const { state, actions, dispatch } =
     useContext<IEditPatientContext>(EditPatientContext);
   const { getFederalEntities } = actions;
   const { data: federalEntities } = state.getFederalEntities;
-  
+
   const setInitialValues = () => {
     setValues({
       ...values,
@@ -96,7 +118,7 @@ export default function CompanionEdit ({companionEdit, setCompanionEdit, values,
         : "",
       phone: companionEdit?.phoneNumber ?? "",
       country: companionEdit?.country ?? "",
-      federalEntity: companionEdit?.federativeEntityId ?? 0,
+      federalEntity: companionEdit.federativeEntityId ?? 0,
       city: companionEdit?.city ?? "",
       direction: companionEdit?.address ?? "",
     });
@@ -161,27 +183,25 @@ export default function CompanionEdit ({companionEdit, setCompanionEdit, values,
     setErrors({ ...errors, phone: "" });
     return false;
   };
-  
+
   const returnListCompanion = () => {
-    setCompanionEdit(null)
+    setCompanionEdit(null);
     return;
-  } 
+  };
 
   useEffect(() => {
+    getFederalEntities()(dispatch);
     setInitialValues();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <>
-      <div 
+      <div
         className="flex justify-start gap-3 items-center lg:w-[40%] cursor-pointer"
         onClick={() => returnListCompanion()}
       >
-        <Lucide 
-          icon="ChevronLeft"
-          className="w-4 h-4"
-        />
+        <Lucide icon="ChevronLeft" className="w-4 h-4" />
         <p className="text-base text-slate-500 pb-2">
           Volver a la lista de Contactos
         </p>

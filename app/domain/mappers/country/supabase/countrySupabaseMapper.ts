@@ -1,4 +1,4 @@
-import { ICountry } from "domain/core/entities/countryEntity";
+import { ICountry, ICountryLocation } from "domain/core/entities/countryEntity";
 
 export function countrySupabaseToMap(data: any): ICountry {
   return {
@@ -14,4 +14,13 @@ export function countrySupabaseToMap(data: any): ICountry {
     updatedOn: data?.fechaActualizacion ? new Date(data.fechaActualizacion) : new Date(),
     deletedOn: data?.fechaEliminacion ? new Date(data.fechaEliminacion) : new Date(),
   } as ICountry;
+}
+
+export function countryLocationSupabaseToMap(data: any): ICountryLocation {
+  return {
+    id: data?.id ?? 0,
+    municipalityId: data?.municipioCatalogoId ?? 0,
+    name: data?.name ?? "",
+    federalEntityId: data?.entidadFederativaId ?? 0,
+  } as ICountryLocation;
 }

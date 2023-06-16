@@ -5,9 +5,9 @@ import { FederalEntityRepository } from "infrastructure/repositories/federalEnti
 export default class FederalEntitiesUseCase {
     private _repository: FederalEntityRepository = new FederalEntityRepository();
 
-    async getFederalEntities(): Promise<IFederalEntity[] > {
+    async getFederalEntities(obj: { searchQuery?: string | null, limit?: number | null }): Promise<IFederalEntity[] > {
         try {
-            const response = await this._repository.getFederalEntities();
+            const response = await this._repository.getFederalEntities({ searchQuery: obj.searchQuery, limit: obj.limit });
 
             if (response instanceof FederalEntityFailure) throw response;
 

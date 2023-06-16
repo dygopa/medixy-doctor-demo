@@ -17,6 +17,9 @@ export function subjectSupabaseToMap(data: any): ISubject {
     ageType: data?.fechaNacimiento ? getPatientAgeType(new Date(data.fechaNacimiento)) : null,
     address: data?.direccion ?? "",
     federativeEntityId: data?.entidadFederativaId ?? null,
+    municipalityId: data?.municipioId ?? null,
+    countryLocationId: data?.localidadPaisId ?? null,
+    street: data?.street ?? null,
     city: data?.ciudad ?? "",
     pictureUrl: data?.avatar ?? "",
     isPatient: data?.esPaciente ?? "",
@@ -56,7 +59,6 @@ function getPatientAgeType(birthDate: Date): string {
 
 
 export function fromSubjectSupabaseDocumentData(subject: ISubject): any {
-  console.log(subject)
   const documentData = {
     nombres: subject.name,
     primerApellido: subject.lastName,
@@ -68,6 +70,9 @@ export function fromSubjectSupabaseDocumentData(subject: ISubject): any {
     telefono: subject.phoneNumber,
     paisNacimiento: subject.country,
     entidadFederativaId: subject.federativeEntityId,
+    municipioId: subject.municipalityId,
+    localidadPaisId: subject.countryLocationId,
+    calle: subject.street,
     estado: subject.state,
     direccion: subject.address,
     ciudad: subject.city,

@@ -5,6 +5,7 @@ import CreateAppointment from './CreateAppointment/CreateAppointment';
 import { twMerge } from 'tailwind-merge';
 import AppointmentDetail from './AppointmentDetail/AppointmentDetail';
 import CreateAgendaHelp from './CreateAgendaHelp/CreateAgendaHelp';
+import FiltersComponent from './FiltersComponent/FiltersComponent';
 
 function Popup() {
 
@@ -19,7 +20,6 @@ function Popup() {
     useEffect(() => {
       function handleClickOutside(event:MouseEvent) {
         if (ref.current && !ref.current.contains(event.target)) {
-          console.log("Click")
           changeStatusPopup(false)(dispatch)
         }
       }
@@ -41,6 +41,7 @@ function Popup() {
       {type === 1 && <CreateAgenda customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
       {type === 2 && <AppointmentDetail customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
       {type === 3 && <CreateAgendaHelp customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
+      {type === 4 && <FiltersComponent customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
     </div>
   )
 }

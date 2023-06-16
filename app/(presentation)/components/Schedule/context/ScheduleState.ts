@@ -1,6 +1,12 @@
 import { ScheduleFailure } from "domain/core/failures/schedule/scheduleFailure";
 
 export interface IScheduleState {
+  getCalendarEvents: IScheduleUserState;
+  predifinedReservationData: IScheduleUserState;
+  typeOfAppointmentCreation: IScheduleUserState;
+  appointmentDetail: IScheduleUserState;
+  activeLocality: IScheduleUserState;
+  activeService: IScheduleUserState;
   statusPopup: IScheduleUserState;
   scheduleUser: IScheduleUserState;
   typePopupActive: IScheduleUserState;
@@ -9,6 +15,9 @@ export interface IScheduleState {
   createAppointment: IScheduleUserState;
   getAttentionWindowsByService: IScheduleUserState;
   createWindowAttention: IScheduleUserState;
+  getServices: IScheduleUserState;
+  getLocalities: IScheduleUserState;
+  getPatients: IScheduleUserState;
 }
 
 interface IScheduleUserState {
@@ -19,6 +28,42 @@ interface IScheduleUserState {
 }
 
 export const initialState: IScheduleState = {
+  getCalendarEvents: {
+    data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  typeOfAppointmentCreation: {
+    data: 0,
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  predifinedReservationData: {
+    data: {},
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  appointmentDetail: {
+    data: {},
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  activeLocality: {
+    data: {},
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  activeService: {
+    data: {},
+    loading: false,
+    successful: false,
+    error: null,
+  },
   statusPopup: {
     data: false,
     loading: false,
@@ -63,6 +108,24 @@ export const initialState: IScheduleState = {
   },
   createWindowAttention: {
     data: {},
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  getServices: {
+    data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  getLocalities: {
+    data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  getPatients: {
+    data: [],
     loading: false,
     successful: false,
     error: null,

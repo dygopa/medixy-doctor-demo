@@ -4,20 +4,29 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import esLocale from "@fullcalendar/core/locales/es";
+import { EventClickArg } from "@fullcalendar/core";
 
 function Calendar({
   initialEvent,
   handleClick,
+  handleChangeInWeek,
+  events
 }: {
   initialEvent: string;
   handleClick: Function;
+  handleChangeInWeek: Function;
+  events?: any[];
 }) {
 
   return (
-    <FullCalendar 
+    <FullCalendar
+      navLinks={true}
       plugins={[interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin]}
       locale={esLocale}
-      dateClick={(arg: DateClickArg) => handleClick(arg)}
+      datesSet={(dateInfo) => {
+        handleChangeInWeek(dateInfo)
+      }}
+      eventClick={(arg: EventClickArg) => handleClick(arg)}
       initialDate={new Date()}
       editable={false}
       height="100%"
@@ -29,21 +38,14 @@ function Calendar({
       buttonText={{
         today: "Hoy",
       }} 
+      duration={"00:15"}
       initialView="timeGridWeek"
       views={{ 
         timeGridWeek: {
           titleFormat: { month: "long", year: "numeric" },
         },
       }}
-      events={[
-        {
-          title: "",
-          start: initialEvent,
-          end: initialEvent,
-          textColor: "#fff",
-          backgroundColor: "#000000",
-        },
-      ]}
+      events={events}
     />
   );
 }

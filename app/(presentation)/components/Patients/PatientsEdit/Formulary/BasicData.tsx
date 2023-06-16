@@ -2,6 +2,9 @@ import {
   FormInput,
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
+import { ICountryLocation } from "domain/core/entities/countryEntity";
+import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
+import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import { Dispatch, SetStateAction } from "react";
 import { FiUser } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
@@ -19,9 +22,12 @@ interface IBasicDataProps {
     country: string;
     email: string;
     birthDate: string;
-    federalEntity: number;
+    federalEntity: IFederalEntity;
+    municipality: IMunicipality;
+    countryLocation: ICountryLocation;
     city: string;
     direction: string;
+    street: string;
   };
   setValues: Dispatch<
     SetStateAction<{
@@ -36,9 +42,12 @@ interface IBasicDataProps {
       phone: string;
       country: string;
       email: string;
-      federalEntity: number;
+      federalEntity: IFederalEntity;
+      municipality: IMunicipality;
+      countryLocation: ICountryLocation;
       city: string;
       direction: string;
+      street: string;
     }>
   >;
   errors: {
@@ -52,6 +61,7 @@ interface IBasicDataProps {
     country: string;
     email: string;
     phone: string;
+    federalEntity: string;
   };
   setErrors: Dispatch<
     SetStateAction<{
@@ -65,6 +75,7 @@ interface IBasicDataProps {
       country: string;
       email: string;
       phone: string;
+      federalEntity: string;
     }>
   >;
 }
@@ -135,7 +146,7 @@ export default function BasicData({
     return false;
   };
 
-  console.log(values)
+  console.log(values);
 
   return (
     <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">
