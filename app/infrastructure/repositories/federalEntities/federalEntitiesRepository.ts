@@ -4,13 +4,21 @@ import { federalEntitySupabaseToMap } from "domain/mappers/federalEntities/supab
 import { supabase } from "infrastructure/config/supabase/supabase-client";
 
 export default interface IFederalEntityRepository {
-  getFederalEntities(): Promise<IFederalEntity[] | FederalEntityFailure>;
+  getFederalEntities(obj: { searchQuery?: string | null; limit?: number | null }): Promise<IFederalEntity[] | FederalEntityFailure>;
 }
 
 export class FederalEntityRepository implements IFederalEntityRepository {
-  async getFederalEntities(): Promise<IFederalEntity[] | FederalEntityFailure > {
+  async getFederalEntities(obj: { searchQuery?: string | null; limit?: number | null }): Promise<IFederalEntity[] | FederalEntityFailure > {
     try {
       let query = supabase.from("EntidadFederativa").select();
+
+      if (obj.searchQuery) {
+        query = query.or(`or(nombre.ilike.%${obj.searchQuery.trim().toLowerCase()}%,abreviatura.ilike.%${obj.searchQuery.trim().toLowerCase()}%),and(nombre.ilike.%${obj.searchQuery.trim().toLowerCase()}%,abreviatura.ilike.%${obj.searchQuery.trim().toLowerCase()}%)`);
+      }
+
+      if (obj.limit) {
+        query = query.limit(obj.limit);
+      }
 
       const snapshots = await query;
 

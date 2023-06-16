@@ -1,3 +1,5 @@
+import { IFederalEntity } from "./federalEntitiesEntity";
+
 export interface ICountry {
     countryId: string;
     phoneCode: string;
@@ -15,4 +17,12 @@ export interface ICountry {
 export interface ICountriesISO {
     iso: string;
     name: string;
+}
+
+export interface ICountryLocation {
+    id: number;
+    municipalityId: number;
+    name: string;
+    federalEntityId: number;
+    federalEntity: IFederalEntity;
 }

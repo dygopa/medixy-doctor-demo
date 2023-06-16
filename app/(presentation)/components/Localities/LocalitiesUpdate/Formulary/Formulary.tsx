@@ -25,6 +25,12 @@ import {
 import { ILocality } from "domain/core/entities/localityEntity";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { usePathname, useRouter } from "next/navigation";
+import AutocompleteInputStates from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputStates/AutocompleteInputStates";
+import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
+import { IMunicipality } from "domain/core/entities/municipalityEntity";
+import { ICountryLocation } from "domain/core/entities/countryEntity";
+import AutocompleteInputMunicipalities from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMunicipalities/AutocompleteInputMunicipalities";
+import AutocompleteInputLocations from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputLocations/AutocompleteInputLocations";
 
 export default function Formulary({
   userId,
@@ -61,10 +67,10 @@ export default function Formulary({
     latitude: 0,
     longitude: 0,
     clues: "",
-    state: {
-      id: 0,
-      name: "",
-    },
+    state: {} as IFederalEntity,
+    municipality: {} as IMunicipality,
+    countryLocation: {} as ICountryLocation,
+    street: "",
     address: "",
     media: {
       data: "",
@@ -84,10 +90,10 @@ export default function Formulary({
       name: data?.name ?? "",
       code: data?.code ?? "",
       clues: data?.clues ?? "",
-      state: {
-        id: data?.state.id ?? 0,
-        name: data?.state.name ?? 0,
-      },
+      state: {} as IFederalEntity,
+      municipality: {} as IMunicipality,
+      countryLocation: {} as ICountryLocation,
+      street: data?.street,
       address: data?.address ?? "",
       media: {
         data: data?.image_url ?? "",
@@ -164,15 +170,11 @@ export default function Formulary({
         </h2>
         <div className="lg:w-[20%] w-[40%] flex justify-center items-center">
           <Button
-            disabled={loadingUpdate ||
-              formData?.address === "" ||
-              formData?.name === ""
+            disabled={
+              loadingUpdate || formData?.address === "" || formData?.name === ""
             }
             onClick={() => {
-              updateUserLocality(
-                { ...formData, state: formData.state.name },
-                data.id
-              )(dispatch);
+              updateUserLocality(formData, data.id)(dispatch);
               //console.log(formData)
             }}
             variant="primary"
@@ -203,7 +205,8 @@ export default function Formulary({
                 </div>
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Nombre del consultorio<span className="text-primary font-bold">*</span>
+                    Nombre del consultorio
+                    <span className="text-primary font-bold">*</span>
                   </p>
                   <FormInput
                     type={"text"}
@@ -264,48 +267,125 @@ export default function Formulary({
                     }}
                   />
                 </div>
-                <div className="w-full flex justify-start items-center gap-5">
-                  <div className="lg:flex justify-between items-center relative w-full gap-3">
+                <div className="lg:flex justify-between items-center relative w-full gap-3">
+                  <div className="lg:w-[445px]">
                     <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                       Estado
                     </p>
-                    <FormSelect
-                      value={formData.state?.id}
-                      className="form-control lg:w-[70%]"
-                      onChange={(e: any) => {
+                  </div>
+                  <div className="w-full flex justify-end">
+                    <AutocompleteInputStates
+                      defaultValue={formData.state.nameEntity}
+                      itemsAdded={[formData.state]}
+                      placeholder="Estado"
+                      onChange={(item: string) => {
                         setFormData({
                           ...formData,
-                          state: {
-                            ...formData["state"],
-                            id: +e.target.value,
-                          },
+                          state: {} as IFederalEntity,
+                          municipality: {} as IMunicipality,
                         });
                       }}
-                    >
-                      <option>Estado del consultorio...</option>
-                      {states &&
-                        [...(states as Array<any>)].map((elem, i) => (
-                          <option key={i} value={elem["id"]}>
-                            {elem["name"]}
-                          </option>
-                        ))}
-                    </FormSelect>
-                  </div>
-                  <div className="lg:flex justify-between items-center relative w-full gap-3">
-                    <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                      Ciudad
-                    </p>
-                    <FormInput
-                      type={"text"}
-                      placeholder="Escribe la ciudad del consultorio..."
-                      min={0}
-                      value={formData.city}
-                      className="form-control lg:w-[70%]"
-                      onChange={(e: any) => {
-                        setFormData({ ...formData, city: e.target.value });
+                      onClick={(item: IFederalEntity) => {
+                        setFormData({
+                          ...formData,
+                          state: item,
+                        });
                       }}
                     />
                   </div>
+                </div>
+
+                <div className="lg:flex justify-between items-center relative w-full gap-3">
+                  <div className="lg:w-[445px]">
+                    <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                      Municipio
+                    </p>
+                  </div>
+                  <div className="w-full flex justify-end">
+                    <AutocompleteInputMunicipalities
+                      defaultValue={formData.municipality.name}
+                      itemsAdded={[formData.municipality]}
+                      placeholder="Municipio"
+                      disabled={!formData.state.entityId}
+                      federalEntityId={formData.state.entityId}
+                      onChange={(item: string) => {
+                        setFormData({
+                          ...formData,
+                          municipality: {} as IMunicipality,
+                          countryLocation: {} as ICountryLocation,
+                        });
+                      }}
+                      onClick={(item: IMunicipality) => {
+                        setFormData({
+                          ...formData,
+                          municipality: item,
+                        });
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="lg:flex justify-between items-center relative w-full gap-3">
+                  <div className="lg:w-[445px]">
+                    <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                      Localidad
+                    </p>
+                  </div>
+                  <div className="w-full flex justify-end">
+                    <AutocompleteInputLocations
+                      defaultValue={formData.countryLocation.name}
+                      itemsAdded={[formData.countryLocation]}
+                      placeholder="Localidad"
+                      disabled={
+                        !formData.municipality.id || !formData.state.entityId
+                      }
+                      municipalityId={formData.municipality.id}
+                      onChange={(item: string) => {
+                        setFormData({
+                          ...formData,
+                          countryLocation: {} as ICountryLocation,
+                        });
+                      }}
+                      onClick={(item: ICountryLocation) => {
+                        setFormData({
+                          ...formData,
+                          countryLocation: item,
+                        });
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="lg:flex justify-between items-center relative w-full gap-3">
+                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                    Ciudad
+                  </p>
+                  <FormInput
+                    type={"text"}
+                    placeholder="Escribe la ciudad del consultorio..."
+                    min={0}
+                    value={formData.city}
+                    className="form-control lg:w-[70%]"
+                    onChange={(e: any) => {
+                      setFormData({ ...formData, city: e.target.value });
+                    }}
+                  />
+                </div>
+
+                <div className="lg:flex justify-between items-center relative w-full gap-3">
+                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                    Calle
+                  </p>
+                  <FormInput
+                    type={"text"}
+                    placeholder="Escribe la calle..."
+                    min={0}
+                    value={formData.street}
+                    className="form-control lg:w-[70%]"
+                    onChange={(e: any) => {
+                      setFormData({ ...formData, street: e.target.value });
+                    }}
+                  />
                 </div>
                 <div className="w-full flex justify-start items-center gap-5">
                   <div className="lg:flex justify-between items-center relative w-full gap-3">

@@ -11,6 +11,7 @@ export interface ILocality {
     image_url: string;
     latitude: number;
     longitude: number;
+    street: string;
 }
 
 interface IState {

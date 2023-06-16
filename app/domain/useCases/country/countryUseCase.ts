@@ -1,5 +1,6 @@
 import { ICountriesISO, ICountry } from "domain/core/entities/countryEntity";
 import { CountryFailure } from "domain/core/failures/country/countryFailure";
+import { IGetCountryLocationsResponse } from "domain/core/response/countryResponse";
 import { CountryRepository } from "infrastructure/repositories/country/countryRepository";
 import { CountriesISORepository } from "infrastructure/repositories/country/mock/countriesRepository";
 
@@ -18,6 +19,7 @@ export default class CountriesUseCase {
       throw error;
     }
   }
+
   async getCountriesISO(): Promise<ICountriesISO[]> {
     try {
       const response = await this._countriesISORepository.getCountries();
@@ -27,6 +29,18 @@ export default class CountriesUseCase {
       return response;
     } catch (error) {
       throw error;
+    }
+  }
+
+  async getCountryLocations(obj: { searchQuery?: string | null, limit?: number | null; federalEntityId?: number | null; municipalityId?: number | null }): Promise<IGetCountryLocationsResponse> {
+    try {
+        const response = await this._repository.getCountryLocations({ searchQuery: obj.searchQuery, limit: obj.limit, federalEntityId: obj.federalEntityId, municipalityId: obj.municipalityId });
+
+        if (response instanceof CountryFailure) throw response;
+
+        return response;
+    } catch (error) {
+        throw error;
     }
   }
 }
