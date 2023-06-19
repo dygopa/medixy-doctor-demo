@@ -37,6 +37,7 @@ export default function CurrentConsultation({
   const pathname = usePathname();
 
   const view = params.get("view");
+  const type = params.get("type");
   const currentConsultationExpanded = params.get("currentConsultationExpanded");
 
   const [showBody, setShowBody] = useState(false);
@@ -121,7 +122,11 @@ export default function CurrentConsultation({
           type="button"
           onClick={() => {
             setShowBody(!showBody);
-            router.push(`${pathname}?view=current-consultation`);
+            router.push(
+              `${pathname}?view=current-consultation&type=${
+                type ?? "medical-record"
+              }`
+            );
           }}
           className="w-full"
         >

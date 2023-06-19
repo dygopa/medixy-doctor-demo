@@ -1,12 +1,15 @@
 import { MedicalRecordCategoriesIdEnum, MedicalRecordTypesNumberEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import { getSkipPagination } from "(presentation)/(helper)/paginate/paginateHelper";
+import { IAppointment } from "domain/core/entities/appointmentEntity";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { ISubject } from "domain/core/entities/subjectEntity";
+import { IGetAppointmentResponse } from "domain/core/response/appointmentsResponse";
 import { IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
 import { IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
 import { IGetSubjectRelationsResponse } from "domain/core/response/subjectsResponse";
 import { IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
+import AppointmentUseCase from "domain/useCases/appointment/appointmentUseCases";
 import FederalEntitiesUseCase from "domain/useCases/federalEntity/federalEntityUseCase";
 import MedicalConsultyUseCase from "domain/useCases/medicalConsulty/medicalConsultyUseCases";
 import MedicalMeasureUseCase from "domain/useCases/medicalMeasure/medicalMeasureUseCases";
@@ -17,6 +20,7 @@ import { Dispatch } from "react";
 
 export interface IMedicalRecordActions {
     getSubjectById: (subjectId: number) => (dispatch: Dispatch<any>) => {};
+    getAppointmentById: (appointmentId: string) => (dispatch: Dispatch<any>) => {};
     getMedicalMeasures: (obj: { subjectId: number; sort?: Object | null; }) => (dispatch: Dispatch<any>) => {};
     getMedicalConsulties: (obj: { subjectId: number, limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getTreatments: (obj: { subjectId: number, sort?: Object; limit?: number | null }) => (dispatch: Dispatch<any>) => {};
@@ -39,6 +43,18 @@ const getSubjectById = (subjectId: number) => async (dispatch: Dispatch<any>) =>
     } catch (error) {
         dispatch({ type: "GET_SUBJECT_ERROR", payload: { error: error } });
     }
+}
+
+const getAppointmentById = (appointmentId: string) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_APPOINTMENT_LOADING" });
+
+    const res: IGetAppointmentResponse = await new AppointmentUseCase().getAppointmentById(appointmentId);
+
+    dispatch({ type: "GET_APPOINTMENT_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "GET_APPOINTMENT_ERROR", payload: { error: error } });
+  }
 }
 
 const getMedicalMeasures = (obj: { subjectId: number; sort?: Object | null; }) => async (dispatch: Dispatch<any>) => {
@@ -151,7 +167,7 @@ const getCompanions = (obj: { patientId: number }) => async (dispatch: Dispatch<
   try {
     dispatch({ type: "GET_COMPONIONS_LOADING" });
     
-    const res: IGetSubjectRelationsResponse = await new SubjectsUseCase().getSubjectsComponions({
+    const res: IGetSubjectRelationsResponse = await new SubjectsUseCase().getSubjectsCompanions({
       patientId: obj.patientId,
       typeRelation: 1,
     });
@@ -207,6 +223,7 @@ const createCompanion = (patientId:number, companion:ISubject) => async (dispatc
 
 export const actions: IMedicalRecordActions = {
     getSubjectById,
+    getAppointmentById,
     getMedicalMeasures,
     getMedicalConsulties,
     getTreatments,

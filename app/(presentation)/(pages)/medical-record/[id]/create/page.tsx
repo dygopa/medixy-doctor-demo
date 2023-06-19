@@ -15,7 +15,7 @@ export default async function MedicalRecordCreatePage({
       pathname={MedicalRecordRoutesEnum.MedicalRecord}
     >
       <Providers>
-        <MedicalRecordCreateIndex subjectId={parseInt(params.id, 10)} />
+        <MedicalRecordCreateIndex id={params.id} />
       </Providers>
     </AppLayout>
   );

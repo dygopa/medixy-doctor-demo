@@ -10,12 +10,13 @@ type valuesTypes = {
   observations: string;
 };
 
-export default function Diagnosis () {
+export default function Diagnosis() {
   const router = useRouter();
   const params = useSearchParams();
   const pathname = usePathname();
 
   const view = params.get("view");
+  const type = params.get("type");
   const diagnosisExpanded = params.get("diagnose");
 
   const [values, setValues] = useState<valuesTypes>({
@@ -38,8 +39,6 @@ export default function Diagnosis () {
     let diagnose = valuesJSON.currentConsultation.diagnose;
     diagnose = values;
 
-    console.log(diagnose)
-
     valuesJSON.currentConsultation.diagnose = diagnose.diagnose;
 
     valuesJSON.currentConsultation.observations = diagnose.observations;
@@ -58,10 +57,7 @@ export default function Diagnosis () {
   }, [values]);
 
   useEffect(() => {
-    if (
-      view === "diagnosis" ||
-      diagnosisExpanded === "true"
-    ) {
+    if (view === "diagnosis" || diagnosisExpanded === "true") {
       setShowBody(true);
     } else {
       setShowBody(false);
@@ -70,17 +66,19 @@ export default function Diagnosis () {
 
   return (
     <div
-    className={clsx([
-      "h-auto relative z-40 w-full",
-      "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
-    ])}
+      className={clsx([
+        "h-auto relative z-40 w-full",
+        "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
+      ])}
     >
       <div className="p-4 box h-full">
         <button
           type="button"
           onClick={() => {
             setShowBody(!showBody);
-            router.push(`${pathname}?view=diagnosis`);
+            router.push(
+              `${pathname}?view=diagnosis&type=${type ?? "medical-record"}`
+            );
           }}
           className="w-full"
         >
@@ -106,5 +104,5 @@ export default function Diagnosis () {
         </form>
       </div>
     </div>
-  )
+  );
 }

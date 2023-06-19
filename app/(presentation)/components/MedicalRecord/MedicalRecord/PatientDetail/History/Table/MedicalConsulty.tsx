@@ -1,5 +1,4 @@
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
-import { PatientsRoutesEnum } from "(presentation)/(routes)/patientsRoutes";
 import clsx from "clsx";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import { useRouter } from "next/navigation";
@@ -18,8 +17,25 @@ export default function MedicalConsulty({
 }: IMedicalConsultyProps) {
   const { state } = useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { data: subject } = state.subject;
+  const { data: appointment } = state.appointment;
 
   const router = useRouter();
+
+  const getRedirectMedicalRecord = () => {
+    if (appointment.data?.id) {
+      return (
+        MedicalRecordRoutesEnum.MedicalRecord +
+        appointment.data.id +
+        `?type=appointment&view_medical_record=true&medical_record_id=${medicalConsulty.id}`
+      );
+    }
+
+    return (
+      MedicalRecordRoutesEnum.MedicalRecord +
+      subject?.subjectId +
+      `?view_medical_record=true&medical_record_id=${medicalConsulty.id}`
+    );
+  };
 
   const [isHover, setIsHover] = useState(false);
 
@@ -29,13 +45,7 @@ export default function MedicalConsulty({
       className="intro-x cursor-pointer lg:flex md:flex sm:flex justify-between rounded-md items-center p-4 bg-white hover:bg-primary shadow-[20px_3px_20px_#0000000b] "
       onMouseEnter={() => setIsHover(true)}
       onMouseLeave={() => setIsHover(false)}
-      onClick={() =>
-        router.push(
-          MedicalRecordRoutesEnum.MedicalRecord +
-            subject?.subjectId +
-            `?view_medical_record=true&medical_record_id=${medicalConsulty.id}`
-        )
-      }
+      onClick={() => router.push(getRedirectMedicalRecord())}
     >
       <div className="flex items-center overflow-y-hidden">
         <div className="mr-10">

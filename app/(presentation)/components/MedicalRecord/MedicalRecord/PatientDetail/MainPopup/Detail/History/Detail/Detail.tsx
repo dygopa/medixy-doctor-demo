@@ -12,11 +12,13 @@ import VitalSigns from "./VitalSigns/VitalSigns";
 interface IDetailProps {
   medicalConsulty: IMedicalConsulty;
   setMedicalConsulty: Dispatch<SetStateAction<IMedicalConsulty | null>>;
+  appointmentId: string | null;
 }
 
 export default function Detail({
   medicalConsulty,
   setMedicalConsulty,
+  appointmentId,
 }: IDetailProps) {
   return (
     <div>
@@ -24,6 +26,7 @@ export default function Detail({
         <Title
           medicalConsulty={medicalConsulty}
           setMedicalConsulty={setMedicalConsulty}
+          appointmentId={appointmentId}
         />
       </div>
 

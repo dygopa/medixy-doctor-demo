@@ -38,12 +38,8 @@ export default function Navigator() {
     );
   const { createMedicalConsulty } = actions;
   const { data: subject } = state.subject;
-  const {
-    data: medicalConsulty,
-    loading,
-    error,
-    successful,
-  } = state.createMedicalConsulty;
+  const { data: appointment } = state.appointment;
+  const { loading, error, successful } = state.createMedicalConsulty;
 
   const router = useRouter();
 
@@ -343,7 +339,22 @@ export default function Navigator() {
       subjectId: subject?.subjectId ?? 0,
     };
 
-    createMedicalConsulty(medicalConsulty)(dispatch);
+    createMedicalConsulty({
+      medicalConsulty: medicalConsulty,
+      appointmentId: appointment.data?.id ? appointment.data.id : null,
+    })(dispatch);
+  };
+
+  const getRedirectMedicalRecord = () => {
+    if (appointment.data?.id) {
+      return (
+        MedicalRecordRoutesEnum.MedicalRecord +
+        appointment.data.id +
+        "?type=appointment"
+      );
+    }
+
+    return MedicalRecordRoutesEnum.MedicalRecord + subject?.subjectId;
   };
 
   const onShowAlertError = () => {
@@ -358,7 +369,7 @@ export default function Navigator() {
     localStorage.removeItem("prosit.storage.medical-record-create");
 
     setTimeout(() => {
-      router.push(MedicalRecordRoutesEnum.MedicalRecord + subject?.subjectId);
+      router.push(getRedirectMedicalRecord());
     }, 3000);
   };
 

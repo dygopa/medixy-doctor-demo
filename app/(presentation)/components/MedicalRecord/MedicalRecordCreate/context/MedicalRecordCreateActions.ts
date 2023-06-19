@@ -15,9 +15,12 @@ import TreatmentUseCase from "domain/useCases/treatments/treatmentsUseCase";
 import { IGetSpecialtiesResponse } from "domain/core/response/specialtiesResponse";
 import SpecialtyUseCase from "domain/useCases/specialty/specialtyUseCases";
 import { IGetSubjectRelationsResponse } from "domain/core/response/subjectsResponse";
+import { IGetAppointmentResponse } from "domain/core/response/appointmentsResponse";
+import AppointmentUseCase from "domain/useCases/appointment/appointmentUseCases";
 
 export interface IMedicalRecordCreateActions {
     getSubjectById: (subjectId: number) => (dispatch: Dispatch<any>) => {};
+    getAppointmentById: (appointmentId: string) => (dispatch: Dispatch<any>) => {};
     getSpecialties: () => (dispatch: Dispatch<any>) => {};
     getMedicalMeasures: (obj: { subjectId: number; sort?: Object | null; }) => (dispatch: Dispatch<any>) => {};
     getMedicalConsulties: (obj: { subjectId: number, sort: Object; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
@@ -40,6 +43,18 @@ const getSubjectById = (subjectId: number) => async (dispatch: Dispatch<any>) =>
     } catch (error) {
         dispatch({ type: "GET_SUBJECT_ERROR", payload: { error: error } });
     }
+}
+
+const getAppointmentById = (appointmentId: string) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_APPOINTMENT_LOADING" });
+
+    const res: IGetAppointmentResponse = await new AppointmentUseCase().getAppointmentById(appointmentId);
+
+    dispatch({ type: "GET_APPOINTMENT_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "GET_APPOINTMENT_ERROR", payload: { error: error } });
+  }
 }
 
 const getSpecialties = () => async (dispatch: Dispatch<any>) => {
@@ -167,7 +182,7 @@ const getCompanions = (obj: { patientId: number }) => async (dispatch: Dispatch<
   try {
     dispatch({ type: "GET_COMPONIONS_LOADING" });
     
-    const res: IGetSubjectRelationsResponse = await new SubjectsUseCase().getSubjectsComponions({
+    const res: IGetSubjectRelationsResponse = await new SubjectsUseCase().getSubjectsCompanions({
       patientId: obj.patientId,
       typeRelation: 1,
     });
@@ -196,6 +211,7 @@ const createCompanion = (patientId:number, companion:ISubject) => async (dispatc
 
 export const actions: IMedicalRecordCreateActions = {
     getSubjectById,
+    getAppointmentById,
     getSpecialties,
     getMedicalMeasures,
     getMedicalConsulties,

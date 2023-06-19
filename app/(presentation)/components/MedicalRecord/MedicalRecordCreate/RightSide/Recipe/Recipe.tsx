@@ -12,6 +12,7 @@ export default function Recipe() {
   const pathname = usePathname();
 
   const view = params.get("view");
+  const type = params.get("type");
 
   const [showBody, setShowBody] = useState(false);
   const [recipes, setRecipes] = useState<IRecipe[]>([]);
@@ -63,7 +64,7 @@ export default function Recipe() {
   }, []);
 
   useEffect(() => {
-    if (view === "recipe") {
+    if (!view || view === "recipe") {
       setShowBody(true);
     } else {
       setShowBody(false);
@@ -82,7 +83,9 @@ export default function Recipe() {
           type="button"
           onClick={() => {
             setShowBody(!showBody);
-            router.push(`${pathname}?view=recipe`);
+            router.push(
+              `${pathname}?view=recipe&type=${type ?? "medical-record"}`
+            );
           }}
           className="w-full"
         >

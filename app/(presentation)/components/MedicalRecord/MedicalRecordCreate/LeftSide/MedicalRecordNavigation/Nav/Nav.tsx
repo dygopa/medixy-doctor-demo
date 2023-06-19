@@ -7,6 +7,7 @@ export default function Nav() {
   const pathname = usePathname();
 
   const view = params.get("view");
+  const type = params.get("type");
 
   const getTopLineByView = (): string => {
     switch (view?.toLowerCase()) {
@@ -17,11 +18,11 @@ export default function Nav() {
       case "current-consultation":
         return "top-32";
       case "diagnosis":
-        return "top-60";
+        return "top-52";
       case "orders":
-        return "top-72";
+        return "top-64";
       case "recipe":
-        return "top-[400px]";
+        return "top-[375px]";
 
       default:
         return "top-0";
@@ -51,7 +52,9 @@ export default function Nav() {
         <div className="py-1">
           <NavItem
             text="Signos vítales"
-            href={`${pathname}?view=vital-signs`}
+            href={`${pathname}?view=vital-signs&type=${
+              type ?? "medical-record"
+            }`}
             isActive={getNavIsActive("vital-signs")}
           />
         </div>
@@ -59,7 +62,7 @@ export default function Nav() {
         <div className="py-1">
           <NavItem
             text="Antecedentes"
-            href={`${pathname}?view=records`}
+            href={`${pathname}?view=records&type=${type ?? "medical-record"}`}
             isActive={getNavIsActive("records")}
           />
         </div>
@@ -67,12 +70,13 @@ export default function Nav() {
         <div className="w-full">
           <NavItem
             text="Consulta actual"
-            href={`${pathname}?view=current-consultation`}
+            href={`${pathname}?view=current-consultation&type=${
+              type ?? "medical-record"
+            }`}
             subItems={[
               {
                 text: "Exploración física",
               },
-              { text: "Diagnósticos" },
             ]}
             isActive={getNavIsActive("current-consultation")}
           />
@@ -81,7 +85,7 @@ export default function Nav() {
         <div className="w-full">
           <NavItem
             text="Diagnóstico"
-            href={`${pathname}?view=diagnosis`}
+            href={`${pathname}?view=diagnosis&type=${type ?? "medical-record"}`}
             isActive={getNavIsActive("diagnosis")}
           />
         </div>
@@ -89,7 +93,7 @@ export default function Nav() {
         <div className="w-full">
           <NavItem
             text="Ordenes"
-            href={`${pathname}?view=orders`}
+            href={`${pathname}?view=orders&type=${type ?? "medical-record"}`}
             subItems={[
               {
                 text: "Estudios",
@@ -103,7 +107,7 @@ export default function Nav() {
         <div className="w-full">
           <NavItem
             text="Receta"
-            href={`${pathname}?view=recipe`}
+            href={`${pathname}?view=recipe&type=${type ?? "medical-record"}`}
             isActive={getNavIsActive("recipe")}
           />
         </div>
