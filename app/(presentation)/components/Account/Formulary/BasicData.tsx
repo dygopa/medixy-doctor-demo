@@ -15,6 +15,7 @@ import { FiUser } from "react-icons/fi";
 import moment from "moment/moment";
 import Image from "next/image";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
+import { VALIDATE_NAMES } from "(presentation)/(utils)/errors-validation";
 
 interface IFormularyProps {
   account: IUser;
@@ -104,6 +105,15 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
       });
       return true;
     }
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          name: "El nombre del paciente solo debe incluir letras",
+        };
+      });
+      return true;
+    }
     setErrors({ ...errors, name: "" });
     return false;
   };
@@ -118,7 +128,16 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
         };
       });
       return true;
-    }
+    };
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          lastname: "El apellido del paciente solo debe incluir letras",
+        };
+      });
+      return true;
+    };
     setErrors({ ...errors, lastname: "" });
     return false;
   };
@@ -218,7 +237,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
             <div className="lg:w-[70%] grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 justify-start items-start gap-3 lg:mt-0 mt-6">
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Nombre(s)
+                  Nombre(s){" "}<span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"text"}
@@ -234,7 +253,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Apellido paterno
+                  Apellido paterno{" "}<span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"text"}

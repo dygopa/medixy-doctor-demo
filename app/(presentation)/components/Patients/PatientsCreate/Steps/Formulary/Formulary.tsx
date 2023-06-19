@@ -20,6 +20,7 @@ import { ISubject } from "domain/core/entities/subjectEntity";
 import { subjectFailuresEnum } from "domain/core/failures/subject/subjectFailure";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { useRouter } from "next/navigation";
+import { VALIDATE_NAMES } from "(presentation)/(utils)/errors-validation";
 
 interface IBasicDataProps {
   values: {
@@ -78,13 +79,22 @@ export default function Formulary({
   errors,
   setErrors,
 }: IBasicDataProps) {
-  const handlename = (value: string) => {
+  const handlename = (value: string, e:any) => {
     setValues({ ...values, name: value });
     if (value.length < 2) {
       setErrors((previousState) => {
         return {
           ...previousState,
           name: "El nombre del paciente es obligatorio",
+        };
+      });
+      return true;
+    }
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          name: "El nombre del paciente solo debe incluir letras",
         };
       });
       return true;
@@ -100,6 +110,15 @@ export default function Formulary({
         return {
           ...previousState,
           lastname: "El apellido del paciente es obligatorio",
+        };
+      });
+      return true;
+    }
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          lastname: "El apellido del paciente solo debe incluir letras",
         };
       });
       return true;
@@ -151,7 +170,7 @@ export default function Formulary({
         </p>
         <FormInput
           type="text"
-          onChange={(e: any) => handlename(e.target.value)}
+          onChange={(e: any) => handlename(e.target.value, e)}
           placeholder="Nombre"
         />
         {errors.name.length > 0 && (
