@@ -30,7 +30,6 @@ export default function HistoryTable({
     if (subjectId) {
       getMedicalConsulties({
         subjectId: subjectId,
-        sort: { field: "fechaConsulta", ascending: false },
       })(dispatch);
     }
   };

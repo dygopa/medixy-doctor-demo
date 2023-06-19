@@ -659,6 +659,30 @@ export const getMedicalRecordsPhysical = (values: any, subjectId: number) => {
         } as IMedicalRecord);
       }
 
+      if (values?.deformity?.isChecked) {
+        medicalRecords.push({
+          id: 0,
+          subjectId: subjectId,
+          medicalRecordTypeId: 0,
+          medicalRecordType: {
+            id: 0,
+            name: MedicalRecordTypesPhysicalEnum.DEFORMITY,
+          } as IMedicalRecordType,
+          medicalRecordValues: [
+            {
+              id: 0,
+              value: values?.deformity?.value,
+              medicalRecordValueType: {
+                id: 0,
+                name: MedicalRecordValueTypesPhysicalEnum.DEFORMITY_DESCRIPTION,
+              } as IMedicalRecordValueType,
+            },
+          ],
+          medicalConsultyId: 0,
+          medicalConsulty: {},
+        } as IMedicalRecord);
+      }
+
       if (values?.disnea?.isChecked) {
         medicalRecords.push({
           id: 0,
@@ -779,7 +803,7 @@ export const getMedicalRecordsPhysical = (values: any, subjectId: number) => {
         } as IMedicalRecord);
       }
 
-      if (values?.abnormality?.values?.abdomen?.isChecked) {
+      if (values?.abnormality?.isChecked && values?.abnormality?.values?.abdomen?.isChecked) {
         medicalRecords.push({
           id: 0,
           subjectId: subjectId,
@@ -803,7 +827,7 @@ export const getMedicalRecordsPhysical = (values: any, subjectId: number) => {
         } as IMedicalRecord);
       }
 
-      if (values?.abnormality?.values?.anatomicalStateEyes?.isChecked) {
+      if (values?.abnormality?.isChecked && values?.abnormality?.values?.anatomicalStateEyes?.isChecked) {
         medicalRecords.push({
           id: 0,
           subjectId: subjectId,
@@ -827,7 +851,7 @@ export const getMedicalRecordsPhysical = (values: any, subjectId: number) => {
         } as IMedicalRecord);
       }
 
-      if (values?.abnormality?.values?.buccalPharynx?.isChecked) {
+      if (values?.abnormality?.isChecked && values?.abnormality?.values?.buccalPharynx?.isChecked) {
         medicalRecords.push({
           id: 0,
           subjectId: subjectId,
@@ -851,7 +875,7 @@ export const getMedicalRecordsPhysical = (values: any, subjectId: number) => {
         } as IMedicalRecord);
       }
 
-      if (values?.abnormality?.values?.chest?.isChecked) {
+      if (values?.abnormality?.isChecked && values?.abnormality?.values?.chest?.isChecked) {
         medicalRecords.push({
           id: 0,
           subjectId: subjectId,
@@ -875,7 +899,7 @@ export const getMedicalRecordsPhysical = (values: any, subjectId: number) => {
         } as IMedicalRecord);
       }
 
-      if (values?.abnormality?.values?.extremities?.isChecked) {
+      if (values?.abnormality?.isChecked && values?.abnormality?.values?.extremities?.isChecked) {
         medicalRecords.push({
           id: 0,
           subjectId: subjectId,
@@ -899,7 +923,7 @@ export const getMedicalRecordsPhysical = (values: any, subjectId: number) => {
         } as IMedicalRecord);
       }
 
-      if (values?.abnormality?.values?.eyeVision?.isChecked) {
+      if (values?.abnormality?.isChecked && values?.abnormality?.values?.eyeVision?.isChecked) {
         medicalRecords.push({
           id: 0,
           subjectId: subjectId,
@@ -923,7 +947,7 @@ export const getMedicalRecordsPhysical = (values: any, subjectId: number) => {
         } as IMedicalRecord);
       }
 
-      if (values?.abnormality?.values?.hearingEars?.isChecked) {
+      if (values?.abnormality?.isChecked && values?.abnormality?.values?.hearingEars?.isChecked) {
         medicalRecords.push({
           id: 0,
           subjectId: subjectId,
@@ -947,7 +971,7 @@ export const getMedicalRecordsPhysical = (values: any, subjectId: number) => {
         } as IMedicalRecord);
       }
 
-      if (values?.abnormality?.values?.neck?.isChecked) {
+      if (values?.abnormality?.isChecked && values?.abnormality?.values?.neck?.isChecked) {
         medicalRecords.push({
           id: 0,
           subjectId: subjectId,
@@ -971,7 +995,7 @@ export const getMedicalRecordsPhysical = (values: any, subjectId: number) => {
         } as IMedicalRecord);
       }
 
-      if (values?.abnormality?.values?.spine?.isChecked) {
+      if (values?.abnormality?.isChecked && values?.abnormality?.values?.spine?.isChecked) {
         medicalRecords.push({
           id: 0,
           subjectId: subjectId,

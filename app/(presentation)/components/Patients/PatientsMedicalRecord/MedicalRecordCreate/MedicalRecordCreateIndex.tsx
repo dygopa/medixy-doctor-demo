@@ -6,7 +6,6 @@ import MedicalRecordCreateProvider, {
   IMedicalRecordCreateContext,
   MedicalRecordCreateContext,
 } from "./context/MedicalRecordCreateContext";
-import History from "./History/History";
 import LeftSide from "./LeftSide/LeftSide";
 import MainPopup from "./MainPopup/MainPopup";
 import Navigator from "./Navigator/Navigator";
@@ -25,7 +24,7 @@ export default function MedicalRecordCreateIndex({
   const { getSubjectById } = actions;
   const { data: subject, loading, successful, error } = state.subject;
 
-  const [screenSize, setScreenSize] = useState(getCurrentDimension());
+  const [screenSize, setScreenSize] = useState({ width: 0, height: 0 });
   const [isOpen, setIsOpen] = useState(false);
   const [popupSectionActive, setPopupSectionActive] = useState(0);
 
@@ -40,6 +39,9 @@ export default function MedicalRecordCreateIndex({
     const updateDimension = () => {
       setScreenSize(getCurrentDimension());
     };
+
+    if (screenSize.width === 0 && screenSize.height === 0) updateDimension();
+
     window.addEventListener("resize", updateDimension);
 
     return () => {
@@ -119,13 +121,6 @@ export default function MedicalRecordCreateIndex({
           >
             <RightSide width={screenSize.width} />
           </div>
-        </div>
-
-        <div>
-          <History
-            setIsOpen={setIsOpen}
-            setPopupSectionActive={setPopupSectionActive}
-          />
         </div>
       </div>
 

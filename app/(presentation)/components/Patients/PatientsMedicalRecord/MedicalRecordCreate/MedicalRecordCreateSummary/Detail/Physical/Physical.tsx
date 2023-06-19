@@ -288,7 +288,7 @@ export default function Physical() {
           <div>
             <h1 className="text-slate-900 font-bold text-lg flex">
               Anormalidades:
-              {values.abnormality.value.length > 0
+              {values.abnormality?.value?.length > 0
                 ? ` ${values.abnormality.value}`
                 : ""}
             </h1>

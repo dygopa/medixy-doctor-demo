@@ -96,7 +96,7 @@ export default function AbnormalitySection({
       <div className="md:flex items-center justify-between mb-4 w-full">
         <div className="md:flex items-center w-full">
           <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
-            <p className="text-md">- En el estado anatómico de los ojos</p>
+            <p className="text-md">En el estado anatómico de los ojos</p>
           </div>
 
           <div className="flex items-center w-full">
@@ -168,7 +168,7 @@ export default function AbnormalitySection({
       <div className="md:flex items-center justify-between mb-4 w-full">
         <div className="md:flex items-center w-full">
           <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
-            <p className="text-md">- En la visión de cada ojo</p>
+            <p className="text-md">En la visión de cada ojo</p>
           </div>
 
           <div className="flex items-center w-full">
@@ -232,7 +232,7 @@ export default function AbnormalitySection({
       <div className="md:flex items-center justify-between mb-4 w-full">
         <div className="md:flex items-center w-full">
           <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
-            <p className="text-md">- En la audición de cada oído</p>
+            <p className="text-md">En la audición de cada oído</p>
           </div>
 
           <div className="flex items-center w-full">
@@ -296,7 +296,7 @@ export default function AbnormalitySection({
       <div className="md:flex items-center justify-between mb-4 w-full">
         <div className="md:flex items-center w-full">
           <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
-            <p className="text-md">- En la cavidad bucal y la faringe</p>
+            <p className="text-md">En la cavidad bucal y la faringe</p>
           </div>
 
           <div className="flex items-center w-full">
@@ -363,8 +363,7 @@ export default function AbnormalitySection({
         <div className="md:flex items-center w-full">
           <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
             <p className="text-md">
-              - En el cuello (ganglios, tiroides, ingurgitación yugular,
-              arterias)
+              En el cuello (ganglios, tiroides, ingurgitación yugular, arterias)
             </p>
           </div>
 
@@ -428,7 +427,7 @@ export default function AbnormalitySection({
       <div className="md:flex items-center justify-between mb-4 w-full">
         <div className="md:flex items-center w-full">
           <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
-            <p className="text-md">- En el tórax (inspección, auscultación)</p>
+            <p className="text-md">En el tórax (inspección, auscultación)</p>
           </div>
 
           <div className="flex items-center w-full">
@@ -492,7 +491,7 @@ export default function AbnormalitySection({
         <div className="md:flex items-center w-full">
           <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
             <p className="text-md">
-              - En la columna vertebral (deformidad, dolor, limitación)
+              En la columna vertebral (deformidad, dolor, limitación)
             </p>
           </div>
 
@@ -557,7 +556,7 @@ export default function AbnormalitySection({
         <div className="md:flex items-center w-full">
           <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
             <p className="text-md">
-              - En el abdomen (inspeccion, palpación, dolor, visceromeglias,
+              En el abdomen (inspeccion, palpación, dolor, visceromeglias,
               ascitis)
             </p>
           </div>
@@ -624,7 +623,7 @@ export default function AbnormalitySection({
         <div className="md:flex items-center w-full">
           <div className="md:mr-5 md:mb-0 mb-1 lg:w-[300px] md:w-[300px] w-full">
             <p className="text-md">
-              - En las extremidades (várices, úlceras, edema, articulaciones,
+              En las extremidades (várices, úlceras, edema, articulaciones,
               arterias, reflejo patelar)
             </p>
           </div>
