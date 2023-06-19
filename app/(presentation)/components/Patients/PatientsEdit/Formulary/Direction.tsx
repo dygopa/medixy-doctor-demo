@@ -107,7 +107,7 @@ export default function Contact({
         <div className="w-full md:grid md:grid-cols-2 grid-cols-1 justify-start items-center gap-3">
           <div className="md:flex md:flex-col justify-between items-start relative gap-1">
             <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-              Entidad Federativa
+              Entidad Federativa{" "}<span className="text-primary font-bold">*</span>
             </p>
             <AutocompleteInputStates
               defaultValue={values.federalEntity.nameEntity}
