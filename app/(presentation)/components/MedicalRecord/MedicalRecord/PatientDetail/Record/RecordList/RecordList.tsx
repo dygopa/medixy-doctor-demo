@@ -2,6 +2,7 @@ import {
   MedicalRecordCategoriesIdEnum,
   medicalRecordTypeEnum,
 } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
+import { getMedicalRecordsForTypes } from "(presentation)/(helper)/medicalRecords/medicalRecordsHelper";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
   IMedicalRecord,
@@ -23,19 +24,9 @@ export default function RecordList() {
   const [medicalRecords, setMedicalRecords] = useState<IMedicalRecord[]>([]);
 
   const setMedicalRecordsMap = () => {
-    const medicalRecordsList: IMedicalRecord[] = [];
-
-    if (data.data && data.data.length > 0) {
-      data.data.forEach((medicalRecord: IMedicalRecord) => {
-        const index = medicalRecordsList.findIndex(
-          (medicalRecordFind) =>
-            medicalRecordFind.medicalRecordTypeId ===
-            medicalRecord.medicalRecordTypeId
-        );
-
-        if (index < 0) medicalRecordsList.push(medicalRecord);
-      });
-    }
+    const medicalRecordsList: IMedicalRecord[] = getMedicalRecordsForTypes(
+      data.data
+    );
 
     setMedicalRecords(medicalRecordsList);
   };
@@ -45,7 +36,6 @@ export default function RecordList() {
       getMedicalRecords({
         subjectId: subject.subjectId,
         medicalRecordCategoryId: MedicalRecordCategoriesIdEnum.RECORDS,
-        limit: 6,
       })(dispatch);
     }
   };
@@ -111,15 +101,17 @@ export default function RecordList() {
             </div>
 
             {medicalRecord.medicalRecordValues.length > 0 && (
-              <div>
+              <div className="flex">
                 {medicalRecord.medicalRecordValues.map(
-                  (medicalRecordValue: IMedicalRecordValue) => (
+                  (medicalRecordValue: IMedicalRecordValue, i: number) => (
                     <p
-                      key={medicalRecordValue.id}
-                      className="text-slate-900 text-md font-medium overflow-hidden block text-ellipsis"
+                      key={i}
+                      className="text-slate-900 text-md font-medium overflow-hidden block text-ellipsis mr-1"
                       style={{ wordBreak: "break-word", maxHeight: "3em" }}
                     >
                       {medicalRecordValue.value}
+                      {i !== medicalRecord.medicalRecordValues.length - 1 &&
+                        ","}
                     </p>
                   )
                 )}
