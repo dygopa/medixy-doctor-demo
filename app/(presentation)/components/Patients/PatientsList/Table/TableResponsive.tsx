@@ -1,7 +1,4 @@
-import {
-  PatientsMedicalRecordRoutesEnum,
-  PatientsRoutesEnum,
-} from "(presentation)/(routes)/patientsRoutes";
+import { PatientsRoutesEnum } from "(presentation)/(routes)/patientsRoutes";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import Link from "next/link";
 import { Fragment, useContext, useEffect } from "react";
@@ -13,6 +10,7 @@ import {
 import { ISubject } from "domain/core/entities/subjectEntity";
 import Paginate from "(presentation)/components/core/Paginate/Paginate";
 import { useSearchParams } from "next/navigation";
+import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
 
 export default function TableResponsive() {
   const { state, actions, dispatch } =
@@ -120,9 +118,8 @@ export default function TableResponsive() {
                             className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100"
                             href={{
                               pathname:
-                                PatientsRoutesEnum.PatientsView +
-                                patient.subjectId +
-                                PatientsMedicalRecordRoutesEnum.MedicalRecord,
+                                MedicalRecordRoutesEnum.MedicalRecord +
+                                patient.subjectId,
                             }}
                           >
                             <Lucide icon="FileText" className="w-5 h-5" />

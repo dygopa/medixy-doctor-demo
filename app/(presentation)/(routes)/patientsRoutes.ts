@@ -5,8 +5,3 @@ export enum PatientsRoutesEnum {
     PatientsEdit = "/patients/edit-patient/"
 }
 
-export enum PatientsMedicalRecordRoutesEnum {
-    MedicalRecord = "/medical-record",
-    MedicalRecordCreate = "/create",
-    MedicalRecordCreateSummary = "/summary"
-}
