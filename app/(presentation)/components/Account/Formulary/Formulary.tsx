@@ -94,7 +94,12 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
         </div>
         <Button
           variant="primary"
-          disabled={loading}
+          disabled={
+            loading || 
+            account.names === "" ||
+            account.firstName === "" ||
+            validForm() > 0
+          }
           onClick={() => {
             updateAccount();
           }}

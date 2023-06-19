@@ -134,7 +134,8 @@ export default function Steps() {
             values.name === "" ||
             values.lastname === "" ||
             values.age === "" ||
-            values.phone === ""
+            values.phone === "" ||
+            validForm() > 0
            } onClick={() => onSubmit()}>
             {loading ? "Creando paciente..." : "Crear paciente"}
           </Button>
