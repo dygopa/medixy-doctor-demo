@@ -180,7 +180,7 @@ export default function BasicData({
           <div className="lg:w-[70%] grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 justify-start items-center gap-3 lg:mt-0 mt-6">
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Nombre(s)
+                Nombre(s){" "}<span className="text-primary font-bold">*</span>
               </p>
               <FormInput
                 type={"text"}
@@ -196,7 +196,7 @@ export default function BasicData({
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Apellido paterno
+                Apellido paterno{" "}<span className="text-primary font-bold">*</span>
               </p>
               <FormInput
                 type={"text"}
@@ -241,7 +241,7 @@ export default function BasicData({
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Fecha de nacimiento
+                Fecha de nacimiento{" "}<span className="text-primary font-bold">*</span>
               </p>
               <FormInput
                 type={"date"}
@@ -326,7 +326,7 @@ export default function BasicData({
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Teléfono
+                Teléfono{" "}<span className="text-primary font-bold">*</span>
               </p>
               <FormInput
                 type="tel"
