@@ -14,42 +14,25 @@ export default function CalendarIndex() {
   const { data: user, successful: loadedUser} = auth.getUserAuthenticated;
 
   const { state, actions, dispatch } = useContext<IScheduleContext>(ScheduleContext);
-  const { appointmentDetail, getAppointments, changeTypePopup, changeStatusPopup, predifinedReservationData, getCalendarEvents } = actions;
+  const { 
+    appointmentDetail, 
+    getAppointments, 
+    changeTypePopup, 
+    changeStatusPopup, 
+    predifinedReservationData, 
+    getCalendarEvents,
+    getServices,
+    activeService
+  } = actions;
   
   const { successful: createAppointmentSuccessful, error: createAppointmentError } = state.createAppointment;
   const { successful: calendarEventsSuccessful, error: calendarEventsError, data: calendarEvents } = state.getCalendarEvents;
   const { successful: serviceSuccessful, error: serviceError, data: service } = state.activeService;
   const { successful: loadedCreationAppointment } = state.createAppointment;
+  const { successful: servicesSuccessful, error: servicesError, data: services } = state.getServices;
 
   const [appointments, setAppointments] = useState([])
   const [loadedAppointments, setLoadedAppointments] = useState(false)
-
-  let data = [
-    {
-      id: 2,
-      serviceId: 3,
-      fechaReserva: moment().add(1, "h").toDate(),
-      nombres: "Usuario",
-      primerApellido: "Apellido",
-      type: "WINDOW",
-    },
-    {
-      id: 3,
-      serviceId: 41,
-      fechaReserva: moment().add(2, "h").toDate(),
-      nombres: "Usuario",
-      primerApellido: "Apellido",        
-      type: "FREE_SLOT",
-    },
-    {
-      id: 4,
-      serviceId: 0,
-      fechaReserva: moment().add(3, "h").toDate(),
-      nombres: "Usuario",
-      primerApellido: "Apellido",        
-      type: "APPOINTMENT",
-    },
-  ]
 
   function formatEvent(elem:any){
     let object = {}
@@ -62,8 +45,8 @@ export default function CalendarIndex() {
 
     object = {
       title: text,
-      start: moment(elem["fechaReserva"]).format("YYYY-MM-DD HH:mm"),
-      end: moment(elem["fechaFinReserva"]).format("YYYY-MM-DD HH:mm"),
+      start: moment(elem["fechaReserva"]).utc().format("YYYY-MM-DD HH:mm"),
+      end: moment(elem["fechaFinReserva"]).utc().format("YYYY-MM-DD HH:mm"),
       textColor: textColor,
       type: type,
       borderColor: textColor,
@@ -72,7 +55,11 @@ export default function CalendarIndex() {
       description: "-",
       attentionWindowId: elem["id"],
       serviceId: elem["servicioId"],
-      sujetos: {...elem["Sujetos"], sujetoId: elem["sujetoId"]},
+      sujetos: {
+        ...elem["Sujetos"], 
+        nombre: elem["Servicios"]["nombre"], 
+        sujetoId: elem["sujetoId"]
+      },
       backgroundColor: backgroundColor,
     }
     return object
@@ -106,7 +93,7 @@ export default function CalendarIndex() {
       })(dispatch); changeStatusPopup(true)(dispatch); changeTypePopup(0)(dispatch)
     }
     if(data["type"] === "APPOINMENT"){
-      appointmentDetail(data["sujetos"])(dispatch); changeStatusPopup(true)(dispatch); changeTypePopup(2)(dispatch)
+      appointmentDetail({...data["sujetos"], fechaReserva: data["dateEvent"]})(dispatch); changeStatusPopup(true)(dispatch); changeTypePopup(2)(dispatch)
     }
 
     console.log(data)
@@ -124,7 +111,23 @@ export default function CalendarIndex() {
   }, [calendarEventsSuccessful]);
 
   useMemo(() => {
-    if (loadedUser && serviceSuccessful) getCalendarEvents(user.userId, service.id, {}, {})(dispatch)
+    if (loadedUser && servicesSuccessful){
+      if(services.length === 1){
+        activeService({
+          id: services[0]["id"],
+          title: services[0]["name"],
+          description: services[0]["description"],
+          type: "SERVICE",
+        })(dispatch)
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadedUser, services]);
+
+  useMemo(() => {
+    if (loadedUser && serviceSuccessful){
+      getCalendarEvents(user.userId, service.id, {}, {})(dispatch)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser, service]);
 
