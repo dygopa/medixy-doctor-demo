@@ -3,10 +3,6 @@ import { ICIE10 } from "domain/core/entities/cie10Entity";
 import { Dispatch, SetStateAction } from "react";
 
 type valuesTypes = {
-  consultationDate: string;
-  referredBy: string;
-  consultationReason: string;
-  sufferingDate: string;
   diagnose: ICIE10[];
   observations: string;
 };

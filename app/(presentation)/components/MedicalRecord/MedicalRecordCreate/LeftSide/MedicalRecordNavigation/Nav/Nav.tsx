@@ -16,10 +16,12 @@ export default function Nav() {
         return "top-16";
       case "current-consultation":
         return "top-32";
-      case "orders":
+      case "diagnosis":
         return "top-60";
+      case "orders":
+        return "top-72";
       case "recipe":
-        return "top-[350px]";
+        return "top-[400px]";
 
       default:
         return "top-0";
@@ -73,6 +75,14 @@ export default function Nav() {
               { text: "Diagnósticos" },
             ]}
             isActive={getNavIsActive("current-consultation")}
+          />
+        </div>
+
+        <div className="w-full">
+          <NavItem
+            text="Diagnóstico"
+            href={`${pathname}?view=diagnosis`}
+            isActive={getNavIsActive("diagnosis")}
           />
         </div>
 

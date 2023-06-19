@@ -38,11 +38,26 @@ export default function Navigator({
   const [isLoading, setIsLoading] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
 
+  const validateDiagnosis = (values: any) => {
+    console.log(values)
+    let errors = {
+      diagnose: false,
+      diagnosisCount: 0,
+    };
+
+    errors = {
+      ...errors,
+      diagnose: values.diagnose.length === 0 ? true : false,
+      diagnosisCount: values.diagnose.length === 0 ? errors.diagnosisCount+1 : errors.diagnosisCount,
+    };
+
+    return errors;
+  }
+
   const validateCurrentConsultation = (values: any) => {
     let errors = {
       consultationDate: false,
       consultationReason: false,
-      diagnose: false,
       currentConsultationCount: 0,
     };
 
@@ -66,15 +81,6 @@ export default function Navigator({
       )
         ? errors.currentConsultationCount + 1
         : errors.currentConsultationCount,
-    };
-
-    errors = {
-      ...errors,
-      diagnose: values.diagnose.length === 0 ? true : false,
-      currentConsultationCount:
-        values.diagnose.length === 0
-          ? errors.currentConsultationCount + 1
-          : errors.currentConsultationCount,
     };
 
     return errors;
@@ -157,14 +163,16 @@ export default function Navigator({
 
   const validateForm = (values: any) => {
     let currentConsultationErrors = {};
+    let diagnosisErrors = {};
     let vitalSignsErrors = {};
 
     currentConsultationErrors = validateCurrentConsultation(
       values.currentConsultation
     );
+    diagnosisErrors = validateDiagnosis(values.currentConsultation)
     vitalSignsErrors = validateVitalSigns(values.vitalSigns);
 
-    return { currentConsultationErrors, vitalSignsErrors };
+    return { currentConsultationErrors, diagnosisErrors, vitalSignsErrors };
   };
 
   const setValuesFromLocalStorage = () => {
@@ -204,7 +212,7 @@ export default function Navigator({
 
     const valuesStorage = setValuesFromLocalStorage();
 
-    const { currentConsultationErrors, vitalSignsErrors }: any =
+    const { currentConsultationErrors, diagnosisErrors, vitalSignsErrors }: any =
       validateForm(valuesStorage);
 
     let queryErrors = "";
@@ -213,6 +221,14 @@ export default function Navigator({
       queryErrors = queryErrors + `currentConsultationExpanded=true&`;
 
       Object.entries(currentConsultationErrors).map(([key, val]) => {
+        if (val) queryErrors = queryErrors + `${key}=${val}&`;
+      });
+    }
+
+    if (diagnosisErrors.diagnosisCount > 0) {
+      queryErrors = queryErrors + `diagnose=true&`;
+
+      Object.entries(diagnosisErrors).map(([key, val]) => {
         if (val) queryErrors = queryErrors + `${key}=${val}&`;
       });
     }

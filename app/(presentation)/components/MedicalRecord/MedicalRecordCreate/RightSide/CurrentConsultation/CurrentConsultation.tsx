@@ -4,7 +4,6 @@ import { ICIE10 } from "domain/core/entities/cie10Entity";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import BasicDetails from "./BasicDetails/BasicDetails";
-import Diagnosis from "./Diagnosis/Diagnosis";
 import PhysicalExploration from "./PhysicalExploration/PhysicalExploration";
 
 interface ICurrentConsultationProps {
@@ -16,8 +15,6 @@ type valuesTypes = {
   referredBy: string;
   consultationReason: string;
   sufferingDate: string;
-  diagnose: ICIE10[];
-  observations: string;
 };
 
 export default function CurrentConsultation({
@@ -28,8 +25,6 @@ export default function CurrentConsultation({
     referredBy: "",
     consultationReason: "",
     sufferingDate: "",
-    diagnose: [],
-    observations: "",
   });
 
   const [errors, setErrors] = useState({
@@ -159,10 +154,6 @@ export default function CurrentConsultation({
 
           <div className="py-4">
             <PhysicalExploration />
-          </div>
-
-          <div className="py-4">
-            <Diagnosis values={values} setValues={setValues} />
           </div>
         </form>
       </div>
