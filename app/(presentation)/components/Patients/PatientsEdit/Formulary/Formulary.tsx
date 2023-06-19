@@ -63,9 +63,9 @@ export default function Formulary() {
     country: "",
     email: "",
     birthDate: "",
-    federalEntity: {} as IFederalEntity,
-    municipality: {} as IMunicipality,
-    countryLocation: {} as ICountryLocation,
+    federalEntity: 0,
+    municipality: 0,
+    countryLocation: 0,
     city: "",
     direction: "",
     street: "",
@@ -158,8 +158,11 @@ export default function Formulary() {
       birthDate: patient?.birthDate ?? "",
       phone: patient?.phoneNumber ?? "",
       country: patient?.country ?? "",
-      federalEntity: {} as IFederalEntity,
+      federalEntity: patient?.federativeEntityId ?? 0,
+      municipality: patient?.municipalityId ?? 0,
+      countryLocation: patient?.countryLocationId ?? 0,
       city: patient?.city ?? "",
+      street: patient?.street ?? "",
       direction: patient?.address ?? "",
     });
   };
@@ -212,9 +215,9 @@ export default function Formulary() {
       sex: values.sex,
       gender: values.gender,
       phoneNumber: values.phone,
-      federativeEntityId: values.federalEntity.entityId,
-      municipalityId: values.municipality.id ?? null,
-      countryLocationId: values.countryLocation.id ?? null,
+      federativeEntityId: values.federalEntity,
+      municipalityId: values.municipality ?? null,
+      countryLocationId: values.countryLocation ?? null,
       street: values.street,
       country: values.country,
       state: 0,
@@ -445,7 +448,7 @@ export default function Formulary() {
                 values.name === "" ||
                 values.lastname === "" ||
                 values.birthDate === "" ||
-                !values.federalEntity?.entityId ||
+                !values.federalEntity ||
                 values.phone === "" ||
                 validForm() > 0
               }

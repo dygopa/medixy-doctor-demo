@@ -5,17 +5,13 @@ import { municipalitySupabaseToMap } from "domain/mappers/municipality/supabase/
 import { supabase } from "infrastructure/config/supabase/supabase-client";
 
 export default interface IMunicipalityRepository {
-  getMunicipalities(obj: { searchQuery?: string | null; limit?: number | null; federalEntityId?: number | null }): Promise<IGetMunicipalitiesResponse | MunicipalityFailure>;
+  getMunicipalities(obj: { limit?: number | null; federalEntityId?: number | null }): Promise<IGetMunicipalitiesResponse | MunicipalityFailure>;
 }
 
 export class MunicipalityRepository implements IMunicipalityRepository {
-  async getMunicipalities(obj: { searchQuery?: string | null; limit?: number | null; federalEntityId?: number | null }): Promise<IGetMunicipalitiesResponse | MunicipalityFailure > {
+  async getMunicipalities(obj: { limit?: number | null; federalEntityId?: number | null }): Promise<IGetMunicipalitiesResponse | MunicipalityFailure > {
     try {
       let query = supabase.from("Municipios").select("*", { count: "exact" });
-
-      if (obj.searchQuery) {
-        query = query.or(`or(nombre.ilike.%${obj.searchQuery.trim().toLowerCase()}%),and(nombre.ilike.%${obj.searchQuery.trim().toLowerCase()}%)`);
-      }
 
       if (obj.federalEntityId) {
         query = query.eq("entidadFederativaId", obj.federalEntityId);
