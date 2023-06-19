@@ -86,7 +86,7 @@ function AppointmentDetail({cancelFuntion, customRef}:{
             <div className="w-full flex flex-col justify-center items-center gap-4">
                 <div className="w-full">
                     <Link href={{
-                        pathname: "/medical-record/" + data["sujetoId"],
+                        pathname: "/medical-record/" + data["appoinmentId"],
                         query: {
                             type: "appointment"
                         }

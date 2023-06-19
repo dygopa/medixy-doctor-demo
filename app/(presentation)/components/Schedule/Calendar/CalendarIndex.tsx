@@ -58,7 +58,8 @@ export default function CalendarIndex() {
       sujetos: {
         ...elem["Sujetos"], 
         nombre: elem["Servicios"]["nombre"], 
-        sujetoId: elem["sujetoId"]
+        sujetoId: elem["sujetoId"],
+        appoinmentId: elem["id"]
       },
       backgroundColor: backgroundColor,
     }
