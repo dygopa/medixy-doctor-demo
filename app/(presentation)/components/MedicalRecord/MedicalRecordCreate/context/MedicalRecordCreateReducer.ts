@@ -34,6 +34,61 @@ export const MedicalRecordCreateReducer = (state: any, action: any) => {
           },
         }
 
+      case 'GET_APPOINTMENT_LOADING':
+        return {
+          ...state,
+          appointment: {
+            ...state.appointment,
+            data: null,
+            loading: true,
+            successful: false,
+            error: null,
+          },
+          subject: {
+            ...state.subject,
+            data: null,
+            loading: false,
+            successful: false,
+            error: null,
+          },
+        };
+      case 'GET_APPOINTMENT_SUCCESSFUL':
+        return {
+          ...state,
+          appointment: {
+            ...state.appointment,
+            data: action.payload.data,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+          subject: {
+            ...state.subject,
+            data: action.payload.data.data.subject,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+        };
+      case 'GET_APPOINTMENT_ERROR':
+        return {
+          ...state,
+          appointment: {
+            ...state.appointment,
+            data: null,
+            loading: false,
+            successful: false,
+            error: action.payload.error,
+          },
+          subject: {
+            ...state.subject,
+            data: null,
+            loading: false,
+            successful: false,
+            error: null,
+          },
+        }
+
       case 'GET_SPECIALTIES_LOADING' :
         return {
           ...state,

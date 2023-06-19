@@ -1,5 +1,6 @@
 "use client";
 
+import { useSearchParams } from "next/navigation";
 import { useContext, useEffect } from "react";
 import {
   IMedicalRecordCreateSummaryContext,
@@ -9,23 +10,36 @@ import Detail from "./Detail/Detail";
 import Navigator from "./Navigator/Navigator";
 
 interface IMedicalRecordCreateSummaryIndexProps {
-  subjectId: number;
+  id: string;
 }
 
 export default function MedicalRecordCreateSummaryIndex({
-  subjectId,
+  id,
 }: IMedicalRecordCreateSummaryIndexProps) {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordCreateSummaryContext>(
       MedicalRecordCreateSummaryContext
     );
-  const { getSubjectById } = actions;
+  const { getSubjectById, getAppointmentById } = actions;
   const { data: subject, loading, successful, error } = state.subject;
+  const {
+    data: appointment,
+    loading: appointmentLoading,
+    successful: appointmentSucessful,
+    error: appointmentError,
+  } = state.appointment;
+
+  const searchParams = useSearchParams();
+
+  const type = searchParams.get("type");
 
   useEffect(() => {
     let isCleanup = true;
 
-    if (isCleanup) getSubjectById(subjectId)(dispatch);
+    if (isCleanup && type !== "appointment")
+      getSubjectById(parseInt(id, 10))(dispatch);
+
+    if (isCleanup && type === "appointment") getAppointmentById(id)(dispatch);
 
     return () => {
       isCleanup = false;
@@ -33,14 +47,17 @@ export default function MedicalRecordCreateSummaryIndex({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (loading)
+  if (loading || appointmentLoading)
     return (
       <div className="w-full flex flex-col justify-center items-center py-8">
         <p className="font-bold text-slate-900 text-lg">Un momento...</p>
+        <p className="font-light text-slate-500 text-base">
+          {loading ? "Cargando tu paciente" : "Cargando la cita"}
+        </p>
       </div>
     );
 
-  if (error)
+  if (error || appointmentError)
     return (
       <div className="w-full flex flex-col justify-center items-center py-8">
         <p className="font-bold text-slate-900 text-lg">
@@ -52,11 +69,35 @@ export default function MedicalRecordCreateSummaryIndex({
       </div>
     );
 
+  if (!appointment.data?.id && appointmentSucessful) {
+    return (
+      <div className="w-full flex flex-col justify-center items-center py-8">
+        <p className="font-bold text-slate-900 text-lg">Esta cita no existe</p>
+        <p className="font-light text-slate-500 text-base">
+          La cita actual no existe en tu agenda
+        </p>
+      </div>
+    );
+  }
+
+  if (appointment.data?.id && appointmentSucessful && !subject?.subjectId) {
+    return (
+      <div className="w-full flex flex-col justify-center items-center py-8">
+        <p className="font-bold text-slate-900 text-lg">
+          Esta cita no esta disponible
+        </p>
+        <p className="font-light text-slate-500 text-base">
+          La cita actual no se encuentra disponible
+        </p>
+      </div>
+    );
+  }
+
   if (!subject?.subjectId && successful) {
     return (
       <div className="w-full flex flex-col justify-center items-center py-8">
         <p className="font-bold text-slate-900 text-lg">
-          Vaya, se ha encontrado el paciente
+          Vaya, no se ha encontrado el paciente
         </p>
         <p className="font-light text-slate-500 text-base">
           Lo sentimos, pero no hemos encontrado el paciente

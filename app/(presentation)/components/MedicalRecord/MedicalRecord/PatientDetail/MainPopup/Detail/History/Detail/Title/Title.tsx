@@ -1,5 +1,4 @@
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
-import { PatientsRoutesEnum } from "(presentation)/(routes)/patientsRoutes";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Dispatch, SetStateAction } from "react";
@@ -7,16 +6,30 @@ import { Dispatch, SetStateAction } from "react";
 interface ITitleProps {
   medicalConsulty: IMedicalConsulty;
   setMedicalConsulty: Dispatch<SetStateAction<IMedicalConsulty | null>>;
+  appointmentId: string | null;
 }
 
 export default function Title({
   medicalConsulty,
   setMedicalConsulty,
+  appointmentId,
 }: ITitleProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const medicalRecordId = searchParams.get("medical_record_id");
+
+  const getRedirectMedicalRecord = () => {
+    if (appointmentId) {
+      return (
+        MedicalRecordRoutesEnum.MedicalRecord +
+        appointmentId +
+        "?type=appointment"
+      );
+    }
+
+    return MedicalRecordRoutesEnum.MedicalRecord + medicalConsulty.subjectId;
+  };
 
   const onCloseMedicalConsulty = () => {
     if (!medicalRecordId) {
@@ -24,9 +37,7 @@ export default function Title({
       return;
     }
 
-    router.push(
-      MedicalRecordRoutesEnum.MedicalRecord + medicalConsulty.subjectId
-    );
+    router.push(getRedirectMedicalRecord());
   };
 
   return (

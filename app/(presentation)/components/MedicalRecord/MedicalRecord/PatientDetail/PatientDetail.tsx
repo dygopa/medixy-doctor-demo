@@ -12,9 +12,13 @@ import VitalSigns from "./VitalSigns/VitalSigns";
 
 interface IPatientDetailsProps {
   subjectId: number;
+  appointmentId: string | null;
 }
 
-export default function PatientDetails({ subjectId }: IPatientDetailsProps) {
+export default function PatientDetails({
+  subjectId,
+  appointmentId,
+}: IPatientDetailsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [popupSectionActive, setPopupSectionActive] = useState(0);
 
@@ -91,6 +95,7 @@ export default function PatientDetails({ subjectId }: IPatientDetailsProps) {
         <MedicalRecordProvider>
           <MainPopup
             subjectId={subjectId}
+            appointmentId={appointmentId}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             popupSectionActive={popupSectionActive}

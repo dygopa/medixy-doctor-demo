@@ -11,12 +11,14 @@ import clsx from "clsx";
 
 interface IDetailProps {
   subjectId: number;
+  appointmentId: string | null;
   popupSectionActive: number;
   setPopupSectionActive: Dispatch<SetStateAction<number>>;
 }
 
 export default function Detail({
   subjectId,
+  appointmentId,
   popupSectionActive,
   setPopupSectionActive,
 }: IDetailProps) {
@@ -80,7 +82,7 @@ export default function Detail({
       case 1:
         return <Companion subjectId={subjectId} />;
       case 2:
-        return <History subjectId={subjectId} />;
+        return <History subjectId={subjectId} appointmentId={appointmentId} />;
       case 3:
         return <Allergies subjectId={subjectId} />;
       case 4:

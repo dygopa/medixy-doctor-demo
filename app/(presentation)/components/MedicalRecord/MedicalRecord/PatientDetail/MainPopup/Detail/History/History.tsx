@@ -10,9 +10,10 @@ import HistoryTable from "./Table/Table";
 
 interface IHistoryProps {
   subjectId: number;
+  appointmentId: string | null;
 }
 
-export default function History({ subjectId }: IHistoryProps) {
+export default function History({ subjectId, appointmentId }: IHistoryProps) {
   const { state } = useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { data: medicalConsulties, successful } = state.medicalConsulties;
 
@@ -50,6 +51,7 @@ export default function History({ subjectId }: IHistoryProps) {
         <Detail
           medicalConsulty={medicalConsulty}
           setMedicalConsulty={setMedicalConsulty}
+          appointmentId={appointmentId}
         />
       ) : (
         <HistoryTable

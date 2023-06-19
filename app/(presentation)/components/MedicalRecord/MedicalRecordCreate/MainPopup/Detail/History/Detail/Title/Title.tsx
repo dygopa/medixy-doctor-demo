@@ -6,16 +6,35 @@ import { Dispatch, SetStateAction } from "react";
 interface ITitleProps {
   medicalConsulty: IMedicalConsulty;
   setMedicalConsulty: Dispatch<SetStateAction<IMedicalConsulty | null>>;
+  appointmentId: string | null;
 }
 
 export default function Title({
   medicalConsulty,
   setMedicalConsulty,
+  appointmentId,
 }: ITitleProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const medicalRecordId = searchParams.get("medical_record_id");
+
+  const getRedirectMedicalRecordCreate = () => {
+    if (appointmentId) {
+      return (
+        MedicalRecordRoutesEnum.MedicalRecord +
+        appointmentId +
+        MedicalRecordRoutesEnum.MedicalRecordCreate +
+        "?type=appointment"
+      );
+    }
+
+    return (
+      MedicalRecordRoutesEnum.MedicalRecord +
+      medicalConsulty.subjectId +
+      MedicalRecordRoutesEnum.MedicalRecordCreate
+    );
+  };
 
   const onCloseMedicalConsulty = () => {
     if (!medicalRecordId) {
@@ -23,11 +42,7 @@ export default function Title({
       return;
     }
 
-    router.push(
-      MedicalRecordRoutesEnum.MedicalRecord +
-        medicalConsulty.subjectId +
-        MedicalRecordRoutesEnum.MedicalRecordCreate
-    );
+    router.push(getRedirectMedicalRecordCreate());
   };
 
   return (

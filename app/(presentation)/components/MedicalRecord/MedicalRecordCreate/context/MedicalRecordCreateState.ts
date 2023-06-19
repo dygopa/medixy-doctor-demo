@@ -13,9 +13,12 @@ import { IGetTreatmentsResponse } from "domain/core/response/treatmentResponses"
 import { IGetSpecialtiesResponse } from "domain/core/response/specialtiesResponse";
 import { SpecialtyFailure } from "domain/core/failures/specialty/specialtyFailure";
 import { IGetSubjectRelationsResponse } from "domain/core/response/subjectsResponse";
+import { IGetAppointmentResponse } from "domain/core/response/appointmentsResponse";
+import { AppointmentFailure } from "domain/core/failures/appointment/appintmentFailure";
 
 export interface IMedicalRecordCreateState {
     subject: IGetSubjectState;
+    appointment: IGetAppointmentState;
     specialties: IGetSpecialtiesState;
     medicalMeasures: IGetMedicalMeasuresState;
     medicalConsulties: IGetMedicalConsultiesState;
@@ -33,6 +36,13 @@ interface IGetSubjectState {
     loading: boolean;
     successful: boolean;
     error: SubjectFailure | null; 
+}
+
+interface IGetAppointmentState {
+    data: IGetAppointmentResponse;
+    loading: boolean;
+    successful: boolean;
+    error: AppointmentFailure | null; 
 }
 
 interface IGetSpecialtiesState {
@@ -108,6 +118,12 @@ interface ICompanionCreateCompanionState {
 export const initialState: IMedicalRecordCreateState = {
     subject: {
         data: null,
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    appointment: {
+        data: {} as IGetAppointmentResponse,
         loading: false,
         successful: false,
         error: null,

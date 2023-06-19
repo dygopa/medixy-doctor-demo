@@ -5,6 +5,7 @@ import clsx from "clsx";
 
 interface IMainPopupProps {
   subjectId: number;
+  appointmentId: string | null;
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   popupSectionActive: number;
@@ -13,6 +14,7 @@ interface IMainPopupProps {
 
 function MainPopup({
   subjectId,
+  appointmentId,
   isOpen,
   setIsOpen,
   popupSectionActive,
@@ -27,12 +29,17 @@ function MainPopup({
     >
       <div className="bg-white xl:w-[900px] lg:w-[1000px] md:w-[700px] w-full h-full block relative box-border overflow-y-auto">
         <div>
-          <Header subjectId={subjectId} setIsOpen={setIsOpen} />
+          <Header
+            subjectId={subjectId}
+            appointmentId={appointmentId}
+            setIsOpen={setIsOpen}
+          />
         </div>
 
         <div className="p-4 h-full">
           <Detail
             subjectId={subjectId}
+            appointmentId={appointmentId}
             popupSectionActive={popupSectionActive}
             setPopupSectionActive={setPopupSectionActive}
           />
