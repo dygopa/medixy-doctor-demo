@@ -5,6 +5,7 @@ import {
 import { ICountryLocation } from "domain/core/entities/countryEntity";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
+import moment from "moment";
 import { Dispatch, SetStateAction } from "react";
 import { FiUser } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
@@ -117,14 +118,15 @@ export default function BasicData({
   };
 
   const handleage = (value: string) => {
-    setValues({ ...values, age: value });
-    if (value.length === 0) {
-      setErrors((previousState) => {
+    setValues({ ...values, birthDate: value })
+    if (value.length < 2) {
+      setErrors((previousState: any) => {
         return {
           ...previousState,
-          age: "Escribe la fecha de nacimiento del paciente",
-        };
-      });
+          age: "La fecha de nacimiento es obligatorio",
+        }
+      })
+      console.log(errors.age)
       return true;
     }
     setErrors({ ...errors, age: "" });
@@ -244,12 +246,8 @@ export default function BasicData({
               <FormInput
                 type={"date"}
                 min={0}
-                /*defaultValue={
-                  account?.birthDate !== ""
-                    ? moment(account?.birthDate).toDate().getDate()
-                    : Date.now()
-                }*/
                 defaultValue={values.birthDate}
+                value={values.birthDate}
                 className="form-control w-full"
                 onChange={(e: any) => handleage(e.target.value)}
               />

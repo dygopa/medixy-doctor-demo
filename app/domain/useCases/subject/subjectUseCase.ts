@@ -25,7 +25,7 @@ export default class SubjectsUseCase {
     }
   }
 
-  async getSubjectsComponions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; patientId?: number | undefined; typeRelation?: number | undefined}): Promise<IGetSubjectRelationsResponse> {
+  async getSubjectsCompanions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; patientId?: number | undefined; typeRelation?: number | undefined}): Promise<IGetSubjectRelationsResponse> {
     try {
       const response = await this._repository.getSubjectsCompanions({
         skip: obj.skip,
@@ -109,6 +109,8 @@ export default class SubjectsUseCase {
   async createSubjectRelations(subjectPrimayId: number, subjectSecundaryId: number): Promise<boolean> {
     try {
       const response = await this._repository.createRelationSubject(subjectPrimayId, subjectSecundaryId);
+
+      console.log (response)
 
       if (response instanceof SubjectFailure) throw response;
 

@@ -109,13 +109,7 @@ export default function CompanionEdit({
       sex: companionEdit?.sex ?? 0,
       gender: companionEdit?.gender ?? 0,
       email: companionEdit?.email ?? "",
-      birthDate: companionEdit?.birthDate
-        ? `${new Date(companionEdit.birthDate).getFullYear()}-${
-            new Date(companionEdit.birthDate).getMonth() + 1 < 10
-              ? `0${new Date(companionEdit.birthDate).getMonth() + 1}`
-              : new Date(companionEdit.birthDate).getMonth() + 1
-          }-${new Date(companionEdit.birthDate).getDate()}`
-        : "",
+      birthDate: companionEdit?.birthDate ?? "",
       phone: companionEdit?.phoneNumber ?? "",
       country: companionEdit?.country ?? "",
       federalEntity: companionEdit.federativeEntityId ?? 0,
@@ -155,7 +149,7 @@ export default function CompanionEdit({
   };
 
   const handleage = (value: string) => {
-    setValues({ ...values, age: value });
+    setValues({ ...values, birthDate: value });
     if (value.length === 0) {
       setErrors((previousState) => {
         return {
@@ -301,11 +295,6 @@ export default function CompanionEdit({
                 <FormInput
                   type={"date"}
                   min={0}
-                  /*defaultValue={
-                    account?.birthDate !== ""
-                      ? moment(account?.birthDate).toDate().getDate()
-                      : Date.now()
-                  }*/
                   defaultValue={values.birthDate}
                   className="form-control w-full"
                   onChange={(e: any) => handleage(e.target.value)}
