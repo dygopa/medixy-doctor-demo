@@ -1,7 +1,13 @@
+import { MedicalRecordCategoriesIdEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
+import { getMedicalRecordsValues } from "(presentation)/(helper)/medicalRecords/medicalRecordsHelper";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import {
+  IMedicalRecordCreateContext,
+  MedicalRecordCreateContext,
+} from "../../context/MedicalRecordCreateContext";
 import RecordsFamily from "./RecordsFamily/RecordsFamily";
 import RecordsNonPathological from "./RecordsNonPathological/RecordsNonPathological";
 import RecordsPathological from "./RecordsPathological/RecordsPathological";
@@ -182,6 +188,18 @@ export default function Records() {
     },
   });
 
+  const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
+    MedicalRecordCreateContext
+  );
+  const { getMedicalRecords } = actions;
+  const { data: subject } = state.subject;
+  const {
+    data: medicalRecords,
+    loading,
+    error,
+    successful,
+  } = state.medicalRecords;
+
   const router = useRouter();
   const params = useSearchParams();
   const pathname = usePathname();
@@ -224,6 +242,27 @@ export default function Records() {
 
     setValues(valuesJSON.records);
   };
+
+  const setMedicalRecords = () => {
+    const valuesMedicalRecords: any = getMedicalRecordsValues(
+      medicalRecords.data
+    );
+
+    if (valuesMedicalRecords) setValues(valuesMedicalRecords);
+  };
+
+  useEffect(() => {
+    getMedicalRecords({
+      subjectId: subject?.subjectId ?? 0,
+      medicalRecordCategoryId: MedicalRecordCategoriesIdEnum.RECORDS,
+    })(dispatch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    if (successful) setMedicalRecords();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [successful]);
 
   useEffect(() => {
     if (!initialRender) saveValuesInLocalStorage();
@@ -277,23 +316,38 @@ export default function Records() {
           </div>
         </button>
 
-        <form className={clsx([showBody ? "block" : "hidden"])}>
-          <div className="py-4">
-            <RecordsPathological values={values} setValues={setValues} />
+        {loading && showBody ? (
+          <div className="w-full flex flex-col justify-center items-center py-8">
+            <p className="font-bold text-slate-900 text-lg">Un momento...</p>
           </div>
-
-          <div className="py-4">
-            <RecordsNonPathological values={values} setValues={setValues} />
+        ) : error && showBody ? (
+          <div className="w-full flex flex-col justify-center items-center py-8">
+            <p className="font-bold text-slate-900 text-lg">
+              Vaya, algo no ha salido como se esperaba
+            </p>
+            <p className="font-light text-slate-500 text-base">
+              Lo sentimos, algo no ha salido bien. Vuelve a intentarlo
+            </p>
           </div>
+        ) : (
+          <form className={clsx([showBody ? "block" : "hidden"])}>
+            <div className="py-4">
+              <RecordsPathological values={values} setValues={setValues} />
+            </div>
 
-          <div className="py-4">
-            <RecordsFamily values={values} setValues={setValues} />
-          </div>
+            <div className="py-4">
+              <RecordsNonPathological values={values} setValues={setValues} />
+            </div>
 
-          {/* <div className="py-4">
+            <div className="py-4">
+              <RecordsFamily values={values} setValues={setValues} />
+            </div>
+
+            {/* <div className="py-4">
             <RecordsSpecialty values={values} setValues={setValues} />
     </div> */}
-        </form>
+          </form>
+        )}
       </div>
     </div>
   );

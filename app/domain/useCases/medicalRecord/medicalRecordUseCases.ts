@@ -10,6 +10,7 @@ export default class MedicalRecordUseCase {
         sort?: any; 
         limit?: number | null; 
         subjectId?: number | null; 
+        medicalConsulty?: number | null;
         medicalRecordType?: number | null;
         medicalRecordCategory?: number | null;
     }): Promise<IGetMedicalRecordsResponse> {
@@ -18,6 +19,7 @@ export default class MedicalRecordUseCase {
                 skip: obj.skip,
                 sort: obj.sort,
                 limit: obj.limit,
+                medicalConsulty: obj.medicalConsulty,
                 subjectId: obj.subjectId,
                 medicalRecordType: obj.medicalRecordType,
                 medicalRecordCategory: obj.medicalRecordCategory
