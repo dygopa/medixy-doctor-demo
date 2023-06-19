@@ -55,11 +55,10 @@ function AppointmentDetail({cancelFuntion, customRef}:{
                     <p className='font-light text-sm text-slate-500'>Edad: {ageBirth} años</p>
                     <p className='font-light text-sm text-slate-500'>CURP: {data["curp"] ?? "-"}</p>
                     <div className="w-full flex justify-start items-center gap-2">
-                        <p className='font-light text-sm text-gray-700'>{data["estado"] === 1 ? "Por atender" : "Atendido"}</p>
+                        <p className='font-light text-sm text-gray-700'>{'Por atender'}</p>
                         <span className={twMerge([
                             'w-3 h-3 rounded-full',
-                            data["estado"] === 1 && "bg-yellow-500",
-                            data["estado"] === 2 && "bg-green-500",
+                            'bg-yellow-500'
                         ])}></span>
                     </div>
                 </div>
@@ -77,8 +76,8 @@ function AppointmentDetail({cancelFuntion, customRef}:{
                     <DataSpan label={"Teléfono"} value={data["telefono"] ?? "-"} />
                 </div>
                 <div className="w-full grid grid-cols-2 justify-between items-center gap-3">
-                    <DataSpan label={"Para cuando"} value={moment(data["fechaReserva"]).format("DD-MM-YYYY")} />
-                    <DataSpan label={"A las"} value={moment(data["fechaReserva"]).utc().format("HH:mm a")} />
+                    <DataSpan label={"Para cuando"} value={moment(data["fechaReserva"]).utc().format("DD-MM-YYYY")} />
+                    <DataSpan label={"A las"} value={moment(data["fechaReserva"]).format("hh:mm a")} />
                 </div>
                 <div className="w-full grid grid-cols-2 justify-between items-center gap-3">
                     <DataSpan label={"Quien hizo la cita"} value={`${user.names} ${user.lastName}`} />
@@ -87,7 +86,10 @@ function AppointmentDetail({cancelFuntion, customRef}:{
             <div className="w-full flex flex-col justify-center items-center gap-4">
                 <div className="w-full">
                     <Link href={{
-                        pathname: "/patients/patient/" + data["sujetoId"] + "/medical-record"
+                        pathname: "/medical-record/" + data["sujetoId"],
+                        query: {
+                            type: "appointment"
+                        }
                     }}>
                         <Button variant='primary' className='w-full'>
                             Atender paciente

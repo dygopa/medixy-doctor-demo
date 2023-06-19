@@ -3,12 +3,26 @@ import React, { useContext, useMemo, useState } from 'react'
 import { IScheduleContext, ScheduleContext } from '../../context/ScheduleContext';
 import Loading from '(presentation)/components/core/Loading/Loading';
 import moment from 'moment';
+import { AuthContext, IAuthContext } from '(presentation)/(layouts)/AppLayout/context/AuthContext';
+import Button from '(presentation)/components/core/BaseComponents/Button';
+import Link from 'next/link';
+import { FiBriefcase, FiHome } from 'react-icons/fi';
+import { AiFillBuild } from 'react-icons/ai';
+import Lucide from '(presentation)/components/core/BaseComponents/Lucide';
+import AlertComponent from '(presentation)/components/core/BaseComponents/Alert';
 
 export default function CalendarIndex() {
 
-    const { state, actions, dispatch } = useContext<IScheduleContext>(ScheduleContext);
-    const { data, loading, successful, error } = state.getAttentionWindows;
+    const { state: auth} = useContext<IAuthContext>(AuthContext);
+    const { data: user, successful: loadedUser} = auth.getUserAuthenticated;  
 
+    const { state, actions, dispatch } = useContext<IScheduleContext>(ScheduleContext);
+    const { getLocalities, getServices} = actions;
+    const { data, loading, successful, error } = state.getAttentionWindows;
+    const { successful: successfulWindowCreated, error: errorWindowCreated  } = state.createWindowAttention;
+    const { data: localities, successful: localitiesSuccessful, loading: localitiesLoading } = state.getLocalities;
+    const { data: services, successful: servicesSuccessful, loading: servicesLoading } = state.getServices;
+  
     const [windows, setWindows] = useState([])
 
     function formatHour(value:number){
@@ -30,8 +44,8 @@ export default function CalendarIndex() {
 
         object = {
             title: elem["Servicios"]["nombre"],
-            start: start.format("YYYY-MM-DD HH:MM"),
-            end: end.format("YYYY-MM-DD HH:MM"),
+            start: start.format("YYYY-MM-DD HH:mm"),
+            end: end.format("YYYY-MM-DD HH:mm"),
             textColor: "#FFF",
             backgroundColor: "#1e2b37",
         }
@@ -41,7 +55,6 @@ export default function CalendarIndex() {
     function formatList(){
         let list = []
         list = data.map((elem:any) => formatEvent(elem))
-        console.log(list)
         setWindows(list)
     }
 
@@ -49,14 +62,63 @@ export default function CalendarIndex() {
         if(successful) formatList()
     },[successful])
 
+    useMemo(() => {
+        if (loadedUser){
+          getServices(user.userId)(dispatch)
+          getLocalities(user.userId)(dispatch)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [loadedUser]);
+
     return (
         <div className="mt-8 flex justify-between items-start gap-5">
+            <AlertComponent
+                variant="error"
+                show={errorWindowCreated !== null}
+                description={"Ha ocurrido un error creando la ventana de atención"}
+            />
+            <AlertComponent
+                variant="success"
+                show={successfulWindowCreated === true}
+                description="Ventana de atención creada exitosamente"
+            />
             {/* BEGIN: Calendar Content */}
             <div className='w-full h-[64vh]'>
                 {loading ? 
                     <Loading/>
-                : 
+                : (localities && ([...(localities as any[])].length > 0) && (services && [...(services as any[])].length > 0)) ?
                     <Calendar handleChangeInWeek={()=>{}} events={windows} initialEvent={""} handleClick={()=>{}}/>
+                :
+                    <div className='w-full h-full flex justify-center items-center flex-wrap gap-5'>
+                        {(localities && ([...(localities as any[])].length === 0)) && <div className='w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4'>
+                            <div className='w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center'>
+                                <span className='h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center'>
+                                    <Lucide icon="Building"/>
+                                </span>
+                            </div>
+                            <div className='w-full h-fit flex flex-col justify-center items-center gap-1 text-center px-2'>
+                                <p className='font-semibold text-slate-900 text-base'>No hay consultorios</p>
+                                <p className='font-light text-slate-500 text-sm'>Crea tu primer consultorio y empieza a crear los servicios que prestas</p>
+                            </div>
+                            <Link className="w-full block" href={"/localities/create"}>
+                                <Button className="w-full" variant="primary">Crear consultorio</Button>
+                            </Link>
+                        </div>}
+                        {(services && [...(services as any[])].length === 0) && <div className='w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4'>
+                            <div className='w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center'>
+                                <span className='h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center'>
+                                    <FiBriefcase/>
+                                </span>
+                            </div>
+                            <div className='w-full h-fit flex flex-col justify-center items-center gap-1 text-center px-2'>
+                                <p className='font-semibold text-slate-900 text-base'>No hay servicios</p>
+                                <p className='font-light text-slate-500 text-sm'>Crea tu primer servicio y empieza a configurar las ventanas de atención para esos servicios</p>
+                            </div>
+                            <Link className="w-full block" href={"/services/new-service"}>
+                                <Button className="w-full" variant="primary">Crear servicio</Button>
+                            </Link>
+                        </div>}
+                    </div>
                 }
             </div>
             {/* END: Calendar Content */}

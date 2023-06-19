@@ -139,7 +139,9 @@ function CreateAgenda({cancelFuntion, customRef}:{
   useMemo(()=>{
     if(successful){
       getAttentionWindows(formData.serviceId, "")(dispatch)
-      changeStatusPopup(false)(dispatch)
+      setTimeout(() => {
+        changeStatusPopup(false)(dispatch)
+      }, 2000);
     }
   },[successful])
 

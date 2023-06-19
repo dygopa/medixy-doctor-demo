@@ -8,7 +8,7 @@ import { twMerge } from 'tailwind-merge';
 import { IScheduleContext, ScheduleContext } from '../../context/ScheduleContext';
 import SpecialSearch from '(presentation)/components/core/SpecialSearch/SpecialSearch';
 import { IService } from 'domain/core/entities/serviceEntity';
-import { IPatient } from 'domain/core/entities/patientEntity';
+import { ISubject } from 'domain/core/entities/subjectEntity';
 import Loading from '(presentation)/components/core/Loading/Loading';
 import moment from 'moment';
 import 'moment/locale/es';
@@ -31,6 +31,7 @@ function CreateAppointment({cancelFuntion, customRef}:{
   const { successful: typeOfAppointmentCreationSuccessful, data: typeOfAppointmentCreation } = state.typeOfAppointmentCreation;
 
   const [fromCalendar, setFromCalendar] = useState(false)
+  const [loadedLists, setLoadedLists] = useState(false)
 
   const [selectedDate, setSelectedDate] = useState("")
 
@@ -119,14 +120,15 @@ function CreateAppointment({cancelFuntion, customRef}:{
     }))
     setListOfServices(list_services)
 
-    let list_patients = patients.data.map((elem:IPatient) => ({
-      id: elem.patientId,
+    let list_patients = patients.data.map((elem:ISubject) => ({
+      id: elem.subjectId,
       title: elem.name,
       description: elem.phoneNumber,
       type: "PATIENT",
     }))
     setListOfPatients(list_patients)
 
+    setLoadedLists(true)
   }
 
   function getDataFromPredifined(){
@@ -147,21 +149,23 @@ function CreateAppointment({cancelFuntion, customRef}:{
   }
 
   useMemo(()=>{
-    if(predifinedReservation["serviceId"] !== undefined){
-      getDataFromPredifined()
-      setFromCalendar(true)
-    }else{
-      setSelectedDate("")
-      setSelectedService({
-        id: 0,
-        title: "",
-        description: "",
-        type: "SERVICE",
-      })
-      setFormData({...formData, windowId: 0 })
-      setFromCalendar(false)
+    if(loadedLists){
+      if(predifinedReservation["serviceId"] !== undefined){
+        getDataFromPredifined()
+        setFromCalendar(true)
+      }else{
+        setSelectedDate("")
+        setSelectedService({
+          id: 0,
+          title: "",
+          description: "",
+          type: "SERVICE",
+        })
+        setFormData({...formData, windowId: 0 })
+        setFromCalendar(false)
+      }
     }
-  },[predifinedReservationSuccessful, predifinedReservation])
+  },[predifinedReservationSuccessful, predifinedReservation, loadedLists])
 
   useMemo(()=>{
     if(loadedCreationAppointment){
@@ -197,7 +201,7 @@ function CreateAppointment({cancelFuntion, customRef}:{
             selectedItem={selectedPatient}
           />
           <div className="w-full flex justify-end items-center">
-            <Link href="/schedule" className='font-light text-sm text-primary underline'>No existe el paciente</Link>
+            <Link href="/patients/new-patient" className='font-light text-sm text-primary underline'>No existe el paciente</Link>
           </div>
           
           {selectedPatient["title"] !== "" && <div className={twMerge([

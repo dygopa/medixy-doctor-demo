@@ -22,7 +22,8 @@ export class ScheduleRepository implements IScheduleRepository {
             
             let query = supabase.from("VentanasAtencion").select(`
                 *,
-                Citas (*, 
+                Citas (
+                    *, 
                     Sujetos(
                         nombres,
                         primerApellido,
@@ -35,12 +36,14 @@ export class ScheduleRepository implements IScheduleRepository {
                         ciudad,
                         direccion,
                         avatar
+                    ),
+                    Servicios (
+                        nombre
                     )
                 )
             `).eq("servicioId", serviceId)
 
             let res = await query
-            console.log("res.data", res.data)
             
             let list = res.data?.map((elem:any)=> [...elem["Citas"]] )
             
@@ -93,6 +96,8 @@ export class ScheduleRepository implements IScheduleRepository {
 
             if(date){
                 list = list.filter(elem => moment(elem["fechaReserva"]).format("YYYY-MM-DD") === date )
+            }else{
+                list = list.filter(elem => moment(elem["fechaReserva"]).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD") )
             }
 
             return list ?? [];
@@ -112,7 +117,6 @@ export class ScheduleRepository implements IScheduleRepository {
             `).eq("servicioId", id)
 
             let res = await query
-            console.log(res.data)
 
             return res.data ?? [];
         } catch (error) {
@@ -186,7 +190,6 @@ export class ScheduleRepository implements IScheduleRepository {
             
                 let listOfDates:any = []
                 listOfDates = listOfDates.concat(...listOfSlots!)
-
                 listOfDates!.forEach((elem:any)=>{
                     list.push({
                         id: elem["id"],
@@ -196,14 +199,13 @@ export class ScheduleRepository implements IScheduleRepository {
                         fechaFin: elem["fechaFinReserva"],
                         horaInicio: parseInt(moment(elem["fechaReserva"]).utc().format("HH:mm").split(":").join("")),
                         horaFin: parseInt(moment(elem["fechaFinReserva"]).utc().format("HH:mm").split(":").join("")),
-                        tipo: 2
+                        tipo: 2,
+                        disponible: elem["sujetoId"] !== null ? false : true
                     })
                 })
             }
 
-            list = list.filter((elem:any)=> elem["dateToFilter"] === date)
-            
-            console.log(list, date)
+            list = list.filter((elem:any)=> elem["dateToFilter"] === date && elem["disponible"] === true)
 
             return list;
         } catch (error) {
@@ -302,8 +304,6 @@ export class ScheduleRepository implements IScheduleRepository {
             const response = await fetch(URL, requestOptions)
             let data = await response.json()
             
-            console.log("CREATE_ATTENTION_WINDOW_ENDPOINT", response)
-
             return data["data"] ?? {};
         } catch (error) {
             const exception = error as any;

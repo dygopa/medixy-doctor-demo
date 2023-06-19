@@ -18,27 +18,26 @@ const AppointmentComponent = ({onClick, data}:{
   let hour = moment(data["fechaReserva"]).format("hh:mm a").toString()
 
   return(
-    <div onClick={onClick} className="cursor-pointer relative w-full min-h-[10vh] h-fit max-h-[14vh] bg-white flex justify-between items-center p-3 gap-2 box-border rounded-md shadow-sm">
-      <div className="w-[16%] h-full flex flex-col justify-center items-center">
-        <div className='w-14 h-14 rounded-lg bg-primary/20 text-primary flex flex-col justify-center items-center text-lg overflow-hidden'>
+    <div onClick={onClick} className="cursor-pointer relative w-full min-h-[9vh] h-[9vh] max-h-[14vh] bg-white flex justify-between items-center p-3 gap-2 box-border rounded-md shadow-sm">
+      <div className="w-10 h-full flex flex-col justify-center items-start">
+        <div className='w-10 h-10 rounded-lg bg-primary/20 text-primary flex flex-col justify-center items-center text-lg overflow-hidden'>
           <FiUser/>
         </div>
       </div>
-      <div className="w-[50%] h-full flex flex-col justify-between items-start overflow-hidden">
+      <div className="w-[53%] h-full flex flex-col justify-between items-start overflow-hidden">
         <p className='font-semibold text-sm text-slate-900 w-full whitespace-nowrap text-ellipsis'>{data["nombres"]} {data["primerApellido"]}</p>
         <p className='font-light text-sm text-slate-500 w-full whitespace-nowrap text-ellipsis'>{data["nombre"]}</p>
       </div>
-      <div className="w-[30%] h-[7vh] flex flex-col justify-between items-end">
+      <div className="w-[30%] h-full flex flex-col justify-between items-end">
         <div className="w-full flex justify-end items-center gap-1 overflow-hidden">
-          <p className='font-light text-[12px] text-gray-700 whitespace-nowrap text-ellipsis'>{hour}</p>
+          <p className='font-semibold text-[12px] text-slate-900 whitespace-nowrap text-ellipsis'>{hour}</p>
           {/* <Lucide icon="MoreVertical" className="w-5 h-5 text-slate-500" /> */}
         </div>
         <div className="w-full flex justify-end items-center gap-2">
-          <p className='font-light text-sm text-gray-700'>{isPending ? "Por atender" : "Atendido" }</p>
+          <p className='font-light text-sm text-gray-700'>{"Por atender"}</p>
           <span className={twMerge([
-            "w-3 h-3 rounded-full",
-            isPending && "bg-yellow-500",
-            !isPending && "bg-green-500",
+            "w-2 h-2 rounded-full",
+            "bg-yellow-500"
           ])}></span>
         </div>
       </div>
