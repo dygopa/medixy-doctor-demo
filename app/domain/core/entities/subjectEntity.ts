@@ -20,7 +20,7 @@ export interface ISubject {
     countryLocationId?: number | null;
     street?: string | null;
     isPatient: boolean;
-    birthDate: Date | null;
+    birthDate: string | null;
     createdOn: Date;
     updatedOn: Date | null;
     deletedOn: Date | null;

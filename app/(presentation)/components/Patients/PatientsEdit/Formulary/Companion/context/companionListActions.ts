@@ -15,7 +15,7 @@ const getCompanions = (obj: { page?: number | null; limit: number; searchQuery?:
 
     const skip: number | null = getSkipPagination({ page: obj.page ?? 1, limit: obj.limit })
     
-    const res: IGetSubjectRelationsResponse = await new SubjectsUseCase().getSubjectsComponions({
+    const res: IGetSubjectRelationsResponse = await new SubjectsUseCase().getSubjectsCompanions({
       skip: skip,
       limit: obj.limit,
       searchQuery: obj.searchQuery,
@@ -36,7 +36,7 @@ const createCompanion = (patientId:number, companion:ISubject) => async (dispatc
     
     const res: ISubject = await new SubjectsUseCase().createSubject(companion);
 
-    await new SubjectsUseCase().createSubjectRelations(patientId, res.subjectId);
+    const response = await new SubjectsUseCase().createSubjectRelations(patientId, res.subjectId);
 
     dispatch({ type: "CREATE_COMPANION_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

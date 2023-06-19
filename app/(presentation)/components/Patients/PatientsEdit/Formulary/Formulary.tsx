@@ -155,13 +155,7 @@ export default function Formulary() {
       sex: patient?.sex ?? 0,
       gender: patient?.gender ?? 0,
       email: patient?.email ?? "",
-      birthDate: patient?.birthDate
-        ? `${new Date(patient.birthDate).getFullYear()}-${
-            new Date(patient.birthDate).getMonth() + 1 < 10
-              ? `0${new Date(patient.birthDate).getMonth() + 1}`
-              : new Date(patient.birthDate).getMonth() + 1
-          }-${new Date(patient.birthDate).getDate()}`
-        : "",
+      birthDate: patient?.birthDate ?? "",
       phone: patient?.phoneNumber ?? "",
       country: patient?.country ?? "",
       federalEntity: {} as IFederalEntity,
@@ -229,7 +223,7 @@ export default function Formulary() {
       pictureUrl: "",
       isPatient: true,
       birthDate:
-        values.birthDate.length > 0 ? new Date(values.birthDate) : null,
+        values.birthDate ?? null,
       createdOn: patient?.createdOn ?? new Date(),
       updatedOn: new Date(),
       deletedOn: null,
@@ -261,9 +255,7 @@ export default function Formulary() {
       pictureUrl: "",
       isPatient: false,
       birthDate:
-        valuesEditCompanion.birthDate.length > 0
-          ? new Date(values.birthDate)
-          : null,
+        valuesEditCompanion.birthDate ?? null,
       createdOn: patient?.createdOn ?? new Date(),
       updatedOn: new Date(),
       deletedOn: null,
@@ -313,7 +305,7 @@ export default function Formulary() {
 
   const [companionEdit, setCompanionEdit] = useState<ISubject | null>(null);
 
-  const onNewPatient = (e: any) => {
+  const onNewCompanion = (e: any) => {
     if (!newCompanion) {
       setNewCompanion(true);
     } else {
@@ -334,9 +326,7 @@ export default function Formulary() {
         pictureUrl: "",
         isPatient: false,
         birthDate:
-          valuesNewCompanion.birthDate.length > 0
-            ? new Date(valuesNewCompanion.birthDate)
-            : null,
+          valuesNewCompanion.birthDate ?? null,
         createdOn: patient?.createdOn ?? new Date(),
         updatedOn: new Date(),
         deletedOn: null,
@@ -478,7 +468,7 @@ export default function Formulary() {
                   disabled={loadingCompanion}
                   className="my-4 w-[100%] lg:w-auto"
                   variant="primary"
-                  onClick={(e: any) => onNewPatient(e)}
+                  onClick={(e: any) => onNewCompanion(e)}
                 >
                   {!newCompanion ? "Nuevo contacto" : "Agregar contacto"}
                 </Button>

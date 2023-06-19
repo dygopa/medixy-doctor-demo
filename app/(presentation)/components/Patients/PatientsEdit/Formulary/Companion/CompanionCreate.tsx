@@ -71,7 +71,7 @@ export default function CompanionCreate({
   };
 
   const handleage = (value: string) => {
-    setValues({ ...values, age: value });
+    setValues({ ...values, birthDate: value });
     if (value.length < 2) {
       setErrors((previousState: any) => {
         return {
