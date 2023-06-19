@@ -24,7 +24,6 @@ export default function HistoryTable() {
     if (subject?.subjectId) {
       getMedicalConsulties({
         subjectId: subject.subjectId,
-        sort: { field: "fechaConsulta", ascending: false },
         limit: 3,
       })(dispatch);
     }

@@ -149,7 +149,8 @@ export default function AddRecipe({
       values.frequencyMeasure.length > 0 &&
       values.frequencyValue.length > 0 &&
       values.duringMeasure.length > 0 &&
-      values.duringValue.length > 0
+      values.duringValue.length > 0 &&
+      values.indication.length > 0
     ) {
       return false;
     }
