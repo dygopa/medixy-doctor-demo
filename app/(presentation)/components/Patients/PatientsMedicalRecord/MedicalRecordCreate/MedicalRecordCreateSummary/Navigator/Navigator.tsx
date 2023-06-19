@@ -365,8 +365,7 @@ export default function Navigator() {
       router.push(
         PatientsRoutesEnum.PatientsView +
           subject?.subjectId +
-          PatientsMedicalRecordRoutesEnum.MedicalRecord +
-          `?view_medical_record=true&medical_record_id=${medicalConsulty.data?.id}&from=medical-consulty-summary`
+          PatientsMedicalRecordRoutesEnum.MedicalRecord
       );
     }, 3000);
   };

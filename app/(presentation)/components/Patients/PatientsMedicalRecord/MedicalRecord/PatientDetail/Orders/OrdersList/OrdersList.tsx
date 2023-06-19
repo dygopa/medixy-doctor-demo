@@ -88,9 +88,10 @@ export default function OrdersList() {
 
     if (
       medicalRecord.medicalRecordType.name ===
-      MedicalRecordTypesOrdersEnum.ORDER_SPECIALTY
+        MedicalRecordTypesOrdersEnum.ORDER_SPECIALTY &&
+      medicalRecord.medicalRecordValues.length >= 1
     ) {
-      return medicalRecord.medicalRecordValues[0].value;
+      return `${medicalRecord.medicalRecordValues[0].value} - ${medicalRecord.medicalRecordValues[1].value}`;
     }
 
     if (
@@ -143,7 +144,7 @@ export default function OrdersList() {
     return (
       <div className="w-full flex flex-col justify-center items-center mt-8">
         <p className="font-light text-slate-500 text-base">
-          El paciente no posee antecedentes.
+          El paciente no posee ordenes.
         </p>
       </div>
     );

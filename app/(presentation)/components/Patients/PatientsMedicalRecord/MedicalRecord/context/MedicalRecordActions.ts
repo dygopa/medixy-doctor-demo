@@ -18,7 +18,7 @@ import { Dispatch } from "react";
 export interface IMedicalRecordActions {
     getSubjectById: (subjectId: number) => (dispatch: Dispatch<any>) => {};
     getMedicalMeasures: (obj: { subjectId: number; sort?: Object | null; }) => (dispatch: Dispatch<any>) => {};
-    getMedicalConsulties: (obj: { subjectId: number, sort: Object; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
+    getMedicalConsulties: (obj: { subjectId: number, limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getTreatments: (obj: { subjectId: number, sort?: Object; limit?: number | null }) => (dispatch: Dispatch<any>) => {};
     getAllergies: (obj: { subjectId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getOrders: (obj: { subjectId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
@@ -56,14 +56,19 @@ const getMedicalMeasures = (obj: { subjectId: number; sort?: Object | null; }) =
       }
 }
 
-const getMedicalConsulties = (obj: { subjectId: number; sort?: Object | null; limit?: number | null; }) => async (dispatch: Dispatch<any>) => {
+const getMedicalConsulties = (obj: { subjectId: number; limit?: number | null; }) => async (dispatch: Dispatch<any>) => {
     try {
         dispatch({ type: "GET_MEDICAL_CONSULTIES_LOADING" });
+
+        const sort: Object = {
+          field: "fechaConsulta",
+          ascending: false,
+        }
         
         const res: IGetMedicalConsultiesResponse = await new MedicalConsultyUseCase().getMedicalConsulties({
           limit: obj.limit,
           subjectId: obj.subjectId,
-          sort: obj.sort,
+          sort: sort,
         });
     
         dispatch({ type: "GET_MEDICAL_CONSULTIES_SUCCESSFUL", payload: { data: res } });

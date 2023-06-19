@@ -564,6 +564,7 @@ export default function PhysicalExplorationForm({
                     ...values,
                     [e.target.name]: {
                       isChecked: e.target.checked,
+                      value: e.target.checked ? values.abnormality.value : "",
                       values: values.abnormality.values,
                     },
                   })
@@ -597,8 +598,6 @@ export default function PhysicalExplorationForm({
       </div>
 
       <div className="w-full flex items-center">
-        <div className="lg:w-[325px] md:w-[150px] w-[40px]" />
-
         <div className="w-full">
           {values.abnormality.isChecked && (
             <AbnormalitySection values={values} setValues={setValues} />
