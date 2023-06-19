@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import CurrentConsultation from "./CurrentConsultation/CurrentConsultation";
+import Diagnosis from "./Diagnosis/Diagnosis";
 import Orders from "./Orders/Orders";
 import Recipe from "./Recipe/Recipe";
 import Records from "./Records/Records";
@@ -243,6 +244,10 @@ export default function RightSide({ width }: IRightSideProps) {
 
       <div className="w-full mb-8">
         <CurrentConsultation width={width} />
+      </div>
+
+      <div className="w-full mb-8">
+        <Diagnosis />
       </div>
 
       <div className="w-full mb-8">

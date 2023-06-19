@@ -4,10 +4,6 @@ import Diagnose from "./Diagnose/Diagnose";
 import DiagnoseMobile from "./DiagnoseMobile/DiagnoseMobile";
 
 type valuesTypes = {
-  consultationDate: string;
-  referredBy: string;
-  consultationReason: string;
-  sufferingDate: string;
   diagnose: ICIE10[];
   observations: string;
 };

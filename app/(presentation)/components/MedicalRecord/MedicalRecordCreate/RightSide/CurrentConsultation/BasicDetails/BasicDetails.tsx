@@ -9,8 +9,6 @@ type valuesTypes = {
   referredBy: string;
   consultationReason: string;
   sufferingDate: string;
-  diagnose: ICIE10[];
-  observations: string;
 };
 
 type errorsTypes = {
