@@ -1,7 +1,4 @@
-import {
-  PatientsMedicalRecordRoutesEnum,
-  PatientsRoutesEnum,
-} from "(presentation)/(routes)/patientsRoutes";
+import { PatientsRoutesEnum } from "(presentation)/(routes)/patientsRoutes";
 import Table from "(presentation)/components/core/BaseComponents/Table";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import Link from "next/link";
@@ -14,6 +11,7 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import Paginate from "(presentation)/components/core/Paginate/Paginate";
+import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
 
 export default function PatientsTable() {
   const { state, actions, dispatch } =
@@ -133,9 +131,8 @@ export default function PatientsTable() {
                         className="flex items-center mr-3"
                         href={{
                           pathname:
-                            PatientsRoutesEnum.PatientsView +
-                            patient.subjectId +
-                            PatientsMedicalRecordRoutesEnum.MedicalRecord,
+                            MedicalRecordRoutesEnum.MedicalRecord +
+                            patient.subjectId,
                         }}
                       >
                         <Button variant="primary" className="p-2 text-center">

@@ -1,7 +1,4 @@
-import {
-  PatientsMedicalRecordRoutesEnum,
-  PatientsRoutesEnum,
-} from "(presentation)/(routes)/patientsRoutes";
+import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import clsx from "clsx";
 import Image from "next/image";
@@ -19,13 +16,7 @@ export default function PatientDetails() {
           </div>
 
           <div>
-            <Link
-              href={
-                PatientsRoutesEnum.PatientsView +
-                "ACV32JH" +
-                PatientsMedicalRecordRoutesEnum.MedicalRecord
-              }
-            >
+            <Link href={MedicalRecordRoutesEnum.MedicalRecord}>
               <Button variant="primary">Expediente médico</Button>
             </Link>
           </div>

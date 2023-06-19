@@ -1,49 +1,73 @@
-import { PatientsRoutesEnum } from "(presentation)/(routes)/patientsRoutes";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import Table from "(presentation)/components/core/BaseComponents/Table";
-import Paginate from "(presentation)/components/core/Paginate/Paginate";
-import { IRelationSubject, ISubject } from "domain/core/entities/subjectEntity";
-import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
-import { Dispatch, SetStateAction, useContext, useEffect } from "react";
 import {
-  CompanionsListContext,
-  ICompanionsListContext,
-} from "../context/companionListContext";
+  IMedicalRecordCreateContext,
+  MedicalRecordCreateContext,
+} from "(presentation)/components/MedicalRecord/MedicalRecordCreate/context/MedicalRecordCreateContext";
+import { IRelationSubject, ISubject } from "domain/core/entities/subjectEntity";
+import { Dispatch, SetStateAction, useContext, useEffect } from "react";
 
 interface ITableProps {
   setCompanionEdit: Dispatch<SetStateAction<ISubject | null>>;
-  idPatient: number | undefined;
+  patientId: number;
 }
 
 export default function CompanionsTable({
-  idPatient,
+  patientId,
   setCompanionEdit,
 }: ITableProps) {
-  const { state, actions, dispatch } = useContext<ICompanionsListContext>(
-    CompanionsListContext
+  const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
+    MedicalRecordCreateContext
   );
-  const { data: companions, loading, successful, error } = state.getCompanions;
+  const { data: companions, loading, successful, error } = state.companions;
   const { getCompanions } = actions;
-
-  const router = useRouter();
-  const searchParams = useSearchParams();
-
-  const page = searchParams.get("page");
-  const searchQuery = searchParams.get("search_query");
 
   useEffect(() => {
     getCompanions({
-      page: page && page?.length > 0 ? parseInt(page.toString(), 10) : "1",
-      searchQuery: searchQuery,
-      limit: 10,
-      patientId: idPatient,
+      patientId: patientId,
     })(dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, searchQuery]);
+  }, []);
 
-  console.log(companions);
+  if (loading) {
+    return (
+      <div className="w-full flex flex-col justify-center items-center">
+        <p className="font-bold text-slate-900 text-lg text-center">
+          Un momento...
+        </p>
+        <p className="font-light text-slate-500 text-base text-center">
+          Cargando los contactos.
+        </p>
+      </div>
+    );
+  }
+
+  if (successful && companions.data.length === 0) {
+    return (
+      <div className="w-full flex flex-col justify-center items-center text-center">
+        <p className="font-bold text-slate-900 text-lg">
+          Vaya, no tienes contactos aún
+        </p>
+        <p className="font-light text-slate-500 text-base text-center">
+          Lo sentimos, pero no tienes contactos agregados todavia.
+        </p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="w-full flex flex-col justify-center items-center">
+        <p className="font-bold text-slate-900 text-lg text-center">
+          A ocurrido un error
+        </p>
+        <p className="font-light text-slate-500 text-base text-center">
+          Algo no ha salido bien, por favor vuelva a intentarlo.
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="col-span-12 overflow-auto lg:overflow-visible z-0 ">
@@ -133,44 +157,6 @@ export default function CompanionsTable({
             ))}
         </Table.Tbody>
       </Table>
-      {loading && (
-        <div className="w-full flex flex-col justify-center items-center">
-          <p className="font-bold text-slate-900 text-lg text-center">
-            Un momento...
-          </p>
-          <p className="font-light text-slate-500 text-base text-center">
-            Cargando los acompañantes.
-          </p>
-        </div>
-      )}
-
-      {successful && companions.data.length === 0 && (
-        <div className="w-full flex flex-col justify-center items-center text-center">
-          <p className="font-bold text-slate-900 text-lg">
-            Vaya, no tienes acompañantes aún
-          </p>
-          <p className="font-light text-slate-500 text-base text-center">
-            Lo sentimos, pero no tienes acompañantes agregados todavia.
-          </p>
-        </div>
-      )}
-      {error && (
-        <div className="w-full flex flex-col justify-center items-center">
-          <p className="font-bold text-slate-900 text-lg text-center">
-            A ocurrido un error
-          </p>
-          <p className="font-light text-slate-500 text-base text-center">
-            Algo no ha salido bien, por favor vuelva a intentarlo.
-          </p>
-        </div>
-      )}
-      <div className="flex justify-end mt-8 overflow-x-hidden">
-        <Paginate
-          page={page ? page.toString() : "1"}
-          limit={companions.metadata?.limit ?? 0}
-          total={companions.metadata?.total}
-        />
-      </div>
     </div>
   );
 }
