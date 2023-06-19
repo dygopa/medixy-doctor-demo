@@ -10,7 +10,7 @@ const createSubject = (subject:ISubject) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "CREATE_PATIENT_LOADING" });
       
-      const res: boolean = await new SubjectsUseCase().createSubject(subject);
+      const res = await new SubjectsUseCase().createSubject(subject);
   
       dispatch({ type: "CREATE_PATIENT_SUCCESSFUL", payload: { data: res } });
     } catch (error) {
