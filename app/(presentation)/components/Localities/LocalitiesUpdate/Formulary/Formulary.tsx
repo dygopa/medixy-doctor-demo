@@ -31,6 +31,7 @@ import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import { ICountryLocation } from "domain/core/entities/countryEntity";
 import AutocompleteInputMunicipalities from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMunicipalities/AutocompleteInputMunicipalities";
 import AutocompleteInputLocations from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputLocations/AutocompleteInputLocations";
+import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 
 export default function Formulary({
   userId,
@@ -77,6 +78,27 @@ export default function Formulary({
       type: "",
     },
   });
+
+  let [ errors, setErrors ] = useState({
+    postal_code: "",
+  })
+
+  const handlePostalCode = (value: string) => {
+    setFormData({ ...formData, postal_code: value });
+    if(value.length > 0) {
+      if (!VALIDATE_NUMBERS(value)) {
+        setErrors((previousState) => {
+          return {
+            ...previousState,
+            postal_code: "El código postal solo lleva números",
+          };
+        });
+        return true;
+      }
+    }
+    setErrors({ ...errors, postal_code: "" });
+    return false;
+  };
 
   let [loadedStates, setLoadedStates] = useState(false);
 
@@ -259,14 +281,12 @@ export default function Formulary({
                     min={0}
                     value={formData.postal_code}
                     className="form-control lg:w-[70%]"
-                    onChange={(e: any) => {
-                      setFormData({
-                        ...formData,
-                        postal_code: e.target.value,
-                      });
-                    }}
+                    onChange={(e: any) => handlePostalCode(e.target.value)}
                   />
                 </div>
+                {errors.postal_code.length > 0 && (
+                  <span className="text-red-500 w-full text-right -mt-5">{errors.postal_code}</span>
+                )}
                 <div className="lg:flex justify-between items-center relative w-full gap-3">
                   <div className="lg:w-[445px]">
                     <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">

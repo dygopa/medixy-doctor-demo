@@ -1,3 +1,4 @@
+import { VALIDATE_NAMES } from "(presentation)/(utils)/errors-validation";
 import {
   FormInput,
   FormSelect,
@@ -98,6 +99,15 @@ export default function BasicData({
       });
       return true;
     }
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          name: "El nombre del paciente solo debe incluir letras",
+        };
+      });
+      return true;
+    }
     setErrors({ ...errors, name: "" });
     return false;
   };
@@ -109,6 +119,15 @@ export default function BasicData({
         return {
           ...previousState,
           lastname: "El apellido del paciente es obligatorio",
+        };
+      });
+      return true;
+    }
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          lastname: "El apellido del paciente solo debe incluir letras",
         };
       });
       return true;
