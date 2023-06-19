@@ -71,33 +71,33 @@ const getSpecialties = () => async (dispatch: Dispatch<any>) => {
 
 const getMedicalMeasures = (obj: { subjectId: number; sort?: Object | null; }) => async (dispatch: Dispatch<any>) => {
     try {
-        dispatch({ type: "GET_MEDICAL_MEASURES_LOADING" });
-        
-        const res: IGetMedicalMeasuresResponse = await new MedicalMeasureUseCase().getMedicalMeasures({
-          subjectId: obj.subjectId,
-          sort: obj.sort,
-        });
-    
-        dispatch({ type: "GET_MEDICAL_MEASURES_SUCCESSFUL", payload: { data: res } });
-      } catch (error) {
-        dispatch({ type: "GET_MEDICAL_MEASURES_ERROR", payload: { error: error } });
-      }
+      dispatch({ type: "GET_MEDICAL_MEASURES_LOADING" });
+      
+      const res: IGetMedicalMeasuresResponse = await new MedicalMeasureUseCase().getMedicalMeasures({
+        subjectId: obj.subjectId,
+        sort: obj.sort,
+      });
+  
+      dispatch({ type: "GET_MEDICAL_MEASURES_SUCCESSFUL", payload: { data: res } });
+    } catch (error) {
+      dispatch({ type: "GET_MEDICAL_MEASURES_ERROR", payload: { error: error } });
+    }
 }
 
 const getMedicalConsulties = (obj: { subjectId: number; sort?: Object | null; limit?: number | null; }) => async (dispatch: Dispatch<any>) => {
     try {
-        dispatch({ type: "GET_MEDICAL_CONSULTIES_LOADING" });
-        
-        const res: IGetMedicalConsultiesResponse = await new MedicalConsultyUseCase().getMedicalConsulties({
-          limit: obj.limit,
-          subjectId: obj.subjectId,
-          sort: obj.sort,
-        });
-    
-        dispatch({ type: "GET_MEDICAL_CONSULTIES_SUCCESSFUL", payload: { data: res } });
-      } catch (error) {
-        dispatch({ type: "GET_MEDICAL_CONSULTIES_ERROR", payload: { error: error } });
-      }
+      dispatch({ type: "GET_MEDICAL_CONSULTIES_LOADING" });
+      
+      const res: IGetMedicalConsultiesResponse = await new MedicalConsultyUseCase().getMedicalConsulties({
+        limit: obj.limit,
+        subjectId: obj.subjectId,
+        sort: obj.sort,
+      });
+  
+      dispatch({ type: "GET_MEDICAL_CONSULTIES_SUCCESSFUL", payload: { data: res } });
+    } catch (error) {
+      dispatch({ type: "GET_MEDICAL_CONSULTIES_ERROR", payload: { error: error } });
+    }
 }
 
 const getTreatments = (obj: { subjectId: number; limit?: number | null; }) => async (dispatch: Dispatch<any>) => {
@@ -189,7 +189,6 @@ const getCompanions = (obj: { patientId: number }) => async (dispatch: Dispatch<
 
     dispatch({ type: "GET_COMPONIONS_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
-    console.log("Error calling action", error)
     dispatch({ type: "GET_COMPONIONS_ERROR", payload: { error: error } });
   }
 }
@@ -204,7 +203,6 @@ const createCompanion = (patientId:number, companion:ISubject) => async (dispatc
 
     dispatch({ type: "CREATE_COMPANION_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
-    console.log("Error calling action", error)
     dispatch({ type: "CREATE_COMPANION_ERROR", payload: { error: error } });
   }
 }

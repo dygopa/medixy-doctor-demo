@@ -240,11 +240,22 @@ export default function Records() {
         </div>
       )}
 
+      {values.transfusions.isChecked && (
+        <div>
+          <h1 className="text-slate-900 font-bold text-lg flex">
+            Transfusiones
+            {values.transfusions.value.length > 0
+              ? ` - ${values.transfusions.value}`
+              : ""}
+          </h1>
+        </div>
+      )}
+
       {values.anemia.isChecked && (
         <div>
           <h1 className="text-slate-900 font-bold text-lg flex">
             Anemia
-            {values.anemia.value.length > 0 ? `, ${values.anemia.value}` : ""}
+            {values.anemia.value.length > 0 ? ` - ${values.anemia.value}` : ""}
           </h1>
         </div>
       )}
@@ -254,7 +265,7 @@ export default function Records() {
           <h1 className="text-slate-900 font-bold text-lg flex">
             Artritis
             {values.arthritis.value.length > 0
-              ? `, ${values.arthritis.value}`
+              ? ` - ${values.arthritis.value}`
               : ""}
           </h1>
         </div>
@@ -264,7 +275,7 @@ export default function Records() {
         <div>
           <h1 className="text-slate-900 font-bold text-lg flex">
             Asma
-            {values.asma.value.length > 0 ? `, ${values.asma.value}` : ""}
+            {values.asma.value.length > 0 ? ` - ${values.asma.value}` : ""}
           </h1>
         </div>
       )}
@@ -273,7 +284,7 @@ export default function Records() {
         <div>
           <h1 className="text-slate-900 font-bold text-lg flex">
             Cáncer
-            {values.cancer.value.length > 0 ? `, ${values.cancer.value}` : ""}
+            {values.cancer.value.length > 0 ? ` - ${values.cancer.value}` : ""}
           </h1>
         </div>
       )}
@@ -283,7 +294,7 @@ export default function Records() {
           <h1 className="text-slate-900 font-bold text-lg flex">
             Coágulos sanguíneos
             {values.bloodClots.value.length > 0
-              ? `, ${values.bloodClots.value}`
+              ? ` - ${values.bloodClots.value}`
               : ""}
           </h1>
         </div>
@@ -293,7 +304,9 @@ export default function Records() {
         <div>
           <h1 className="text-slate-900 font-bold text-lg flex">
             Colitis
-            {values.colitis.value.length > 0 ? `, ${values.colitis.value}` : ""}
+            {values.colitis.value.length > 0
+              ? ` - ${values.colitis.value}`
+              : ""}
           </h1>
         </div>
       )}
@@ -320,7 +333,7 @@ export default function Records() {
           <h1 className="text-slate-900 font-bold text-lg flex">
             Tabaquismo
             {values.smokingNonPathological.value.length > 0
-              ? `, ${values.smokingNonPathological.value}`
+              ? ` - ${values.smokingNonPathological.value}`
               : ""}
           </h1>
         </div>
@@ -331,7 +344,7 @@ export default function Records() {
           <h1 className="text-slate-900 font-bold text-lg flex">
             Drogas
             {values.drugsNonPathological.value.length > 0
-              ? `, ${values.drugsNonPathological.value}`
+              ? ` - ${values.drugsNonPathological.value}`
               : ""}
           </h1>
         </div>
@@ -342,7 +355,7 @@ export default function Records() {
           <h1 className="text-slate-900 font-bold text-lg flex">
             Realiza ejercicio
             {values.exerciseNonPathological.value.length > 0
-              ? `, ${values.exerciseNonPathological.value}`
+              ? ` - ${values.exerciseNonPathological.value}`
               : ""}
           </h1>
         </div>
@@ -353,7 +366,7 @@ export default function Records() {
           <h1 className="text-slate-900 font-bold text-lg flex">
             COVID
             {values.covidNonPathological.value.length > 0
-              ? `, ${values.covidNonPathological.value}`
+              ? ` - ${values.covidNonPathological.value}`
               : ""}
           </h1>
         </div>

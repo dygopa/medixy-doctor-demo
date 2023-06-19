@@ -2,6 +2,7 @@ import {
   MedicalRecordCategoriesIdEnum,
   medicalRecordTypeEnum,
 } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
+import { getMedicalRecordsForTypes } from "(presentation)/(helper)/medicalRecords/medicalRecordsHelper";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
   IMedicalRecord,
@@ -27,19 +28,9 @@ export default function RecordList({ subjectId }: IRecordListProps) {
   const [medicalRecords, setMedicalRecords] = useState<IMedicalRecord[]>([]);
 
   const setMedicalRecordsMap = () => {
-    const medicalRecordsList: IMedicalRecord[] = [];
-
-    if (data.data && data.data.length > 0) {
-      data.data.forEach((medicalRecord: IMedicalRecord) => {
-        const index = medicalRecordsList.findIndex(
-          (medicalRecordFind) =>
-            medicalRecordFind.medicalRecordTypeId ===
-            medicalRecord.medicalRecordTypeId
-        );
-
-        if (index < 0) medicalRecordsList.push(medicalRecord);
-      });
-    }
+    const medicalRecordsList: IMedicalRecord[] = getMedicalRecordsForTypes(
+      data.data
+    );
 
     setMedicalRecords(medicalRecordsList);
   };

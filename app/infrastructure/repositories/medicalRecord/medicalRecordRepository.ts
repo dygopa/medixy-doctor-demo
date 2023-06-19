@@ -12,6 +12,7 @@ export default interface IMedicalRecordRepository {
     sort?: any; 
     limit?: number | null; 
     subjectId?: number | null;
+    medicalConsulty?: number | null;
     medicalRecordType?: number | null;
     medicalRecordCategory?: number | null;
   }): Promise<IGetMedicalRecordsResponse | MedicalRecordFailure>;
@@ -24,6 +25,7 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
     sort?: any; 
     limit?: number | null; 
     subjectId?: number | null;
+    medicalConsulty?: number | null;
     medicalRecordType?: number | null;
     medicalRecordCategory?: number | null;
   }): Promise<IGetMedicalRecordsResponse | MedicalRecordFailure> {
@@ -46,6 +48,10 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       if (obj.subjectId) {
         query = query.eq("sujetoId", obj.subjectId);
+      }
+
+      if (obj.medicalConsulty) {
+        query = query.eq("consultaMedicaId", obj.medicalConsulty);
       }
 
       if (obj.medicalRecordType) {

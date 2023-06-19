@@ -1,6 +1,7 @@
 import { MedicalRecordTypesEnum, MedicalRecordTypesOrdersEnum, MedicalRecordTypesPhysicalEnum, MedicalRecordValueTypesEnum, MedicalRecordValueTypesOrdersEnum, MedicalRecordValueTypesPhysicalEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
-import { IMedicalRecord, IMedicalRecordType, IMedicalRecordValueType } from "domain/core/entities/medicalRecordEntity";
+import { IMedicalRecord, IMedicalRecordType, IMedicalRecordValue, IMedicalRecordValueType } from "domain/core/entities/medicalRecordEntity";
 import { IOrderMedical } from "domain/core/entities/orderEntity";
+import { medicalRecordsValues } from "./medicalRecordsValues";
 
 export const getMedicalRecordsHistory = (values: any, subjectId: number) => {
     const medicalRecords: IMedicalRecord[] = [];
@@ -1245,4 +1246,263 @@ export const getMedicalRecordsOrders = (values: any, subjectId: number) => {
   }
 
   return medicalRecords;
+}
+
+export const getMedicalRecordsValues = (medicalRecords: IMedicalRecord[]) => {
+  if (medicalRecords.length === 0) return medicalRecordsValues;
+  
+  let values = medicalRecordsValues;
+
+  medicalRecords.forEach((medicalRecord: IMedicalRecord) => {
+    switch (medicalRecord.medicalRecordType.name) {
+      case MedicalRecordTypesEnum.ALLERGIES:
+        if (medicalRecord.medicalRecordValues.length > 0) {
+          values = {
+            ...values, 
+            allergiesPathological: { 
+              isChecked: true, 
+              values: values.allergiesPathological.values.concat(medicalRecord.medicalRecordValues.map((medicalRecordValue: IMedicalRecordValue) => { 
+                if (values.allergiesPathological.values.indexOf(medicalRecordValue.value) < 0) return medicalRecordValue.value;
+              
+                return "";
+              })) 
+            } 
+          };
+
+          values = {...values, allergiesPathological: { isChecked: true, values: values.allergiesPathological.values.filter((valueFilter) => valueFilter !== "") }}
+        }
+        break;
+      case MedicalRecordTypesEnum.SURGICAL_INTERVENTIONS:
+        if (medicalRecord.medicalRecordValues.length > 0) {
+          values = {
+            ...values, 
+            surgicalInterventions: { 
+              isChecked: true, 
+              values: values.surgicalInterventions.values.concat(medicalRecord.medicalRecordValues.map((medicalRecordValue: IMedicalRecordValue) => { 
+                if (values.surgicalInterventions.values.indexOf(medicalRecordValue.value) < 0) return medicalRecordValue.value;
+              
+                return "";
+              })) 
+            } 
+          };
+
+          values = {...values, surgicalInterventions: { isChecked: true, values: values.surgicalInterventions.values.filter((valueFilter) => valueFilter !== "") }}
+        }
+        break;
+      case MedicalRecordTypesEnum.TAKE_MEDICATIONS:
+        if (medicalRecord.medicalRecordValues.length > 0) {
+          values = {
+            ...values, 
+            takeMedication: { 
+              isChecked: true, 
+              values: values.takeMedication.values.concat(medicalRecord.medicalRecordValues.map((medicalRecordValue: IMedicalRecordValue) => { 
+                if (values.takeMedication.values.indexOf(medicalRecordValue.value) < 0) return medicalRecordValue.value;
+              
+                return "";
+              })) 
+            } 
+          };
+
+          values = {...values, takeMedication: { isChecked: true, values: values.takeMedication.values.filter((valueFilter) => valueFilter !== "") }}
+        }
+        break;
+      case MedicalRecordTypesEnum.TRANSFUSIONS:
+        if (medicalRecord.medicalRecordValues.length > 0 && medicalRecord.medicalRecordValues.length > 0 && !values.transfusions.value.includes(medicalRecord.medicalRecordValues[0].value)) {
+          values = {...values, transfusions: { isChecked: true, value:  values.transfusions.value + `${values.transfusions.value.length > 0 ? ", " : ""}` + medicalRecord.medicalRecordValues[0].value } };
+        }
+        break;
+      case MedicalRecordTypesEnum.ANEMIA:
+        if (medicalRecord.medicalRecordValues.length > 0 && medicalRecord.medicalRecordValues.length > 0 && !values.anemia.value.includes(medicalRecord.medicalRecordValues[0].value)) {
+          values = {...values, anemia: { isChecked: true, value:  values.anemia.value + `${values.anemia.value.length > 0 ? ", " : ""}` + medicalRecord.medicalRecordValues[0].value } };
+        }
+        break;
+      case MedicalRecordTypesEnum.ARTHRITIS:
+        if (medicalRecord.medicalRecordValues.length > 0 && medicalRecord.medicalRecordValues.length > 0 && !values.arthritis.value.includes(medicalRecord.medicalRecordValues[0].value)) {
+          values = {...values, arthritis: { isChecked: true, value:  values.arthritis.value + `${values.arthritis.value.length > 0 ? ", " : ""}` + medicalRecord.medicalRecordValues[0].value } };
+        }
+        break;
+      case MedicalRecordTypesEnum.ASMA:
+        if (medicalRecord.medicalRecordValues.length > 0 && medicalRecord.medicalRecordValues.length > 0 && !values.asma.value.includes(medicalRecord.medicalRecordValues[0].value)) {
+          values = {...values, asma: { isChecked: true, value:  values.asma.value + `${values.asma.value.length > 0 ? ", " : ""}` + medicalRecord.medicalRecordValues[0].value } };
+        }
+        break;
+      case MedicalRecordTypesEnum.CANCER:
+        if (medicalRecord.medicalRecordValues.length > 0 && medicalRecord.medicalRecordValues.length > 0 && !values.cancer.value.includes(medicalRecord.medicalRecordValues[0].value)) {
+          values = {...values, cancer: { isChecked: true, value:  values.cancer.value + `${values.cancer.value.length > 0 ? ", " : ""}` + medicalRecord.medicalRecordValues[0].value } };
+        }
+        break;
+      case MedicalRecordTypesEnum.BLOODS_CLOTS:
+        if (medicalRecord.medicalRecordValues.length > 0 && medicalRecord.medicalRecordValues.length > 0 && !values.bloodClots.value.includes(medicalRecord.medicalRecordValues[0].value)) {
+          values = {...values, bloodClots: { isChecked: true, value:  values.bloodClots.value + `${values.bloodClots.value.length > 0 ? ", " : ""}` + medicalRecord.medicalRecordValues[0].value } };
+        }
+        break;
+      case MedicalRecordTypesEnum.COLITIS:
+        if (medicalRecord.medicalRecordValues.length > 0 && medicalRecord.medicalRecordValues.length > 0 && !values.colitis.value.includes(medicalRecord.medicalRecordValues[0].value)) {
+          values = {...values, colitis: { isChecked: true, value:  values.colitis.value + `${values.colitis.value.length > 0 ? ", " : ""}` + medicalRecord.medicalRecordValues[0].value } };
+        }
+        break;
+      case MedicalRecordTypesEnum.BLOOD_TYPE:
+        if (medicalRecord.medicalRecordValues.length > 0) {
+          values = {
+            ...values, 
+            bloodTypeNonPathological: { 
+              isChecked: true, 
+              values: values.bloodTypeNonPathological.values.concat(medicalRecord.medicalRecordValues.map((medicalRecordValue: IMedicalRecordValue) => { 
+                if (values.bloodTypeNonPathological.values.indexOf(medicalRecordValue.value) < 0) return medicalRecordValue.value;
+              
+                return "";
+              })) 
+            } 
+          };
+
+          values = {...values, bloodTypeNonPathological: { isChecked: true, values: values.bloodTypeNonPathological.values.filter((valueFilter) => valueFilter !== "") }}
+        }
+        break;
+      case MedicalRecordTypesEnum.SMOKING:
+        if (medicalRecord.medicalRecordValues.length > 0 && medicalRecord.medicalRecordValues.length > 0 && !values.smokingNonPathological.value.includes(medicalRecord.medicalRecordValues[0].value)) {
+          values = {...values, smokingNonPathological: { isChecked: true, value:  values.smokingNonPathological.value + `${values.smokingNonPathological.value.length > 0 ? ", " : ""}` + medicalRecord.medicalRecordValues[0].value } };
+        }
+        break;
+      case MedicalRecordTypesEnum.ALCOCHOLIC_BEVERAGES:
+        if (medicalRecord.medicalRecordValues.length > 0 && medicalRecord.medicalRecordValues.length > 0 && !values.alcoholicBeveragesNonPathological.value.includes(medicalRecord.medicalRecordValues[0].value)) {
+          values = {...values, alcoholicBeveragesNonPathological: { isChecked: true, value:  values.alcoholicBeveragesNonPathological.value + `${values.alcoholicBeveragesNonPathological.value.length > 0 ? ", " : ""}` + medicalRecord.medicalRecordValues[0].value } };
+        }
+        break;
+      case MedicalRecordTypesEnum.DRUGS:
+        if (medicalRecord.medicalRecordValues.length > 0 && medicalRecord.medicalRecordValues.length > 0 && !values.drugsNonPathological.value.includes(medicalRecord.medicalRecordValues[0].value)) {
+          values = {...values, drugsNonPathological: { isChecked: true, value:  values.drugsNonPathological.value + `${values.drugsNonPathological.value.length > 0 ? ", " : ""}` + medicalRecord.medicalRecordValues[0].value } };
+        }
+        break;
+      case MedicalRecordTypesEnum.COVID:
+        if (medicalRecord.medicalRecordValues.length > 0 && medicalRecord.medicalRecordValues.length > 0 && !values.covidNonPathological.value.includes(medicalRecord.medicalRecordValues[0].value)) {
+          values = {...values, covidNonPathological: { isChecked: true, value:  values.covidNonPathological.value + `${values.covidNonPathological.value.length > 0 ? ", " : ""}` + medicalRecord.medicalRecordValues[0].value } };
+        }
+        break;
+      case MedicalRecordTypesEnum.DIABETES:
+        if (medicalRecord.medicalRecordValues.length > 0) {
+          values = {
+            ...values, 
+            diabetesFamily: { 
+              isChecked: true, 
+              values: values.diabetesFamily.values.concat(medicalRecord.medicalRecordValues.map((medicalRecordValue: IMedicalRecordValue) => { 
+                if (values.diabetesFamily.values.indexOf(medicalRecordValue.value) < 0) return medicalRecordValue.value;
+              
+                return "";
+              })) 
+            } 
+          };
+
+          values = {...values, diabetesFamily: { isChecked: true, values: values.diabetesFamily.values.filter((valueFilter) => valueFilter !== "") }}
+        }
+        break;
+      case MedicalRecordTypesEnum.CANCER_FAMILY:
+        if (medicalRecord.medicalRecordValues.length > 0) {
+          values = {
+            ...values, 
+            cancerFamily: { 
+              isChecked: true, 
+              values: values.cancerFamily.values.concat(medicalRecord.medicalRecordValues.map((medicalRecordValue: IMedicalRecordValue) => { 
+                if (values.cancerFamily.values.indexOf(medicalRecordValue.value) < 0) return medicalRecordValue.value;
+              
+                return "";
+              })) 
+            } 
+          };
+
+          values = {...values, cancerFamily: { isChecked: true, values: values.cancerFamily.values.filter((valueFilter) => valueFilter !== "") }}
+        }
+        break;
+      case MedicalRecordTypesEnum.HIPERTENSION:
+        if (medicalRecord.medicalRecordValues.length > 0) {
+          values = {
+            ...values, 
+            hypertensionFamily: { 
+              isChecked: true, 
+              values: values.hypertensionFamily.values.concat(medicalRecord.medicalRecordValues.map((medicalRecordValue: IMedicalRecordValue) => { 
+                if (values.hypertensionFamily.values.indexOf(medicalRecordValue.value) < 0) return medicalRecordValue.value;
+              
+                return "";
+              })) 
+            } 
+          };
+
+          values = {...values, hypertensionFamily: { isChecked: true, values: values.hypertensionFamily.values.filter((valueFilter) => valueFilter !== "") }}
+        }
+        break;
+      case MedicalRecordTypesEnum.SIDA:
+        if (medicalRecord.medicalRecordValues.length > 0) {
+          values = {
+            ...values, 
+            sidaFamily: { 
+              isChecked: true, 
+              values: values.sidaFamily.values.concat(medicalRecord.medicalRecordValues.map((medicalRecordValue: IMedicalRecordValue) => { 
+                if (values.sidaFamily.values.indexOf(medicalRecordValue.value) < 0) return medicalRecordValue.value;
+              
+                return "";
+              })) 
+            } 
+          };
+
+          values = {...values, sidaFamily: { isChecked: true, values: values.sidaFamily.values.filter((valueFilter) => valueFilter !== "") }}
+        }
+        break;
+      case MedicalRecordTypesEnum.OTHER:
+        if (medicalRecord.medicalRecordValues.length > 0) {
+          values = {
+            ...values, 
+            otherFamily: { 
+              isChecked: true, 
+              values: values.otherFamily.values.concat(medicalRecord.medicalRecordValues.map((medicalRecordValue: IMedicalRecordValue) => { 
+                if (values.otherFamily.values.indexOf(medicalRecordValue.value) < 0) return medicalRecordValue.value;
+              
+                return "";
+              })) 
+            } 
+          };
+
+          values = {...values, otherFamily: { isChecked: true, values: values.otherFamily.values.filter((valueFilter) => valueFilter !== "") }}
+        }
+        break;
+
+      default:
+        break;
+    }
+  });
+
+  return values;
+}
+
+export const getMedicalRecordsForTypes = (medicalRecords: IMedicalRecord[]) => {
+  if (medicalRecords.length === 0) return [];
+
+  const values: IMedicalRecord[] = [];
+
+  medicalRecords.forEach((medicalRecord: IMedicalRecord) => {
+    const currentMedicalRecordIndex = values.findIndex((medicalRecordFind) => medicalRecordFind.medicalRecordType.name === medicalRecord.medicalRecordType.name);
+
+    if (medicalRecord.medicalRecordValues.length > 0 && currentMedicalRecordIndex >= 0) {
+      const medicalRecordValues = values[currentMedicalRecordIndex].medicalRecordValues;
+
+      medicalRecord.medicalRecordValues.forEach((medicalRecordValue: IMedicalRecordValue) => {
+        if (values[currentMedicalRecordIndex].medicalRecordValues.findIndex((medicalRecordValueFind) => medicalRecordValueFind.value === medicalRecordValue.value) < 0) {
+          medicalRecordValues.push(medicalRecordValue);
+        }
+      });
+
+      values[currentMedicalRecordIndex].medicalRecordValues = medicalRecordValues;
+    } else if (medicalRecord.medicalRecordValues.length > 0) {
+      values.push({
+        id: values.length + 1,
+        medicalRecordTypeId: medicalRecord.medicalRecordTypeId,
+        medicalRecordType: medicalRecord.medicalRecordType,
+        medicalRecordValues: medicalRecord.medicalRecordValues,
+        medicalConsultyId: medicalRecord.medicalConsultyId,
+        medicalConsulty: medicalRecord.medicalConsulty,
+        subjectId: medicalRecord.subjectId,
+        subject: medicalRecord.subject,
+      } as IMedicalRecord);
+    }
+  });
+
+  return values;
 }
