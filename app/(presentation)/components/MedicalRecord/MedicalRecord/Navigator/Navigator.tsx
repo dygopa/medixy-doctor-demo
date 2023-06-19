@@ -1,5 +1,4 @@
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
-import { PatientsRoutesEnum } from "(presentation)/(routes)/patientsRoutes";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import Link from "next/link";
 import { useContext } from "react";
@@ -11,6 +10,24 @@ import {
 export default function Navigator() {
   const { state } = useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { data: subject } = state.subject;
+  const { data: appointment } = state.appointment;
+
+  const getRedirectMedicalRecordCreate = () => {
+    if (appointment.data?.id) {
+      return (
+        MedicalRecordRoutesEnum.MedicalRecord +
+        appointment.data.id +
+        MedicalRecordRoutesEnum.MedicalRecordCreate +
+        "?type=appointment"
+      );
+    }
+
+    return (
+      MedicalRecordRoutesEnum.MedicalRecord +
+      subject?.subjectId +
+      MedicalRecordRoutesEnum.MedicalRecordCreate
+    );
+  };
 
   return (
     <div className="w-full">
@@ -30,13 +47,7 @@ export default function Navigator() {
         </div>
 
         <div className="lg:mt-0 mt-4">
-          <Link
-            href={
-              MedicalRecordRoutesEnum.MedicalRecord +
-              subject?.subjectId +
-              MedicalRecordRoutesEnum.MedicalRecordCreate
-            }
-          >
+          <Link href={getRedirectMedicalRecordCreate()}>
             <Button variant="primary">Nueva consulta</Button>
           </Link>
         </div>

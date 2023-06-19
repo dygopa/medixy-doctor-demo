@@ -20,14 +20,7 @@ export default function RightSide({ width }: IRightSideProps) {
       "prosit.storage.medical-record-create"
     );
 
-    values = JSON.parse(values);
-
-    if (
-      !values ||
-      typeof values?.currentConsultation?.diagnose === "string" ||
-      typeof values?.vitalSigns === "undefined" ||
-      typeof values?.physical === "undefined"
-    ) {
+    if (!values) {
       const valuesFormulary = {
         currentConsultation: {
           consultationDate: "",

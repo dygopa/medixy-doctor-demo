@@ -12,6 +12,7 @@ export default function Orders() {
   const pathname = usePathname();
 
   const view = params.get("view");
+  const type = params.get("type");
 
   const [showBody, setShowBody] = useState(false);
   const [orders, setOrders] = useState<IOrderMedical[]>([]);
@@ -82,7 +83,9 @@ export default function Orders() {
           type="button"
           onClick={() => {
             setShowBody(!showBody);
-            router.push(`${pathname}?view=orders`);
+            router.push(
+              `${pathname}?view=orders&type=${type ?? "medical-record"}`
+            );
           }}
           className="w-full"
         >

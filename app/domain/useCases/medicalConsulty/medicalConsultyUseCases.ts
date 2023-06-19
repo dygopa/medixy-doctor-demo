@@ -1,6 +1,7 @@
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
 import { ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
+import IAppointmentRepository, { AppointmentRepository } from "infrastructure/repositories/appointment/appointmentRepository";
 import IDiagnosisRepository, { DiagnosisRepository } from "infrastructure/repositories/diagnosis/diagnosisRepository";
 import { MedicalConsultyRepository } from "infrastructure/repositories/medicalConsulty/medicalConsultyRepository";
 import IMedicalMeasureRepository, { MedicalMeasureRepository } from "infrastructure/repositories/medicalMeasure/medicalMeasureRepository";
@@ -13,6 +14,7 @@ export default class MedicalConsultyUseCase {
   private _treatmentRepository: ITreatmentRepository = new TreatmentRepository();
   private _diagnosisRepository: IDiagnosisRepository = new DiagnosisRepository();
   private _medicalRecordRepository: IMedicalRecordRepository = new MedicalRecordRepository();
+  private _appointmentRepository: IAppointmentRepository = new AppointmentRepository();
 
   async getMedicalConsulties(obj: { skip?: number | null; sort?: any; limit?: number | null; subjectId?: number | null }): Promise<IGetMedicalConsultiesResponse> {
     try {
@@ -31,37 +33,39 @@ export default class MedicalConsultyUseCase {
     }
   }
 
-  async createMedicalConsulty(medicalConsulty: IMedicalConsulty): Promise<ICreateMedicalConsultyResponse> {
+  async createMedicalConsulty(obj: { medicalConsulty: IMedicalConsulty; appointmentId?: string | null }): Promise<ICreateMedicalConsultyResponse> {
     try {
-      const response = await this._repository.createMedicalConsulty(medicalConsulty);
+      const response = await this._repository.createMedicalConsulty(obj.medicalConsulty);
 
       if (response instanceof MedicalConsultyFailure) throw response;
 
-      if (medicalConsulty.medicalMeasures && medicalConsulty.medicalMeasures.length > 0) {
-        await Promise.all((medicalConsulty.medicalMeasures.map(async (medicalMeasure) => {
+      if (obj.appointmentId) await this._appointmentRepository.editAppointmentStatus({ appointmentId: obj.appointmentId, status: 7 });
+
+      if (obj.medicalConsulty.medicalMeasures && obj.medicalConsulty.medicalMeasures.length > 0) {
+        await Promise.all((obj.medicalConsulty.medicalMeasures.map(async (medicalMeasure) => {
           medicalMeasure.medicalConsultyId = response.data.id;
 
           await this._medicalMeasuresRepository.createMedicalMeasure(medicalMeasure);
         })))
       }
 
-      if (medicalConsulty.treatments && medicalConsulty.treatments.length > 0) {
-        await Promise.all((medicalConsulty.treatments.map(async (treatment) => {
+      if (obj.medicalConsulty.treatments && obj.medicalConsulty.treatments.length > 0) {
+        await Promise.all((obj.medicalConsulty.treatments.map(async (treatment) => {
           treatment.medicalConsultyId = response.data.id;
 
           await this._treatmentRepository.createTreatment(treatment);
         })))
       } 
 
-      if (medicalConsulty.diagnose && medicalConsulty.diagnose.length > 0) {
-        await Promise.all((medicalConsulty.diagnose.map(async (diagnosis) => {
+      if (obj.medicalConsulty.diagnose && obj.medicalConsulty.diagnose.length > 0) {
+        await Promise.all((obj.medicalConsulty.diagnose.map(async (diagnosis) => {
           diagnosis.medicalConsultyId = response.data.id;
           await this._diagnosisRepository.createDiagnosis(diagnosis);
         })))
       }
 
-      if (medicalConsulty.medicalRecords && medicalConsulty.medicalRecords.length > 0) {
-        await Promise.all((medicalConsulty.medicalRecords.map(async (medicalRecord) => {
+      if (obj.medicalConsulty.medicalRecords && obj.medicalConsulty.medicalRecords.length > 0) {
+        await Promise.all((obj.medicalConsulty.medicalRecords.map(async (medicalRecord) => {
           medicalRecord.medicalConsultyId = response.data.id;
 
           await this._medicalRecordRepository.createMedicalRecord(medicalRecord);

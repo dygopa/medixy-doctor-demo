@@ -32,14 +32,51 @@ export default function Navigator({
     MedicalRecordCreateContext
   );
   const { data: subject } = state.subject;
+  const { data: appointment } = state.appointment;
 
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
 
+  const getRedirectMedicalRecordCreate = () => {
+    if (appointment.data?.id) {
+      return (
+        MedicalRecordRoutesEnum.MedicalRecord +
+        appointment.data.id +
+        MedicalRecordRoutesEnum.MedicalRecordCreate +
+        MedicalRecordRoutesEnum.MedicalRecordCreateSummary +
+        "?type=appointment"
+      );
+    }
+
+    return (
+      MedicalRecordRoutesEnum.MedicalRecord +
+      subject?.subjectId +
+      MedicalRecordRoutesEnum.MedicalRecordCreate +
+      MedicalRecordRoutesEnum.MedicalRecordCreateSummary
+    );
+  };
+
+  const getRedirectMedicalRecordCreateWithErrors = (queryErrors: string) => {
+    if (appointment.data?.id) {
+      return (
+        MedicalRecordRoutesEnum.MedicalRecord +
+        appointment.data.id +
+        MedicalRecordRoutesEnum.MedicalRecordCreate +
+        `?${queryErrors}&type=appointment`
+      );
+    }
+
+    return (
+      MedicalRecordRoutesEnum.MedicalRecord +
+      subject?.subjectId +
+      MedicalRecordRoutesEnum.MedicalRecordCreate +
+      `?${queryErrors}`
+    );
+  };
+
   const validateDiagnosis = (values: any) => {
-    console.log(values)
     let errors = {
       diagnose: false,
       diagnosisCount: 0,
@@ -48,11 +85,14 @@ export default function Navigator({
     errors = {
       ...errors,
       diagnose: values.diagnose.length === 0 ? true : false,
-      diagnosisCount: values.diagnose.length === 0 ? errors.diagnosisCount+1 : errors.diagnosisCount,
+      diagnosisCount:
+        values.diagnose.length === 0
+          ? errors.diagnosisCount + 1
+          : errors.diagnosisCount,
     };
 
     return errors;
-  }
+  };
 
   const validateCurrentConsultation = (values: any) => {
     let errors = {
@@ -169,7 +209,7 @@ export default function Navigator({
     currentConsultationErrors = validateCurrentConsultation(
       values.currentConsultation
     );
-    diagnosisErrors = validateDiagnosis(values.currentConsultation)
+    diagnosisErrors = validateDiagnosis(values.currentConsultation);
     vitalSignsErrors = validateVitalSigns(values.vitalSigns);
 
     return { currentConsultationErrors, diagnosisErrors, vitalSignsErrors };
@@ -212,8 +252,11 @@ export default function Navigator({
 
     const valuesStorage = setValuesFromLocalStorage();
 
-    const { currentConsultationErrors, diagnosisErrors, vitalSignsErrors }: any =
-      validateForm(valuesStorage);
+    const {
+      currentConsultationErrors,
+      diagnosisErrors,
+      vitalSignsErrors,
+    }: any = validateForm(valuesStorage);
 
     let queryErrors = "";
 
@@ -242,12 +285,7 @@ export default function Navigator({
     }
 
     if (queryErrors.length > 0) {
-      router.push(
-        MedicalRecordRoutesEnum.MedicalRecord +
-          subject?.subjectId +
-          MedicalRecordRoutesEnum.MedicalRecordCreate +
-          `?${queryErrors}`
-      );
+      router.push(getRedirectMedicalRecordCreateWithErrors(queryErrors));
       setShowAlertError(true);
       setIsLoading(false);
 
@@ -259,12 +297,7 @@ export default function Navigator({
 
     saveValuesInLocalStorage();
 
-    router.push(
-      MedicalRecordRoutesEnum.MedicalRecord +
-        subject?.subjectId +
-        MedicalRecordRoutesEnum.MedicalRecordCreate +
-        MedicalRecordRoutesEnum.MedicalRecordCreateSummary
-    );
+    router.push(getRedirectMedicalRecordCreate());
   };
 
   return (

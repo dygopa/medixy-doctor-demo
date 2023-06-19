@@ -40,9 +40,10 @@ export default function VitalSigns() {
   const pathname = usePathname();
 
   const view = params.get("view");
+  const type = params.get("type");
   const vitalSignsExpanded = params.get("vitalSignsExpanded");
 
-  const [showBody, setShowBody] = useState(true);
+  const [showBody, setShowBody] = useState(false);
   const [initialRender, setInitialRender] = useState(true);
 
   const saveValuesInLocalStorage = () => {
@@ -93,7 +94,7 @@ export default function VitalSigns() {
   }, [vitalSignsExpanded]);
 
   useEffect(() => {
-    if (!view || view === "vital-signs") {
+    if (view === "vital-signs") {
       setShowBody(true);
     } else {
       setShowBody(false);
@@ -112,7 +113,9 @@ export default function VitalSigns() {
           type="button"
           onClick={() => {
             setShowBody(!showBody);
-            router.push(`${pathname}?view=vital-signs`);
+            router.push(
+              `${pathname}?view=vital-signs&type=${type ?? "medical-record"}`
+            );
           }}
           className="w-full"
         >

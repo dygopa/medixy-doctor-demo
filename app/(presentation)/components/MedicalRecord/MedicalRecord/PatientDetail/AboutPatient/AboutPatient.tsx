@@ -9,15 +9,31 @@ import {
 } from "../../context/MedicalRecordContext";
 import { Menu, Transition } from "@headlessui/react";
 import { useRouter } from "next/navigation";
-import { PatientsRoutesEnum } from "(presentation)/(routes)/patientsRoutes";
 import { getFirstLetter } from "(presentation)/(helper)/strings/strings";
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
 
 export default function AboutPatient() {
   const { state } = useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { data: subject } = state.subject;
+  const { data: appointment } = state.appointment;
 
   const router = useRouter();
+
+  const getRedirectMedicalRecord = () => {
+    if (appointment.data?.id) {
+      return (
+        MedicalRecordRoutesEnum.MedicalRecord +
+        appointment.data.id +
+        "?type=appointment"
+      );
+    }
+
+    return (
+      MedicalRecordRoutesEnum.MedicalRecord +
+      subject?.subjectId +
+      "?type=medical-record"
+    );
+  };
 
   return (
     <div
@@ -80,9 +96,8 @@ export default function AboutPatient() {
                             className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
                             onClick={() => {
                               router.push(
-                                MedicalRecordRoutesEnum.MedicalRecord +
-                                  subject?.subjectId +
-                                  `?view_edit_subject=true`
+                                getRedirectMedicalRecord() +
+                                  `&view_edit_subject=true`
                               );
                             }}
                           >
@@ -101,9 +116,8 @@ export default function AboutPatient() {
                             className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
                             onClick={() => {
                               router.push(
-                                MedicalRecordRoutesEnum.MedicalRecord +
-                                  subject?.subjectId +
-                                  `?view_companion=true`
+                                getRedirectMedicalRecord() +
+                                  `&view_companion=true`
                               );
                             }}
                           >

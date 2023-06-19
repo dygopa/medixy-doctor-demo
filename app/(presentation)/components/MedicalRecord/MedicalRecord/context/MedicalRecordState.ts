@@ -1,11 +1,13 @@
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { ISubject } from "domain/core/entities/subjectEntity";
+import { AppointmentFailure } from "domain/core/failures/appointment/appintmentFailure";
 import { FederalEntityFailure } from "domain/core/failures/federalEntity/federalEntityFailure";
 import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
 import { MedicalMeasureFailure } from "domain/core/failures/medicalMeasure/medicalMeasureFailure";
 import { MedicalRecordFailure } from "domain/core/failures/medicalRecord/medicalRecordFailure";
 import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
 import { TreatmentFailure } from "domain/core/failures/treatment/treatmentFailure";
+import { IGetAppointmentResponse } from "domain/core/response/appointmentsResponse";
 import { IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
 import { IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
@@ -14,6 +16,7 @@ import { IGetTreatmentsResponse } from "domain/core/response/treatmentResponses"
 
 export interface IMedicalRecordState {
     subject: IGetSubjectState;
+    appointment: IGetAppointmentState;
     medicalMeasures: IGetMedicalMeasuresState;
     medicalConsulties: IGetMedicalConsultiesState;
     treatments: IGetTreatmentsState;
@@ -31,6 +34,13 @@ interface IGetSubjectState {
     loading: boolean;
     successful: boolean;
     error: SubjectFailure | null; 
+}
+
+interface IGetAppointmentState {
+    data: IGetAppointmentResponse;
+    loading: boolean;
+    successful: boolean;
+    error: AppointmentFailure | null; 
 }
 
 interface IGetMedicalMeasuresState {
@@ -106,6 +116,12 @@ interface ICompanionCreateCompanionState {
 export const initialState: IMedicalRecordState = {
     subject: {
         data: null,
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    appointment: {
+        data: {} as IGetAppointmentResponse,
         loading: false,
         successful: false,
         error: null,
