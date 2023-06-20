@@ -3,15 +3,14 @@ import Link from "next/link";
 import { HiOutlineBell } from "react-icons/hi";
 import { DashboardContext, IDashboardContext } from "../context/DashboardContext";
 import { useContext, useEffect, useState } from "react";
+import { IUser } from "domain/core/entities/userEntity";
+import moment from "moment";
 
-export default function MedicalConsultationNext() {
+export default function MedicalConsultationNext({ user }: { user: IUser }) {
 
-  const { state, actions, dispatch } = useContext<IDashboardContext>(DashboardContext);
-  const { getLatestAppointment } = actions;
+  const { state } = useContext<IDashboardContext>(DashboardContext);
 
   const { data, loading, error, successful } = state.getLatestAppointment;
-
-  const [loadedAppointment, setLoadedAppointment] = useState(false);
 
   const LoadingAppointment = () => {
     return(
@@ -29,6 +28,10 @@ export default function MedicalConsultationNext() {
   }
 
   const LastOne = () => {
+
+    let appointment:any = data !== null ? data : {}
+    let hour = moment(appointment["fechaReserva"]).utc().format("hh:mm a").toString()
+
     return (
       <div className="w-full h-full lg:flex md:flex sm:flex block justify-between items-start gap-4 p-5 bg-white rounded-md shadow-md">
         <div className="w-[10%] flex flex-col justify-start items-start">
@@ -42,20 +45,29 @@ export default function MedicalConsultationNext() {
               Próxima Consulta
             </p>
             <p className="font-light text-sm text-slate-500">-</p>
-            <p className="font-medium text-base text-slate-900">10:00 am</p>
+            <p className="font-medium text-base text-slate-900">{hour}</p>
           </div>
           <div className="mb-4 mt-2">
             <p className="font-medium text-lg text-slate-900">
-              Fernando Suarez
+              {appointment["nombres"]} {appointment["primerApellido"]}
             </p>
             <p className="font-light text-sm text-slate-500">
               {" "}
-              Dolor de Hombro Izquierdo
+              {appointment["nombre"] ?? ""}
             </p>
           </div>
-          <Button className="w-full" variant="primary">
-            Atender
-          </Button>
+          <Link
+          className='w-full'
+          href={{
+            pathname: "/medical-record/" + appointment["id"],
+            query: {
+              type: "appointment"
+            }
+          }}>
+            <Button variant='primary' className='w-full'>
+              Atender
+            </Button>
+          </Link>
         </div>
       </div>
     );
@@ -86,18 +98,9 @@ export default function MedicalConsultationNext() {
     );
   };
 
-  function loadData(){
-    getLatestAppointment()(dispatch)
-    setLoadedAppointment(true)
-  } 
-
-  useEffect(()=>{
-    loadData()
-  },[loadedAppointment])
-
   return loading ? 
     <LoadingAppointment/> 
-  : (successful && Object.keys(data as Object).length > 0) ? 
+  : (successful && data) ? 
     <LastOne/> 
   : 
     <EmptyState/>;

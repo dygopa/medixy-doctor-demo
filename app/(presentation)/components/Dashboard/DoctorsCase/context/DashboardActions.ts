@@ -8,12 +8,12 @@ export interface IDashboardActions {
   getLatestAppointment: Function;
   getSubject: Function;
 }
-
-const getPendingAppointments = (obj:any) => async (dispatch: Dispatch<any>) => {
+ 
+const getPendingAppointments = (id:number, date:string) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "GET_PENDING_APPOINTMENTS_LOADING" });
 
-    const res: Array<any> = await new DashboardUseCase().getPendingAppointments();
+    const res: Array<any> = await new DashboardUseCase().getPendingAppointments(id, date);
 
     dispatch({ type: "GET_PENDING_APPOINTMENTS_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
@@ -33,11 +33,11 @@ const getCompletedAppointments = (obj:any) => async (dispatch: Dispatch<any>) =>
   }
 }
 
-const getLatestAppointment = (obj:any) => async (dispatch: Dispatch<any>) => {
+const getLatestAppointment = (id:number) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "GET_LATEST_APPOINTMENT_LOADING" });
 
-    const res: Object = await new DashboardUseCase().getLatestAppointment();
+    const res: Object = await new DashboardUseCase().getLatestAppointment(id);
 
     dispatch({ type: "GET_LATEST_APPOINTMENT_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

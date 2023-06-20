@@ -3,8 +3,26 @@ import MedicalConsultationCalendar from "./MedicalConsultationCalendar/MedicalCo
 import MedicalConsultationList from "./MedicalConsultationList/MedicalConsultationList";
 import MedicalConsultationListProvider from "./MedicalConsultationList/context/MedicalConsultationListContext";
 import { IUser } from "domain/core/entities/userEntity";
+import { useContext, useMemo } from "react";
+import moment from "moment";
+import { DashboardContext, IDashboardContext } from "./context/DashboardContext";
 
 function DoctorsCase({ account }: { account: IUser }) {
+  
+  const { actions, dispatch } =
+    useContext<IDashboardContext>(DashboardContext);
+  const { getPendingAppointments, getCompletedAppointments, getSubject, getLatestAppointment} = actions;
+
+  useMemo(() => {
+    if (account){
+      getLatestAppointment(account.userId)(dispatch)
+      getCompletedAppointments()(dispatch);
+      getSubject({})(dispatch);
+      getPendingAppointments(account.userId, moment().format("YYYY-MM-DD"))(dispatch)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [account]);
+
   return (
     <div className="w-full flex flex-col justify-start items-center gap-1">
       <div className="w-full h-auto relative lg:flex justify-between  gap-7">
@@ -32,16 +50,16 @@ function DoctorsCase({ account }: { account: IUser }) {
         </div>
 
         <div className="lg:w-[40%] lg:h-[200px] w-full h-full relative lg:mt-0 mt-8">
-          <MedicalConsultationNext />
+          <MedicalConsultationNext user={account}/>
         </div>
       </div>
 
       <div className="w-full relative lg:flex justify-between  gap-6 mt-8">
         <div className="lg:w-[60%] lg:mb-0 mb-8">
-          <MedicalConsultationCalendar />
+          <MedicalConsultationCalendar user={account}/>
         </div>
         <div className="lg:w-[40%] relative">
-          <MedicalConsultationList />
+          <MedicalConsultationList user={account}/>
         </div>
       </div>
     </div>
