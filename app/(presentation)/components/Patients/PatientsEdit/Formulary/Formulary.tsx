@@ -278,19 +278,19 @@ export default function Formulary() {
     editSubject(companionNewEdit)(dispatch);
   };
 
-  /*useEffect(() => {
-    if (successful) {
+  useEffect(() => {
+    /*if (successful) {
       setTimeout(() => {
         router.push(PatientsRoutesEnum.PatientsList);
       }, 3500);
-    }
+    }*/
     if (successfulCompanion) {
       setTimeout(() => {
         setNewCompanion(false);
       }, 3500);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [successful, successfulCompanion]);*/
+  }, [successful, successfulCompanion]);
 
   let listTabs = ["Información básica", "Contactos"];
 

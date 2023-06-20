@@ -109,6 +109,8 @@ export class LocalitiesRepository implements ILocalitiesRepository {
     try {
       let cookies = nookies.get(undefined, 'access_token');
 
+      console.log(obj)
+
       var myHeaders = new Headers();
 
       myHeaders.append("Content-Type", "application/json");
@@ -121,10 +123,10 @@ export class LocalitiesRepository implements ILocalitiesRepository {
         type: "CONSULTING_ROOM",
         address: obj["address"] ?? "",
         postal_code: obj["postal_code"] ?? "",
-        state_id: obj["state_id"] ?? 0,
+        state_id: obj["federalEntity"] ?? 0,
         city: obj["city"] ?? "",
         latitude: obj["latitude"] ?? 0,
-        longitude: obj["longitude"] ?? 0
+        longitude: obj["longitude"] ?? 0,
       });
 
       var requestOptions = {
@@ -155,6 +157,8 @@ export class LocalitiesRepository implements ILocalitiesRepository {
     try {
       let cookies = nookies.get(undefined, 'access_token');
 
+      console.log(obj)
+
       var myHeaders = new Headers();
 
       myHeaders.append("Content-Type", "application/json");
@@ -166,9 +170,9 @@ export class LocalitiesRepository implements ILocalitiesRepository {
           clues: obj["clues"] ?? "",
           address: obj["address"] ?? "",
           postal_code: obj["postal_code"] ?? "",
-          state: obj["state"]["entityId"] ?? "",
-          municipality: obj["municipality"]["id"] ?? null,
-          countryLocation: obj["countryLocation"]["id"] ?? null,
+          state: obj["federalEntity"] ?? "",
+          municipality: obj["municipality"] ?? null,
+          countryLocation: obj["countryLocation"] ?? null,
           street: obj["street"] ?? null,
           city: obj["city"] ?? "",
           latitude: obj["latitude"] ?? 0,
