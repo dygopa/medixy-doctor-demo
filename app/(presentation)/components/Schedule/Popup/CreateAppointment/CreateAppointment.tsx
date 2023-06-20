@@ -99,7 +99,7 @@ function CreateAppointment({cancelFuntion, customRef}:{
           {fromCalendar ? 
             <p>{`${data["horaInicio"]}`} - {`${data["horaFin"]}`}</p>
             : 
-            (isActualHour ? <p>{`${moment(data["fechaInicio"]).utc().format("HH:mm a")}`} - {`${moment(data["fechaFin"]).utc().format("HH:mm a")}`}</p> : <p>{`${startHour}:${startMinutes}`} - {`${endHour}:${endMinutes}`}</p>)
+            (isActualHour ? <p>{`${moment(data["fechaInicio"]).utc().format("hh:mm a")}`} - {`${moment(data["fechaFin"]).utc().format("hh:mm a")}`}</p> : <p>{`${startHour}:${startMinutes}`} - {`${endHour}:${endMinutes}`}</p>)
           }
           <span className={twMerge([
             "w-fit h-fit px-5 py-1 rounded font-medium text-xs",
