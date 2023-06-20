@@ -6,21 +6,18 @@ import {
   DashboardContext,
   IDashboardContext,
 } from "../context/DashboardContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
+import { IUser } from "domain/core/entities/userEntity";
+import moment from "moment";
 
-export default function MedicalConsultationCalendar() {
-  const { state, actions, dispatch } =
-    useContext<IDashboardContext>(DashboardContext);
-  const { getCompletedAppointments, getSubject, getPendingAppointments } =
-    actions;
+export default function MedicalConsultationCalendar({ user }: { user: IUser }) {
+  const { state } = useContext<IDashboardContext>(DashboardContext);
 
   const { data: completedAppointments, loading: loadingCompletedAppointments } =
     state.getCompletedAppointments;
   const { data: patients, loading: loadingSubjects } = state.getSubjects;
   const { data: pendingAppointments, loading: loadingPendingAppointments } =
     state.getPendingAppointments;
-
-  const [loadedData, setLoadedData] = useState(false);
 
   const StatComponent = ({
     children,
@@ -41,17 +38,6 @@ export default function MedicalConsultationCalendar() {
       </div>
     );
   };
-
-  function loadData() {
-    getCompletedAppointments()(dispatch);
-    getSubject()(dispatch);
-    getPendingAppointments()(dispatch);
-    setLoadedData(true);
-  }
-
-  useEffect(() => {
-    loadData();
-  }, [loadedData]);
 
   return (
     <div
@@ -96,7 +82,14 @@ export default function MedicalConsultationCalendar() {
             <BsCalendarDate />
           </div>
         </StatComponent>
-        <StatComponent value={0} label={"Pacientes"}>
+        <StatComponent 
+          value={
+            loadingSubjects
+              ? 0
+              : (patients as any[])?.length
+          } 
+          label={"Pacientes"}
+        >
           <div className="w-12 h-12 flex justify-center items-center rounded-lg bg-red-200 text-red-800 text-xl">
             <FiUser />
           </div>

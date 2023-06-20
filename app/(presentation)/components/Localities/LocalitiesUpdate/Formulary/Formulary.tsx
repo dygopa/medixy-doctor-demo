@@ -106,8 +106,8 @@ export default function Formulary({
 
   const handlePostalCode = (value: number) => {
     setFormData({ ...formData, postal_code: value });
-    if(value.length > 0) {
-      if (!VALIDATE_NUMBERS(value)) {
+    if(value > 0) {
+      if (typeof value === "number") {
         setErrors((previousState) => {
           return {
             ...previousState,
