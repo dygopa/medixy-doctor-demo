@@ -24,9 +24,9 @@ interface IBasicDataProps {
     country: string;
     email: string;
     birthDate: string;
-    federalEntity: IFederalEntity;
-    municipality: IMunicipality;
-    countryLocation: ICountryLocation;
+    federalEntity: number;
+    municipality: number;
+    countryLocation: number;
     city: string;
     direction: string;
     street: string;
@@ -44,9 +44,9 @@ interface IBasicDataProps {
       phone: string;
       country: string;
       email: string;
-      federalEntity: IFederalEntity;
-      municipality: IMunicipality;
-      countryLocation: ICountryLocation;
+      federalEntity: number;
+      municipality: number;
+      countryLocation: number;
       city: string;
       direction: string;
       street: string;

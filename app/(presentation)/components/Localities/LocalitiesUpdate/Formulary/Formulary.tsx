@@ -158,9 +158,9 @@ export default function Formulary({
     setLoadedStates(true);
   }, [loadedStates]);
 
-  useMemo(() => {
+  /*useMemo(() => {
     if (successfulUpdate) window.location.href = "/localities";
-  }, [successfulUpdate]);
+  }, [successfulUpdate]);*/
 
   if (loading) {
     return (
@@ -384,7 +384,7 @@ export default function Formulary({
                     type={"text"}
                     placeholder="Escribe la ciudad del consultorio..."
                     min={0}
-                    value={formData.city}
+                    defaultValue={formData.city}
                     className="form-control lg:w-[70%]"
                     onChange={(e: any) => {
                       setFormData({ ...formData, city: e.target.value });
@@ -400,7 +400,7 @@ export default function Formulary({
                     type={"text"}
                     placeholder="Escribe la calle..."
                     min={0}
-                    value={formData.street}
+                    defaultValue={formData.street}
                     className="form-control lg:w-[70%]"
                     onChange={(e: any) => {
                       setFormData({ ...formData, street: e.target.value });

@@ -1,11 +1,17 @@
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { ISubject } from "domain/core/entities/subjectEntity";
+import { CountryFailure } from "domain/core/failures/country/countryFailure";
 import { FederalEntityFailure } from "domain/core/failures/federalEntity/federalEntityFailure";
+import { MunicipalityFailure } from "domain/core/failures/municipality/municipalityFailure";
 import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
+import { IGetCountryLocationsResponse } from "domain/core/response/countryResponse";
+import { IGetMunicipalitiesResponse } from "domain/core/response/municipalityResponse";
 
 export interface IEditSubjectState {
     subject: IGetSubjectState;
     getFederalEntities: IEditSubjectEditSubjectState;
+    municipalities: IGetMunicipalitiesState;
+    countryLocations: IGetCountryLocationsState;
     editSubject: IUpdateSubjectState;
 }
 
@@ -16,11 +22,25 @@ interface IGetSubjectState {
     error: SubjectFailure| null; 
 }
 
+interface IGetCountryLocationsState {
+    data: IGetCountryLocationsResponse;
+    loading: boolean;
+    successful: boolean;
+    error: CountryFailure | null; 
+}
+
 interface IEditSubjectEditSubjectState {
     data: Array<IFederalEntity>;
     loading: boolean;
     successful: boolean;
     error: FederalEntityFailure| null; 
+}
+
+interface IGetMunicipalitiesState {
+    data: IGetMunicipalitiesResponse;
+    loading: boolean;
+    successful: boolean;
+    error: MunicipalityFailure | null; 
 }
 
 interface IUpdateSubjectState {
@@ -48,5 +68,18 @@ export const initialState: IEditSubjectState = {
         loading: false,
         successful: false,
         error: null,
-    }
+    },
+    municipalities: {
+        data: {} as IGetMunicipalitiesResponse,
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    countryLocations: {
+        data: {} as IGetCountryLocationsResponse,
+        loading: false,
+        successful: false,
+        error: null,
+    },
+
 }

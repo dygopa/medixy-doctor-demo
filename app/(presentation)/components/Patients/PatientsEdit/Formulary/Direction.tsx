@@ -13,6 +13,7 @@ import {
   SetStateAction,
   useContext,
   useEffect,
+  useMemo,
 } from "react";
 import AutocompleteInputStates from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputStates/AutocompleteInputStates";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
@@ -20,6 +21,7 @@ import AutocompleteInputMunicipalities from "(presentation)/components/core/Base
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import { ICountryLocation } from "domain/core/entities/countryEntity";
 import AutocompleteInputLocations from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputLocations/AutocompleteInputLocations";
+import { IUserContext, UserContext } from "(presentation)/components/Account/context/UserContext";
 
 interface IContactProps {
   values: {
@@ -34,9 +36,9 @@ interface IContactProps {
     country: string;
     birthDate: string;
     email: string;
-    federalEntity: IFederalEntity;
-    municipality: IMunicipality;
-    countryLocation: ICountryLocation;
+    federalEntity: number;
+    municipality: number;
+    countryLocation: number;
     city: string;
     direction: string;
     street: string;
@@ -54,9 +56,9 @@ interface IContactProps {
       phone: string;
       country: string;
       email: string;
-      federalEntity: IFederalEntity;
-      municipality: IMunicipality;
-      countryLocation: ICountryLocation;
+      federalEntity: number;
+      municipality: number;
+      countryLocation: number;
       city: string;
       direction: string;
       street: string;
@@ -98,6 +100,39 @@ export default function Contact({
   errors,
   setErrors,
 }: IContactProps) {
+
+  const { state, actions, dispatch } = useContext<IEditPatientContext>(EditPatientContext);
+  const { getFederalEntities, getMunicipalities, getCountryLocations } = actions;
+  const { data: federalEntities } = state.getFederalEntities;
+  const { data: municipalities, successful } = state.municipalities;
+  const { data: countryLocations } = state.countryLocations;
+
+  useEffect(() => {
+    getFederalEntities()(dispatch);
+  }, [])
+
+  useEffect(() => {
+    getMunicipalities({
+      federalEntityId: values.federalEntity,
+    })(dispatch);
+  }, [values.federalEntity])
+
+  useMemo(() => {
+    if (successful) {
+      if (municipalities.data.length > 0) {
+        const municipalitySearch = municipalities.data.find((elem) => {
+          return elem.id === values.municipality;
+        })
+        getCountryLocations({
+          federalEntityId: values.federalEntity,
+          municipalityId: municipalitySearch?.catalogId,
+        })(dispatch);
+      }
+    }
+  }, [values.federalEntity, values.municipality, successful])
+
+  console.log(countryLocations)
+
   return (
     <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">
       <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
@@ -109,31 +144,20 @@ export default function Contact({
             <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
               Entidad Federativa{" "}<span className="text-primary font-bold">*</span>
             </p>
-            <AutocompleteInputStates
-              defaultValue={values.federalEntity.nameEntity}
-              itemsAdded={[values.federalEntity]}
-              placeholder="Entidad federativa"
-              onChange={(item: string) => {
-                setValues({
-                  ...values,
-                  federalEntity: {} as IFederalEntity,
-                  municipality: {} as IMunicipality,
-                });
-
-                setErrors({
-                  ...errors,
-                  federalEntity: "Debe seleccionar una entidad federativa",
-                });
-              }}
-              onClick={(item: IFederalEntity) => {
-                setValues({
-                  ...values,
-                  federalEntity: item,
-                });
-
-                setErrors({ ...errors, federalEntity: "" });
-              }}
-            />
+            <FormSelect
+              className="form-control w-full"
+              defaultValue={values.federalEntity}
+              value={values.federalEntity}
+              onChange={(e: any) =>
+                setValues({ ...values, federalEntity: parseInt(e.target.value) })
+              }
+            >
+              {federalEntities.map((elem) => (
+                <option key={elem.entityId} value={elem.entityId}>
+                  {elem.nameEntity}
+                </option>
+              ))}
+            </FormSelect>
 
             {errors.federalEntity && (
               <p className="text-danger mt-1">
@@ -145,52 +169,43 @@ export default function Contact({
             <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
               Municipio
             </p>
-            <AutocompleteInputMunicipalities
-              defaultValue={values.municipality.name}
-              itemsAdded={[values.municipality]}
-              placeholder="Municipio"
-              disabled={!values.federalEntity.entityId}
-              federalEntityId={values.federalEntity.entityId}
-              onChange={(item: string) => {
-                setValues({
-                  ...values,
-                  municipality: {} as IMunicipality,
-                  countryLocation: {} as ICountryLocation,
-                });
-              }}
-              onClick={(item: IMunicipality) => {
-                setValues({
-                  ...values,
-                  municipality: item,
-                });
-              }}
-            />
+            <FormSelect
+              className="form-control w-full"
+              disabled={values.federalEntity === 0}
+              defaultValue={values.municipality}
+              value={values.municipality}
+              onChange={(e: any) =>
+                setValues({ ...values, municipality: parseInt(e.target.value) })
+              }
+            >
+              {municipalities.data?.map((elem: IMunicipality) => (
+                  <option key={elem.id} value={elem.id}>
+                    {elem.name}
+                  </option>
+                ))
+              }
+            </FormSelect>
           </div>
           <div className="md:flex md:flex-col justify-between items-start relative gap-1">
             <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
               Localidad
             </p>
-            <AutocompleteInputLocations
-              defaultValue={values.countryLocation.name}
-              itemsAdded={[values.countryLocation]}
-              placeholder="Localidad"
-              disabled={
-                !values.municipality.id || !values.federalEntity.entityId
+            <FormSelect
+              className="form-control w-full"
+              disabled={values.municipality === 0}
+              defaultValue={values.countryLocation}
+              value={values.countryLocation}
+              onChange={(e: any) =>
+                setValues({ ...values, countryLocation: parseInt(e.target.value) })
               }
-              municipalityId={values.municipality.id}
-              onChange={(item: string) => {
-                setValues({
-                  ...values,
-                  countryLocation: {} as ICountryLocation,
-                });
-              }}
-              onClick={(item: ICountryLocation) => {
-                setValues({
-                  ...values,
-                  countryLocation: item,
-                });
-              }}
-            />
+            >
+              {countryLocations.data?.map((elem: ICountryLocation) => (
+                  <option key={elem.id} value={elem.id}>
+                    {elem.name}
+                  </option>
+                ))
+              }
+            </FormSelect>
           </div>
           <div className="my-3 md:my-0 md:flex md:flex-col justify-between items-start relative gap-1">
             <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">

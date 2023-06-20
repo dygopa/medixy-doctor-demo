@@ -22,15 +22,23 @@ export default function Steps() {
   const router = useRouter();
 
   const [values, setValues] = useState({
-    name:"",
+    name: "",
     lastname: "",
     motherlastname: "",
-    age: '',
+    age: "",
     curp: "",
     sex: 0,
     gender: 0,
     phone: "",
+    country: "",
     email: "",
+    birthDate: "",
+    federalEntity: 0,
+    municipality: 0,
+    countryLocation: 0,
+    city: "",
+    direction: "",
+    street: "",
   });
 
   const [errors, setErrors] = useState({
@@ -38,11 +46,13 @@ export default function Steps() {
     name: "",
     lastname: "",
     motherlastname: "",
-    age: '',
+    age: "",
     curp: "",
     sex: "",
-    phone: "",
+    country: "",
     email: "",
+    phone: "",
+    federalEntity: "",
   });
 
   const validForm = () => {
@@ -83,8 +93,16 @@ export default function Steps() {
       sex: values.sex,
       gender: values.gender,
       phoneNumber: values.phone,
+      federativeEntityId: values.federalEntity,
+      municipalityId: values.municipality ?? null,
+      countryLocationId: values.countryLocation ?? null,
+      street: values.street,
+      country: values.country,
       state: 0,
+      address: values.direction,
+      city: values.city,
       pictureUrl: "",
+      isPatient: true,
       birthDate:
         values.age.length > 0 ? new Date(values.age) : null,
       createdOn: new Date(),

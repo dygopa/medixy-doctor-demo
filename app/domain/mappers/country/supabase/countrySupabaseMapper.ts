@@ -20,7 +20,7 @@ export function countryLocationSupabaseToMap(data: any): ICountryLocation {
   return {
     id: data?.id ?? 0,
     municipalityId: data?.municipioCatalogoId ?? 0,
-    name: data?.name ?? "",
+    name: data?.nombre ?? "",
     federalEntityId: data?.entidadFederativaId ?? 0,
   } as ICountryLocation;
 }

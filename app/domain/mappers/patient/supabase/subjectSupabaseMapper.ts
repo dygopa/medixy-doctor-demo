@@ -19,7 +19,7 @@ export function subjectSupabaseToMap(data: any): ISubject {
     federativeEntityId: data?.entidadFederativaId ?? null,
     municipalityId: data?.municipioId ?? null,
     countryLocationId: data?.localidadPaisId ?? null,
-    street: data?.street ?? null,
+    street: data?.calle ?? null,
     city: data?.ciudad ?? "",
     pictureUrl: data?.avatar ?? "",
     isPatient: data?.esPaciente ?? "",
