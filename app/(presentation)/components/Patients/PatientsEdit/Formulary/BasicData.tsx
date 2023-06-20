@@ -1,4 +1,4 @@
-import { VALIDATE_NAMES } from "(presentation)/(utils)/errors-validation";
+import { VALIDATE_NAMES, VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import {
   FormInput,
   FormSelect,
@@ -154,6 +154,15 @@ export default function BasicData({
 
   const handlephone = (value: string) => {
     setValues({ ...values, phone: value });
+    if (!VALIDATE_NUMBERS(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          phone: "El teléfono del paciente solo lleva números",
+        };
+      });
+      return true;
+    }
     if (value.length < 2) {
       setErrors((previousState) => {
         return {

@@ -156,7 +156,8 @@ export default function WithoutSteps({
           disabled={
             createUserLocalityLoading ||
             formData?.name === "" ||
-            formData?.address === ""
+            formData?.address === "" ||
+            formData?.postal_code === ""
           }
           onClick={() => {
             console.log(formData);
@@ -224,7 +225,7 @@ export default function WithoutSteps({
               </div>
               <div className="lg:flex justify-between items-start relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Código postal
+                  Código postal <span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"text"}

@@ -104,10 +104,10 @@ export default function Formulary({
     }
   }, [formData.federalEntity, formData.municipality, successfulMunicipalities])
 
-  const handlePostalCode = (value: number) => {
-    setFormData({ ...formData, postal_code: value });
-    if(value > 0) {
-      if (typeof value === "number") {
+  const handlePostalCode = (value: string) => {
+    setFormData({ ...formData, postal_code: parseInt(value) });
+    if(value.length > 0) {
+      if (!VALIDATE_NUMBERS(value)) {
         setErrors((previousState) => {
           return {
             ...previousState,
@@ -148,7 +148,7 @@ export default function Formulary({
       },
     });
   };
-  console.log(data)
+  
   useEffect(() => {
     if (successful) {
       setFormDataValues();
@@ -178,9 +178,9 @@ export default function Formulary({
     setFormData({ ...formData, media: obj });
   }
 
-  useMemo(() => {
+  /*useMemo(() => {
     if (successfulUpdate) window.location.href = "/localities";
-  }, [successfulUpdate]);
+  }, [successfulUpdate]);*/
 
   if (loading) {
     return (
@@ -193,6 +193,7 @@ export default function Formulary({
     );
   }
 
+  console.log(formData)
   return (
     <>
       <AlertComponent
@@ -293,7 +294,7 @@ export default function Formulary({
                 </div>
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Código postal
+                    Código postal<span className="text-primary font-bold">*</span>
                   </p>
                   <FormInput
                     type={"text"}

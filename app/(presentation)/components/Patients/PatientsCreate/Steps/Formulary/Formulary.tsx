@@ -20,7 +20,7 @@ import { ISubject } from "domain/core/entities/subjectEntity";
 import { subjectFailuresEnum } from "domain/core/failures/subject/subjectFailure";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { useRouter } from "next/navigation";
-import { VALIDATE_NAMES } from "(presentation)/(utils)/errors-validation";
+import { VALIDATE_NAMES, VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import { ICountryLocation } from "domain/core/entities/countryEntity";
 
@@ -197,6 +197,15 @@ export default function Formulary({
 
   const handlephone = (value: string) => {
     setValues({ ...values, phone: value });
+    if (!VALIDATE_NUMBERS(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          phone: "El teléfono del paciente solo lleva números",
+        };
+      });
+      return true;
+    }
     if (value.length < 2) {
       setErrors((previousState) => {
         return {
