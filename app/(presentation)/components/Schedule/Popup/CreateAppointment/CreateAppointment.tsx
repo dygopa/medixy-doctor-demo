@@ -258,8 +258,8 @@ function CreateAppointment({cancelFuntion, customRef}:{
             <ExampleComponent data={{
               id: predifinedReservation["attentionWindowId"],
               fechaInicio: predifinedReservation["date"],
-              horaInicio: moment(predifinedReservation["date"]).format("hh:mm a"),
-              horaFin: moment(predifinedReservation["dateEnd"]).format("hh:mm a"),
+              horaInicio: moment(predifinedReservation["date"]).utc().format("hh:mm a"),
+              horaFin: moment(predifinedReservation["dateEnd"]).utc().format("hh:mm a"),
               tipo: predifinedReservation["type"] === "WINDOW" ? 1 : 2,
             }} />
           : <div className="w-full flex flex-col justify-start items-center gap-6">
