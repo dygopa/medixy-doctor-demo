@@ -12,6 +12,8 @@ const getFederalEntities = (obj: { searchQuery: string }) => async (dispatch: Di
 
         const res: IFederalEntity[] = await new FederalEntitiesUseCase().getFederalEntities({ searchQuery: obj.searchQuery, limit: 100 });
 
+        console.log(res)
+
         dispatch({ type: "GET_FEDERAL_ENTITIES_SUCCESSFUL", payload: { data: res } });
     } catch (error) {
         dispatch({ type: "GET_FEDERAL_ENTITIES_ERROR", payload: { error: error } });
