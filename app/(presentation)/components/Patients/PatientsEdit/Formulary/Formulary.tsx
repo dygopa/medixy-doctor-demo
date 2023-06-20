@@ -98,8 +98,11 @@ export default function Formulary() {
     email: "",
     birthDate: "",
     federalEntity: 0,
+    municipality: 0,
+    countryLocation: 0,
     city: "",
     direction: "",
+    street: "",
   });
 
   const [errorsEditCompanion, setErrorsEditCompanion] = useState({
@@ -113,6 +116,7 @@ export default function Formulary() {
     country: "",
     email: "",
     phone: "",
+    federalEntity: "",
   });
 
   const [valuesNewCompanion, setValuesNewCompanion] = useState({
@@ -128,8 +132,11 @@ export default function Formulary() {
     email: "",
     birthDate: "",
     federalEntity: 0,
+    municipality: 0,
+    countryLocation: 0,
     city: "",
     direction: "",
+    street: "",
   });
 
   const [errorsNewCompanion, setErrorsNewCompanion] = useState({
@@ -143,6 +150,7 @@ export default function Formulary() {
     country: "",
     email: "",
     phone: "",
+    federalEntity: "",
   });
 
   const setInitialValues = () => {
@@ -251,6 +259,9 @@ export default function Formulary() {
       gender: valuesEditCompanion.gender,
       phoneNumber: valuesEditCompanion.phone,
       federativeEntityId: valuesEditCompanion.federalEntity,
+      municipalityId: valuesEditCompanion.municipality ?? null,
+      countryLocationId: valuesEditCompanion.countryLocation ?? null,
+      street: valuesEditCompanion.street,
       country: valuesEditCompanion.country,
       state: 0,
       address: valuesEditCompanion.direction,
@@ -267,19 +278,19 @@ export default function Formulary() {
     editSubject(companionNewEdit)(dispatch);
   };
 
-  useEffect(() => {
-    /*if (successful) {
+  /*useEffect(() => {
+    if (successful) {
       setTimeout(() => {
         router.push(PatientsRoutesEnum.PatientsList);
       }, 3500);
-    }*/
+    }
     if (successfulCompanion) {
       setTimeout(() => {
         setNewCompanion(false);
       }, 3500);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [successful, successfulCompanion]);
+  }, [successful, successfulCompanion]);*/
 
   let listTabs = ["Información básica", "Contactos"];
 
@@ -322,6 +333,9 @@ export default function Formulary() {
         gender: valuesNewCompanion.gender,
         phoneNumber: valuesNewCompanion.phone,
         federativeEntityId: valuesNewCompanion.federalEntity,
+        municipalityId: valuesNewCompanion.municipality ?? null,
+        countryLocationId: valuesNewCompanion.countryLocation ?? null,
+        street: valuesNewCompanion.street,
         country: valuesNewCompanion.country,
         state: 0,
         address: valuesNewCompanion.direction,

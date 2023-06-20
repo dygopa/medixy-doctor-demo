@@ -21,6 +21,8 @@ import { subjectFailuresEnum } from "domain/core/failures/subject/subjectFailure
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { useRouter } from "next/navigation";
 import { VALIDATE_NAMES } from "(presentation)/(utils)/errors-validation";
+import { IMunicipality } from "domain/core/entities/municipalityEntity";
+import { ICountryLocation } from "domain/core/entities/countryEntity";
 
 interface IBasicDataProps {
   values: {
@@ -32,7 +34,15 @@ interface IBasicDataProps {
     sex: number;
     gender: number;
     phone: string;
+    country: string;
     email: string;
+    birthDate: string;
+    federalEntity: number;
+    municipality: number;
+    countryLocation: number;
+    city: string;
+    direction: string;
+    street: string;
   };
   setValues: Dispatch<
     SetStateAction<{
@@ -43,8 +53,16 @@ interface IBasicDataProps {
       curp: string;
       sex: number;
       gender: number;
+      birthDate: string;
       phone: string;
+      country: string;
       email: string;
+      federalEntity: number;
+      municipality: number;
+      countryLocation: number;
+      city: string;
+      direction: string;
+      street: string;
     }>
   >;
   errors: {
@@ -55,8 +73,10 @@ interface IBasicDataProps {
     age: string;
     curp: string;
     sex: string;
+    country: string;
     email: string;
     phone: string;
+    federalEntity: string;
   };
   setErrors: Dispatch<
     SetStateAction<{
@@ -67,8 +87,10 @@ interface IBasicDataProps {
       age: string;
       curp: string;
       sex: string;
+      country: string;
       email: string;
       phone: string;
+      federalEntity: string;
     }>
   >;
 }
@@ -79,6 +101,37 @@ export default function Formulary({
   errors,
   setErrors,
 }: IBasicDataProps) {
+
+  const { state, actions, dispatch } = useContext<ICreatePatientContext>(CreatePatientContext);
+  const { getFederalEntities, getMunicipalities, getCountryLocations } = actions;
+  const { data: federalEntities } = state.getFederalEntities;
+  const { data: municipalities, successful } = state.municipalities;
+  const { data: countryLocations } = state.countryLocations;
+
+  useEffect(() => {
+    getFederalEntities()(dispatch);
+  }, [])
+
+  useEffect(() => {
+    getMunicipalities({
+      federalEntityId: values.federalEntity,
+    })(dispatch);
+  }, [values.federalEntity])
+
+  useMemo(() => {
+    if (successful) {
+      if (municipalities.data.length > 0) {
+        const municipalitySearch = municipalities.data.find((elem) => {
+          return elem.id === values.municipality;
+        })
+        getCountryLocations({
+          federalEntityId: values.federalEntity,
+          municipalityId: municipalitySearch?.catalogId,
+        })(dispatch);
+      }
+    }
+  }, [values.federalEntity, values.municipality, successful])
+
   const handlename = (value: string, e:any) => {
     setValues({ ...values, name: value });
     if (value.length < 2) {
@@ -286,7 +339,108 @@ export default function Formulary({
         />
       </div>
 
-      <div className="input-group w-full"></div>
+      <div className="md:flex gap-3 w-full">
+        <div className="input-group md:w-[50%]">
+          <p className="input-label py-2">
+            Entidad Federativa
+          </p>
+          <FormSelect
+            className="form-control w-full"
+            defaultValue={values.federalEntity}
+            value={values.federalEntity}
+            onChange={(e: any) =>
+              setValues({ ...values, federalEntity: parseInt(e.target.value) })
+            }
+          >
+            {federalEntities.map((elem) => (
+              <option key={elem.entityId} value={elem.entityId}>
+                {elem.nameEntity}
+              </option>
+            ))}
+          </FormSelect>
+        </div>
+        <div className="input-group mt-3 md:mt-0 md:w-[50%]">
+          <p className="input-label py-2">Municipio</p>
+          <FormSelect
+            className="form-control w-full"
+            disabled={values.federalEntity === 0}
+            defaultValue={values.municipality}
+            value={values.municipality}
+            onChange={(e: any) =>
+              setValues({ ...values, municipality: parseInt(e.target.value) })
+            }
+          >
+            {municipalities.data?.map((elem: IMunicipality) => (
+                <option key={elem.id} value={elem.id}>
+                  {elem.name}
+                </option>
+              ))
+            }
+          </FormSelect>
+        </div>
+      </div>
+
+      <div className="md:flex gap-3 w-full">
+        <div className="input-group md:w-[50%]">
+          <p className="input-label py-2">
+            Localidad
+          </p>
+          <FormSelect
+            className="form-control w-full"
+            disabled={values.municipality === 0}
+            defaultValue={values.countryLocation}
+            value={values.countryLocation}
+            onChange={(e: any) =>
+              setValues({ ...values, countryLocation: parseInt(e.target.value) })
+            }
+          >
+            {countryLocations.data?.map((elem: ICountryLocation) => (
+                <option key={elem.id} value={elem.id}>
+                  {elem.name}
+                </option>
+              ))
+            }
+          </FormSelect>
+        </div>
+        <div className="input-group mt-3 md:mt-0 md:w-[50%]">
+          <p className="input-label py-2">Ciudad</p>
+          <FormInput
+            type={"text"}
+            placeholder="Ciudad"
+            min={0}
+            value={values.city}
+            className="form-control w-full"
+            onChange={(e: any) => {
+              setValues({ ...values, city: e.target.value });
+            }}
+          />
+        </div>
+      </div>
+      <div className="input-group w-full">
+        <p className="input-label py-2">Calle</p>
+        <FormInput
+            type={"text"}
+            placeholder="Calle"
+            min={0}
+            value={values.street}
+            className="form-control w-full"
+            onChange={(e: any) => {
+              setValues({ ...values, street: e.target.value });
+            }}
+          />
+      </div>
+      <div className="input-group w-full">
+        <p className="input-label py-2">Dirección</p>
+        <FormInput
+            type={"text"}
+            value={values.direction}
+            placeholder="Dirección completa de su residencia"
+            className="form-control w-full"
+            onChange={(e: any) => {
+              setValues({ ...values, direction: e.target.value });
+            }}
+          />
+      </div>
     </div>
   );
 }
