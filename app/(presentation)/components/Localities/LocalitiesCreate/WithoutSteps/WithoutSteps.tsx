@@ -29,6 +29,8 @@ import {
   StepByStepContext,
 } from "(presentation)/components/core/StepByStep/context/StepByStepContext";
 import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
+import { IMunicipality } from "domain/core/entities/municipalityEntity";
+import { ICountryLocation } from "domain/core/entities/countryEntity";
 
 export default function WithoutSteps({
   userId,
@@ -40,7 +42,7 @@ export default function WithoutSteps({
   const { state, actions, dispatch } =
     useContext<ILocalitiesContext>(LocalitiesContext);
 
-  const { createUserLocality, getCountryStates } = actions;
+  const { createUserLocality, getFederalEntities } = actions;
 
   const {
     loading: createUserLocalityLoading,
@@ -48,12 +50,7 @@ export default function WithoutSteps({
     error: createUserLocalityError,
   } = state.createUserLocality;
 
-  const {
-    data: states,
-    loading: statesLoading,
-    successful: statesSuccess,
-    error: statesError,
-  } = state.getCountryStates;
+  const { data: federalEntities } = state.getFederalEntities;
 
   const { actions: actionsStep, dispatch: dispatchStep } =
     useContext<IStepByStepContext>(StepByStepContext);
@@ -63,11 +60,11 @@ export default function WithoutSteps({
     name: "",
     code: "",
     postal_code: "",
-    state_id: 0,
     city: "",
     clues: "",
     latitude: 0,
     longitude: 0,
+    federalEntity: 0,
     address: "",
     media: {
       data: "",
@@ -78,6 +75,10 @@ export default function WithoutSteps({
   let [ errors, setErrors ] = useState({
     postal_code: "",
   })
+
+  useEffect(() => {
+    getFederalEntities()(dispatch);
+  }, [])
 
   const handlePostalCode = (value: string) => {
     setFormData({ ...formData, postal_code: value });
@@ -122,11 +123,6 @@ export default function WithoutSteps({
     setFormData({ ...formData, media: obj });
   }
 
-  useEffect(() => {
-    getCountryStates()(dispatch);
-    setLoadedStates(true);
-  }, [loadedStates]);
-
   useMemo(() => {
     if (createUserLocalitySuccess) {
       createUserSteps(accountId, "LOCATION_CREATED")(dispatchStep);
@@ -135,6 +131,8 @@ export default function WithoutSteps({
       }, 1000);
     }
   }, [createUserLocalitySuccess]);
+
+  console.log(formData)
 
   return (
     <>
@@ -243,25 +241,24 @@ export default function WithoutSteps({
               <div className="w-full flex justify-start items-center gap-5">
                 <div className="lg:flex justify-between items-center relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Estado
+                    Entidad Federativa
                   </p>
                   <FormSelect
-                    value={formData.state_id}
-                    className="form-control lg:w-[70%]"
-                    onChange={(e: any) => {
-                      setFormData({ ...formData, state_id: e.target.value });
-                    }}
+                    className="form-control w-full"
+                    defaultValue={formData.federalEntity}
+                    value={formData.federalEntity}
+                    onChange={(e: any) =>
+                      setFormData({ ...formData, federalEntity: parseInt(e.target.value) })
+                    }
                   >
-                    <option>Estado del consultorio...</option>
-                    {states &&
-                      [...(states as Array<any>)].map((elem, i) => (
-                        <option key={i} value={elem["id"]}>
-                          {elem["name"]}
-                        </option>
-                      ))}
+                    {federalEntities.map((elem) => (
+                      <option key={elem.entityId} value={elem.entityId}>
+                        {elem.nameEntity}
+                      </option>
+                    ))}
                   </FormSelect>
                 </div>
-                <div className="lg:flex justify-between items-center relative w-full gap-3">
+                <div className="lg:flex justify-between items-center relative w-full gap-3"> 
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     Ciudad
                   </p>

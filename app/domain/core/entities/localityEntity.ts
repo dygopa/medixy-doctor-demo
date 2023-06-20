@@ -8,10 +8,13 @@ export interface ILocality {
     postal_code: number;
     state: IState;
     city: string;
+    federativeEntityId?: number | null;
+    municipalityId?: number | null;
+    countryLocationId?: number | null;
+    street?: string | null;
     image_url: string;
     latitude: number;
     longitude: number;
-    street: string;
 }
 
 interface IState {
