@@ -44,7 +44,7 @@ export default function Formulary({
 
   const { state, actions, dispatch } =
     useContext<ILocalitiesContext>(LocalitiesContext);
-  const { gettingUserLocality, updateUserLocality, getCountryStates } = actions;
+  const { gettingUserLocality, updateUserLocality, getFederalEntities, getMunicipalities, getCountryLocations } = actions;
   const { data, loading, successful, error } = state.gettingUserLocality;
   const {
     data: dataUpdate,
@@ -53,24 +53,21 @@ export default function Formulary({
     error: errorUpdate,
   } = state.updateUserLocality;
 
-  const {
-    data: states,
-    loading: statesLoading,
-    successful: statesSuccess,
-    error: statesError,
-  } = state.getCountryStates;
+  const { data: federalEntities } = state.getFederalEntities;
+  const { data: municipalities, successful: successfulMunicipalities } = state.municipalities;
+  const { data: countryLocations } = state.countryLocations;
 
   let [formData, setFormData] = useState({
     name: "",
     code: "",
     city: "",
-    postal_code: "",
+    postal_code: 0,
     latitude: 0,
     longitude: 0,
     clues: "",
-    state: {} as IFederalEntity,
-    municipality: {} as IMunicipality,
-    countryLocation: {} as ICountryLocation,
+    federalEntity: 0,
+    municipality: 0,
+    countryLocation: 0,
     street: "",
     address: "",
     media: {
@@ -83,7 +80,31 @@ export default function Formulary({
     postal_code: "",
   })
 
-  const handlePostalCode = (value: string) => {
+  useEffect(() => {
+    getFederalEntities()(dispatch);
+  }, [])
+
+  useEffect(() => {
+    getMunicipalities({
+      federalEntityId: formData.federalEntity,
+    })(dispatch);
+  }, [formData.federalEntity])
+
+  useMemo(() => {
+    if (successfulMunicipalities) {
+      if (municipalities.data.length > 0) {
+        const municipalitySearch = municipalities.data.find((elem) => {
+          return elem.id === formData.municipality;
+        })
+        getCountryLocations({
+          federalEntityId: formData.federalEntity,
+          municipalityId: municipalitySearch?.catalogId,
+        })(dispatch);
+      }
+    }
+  }, [formData.federalEntity, formData.municipality, successfulMunicipalities])
+
+  const handlePostalCode = (value: number) => {
     setFormData({ ...formData, postal_code: value });
     if(value.length > 0) {
       if (!VALIDATE_NUMBERS(value)) {
@@ -112,18 +133,22 @@ export default function Formulary({
       name: data?.name ?? "",
       code: data?.code ?? "",
       clues: data?.clues ?? "",
-      state: {} as IFederalEntity,
-      municipality: {} as IMunicipality,
-      countryLocation: {} as ICountryLocation,
-      street: data?.street,
+      federalEntity: data?.state.id ?? 0,
+      municipality: data?.municipalityId ?? 0,
+      countryLocation: data?.countryLocationId ?? 0,
+      street: data?.street ?? "",
+      city: data?.city ?? "",
+      postal_code: data?.postal_code ?? "",
       address: data?.address ?? "",
+      latitude: data?.latitude ?? "",
+      longitude: data?.longitude ?? "",
       media: {
         data: data?.image_url ?? "",
         type: data?.type,
       },
     });
   };
-
+  console.log(data)
   useEffect(() => {
     if (successful) {
       setFormDataValues();
@@ -153,14 +178,9 @@ export default function Formulary({
     setFormData({ ...formData, media: obj });
   }
 
-  useEffect(() => {
-    getCountryStates()(dispatch);
-    setLoadedStates(true);
-  }, [loadedStates]);
-
-  /*useMemo(() => {
+  useMemo(() => {
     if (successfulUpdate) window.location.href = "/localities";
-  }, [successfulUpdate]);*/
+  }, [successfulUpdate]);
 
   if (loading) {
     return (
@@ -290,28 +310,24 @@ export default function Formulary({
                 <div className="lg:flex justify-between items-center relative w-full gap-3">
                   <div className="lg:w-[445px]">
                     <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                      Estado
+                      Entidad Federativa
                     </p>
                   </div>
                   <div className="w-full flex justify-end">
-                    <AutocompleteInputStates
-                      defaultValue={formData.state.nameEntity}
-                      itemsAdded={[formData.state]}
-                      placeholder="Estado"
-                      onChange={(item: string) => {
-                        setFormData({
-                          ...formData,
-                          state: {} as IFederalEntity,
-                          municipality: {} as IMunicipality,
-                        });
-                      }}
-                      onClick={(item: IFederalEntity) => {
-                        setFormData({
-                          ...formData,
-                          state: item,
-                        });
-                      }}
-                    />
+                  <FormSelect
+                    className="form-control w-full"
+                    defaultValue={formData.federalEntity}
+                    value={formData.federalEntity}
+                    onChange={(e: any) =>
+                      setFormData({ ...formData, federalEntity: parseInt(e.target.value) })
+                    }
+                  >
+                    {federalEntities.map((elem) => (
+                      <option key={elem.entityId} value={elem.entityId}>
+                        {elem.nameEntity}
+                      </option>
+                    ))}
+                  </FormSelect>
                   </div>
                 </div>
 
@@ -322,26 +338,22 @@ export default function Formulary({
                     </p>
                   </div>
                   <div className="w-full flex justify-end">
-                    <AutocompleteInputMunicipalities
-                      defaultValue={formData.municipality.name}
-                      itemsAdded={[formData.municipality]}
-                      placeholder="Municipio"
-                      disabled={!formData.state.entityId}
-                      federalEntityId={formData.state.entityId}
-                      onChange={(item: string) => {
-                        setFormData({
-                          ...formData,
-                          municipality: {} as IMunicipality,
-                          countryLocation: {} as ICountryLocation,
-                        });
-                      }}
-                      onClick={(item: IMunicipality) => {
-                        setFormData({
-                          ...formData,
-                          municipality: item,
-                        });
-                      }}
-                    />
+                  <FormSelect
+                    className="form-control w-full"
+                    disabled={formData.federalEntity === 0}
+                    defaultValue={formData.municipality}
+                    value={formData.municipality}
+                    onChange={(e: any) =>
+                      setFormData({ ...formData, municipality: parseInt(e.target.value) })
+                    }
+                  >
+                    {municipalities.data?.map((elem: IMunicipality) => (
+                        <option key={elem.id} value={elem.id}>
+                          {elem.name}
+                        </option>
+                      ))
+                    }
+                  </FormSelect>
                   </div>
                 </div>
 
@@ -352,27 +364,22 @@ export default function Formulary({
                     </p>
                   </div>
                   <div className="w-full flex justify-end">
-                    <AutocompleteInputLocations
-                      defaultValue={formData.countryLocation.name}
-                      itemsAdded={[formData.countryLocation]}
-                      placeholder="Localidad"
-                      disabled={
-                        !formData.municipality.id || !formData.state.entityId
-                      }
-                      municipalityId={formData.municipality.id}
-                      onChange={(item: string) => {
-                        setFormData({
-                          ...formData,
-                          countryLocation: {} as ICountryLocation,
-                        });
-                      }}
-                      onClick={(item: ICountryLocation) => {
-                        setFormData({
-                          ...formData,
-                          countryLocation: item,
-                        });
-                      }}
-                    />
+                  <FormSelect
+                    className="form-control w-full"
+                    disabled={formData.municipality === 0}
+                    defaultValue={formData.countryLocation}
+                    value={formData.countryLocation}
+                    onChange={(e: any) =>
+                      setFormData({ ...formData, countryLocation: parseInt(e.target.value) })
+                    }
+                  >
+                    {countryLocations.data?.map((elem: ICountryLocation) => (
+                        <option key={elem.id} value={elem.id}>
+                          {elem.name}
+                        </option>
+                      ))
+                    }
+                  </FormSelect>
                   </div>
                 </div>
 
