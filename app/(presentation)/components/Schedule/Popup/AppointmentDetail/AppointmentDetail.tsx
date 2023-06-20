@@ -77,7 +77,7 @@ function AppointmentDetail({cancelFuntion, customRef}:{
                 </div>
                 <div className="w-full grid grid-cols-2 justify-between items-center gap-3">
                     <DataSpan label={"Para cuando"} value={moment(data["fechaReserva"]).utc().format("DD-MM-YYYY")} />
-                    <DataSpan label={"A las"} value={moment(data["fechaReserva"]).format("hh:mm a")} />
+                    <DataSpan label={"A las"} value={moment(data["fechaReserva"]).utc().format("hh:mm a")} />
                 </div>
                 <div className="w-full grid grid-cols-2 justify-between items-center gap-3">
                     <DataSpan label={"Quien hizo la cita"} value={`${user.names} ${user.lastName}`} />

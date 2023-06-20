@@ -1,16 +1,21 @@
 import { DashboardFailure } from "domain/core/failures/dashboard/DashboardFailure";
+import { ScheduleFailure } from "domain/core/failures/schedule/scheduleFailure";
 import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
 import { IGetSubjectsResponse } from "domain/core/response/subjectsResponse";
+import { ScheduleRepository } from "infrastructure/repositories/schedule/scheduleRepository";
 import { SubjectRepository } from "infrastructure/repositories/subject/subjectRepository";
+import moment from "moment";
 
 export default class DashboardUseCase {
     private _repositorySubjects: SubjectRepository = new SubjectRepository();
+    private _repositorySchedule: ScheduleRepository = new ScheduleRepository();
 
-    async getPendingAppointments(): Promise<Array<any>> {
+    async getPendingAppointments(id:number, date:string): Promise<Array<any>> {
         try {
-            const response:any[] = [];
+            
+            const response = await this._repositorySchedule.getAppointments(id, date);
 
-            if (response instanceof DashboardFailure) throw response;
+            if (response instanceof ScheduleFailure) throw response;
 
             return response;
         } catch (error) {
@@ -30,12 +35,16 @@ export default class DashboardUseCase {
         }
     }
 
-    async getLatestAppointment(): Promise<any> {
+    async getLatestAppointment(id:number): Promise<any> {
         try {
-            const response:any = {};
 
-            if (response instanceof DashboardFailure) throw response;
+            const list:any[] | ScheduleFailure = await this._repositorySchedule.getAppointments(id, moment().format("YYYY-MM-DD"));
 
+            if (list instanceof ScheduleFailure) throw list;
+
+            let response = list.find(elem => moment(elem["fechaReserva"]).utc().isSameOrBefore(moment().utc()))
+            console.log(response)
+            
             return response;
         } catch (error) {
             throw error;

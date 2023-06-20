@@ -15,7 +15,7 @@ const AppointmentComponent = ({onClick, data}:{
 }) => {
 
   let isPending = data["estado"] === 1
-  let hour = moment(data["fechaReserva"]).format("hh:mm a").toString()
+  let hour = moment(data["fechaReserva"]).utc().format("hh:mm a").toString()
 
   return(
     <div onClick={onClick} className="cursor-pointer relative w-full min-h-[9vh] h-[9vh] max-h-[14vh] bg-white flex justify-between items-center p-3 gap-2 box-border rounded-md shadow-sm">
@@ -66,7 +66,12 @@ const Side = () => {
       </div>
       <div className='w-full flex flex-col justify-start items-center gap-3'>
         {loading && <Loading/>}
-        {(successful && data.length > 0) && data.map((elem:any) => <AppointmentComponent data={elem} onClick={()=>{ appointmentDetail(elem)(dispatch); changeStatusPopup(true)(dispatch); changeTypePopup(2)(dispatch) }} /> )}
+        {(successful && data.length > 0) && data.map((elem:any) => <AppointmentComponent 
+          data={elem} 
+          onClick={()=>{
+            appointmentDetail({...elem, appoinmentId: elem["id"]})(dispatch); changeStatusPopup(true)(dispatch); changeTypePopup(2)(dispatch) 
+          }} 
+        /> )}
         {(successful && data.length === 0) && 
           <div className="w-full h-auto rounded-md overflow-y-auto text-center mt-8">
             <p className="font-medium text-lg text-slate-900">
