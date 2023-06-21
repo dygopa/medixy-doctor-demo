@@ -1,8 +1,13 @@
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import clsx from "clsx";
-import { ICIE10 } from "domain/core/entities/cie10Entity";
 import { useSearchParams } from "next/navigation";
-import { ChangeEvent, Dispatch, SetStateAction, useEffect } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+  useState,
+} from "react";
 
 type valuesTypes = {
   consultationDate: string;
@@ -33,6 +38,29 @@ export default function BasicDetails({
 
   const consultationDate = params.get("consultationDate");
   const consultationReason = params.get("consultationReason");
+
+  const [screenSize, setScreenSize] = useState({ width: 0, height: 0 });
+
+  function getCurrentDimension() {
+    return {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    };
+  }
+
+  useEffect(() => {
+    const updateDimension = () => {
+      setScreenSize(getCurrentDimension());
+    };
+
+    if (screenSize.width === 0 && screenSize.height === 0) updateDimension();
+
+    window.addEventListener("resize", updateDimension);
+
+    return () => {
+      window.removeEventListener("resize", updateDimension);
+    };
+  }, [screenSize]);
 
   const handleConsultationDateErrors = (value: string) => {
     if (value.length === 0) {
@@ -103,8 +131,13 @@ export default function BasicDetails({
 
   return (
     <div>
-      <div className="xl:flex justify-between mb-4">
-        <div className="xl:flex lg:flex xl:mb-0 mb-4 items-center">
+      <div
+        className={clsx([
+          "justify-between mb-4",
+          screenSize.width <= 1500 ? "block" : "xl:flex",
+        ])}
+      >
+        <div className="xl:flex lg:flex xl:mb-4 mb-4 items-center">
           <div className="mr-5 xl:w-[170px] lg:w-[150px] w-full xl:mb-0 lg:mb-0 mb-1">
             <p className="text-slate-900 font-lighter text-md flex">
               Fecha de la consulta{" "}
@@ -112,7 +145,12 @@ export default function BasicDetails({
             </p>
           </div>
 
-          <div className="xl:w-[300px] w-full">
+          <div
+            className={clsx([
+              "w-full",
+              screenSize.width <= 1500 ? "w-full" : "xl:w-[300px]",
+            ])}
+          >
             <FormInput
               value={values.consultationDate}
               name="consultationDate"
@@ -132,7 +170,7 @@ export default function BasicDetails({
         </div>
 
         <div className="xl:flex lg:flex items-center xl:mt-0 mt-4">
-          <div className="mr-5 xl:w-[150px] w-[150px] xl:mb-0 lg:mb-0 mb-1 xl:text-end">
+          <div className="mr-5 xl:w-[170px] w-[150px] xl:mb-0 lg:mb-0 mb-1">
             <p className="text-md">Referido por</p>
           </div>
 
@@ -150,7 +188,7 @@ export default function BasicDetails({
 
       <div className="xl:flex items-center justify-between w-full mb-4">
         <div className="xl:flex lg:flex items-center w-full">
-          <div className="mr-5 lg:w-[200px] w-full xl:mb-0 lg:mb-0 mb-1">
+          <div className="mr-5 xl:w-[200px] lg:w-[150px] w-full xl:mb-0 lg:mb-0 mb-1">
             <p className="text-slate-900 font-lighter text-md flex">
               Mótivo de la consulta{" "}
               <span className="text-primary font-bold">*</span>
@@ -179,7 +217,7 @@ export default function BasicDetails({
 
       <div className="xl:flex items-center justify-between w-full mb-4">
         <div className="xl:flex lg:flex items-center w-full">
-          <div className="mr-5 lg:w-[200px] xl:mb-0 lg:mb-0 mb-1">
+          <div className="mr-5 xl:w-[200px] lg:w-[150px] xl:mb-0 lg:mb-0 mb-1">
             <p className="text-md">Inicio del padecimiento</p>
           </div>
 

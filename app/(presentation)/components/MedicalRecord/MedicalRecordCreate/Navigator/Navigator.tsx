@@ -1,3 +1,7 @@
+import {
+  AuthContext,
+  IAuthContext,
+} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
@@ -28,6 +32,9 @@ export default function Navigator({
   setIsOpen,
   setPopupSectionActive,
 }: INavigatorProps) {
+  const { state: authState } = useContext<IAuthContext>(AuthContext);
+  const { data: user } = authState.getUserAuthenticated;
+
   const { state } = useContext<IMedicalRecordCreateContext>(
     MedicalRecordCreateContext
   );
@@ -303,13 +310,13 @@ export default function Navigator({
   return (
     <>
       <div className="w-full md:flex justify-between items-center sticky top-[67px] z-[97]  bg-slate-100 py-2 md:pb-0">
-        <div className="md:w-[50%]">
-          <h2 className="lg:mr-5 text-2xl font-bold truncate py-3">
+        <div className="md:w-[50%] lg:mb-0 mb-4">
+          <h2 className="lg:mr-5 text-2xl font-bold truncate mb-2">
             Nueva consulta
           </h2>
-          {/*<p className="font-light text-slate-500 text-base my-3">
-            Información detallada del expediente del paciente
-          </p>*/}
+          <p className="font-normal text-slate-500 text-lg">
+            Doctor {user?.names} {user?.firstName}
+          </p>
         </div>
         <div className="flex items-center justify-center md:justify-end">
           <Button
