@@ -30,6 +30,7 @@ function Calendar({
       initialDate={new Date()}
       editable={false}
       height="100%"
+      slotDuration={'00:15:00'}
       headerToolbar={{
         start: "prev,next today",
         center: "title",
@@ -37,8 +38,7 @@ function Calendar({
       }}
       buttonText={{
         today: "Hoy",
-      }} 
-      duration={"00:15"}
+      }}
       initialView="timeGridWeek"
       views={{ 
         timeGridWeek: {
