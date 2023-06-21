@@ -1,4 +1,4 @@
-import { VALIDATE_NAMES, VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
+import { VALIDATE_EMAIL, VALIDATE_NAMES, VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import {
   FormInput,
   FormSelect,
@@ -176,6 +176,18 @@ export default function BasicData({
     return false;
   };
 
+  const handleEmail = (value: string) => {
+    setValues({ ...values, email: value });
+    if (values.email.length > 1) {
+      if (!VALIDATE_EMAIL(values.email)) {
+        setErrors({ ...errors, email: "El email debe ser correcto" });
+        return true;
+      }
+    }
+    setErrors({ ...errors, email: "" });
+    return false;
+  };
+
   console.log(values);
 
   return (
@@ -347,10 +359,11 @@ export default function BasicData({
                 placeholder="Correo Electrónico"
                 min={0}
                 className="form-control w-full"
-                onChange={(e: any) =>
-                  setValues({ ...values, email: e.target.value })
-                }
+                onChange={(e) => handleEmail(e.target.value)}
               />
+              {errors.email.length > 0 && (
+                <span className="text-red-500">{errors.email}</span>
+              )}
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
