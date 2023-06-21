@@ -42,7 +42,7 @@ function AppointmentDetail({cancelFuntion, customRef}:{
     },[successful])
 
     return (
-        <div ref={customRef} className='w-[32%] min-h-[60vh] h-fit max-h-screen flex flex-col justify-between items-start bg-white rounded-md p-6 gap-8'>
+        <div ref={customRef} className='w-full md:w-[35%] lg:w-[35%] h-screen  md:min-h-[60vh] md:max-h-[90vh] lg:min-h-[60vh] lg:max-h-[90vh] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8'>
             <p className="font-bold text-2xl text-slate-900">Cita</p>
             <div className="w-full flex justify-between items-center gap-2">
                 <div className="w-1/4 flex justify-center items-center">

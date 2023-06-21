@@ -6,13 +6,13 @@ export default function ConfigurationIndex() {
 
     const ConfigurationCard = ({children, title, description, path}:{children: any; title: string; description: string; path: string}) => {
         return(
-            <Link href={path} target='_blank' className='cursor-pointer bg-white border rounded-md overflow-hidden h-fit px-3 py-5 flex justify-between items-start gap-2'>
-                <div className='w-1/4 h-fit flex flex-col justify-start items-center'>
+            <Link href={path} className='cursor-pointer bg-white border rounded-md overflow-hidden h-fit p-5 flex justify-between items-start gap-4'>
+                <div className='w-12 h-fit flex flex-col justify-start items-center'>
                     <div className='w-12 h-12 bg-primary/20 text-primary text-lg flex flex-col justify-center items-center rounded-md overflow-hidden'>
                         {children}
                     </div>
                 </div>
-                <div className='w-3/4 h-fit flex flex-col justify-start items-start gap-2'>
+                <div className='w-[80%] h-fit flex flex-col justify-start items-start gap-1'>
                     <p className='font-semibold text-base text-slate-900'>{title}</p>
                     <p className='font-light text-sm text-slate-500'>{description}</p>
                 </div>

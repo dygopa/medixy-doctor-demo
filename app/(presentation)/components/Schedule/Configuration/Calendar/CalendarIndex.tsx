@@ -57,6 +57,41 @@ export default function CalendarIndex() {
         list = data.map((elem:any) => formatEvent(elem))
         setWindows(list)
     }
+    
+    const RowCards = () => {
+        return(
+            <div className='w-full h-full flex justify-center items-center flex-wrap gap-5'>
+                {(localities && ([...(localities as any[])].length === 0)) && <div className='w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4'>
+                    <div className='w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center'>
+                        <span className='h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center'>
+                            <Lucide icon="Building"/>
+                        </span>
+                    </div>
+                    <div className='w-full h-fit flex flex-col justify-center items-center gap-1 text-center px-2'>
+                        <p className='font-semibold text-slate-900 text-base'>No hay consultorios</p>
+                        <p className='font-light text-slate-500 text-sm'>Crea tu primer consultorio y empieza a crear los servicios que prestas</p>
+                    </div>
+                    <Link className="w-full block" href={"/localities/create"}>
+                        <Button className="w-full" variant="primary">Crear consultorio</Button>
+                    </Link>
+                </div>}
+                {(services && [...(services as any[])].length === 0) && <div className='w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4'>
+                    <div className='w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center'>
+                        <span className='h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center'>
+                            <FiBriefcase/>
+                        </span>
+                    </div>
+                    <div className='w-full h-fit flex flex-col justify-center items-center gap-1 text-center px-2'>
+                        <p className='font-semibold text-slate-900 text-base'>No hay servicios</p>
+                        <p className='font-light text-slate-500 text-sm'>Crea tu primer servicio y empieza a configurar las ventanas de atención para esos servicios</p>
+                    </div>
+                    <Link className="w-full block" href={"/services/new-service"}>
+                        <Button className="w-full" variant="primary">Crear servicio</Button>
+                    </Link>
+                </div>}
+            </div>
+        )
+    }
 
     useMemo(()=>{
         if(successful) formatList()
@@ -84,42 +119,13 @@ export default function CalendarIndex() {
             />
             {/* BEGIN: Calendar Content */}
             <div className='w-full h-[64vh]'>
-                {loading ? 
-                    <Loading/>
-                : (localities && ([...(localities as any[])].length > 0) && (services && [...(services as any[])].length > 0)) ?
-                    <Calendar handleChangeInWeek={()=>{}} events={windows} initialEvent={""} handleClick={()=>{}}/>
-                :
-                    <div className='w-full h-full flex justify-center items-center flex-wrap gap-5'>
-                        {(localities && ([...(localities as any[])].length === 0)) && <div className='w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4'>
-                            <div className='w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center'>
-                                <span className='h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center'>
-                                    <Lucide icon="Building"/>
-                                </span>
-                            </div>
-                            <div className='w-full h-fit flex flex-col justify-center items-center gap-1 text-center px-2'>
-                                <p className='font-semibold text-slate-900 text-base'>No hay consultorios</p>
-                                <p className='font-light text-slate-500 text-sm'>Crea tu primer consultorio y empieza a crear los servicios que prestas</p>
-                            </div>
-                            <Link className="w-full block" href={"/localities/create"}>
-                                <Button className="w-full" variant="primary">Crear consultorio</Button>
-                            </Link>
-                        </div>}
-                        {(services && [...(services as any[])].length === 0) && <div className='w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4'>
-                            <div className='w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center'>
-                                <span className='h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center'>
-                                    <FiBriefcase/>
-                                </span>
-                            </div>
-                            <div className='w-full h-fit flex flex-col justify-center items-center gap-1 text-center px-2'>
-                                <p className='font-semibold text-slate-900 text-base'>No hay servicios</p>
-                                <p className='font-light text-slate-500 text-sm'>Crea tu primer servicio y empieza a configurar las ventanas de atención para esos servicios</p>
-                            </div>
-                            <Link className="w-full block" href={"/services/new-service"}>
-                                <Button className="w-full" variant="primary">Crear servicio</Button>
-                            </Link>
-                        </div>}
-                    </div>
+                { ((user !== null && user.userId) && (localities && ([...(localities as any[])].length === 0) && (services && [...(services as any[])].length === 0))) &&
+                    <RowCards/>
                 }
+                { ((user !== null && user.userId) && (localities && ([...(localities as any[])].length > 0) && (services && [...(services as any[])].length > 0))) && 
+                    <Calendar handleChangeInWeek={()=>{}} events={windows} initialEvent={""} handleClick={()=>{}}/>
+                }
+                { loading && <Loading/> }
             </div>
             {/* END: Calendar Content */}
         </div>

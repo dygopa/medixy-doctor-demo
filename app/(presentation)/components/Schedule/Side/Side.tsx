@@ -18,7 +18,7 @@ const AppointmentComponent = ({onClick, data}:{
   let hour = moment(data["fechaReserva"]).utc().format("hh:mm a").toString()
 
   return(
-    <div onClick={onClick} className="cursor-pointer relative w-full min-h-[9vh] h-[9vh] max-h-[14vh] bg-white flex justify-between items-center p-3 gap-2 box-border rounded-md shadow-sm">
+    <div onClick={onClick} className="cursor-pointer relative w-full min-h-[11vh] h-fit max-h-[14vh] bg-white flex justify-between items-center p-3 gap-2 box-border rounded-md shadow-sm">
       <div className="w-10 h-full flex flex-col justify-center items-start">
         <div className='w-10 h-10 rounded-lg bg-primary/20 text-primary flex flex-col justify-center items-center text-lg overflow-hidden'>
           <FiUser/>
@@ -26,7 +26,7 @@ const AppointmentComponent = ({onClick, data}:{
       </div>
       <div className="w-[53%] h-full flex flex-col justify-between items-start overflow-hidden">
         <p className='font-semibold text-sm text-slate-900 w-full whitespace-nowrap text-ellipsis'>{data["nombres"]} {data["primerApellido"]}</p>
-        <p className='font-light text-sm text-slate-500 w-full whitespace-nowrap text-ellipsis'>{data["nombre"]}</p>
+        <p className='font-light text-[12px] text-slate-500 w-full whitespace-nowrap text-ellipsis'>{data["nombre"]}</p>
       </div>
       <div className="w-[30%] h-full flex flex-col justify-between items-end">
         <div className="w-full flex justify-end items-center gap-1 overflow-hidden">
@@ -34,7 +34,7 @@ const AppointmentComponent = ({onClick, data}:{
           {/* <Lucide icon="MoreVertical" className="w-5 h-5 text-slate-500" /> */}
         </div>
         <div className="w-full flex justify-end items-center gap-2">
-          <p className='font-light text-sm text-gray-700'>{"Por atender"}</p>
+          <p className='font-light text-[12px] text-gray-700'>{"Por atender"}</p>
           <span className={twMerge([
             "w-2 h-2 rounded-full",
             "bg-yellow-500"
