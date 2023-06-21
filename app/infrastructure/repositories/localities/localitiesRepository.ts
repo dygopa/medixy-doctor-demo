@@ -109,8 +109,6 @@ export class LocalitiesRepository implements ILocalitiesRepository {
     try {
       let cookies = nookies.get(undefined, 'access_token');
 
-      console.log(obj)
-
       var myHeaders = new Headers();
 
       myHeaders.append("Content-Type", "application/json");
@@ -127,6 +125,9 @@ export class LocalitiesRepository implements ILocalitiesRepository {
         city: obj["city"] ?? "",
         latitude: obj["latitude"] ?? 0,
         longitude: obj["longitude"] ?? 0,
+        municipality: obj["municipality"] ?? null,
+        country_location: obj["countryLocation"] ?? null,
+        street: obj["street"] ?? null,
       });
 
       var requestOptions = {

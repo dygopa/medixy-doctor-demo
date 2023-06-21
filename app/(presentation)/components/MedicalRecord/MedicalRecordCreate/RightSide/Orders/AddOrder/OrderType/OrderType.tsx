@@ -14,7 +14,7 @@ export default function OrderType({
   setOrderType,
 }: IOrderTypeProps) {
   return (
-    <div className="xl:w-[300px]">
+    <div className="xl:w-[200px]">
       <div className="mb-5">
         <FormSelect
           defaultValue={orderType ? orderType.toString() : ""}

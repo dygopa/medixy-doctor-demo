@@ -11,6 +11,7 @@ import {
   FormInput,
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
+import clsx from "clsx";
 import { IMedicine } from "domain/core/entities/medicineEntity";
 import { IRecipe } from "domain/core/entities/recipeEntity";
 import {
@@ -34,6 +35,8 @@ export default function AddRecipe({
   recipeEdit,
   setRecipeEdit,
 }: IAddRecipeProps) {
+  const [screenSize, setScreenSize] = useState({ width: 0, height: 0 });
+
   const [values, setValues] = useState({
     medicine: "",
     via: TreatmentViaDosisEnum.ORAL,
@@ -45,6 +48,27 @@ export default function AddRecipe({
     duringValue: "",
     indication: "",
   });
+
+  function getCurrentDimension() {
+    return {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    };
+  }
+
+  useEffect(() => {
+    const updateDimension = () => {
+      setScreenSize(getCurrentDimension());
+    };
+
+    if (screenSize.width === 0 && screenSize.height === 0) updateDimension();
+
+    window.addEventListener("resize", updateDimension);
+
+    return () => {
+      window.removeEventListener("resize", updateDimension);
+    };
+  }, [screenSize]);
 
   const onAddRecipe = () => {
     const recipe: IRecipe = {
@@ -191,13 +215,30 @@ export default function AddRecipe({
       </div>
 
       <div className="mb-4 w-full">
-        <div className="xl:flex items-center mb-4">
-          <div className="xl:flex items-center w-full">
+        <div
+          className={clsx([
+            "items-center mb-4",
+            screenSize.width > 1500 && "xl:flex",
+          ])}
+        >
+          <div
+            className={clsx([
+              "items-center w-full",
+              screenSize.width > 1500 && "xl:flex",
+            ])}
+          >
             <div className="xl:mr-5 xl:mb-0 mb-1 xl:w-[100px] w-full md:grid grid-cols-2 md:gap-5 xl:gap-0">
               <p className="text-slate-900 font-lighter text-md">
                 Prescripción
               </p>
-              <p className="text-slate-900 font-lighter text-lg xl:hidden hidden md:block">
+              <p
+                className={clsx([
+                  "text-slate-900 font-lighter text-md",
+                  screenSize.width <= 1500 && screenSize.width >= 767
+                    ? "block xl:ml-56"
+                    : "hidden",
+                ])}
+              >
                 Duración
               </p>
             </div>
@@ -323,111 +364,129 @@ export default function AddRecipe({
                   </div>
                 </div>
               </div>
-              <div className="xl:mr-5 xl:mb-0 xl:w-[80px] w-full md:hidden lg:hidden block xl:block">
-                <p className="text-slate-900 font-lighter text-md">Duración</p>
-              </div>
-              <div className="md:flex items-center md:gap-3 xl:gap-0">
-                <div className="xl:mr-3 xl:mb-0 mb-3">
-                  <div className="mb-1">
-                    <p className="text-md text-slate-500">Cada</p>
-                  </div>
 
-                  <div>
-                    <FormInput
-                      value={values.frequencyValue}
-                      name="frequencyValue"
-                      type="number"
-                      min="1"
-                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        if (
-                          e.target.value.length > 0 &&
-                          parseInt(e.target.value, 10) <= 0
-                        )
-                          return;
-
-                        setValues({
-                          ...values,
-                          [e.target.name]: e.target.value,
-                        });
-                      }}
-                      className="xl:w-16 md:w-14 w-full"
-                    />
-                  </div>
+              <div
+                className={clsx([
+                  "items-center",
+                  screenSize.width > 1500 && "flex",
+                ])}
+              >
+                <div
+                  className={clsx([
+                    "xl:mr-5 xl:mb-0 xl:w-[80px] w-full md:hidden lg:hidden",
+                    screenSize.width <= 1500 && screenSize.width >= 1200
+                      ? "hidden"
+                      : "block xl:block",
+                  ])}
+                >
+                  <p className="text-slate-900 font-lighter text-md">
+                    Duración
+                  </p>
                 </div>
 
-                <div className="xl:mr-3 xl:mb-0 mb-3">
-                  <div className="mb-1">
-                    <p className="text-md text-white md:h-[20px]" />
+                <div className="md:flex items-center md:gap-3 xl:gap-0">
+                  <div className="xl:mr-3 xl:mb-0 mb-3">
+                    <div className="mb-1">
+                      <p className="text-md text-slate-500">Cada</p>
+                    </div>
+
+                    <div>
+                      <FormInput
+                        value={values.frequencyValue}
+                        name="frequencyValue"
+                        type="number"
+                        min="1"
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                          if (
+                            e.target.value.length > 0 &&
+                            parseInt(e.target.value, 10) <= 0
+                          )
+                            return;
+
+                          setValues({
+                            ...values,
+                            [e.target.name]: e.target.value,
+                          });
+                        }}
+                        className="xl:w-16 md:w-14 w-full"
+                      />
+                    </div>
                   </div>
 
-                  <div>
-                    <FormSelect
-                      defaultValue={values.frequencyMeasure}
-                      name="frequencyMeasure"
-                      onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                        setValues({
-                          ...values,
-                          [e.target.name]: e.target.value,
-                        })
-                      }
-                    >
-                      <option value="hours">Horas</option>
-                      <option value="days">Días</option>
-                      <option value="weeks">Semanas</option>
-                      <option value="months">Meses</option>
-                    </FormSelect>
-                  </div>
-                </div>
+                  <div className="xl:mr-3 xl:mb-0 mb-3">
+                    <div className="mb-1">
+                      <p className="text-md text-white md:h-[20px]" />
+                    </div>
 
-                <div className="xl:mr-3 xl:mb-0 mb-3">
-                  <div className="mb-1">
-                    <p className="text-md text-slate-500">Durante</p>
-                  </div>
-
-                  <div>
-                    <FormInput
-                      value={values.duringValue}
-                      name="duringValue"
-                      type="number"
-                      min="1"
-                      onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                        if (
-                          e.target.value.length > 0 &&
-                          parseInt(e.target.value, 10) <= 0
-                        )
-                          return;
-
-                        setValues({
-                          ...values,
-                          [e.target.name]: e.target.value,
-                        });
-                      }}
-                      className="xl:w-16 md:w-14 w-full"
-                    />
-                  </div>
-                </div>
-
-                <div className="xl:mr-3 xl:mb-0 mb-3">
-                  <div className="mb-1">
-                    <p className="text-md text-white md:h-[20px]" />
+                    <div>
+                      <FormSelect
+                        defaultValue={values.frequencyMeasure}
+                        name="frequencyMeasure"
+                        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                          setValues({
+                            ...values,
+                            [e.target.name]: e.target.value,
+                          })
+                        }
+                      >
+                        <option value="hours">Horas</option>
+                        <option value="days">Días</option>
+                        <option value="weeks">Semanas</option>
+                        <option value="months">Meses</option>
+                      </FormSelect>
+                    </div>
                   </div>
 
-                  <div>
-                    <FormSelect
-                      defaultValue={values.duringMeasure}
-                      name="duringMeasure"
-                      onChange={(e: ChangeEvent<HTMLSelectElement>) =>
-                        setValues({
-                          ...values,
-                          [e.target.name]: e.target.value,
-                        })
-                      }
-                    >
-                      <option value="hours">Horas</option>
-                      <option value="days">Días</option>
-                      <option value="weeks">Semanas</option>
-                      <option value="months">Meses</option>
-                    </FormSelect>
+                  <div className="xl:mr-3 xl:mb-0 mb-3">
+                    <div className="mb-1">
+                      <p className="text-md text-slate-500">Durante</p>
+                    </div>
+
+                    <div>
+                      <FormInput
+                        value={values.duringValue}
+                        name="duringValue"
+                        type="number"
+                        min="1"
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                          if (
+                            e.target.value.length > 0 &&
+                            parseInt(e.target.value, 10) <= 0
+                          )
+                            return;
+
+                          setValues({
+                            ...values,
+                            [e.target.name]: e.target.value,
+                          });
+                        }}
+                        className="xl:w-16 md:w-14 w-full"
+                      />
+                    </div>
+                  </div>
+
+                  <div className="xl:mr-3 xl:mb-0 mb-3">
+                    <div className="mb-1">
+                      <p className="text-md text-white md:h-[20px]" />
+                    </div>
+
+                    <div>
+                      <FormSelect
+                        defaultValue={values.duringMeasure}
+                        name="duringMeasure"
+                        onChange={(e: ChangeEvent<HTMLSelectElement>) =>
+                          setValues({
+                            ...values,
+                            [e.target.name]: e.target.value,
+                          })
+                        }
+                      >
+                        <option value="hours">Horas</option>
+                        <option value="days">Días</option>
+                        <option value="weeks">Semanas</option>
+                        <option value="months">Meses</option>
+                      </FormSelect>
+                    </div>
                   </div>
                 </div>
               </div>

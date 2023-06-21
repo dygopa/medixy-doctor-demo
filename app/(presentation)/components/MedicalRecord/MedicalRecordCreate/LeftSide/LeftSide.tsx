@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import MedicalRecordNavigation from "./MedicalRecordNavigation/MedicalRecordNavigation";
 import Patient from "./Patient/Patient";
 
@@ -14,15 +14,15 @@ export default function LeftSide({ windowWidth }: ILeftSideProps) {
     <div
       className={clsx([
         "top-[155px] z-[99]",
-        windowWidth <= 1866 ? "static" : "sticky",
+        windowWidth <= 992 ? "static" : "sticky",
       ])}
     >
       <div
         className={clsx([
-          "xl:h-[18vh] h-auto mb-8",
-          windowWidth <= 1866 && "hidden",
-          showCompleteDetails && windowWidth >= 1866
-            ? "xl:w-[1200px]"
+          "h-auto mb-8",
+          windowWidth <= 992 && "hidden",
+          showCompleteDetails && windowWidth >= 992
+            ? "xl:w-[985px] lg:w-[875px] md:w-[840px]"
             : "w-full",
         ])}
       >
@@ -35,8 +35,8 @@ export default function LeftSide({ windowWidth }: ILeftSideProps) {
 
       <div
         className={clsx([
-          "w-[385px]",
-          windowWidth <= 1866 ? "hidden" : "block",
+          "xl:w-[375px] lg:w-[350px]",
+          windowWidth <= 992 ? "hidden" : "block",
         ])}
       >
         <MedicalRecordNavigation />
