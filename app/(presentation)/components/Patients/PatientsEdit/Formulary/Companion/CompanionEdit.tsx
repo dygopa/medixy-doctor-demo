@@ -1,3 +1,4 @@
+import { VALIDATE_EMAIL, VALIDATE_NAMES } from "(presentation)/(utils)/errors-validation";
 import AutocompleteInputStates from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputStates/AutocompleteInputStates";
 import {
   FormInput,
@@ -167,6 +168,15 @@ export default function CompanionEdit({
       });
       return true;
     }
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          name: "El nombre del paciente solo debe incluir letras",
+        };
+      });
+      return true;
+    }
     setErrors({ ...errors, name: "" });
     return false;
   };
@@ -178,6 +188,15 @@ export default function CompanionEdit({
         return {
           ...previousState,
           lastname: "El apellido del paciente es obligatorio",
+        };
+      });
+      return true;
+    }
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          lastname: "El apellido del paciente solo debe incluir letras",
         };
       });
       return true;
@@ -219,6 +238,18 @@ export default function CompanionEdit({
   const returnListCompanion = () => {
     setCompanionEdit(null);
     return;
+  };
+
+  const handleEmail = (value: string) => {
+    setValues({ ...values, email: value });
+    if (values.email.length > 1) {
+      if (!VALIDATE_EMAIL(values.email)) {
+        setErrors({ ...errors, email: "El email debe ser correcto" });
+        return true;
+      }
+    }
+    setErrors({ ...errors, email: "" });
+    return false;
   };
 
   useEffect(() => {
@@ -405,10 +436,11 @@ export default function CompanionEdit({
                   placeholder="Correo Electrónico"
                   min={0}
                   className="form-control w-full"
-                  onChange={(e: any) =>
-                    setValues({ ...values, email: e.target.value })
-                  }
+                  onChange={(e) => handleEmail(e.target.value)}
                 />
+                {errors.email.length > 0 && (
+                  <span className="text-red-500">{errors.email}</span>
+                )}
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">

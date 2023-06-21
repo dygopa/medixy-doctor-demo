@@ -20,7 +20,7 @@ import { ISubject } from "domain/core/entities/subjectEntity";
 import { subjectFailuresEnum } from "domain/core/failures/subject/subjectFailure";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { useRouter } from "next/navigation";
-import { VALIDATE_NAMES, VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
+import { VALIDATE_EMAIL, VALIDATE_NAMES, VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import { ICountryLocation } from "domain/core/entities/countryEntity";
 
@@ -197,15 +197,6 @@ export default function Formulary({
 
   const handlephone = (value: string) => {
     setValues({ ...values, phone: value });
-    if (!VALIDATE_NUMBERS(value)) {
-      setErrors((previousState) => {
-        return {
-          ...previousState,
-          phone: "El teléfono del paciente solo lleva números",
-        };
-      });
-      return true;
-    }
     if (value.length < 2) {
       setErrors((previousState) => {
         return {
@@ -215,9 +206,33 @@ export default function Formulary({
       });
       return true;
     }
+    if (!VALIDATE_NUMBERS(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          phone: "El teléfono del paciente solo lleva números",
+        };
+      });
+      return true;
+    }
     setErrors({ ...errors, phone: "" });
     return false;
   };
+
+  const handleEmail = (value: string) => {
+    setValues({ ...values, email: value });
+    if (values.email.length > 1) {
+      if (!VALIDATE_EMAIL(values.email)) {
+        setErrors({ ...errors, email: "El email debe ser correcto" });
+        return true;
+      }
+    }
+    setErrors({ ...errors, email: "" });
+    return false;
+  };
+
+  console.log(errors)
+  console.log(values)
 
   return (
     <div className="w-full bg-white shadow-xl lg:w-[60%] shadow-slate-100 rounded-md h-fit p-7">
@@ -332,9 +347,12 @@ export default function Formulary({
         <p className="input-label py-2">Email</p>
         <FormInput
           type="email"
-          onChange={(e) => setValues({ ...values, email: e.target.value })}
+          onChange={(e) => handleEmail(e.target.value)}
           placeholder="Email"
         />
+        {errors.email.length > 0 && (
+          <span className="text-red-500">{errors.email}</span>
+        )}
       </div>
 
       <div className="input-group w-full">
