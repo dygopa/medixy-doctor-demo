@@ -56,6 +56,34 @@ export default function Diagnosis() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
 
+  const setValuesFromLocalStorage = () => {
+    const valuesStorage = localStorage.getItem(
+      "prosit.storage.medical-record-create"
+    );
+
+    if (!valuesStorage) window.location.reload();
+
+    const valuesJSON = JSON.parse(valuesStorage ?? "");
+
+    setValues({
+      ...values,
+      diagnose: valuesJSON.currentConsultation.diagnose,
+      observations: valuesJSON.currentConsultation.observations,
+    });
+  };
+
+  useEffect(() => {
+    if (!initialRender) saveValuesInLocalStorage();
+
+    setInitialRender(false);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values]);
+
+  useEffect(() => {
+    setValuesFromLocalStorage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
     if (view === "diagnosis" || diagnosisExpanded === "true") {
       setShowBody(true);

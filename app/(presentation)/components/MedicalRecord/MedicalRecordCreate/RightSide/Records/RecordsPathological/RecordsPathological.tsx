@@ -1,7 +1,9 @@
 import AutocompleteInput from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInput";
+import AutocompleteInputMedicines from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMedicines/AutocompleteInputMedicines";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
+import { IMedicine } from "domain/core/entities/medicineEntity";
 import {
   ChangeEvent,
   Dispatch,
@@ -323,38 +325,17 @@ export default function RecordsPathological({
               </div>
 
               <div className="w-full">
-                <AutocompleteInput
-                  disabled={!values.takeMedication.isChecked}
-                  items={["Omeprazol", "Ibuprofeno"]}
-                  itemsAdded={values.takeMedication.values}
+                <AutocompleteInputMedicines
                   placeholder="Omeprazol, Ibuprofeno (ENTER para agregar)"
+                  disabled={!values.takeMedication.isChecked}
                   className="h-[50px] w-full"
-                  onClick={(item: string) => {
+                  onClick={(item: IMedicine) => {
                     if (
                       values.takeMedication.isChecked &&
-                      item.length > 0 &&
-                      values.takeMedication.values.indexOf(item) < 0
+                      values.takeMedication.values.indexOf(item.name) < 0
                     ) {
                       const valuesMedication = values.takeMedication.values;
-                      valuesMedication.push(item);
-
-                      setValues({
-                        ...values,
-                        takeMedication: {
-                          isChecked: true,
-                          values: valuesMedication,
-                        },
-                      });
-                    }
-                  }}
-                  onKeyDown={(item: string) => {
-                    if (
-                      values.takeMedication.isChecked &&
-                      item.length > 0 &&
-                      values.takeMedication.values.indexOf(item) < 0
-                    ) {
-                      const valuesMedication = values.takeMedication.values;
-                      valuesMedication.push(item);
+                      valuesMedication.push(item.name);
 
                       setValues({
                         ...values,
