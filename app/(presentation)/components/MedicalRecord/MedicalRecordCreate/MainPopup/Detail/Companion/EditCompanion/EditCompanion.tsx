@@ -1,4 +1,4 @@
-import MedicalRecordProvider from "(presentation)/components/MedicalRecord/MedicalRecord/context/MedicalRecordContext";
+import MedicalRecordCreateProvider from "(presentation)/components/MedicalRecord/MedicalRecordCreate/context/MedicalRecordCreateContext";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import { Dispatch, SetStateAction } from "react";
 import Formulary from "./Formulary/Formulary";
@@ -15,7 +15,7 @@ export default function EditCompanion({
   patientId,
 }: IEditCompanionProps) {
   return (
-    <MedicalRecordProvider>
+    <MedicalRecordCreateProvider>
       <div>
         <div>
           <Formulary
@@ -25,6 +25,6 @@ export default function EditCompanion({
           />
         </div>
       </div>
-    </MedicalRecordProvider>
+    </MedicalRecordCreateProvider>
   );
 }

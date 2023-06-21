@@ -42,7 +42,12 @@ export default function WithoutSteps({
   const { state, actions, dispatch } =
     useContext<ILocalitiesContext>(LocalitiesContext);
 
-  const { createUserLocality, getFederalEntities } = actions;
+  const {
+    createUserLocality,
+    getFederalEntities,
+    getMunicipalities,
+    getCountryLocations,
+  } = actions;
 
   const {
     loading: createUserLocalityLoading,
@@ -51,6 +56,9 @@ export default function WithoutSteps({
   } = state.createUserLocality;
 
   const { data: federalEntities } = state.getFederalEntities;
+  const { data: municipalities, successful: successfulMunicipalities } =
+    state.municipalities;
+  const { data: countryLocations } = state.countryLocations;
 
   const { actions: actionsStep, dispatch: dispatchStep } =
     useContext<IStepByStepContext>(StepByStepContext);
@@ -65,6 +73,9 @@ export default function WithoutSteps({
     latitude: 0,
     longitude: 0,
     federalEntity: 0,
+    municipality: 0,
+    countryLocation: 0,
+    street: "",
     address: "",
     media: {
       data: "",
@@ -72,17 +83,37 @@ export default function WithoutSteps({
     },
   });
 
-  let [ errors, setErrors ] = useState({
+  let [errors, setErrors] = useState({
     postal_code: "",
-  })
+  });
 
   useEffect(() => {
     getFederalEntities()(dispatch);
-  }, [])
+  }, []);
+
+  useEffect(() => {
+    getMunicipalities({
+      federalEntityId: formData.federalEntity,
+    })(dispatch);
+  }, [formData.federalEntity]);
+
+  useMemo(() => {
+    if (successfulMunicipalities) {
+      if (municipalities.data.length > 0) {
+        const municipalitySearch = municipalities.data.find((elem) => {
+          return elem.id === formData.municipality;
+        });
+        getCountryLocations({
+          federalEntityId: formData.federalEntity,
+          municipalityId: municipalitySearch?.catalogId,
+        })(dispatch);
+      }
+    }
+  }, [formData.federalEntity, formData.municipality, successfulMunicipalities]);
 
   const handlePostalCode = (value: string) => {
     setFormData({ ...formData, postal_code: value });
-    if(value.length > 0) {
+    if (value.length > 0) {
       if (!VALIDATE_NUMBERS(value)) {
         setErrors((previousState) => {
           return {
@@ -96,7 +127,6 @@ export default function WithoutSteps({
     setErrors({ ...errors, postal_code: "" });
     return false;
   };
-
 
   const [loadedStates, setLoadedStates] = useState(false);
 
@@ -132,8 +162,6 @@ export default function WithoutSteps({
     }
   }, [createUserLocalitySuccess]);
 
-  console.log(formData)
-
   return (
     <>
       <AlertComponent
@@ -157,10 +185,10 @@ export default function WithoutSteps({
             createUserLocalityLoading ||
             formData?.name === "" ||
             formData?.address === "" ||
-            formData?.postal_code === ""
+            formData?.postal_code === "" ||
+            formData?.city === ""
           }
           onClick={() => {
-            console.log(formData);
             createUserLocality({ ...formData, id: userId })(dispatch);
           }}
           variant="primary"
@@ -225,7 +253,8 @@ export default function WithoutSteps({
               </div>
               <div className="lg:flex justify-between items-start relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Código postal <span className="text-primary font-bold">*</span>
+                  Código postal{" "}
+                  <span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"text"}
@@ -237,106 +266,183 @@ export default function WithoutSteps({
                 />
               </div>
               {errors.postal_code.length > 0 && (
-                <span className="text-red-500 w-full text-right -mt-5">{errors.postal_code}</span>
+                <span className="text-red-500 w-full text-right -mt-5">
+                  {errors.postal_code}
+                </span>
               )}
-              <div className="w-full flex justify-start items-center gap-5">
-                <div className="lg:flex justify-between items-center relative w-full gap-3">
+              <div className="lg:flex justify-between items-center relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Entidad Federativa{" "}
+                  <span className="text-primary font-bold">*</span>
+                </p>
+                <FormSelect
+                  className="form-control lg:w-[70%]"
+                  defaultValue={formData.federalEntity}
+                  value={formData.federalEntity}
+                  onChange={(e: any) =>
+                    setFormData({
+                      ...formData,
+                      federalEntity: parseInt(e.target.value),
+                    })
+                  }
+                >
+                  {federalEntities.map((elem) => (
+                    <option key={elem.entityId} value={elem.entityId}>
+                      {elem.nameEntity}
+                    </option>
+                  ))}
+                </FormSelect>
+              </div>
+
+              <div className="lg:flex justify-between items-center relative w-full gap-3">
+                <div className="lg:w-[445px]">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Entidad Federativa
+                    Municipio
                   </p>
+                </div>
+                <div className="w-full flex justify-end">
                   <FormSelect
                     className="form-control w-full"
-                    defaultValue={formData.federalEntity}
-                    value={formData.federalEntity}
+                    disabled={formData.federalEntity === 0}
+                    defaultValue={formData.municipality}
+                    value={formData.municipality}
                     onChange={(e: any) =>
-                      setFormData({ ...formData, federalEntity: parseInt(e.target.value) })
+                      setFormData({
+                        ...formData,
+                        municipality: parseInt(e.target.value),
+                      })
                     }
                   >
-                    {federalEntities.map((elem) => (
-                      <option key={elem.entityId} value={elem.entityId}>
-                        {elem.nameEntity}
+                    {municipalities.data?.map((elem: IMunicipality) => (
+                      <option key={elem.id} value={elem.id}>
+                        {elem.name}
                       </option>
                     ))}
                   </FormSelect>
                 </div>
-                <div className="lg:flex justify-between items-center relative w-full gap-3"> 
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Ciudad
-                  </p>
-                  <FormInput
-                    type={"text"}
-                    placeholder="Escribe la ciudad del consultorio..."
-                    min={0}
-                    value={formData.city}
-                    className="form-control lg:w-[70%]"
-                    onChange={(e: any) => {
-                      setFormData({ ...formData, city: e.target.value });
-                    }}
-                  />
-                </div>
               </div>
-              <div className="w-full flex justify-start items-center gap-5">
-                <div className="lg:flex justify-between items-center relative w-full gap-3">
+
+              <div className="lg:flex justify-between items-center relative w-full gap-3">
+                <div className="lg:w-[445px]">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Latitud
+                    Localidad
                   </p>
-                  <FormInput
-                    type={"number"}
-                    placeholder="0"
-                    min={0}
-                    value={formData.latitude}
-                    className="form-control lg:w-[70%]"
-                    onChange={(e: any) => {
-                      setFormData({ ...formData, latitude: +e.target.value });
-                    }}
-                  />
                 </div>
-                <div className="lg:flex justify-between items-center relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Longitud
-                  </p>
-                  <FormInput
-                    type={"number"}
-                    placeholder="0"
-                    min={0}
-                    value={formData.longitude}
-                    className="form-control lg:w-[70%]"
-                    onChange={(e: any) => {
+                <div className="w-full flex justify-end">
+                  <FormSelect
+                    className="form-control w-full"
+                    disabled={formData.municipality === 0}
+                    defaultValue={formData.countryLocation}
+                    value={formData.countryLocation}
+                    onChange={(e: any) =>
                       setFormData({
                         ...formData,
-                        longitude: +e.target.value,
-                      });
-                    }}
-                  />
+                        countryLocation: parseInt(e.target.value),
+                      })
+                    }
+                  >
+                    {countryLocations.data?.map((elem: ICountryLocation) => (
+                      <option key={elem.id} value={elem.id}>
+                        {elem.name}
+                      </option>
+                    ))}
+                  </FormSelect>
                 </div>
               </div>
-              <div className="lg:flex justify-between items-start relative w-full gap-3">
+
+              <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Dirección
-                  <span className="text-primary font-bold">*</span>
+                  Ciudad <span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Escribe la dirección del consultorio..."
+                  placeholder="Escribe la ciudad del consultorio..."
                   min={0}
-                  value={formData.address}
+                  value={formData.city}
                   className="form-control lg:w-[70%]"
                   onChange={(e: any) => {
-                    setFormData({ ...formData, address: e.target.value });
+                    setFormData({ ...formData, city: e.target.value });
                   }}
                 />
               </div>
-              <div className="flex justify-between items-center relative w-full gap-3"></div>
-              <div className="lg:flex justify-between items-start relative w-full gap-3">
-                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Cargar imagen
-                </p>
-                <FormInput
-                  onChange={(e) => handleChangeMedia(e)}
-                  type="file"
-                  className="form-control lg:w-[70%]"
-                />
-              </div>
+            </div>
+
+            <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Calle
+              </p>
+              <FormInput
+                type={"text"}
+                placeholder="Escribe la calle..."
+                min={0}
+                defaultValue={formData.street}
+                className="form-control lg:w-[70%]"
+                onChange={(e: any) => {
+                  setFormData({ ...formData, street: e.target.value });
+                }}
+              />
+            </div>
+
+            <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Latitud
+              </p>
+              <FormInput
+                type={"number"}
+                placeholder="0"
+                min={0}
+                value={formData.latitude}
+                className="form-control lg:w-[70%]"
+                onChange={(e: any) => {
+                  setFormData({ ...formData, latitude: +e.target.value });
+                }}
+              />
+            </div>
+
+            <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Longitud
+              </p>
+              <FormInput
+                type={"number"}
+                placeholder="0"
+                min={0}
+                value={formData.longitude}
+                className="form-control lg:w-[70%]"
+                onChange={(e: any) => {
+                  setFormData({
+                    ...formData,
+                    longitude: +e.target.value,
+                  });
+                }}
+              />
+            </div>
+            <div className="lg:flex justify-between items-start relative w-full gap-3 mb-4">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Dirección
+                <span className="text-primary font-bold">*</span>
+              </p>
+              <FormInput
+                type={"text"}
+                placeholder="Escribe la dirección del consultorio..."
+                min={0}
+                value={formData.address}
+                className="form-control lg:w-[70%]"
+                onChange={(e: any) => {
+                  setFormData({ ...formData, address: e.target.value });
+                }}
+              />
+            </div>
+            <div className="flex justify-between items-center relative w-full gap-3"></div>
+            <div className="lg:flex justify-between items-start relative w-full gap-3">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Cargar imagen
+              </p>
+              <FormInput
+                onChange={(e) => handleChangeMedia(e)}
+                type="file"
+                className="form-control lg:w-[70%]"
+              />
             </div>
           </div>
         </div>

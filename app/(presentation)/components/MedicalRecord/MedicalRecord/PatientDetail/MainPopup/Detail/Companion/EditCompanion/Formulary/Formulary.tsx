@@ -186,8 +186,7 @@ export default function CompanionCreate({
       city: values.city,
       pictureUrl: "",
       isPatient: false,
-      birthDate:
-        values.birthDate.length > 0 ? new Date(values.birthDate) : null,
+      birthDate: values.birthDate,
       createdOn: companion?.createdOn ?? new Date(),
       updatedOn: new Date(),
       deletedOn: null,

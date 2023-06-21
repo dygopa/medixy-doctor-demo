@@ -46,6 +46,26 @@ export default function MedicalRecordCreateIndex({
     };
   }
 
+  const getLeftSideColSpan = () => {
+    if (screenSize.width <= 992) return "xl:col-span-0";
+
+    if (screenSize.width <= 1500) return "xl:col-span-5";
+
+    if (screenSize.width <= 1862) return "xl:col-span-4";
+
+    return "xl:col-span-3";
+  };
+
+  const getRightSideColSpan = () => {
+    if (screenSize.width <= 992) return "xl:col-span-12 col-span-12";
+
+    if (screenSize.width <= 1500) return "xl:col-span-7 col-span-7";
+
+    if (screenSize.width <= 1862) return "xl:col-span-8";
+
+    return "xl:col-span-9";
+  };
+
   useEffect(() => {
     const updateDimension = () => {
       setScreenSize(getCurrentDimension());
@@ -145,21 +165,11 @@ export default function MedicalRecordCreateIndex({
         />
 
         <div className="mt-10 grid grid-cols-12 gap-4">
-          <div
-            className={clsx([
-              "col-span-12",
-              screenSize.width <= 1866 ? "xl:col-span-0" : "xl:col-span-3",
-            ])}
-          >
+          <div className={clsx(["col-span-5", getLeftSideColSpan()])}>
             <LeftSide windowWidth={screenSize.width} />
           </div>
 
-          <div
-            className={clsx([
-              "col-span-12",
-              screenSize.width <= 1866 ? "xl:col-span-12" : "xl:col-span-9",
-            ])}
-          >
+          <div className={clsx([getRightSideColSpan()])}>
             <RightSide width={screenSize.width} />
           </div>
         </div>
