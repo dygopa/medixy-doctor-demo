@@ -1,3 +1,4 @@
+import { VALIDATE_EMAIL, VALIDATE_NAMES } from "(presentation)/(utils)/errors-validation";
 import {
   FormInput,
   FormSelect,
@@ -92,6 +93,15 @@ export default function CompanionCreate({
       });
       return true;
     }
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          name: "El nombre del paciente solo debe incluir letras",
+        };
+      });
+      return true;
+    }
     setErrors({ ...errors, name: "" });
     return false;
   };
@@ -103,6 +113,15 @@ export default function CompanionCreate({
         return {
           ...previousState,
           lastname: "El apellido del paciente es obligatorio",
+        };
+      });
+      return true;
+    }
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          lastname: "El apellido del paciente solo debe incluir letras",
         };
       });
       return true;
@@ -138,6 +157,18 @@ export default function CompanionCreate({
       return true;
     }
     setErrors({ ...errors, phone: "" });
+    return false;
+  };
+
+  const handleEmail = (value: string) => {
+    setValues({ ...values, email: value });
+    if (values.email.length > 1) {
+      if (!VALIDATE_EMAIL(values.email)) {
+        setErrors({ ...errors, email: "El email debe ser correcto" });
+        return true;
+      }
+    }
+    setErrors({ ...errors, email: "" });
     return false;
   };
 
@@ -263,9 +294,12 @@ export default function CompanionCreate({
           <p className="input-label py-2">Email</p>
           <FormInput
             type="email"
-            onChange={(e) => setValues({ ...values, email: e.target.value })}
+            onChange={(e) => handleEmail(e.target.value)}
             placeholder="Email"
           />
+          {errors.email.length > 0 && (
+            <span className="text-red-500">{errors.email}</span>
+          )}
         </div>
 
         <div className="input-group w-full">
