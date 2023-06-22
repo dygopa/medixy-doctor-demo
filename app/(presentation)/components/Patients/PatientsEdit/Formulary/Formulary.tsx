@@ -233,8 +233,7 @@ export default function Formulary() {
       city: values.city,
       pictureUrl: "",
       isPatient: true,
-      birthDate:
-        values.birthDate ?? null,
+      birthDate: values.birthDate ?? null,
       createdOn: patient?.createdOn ?? new Date(),
       updatedOn: new Date(),
       deletedOn: null,
@@ -259,8 +258,14 @@ export default function Formulary() {
       gender: valuesEditCompanion.gender,
       phoneNumber: valuesEditCompanion.phone,
       federativeEntityId: valuesEditCompanion.federalEntity,
-      municipalityId: valuesEditCompanion.municipality ?? null,
-      countryLocationId: valuesEditCompanion.countryLocation ?? null,
+      municipalityId:
+        valuesEditCompanion.municipality !== 0
+          ? valuesEditCompanion.municipality
+          : null,
+      countryLocationId:
+        valuesEditCompanion.countryLocation !== 0
+          ? valuesEditCompanion.countryLocation
+          : null,
       street: valuesEditCompanion.street,
       country: valuesEditCompanion.country,
       state: 0,
@@ -268,8 +273,7 @@ export default function Formulary() {
       city: valuesEditCompanion.city,
       pictureUrl: "",
       isPatient: false,
-      birthDate:
-        valuesEditCompanion.birthDate ?? null,
+      birthDate: valuesEditCompanion.birthDate ?? null,
       createdOn: patient?.createdOn ?? new Date(),
       updatedOn: new Date(),
       deletedOn: null,
@@ -333,8 +337,14 @@ export default function Formulary() {
         gender: valuesNewCompanion.gender,
         phoneNumber: valuesNewCompanion.phone,
         federativeEntityId: valuesNewCompanion.federalEntity,
-        municipalityId: valuesNewCompanion.municipality ?? null,
-        countryLocationId: valuesNewCompanion.countryLocation ?? null,
+        municipalityId:
+          valuesNewCompanion.municipality !== 0
+            ? valuesNewCompanion.municipality
+            : null,
+        countryLocationId:
+          valuesNewCompanion.countryLocation !== 0
+            ? valuesNewCompanion.countryLocation
+            : null,
         street: valuesNewCompanion.street,
         country: valuesNewCompanion.country,
         state: 0,
@@ -342,14 +352,11 @@ export default function Formulary() {
         city: valuesNewCompanion.city,
         pictureUrl: "",
         isPatient: false,
-        birthDate:
-          valuesNewCompanion.birthDate ?? null,
+        birthDate: valuesNewCompanion.birthDate ?? null,
         createdOn: patient?.createdOn ?? new Date(),
         updatedOn: new Date(),
         deletedOn: null,
       };
-
-      console.log(companionNew);
 
       createCompanion(patient?.subjectId, companionNew)(dispatchCompanions);
     }

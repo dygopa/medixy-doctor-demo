@@ -76,7 +76,7 @@ export default function AddRecipe({
       medicine: values.medicine,
       via: values.via,
       quantity: values.quantity.length > 0 ? parseInt(values.quantity, 10) : 0,
-      unit: values.unit,
+      unit: parseInt(values.unit.toString(), 10),
       frequencyMeasure: values.frequencyMeasure,
       frequencyValue:
         values.frequencyValue.length > 0
@@ -116,7 +116,7 @@ export default function AddRecipe({
       medicine: values.medicine,
       via: values.via,
       quantity: values.quantity.length > 0 ? parseInt(values.quantity, 10) : 0,
-      unit: values.unit,
+      unit: parseInt(values.unit.toString(), 10),
       frequencyMeasure: values.frequencyMeasure,
       frequencyValue:
         values.frequencyValue.length > 0
@@ -155,7 +155,9 @@ export default function AddRecipe({
       medicine: recipeEdit?.medicine ?? "",
       via: recipeEdit?.via ?? TreatmentViaDosisEnum.ORAL,
       quantity: recipeEdit?.quantity ? recipeEdit.quantity.toString() : "",
-      unit: recipeEdit?.unit ?? TreatmentDosisTypeEnum.CAPSULE,
+      unit: recipeEdit?.unit
+        ? parseInt(recipeEdit.unit.toString(), 10)
+        : TreatmentDosisTypeEnum.CAPSULE,
       frequencyMeasure: recipeEdit?.frequencyMeasure ?? "",
       frequencyValue: recipeEdit?.frequencyValue
         ? recipeEdit.frequencyValue.toString()
@@ -175,8 +177,7 @@ export default function AddRecipe({
       values.frequencyMeasure.length > 0 &&
       values.frequencyValue.length > 0 &&
       values.duringMeasure.length > 0 &&
-      values.duringValue.length > 0 &&
-      values.indication.length > 0
+      values.duringValue.length > 0
     ) {
       return false;
     }
