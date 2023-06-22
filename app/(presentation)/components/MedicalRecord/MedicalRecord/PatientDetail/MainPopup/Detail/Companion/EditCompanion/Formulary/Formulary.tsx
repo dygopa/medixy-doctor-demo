@@ -136,12 +136,12 @@ export default function CompanionCreate({
       sex: companion?.sex ?? 0,
       gender: companion?.gender ?? 0,
       email: companion?.email ?? "",
-      birthDate: companion?.birthDate
+      age: companion?.birthDate
         ? `${new Date(companion.birthDate).getFullYear()}-${
             new Date(companion.birthDate).getMonth() + 1 < 10
               ? `0${new Date(companion.birthDate).getMonth() + 1}`
-              : new Date(companion.birthDate).getMonth() + 1
-          }-${new Date(companion.birthDate).getDate()}`
+              : +1
+          }-${new Date(companion.birthDate).getDate() + 1}`
         : "",
       phone: companion?.phoneNumber ?? "",
       country: companion?.country ?? "",
@@ -186,7 +186,7 @@ export default function CompanionCreate({
       city: values.city,
       pictureUrl: "",
       isPatient: false,
-      birthDate: values.birthDate,
+      birthDate: values.age,
       createdOn: companion?.createdOn ?? new Date(),
       updatedOn: new Date(),
       deletedOn: null,
@@ -300,6 +300,7 @@ export default function CompanionCreate({
           <FormInput
             type={"date"}
             min={0}
+            value={values.age}
             onChange={(e: any) => handleage(e.target.value)}
             className="form-control w-full"
           />

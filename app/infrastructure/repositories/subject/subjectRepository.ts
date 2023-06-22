@@ -225,7 +225,6 @@ export class SubjectRepository implements ISubjectRepository {
           metadata: {}
         }
 
-        console.log(res)
         return JSON.parse(JSON.stringify(response));
       } catch (error) {
         const exception = error as any;
@@ -248,9 +247,6 @@ export class SubjectRepository implements ISubjectRepository {
 
     async createRelationSubject(subjectId: number, companionId: number): Promise<boolean | SubjectFailure> {
       try {
-
-        console.log(subjectId, companionId)
-
         const relationSubject = {
           type: 1,
           subjectId: subjectId,

@@ -78,7 +78,7 @@ export function fromSubjectSupabaseDocumentData(subject: ISubject): any {
     ciudad: subject.city,
     esPaciente: subject.isPatient,
     avatar: subject.pictureUrl === "" ? null: subject.pictureUrl,
-    fechaNacimiento: subject.birthDate,
+    fechaNacimiento: subject.birthDate ? new Date(subject.birthDate) : null,
     fechaRegistro: subject.createdOn,
     //fechaActualizacion: subject.updatedOn,
     //fechaEliminado: subject.deletedOn,
