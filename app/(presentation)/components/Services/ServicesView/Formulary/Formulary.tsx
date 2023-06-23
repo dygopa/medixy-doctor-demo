@@ -308,7 +308,6 @@ export default function Formulary({ userId }: { userId: string }) {
                       setFormData({ ...formData, status: +e.target.value })
                     }
                   >
-                    <option value="">Estado del servicio</option>
                     <option value={1}>Activo</option>
                     <option value={2}>Borrador</option>
                   </FormSelect>

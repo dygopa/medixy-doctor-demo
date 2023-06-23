@@ -207,7 +207,7 @@ export default function Formulary({
         description="Tu consultorio se ha actualizado exitosamente"
       />
 
-      <div className="w-full lg:flex justify-between items-start">
+      <div className="w-full lg:flex justify-between items-start sticky top-[67px] z-[50]  bg-slate-100 py-3">
         <h2 className="lg:mr-5 lg:mb-0 mb-4 text-2xl font-bold truncate">
           Actualizar consultorio
         </h2>
