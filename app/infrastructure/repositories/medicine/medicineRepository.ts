@@ -4,7 +4,7 @@ import { MedicineFailure } from "domain/core/failures/medicine/medicineFailure";
 import { IGetMedicinesResponse } from "domain/core/response/medicineResponse";
 import { medicineApiToMap } from "domain/mappers/medicine/api/medicineApiMapper";
 import { VIDAL_API_DOMAIN, VIDAL_APP_ID, VIDAL_APP_KEY } from "infrastructure/config/api/vidal/vidal";
-import { parseString } from "xml2js"; 
+//import { parseString } from "xml2js"; 
 
 export default interface IMedicineRepository {
   getMedicines(obj: { 
@@ -49,13 +49,13 @@ export class MedicineRepository implements IMedicineRepository {
       
       let json: any = {};
 
-      parseString(xml, (err, results) => {
+      /*parseString(xml, (err, results) => {
         if (err) return new MedicineFailure(medicalRecordFailuresEnum.serverError);
 
         let data = JSON.parse(JSON.stringify(results))
           
         json = data;
-      });
+      });*/
 
       const medicines: IMedicine[] = [];
 
