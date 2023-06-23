@@ -3,7 +3,6 @@ import {
   FormInput,
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
-import moment from "moment";
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { FiUser } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
@@ -142,20 +141,20 @@ export default function BasicData({
 
   const handlephone = (value: string) => {
     setValues({ ...values, phone: value });
-    if (!VALIDATE_NUMBERS(value)) {
-      setErrors((previousState) => {
-        return {
-          ...previousState,
-          phone: "El teléfono del paciente solo lleva números",
-        };
-      });
-      return true;
-    }
     if (value.length < 2) {
       setErrors((previousState) => {
         return {
           ...previousState,
           phone: "Escribe el teléfono del paciente",
+        };
+      });
+      return true;
+    }
+    if (!VALIDATE_NUMBERS(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          phone: "El teléfono del paciente solo lleva números",
         };
       });
       return true;
@@ -175,8 +174,6 @@ export default function BasicData({
     setErrors({ ...errors, email: "" });
     return false;
   };
-
-  console.log(values);
 
   return (
     <div className="w-full bg-white  rounded-md h-fit">
