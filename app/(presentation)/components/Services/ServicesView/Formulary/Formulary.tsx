@@ -6,6 +6,7 @@ import React, {
   useMemo,
   useState,
   Fragment,
+  useRef,
 } from "react";
 import {
   IServicesContext,
@@ -21,6 +22,9 @@ import {
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { Menu, Transition } from "@headlessui/react";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
+import Image from "next/image";
+import { twMerge } from "tailwind-merge";
+import { MdOutlineMedicalServices } from "react-icons/md";
 
 export default function Formulary({ userId }: { userId: string }) {
   const pathname = usePathname();
@@ -56,6 +60,10 @@ export default function Formulary({ userId }: { userId: string }) {
       type: "",
     },
   });
+
+  let avatarRef = useRef<HTMLInputElement>(null);
+
+  const handleClickRef = () => avatarRef.current && avatarRef.current.click();
 
   const setFormDataValues = () => {
     setFormData({
@@ -200,6 +208,80 @@ export default function Formulary({ userId }: { userId: string }) {
                   Definición del servicio
                 </p>
               </div>
+              <div className="text-center relative w-full gap-3">
+                {/*<p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Cargar imagen
+                  <span className="text-primary font-bold">*</span>
+                </p>
+                <FormInput
+                  type="file"
+                  className="form-control lg:w-[70%]"
+                  onChange={(e) => handleChangeMedia(e)}
+                />*/}
+                {data?.image_url?.length > 0 ? (
+                <>
+                  <div className="flex text-center w-full justify-center">
+                    <div className="w-[150px] h-[150px] relative flex justify-center hover:border hover:border-primary rounded-xl">
+                      <input
+                        accept="image/png, image/jpeg, application/pdf"
+                        type="file"
+                        ref={avatarRef}
+                        className="opacity-0 top-0 h-full z-50 cursor-pointer"
+                        onChange={(e) => {
+                          handleChangeMedia(e);
+                        }}
+                      />
+                      <Image
+                        className="object-cover rounded-xl "
+                        src={data?.image_url}
+                        alt=""
+                        fill
+                      />
+                    </div>
+                  </div>
+
+                  <p className="text-[13px] text-slate-500 font-medium pt-2">
+                    Recomendado (.png, .jpg, .jpeg)
+                  </p>
+                  {loadingUpdate && (
+                    <p className="text-[13px] text-slate-800 font-bold pt-2">
+                      Guardando su foto de perfil...
+                    </p>
+                  )}
+                </>
+                ) : (
+                  <>
+                    <div className="flex text-center w-full justify-center">
+                      <input
+                        accept="image/png, image/jpeg, application/pdf"
+                        type="file"
+                        ref={avatarRef}
+                        className="hidden"
+                        onChange={(e) => {
+                          handleChangeMedia(e);
+                        }}
+                      />
+                      <div
+                        onClick={handleClickRef}
+                        className={twMerge([
+                          "transition w-[10rem] h-[10rem] rounded-xl border flex flex-col justify-center items-center cursor-pointer",
+                          "hover:bg-slate-200",
+                        ])}
+                      >
+                        <MdOutlineMedicalServices size={60} />
+                      </div>
+                    </div>
+                    <p className="text-[13px] text-slate-500 font-medium pt-2">
+                      Recomendado (.png, .jpg, .jpeg)
+                    </p>
+                    {loadingUpdate && (
+                      <p className="text-[13px] text-slate-800 font-bold pt-2">
+                        Guardando su foto de perfil...
+                      </p>
+                    )}
+                  </>
+                )}
+              </div>
               <div className="lg:flex justify-between items-start relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Categoría
@@ -239,17 +321,7 @@ export default function Formulary({ userId }: { userId: string }) {
                   }
                 />
               </div>
-              <div className="lg:flex justify-between items-start relative w-full gap-3">
-                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Cargar imagen
-                  <span className="text-primary font-bold">*</span>
-                </p>
-                <FormInput
-                  type="file"
-                  className="form-control lg:w-[70%]"
-                  onChange={(e) => handleChangeMedia(e)}
-                />
-              </div>
+              
               <div className="lg:flex justify-between items-start relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Precio
