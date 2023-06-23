@@ -6,6 +6,8 @@ import {
 import { Dispatch, SetStateAction, useEffect } from "react";
 import { FiUser } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
+import IntlTelInput from "react-intl-tel-input";
+import 'react-intl-tel-input/dist/main.css';
 
 interface IBasicDataProps {
   values: {
@@ -141,20 +143,20 @@ export default function BasicData({
 
   const handlephone = (value: string) => {
     setValues({ ...values, phone: value });
+    if (value.length < 2) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          phone: "El teléfono del paciente es obligatorio",
+        };
+      });
+      return true;
+    }
     if (!VALIDATE_NUMBERS(value)) {
       setErrors((previousState) => {
         return {
           ...previousState,
           phone: "El teléfono del paciente solo lleva números",
-        };
-      });
-      return true;
-    }
-    if (value.length < 2) {
-      setErrors((previousState) => {
-        return {
-          ...previousState,
-          phone: "Escribe el teléfono del paciente",
         };
       });
       return true;
@@ -340,13 +342,17 @@ export default function BasicData({
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Teléfono{" "}<span className="text-primary font-bold">*</span>
                 </p>
-                <FormInput
-                  type="tel"
-                  placeholder="Número de teléfono"
-                  min={0}
+                <IntlTelInput
+                  preferredCountries={['mx']}
                   defaultValue={values.phone}
-                  className="form-control w-full"
-                  onChange={(e) => handlephone(e.target.value)}
+                  //value={values.phone}
+                  onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
+                  onPhoneNumberBlur={(e) => console.log(e)}
+                  inputClassName={twMerge([
+                    "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
+                    "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
+                    "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
+                  ])}
                 />
                 {errors.phone.length > 0 && (
                   <span className="text-red-500">{errors.phone}</span>

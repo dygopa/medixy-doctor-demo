@@ -20,9 +20,12 @@ import { ISubject } from "domain/core/entities/subjectEntity";
 import { subjectFailuresEnum } from "domain/core/failures/subject/subjectFailure";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { useRouter } from "next/navigation";
-import { VALIDATE_EMAIL, VALIDATE_NAMES, VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
+import { VALIDATE_EMAIL, VALIDATE_NAMES, VALIDATE_NUMBERS, VALIDATE_STRING } from "(presentation)/(utils)/errors-validation";
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import { ICountryLocation } from "domain/core/entities/countryEntity";
+import IntlTelInput from 'react-intl-tel-input';
+import 'react-intl-tel-input/dist/main.css';
+import { twMerge } from "tailwind-merge";
 
 interface IBasicDataProps {
   values: {
@@ -231,8 +234,8 @@ export default function Formulary({
     return false;
   };
 
-  console.log(errors)
-  console.log(values)
+  console.log(values.phone)
+  console.log(errors.phone)
 
   return (
     <div className="w-full bg-white shadow-xl lg:w-[60%] shadow-slate-100 rounded-md h-fit p-7">
@@ -333,13 +336,20 @@ export default function Formulary({
         <p className="input-label py-2">
           Teléfono <span className="text-primary font-bold">*</span>
         </p>
-        <FormInput
-          type="text"
-          onChange={(e) => handlephone(e.target.value)}
-          placeholder="Teléfono"
-        />
+        <div className="w-full">
+          <IntlTelInput
+            preferredCountries={['mx']}
+            onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
+            onPhoneNumberBlur={(e) => console.log(e)}
+            inputClassName={twMerge([
+              "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
+              "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
+              "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
+            ])}
+          />
+        </div>
         {errors.phone.length > 0 && (
-          <span className="text-red-500">{errors.phone}</span>
+          <span className="text-red-500 mt-2">{errors.phone}</span>
         )}
       </div>
 
