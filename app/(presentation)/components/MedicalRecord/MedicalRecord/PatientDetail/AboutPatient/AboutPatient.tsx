@@ -125,7 +125,7 @@ export default function AboutPatient() {
                               <Lucide icon="Users" size={20} />
                             </div>
 
-                            <div>Acompañante</div>
+                            <div>Contactos</div>
                           </button>
                         </div>
                       )}
