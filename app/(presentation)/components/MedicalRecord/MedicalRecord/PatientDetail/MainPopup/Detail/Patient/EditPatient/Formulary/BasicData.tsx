@@ -1,3 +1,4 @@
+import { VALIDATE_EMAIL, VALIDATE_NAMES, VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import {
   FormInput,
   FormSelect,
@@ -86,6 +87,15 @@ export default function BasicData({
       });
       return true;
     }
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          name: "El nombre del paciente solo debe incluir letras",
+        };
+      });
+      return true;
+    }
     setErrors({ ...errors, name: "" });
     return false;
   };
@@ -101,19 +111,28 @@ export default function BasicData({
       });
       return true;
     }
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          lastname: "El apellido del paciente solo debe incluir letras",
+        };
+      });
+      return true;
+    }
     setErrors({ ...errors, lastname: "" });
     return false;
   };
 
   const handleage = (value: string) => {
-    setValues({ ...values, age: value });
-    if (value.length === 0) {
-      setErrors((previousState) => {
+    setValues({ ...values, birthDate: value })
+    if (value.length < 2) {
+      setErrors((previousState: any) => {
         return {
           ...previousState,
-          age: "Escribe la fecha de nacimiento del paciente",
-        };
-      });
+          age: "La fecha de nacimiento es obligatorio",
+        }
+      })
       return true;
     }
     setErrors({ ...errors, age: "" });
@@ -122,6 +141,15 @@ export default function BasicData({
 
   const handlephone = (value: string) => {
     setValues({ ...values, phone: value });
+    if (!VALIDATE_NUMBERS(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          phone: "El teléfono del paciente solo lleva números",
+        };
+      });
+      return true;
+    }
     if (value.length < 2) {
       setErrors((previousState) => {
         return {
@@ -132,6 +160,18 @@ export default function BasicData({
       return true;
     }
     setErrors({ ...errors, phone: "" });
+    return false;
+  };
+
+  const handleEmail = (value: string) => {
+    setValues({ ...values, email: value });
+    if (values.email.length > 1) {
+      if (!VALIDATE_EMAIL(values.email)) {
+        setErrors({ ...errors, email: "El email debe ser correcto" });
+        return true;
+      }
+    }
+    setErrors({ ...errors, email: "" });
     return false;
   };
 
@@ -166,7 +206,7 @@ export default function BasicData({
             <div className="lg:w-[70%] grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 justify-start items-center gap-3 lg:mt-0 mt-6">
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Nombre(s)
+                  Nombre(s){" "}<span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"text"}
@@ -182,7 +222,7 @@ export default function BasicData({
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Apellido paterno
+                  Apellido paterno{" "}<span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"text"}
@@ -227,17 +267,13 @@ export default function BasicData({
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Fecha de nacimiento
+                  Fecha de nacimiento{" "}<span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"date"}
                   min={0}
-                  /*defaultValue={
-                    account?.birthDate !== ""
-                      ? moment(account?.birthDate).toDate().getDate()
-                      : Date.now()
-                  }*/
-                  defaultValue={values.birthDate}
+                  defaultValue={values?.birthDate}
+                  value={values.birthDate}
                   className="form-control w-full"
                   onChange={(e: any) => handleage(e.target.value)}
                 />
@@ -293,13 +329,16 @@ export default function BasicData({
                   min={0}
                   className="form-control w-full"
                   onChange={(e: any) =>
-                    setValues({ ...values, email: e.target.value })
+                    handleEmail(e.target.value)
                   }
                 />
+                {errors.email.length > 0 && (
+                  <span className="text-red-500">{errors.email}</span>
+                )}
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Teléfono
+                  Teléfono{" "}<span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type="tel"

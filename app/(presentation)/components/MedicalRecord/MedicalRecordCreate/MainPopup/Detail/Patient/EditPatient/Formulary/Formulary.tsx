@@ -59,13 +59,7 @@ export default function Formulary() {
       gender: subject?.gender ?? 0,
       sex: subject?.sex ?? 0,
       email: subject?.email ?? "",
-      birthDate: subject?.birthDate
-        ? `${new Date(subject.birthDate).getFullYear()}-${
-            new Date(subject.birthDate).getMonth() + 1 < 10
-              ? `0${new Date(subject.birthDate).getMonth() + 1}`
-              : new Date(subject.birthDate).getMonth() + 1
-          }-${new Date(subject.birthDate).getDate()}`
-        : "",
+      birthDate: subject?.birthDate ?? "",
       phone: subject?.phoneNumber ?? "",
       country: subject?.country ?? "",
       federalEntity: subject?.federativeEntityId ?? 0,
@@ -125,8 +119,7 @@ export default function Formulary() {
       address: values.direction,
       city: values.city,
       pictureUrl: "",
-      birthDate:
-        values.birthDate.length > 0 ? new Date(values.birthDate) : null,
+      birthDate: values.birthDate ?? null,
       createdOn: subject?.createdOn ?? new Date(),
       updatedOn: new Date(),
       deletedOn: null,
@@ -175,7 +168,8 @@ export default function Formulary() {
             values.name === "" ||
             values.lastname === "" ||
             values.birthDate === "" ||
-            values.phone === ""
+            values.phone === "" ||
+            validForm() > 0
           }
           onClick={() => onSubmit()}
         >
