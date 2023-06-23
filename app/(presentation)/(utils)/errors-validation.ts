@@ -10,6 +10,8 @@ export function VALIDATE_NAMES(text: string) {
     return /^[a-zA-Z.]+$/.test(text);
 }
 
+
+
 export function VALIDATE_NUMBERS(text: string) {
-    return /^[0-9]+$/.test(text);
+    return /^[+0-9- 0-9]+$/.test(text);
 }

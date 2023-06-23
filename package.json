@@ -54,6 +54,7 @@
     "react-google-recaptcha": "^2.1.0",
     "react-hook-form": "^7.41.5",
     "react-icons": "^4.7.1",
+    "react-intl-tel-input": "^8.2.0",
     "react-leaflet": "^4.2.1",
     "react-otp-input": "^3.0.2",
     "react-transition-group": "^4.4.5",

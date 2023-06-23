@@ -1,3 +1,4 @@
+import { VALIDATE_EMAIL, VALIDATE_NAMES, VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
@@ -16,6 +17,9 @@ import React, {
   useEffect,
   useState,
 } from "react";
+import IntlTelInput from "react-intl-tel-input";
+import 'react-intl-tel-input/dist/main.css';
+import { twMerge } from "tailwind-merge";
 
 interface ICompanionCreateProps {
   patientId: number;
@@ -74,6 +78,15 @@ export default function CompanionCreate({
       });
       return true;
     }
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          name: "El nombre del paciente solo debe incluir letras",
+        };
+      });
+      return true;
+    }
     setErrors({ ...errors, name: "" });
     return false;
   };
@@ -89,12 +102,21 @@ export default function CompanionCreate({
       });
       return true;
     }
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          lastname: "El apellido del paciente solo debe incluir letras",
+        };
+      });
+      return true;
+    }
     setErrors({ ...errors, lastname: "" });
     return false;
   };
 
   const handleage = (value: string) => {
-    setValues({ ...values, age: value });
+    setValues({ ...values, birthDate: value });
     if (value.length < 2) {
       setErrors((previousState: any) => {
         return {
@@ -111,7 +133,7 @@ export default function CompanionCreate({
   const handlephone = (value: string) => {
     setValues({ ...values, phone: value });
     if (value.length < 2) {
-      setErrors((previousState: any) => {
+      setErrors((previousState) => {
         return {
           ...previousState,
           phone: "El teléfono del paciente es obligatorio",
@@ -119,8 +141,55 @@ export default function CompanionCreate({
       });
       return true;
     }
+    if (!VALIDATE_NUMBERS(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          phone: "El teléfono del paciente solo lleva números",
+        };
+      });
+      return true;
+    }
     setErrors({ ...errors, phone: "" });
     return false;
+  };
+  
+  const handleEmail = (value: string) => {
+    setValues({ ...values, email: value });
+    if (values.email.length > 1) {
+      if (!VALIDATE_EMAIL(values.email)) {
+        setErrors({ ...errors, email: "El email debe ser correcto" });
+        return true;
+      }
+    }
+    setErrors({ ...errors, email: "" });
+    return false;
+  };
+
+  const validForm = () => {
+    let errorsFieldsCount = 0;
+
+    if (errors.global.length > 0) errorsFieldsCount++;
+
+    if (errors.name.length > 0) errorsFieldsCount++;
+
+    if (errors.lastname.length > 0) errorsFieldsCount++;
+
+    if (errors.motherlastname.length > 0) errorsFieldsCount++;
+
+    if (errors.age.length > 0) errorsFieldsCount++;
+
+    if (errors.curp.length > 0) errorsFieldsCount++;
+
+    if (errors.sex.length > 0) errorsFieldsCount++;
+
+    if (errors.country.length > 0) errorsFieldsCount++;
+
+    if (errors.email.length > 0) errorsFieldsCount++;
+
+    if (errors.phone.length > 0) errorsFieldsCount++;
+
+    return errorsFieldsCount;
   };
 
   const onNewCompanion = (e: any) => {
@@ -140,7 +209,7 @@ export default function CompanionCreate({
       city: values.city,
       pictureUrl: "",
       isPatient: false,
-      birthDate: values.age,
+      birthDate: values.birthDate,
       createdOn: new Date(),
       updatedOn: null,
       deletedOn: null,
@@ -201,7 +270,14 @@ export default function CompanionCreate({
 
         <div>
           <Button
-            disabled={loading}
+            disabled={
+              loading || 
+              validForm() > 0 ||
+              values.name === "" ||
+              values.lastname === "" ||
+              values.phone === "" ||
+              values.birthDate === ""
+            }
             className="my-4 w-[100%] lg:w-auto"
             variant="primary"
             onClick={(e: any) => onNewCompanion(e)}
@@ -308,11 +384,18 @@ export default function CompanionCreate({
           <p className="input-label py-2">
             Teléfono <span className="text-primary font-bold">*</span>
           </p>
-          <FormInput
-            type="text"
-            onChange={(e) => handlephone(e.target.value)}
-            placeholder="Teléfono"
-          />
+          <div className="w-full">
+            <IntlTelInput
+              preferredCountries={['mx']}
+              onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
+              onPhoneNumberBlur={(e) => console.log(e)}
+              inputClassName={twMerge([
+                "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
+                "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
+                "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
+              ])}
+            />
+          </div>
           {errors.phone.length > 0 && (
             <span className="text-red-500">{errors.phone}</span>
           )}
@@ -322,9 +405,12 @@ export default function CompanionCreate({
           <p className="input-label py-2">Email</p>
           <FormInput
             type="email"
-            onChange={(e) => setValues({ ...values, email: e.target.value })}
+            onChange={(e) => handleEmail(e.target.value)}
             placeholder="Email"
           />
+          {errors.email.length > 0 && (
+            <span className="text-red-500">{errors.email}</span>
+          )}
         </div>
 
         <div className="input-group w-full">
