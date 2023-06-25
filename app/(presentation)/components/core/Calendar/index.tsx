@@ -4,7 +4,8 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import listPlugin from "@fullcalendar/list";
 import esLocale from "@fullcalendar/core/locales/es";
-import { EventClickArg } from "@fullcalendar/core";
+import { EventChangeArg, EventClickArg, ViewMountArg } from "@fullcalendar/core";
+import { useState } from "react";
 
 function Calendar({
   initialEvent,
@@ -18,8 +19,13 @@ function Calendar({
   events?: any[];
 }) {
 
+  const [showWeek, setShowWeek] = useState(false)
+
+  const handleChangeView = (view:string) => setShowWeek(view === "dayGridDay")
+
   return (
     <FullCalendar
+      viewDidMount={(mountArg: ViewMountArg)=> handleChangeView(mountArg.view.type)}
       navLinks={true}
       plugins={[interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin]}
       locale={esLocale}
@@ -34,7 +40,7 @@ function Calendar({
       headerToolbar={{
         start: "prev,next today",
         center: "title",
-        end: "",
+        end: showWeek ? "timeGridWeek" : "",
       }}
       buttonText={{
         today: "Hoy",
