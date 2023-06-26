@@ -2,25 +2,9 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
-import {
-  FormularyContext,
-  IFormularyContext,
-} from "./context/FormularyContext";
-import { DashboardRoutesEnum } from "(presentation)/(routes)/dashboardRoutes";
-import {
-  AuthFailure,
-  authFailuresEnum,
-} from "domain/core/failures/auth/authFailure";
-import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
-import Link from "next/link";
 import { VALIDATE_EMAIL } from "(presentation)/(utils)/errors-validation";
-import { redirect } from "next/navigation";
 
 export default function Formulary() {
-  const { state, actions, dispatch } =
-    useContext<IFormularyContext>(FormularyContext);
-  const { signInUser } = actions;
-  const { data, loading, error, successful } = state.signInUser;
 
   const [values, setValues] = useState({
     email: "",
@@ -73,10 +57,10 @@ export default function Formulary() {
     if (handleEmail() || handlePassword()) {
       return;
     }
-    signInUser({ email: values.email, password: values.password })(dispatch);
+    window.location.href = "/admin/dashboard";
   };
 
-  const handleErrors = () => {
+  /*const handleErrors = () => {
     switch (error?.code) {
       case authFailuresEnum.wrongPassword:
         setErrors({ ...errors, global: "Las credenciales son invalidas" });
@@ -117,17 +101,17 @@ export default function Formulary() {
   };
 
   useMemo(() => {
-    if (successful) redirect("/admin/dashboard");;
+    if (successful) redirect("/admin/dashboard");
   }, [successful]);
 
   useMemo(() => {
     if (error) handleErrors();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [error]);
+  }, [error]);*/
 
   return (
     <form onSubmit={(e: any) => onSubmit(e)} className="w-full relative">
-      <AlertComponent
+      {/*<AlertComponent
         variant="error"
         show={error !== null}
         description={errors.global}
@@ -136,7 +120,7 @@ export default function Formulary() {
         variant="success"
         show={successful === true}
         description="Redireccionando a tu cuenta..."
-      />
+      />*/}
       <div className="w-full mx-auto flex flex-col justify-center items-center gap-2 mb-8 text-center">
         <h2 className="text-2xl font-bold text-center intro-x xl:text-3xl xl:text-left">
           Panel administrativo
@@ -194,12 +178,12 @@ export default function Formulary() {
       </div>
       <div className="w-full flex flex-col justify-center items-center gap-4 text-center mt-8">
         <Button
-          disabled={loading || values.password === "" || values.email === ""}
+          disabled={values.password === "" || values.email === ""}
           variant="primary"
           type="submit"
           className="w-full py-2"
         >
-          {loading ? "Cargando" : "Acceder a mi cuenta"}
+          Acceder a mi cuenta
         </Button>
       </div>
     </form>

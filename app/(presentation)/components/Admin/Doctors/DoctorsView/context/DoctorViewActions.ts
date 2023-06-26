@@ -1,12 +1,4 @@
-import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
-import { ISubject } from "domain/core/entities/subjectEntity";
 import { IUser } from "domain/core/entities/userEntity";
-import { IGetCountryLocationsResponse } from "domain/core/response/countryResponse";
-import { IGetMunicipalitiesResponse } from "domain/core/response/municipalityResponse";
-import CountriesUseCase from "domain/useCases/country/countryUseCase";
-import FederalEntitiesUseCase from "domain/useCases/federalEntity/federalEntityUseCase";
-import MunicipalitiesUseCase from "domain/useCases/municipality/municipalityUseCases";
-import SubjectsUseCase from "domain/useCases/subject/subjectUseCase";
 import UserUseCase from "domain/useCases/user/userUseCase";
 import { Dispatch } from "react";
 
