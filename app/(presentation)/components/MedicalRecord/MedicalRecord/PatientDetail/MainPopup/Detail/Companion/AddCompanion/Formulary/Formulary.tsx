@@ -1,4 +1,8 @@
-import { VALIDATE_EMAIL, VALIDATE_NAMES, VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
+import {
+  VALIDATE_EMAIL,
+  VALIDATE_NAMES,
+  VALIDATE_NUMBERS,
+} from "(presentation)/(utils)/errors-validation";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
@@ -18,7 +22,7 @@ import React, {
   useState,
 } from "react";
 import IntlTelInput from "react-intl-tel-input";
-import 'react-intl-tel-input/dist/main.css';
+import "react-intl-tel-input/dist/main.css";
 import { twMerge } from "tailwind-merge";
 
 interface ICompanionCreateProps {
@@ -153,7 +157,7 @@ export default function CompanionCreate({
     setErrors({ ...errors, phone: "" });
     return false;
   };
-  
+
   const handleEmail = (value: string) => {
     setValues({ ...values, email: value });
     if (values.email.length > 1) {
@@ -249,7 +253,7 @@ export default function CompanionCreate({
         />
       )}
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between sticky top-[0px] bg-white">
         <div className="flex items-center">
           <div className="mr-4">
             <button
@@ -271,7 +275,7 @@ export default function CompanionCreate({
         <div>
           <Button
             disabled={
-              loading || 
+              loading ||
               validForm() > 0 ||
               values.name === "" ||
               values.lastname === "" ||
@@ -287,7 +291,7 @@ export default function CompanionCreate({
         </div>
       </div>
 
-      <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">
+      <div className="w-full rounded-md h-fit p-7">
         <div className="w-full border-b mb-2">
           <p className="font-medium text-lg text-slate-900 pb-2">
             Nuevo contacto
@@ -386,8 +390,10 @@ export default function CompanionCreate({
           </p>
           <div className="w-full">
             <IntlTelInput
-              preferredCountries={['mx']}
-              onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
+              preferredCountries={["mx"]}
+              onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
+                handlephone(fullNumber)
+              }
               onPhoneNumberBlur={(e) => console.log(e)}
               inputClassName={twMerge([
                 "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",

@@ -1,3 +1,4 @@
+import { IGetAppointmentResponse } from "domain/core/response/appointmentsResponse";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import MedicalRecordProvider from "../context/MedicalRecordContext";
@@ -12,12 +13,12 @@ import VitalSigns from "./VitalSigns/VitalSigns";
 
 interface IPatientDetailsProps {
   subjectId: number;
-  appointmentId: string | null;
+  appointment: IGetAppointmentResponse;
 }
 
 export default function PatientDetails({
   subjectId,
-  appointmentId,
+  appointment,
 }: IPatientDetailsProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [popupSectionActive, setPopupSectionActive] = useState(0);
@@ -95,7 +96,7 @@ export default function PatientDetails({
         <MedicalRecordProvider>
           <MainPopup
             subjectId={subjectId}
-            appointmentId={appointmentId}
+            appointment={appointment.data}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             popupSectionActive={popupSectionActive}

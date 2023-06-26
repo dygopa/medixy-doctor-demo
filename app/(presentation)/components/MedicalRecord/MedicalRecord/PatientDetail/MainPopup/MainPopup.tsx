@@ -2,10 +2,11 @@ import React, { Dispatch, SetStateAction } from "react";
 import Detail from "./Detail/Detail";
 import Header from "./Header/Header";
 import clsx from "clsx";
+import { IAppointment } from "domain/core/entities/appointmentEntity";
 
 interface IMainPopupProps {
   subjectId: number;
-  appointmentId: string | null;
+  appointment: IAppointment | null;
   isOpen: boolean;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   popupSectionActive: number;
@@ -14,7 +15,7 @@ interface IMainPopupProps {
 
 function MainPopup({
   subjectId,
-  appointmentId,
+  appointment,
   isOpen,
   setIsOpen,
   popupSectionActive,
@@ -31,7 +32,7 @@ function MainPopup({
         <div>
           <Header
             subjectId={subjectId}
-            appointmentId={appointmentId}
+            appointmentId={appointment?.id ?? null}
             setIsOpen={setIsOpen}
           />
         </div>
@@ -39,7 +40,7 @@ function MainPopup({
         <div className="p-4 h-full">
           <Detail
             subjectId={subjectId}
-            appointmentId={appointmentId}
+            appointment={appointment}
             popupSectionActive={popupSectionActive}
             setPopupSectionActive={setPopupSectionActive}
           />

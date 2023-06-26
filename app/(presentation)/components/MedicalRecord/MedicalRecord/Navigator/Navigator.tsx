@@ -46,11 +46,13 @@ export default function Navigator() {
           </div>
         </div>
 
-        <div className="lg:mt-0 mt-4">
-          <Link href={getRedirectMedicalRecordCreate()}>
-            <Button variant="primary">Nueva consulta</Button>
-          </Link>
-        </div>
+        {appointment.data?.id && appointment.data?.status !== 7 && (
+          <div className="lg:mt-0 mt-4">
+            <Link href={getRedirectMedicalRecordCreate()}>
+              <Button variant="primary">Atender paciente</Button>
+            </Link>
+          </div>
+        )}
       </div>
     </div>
   );
