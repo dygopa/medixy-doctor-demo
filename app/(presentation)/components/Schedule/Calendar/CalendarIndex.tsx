@@ -74,7 +74,8 @@ export default function CalendarIndex() {
   }
 
   function handleClickOnEvent(data:any){
-    if(moment(data["dateEvent"]).utc().isBefore(moment().utc()) && data["type"] !== "APPOINMENT"){
+    
+    if(moment(data["dateEvent"]).isBefore(moment().utc(true)) && data["type"] !== "APPOINMENT"){
       return;
     }
 
