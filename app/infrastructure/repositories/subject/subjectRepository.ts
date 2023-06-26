@@ -11,6 +11,7 @@ import { ICreateSubjectResponse, IGetSubjectRelationsResponse, IGetSubjectsRespo
 
 export default interface ISubjectRepository {
   getSubjects(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure>;
+  getSubjectsCount(obj: { limit?: number | undefined; searchQuery?: string | undefined; }): Promise<number | SubjectFailure>;
   getSubjectsCompanions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; patientId?: number | undefined; typeRelation?: number | undefined }): Promise<IGetSubjectRelationsResponse | SubjectFailure>;
   getSubjectById(subjectId: number): Promise<ISubject | SubjectFailure>;
   getSubjectsPoints(obj: { country?: string | undefined }): Promise<IPoints | PointFailure>;
@@ -66,6 +67,29 @@ export class SubjectRepository implements ISubjectRepository {
           }
   
           return JSON.parse(JSON.stringify(response));
+      } catch (error) { 
+        const exception = error as any;
+        return new SubjectFailure(subjectFailuresEnum.serverError);
+      }
+    }
+
+    async getSubjectsCount(obj: { limit?: number | undefined; searchQuery?: string | undefined; }): Promise<number | SubjectFailure> {
+      try {
+          let query = supabase.from("Sujetos").select("*", { count: "exact", head: true }).eq("esPaciente", true);
+    
+          if (obj.searchQuery) {
+   
+
+            query = query.or(`or(nombres.ilike.%${obj.searchQuery.trim().toLowerCase()}%,primerApellido.ilike.%${obj.searchQuery.trim().toLowerCase()}%,curp.ilike.%${obj.searchQuery.trim().toLowerCase()}%,telefono.ilike.%${obj.searchQuery.trim().toLowerCase()}%),and(nombres.ilike.%${obj.searchQuery.trim().toLowerCase()}%,primerApellido.ilike.%${obj.searchQuery.trim().toLowerCase()}%,curp.ilike.%${obj.searchQuery.trim().toLowerCase()}%,telefono.ilike.%${obj.searchQuery.trim().toLowerCase()}%)`);
+          }
+
+          if (obj.limit) {
+            query = query.limit(obj.limit);
+          }
+  
+          const res = await query;
+  
+          return res.count ?? 0;
       } catch (error) { 
         const exception = error as any;
         return new SubjectFailure(subjectFailuresEnum.serverError);

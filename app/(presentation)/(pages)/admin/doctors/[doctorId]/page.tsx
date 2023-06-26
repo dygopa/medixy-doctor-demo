@@ -1,5 +1,6 @@
+import AdminAppLayout from "(presentation)/(layouts)/AdminAppLayout/AdminAppLayout";
 import AppLayout from "(presentation)/(layouts)/AppLayout/AppLayout";
-import { DoctorsRoutesEnum } from "(presentation)/(routes)/admin/doctorsRoutes";
+import { AdminDoctorsRoutesEnum } from "(presentation)/(routes)/admin/doctorsRoutes";
 import DoctorViewIndex from "(presentation)/components/Admin/Doctors/DoctorsView/DoctorsViewIndex";
 import Providers from "./providers";
 
@@ -8,16 +9,14 @@ export default async function DoctorViewPage({
 }: {
   params: { doctorId: string };
 }) {
-  console.log(params)
   return (
-    <AppLayout
+    <AdminAppLayout
       title="Informacion del doctor"
-      pathname={DoctorsRoutesEnum.DoctorsView}
-      showStepsBySteps={false}
+      pathname={AdminDoctorsRoutesEnum.DoctorsView}
     >
       <Providers>
         <DoctorViewIndex doctorId={parseInt(params.doctorId, 10)} />
       </Providers>
-    </AppLayout>
+    </AdminAppLayout>
   );
 }

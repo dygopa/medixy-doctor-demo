@@ -1,11 +1,14 @@
-import AppLayout from "(presentation)/(layouts)/AppLayout/AppLayout";
-import { DoctorsRoutesEnum } from "(presentation)/(routes)/admin/doctorsRoutes";
+import AdminAppLayout from "(presentation)/(layouts)/AdminAppLayout/AdminAppLayout";
+import { AdminDoctorsRoutesEnum } from "(presentation)/(routes)/admin/doctorsRoutes";
 import DoctorsListIndex from "(presentation)/components/Admin/Doctors/DoctorsList/DoctorsListIndex";
 
 export default async function DoctorsListPage() {
   return (
-    <AppLayout title="Doctores" pathname={DoctorsRoutesEnum.DoctorsView}>
+    <AdminAppLayout
+      title="Doctores"
+      pathname={AdminDoctorsRoutesEnum.DoctorsView}
+    >
       <DoctorsListIndex />
-    </AppLayout>
+    </AdminAppLayout>
   );
 }

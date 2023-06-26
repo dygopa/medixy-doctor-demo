@@ -10,7 +10,7 @@ import { ISubject } from "domain/core/entities/subjectEntity";
 import Paginate from "(presentation)/components/core/Paginate/Paginate";
 import { useSearchParams } from "next/navigation";
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
-import { DoctorsRoutesEnum } from "(presentation)/(routes)/admin/doctorsRoutes";
+import { AdminDoctorsRoutesEnum } from "(presentation)/(routes)/admin/doctorsRoutes";
 import { IUser } from "domain/core/entities/userEntity";
 
 export default function TableResponsive() {
@@ -81,7 +81,7 @@ export default function TableResponsive() {
             <div className="w-full flex justify-between items-center gap-4">
               <Link
                 href={{
-                  pathname: DoctorsRoutesEnum.DoctorsView + patient.userId,
+                  pathname: AdminDoctorsRoutesEnum.DoctorsView + patient.userId,
                 }}
                 className="w-full flex items-center gap-4 cursor-pointer"
               >
@@ -136,7 +136,7 @@ export default function TableResponsive() {
                             className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100"
                             href={{
                               pathname:
-                                DoctorsRoutesEnum.DoctorsView +
+                                AdminDoctorsRoutesEnum.DoctorsView +
                                 patient.userId,
                             }}
                           >

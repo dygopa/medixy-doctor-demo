@@ -7,9 +7,24 @@ export default class AppointmentUseCase {
 
   async getAppointments(obj: { skip?: number | null; sort?: any; limit?: number | null; subjectId?: number | null }): Promise<IGetAppointmentsResponse> {
     try {
-      const response = await this._repository.getAppointment({
+      const response = await this._repository.getAppointments({
         skip: obj.skip,
         sort: obj.sort,
+        limit: obj.limit,
+        subjectId: obj.subjectId
+      });
+
+      if (response instanceof AppointmentFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getAppointmentsCount(obj: { limit?: number | null; subjectId?: number | null }): Promise<number> {
+    try {
+      const response = await this._repository.getAppointmentsCount({
         limit: obj.limit,
         subjectId: obj.subjectId
       });

@@ -1,5 +1,5 @@
-export enum DoctorsRoutesEnum {
-    DoctorsList = "/doctors",
-    DoctorsView = "admin/doctors/",
+export enum AdminDoctorsRoutesEnum {
+    DoctorsList = "/admin/doctors",
+    DoctorsView = "/admin/doctors/",
 }
 

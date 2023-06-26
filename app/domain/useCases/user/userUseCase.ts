@@ -107,6 +107,21 @@ export default class UserUseCase {
     }
   }
 
+  async getDoctorsCount(obj: { limit?: number | undefined; searchQuery?: string | undefined}): Promise<number> {
+    try {
+      const response = await this._repository.getDoctorsCount({
+        limit: obj.limit,
+        searchQuery: obj.searchQuery
+      });
+
+      if (response instanceof UserFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getDoctorById(doctorId: number): Promise<IUser> {
     try {
       const response = await this._repository.getDoctorById(doctorId);

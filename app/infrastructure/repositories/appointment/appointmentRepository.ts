@@ -7,18 +7,22 @@ import { subjectSupabaseToMap } from "domain/mappers/patient/supabase/subjectSup
 import { supabase } from "infrastructure/config/supabase/supabase-client";
 
 export default interface IAppointmentRepository {
-  getAppointment(obj: { 
+  getAppointments(obj: { 
     skip?: number | string | null; 
     sort?: any; 
     limit?: number | null; 
     subjectId?: number | null;
   }): Promise<IGetAppointmentsResponse | AppointmentFailure>;
+  getAppointmentsCount(obj: { 
+    limit?: number | null; 
+    subjectId?: number | null;
+  }): Promise<number | AppointmentFailure>;
   getAppointmentById(appointmentId: string): Promise<IGetAppointmentResponse | AppointmentFailure>;
   editAppointmentStatus(obj: { appointmentId: string; status: number }): Promise<IUpdateAppointmentResponse | AppointmentFailure>;
 }
 
 export class AppointmentRepository implements IAppointmentRepository {
-    async getAppointment(obj: { 
+    async getAppointments(obj: { 
         skip?: number | string | null; 
         sort?: any; 
         limit?: number | null; 
@@ -74,6 +78,33 @@ export class AppointmentRepository implements IAppointmentRepository {
             const exception = error as any;
             return new AppointmentFailure(appointmentFailuresEnum.serverError);
         }
+    }
+
+    async getAppointmentsCount(obj: { 
+      limit?: number | null; 
+      subjectId?: number | null;
+    }): Promise<number | AppointmentFailure> {
+      try {
+          let query = supabase.from("Citas").select(`
+              *
+          `,
+          { count: "exact", head: true });
+
+          if (obj.subjectId) {
+            query = query.eq("sujetoId", obj.subjectId);
+          }
+
+          if (obj.limit) {
+            query = query.limit(obj.limit);
+          }
+
+          const res = await query;
+
+          return res.count ?? 0;
+      } catch (error) {
+          const exception = error as any;
+          return new AppointmentFailure(appointmentFailuresEnum.serverError);
+      }
     }
 
     async getAppointmentById(appointmentId: string): Promise<IGetAppointmentResponse | AppointmentFailure> {

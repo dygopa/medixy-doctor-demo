@@ -1,8 +1,7 @@
-import { DoctorsRoutesEnum } from "(presentation)/(routes)/admin/doctorsRoutes";
+import { AdminDoctorsRoutesEnum } from "(presentation)/(routes)/admin/doctorsRoutes";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
-import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
@@ -24,7 +23,7 @@ export default function Filters() {
   const handleSearch = () => {
     const query = `?search_query=${values.query}&page=1`;
 
-    router.replace(DoctorsRoutesEnum.DoctorsList + query);
+    router.replace(AdminDoctorsRoutesEnum.DoctorsList + query);
   };
 
   return (
@@ -122,7 +121,7 @@ export default function Filters() {
                       query: "",
                       curp: "",
                     });
-                    router.replace(DoctorsRoutesEnum.DoctorsList);
+                    router.replace(AdminDoctorsRoutesEnum.DoctorsList);
                   }}
                   className="w-32 ml-auto"
                 >

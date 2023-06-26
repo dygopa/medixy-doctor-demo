@@ -11,7 +11,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import Paginate from "(presentation)/components/core/Paginate/Paginate";
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
-import { DoctorsRoutesEnum } from "(presentation)/(routes)/admin/doctorsRoutes";
+import { AdminDoctorsRoutesEnum } from "(presentation)/(routes)/admin/doctorsRoutes";
 import { IUser } from "domain/core/entities/userEntity";
 
 export default function DoctorsTable() {
@@ -36,10 +36,10 @@ export default function DoctorsTable() {
   }, [page, searchQuery]);
 
   const toDateString = (date: Date) => {
-    const stringDate: string = new Date(date).toLocaleDateString()
+    const stringDate: string = new Date(date).toLocaleDateString();
 
-    return stringDate
-  }
+    return stringDate;
+  };
 
   return (
     <>
@@ -68,28 +68,19 @@ export default function DoctorsTable() {
           <Table.Tbody className="z-0">
             {doctors.data?.length > 0 &&
               doctors.data.map((doctor: IUser) => (
-                <Table.Tr
-                  key={doctor.userId}
-                  className="hover:cursor-pointer"
-                >
-                  <Table.Td
-                    className="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5"
-                    
-                  >
+                <Table.Tr key={doctor.userId} className="hover:cursor-pointer">
+                  <Table.Td className="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5">
                     <Link
                       href={{
                         pathname:
-                          DoctorsRoutesEnum.DoctorsView + doctor.userId,
+                          AdminDoctorsRoutesEnum.DoctorsView + doctor.userId,
                       }}
                     >
                       {doctor.names} {doctor.lastName}
                     </Link>
                   </Table.Td>
 
-                  <Table.Td
-                    className="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5"
-                    
-                  >
+                  <Table.Td className="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5">
                     {doctor.curp}
                   </Table.Td>
 
@@ -97,7 +88,7 @@ export default function DoctorsTable() {
                     className="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5"
                     onClick={() =>
                       router.push(
-                        DoctorsRoutesEnum.DoctorsView + doctor.userId
+                        AdminDoctorsRoutesEnum.DoctorsView + doctor.userId
                       )
                     }
                   >
@@ -108,7 +99,7 @@ export default function DoctorsTable() {
                     className="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5"
                     onClick={() =>
                       router.push(
-                        DoctorsRoutesEnum.DoctorsView + doctor.userId
+                        AdminDoctorsRoutesEnum.DoctorsView + doctor.userId
                       )
                     }
                   >
