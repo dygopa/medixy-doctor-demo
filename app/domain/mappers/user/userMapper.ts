@@ -26,3 +26,30 @@ export function userAPIToMap(data: any): IUser {
     professionalLicenseInstitution: data?.professional_license_institution ?? "",
   } as IUser;
 }
+
+export function userSupabaseToMap(data: any): IUser {
+  return {
+    userId: data?.id ?? "",
+    accountId: data?.usuarioId ?? "",
+    names: data?.nombres ?? "",
+    firstName: data?.primerApellido ?? "",
+    lastName: data?.segundoApellido ?? "",
+    phone: data?.telefono ?? "",
+    status: data?.estado ?? 0,
+    email: data?.email ?? "",
+    curp: data?.curp ?? "",
+    birthDate: data?.fechaNacimiento ?? "",
+    sex: data?.sexo ?? 0,
+    websiteUrl: data?.sitioWeb ?? "",
+    avatar: data?.avatar ?? "",
+    address: data?.direccion ?? "",
+    aboutMe: data?.acerca ?? "",
+    country: data?.paisNacimiento ?? "",
+    personType: data?.tipoPersona ?? 0,
+    role: data?.role ?? "",
+    createdOn: data?.fechaRegistro ?? null,
+    pwaProfressionId: data?.profesionPQAId ?? 0,
+    professionalLicense: data?.cedulaProfecional ?? "",
+    professionalLicenseInstitution: data?.institucionCedulaProfecional ?? "",
+  } as IUser;
+}

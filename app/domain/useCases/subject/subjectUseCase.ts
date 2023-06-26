@@ -2,7 +2,7 @@ import { ISubject } from "domain/core/entities/subjectEntity";
 import { IPoints } from "domain/core/entities/pointsEntity";
 import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
 import { PointFailure } from "domain/core/failures/point/pointFailure";
-import { ICreateSubjectResponse, IGetSubjectRelationsResponse, IGetSubjectsResponse } from "domain/core/response/subjectsResponse";
+import { IGetSubjectRelationsResponse, IGetSubjectsResponse } from "domain/core/response/subjectsResponse";
 import { SubjectRepository } from "infrastructure/repositories/subject/subjectRepository";
 
 export default class SubjectsUseCase {
@@ -13,6 +13,21 @@ export default class SubjectsUseCase {
       const response = await this._repository.getSubjects({
         skip: obj.skip,
         sort: obj.sort,
+        limit: obj.limit,
+        searchQuery: obj.searchQuery
+      });
+
+      if (response instanceof SubjectFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getSubjectsCount(obj: { limit?: number | undefined; searchQuery?: string | undefined }): Promise<number> {
+    try {
+      const response = await this._repository.getSubjectsCount({
         limit: obj.limit,
         searchQuery: obj.searchQuery
       });
