@@ -16,6 +16,7 @@ import {
 } from "../context/DoctorViewContext";
 import Contact from "./Contact";
 import AboutMe from "./AboutMe";
+import Credentials from "./Credentials";
 
 export default function Formulary() {
   const { state, actions, dispatch } =
@@ -23,12 +24,11 @@ export default function Formulary() {
   const { data: doctor } = state.getDoctorById;
   const { data: specialities } = state.getUserMedicalSpecialities;
 
-  console.log(doctor)
   console.log(specialities)
 
   return (
     <div>
-      <div className="w-full sticky top-[67px] z-[50]  bg-slate-100 pt-2">
+      <div className="w-full sticky top-[67px] z-[50]  bg-slate-100 py-2">
         <div className="md:flex justify-start items-center">
           <div className="lg:w-[50%]">
             <h2 className="lg:mr-5 text-2xl font-bold truncate">
@@ -45,6 +45,7 @@ export default function Formulary() {
         <BasicData
           doctor={doctor}
         />
+        <Credentials specialities={specialities} />
         <Contact doctor={doctor} />
         <AboutMe doctor= {doctor} />
       </div>

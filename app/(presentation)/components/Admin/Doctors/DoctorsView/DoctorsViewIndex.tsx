@@ -16,13 +16,16 @@ export default function DoctorViewIndex({
 }: IDoctorViewIndexProps) {
   const { state, actions, dispatch } =
     useContext<IDoctorViewContext>(DoctorViewContext);
-  const { getDoctorById } = actions;
+  const { getDoctorById, getUserMedicalSpecialities } = actions;
   const { data: doctor, loading, successful, error } = state.getDoctorById;
 
   useEffect(() => {
     let isCleanup = true;
 
-    if (isCleanup) getDoctorById(doctorId)(dispatch);
+    if (isCleanup) { 
+      getDoctorById(doctorId)(dispatch);
+      getUserMedicalSpecialities(doctorId)(dispatch);
+    };
 
     return () => {
       isCleanup = false;

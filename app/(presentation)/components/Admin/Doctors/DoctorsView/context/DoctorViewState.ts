@@ -14,7 +14,7 @@ interface IGetDoctorState {
 }
 
 interface IUserUserState {
-    data: string | null | Object | Array<any>;
+    data: Array<any>;
     loading: boolean;
     successful: boolean;
     error: UserFailure | null; 

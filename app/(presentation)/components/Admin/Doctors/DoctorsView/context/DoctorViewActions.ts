@@ -20,11 +20,11 @@ const getDoctorById = (doctorId: number) => async (dispatch: Dispatch<any>) => {
     }
 }
 
-const getUserMedicalSpecialities = (id:number) => async (dispatch: Dispatch<any>) => {
+const getUserMedicalSpecialities = (doctorId:number) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "GET_USER_MEDICAL_SPECIALITIES_LOADING" });
       
-      const res: Array<any> = await new UserUseCase().getUserMedicalSpecialities(id);
+      const res: Array<any> = await new UserUseCase().getUserMedicalSpecialities(doctorId);
   
       dispatch({ type: "GET_USER_MEDICAL_SPECIALITIES_SUCCESSFUL", payload: { data: res } });
     } catch (error) {
