@@ -18,7 +18,7 @@ export default function AboutMe({ doctor }: IFormularyProps) {
             Sobre el doctor y sus servicios
           </p>
         </div>
-        <div className="w-full">{doctor?.aboutMe}</div>
+        <div className="w-full">{doctor?.aboutMe && doctor?.aboutMe.length > 0 ? doctor?.aboutMe : "No especificado"}</div>
       </div>
     </div>
   );

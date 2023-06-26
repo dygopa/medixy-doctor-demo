@@ -56,6 +56,13 @@ export default function Credentials({ specialities }: IFormularyProps) {
           }
           </Table.Tbody>
         </Table>
+        {specialities?.length === 0 &&
+          <div className="w-full flex flex-col justify-center items-center text-center">
+            <p className="font-light text-slate-500 text-base text-center">
+              No especificadas
+            </p>
+        </div>
+        }
       </div>
     </div>
   );

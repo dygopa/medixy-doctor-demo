@@ -24,13 +24,13 @@ export default function Contact({ doctor }: IFormularyProps) {
             <p className="text-[13px] w-fit text-slate-900 font-semibold mb-2">
               Teléfono de contacto
             </p>
-            {doctor?.phone}
+            {doctor?.phone && doctor?.phone.length > 0 ? doctor?.phone : "No especificado"}
           </div>
           <div className="flex flex-col justify-between items-start relative gap-1">
             <p className="text-[13px] w-fit text-slate-900 font-semibold mb-2">
               Sitio web
             </p>
-            {doctor?.websiteUrl}
+            {doctor?.websiteUrl && doctor?.websiteUrl.length > 0 ? doctor?.websiteUrl : "No especificado"}
           </div>
         </div>
       </div>

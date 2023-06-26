@@ -49,55 +49,49 @@ export default function BasicData({
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
                 Nombre(s)
               </p>
-              {doctor?.names}
+              {doctor?.names && doctor?.names.length > 0 ? doctor?.names : "No especificado"}
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1 mb-2">
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
                 Apellido paterno
               </p>
-              {doctor?.firstName}
+              {doctor?.firstName && doctor?.firstName.length > 0 ? doctor?.firstName : "No especificado"}
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1 mb-2">
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
                 Apellido materno
               </p>
-              {doctor?.lastName}
+              {doctor?.lastName && doctor?.lastName.length > 0 ? doctor?.lastName : "No especificado"}
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1 mb-2">
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
                 CURP
               </p>
-              {doctor?.curp}
+              {doctor?.curp && doctor?.curp.length > 0 ? doctor?.curp : "No especificado"}
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1 mb-2">
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
                 Fecha de nacimiento
               </p>
-              {doctor?.birthDate}
+              {doctor?.birthDate && doctor?.birthDate.length > 0 ? doctor?.birthDate : "No especificado"}
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1 mb-2">
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
                 Sexo
               </p>
-              {doctor?.sex}
+              {doctor?.sex && doctor?.sex > 0 ? doctor?.sex : "No especificado"}
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1 mb-2">
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
                 País nacimiento
               </p>
-              {doctor?.country}
+              {doctor?.country && doctor?.country.length > 0 ? doctor?.country : "No especificado"}
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1 mb-2">
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
                 Email
               </p>
-              {doctor?.email}
-            </div>
-            <div className="flex flex-col justify-between items-start relative gap-1 mb-2">
-              <p className="text-[13px] w-fit text-slate-900 font-semibold">
-                Teléfono
-              </p>
-              {doctor?.phone}
+              {doctor?.email && doctor?.email.length > 0 ? doctor?.email : "No especificado"}
             </div>
           </div>
         </div>
