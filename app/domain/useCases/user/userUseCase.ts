@@ -89,4 +89,33 @@ export default class UserUseCase {
       throw error;
     }
   }
+
+  async getDoctors(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined}): Promise<IGetUsersResponse> {
+    try {
+      const response = await this._repository.getDoctors({
+        skip: obj.skip,
+        sort: obj.sort,
+        limit: obj.limit,
+        searchQuery: obj.searchQuery
+      });
+
+      if (response instanceof UserFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getDoctorById(doctorId: number): Promise<IUser> {
+    try {
+      const response = await this._repository.getDoctorById(doctorId);
+
+      if (response instanceof UserFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

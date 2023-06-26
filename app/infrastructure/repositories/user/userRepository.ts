@@ -1,5 +1,7 @@
 import { IUser } from "domain/core/entities/userEntity";
 import { UserFailure, userFailuresEnum } from "domain/core/failures/user/userFailure";
+import { IGetUsersResponse } from "domain/core/response/usersResponse";
+import { userSupabaseToMap } from "domain/mappers/user/userMapper";
 import { 
   CREATE_MEDICAL_SPECIALITY_ENDPOINT, 
   DELETE_MEDICAL_SPECIALITY_ENDPOINT, 
@@ -20,6 +22,9 @@ export default interface IUserRepository {
   getMedicalSpecialities(): Promise<Array<any> | UserFailure>;
   createMedicalSpeciality(obj:any): Promise<Array<any> | UserFailure>;
   updateMedicalSpeciality(obj:any): Promise<Object | UserFailure>;
+  getDoctors(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetUsersResponse | UserFailure>;
+  getDoctorById(doctorId: number): Promise<IUser | UserFailure>;
+  getDoctorsCount(obj: { limit?: number | undefined; searchQuery?: string | undefined; }): Promise<number | UserFailure>;
 }
 
 export class UserRepository implements IUserRepository {
@@ -268,6 +273,97 @@ export class UserRepository implements IUserRepository {
       return data["data"] ?? {};
     } catch (error) {
       console.log("Error", error)
+      const exception = error as any;
+      return new UserFailure(userFailuresEnum.serverError);
+    }
+  }
+
+  async getDoctors(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetUsersResponse | UserFailure> {
+    try {
+        let query = supabase.from("Doctores").select("*", { count: "exact" });
+  
+        if (obj.sort) {
+          query = query.order(obj.sort.field, {
+            ascending: obj.sort.ascending
+          });
+        }
+
+        if (obj.searchQuery) {
+ 
+
+          query = query.or(`or(nombres.ilike.%${obj.searchQuery.trim().toLowerCase()}%,primerApellido.ilike.%${obj.searchQuery.trim().toLowerCase()}%,curp.ilike.%${obj.searchQuery.trim().toLowerCase()}%,telefono.ilike.%${obj.searchQuery.trim().toLowerCase()}%),and(nombres.ilike.%${obj.searchQuery.trim().toLowerCase()}%,primerApellido.ilike.%${obj.searchQuery.trim().toLowerCase()}%,curp.ilike.%${obj.searchQuery.trim().toLowerCase()}%,telefono.ilike.%${obj.searchQuery.trim().toLowerCase()}%)`);
+        }
+
+        if (obj.skip && typeof obj.skip === "number" && obj.limit) {
+          query = query.range(obj.skip, obj.skip + obj.limit);
+        }
+
+        if (obj.limit) {
+          query = query.limit(obj.limit);
+        }
+
+        const res = await query;
+        
+        const subjects: IUser[] = [];
+
+        if (res.data && res.data.length > 0) {
+            await Promise.all(res.data.map(async (data: any) => {
+                const subjectMap: IUser = userSupabaseToMap(data);
+    
+                subjects.push(subjectMap);
+            }));
+        }
+
+        const response: IGetUsersResponse = {
+          data: subjects,
+          metadata: {
+            total: res.count ?? 0,
+            limit: obj.limit ?? 0,
+          }
+        }
+
+        console.log(response)
+
+        return JSON.parse(JSON.stringify(response));
+    } catch (error) { 
+      const exception = error as any;
+      return new UserFailure(userFailuresEnum.serverError);
+    }
+  }
+  async getDoctorById(doctorId: number): Promise<IUser | UserFailure> {
+    try {
+      const res = await supabase.from("Doctores").select().eq("id", doctorId).limit(1);
+
+      let doctor: IUser = {} as IUser;
+
+      if (res.data && res.data.length > 0) doctor = userSupabaseToMap(res.data[0]);
+
+      return doctor;
+    } catch (error) { 
+      const exception = error as any;
+      return new UserFailure(userFailuresEnum.serverError);
+    }
+  }
+
+  async getDoctorsCount(obj: { limit?: number | undefined; searchQuery?: string | undefined; }): Promise<number | UserFailure> {
+    try {
+        let query = supabase.from("Doctores").select("*", { count: "exact" });
+
+        if (obj.searchQuery) {
+ 
+
+          query = query.or(`or(nombres.ilike.%${obj.searchQuery.trim().toLowerCase()}%,primerApellido.ilike.%${obj.searchQuery.trim().toLowerCase()}%,curp.ilike.%${obj.searchQuery.trim().toLowerCase()}%,telefono.ilike.%${obj.searchQuery.trim().toLowerCase()}%),and(nombres.ilike.%${obj.searchQuery.trim().toLowerCase()}%,primerApellido.ilike.%${obj.searchQuery.trim().toLowerCase()}%,curp.ilike.%${obj.searchQuery.trim().toLowerCase()}%,telefono.ilike.%${obj.searchQuery.trim().toLowerCase()}%)`);
+        }
+
+
+        if (obj.limit) {
+          query = query.limit(obj.limit);
+        }
+
+        const res = await query;
+
+        return res.count ?? 0;
+    } catch (error) { 
       const exception = error as any;
       return new UserFailure(userFailuresEnum.serverError);
     }
