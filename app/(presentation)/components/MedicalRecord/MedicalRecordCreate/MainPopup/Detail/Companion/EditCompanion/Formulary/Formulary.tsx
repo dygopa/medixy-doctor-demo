@@ -1,4 +1,8 @@
-import { VALIDATE_EMAIL, VALIDATE_NAMES, VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
+import {
+  VALIDATE_EMAIL,
+  VALIDATE_NAMES,
+  VALIDATE_NUMBERS,
+} from "(presentation)/(utils)/errors-validation";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
@@ -274,7 +278,7 @@ export default function CompanionCreate({
         />
       )}
 
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between sticky top-[0px] bg-white">
         <div className="flex items-center">
           <div className="mr-4">
             <button
@@ -312,7 +316,7 @@ export default function CompanionCreate({
         </div>
       </div>
 
-      <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">
+      <div className="w-full rounded-md h-fit p-7">
         <div className="w-full border-b mb-2">
           <p className="font-medium text-lg text-slate-900 pb-2">
             Modificar contacto

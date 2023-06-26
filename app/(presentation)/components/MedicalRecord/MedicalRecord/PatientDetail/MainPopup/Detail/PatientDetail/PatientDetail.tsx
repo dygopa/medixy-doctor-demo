@@ -1,6 +1,8 @@
 import { getFirstLetter } from "(presentation)/(helper)/strings/strings";
+import clsx from "clsx";
+import { IAppointment } from "domain/core/entities/appointmentEntity";
 import Image from "next/image";
-import { Dispatch, SetStateAction, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import {
   IMedicalRecordContext,
   MedicalRecordContext,
@@ -8,9 +10,13 @@ import {
 
 interface IPatientDetailProps {
   subjectId: number;
+  appointment: IAppointment | null;
 }
 
-export default function PatientDetail({ subjectId }: IPatientDetailProps) {
+export default function PatientDetail({
+  subjectId,
+  appointment,
+}: IPatientDetailProps) {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { getSubjectById } = actions;
@@ -77,13 +83,22 @@ export default function PatientDetail({ subjectId }: IPatientDetailProps) {
             )}
           </div>
 
-          <div>
-            <div className="w-full flex justify-center items-center gap-2">
-              <p className="font-medium p-[1.0%_7%] rounded text-sm text-yellow-800 bg-yellow-300">
-                Por atención
-              </p>
+          {appointment?.id && (
+            <div>
+              <div className="w-full flex justify-center items-center gap-2">
+                <p
+                  className={clsx([
+                    "font-medium p-[1.0%_7%] rounded text-sm",
+                    appointment?.status === 7
+                      ? "bg-green-400 text-white"
+                      : "text-yellow-800 bg-yellow-300",
+                  ])}
+                >
+                  {appointment?.status === 7 ? "Atendido" : "Por atención"}
+                </p>
+              </div>
             </div>
-          </div>
+          )}
         </div>
 
         <div className="lg:pl-8 w-full flex justify-between xl:mt-0 mt-4">

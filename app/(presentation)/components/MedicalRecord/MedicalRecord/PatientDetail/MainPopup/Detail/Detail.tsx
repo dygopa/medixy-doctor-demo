@@ -8,17 +8,18 @@ import History from "./History/History";
 import Companion from "./Companion/Companion";
 import Patient from "./Patient/Patient";
 import clsx from "clsx";
+import { IAppointment } from "domain/core/entities/appointmentEntity";
 
 interface IDetailProps {
   subjectId: number;
-  appointmentId: string | null;
+  appointment: IAppointment | null;
   popupSectionActive: number;
   setPopupSectionActive: Dispatch<SetStateAction<number>>;
 }
 
 export default function Detail({
   subjectId,
-  appointmentId,
+  appointment,
   popupSectionActive,
   setPopupSectionActive,
 }: IDetailProps) {
@@ -82,7 +83,12 @@ export default function Detail({
       case 1:
         return <Companion subjectId={subjectId} />;
       case 2:
-        return <History subjectId={subjectId} appointmentId={appointmentId} />;
+        return (
+          <History
+            subjectId={subjectId}
+            appointmentId={appointment?.id ?? null}
+          />
+        );
       case 3:
         return <Allergies subjectId={subjectId} />;
       case 4:
@@ -101,7 +107,7 @@ export default function Detail({
     <div className="h-full">
       <div className="relative w-full bg-white h-full">
         <div className="mb-8">
-          <PatientDetail subjectId={subjectId} />
+          <PatientDetail subjectId={subjectId} appointment={appointment} />
         </div>
 
         <div className="w-full flex justify-start items-center overflow-x-auto overflow-y-hidden py-4">
