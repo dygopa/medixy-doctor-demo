@@ -113,7 +113,7 @@ export default function MedicalRecordIndex({ id }: IMedicalRecordIndexProps) {
         <div className="mt-4">
           <PatientDetails
             subjectId={subject?.subjectId ?? 0}
-            appointmentId={appointment.data?.id}
+            appointment={appointment}
           />
         </div>
       </div>

@@ -63,13 +63,24 @@ export default function AboutPatient() {
               )}
             </div>
 
-            <div>
-              <div className="w-full flex justify-center items-center gap-2">
-                <p className="font-medium p-[1.0%_7%] rounded text-sm text-yellow-800 bg-yellow-300">
-                  Por atención
-                </p>
+            {appointment.data?.id && (
+              <div>
+                <div className="w-full flex justify-center items-center gap-2">
+                  <p
+                    className={clsx([
+                      "font-medium p-[1.0%_7%] rounded text-sm",
+                      appointment.data.status === 7
+                        ? "bg-green-400 text-white"
+                        : "text-yellow-800 bg-yellow-300",
+                    ])}
+                  >
+                    {appointment.data.status === 7
+                      ? "Atendido"
+                      : "Por atención"}
+                  </p>
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           <div className="lg:pl-8 w-full overflow-y-hidden lg:mt-0 mt-8">
