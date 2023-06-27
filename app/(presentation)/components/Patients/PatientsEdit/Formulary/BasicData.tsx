@@ -7,14 +7,17 @@ import { ICountryLocation } from "domain/core/entities/countryEntity";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import moment from "moment";
-import { Dispatch, SetStateAction } from "react";
+import Image from "next/image";
+import { ChangeEvent, Dispatch, SetStateAction, useContext, useEffect, useRef } from "react";
 import { FiUser } from "react-icons/fi";
 import IntlTelInput from "react-intl-tel-input";
 import 'react-intl-tel-input/dist/main.css';
 import { twMerge } from "tailwind-merge";
+import { EditPatientContext, IEditPatientContext } from "../context/EditPatientContext";
 
 interface IBasicDataProps {
   values: {
+    id: number;
     name: string;
     lastname: string;
     motherlastname: string;
@@ -32,9 +35,11 @@ interface IBasicDataProps {
     city: string;
     direction: string;
     street: string;
+    pictureUrl: string;
   };
   setValues: Dispatch<
     SetStateAction<{
+      id: number;
       name: string;
       lastname: string;
       motherlastname: string;
@@ -52,6 +57,7 @@ interface IBasicDataProps {
       city: string;
       direction: string;
       street: string;
+      pictureUrl: string;
     }>
   >;
   errors: {
@@ -90,6 +96,38 @@ export default function BasicData({
   errors,
   setErrors,
 }: IBasicDataProps) {
+  const { state, actions, dispatch } = useContext<IEditPatientContext>(EditPatientContext);
+  const { updateAvatar } = actions;
+  const { data, loading, error, successful } = state.updateAvatar;
+
+  let avatarRef = useRef<HTMLInputElement>(null);
+
+  const toBase64 = (file: File) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = reject;
+    });
+
+  async function handleChangeAvatar(e: ChangeEvent<HTMLInputElement>) {
+    let file = e.target.files![0] as File;
+
+    let base64 = await toBase64(file);
+    let splittedType = file!.type.split("/");
+    var base64result = base64?.toString().split(",")[1];
+
+    let obj = {
+      id: values.id,
+      data: base64result,
+      type: `${splittedType[1]}`,
+    };
+
+    updateAvatar(obj, values.id)(dispatch);
+  }
+
+  const handleClickRef = () => avatarRef.current && avatarRef.current.click();
+
   const handlename = (value: string) => {
     setValues({ ...values, name: value });
     if (value.length < 2) {
@@ -190,8 +228,6 @@ export default function BasicData({
     return false;
   };
 
-  console.log(values);
-
   return (
     <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">
       <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
@@ -202,22 +238,85 @@ export default function BasicData({
         </div>
         <div className="w-full lg:flex justify-between items-center gap-4">
           <div className="lg:w-[30%] flex flex-col justify-center items-center text-center gap-3">
-            <input
-              accept="image/png, image/jpeg, application/pdf"
-              type="file"
-              className="hidden"
-            />
-            <div
-              className={twMerge([
-                "transition w-[10rem] h-[10rem] rounded-full border flex flex-col justify-center items-center cursor-pointer",
-                "hover:bg-slate-200",
-              ])}
-            >
-              <FiUser size={60} />
-            </div>
-            <p className="text-[13px] text-slate-500 font-medium">
-              Recomendado (.png, .jpg, .jpeg)
-            </p>
+          {values?.pictureUrl?.length > 0 ? (
+                <>
+                  <div className="w-[150px] h-[150px] relative flex justify-center hover:border hover:border-primary rounded-full">
+                    <input
+                      accept="image/png, image/jpeg, application/pdf"
+                      type="file"
+                      ref={avatarRef}
+                      className="opacity-0 top-0 h-full z-50 cursor-pointer"
+                      onChange={(e) => {
+                        handleChangeAvatar(e);
+                      }}
+                    />
+                    <Image
+                      className="object-cover rounded-full "
+                      src={values?.pictureUrl}
+                      alt=""
+                      fill
+                    />
+                  </div>
+
+                  <p className="text-[13px] text-slate-500 font-medium">
+                    Recomendado (.png, .jpg, .jpeg)
+                  </p>
+                  {loading && (
+                    <p className="text-[13px] text-slate-800 font-bold">
+                      Guardando foto del paciente...
+                    </p>
+                  )}
+                  {error?.code && (
+                    <p className="text-[13px] text-red-500">
+                      Ocurrio un error guardando la foto del paciente, intentelo nuevamente.
+                    </p>
+                  )}
+                  {successful && (
+                    <p className="text-[13px] text-slate-800 font-bold">
+                      Foto guardada correctamente. Recargue para ver el cambio.
+                    </p>
+                  )}
+                </>
+              ) : (
+                <>
+                  <input
+                    accept="image/png, image/jpeg, application/pdf"
+                    type="file"
+                    ref={avatarRef}
+                    className="hidden"
+                    onChange={(e) => {
+                      handleChangeAvatar(e);
+                    }}
+                  />
+                  <div
+                    onClick={handleClickRef}
+                    className={twMerge([
+                      "transition w-[10rem] h-[10rem] rounded-full border flex flex-col justify-center items-center cursor-pointer",
+                      "hover:bg-slate-200",
+                    ])}
+                  >
+                    <FiUser size={60} />
+                  </div>
+                  <p className="text-[13px] text-slate-500 font-medium">
+                    Recomendado (.png, .jpg, .jpeg)
+                  </p>
+                  {loading && (
+                    <p className="text-[13px] text-slate-800 font-bold">
+                      Guardando su foto de perfil...
+                    </p>
+                  )}
+                  {error?.code && (
+                    <p className="text-[13px] text-red-500">
+                      Ocurrio un error guardando la foto del paciente, intentelo nuevamente.
+                    </p>
+                  )}
+                  {successful && (
+                    <p className="text-[13px] text-slate-800 font-bold">
+                      Foto guardada correctamente. Recargue para ver el cambio.
+                    </p>
+                  )}
+                </>
+              )}
           </div>
           <div className="lg:w-[70%] grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 justify-start items-center gap-3 lg:mt-0 mt-6">
             <div className="flex flex-col justify-between items-start relative gap-1">
