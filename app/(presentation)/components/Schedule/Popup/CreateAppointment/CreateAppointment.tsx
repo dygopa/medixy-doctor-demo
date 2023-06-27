@@ -169,7 +169,7 @@ function CreateAppointment({cancelFuntion, customRef}:{
 
   useMemo(()=>{
     if(loadedCreationAppointment){
-      getAppointments(user.userId)(dispatch)
+      getAppointments(user.userId, moment().format("YYYY-MM-DD"))(dispatch)
       changeStatusPopup(false)(dispatch)
     }
   },[loadedCreationAppointment])

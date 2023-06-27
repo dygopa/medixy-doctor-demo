@@ -18,7 +18,7 @@ function DoctorsCase({ account }: { account: IUser }) {
       getLatestAppointment(account.userId)(dispatch)
       getCompletedAppointments(account.userId)(dispatch);
       getSubject({})(dispatch);
-      getPendingAppointments(account.userId, moment().format("YYYY-MM-DD"))(dispatch)
+      getPendingAppointments(account.userId)(dispatch)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
