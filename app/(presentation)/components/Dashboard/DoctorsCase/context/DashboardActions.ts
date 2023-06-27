@@ -9,7 +9,7 @@ export interface IDashboardActions {
   getSubject: Function;
 }
  
-const getPendingAppointments = (id:number, date:string) => async (dispatch: Dispatch<any>) => {
+const getPendingAppointments = (id:number, date?:string) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "GET_PENDING_APPOINTMENTS_LOADING" });
 
