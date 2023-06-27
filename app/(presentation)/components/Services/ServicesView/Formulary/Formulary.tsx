@@ -25,6 +25,10 @@ import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
 import { MdOutlineMedicalServices } from "react-icons/md";
+import {
+  b64toBlob,
+  getBase64ImageFromUrl,
+} from "(presentation)/(helper)/files/filesHelper";
 
 export default function Formulary({ userId }: { userId: string }) {
   const pathname = usePathname();
@@ -65,7 +69,12 @@ export default function Formulary({ userId }: { userId: string }) {
 
   const handleClickRef = () => avatarRef.current && avatarRef.current.click();
 
-  const setFormDataValues = () => {
+  const setFormDataValues = async () => {
+    let imageUrl: any = "";
+
+    if (data.image_url.length > 0)
+      imageUrl = await getBase64ImageFromUrl(data.image_url);
+
     setFormData({
       ...formData,
       name: data?.name ?? "",
@@ -77,7 +86,7 @@ export default function Formulary({ userId }: { userId: string }) {
       base_price: data?.base_price ?? "",
       status: data?.status ?? "",
       media: {
-        data: "",
+        data: imageUrl.toString().split(",")[1],
         type: "",
       },
     });
@@ -218,37 +227,39 @@ export default function Formulary({ userId }: { userId: string }) {
                   className="form-control lg:w-[70%]"
                   onChange={(e) => handleChangeMedia(e)}
                 />*/}
-                {data?.image_url?.length > 0 ? (
-                <>
-                  <div className="flex text-center w-full justify-center">
-                    <div className="w-[150px] h-[150px] relative flex justify-center hover:border hover:border-primary rounded-xl">
-                      <input
-                        accept="image/png, image/jpeg, application/pdf"
-                        type="file"
-                        ref={avatarRef}
-                        className="opacity-0 top-0 h-full z-50 cursor-pointer"
-                        onChange={(e) => {
-                          handleChangeMedia(e);
-                        }}
-                      />
-                      <Image
-                        className="object-cover rounded-xl "
-                        src={data?.image_url}
-                        alt=""
-                        fill
-                      />
+                {formData?.media?.data?.length > 0 ? (
+                  <>
+                    <div className="flex text-center w-full justify-center">
+                      <div className="w-[150px] h-[150px] relative flex justify-center hover:border hover:border-primary rounded-xl">
+                        <input
+                          accept="image/png, image/jpeg, application/pdf"
+                          type="file"
+                          ref={avatarRef}
+                          className="opacity-0 top-0 h-full z-50 cursor-pointer"
+                          onChange={(e) => {
+                            handleChangeMedia(e);
+                          }}
+                        />
+                        <Image
+                          className="object-cover rounded-xl "
+                          src={URL.createObjectURL(
+                            b64toBlob(formData.media.data)
+                          )}
+                          alt=""
+                          fill
+                        />
+                      </div>
                     </div>
-                  </div>
 
-                  <p className="text-[13px] text-slate-500 font-medium pt-2">
-                    Recomendado (.png, .jpg, .jpeg)
-                  </p>
-                  {loadingUpdate && (
-                    <p className="text-[13px] text-slate-800 font-bold pt-2">
-                      Guardando su foto de perfil...
+                    <p className="text-[13px] text-slate-500 font-medium pt-2">
+                      Recomendado (.png, .jpg, .jpeg)
                     </p>
-                  )}
-                </>
+                    {loadingUpdate && (
+                      <p className="text-[13px] text-slate-800 font-bold pt-2">
+                        Guardando su foto...
+                      </p>
+                    )}
+                  </>
                 ) : (
                   <>
                     <div className="flex text-center w-full justify-center">
@@ -321,7 +332,7 @@ export default function Formulary({ userId }: { userId: string }) {
                   }
                 />
               </div>
-              
+
               <div className="lg:flex justify-between items-start relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Precio
