@@ -16,7 +16,7 @@ function DoctorsCase({ account }: { account: IUser }) {
   useMemo(() => {
     if (account){
       getLatestAppointment(account.userId)(dispatch)
-      getCompletedAppointments()(dispatch);
+      getCompletedAppointments(account.userId)(dispatch);
       getSubject({})(dispatch);
       getPendingAppointments(account.userId, moment().format("YYYY-MM-DD"))(dispatch)
     }
