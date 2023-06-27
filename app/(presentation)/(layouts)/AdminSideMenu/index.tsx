@@ -5,6 +5,7 @@ import MobileMenu from "(presentation)/components/core/MobileMenu";
 import TopBar from "(presentation)/components/core/TopBar";
 import Navigation from "./nav";
 import PopupProvider from "(presentation)/components/core/BaseComponents/Popup/context/PopupContext";
+import TopbarAdmin from "(presentation)/components/core/TopBarAdmin";
 
 interface INavigation {
   title: string;
@@ -37,7 +38,7 @@ function SideMenu({
               "after:content-[''] after:z-[-1] after:rounded-[40px_0px_0px_0px] after:w-full after:inset-y-0 after:absolute after:left-0 after:bg-white/10 after:mt-8 after:-ml-4 after:dark:bg-darkmode-400/50",
             ])}
           >
-            <TopBar navigation={navigation} />
+            <TopbarAdmin navigation={navigation} />
             {children}
           </div>
           {/* END: Content */}
