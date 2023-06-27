@@ -52,6 +52,7 @@ export default function Formulary() {
   const router = useRouter();
 
   const [values, setValues] = useState({
+    id: 0,
     name: "",
     lastname: "",
     motherlastname: "",
@@ -69,6 +70,7 @@ export default function Formulary() {
     city: "",
     direction: "",
     street: "",
+    pictureUrl: "",
   });
 
   const [errors, setErrors] = useState({
@@ -156,6 +158,7 @@ export default function Formulary() {
   const setInitialValues = () => {
     setValues({
       ...values,
+      id: patient?.subjectId ?? 0,
       name: patient?.name ?? "",
       lastname: patient?.lastName ?? "",
       motherlastname: patient?.motherLastName ?? "",
@@ -172,6 +175,7 @@ export default function Formulary() {
       city: patient?.city ?? "",
       street: patient?.street ?? "",
       direction: patient?.address ?? "",
+      pictureUrl: patient?.pictureUrl ?? "",
     });
   };
 
@@ -469,7 +473,6 @@ export default function Formulary() {
                 values.name === "" ||
                 values.lastname === "" ||
                 values.birthDate === "" ||
-                !values.federalEntity ||
                 values.phone === "" ||
                 validForm() > 0
               }
