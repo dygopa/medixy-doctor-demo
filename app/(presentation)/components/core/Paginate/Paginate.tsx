@@ -107,7 +107,7 @@ export default function Paginate({
 
   return (
     <div>
-      <div className="d-flex justify-content-end">
+      <div className="flex justify-end">
         {previousPages.length > 0 &&
           previousPages.indexOf(1) < 0 &&
           currentPage !== 1 && (
@@ -123,7 +123,7 @@ export default function Paginate({
                 </button>
               </div>
 
-              <div className="me-3 mt-3">...</div>
+              <div className="mr-3 mt-3">...</div>
             </>
           )}
 
