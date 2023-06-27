@@ -1,3 +1,4 @@
+import { AppointmentEnum } from "(presentation)/(enum)/appointment/appointmentEnum";
 import { DashboardFailure } from "domain/core/failures/dashboard/DashboardFailure";
 import { ScheduleFailure } from "domain/core/failures/schedule/scheduleFailure";
 import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
@@ -13,7 +14,7 @@ export default class DashboardUseCase {
     async getPendingAppointments(id:number, date:string): Promise<Array<any>> {
         try {
             
-            const response = await this._repositorySchedule.getAppointments(id, date);
+            const response = await this._repositorySchedule.getAppointments(id, date, AppointmentEnum.PENDING);
 
             if (response instanceof ScheduleFailure) throw response;
 
@@ -23,13 +24,16 @@ export default class DashboardUseCase {
         }
     }
 
-    async getCompletedAppointments(): Promise<Array<any>> {
+    async getCompletedAppointments(id:number): Promise<Array<any>> {
         try {
-            const response:any[] = [];
 
-            if (response instanceof DashboardFailure) throw response;
+            const list:any[] | ScheduleFailure = await this._repositorySchedule.getAppointments(id, undefined, AppointmentEnum.COMPLETE);
 
-            return response;
+            if (list instanceof ScheduleFailure) throw list;
+
+            console.log(list)
+            
+            return list;
         } catch (error) {
             throw error;
         }

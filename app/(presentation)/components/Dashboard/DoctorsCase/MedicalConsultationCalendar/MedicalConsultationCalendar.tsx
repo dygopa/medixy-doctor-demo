@@ -66,7 +66,7 @@ export default function MedicalConsultationCalendar({ user }: { user: IUser }) {
           }
           label={"Citas pendientes"}
         >
-          <div className="w-12 h-12 flex justify-center items-center rounded-lg bg-green-200 text-green-800 text-xl">
+          <div className="w-12 h-12 flex justify-center items-center rounded-lg bg-yellow-200 text-yellow-800 text-xl">
             <MdOutlineNotificationsActive />
           </div>
         </StatComponent>
@@ -78,7 +78,7 @@ export default function MedicalConsultationCalendar({ user }: { user: IUser }) {
           }
           label={"Citas completadas"}
         >
-          <div className="w-12 h-12 flex justify-center items-center rounded-lg bg-yellow-200 text-yellow-800 text-xl">
+          <div className="w-12 h-12 flex justify-center items-center rounded-lg bg-green-200 text-green-800 text-xl">
             <BsCalendarDate />
           </div>
         </StatComponent>
