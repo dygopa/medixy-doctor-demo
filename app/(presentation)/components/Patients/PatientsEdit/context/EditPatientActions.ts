@@ -14,6 +14,7 @@ export interface IEditSubjectActions {
     getMunicipalities: (obj: { federalEntityId?: number | null }) => (dispatch: Dispatch<any>) => {};
     getCountryLocations: (obj: { federalEntityId?: number | null; municipalityId?: number | null }) => (dispatch: Dispatch<any>) => {};
     editSubject: (subject: ISubject) => (dispatch: Dispatch<any>) => {};
+    updateAvatar: Function;
 }
 
 const getSubjectById = (subjectId: number) => async (dispatch: Dispatch<any>) => {
@@ -78,10 +79,24 @@ const editSubject = (subject: ISubject) => async (dispatch: Dispatch<any>) => {
     }
 }
 
+const updateAvatar = (obj:any, doctorId: string) => async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch({ type: "UPDATE_AVATAR_LOADING" });
+      
+      const res: string = await new SubjectsUseCase().updateAvatar(obj, doctorId);
+  
+      dispatch({ type: "UPDATE_AVATAR_SUCCESSFUL", payload: { data: res } });
+    } catch (error) {
+      console.log("Error calling action", error)
+      dispatch({ type: "UPDATE_AVATAR_ERROR", payload: { error: error } });
+    }
+  }
+
 export const actions: IEditSubjectActions = {
     getSubjectById,
     getFederalEntities,
     getMunicipalities,
     getCountryLocations,
     editSubject,
+    updateAvatar,
 }

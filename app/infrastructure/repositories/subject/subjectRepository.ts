@@ -8,6 +8,8 @@ import { fromRelationsSubjectsSupabaseDocumentData, fromSubjectSupabaseDocumentD
 import { pointsSupabaseToMap } from "domain/mappers/points/supabase/pointsSupabaseMapper";
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import { ICreateSubjectResponse, IGetSubjectRelationsResponse, IGetSubjectsResponse } from 'domain/core/response/subjectsResponse';
+import { nanoid } from 'nanoid';
+import { getFileFromBase64 } from 'infrastructure/utils/files/filesUtils';
 
 export default interface ISubjectRepository {
   getSubjects(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure>;
@@ -19,6 +21,7 @@ export default interface ISubjectRepository {
   editSubject(subject: ISubject): Promise<boolean | SubjectFailure>;
   createRelationSubject(subjectId: number, copmpanionId: number): Promise<boolean | SubjectFailure>;
   exportSubjectsToCSV(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; country?: string | undefined, startDate?: Date | undefined; endDate?: Date | undefined; }): Promise<boolean | SubjectFailure>;
+  addMediaService(obj:any, subjectId: string | number): Promise<string | SubjectFailure>;
 }
 
 export class SubjectRepository implements ISubjectRepository {
@@ -367,6 +370,70 @@ export class SubjectRepository implements ISubjectRepository {
           return new SubjectFailure(subjectFailuresEnum.subjectsNotFound);
         }
 
+        return new SubjectFailure(subjectFailuresEnum.serverError);
+      }
+    }
+
+    async addMediaService(obj:any, subjectId: string | number): Promise<string | SubjectFailure> {
+      try {
+        console.log(obj, subjectId)
+        const id = nanoid(11);
+        const fileName = `${id}.${obj["type"]}`;
+  
+        const file = getFileFromBase64(obj["data"], fileName);   
+  
+        const { data, error } = await supabase.storage
+          .from("subjects")
+          .upload(`media/${fileName}`, file, {
+              cacheControl: '3600',
+              upsert: false
+          });
+  
+        if (error) return new SubjectFailure(subjectFailuresEnum.serverError)
+  
+        const res = supabase
+          .storage
+          .from("subjects")
+          .getPublicUrl(data.path);
+  
+        await supabase.from("Sujetos").update({ avatar: res.data.publicUrl }).match({ id: subjectId });
+
+        console.log(res.data.publicUrl)
+  
+        return res.data.publicUrl;
+        /* let cookies = nookies.get(undefined, 'access_token');
+  
+        var myHeaders = new Headers();
+  
+        myHeaders.append("Content-Type", "application/json");
+        myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
+  
+        var raw = JSON.stringify({
+          data: obj["data"] ?? "",
+          type: obj["type"] ?? ""
+        });
+  
+        var requestOptions = {
+          method: 'POST',
+          headers: myHeaders,
+          body: raw,
+          redirect: 'follow'
+        } as RequestInit;
+  
+        let URL = ADD_MEDIA_LOCALITY_ENDPOINT(obj["id"]) as RequestInfo
+  
+        const response = await fetch(URL, requestOptions)
+        console.log(response)
+        let data = await response.json()
+  
+        console.log(data)
+  
+        console.log("ADD_MEDIA_LOCALITY_ENDPOINT", data["data"])
+  
+        return data["data"] ?? ""; */
+      } catch (error) {
+        console.log("Error", error)
+        const exception = error as any;
         return new SubjectFailure(subjectFailuresEnum.serverError);
       }
     }
