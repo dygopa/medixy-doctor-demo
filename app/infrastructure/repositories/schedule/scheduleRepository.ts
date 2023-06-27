@@ -79,7 +79,7 @@ export class ScheduleRepository implements IScheduleRepository {
               direccion,
               avatar
             )
-          `).eq("doctorId", id)
+          `).eq("doctorId", id).order("fechaReserva", { ascending: true })
             let res = await query
             
             let list = res.data!.map((elem:any)=>({
@@ -97,8 +97,6 @@ export class ScheduleRepository implements IScheduleRepository {
 
             if(date){
                 list = list.filter(elem => moment(elem["fechaReserva"]).format("YYYY-MM-DD") === date )
-            }else{
-                list = list.filter(elem => moment(elem["fechaReserva"]).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD") )
             }
             
             if(status){

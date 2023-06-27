@@ -11,12 +11,13 @@ export default class DashboardUseCase {
     private _repositorySubjects: SubjectRepository = new SubjectRepository();
     private _repositorySchedule: ScheduleRepository = new ScheduleRepository();
 
-    async getPendingAppointments(id:number, date:string): Promise<Array<any>> {
+    async getPendingAppointments(id:number, date?:string): Promise<Array<any>> {
         try {
             
             const response = await this._repositorySchedule.getAppointments(id, date, AppointmentEnum.PENDING);
 
             if (response instanceof ScheduleFailure) throw response;
+            console.log(response)
 
             return response;
         } catch (error) {
@@ -42,11 +43,14 @@ export default class DashboardUseCase {
     async getLatestAppointment(id:number): Promise<any> {
         try {
 
-            const list:any[] | ScheduleFailure = await this._repositorySchedule.getAppointments(id, moment().format("YYYY-MM-DD"));
+            const list:any[] | ScheduleFailure = await this._repositorySchedule.getAppointments(id, undefined, AppointmentEnum.PENDING);
 
             if (list instanceof ScheduleFailure) throw list;
 
-            let response = list.find(elem => moment(elem["fechaReserva"]).utc().isSameOrBefore(moment().utc()))
+            let response = list.find((elem:any)=>{
+                let date = moment(elem["fechaReserva"]).toDate()
+                return moment(date).isSameOrAfter(moment().utc(true))
+            })
             console.log(response)
             
             return response;
