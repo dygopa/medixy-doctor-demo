@@ -13,6 +13,7 @@ export interface IEditSubjectState {
     municipalities: IGetMunicipalitiesState;
     countryLocations: IGetCountryLocationsState;
     editSubject: IUpdateSubjectState;
+    updateAvatar: ISubjectAvatarState;
 }
 
 interface IGetSubjectState {
@@ -50,6 +51,13 @@ interface IUpdateSubjectState {
     error: SubjectFailure | null;
 }
 
+interface ISubjectAvatarState{
+    data: string;
+    loading: boolean;
+    successful: boolean;
+    error: SubjectFailure | null; 
+}
+
 export const initialState: IEditSubjectState = {
     subject: {
         data: null,
@@ -77,6 +85,12 @@ export const initialState: IEditSubjectState = {
     },
     countryLocations: {
         data: {} as IGetCountryLocationsResponse,
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    updateAvatar: {
+        data: "",
         loading: false,
         successful: false,
         error: null,

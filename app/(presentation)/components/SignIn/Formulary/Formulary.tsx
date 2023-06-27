@@ -205,9 +205,9 @@ export default function Formulary() {
           No tengo una cuenta,{" "}
           <span className="font-semibold">crear una cuenta</span>
         </Link>
-        <Link className="text-base text-primary font-light" href="/invited">
+        {/*<Link className="text-base text-primary font-light" href="/invited">
           Soy un invitado, <span className="font-semibold">validarme</span>
-        </Link>
+          </Link>*/}
       </div>
     </form>
   );

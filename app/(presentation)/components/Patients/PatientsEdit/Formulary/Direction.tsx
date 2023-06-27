@@ -25,6 +25,7 @@ import { IUserContext, UserContext } from "(presentation)/components/Account/con
 
 interface IContactProps {
   values: {
+    id: number;
     name: string;
     lastname: string;
     motherlastname: string;
@@ -42,9 +43,11 @@ interface IContactProps {
     city: string;
     direction: string;
     street: string;
+    pictureUrl: string;
   };
   setValues: Dispatch<
     SetStateAction<{
+      id: number;
       name: string;
       lastname: string;
       motherlastname: string;
@@ -62,6 +65,7 @@ interface IContactProps {
       city: string;
       direction: string;
       street: string;
+      pictureUrl: string;
     }>
   >;
   errors: {
@@ -130,8 +134,6 @@ export default function Contact({
       }
     }
   }, [values.federalEntity, values.municipality, successful])
-
-  console.log(countryLocations)
 
   return (
     <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">

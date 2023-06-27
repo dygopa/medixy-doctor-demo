@@ -97,8 +97,19 @@ export default class SubjectsUseCase {
 
   async editSubject(patient: ISubject): Promise<boolean> {
     try {
-      console.log(patient)
       const response = await this._repository.editSubject(patient);
+
+      if (response instanceof SubjectFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async updateAvatar(obj:any, subjectId: string): Promise<string> {
+    try {
+      const response = await this._repository.addMediaService(obj, subjectId);
 
       if (response instanceof SubjectFailure) throw response;
 
