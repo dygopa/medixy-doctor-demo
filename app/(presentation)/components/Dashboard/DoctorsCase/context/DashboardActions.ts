@@ -21,11 +21,11 @@ const getPendingAppointments = (id:number, date:string) => async (dispatch: Disp
   }
 }
 
-const getCompletedAppointments = (obj:any) => async (dispatch: Dispatch<any>) => {
+const getCompletedAppointments = (id:number) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "GET_COMPLETED_APPOINTMENTS_LOADING" });
 
-    const res: Array<any> = await new DashboardUseCase().getCompletedAppointments();
+    const res: Array<any> = await new DashboardUseCase().getCompletedAppointments(id);
 
     dispatch({ type: "GET_COMPLETED_APPOINTMENTS_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

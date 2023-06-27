@@ -3,10 +3,11 @@ import { ScheduleFailure, scheduleFailuresEnum } from 'domain/core/failures/sche
 import { CREATE_ATTENTION_WINDOW_ENDPOINT, GET_CATEGORIES_SERVICES_ENDPOINT, REGISTER_USER_ENDPOINT } from 'infrastructure/config/api/dictionary';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import moment from 'moment';
+import { AppointmentEnum } from '(presentation)/(enum)/appointment/appointmentEnum';
 
 export default interface IScheduleRepository {
     getCalendarEvents(id:number, serviceId:number, sinceDate:any, untilDate:any): Promise<any[] | ScheduleFailure>;
-    getAppointments(id:number, date?:string): Promise<any[] | ScheduleFailure>;
+    getAppointments(id:number, date?:string, status?:number): Promise<any[] | ScheduleFailure>;
     getAttentionWindows(id:number): Promise<any[] | ScheduleFailure>;
     createAppointment(obj:any): Promise<any | ScheduleFailure>;
     getAttentionWindowsByService(id:number, date?:string): Promise<any[] | ScheduleFailure>;
@@ -58,7 +59,7 @@ export class ScheduleRepository implements IScheduleRepository {
         }
     }
 
-    async getAppointments(id:number, date?:string): Promise<any[] | ScheduleFailure> {
+    async getAppointments(id:number, date?:string, status?:number): Promise<any[] | ScheduleFailure> {
         try {
             let query = supabase.from("Citas").select(`
             *,
@@ -85,7 +86,7 @@ export class ScheduleRepository implements IScheduleRepository {
                 ...elem["Servicios"],
                 ...elem["Sujetos"],
                 doctorId: elem["doctorId"],
-                estado: elem["estado"],
+                estado: parseInt(elem["estado"]),
                 fechaCreacion: elem["fechaCreacion"],
                 fechaReserva: elem["fechaReserva"],
                 id: elem["id"],
@@ -98,6 +99,10 @@ export class ScheduleRepository implements IScheduleRepository {
                 list = list.filter(elem => moment(elem["fechaReserva"]).format("YYYY-MM-DD") === date )
             }else{
                 list = list.filter(elem => moment(elem["fechaReserva"]).format("YYYY-MM-DD") === moment().format("YYYY-MM-DD") )
+            }
+            
+            if(status){
+                list = list.filter(elem => elem["estado"] === status )
             }
 
             return list ?? [];
@@ -131,7 +136,7 @@ export class ScheduleRepository implements IScheduleRepository {
             let appointment = {
                 sujetoId: obj["pacienteId"],
                 doctorId: obj["doctorId"],
-                estado: 9
+                estado: AppointmentEnum.PENDING
             }
 
             let query = supabase.from("Citas")
