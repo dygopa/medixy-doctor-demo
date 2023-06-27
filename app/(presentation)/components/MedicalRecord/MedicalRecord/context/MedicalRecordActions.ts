@@ -3,7 +3,7 @@ import { getSkipPagination } from "(presentation)/(helper)/paginate/paginateHelp
 import { IAppointment } from "domain/core/entities/appointmentEntity";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { ISubject } from "domain/core/entities/subjectEntity";
-import { IGetAppointmentResponse } from "domain/core/response/appointmentsResponse";
+import { IGetAppointmentResponse, IUpdateAppointmentResponse } from "domain/core/response/appointmentsResponse";
 import { IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
 import { IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
@@ -31,6 +31,7 @@ export interface IMedicalRecordActions {
     editSubject: (subject: ISubject) => (dispatch: Dispatch<any>) => {};
     getCompanions: (obj: { patientId: number }) => (dispatch: Dispatch<any>) => {};
     createCompanion: (patientId:number, companion:ISubject) => (dispatch: Dispatch<any>) => {};
+    editAppointmentStatus: (obj: { appointmentId: string; status: number }) => (dispatch: Dispatch<any>) => {};
 }
 
 const getSubjectById = (subjectId: number) => async (dispatch: Dispatch<any>) => {
@@ -174,7 +175,6 @@ const getCompanions = (obj: { patientId: number }) => async (dispatch: Dispatch<
 
     dispatch({ type: "GET_COMPONIONS_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
-    console.log("Error calling action", error)
     dispatch({ type: "GET_COMPONIONS_ERROR", payload: { error: error } });
   }
 }
@@ -187,7 +187,6 @@ const getFederalEntities = () => async (dispatch: Dispatch<any>) => {
 
       dispatch({ type: "GET_FEDERAL_ENTITIES_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
-      console.log("Error calling action", error)
       dispatch({ type: "GET_FEDERAL_ENTITIES_ERROR", payload: { error: error } });
   }
 }
@@ -195,8 +194,7 @@ const getFederalEntities = () => async (dispatch: Dispatch<any>) => {
 const editSubject = (subject: ISubject) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "EDIT_SUBJECT_LOADING" });
-    
-      console.log(subject)
+  
 
     const res: boolean = await new SubjectsUseCase().editSubject(subject);
 
@@ -216,8 +214,19 @@ const createCompanion = (patientId:number, companion:ISubject) => async (dispatc
 
     dispatch({ type: "CREATE_COMPANION_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
-    console.log("Error calling action", error)
     dispatch({ type: "CREATE_COMPANION_ERROR", payload: { error: error } });
+  }
+}
+
+const editAppointmentStatus = (obj: { appointmentId: string; status: number }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "EDIT_APPOINTMENT_STATUS_LOADING" });
+
+    const res: IUpdateAppointmentResponse = await new AppointmentUseCase().editAppointmentStatus({ appointmentId: obj.appointmentId, status: obj.status });
+
+    dispatch({ type: "EDIT_APPOINTMENT_STATUS_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "EDIT_APPOINTMENT_STATUS_ERROR", payload: { error: error } });
   }
 }
 
@@ -234,4 +243,5 @@ export const actions: IMedicalRecordActions = {
     getFederalEntities,
     editSubject,
     createCompanion,
+    editAppointmentStatus,
 }

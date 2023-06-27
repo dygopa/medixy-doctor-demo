@@ -428,5 +428,36 @@ export const MedicalRecordReducer = (state: any, action: any) => {
               error: action.payload.error,
             },
           }
+
+      case 'EDIT_APPOINTMENT_STATUS_LOADING':
+        return {
+          ...state,
+          editAppointmentStatus: {
+            ...state.editAppointmentStatus,
+            loading: true,
+            successful: false,
+            error: null,
+          },
+        };
+      case 'EDIT_APPOINTMENT_STATUS_SUCCESSFUL':
+        return {
+          ...state,
+          editAppointmentStatus: {
+            ...state.editAppointmentStatus,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+        };
+      case 'EDIT_APPOINTMENT_STATUS_ERROR':
+        return {
+          ...state,
+          editAppointmentStatus: {
+            ...state.editAppointmentStatus,
+            loading: false,
+            successful: false,
+            error: action.payload.error,
+          },
+        }
       }
   }

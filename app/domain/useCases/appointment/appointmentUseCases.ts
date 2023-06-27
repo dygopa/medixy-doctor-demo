@@ -1,5 +1,5 @@
 import { AppointmentFailure } from "domain/core/failures/appointment/appintmentFailure";
-import { IGetAppointmentResponse, IGetAppointmentsResponse } from "domain/core/response/appointmentsResponse";
+import { IGetAppointmentResponse, IGetAppointmentsResponse, IUpdateAppointmentResponse } from "domain/core/response/appointmentsResponse";
 import { AppointmentRepository } from "infrastructure/repositories/appointment/appointmentRepository";
 
 export default class AppointmentUseCase {
@@ -40,6 +40,18 @@ export default class AppointmentUseCase {
   async getAppointmentById(appointmentId: string): Promise<IGetAppointmentResponse> {
     try {
       const response = await this._repository.getAppointmentById(appointmentId);
+
+      if (response instanceof AppointmentFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async editAppointmentStatus(obj: { appointmentId: string; status: number }): Promise<IUpdateAppointmentResponse> {
+    try {
+      const response = await this._repository.editAppointmentStatus({ appointmentId: obj.appointmentId, status: obj.status });
 
       if (response instanceof AppointmentFailure) throw response;
 

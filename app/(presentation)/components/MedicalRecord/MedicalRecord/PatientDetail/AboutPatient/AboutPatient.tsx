@@ -11,6 +11,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { useRouter } from "next/navigation";
 import { getFirstLetter } from "(presentation)/(helper)/strings/strings";
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
+import { MedicalRecordStatusEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 
 export default function AboutPatient() {
   const { state } = useContext<IMedicalRecordContext>(MedicalRecordContext);
@@ -47,13 +48,14 @@ export default function AboutPatient() {
           <div className="text-center lg:border-r border-grey">
             <div className="flex w-full justify-center mb-4 mr-24">
               {subject && subject?.pictureUrl.length > 0 ? (
-                <Image
-                  className="object-cover rounded-full"
-                  src={subject.pictureUrl}
-                  alt=""
-                  width={100}
-                  height={100}
-                />
+                <div className="relative w-[100px] h-[100px]">
+                  <Image
+                    className="object-cover rounded-full"
+                    src={subject.pictureUrl}
+                    alt=""
+                    fill
+                  />
+                </div>
               ) : (
                 <div className="w-[60px] h-[60px] bg-primary rounded-full flex justify-center items-center">
                   <span className="text-white font-semibold text-2xl">
@@ -69,12 +71,14 @@ export default function AboutPatient() {
                   <p
                     className={clsx([
                       "font-medium p-[1.0%_7%] rounded text-sm",
-                      appointment.data.status === 7
+                      appointment.data.status ===
+                      MedicalRecordStatusEnum.COMPLETE
                         ? "bg-green-400 text-white"
                         : "text-yellow-800 bg-yellow-300",
                     ])}
                   >
-                    {appointment.data.status === 7
+                    {appointment.data.status ===
+                    MedicalRecordStatusEnum.COMPLETE
                       ? "Atendido"
                       : "Por atención"}
                   </p>

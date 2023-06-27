@@ -1,3 +1,4 @@
+import { MedicalRecordStatusEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
 import { ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
@@ -39,7 +40,7 @@ export default class MedicalConsultyUseCase {
 
       if (response instanceof MedicalConsultyFailure) throw response;
 
-      if (obj.appointmentId) await this._appointmentRepository.editAppointmentStatus({ appointmentId: obj.appointmentId, status: 7 });
+      if (obj.appointmentId) await this._appointmentRepository.editAppointmentStatus({ appointmentId: obj.appointmentId, status: MedicalRecordStatusEnum.COMPLETE });
 
       if (obj.medicalConsulty.medicalMeasures && obj.medicalConsulty.medicalMeasures.length > 0) {
         await Promise.all((obj.medicalConsulty.medicalMeasures.map(async (medicalMeasure) => {

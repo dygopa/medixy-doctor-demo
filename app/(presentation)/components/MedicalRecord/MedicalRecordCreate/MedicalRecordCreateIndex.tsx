@@ -1,7 +1,9 @@
 "use client";
 
+import { MedicalRecordStatusEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
+import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
 import clsx from "clsx";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import MedicalRecordCreateProvider, {
   IMedicalRecordCreateContext,
@@ -35,6 +37,7 @@ export default function MedicalRecordCreateIndex({
   const [isOpen, setIsOpen] = useState(false);
   const [popupSectionActive, setPopupSectionActive] = useState(0);
 
+  const router = useRouter();
   const searchParams = useSearchParams();
 
   const type = searchParams.get("type");
@@ -93,6 +96,20 @@ export default function MedicalRecordCreateIndex({
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  useEffect(() => {
+    if (
+      appointmentSucessful &&
+      appointment.data.status === MedicalRecordStatusEnum.COMPLETE
+    ) {
+      router.push(
+        MedicalRecordRoutesEnum.MedicalRecord +
+          appointment.data.id +
+          "?type=appointment"
+      );
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [appointmentSucessful]);
 
   if (loading || appointmentLoading)
     return (

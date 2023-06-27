@@ -3,10 +3,7 @@ import {
   MedicalRecordTypesOrdersEnum,
 } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import Button from "(presentation)/components/core/BaseComponents/Button";
-import {
-  IMedicalRecord,
-  IMedicalRecordValue,
-} from "domain/core/entities/medicalRecordEntity";
+import { IMedicalRecord } from "domain/core/entities/medicalRecordEntity";
 import React, { useContext, useEffect, useState } from "react";
 import {
   IMedicalRecordContext,
@@ -55,14 +52,18 @@ export default function OrdersList() {
       medicalRecord.medicalRecordType.name ===
       MedicalRecordTypesOrdersEnum.ORDER_LABORATORY
     ) {
-      return medicalRecord.medicalRecordValues[0].value;
+      return medicalRecord.medicalRecordValues[0].value.length === 0
+        ? medicalRecord.medicalRecordValues[1].value
+        : medicalRecord.medicalRecordValues[0].value;
     }
 
     if (
       medicalRecord.medicalRecordType.name ===
       MedicalRecordTypesOrdersEnum.ORDER_DIAGNOSIS
     ) {
-      return medicalRecord.medicalRecordValues[0].value;
+      return medicalRecord.medicalRecordValues[0].value.length === 0
+        ? medicalRecord.medicalRecordValues[1].value
+        : medicalRecord.medicalRecordValues[0].value;
     }
 
     if (
@@ -91,7 +92,7 @@ export default function OrdersList() {
         MedicalRecordTypesOrdersEnum.ORDER_SPECIALTY &&
       medicalRecord.medicalRecordValues.length >= 1
     ) {
-      return `${medicalRecord.medicalRecordValues[0].value} - ${medicalRecord.medicalRecordValues[1].value}`;
+      return `${medicalRecord.medicalRecordValues[0].value} ${medicalRecord.medicalRecordValues[1].value}`;
     }
 
     if (

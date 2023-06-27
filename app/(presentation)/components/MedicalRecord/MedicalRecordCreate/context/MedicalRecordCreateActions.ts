@@ -161,7 +161,6 @@ const getFederalEntities = () => async (dispatch: Dispatch<any>) => {
 
       dispatch({ type: "GET_FEDERAL_ENTITIES_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
-      console.log("Error calling action", error)
       dispatch({ type: "GET_FEDERAL_ENTITIES_ERROR", payload: { error: error } });
   }
 }

@@ -1,3 +1,4 @@
+import { MedicalRecordStatusEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import { getFirstLetter } from "(presentation)/(helper)/strings/strings";
 import clsx from "clsx";
 import { IAppointment } from "domain/core/entities/appointmentEntity";
@@ -66,14 +67,15 @@ export default function PatientDetail({
       <div className="lg:flex block">
         <div className="text-center lg:border-r border-grey">
           <div className="flex w-full justify-center mb-4 mr-24">
-            {subject && subject?.pictureUrl?.length > 0 ? (
-              <Image
-                className="object-cover rounded-full"
-                src={subject.pictureUrl}
-                alt=""
-                width={100}
-                height={100}
-              />
+            {subject && subject?.pictureUrl.length > 0 ? (
+              <div className="relative w-[100px] h-[100px]">
+                <Image
+                  className="object-cover rounded-full"
+                  src={subject.pictureUrl}
+                  alt=""
+                  fill
+                />
+              </div>
             ) : (
               <div className="w-[60px] h-[60px] bg-primary rounded-full flex justify-center items-center">
                 <span className="text-white font-semibold text-2xl">
@@ -89,12 +91,14 @@ export default function PatientDetail({
                 <p
                   className={clsx([
                     "font-medium p-[1.0%_7%] rounded text-sm",
-                    appointment?.status === 7
+                    appointment?.status === MedicalRecordStatusEnum.COMPLETE
                       ? "bg-green-400 text-white"
                       : "text-yellow-800 bg-yellow-300",
                   ])}
                 >
-                  {appointment?.status === 7 ? "Atendido" : "Por atención"}
+                  {appointment?.status === MedicalRecordStatusEnum.COMPLETE
+                    ? "Atendido"
+                    : "Por atención"}
                 </p>
               </div>
             </div>

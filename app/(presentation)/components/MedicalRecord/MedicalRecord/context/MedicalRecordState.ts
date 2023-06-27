@@ -27,6 +27,7 @@ export interface IMedicalRecordState {
     editSubject: IUpdateSubjectState;
     companions: IGetCompanionsState;
     createCompanion: ICompanionCreateCompanionState;
+    editAppointmentStatus: IEditAppointmentStatusState;
 }
 
 interface IGetSubjectState {
@@ -113,6 +114,12 @@ interface ICompanionCreateCompanionState {
     error: SubjectFailure | null;
 }
 
+interface IEditAppointmentStatusState {
+    loading: boolean;
+    successful: boolean;
+    error: AppointmentFailure | null;
+}
+
 export const initialState: IMedicalRecordState = {
     subject: {
         data: null,
@@ -182,6 +189,11 @@ export const initialState: IMedicalRecordState = {
     },
     createCompanion: {
         data: false,
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    editAppointmentStatus: {
         loading: false,
         successful: false,
         error: null,
