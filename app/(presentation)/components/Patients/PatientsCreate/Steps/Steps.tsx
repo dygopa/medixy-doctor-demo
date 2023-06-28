@@ -160,7 +160,7 @@ export default function Steps() {
         </div>
       </div>
       <div className="gap-10 md:mt-0">
-          <div className="mt-5">
+          <div className="mt-5 flex justify-center">
             <Formulary values={values} setValues={setValues} errors={errors} setErrors={setErrors} />
           </div>
       </div>
