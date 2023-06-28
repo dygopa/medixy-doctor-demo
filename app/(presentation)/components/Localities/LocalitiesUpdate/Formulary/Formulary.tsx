@@ -308,15 +308,12 @@ export default function Formulary({
                 {errors.postal_code.length > 0 && (
                   <span className="text-red-500 w-full text-right -mt-5">{errors.postal_code}</span>
                 )}
-                <div className="lg:flex justify-between items-center relative w-full gap-3">
-                  <div className="lg:w-[445px]">
+                <div className="lg:flex justify-between items-start relative w-full gap-3">
                     <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                       Entidad Federativa
                     </p>
-                  </div>
-                  <div className="w-full flex justify-end">
                   <FormSelect
-                    className="form-control w-full"
+                    className="form-control lg:w-[70%]"
                     defaultValue={formData.federalEntity}
                     value={formData.federalEntity}
                     onChange={(e: any) =>
@@ -329,18 +326,14 @@ export default function Formulary({
                       </option>
                     ))}
                   </FormSelect>
-                  </div>
                 </div>
 
-                <div className="lg:flex justify-between items-center relative w-full gap-3">
-                  <div className="lg:w-[445px]">
-                    <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                      Municipio
-                    </p>
-                  </div>
-                  <div className="w-full flex justify-end">
+                <div className="lg:flex justify-between items-start relative w-full gap-3">
+                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                    Municipio
+                  </p>
                   <FormSelect
-                    className="form-control w-full"
+                    className="form-control lg:w-[70%]"
                     disabled={formData.federalEntity === 0}
                     defaultValue={formData.municipality}
                     value={formData.municipality}
@@ -355,18 +348,14 @@ export default function Formulary({
                       ))
                     }
                   </FormSelect>
-                  </div>
                 </div>
 
-                <div className="lg:flex justify-between items-center relative w-full gap-3">
-                  <div className="lg:w-[445px]">
+                <div className="lg:flex justify-between items-start relative w-full gap-3">
                     <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                       Localidad
                     </p>
-                  </div>
-                  <div className="w-full flex justify-end">
                   <FormSelect
-                    className="form-control w-full"
+                    className="form-control lg:w-[70%]"
                     disabled={formData.municipality === 0}
                     defaultValue={formData.countryLocation}
                     value={formData.countryLocation}
@@ -381,7 +370,6 @@ export default function Formulary({
                       ))
                     }
                   </FormSelect>
-                  </div>
                 </div>
 
                 <div className="lg:flex justify-between items-center relative w-full gap-3">

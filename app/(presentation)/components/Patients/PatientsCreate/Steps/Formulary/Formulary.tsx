@@ -234,9 +234,6 @@ export default function Formulary({
     return false;
   };
 
-  console.log(values.phone)
-  console.log(errors.phone)
-
   return (
     <div className="w-full bg-white shadow-xl lg:w-[60%] shadow-slate-100 rounded-md h-fit p-7">
       <div className="w-full border-b mb-2">
@@ -332,37 +329,38 @@ export default function Formulary({
         </FormSelect>
       </div>
 
-      <div className="input-group w-full">
-        <p className="input-label py-2">
-          Teléfono <span className="text-primary font-bold">*</span>
-        </p>
-        <div className="w-full">
-          <IntlTelInput
-            preferredCountries={['mx']}
-            onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
-            onPhoneNumberBlur={(e) => console.log(e)}
-            inputClassName={twMerge([
-              "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
-              "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
-              "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
-            ])}
-          />
+      <div className="md:flex gap-3 w-full">
+        <div className="input-group md:w-[50%]">
+          <p className="input-label py-2">
+            Teléfono <span className="text-primary font-bold">*</span>
+          </p>
+          <div className="w-full">
+            <IntlTelInput
+              preferredCountries={['mx']}
+              onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
+              onPhoneNumberBlur={(e) => console.log(e)}
+              inputClassName={twMerge([
+                "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
+                "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
+                "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
+              ])}
+            />
+          </div>
+          {errors.phone.length > 0 && (
+            <span className="text-red-500 mt-2">{errors.phone}</span>
+          )}
         </div>
-        {errors.phone.length > 0 && (
-          <span className="text-red-500 mt-2">{errors.phone}</span>
-        )}
-      </div>
-
-      <div className="input-group w-full">
-        <p className="input-label py-2">Email</p>
-        <FormInput
-          type="email"
-          onChange={(e) => handleEmail(e.target.value)}
-          placeholder="Email"
-        />
-        {errors.email.length > 0 && (
-          <span className="text-red-500">{errors.email}</span>
-        )}
+        <div className="input-group md:w-[50%]">
+          <p className="input-label py-2">Email</p>
+          <FormInput
+            type="email"
+            onChange={(e) => handleEmail(e.target.value)}
+            placeholder="Email"
+          />
+          {errors.email.length > 0 && (
+            <span className="text-red-500">{errors.email}</span>
+          )}
+        </div>
       </div>
 
       <div className="input-group w-full">

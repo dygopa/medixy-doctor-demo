@@ -39,7 +39,7 @@ export default function Navigator() {
           <Button onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(1)(dispatch) }} variant="primary" type="button" className="w-full lg:w-fit">
             <Lucide icon="Plus" className="w-5 h-5 mr-2" />Nueva venta de atención
           </Button>
-          <div onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(4)(dispatch)  }} className="cursor-pointer w-10 h-10 flex flex-col justify-center items-center bg-bg-primary/10 hover:bg-primary/20 transition rounded-md">
+          <div onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(4)(dispatch)  }} className="cursor-pointer w-10 h-10 flex flex-col justify-center items-center bg-primary/10 hover:bg-primary/20 transition rounded-md">
             <Lucide icon={"Filter"} className="w-5 h-5" />
           </div>
         </>}
