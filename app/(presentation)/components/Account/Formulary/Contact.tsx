@@ -67,7 +67,7 @@ export default function Contact({ account, setAccount }: IFormularyProps) {
               ])}
             />
           </div>
-          <div className="flex flex-col justify-between items-start relative gap-1">
+          {/*<div className="flex flex-col justify-between items-start relative gap-1">
             <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
               Sitio web
             </p>
@@ -81,7 +81,7 @@ export default function Contact({ account, setAccount }: IFormularyProps) {
                 setAccount({ ...account, websiteUrl: e.target.value })
               }
             />
-          </div>
+            </div>*/}
         </div>
       </div>
     </div>
