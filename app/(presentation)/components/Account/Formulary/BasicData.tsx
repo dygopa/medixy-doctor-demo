@@ -289,7 +289,6 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
                 <FormInput
                   type={"text"}
                   placeholder="Escribe tu CURP..."
-                  disabled={true}
                   defaultValue={user?.curp}
                   className="form-control w-full"
                   onChange={(e) =>
