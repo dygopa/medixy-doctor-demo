@@ -31,8 +31,8 @@ function Filters() {
                         <FiBriefcase/>
                     </div>}
                 </div>
-                <div className="w-full lg:w-fit flex flex-col lg:flex-row justify-start flex-wrap lg:flex-nowrap lg:justify-end items-center gap-2 h-full">
-                    <Button onClick={()=>{ predifinedReservationData({})(dispatch); changeStatusPopup(true)(dispatch); changeTypePopup(0)(dispatch) }} variant="primary" type="button" className="w-full lg:w-fit">
+                <div className="w-full lg:w-fit flex flex-row justify-center flex-wrap lg:flex-nowrap lg:justify-end items-center gap-2 h-full">
+                    <Button onClick={()=>{ predifinedReservationData({})(dispatch); changeStatusPopup(true)(dispatch); changeTypePopup(0)(dispatch) }} variant="primary" type="button" className="w-[85%] lg:w-fit">
                         <Lucide icon="Plus" className="w-5 h-5 mr-2" />Nueva cita
                     </Button>
                     <div onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(4)(dispatch)  }} className="cursor-pointer w-10 h-10 flex flex-col justify-center items-center bg-primary/10 hover:bg-primary/20 transition rounded-md">
