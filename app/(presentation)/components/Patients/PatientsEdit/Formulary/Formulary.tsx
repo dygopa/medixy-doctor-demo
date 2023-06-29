@@ -228,8 +228,12 @@ export default function Formulary() {
       gender: values.gender,
       phoneNumber: values.phone,
       federativeEntityId: values.federalEntity,
-      municipalityId: values.municipality ?? null,
-      countryLocationId: values.countryLocation ?? null,
+      municipalityId: values.municipality !== 0
+        ? values.municipality
+        : null,
+      countryLocationId: values.countryLocation !== 0
+       ? values.countryLocation
+       : null,
       street: values.street,
       country: values.country,
       state: 0,

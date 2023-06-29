@@ -194,7 +194,7 @@ export default function Contact({
             </p>
             <FormSelect
               className="form-control w-full"
-              disabled={values.municipality === 0}
+              disabled={values.municipality === 0 || values.federalEntity === 0}
               defaultValue={values.countryLocation}
               value={values.countryLocation}
               onChange={(e: any) =>
