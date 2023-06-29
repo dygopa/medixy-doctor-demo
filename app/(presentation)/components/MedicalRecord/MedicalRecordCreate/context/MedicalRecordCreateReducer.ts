@@ -361,68 +361,130 @@ export const MedicalRecordCreateReducer = (state: any, action: any) => {
               },
             }
 
-            case "GET_COMPONIONS_LOADING" :
+          case "GET_COMPONIONS_LOADING" :
+            return {
+              ...state,
+              companions: {
+                ...state.getComponions,
+                data: {},
+                loading: true,
+                successful: false,
+                error: null,
+              },
+            };
+          case "GET_COMPONIONS_SUCCESSFUL" :
+            return {
+              ...state,
+              companions: {
+                ...state.companions,
+                data: action.payload.data,
+                loading: false,
+                successful: true,
+                error: null,
+              },
+            }
+          case "GET_COMPONIONS_ERROR" :
+            return {
+              ...state,
+              companions: {
+                ...state.companions,
+                data: {},
+                loading: false,
+                successful: false,
+                error: action.payload.error,
+              },
+            }
+    
+            case 'CREATE_COMPANION_LOADING' :
               return {
                 ...state,
-                companions: {
-                  ...state.getComponions,
-                  data: {},
+                createCompanion: {
+                  ...state.createCompanion,
+                  data: false,
                   loading: true,
                   successful: false,
                   error: null,
                 },
               };
-            case "GET_COMPONIONS_SUCCESSFUL" :
+            case 'CREATE_COMPANION_SUCCESSFUL' :
               return {
                 ...state,
-                companions: {
-                  ...state.companions,
-                  data: action.payload.data,
+                createCompanion: {
+                  ...state.createCompanion,
+                  data: true,
                   loading: false,
                   successful: true,
                   error: null,
                 },
               }
-            case "GET_COMPONIONS_ERROR" :
+            case 'CREATE_COMPANION_ERROR' :
               return {
                 ...state,
-                companions: {
-                  ...state.companions,
-                  data: {},
+                createCompanion: {
+                  ...state.createCompanion,
+                  data: false,
                   loading: false,
                   successful: false,
                   error: action.payload.error,
                 },
               }
-      
-              case 'CREATE_COMPANION_LOADING' :
+
+              case 'GET_TREATMENT_PDF_LOADING':
                 return {
                   ...state,
-                  createCompanion: {
-                    ...state.createCompanion,
-                    data: false,
+                  getTreatmentPDF: {
+                    ...state.getTreatmentPDF,
                     loading: true,
                     successful: false,
                     error: null,
                   },
                 };
-              case 'CREATE_COMPANION_SUCCESSFUL' :
+              case 'GET_TREATMENT_PDF_SUCCESSFUL':
                 return {
                   ...state,
-                  createCompanion: {
-                    ...state.createCompanion,
-                    data: true,
+                  getTreatmentPDF: {
+                    ...state.getTreatmentPDF,
                     loading: false,
                     successful: true,
                     error: null,
                   },
-                }
-              case 'CREATE_COMPANION_ERROR' :
+                };
+              case 'GET_TREATMENT_PDF_ERROR':
                 return {
                   ...state,
-                  createCompanion: {
-                    ...state.createCompanion,
-                    data: false,
+                  getTreatmentPDF: {
+                    ...state.getTreatmentPDF,
+                    loading: false,
+                    successful: false,
+                    error: action.payload.error,
+                  },
+                }
+        
+              case 'GET_MEDICAL_RECORD_PDF_LOADING':
+                return {
+                  ...state,
+                  getMedicalRecordPDF: {
+                    ...state.getMedicalRecordPDF,
+                    loading: true,
+                    successful: false,
+                    error: null,
+                  },
+                };
+              case 'GET_MEDICAL_RECORD_PDF_SUCCESSFUL':
+                return {
+                  ...state,
+                  getMedicalRecordPDF: {
+                    ...state.getMedicalRecordPDF,
+                    loading: false,
+                    successful: true,
+                    error: null,
+                  },
+                };
+              case 'GET_MEDICAL_RECORD_PDF_ERROR':
+                return {
+                  ...state,
+                  getMedicalRecordPDF: {
+                    ...state.getMedicalRecordPDF,
                     loading: false,
                     successful: false,
                     error: action.payload.error,

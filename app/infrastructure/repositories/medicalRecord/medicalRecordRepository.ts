@@ -1,10 +1,14 @@
+import { get12HoursFormat, getFullDate } from '(presentation)/(helper)/dates/datesHelper';
 import { IMedicalConsulty } from 'domain/core/entities/medicalConsultyEntity';
-import { IMedicalRecord, IMedicalRecordType, IMedicalRecordValue } from 'domain/core/entities/medicalRecordEntity';
+import { IMedicalRecord, IMedicalRecordType, IMedicalRecordValue, IMedicalRecordValueType } from 'domain/core/entities/medicalRecordEntity';
+import { IUser } from 'domain/core/entities/userEntity';
 import { MedicalRecordFailure, medicalRecordFailuresEnum } from 'domain/core/failures/medicalRecord/medicalRecordFailure';
-import { ICreateMedicalRecordResponse, IGetMedicalRecordsResponse } from 'domain/core/response/medicalRecordResponse';
+import { ICreateMedicalRecordResponse, IGetMedicalRecordPDFResponse, IGetMedicalRecordsResponse } from 'domain/core/response/medicalRecordResponse';
 import { medicalConsultySupabaseToMap } from 'domain/mappers/medicalConsulty/supabase/medicalConsultySupabaseMapper';
-import { fromMedicalRecordSupabaseDocumentData, fromMedicalRecordValueSupabaseDocumentData, medicalRecordSupabaseToMap, medicalRecordTypeSupabaseToMap, medicalRecordValueSupabaseToMap } from 'domain/mappers/medicalRecord/supabase/medicalRecordSupabaseMapper';
+import { fromMedicalRecordSupabaseDocumentData, fromMedicalRecordValueSupabaseDocumentData, medicalRecordSupabaseToMap, medicalRecordTypeSupabaseToMap, medicalRecordValueSupabaseToMap, medicalRecordValueTypeSupabaseToMap } from 'domain/mappers/medicalRecord/supabase/medicalRecordSupabaseMapper';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
+import jsPDF from "jspdf";
+import * as QRCode from "qrcode";
 
 export default interface IMedicalRecordRepository {
   getMedicalRecords(obj: { 
@@ -17,6 +21,10 @@ export default interface IMedicalRecordRepository {
     medicalRecordCategory?: number | null;
   }): Promise<IGetMedicalRecordsResponse | MedicalRecordFailure>;
   createMedicalRecord(medicalRecord: IMedicalRecord): Promise<ICreateMedicalRecordResponse | MedicalRecordFailure>;
+  getMedicalRecordDiagnosisPDF(obj: { 
+    doctor: IUser;
+    medicalRecord: IMedicalRecord;
+  }): Promise<IGetMedicalRecordPDFResponse | MedicalRecordFailure>;
 }
 
 export class MedicalRecordRepository implements IMedicalRecordRepository {
@@ -34,7 +42,10 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
         *,
         ConsultasMedicas (*),
         TiposRegistrosMedicos!inner(*),
-        ValoresRegistrosMedicos (*)
+        ValoresRegistrosMedicos (
+          *,
+          TiposValorRegistrosMedicos (*)
+        )
       `,
       { count: "exact" });
 
@@ -94,8 +105,18 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
                 data.ValoresRegistrosMedicos.forEach((medicalRecordValueData: any) => {
                   const medicalRecordValue: IMedicalRecordValue = medicalRecordValueSupabaseToMap(medicalRecordValueData);
 
+                  if (medicalRecordValueData?.TiposValorRegistrosMedicos) {
+                    const medicalRecordValueType: IMedicalRecordValueType = medicalRecordValueTypeSupabaseToMap(medicalRecordValueData.TiposValorRegistrosMedicos);
+
+                    if (medicalRecordValueType.id > 0) medicalRecordValue.medicalRecordValueType = medicalRecordValueType;
+                  }
+
                   if (medicalRecordValue.id >= 0) medicalRecordMap.medicalRecordValues.push(medicalRecordValue)
                 })
+              }
+
+              if (medicalRecordMap.medicalRecordValues.length > 0) {
+                medicalRecordMap.medicalRecordValues = medicalRecordMap.medicalRecordValues.sort((a, b) => a.medicalRecordValueTypeId - b.medicalRecordValueTypeId);
               }
 
               medicalRecords.push(medicalRecordMap);
@@ -155,6 +176,156 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
         const exception = error as any;
         return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
       }
+  }
+
+  async getMedicalRecordDiagnosisPDF(obj: { 
+    doctor: IUser;
+    medicalRecord: IMedicalRecord;
+  }): Promise<IGetMedicalRecordPDFResponse | MedicalRecordFailure> {
+    try {
+      if (obj.medicalRecord.medicalRecordValues?.length === 0) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+
+      if (obj.doctor.pwaProfressionId) {
+        const res = await supabase.from("ProfesionesPQA").select("*").eq("id", obj.doctor.pwaProfressionId).limit(1);
+
+        if (res.data && res.data.length > 0) obj.doctor.pwaProfression = res.data[0].nombre;
+      }
+
+      const doc = new jsPDF();
+
+      doc.setProperties({
+        title: `Orden de estudio diagnóstico - ${getFullDate(new Date())} ${get12HoursFormat(new Date())}.pdf`
+      });
+
+      var img = new Image();
+      img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
+      doc.addImage(img, "png", 10, 0, 25, 30);
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 35, 10);
+      doc.text(`${obj.doctor.pwaProfression}`, 35, 15);
+
+      if (obj.doctor.pwaProfression.length > 0) {
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 20);
+
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 27);
+      } else {
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 15);
+
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 22);
+      }
+
+      doc.setFontSize(13);
+      doc.text(`Orden # ${obj.medicalRecord.id}`, 160, 20);
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.text(`SOLICITUD DE ESTUDIOS`, 65, 40);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`FECHA DE IMPRESIÓN:`, 130, 40);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`, 175, 40);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 45, 200, 45);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Dr(a).`, 10, 51);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.doctor.names} ${obj.doctor.firstName}`, 21, 51);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 55, 200, 55);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Especialidad:`, 10, 61);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.doctor.pwaProfression}`, 34, 61);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Fecha de la orden:`, 140, 61);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getFullYear()}`, 174, 61);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 65, 200, 65);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Nombre del paciente:`, 10, 75);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName}`, 10, 80);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Edad:`, 85, 75);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 80);
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`Favor de realizar`, 10, 90);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`${obj.medicalRecord.medicalRecordValues[0].value}`, 10, 97);
+      doc.setFontSize(10);
+
+      if (obj.medicalRecord.medicalRecordValues.length >= 1) doc.text(`${obj.medicalRecord.medicalRecordValues[1].value}`, 10, 102);
+
+      
+      doc.setLineWidth(0.1); 
+      doc.line(10, 110, 200, 110);
+
+      doc.setFontSize(11);
+
+      doc.setLineWidth(0.1); 
+      doc.line(30, 137, 60, 137);
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, 143);
+
+      QRCode.toDataURL(obj.medicalRecord.medicalConsultyId.toString(),  (err, url) => {
+        if (err) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+ 
+        var img = new Image();
+        img.src = url;
+        doc.addImage(img, "png", 150, 115, 45, 45);
+      });
+
+      doc.text(`${obj.doctor.address}​`, 50, 165);
+      doc.text(`Tel: ${obj.doctor.phone}​​`, 75, 170);
+
+      doc.output('dataurlnewwindow');
+
+      const response: IGetMedicalRecordPDFResponse = {
+          data: obj.medicalRecord,
+          metadata: {}
+      }
+
+      return JSON.parse(JSON.stringify(response));
+    } catch (error) {
+      const exception = error as any;
+      return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
     }
+  }
 }
   

@@ -1,3 +1,5 @@
+import { ISubject } from "./subjectEntity";
+
 export interface ITreatmentMedicine {
     id: number;
     viaDosis: number;
@@ -19,6 +21,8 @@ export interface ITreatment {
     id: number;
     status: number;
     subjectId: number;
+    subject?: ISubject | null;
+    reference: string;
     medicalConsultyId: number;
     treatmentMedicines: ITreatmentMedicine[];
 }

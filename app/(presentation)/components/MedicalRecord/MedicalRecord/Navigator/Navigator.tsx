@@ -2,6 +2,7 @@ import { MedicalRecordStatusEnum } from "(presentation)/(enum)/medicalRecord/med
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 import {

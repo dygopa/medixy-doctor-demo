@@ -12,3 +12,8 @@ export interface ICreateTreatmentResponse {
     data: ITreatment;
     metadata: {}
 }
+
+export interface IGetTreatmentPDFResponse {
+    data: ITreatment;
+    metadata: {}
+}

@@ -215,6 +215,7 @@ export default function Navigator() {
       subjectId: subject?.subjectId ?? 0,
       medicalConsultyId: 0,
       treatmentMedicines: [],
+      reference: "",
     };
 
     const treatmentMedicines: ITreatmentMedicine[] = [];
@@ -357,6 +358,24 @@ export default function Navigator() {
     return MedicalRecordRoutesEnum.MedicalRecord + subject?.subjectId;
   };
 
+  const getRedirectMedicalRecordCreate = () => {
+    if (appointment.data?.id) {
+      return (
+        MedicalRecordRoutesEnum.MedicalRecord +
+        appointment.data.id +
+        MedicalRecordRoutesEnum.MedicalRecordCreate +
+        "?type=appointment&from=medical-record-summary"
+      );
+    }
+
+    return (
+      MedicalRecordRoutesEnum.MedicalRecord +
+      subject?.subjectId +
+      MedicalRecordRoutesEnum.MedicalRecordCreate +
+      "?from=medical-record-summary"
+    );
+  };
+
   const onShowAlertError = () => {
     setShowAlertError(true);
 
@@ -415,13 +434,7 @@ export default function Navigator() {
                   Volver
                 </Button>
               ) : (
-                <Link
-                  href={
-                    MedicalRecordRoutesEnum.MedicalRecord +
-                    subject?.subjectId +
-                    MedicalRecordRoutesEnum.MedicalRecordCreate
-                  }
-                >
+                <Link href={getRedirectMedicalRecordCreate()}>
                   <Button variant="outline-primary">Volver</Button>
                 </Link>
               )}

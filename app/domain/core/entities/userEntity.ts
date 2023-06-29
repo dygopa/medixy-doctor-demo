@@ -17,6 +17,7 @@ export interface IUser {
   aboutMe: string;
   country: string;
   pwaProfressionId: number;
+  pwaProfression: string;
   professionalLicense: string;
   professionalLicenseInstitution: string;
   role: string;

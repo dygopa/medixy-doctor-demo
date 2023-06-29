@@ -1,9 +1,17 @@
-import { useEffect, useState } from "react";
+import { medicalConsultyInitialValues } from "(presentation)/(helper)/medicalRecords/medicalRecordsValues";
+import { useSearchParams } from "next/navigation";
+import { useContext, useEffect, useState } from "react";
+import { twMerge } from "tailwind-merge";
+import {
+  IMedicalRecordCreateContext,
+  MedicalRecordCreateContext,
+} from "../context/MedicalRecordCreateContext";
 import CurrentConsultation from "./CurrentConsultation/CurrentConsultation";
 import Diagnosis from "./Diagnosis/Diagnosis";
 import Orders from "./Orders/Orders";
 import Recipe from "./Recipe/Recipe";
 import Records from "./Records/Records";
+import RecoveryStorageModal from "./RecoveryStorageModal/RecoveryStorageModal";
 import VitalSigns from "./VitalSigns/VitalSigns";
 
 interface IRightSideProps {
@@ -11,217 +19,78 @@ interface IRightSideProps {
 }
 
 export default function RightSide({ width }: IRightSideProps) {
+  const { state } = useContext<IMedicalRecordCreateContext>(
+    MedicalRecordCreateContext
+  );
+  const { data: appointment } = state.appointment;
+
+  const searchParams = useSearchParams();
+  const from = searchParams.get("from");
+
   const [isLoading, setIsLoading] = useState(true);
+  const [showRecoveryStorageModal, setShowRecoveryStorageModal] =
+    useState(false);
 
   const setValuesLocalStorage = () => {
+    const valuesFormulary = medicalConsultyInitialValues;
+
+    valuesFormulary.appointmentId = appointment.data.id;
+
+    localStorage.setItem(
+      "prosit.storage.medical-record-create",
+      JSON.stringify(valuesFormulary)
+    );
+  };
+
+  const onCheckAppointmentStorage = () => {
     setIsLoading(true);
 
     let values: any = localStorage.getItem(
       "prosit.storage.medical-record-create"
     );
 
-    if (!values) {
-      const valuesFormulary = {
-        currentConsultation: {
-          consultationDate: "",
-          referredBy: "",
-          consultationReason: "",
-          sufferingDate: "",
-          diagnose: [],
-          observations: "",
-        },
-        physical: {
-          abnormalAppearance: {
-            isChecked: false,
-            value: "",
-          },
-          disnea: {
-            isChecked: false,
-            value: "",
-          },
-          deformity: {
-            isChecked: false,
-            value: "",
-          },
-          amputation: {
-            isChecked: false,
-            value: "",
-          },
-          paralysis: {
-            isChecked: false,
-            value: "",
-          },
-          abnormalMovements: {
-            isChecked: false,
-            value: "",
-          },
-          normalGait: {
-            isChecked: false,
-            value: "",
-          },
-          mentalDisorder: {
-            isChecked: false,
-            value: "",
-          },
-          abnormality: {
-            isChecked: false,
-            value: "",
-            values: {
-              anatomicalStateEyes: {
-                isChecked: false,
-                value: "",
-              },
-              eyeVision: {
-                isChecked: false,
-                value: "",
-              },
-              hearingEars: {
-                isChecked: false,
-                value: "",
-              },
-              buccalPharynx: {
-                isChecked: false,
-                value: "",
-              },
-              neck: {
-                isChecked: false,
-                value: "",
-              },
-              chest: {
-                isChecked: false,
-                value: "",
-              },
-              spine: {
-                isChecked: false,
-                value: "",
-              },
-              abdomen: {
-                isChecked: false,
-                value: "",
-              },
-              extremities: {
-                isChecked: false,
-                value: "",
-              },
-            },
-          },
-          smokingPhysical: {
-            isChecked: false,
-            value: "",
-          },
-        },
-        vitalSigns: {
-          size: "",
-          weight: "",
-          temperature: "",
-          respiratoryFrequency: "",
-          oximetry: "",
-          muscleMass: "",
-          glicemy: "",
-        },
-        records: {
-          allergiesPathological: {
-            isChecked: false,
-            values: [],
-          },
-          surgicalInterventions: {
-            isChecked: false,
-            values: [],
-          },
-          takeMedication: {
-            isChecked: false,
-            values: [],
-          },
-          transfusions: {
-            isChecked: false,
-            value: "",
-          },
-          anemia: {
-            isChecked: false,
-            value: "",
-          },
-          arthritis: {
-            isChecked: false,
-            value: "",
-          },
-          asma: {
-            isChecked: false,
-            value: "",
-          },
-          cancer: {
-            isChecked: false,
-            value: "",
-          },
-          bloodClots: {
-            isChecked: false,
-            value: "",
-          },
-          colitis: {
-            isChecked: false,
-            value: "",
-          },
-          bloodTypeNonPathological: {
-            isChecked: false,
-            values: [],
-          },
-          smokingNonPathological: {
-            isChecked: false,
-            value: "",
-          },
-          alcoholicBeveragesNonPathological: {
-            isChecked: false,
-            value: "",
-          },
-          drugsNonPathological: {
-            isChecked: false,
-            value: "",
-          },
-          exerciseNonPathological: {
-            isChecked: false,
-            value: "",
-          },
-          covidNonPathological: {
-            isChecked: false,
-            value: "",
-          },
-          diabetesFamily: {
-            isChecked: false,
-            values: [],
-          },
-          cancerFamily: {
-            isChecked: false,
-            values: [],
-          },
-          hypertensionFamily: {
-            isChecked: false,
-            values: [],
-          },
-          sidaFamily: {
-            isChecked: false,
-            values: [],
-          },
-          otherFamily: {
-            isChecked: false,
-            values: [],
-          },
-        },
-        orders: [],
-        recipes: [],
-        isValid: false,
-      };
+    const valuesJSON: any = values ? JSON.parse(values) : null;
+    const valuesFormulary = medicalConsultyInitialValues;
 
-      localStorage.setItem(
-        "prosit.storage.medical-record-create",
-        JSON.stringify(valuesFormulary)
-      );
+    valuesFormulary.appointmentId = appointment.data?.id;
+
+    if (
+      valuesJSON &&
+      valuesJSON?.appointmentId === appointment.data?.id &&
+      JSON.stringify(valuesJSON) !== JSON.stringify(valuesFormulary) &&
+      from !== "medical-record-summary"
+    )
+      setShowRecoveryStorageModal(true);
+
+    if (!valuesJSON || valuesJSON?.appointmentId !== appointment.data?.id) {
+      setValuesLocalStorage();
     }
 
     setIsLoading(false);
   };
 
   useEffect(() => {
-    setValuesLocalStorage();
+    onCheckAppointmentStorage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (showRecoveryStorageModal) {
+    return (
+      <div
+        className={twMerge([
+          "z-[99] fixed top-0 left-0 w-full h-screen overflow-y-auto bg-gray-900/50 flex flex-col justify-center items-center",
+          showRecoveryStorageModal ? "visible" : "hidden",
+        ])}
+      >
+        <div className="w-full md:w-[60%] lg:w-[40%] h-[450px] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
+          <RecoveryStorageModal
+            setShowRecoveryStorageModal={setShowRecoveryStorageModal}
+            setValuesLocalStorage={setValuesLocalStorage}
+          />
+        </div>
+      </div>
+    );
+  }
 
   if (isLoading) return <div />;
 

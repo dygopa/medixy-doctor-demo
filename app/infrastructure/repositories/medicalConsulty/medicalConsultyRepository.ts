@@ -1,14 +1,16 @@
 import { IDiagnosis } from 'domain/core/entities/diagnosis';
 import { IMedicalConsulty } from 'domain/core/entities/medicalConsultyEntity';
 import { IMedicalMeasure, IMedicalMeasureType } from 'domain/core/entities/medicalMeasureEntity';
-import { IMedicalRecord, IMedicalRecordType, IMedicalRecordValue } from 'domain/core/entities/medicalRecordEntity';
+import { IMedicalRecord, IMedicalRecordType, IMedicalRecordValue, IMedicalRecordValueType } from 'domain/core/entities/medicalRecordEntity';
+import { ISubject } from 'domain/core/entities/subjectEntity';
 import { ITreatment, ITreatmentMedicine } from 'domain/core/entities/treatmentEntity';
 import { MedicalConsultyFailure, medicalConsultyFailuresEnum } from 'domain/core/failures/medicalConsulty/medicalConsultyFailure';
 import { ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse } from 'domain/core/response/medicalConsultyResponse';
 import { diagnosisSupabaseToMap } from 'domain/mappers/diagnosis/diagnosisSupabaseMapper';
 import { fromMedicalConsultySupabaseDocumentData, medicalConsultySupabaseToMap } from "domain/mappers/medicalConsulty/supabase/medicalConsultySupabaseMapper";
 import { medicalMeasureSupabaseToMap, medicalMeasureTypeSupabaseToMap } from 'domain/mappers/medicalMeasure/supabase/medicalMeasureSupabaseMapper';
-import { medicalRecordSupabaseToMap, medicalRecordTypeSupabaseToMap, medicalRecordValueSupabaseToMap } from 'domain/mappers/medicalRecord/supabase/medicalRecordSupabaseMapper';
+import { medicalRecordSupabaseToMap, medicalRecordTypeSupabaseToMap, medicalRecordValueSupabaseToMap, medicalRecordValueTypeSupabaseToMap } from 'domain/mappers/medicalRecord/supabase/medicalRecordSupabaseMapper';
+import { subjectSupabaseToMap } from 'domain/mappers/patient/supabase/subjectSupabaseMapper';
 import { treatmentMedicineSupabaseToMap, treatmentSupabaseToMap } from 'domain/mappers/treatment/supabase/treatmentSupabaseMapper';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 
@@ -36,7 +38,11 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
       RegistrosMedicos (
         *,
         TiposRegistrosMedicos (*),
-        ValoresRegistrosMedicos (*)
+        ValoresRegistrosMedicos (
+          *,
+          TiposValorRegistrosMedicos (*)
+        ),
+        Sujetos (*)
       ),
       SignosVitales (
         *,
@@ -44,7 +50,8 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
       ),
       Tratamientos (
         *,
-        MedicamentosTratamiento (*)
+        MedicamentosTratamiento (*),
+        Sujetos (*)
       )
     `,
     { count: "exact" });
@@ -96,9 +103,27 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
                   if (medicalRecordData?.ValoresRegistrosMedicos?.length > 0) {
                     medicalRecordData.ValoresRegistrosMedicos.forEach((medicalRecordValueData: any) => {
                       const medicalRecordValue: IMedicalRecordValue = medicalRecordValueSupabaseToMap(medicalRecordValueData);
+
+                      if (medicalRecordValueData?.TiposValorRegistrosMedicos) {
+                        const medicalRecordValueType: IMedicalRecordValueType = medicalRecordValueTypeSupabaseToMap(medicalRecordValueData.TiposValorRegistrosMedicos);
+    
+                        if (medicalRecordValueType.id > 0) medicalRecordValue.medicalRecordValueType = medicalRecordValueType;
+                      }
     
                       if (medicalRecordValue.id >= 0) medicalRecord.medicalRecordValues.push(medicalRecordValue)
                     })
+                  }
+
+                  if (medicalRecordData?.Sujetos) {
+                    const subject: ISubject = subjectSupabaseToMap(medicalRecordData.Sujetos);
+    
+                    medicalRecord.subject = subject;
+                  }
+
+                  medicalRecord.medicalConsulty = JSON.parse(JSON.stringify(medicalConsultyMap));
+
+                  if (medicalRecord.medicalRecordValues.length > 0) {
+                    medicalRecord.medicalRecordValues = medicalRecord.medicalRecordValues.sort((a, b) => a.medicalRecordValueTypeId - b.medicalRecordValueTypeId);
                   }
       
                   if (medicalRecord.id >= 0) medicalConsultyMap?.medicalRecords?.push(medicalRecord);
@@ -122,6 +147,12 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
               if (data.Tratamientos?.length > 0) {
                 data.Tratamientos.forEach((treatmentData: any) => {
                   const treatmentMap: ITreatment = treatmentSupabaseToMap(treatmentData);
+
+                  if (treatmentData?.Sujetos) {
+                    const subject: ISubject = subjectSupabaseToMap(treatmentData.Sujetos);
+      
+                    if (subject.subjectId >= 0) treatmentMap.subject = subject;
+                  }
 
                   if (treatmentData?.MedicamentosTratamiento?.length > 0) {
                     treatmentData.MedicamentosTratamiento.forEach((medicineData: any) => {

@@ -2,12 +2,14 @@ import {
   MedicalRecordCategoriesIdEnum,
   medicalRecordTypeOrderEnum,
 } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
+import MedicalRecordProvider from "(presentation)/components/MedicalRecord/MedicalRecord/context/MedicalRecordContext";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import {
   IMedicalRecord,
   IMedicalRecordValue,
 } from "domain/core/entities/medicalRecordEntity";
 import { useEffect, useState } from "react";
+import DownloadPDF from "./DownloadPDF/DownloadPDF";
 
 interface IOrdersProps {
   medicalConsulty: IMedicalConsulty;
@@ -72,6 +74,10 @@ export default function Orders({ medicalConsulty }: IOrdersProps) {
                   </div>
                 )
               )}
+
+              <MedicalRecordProvider>
+                <DownloadPDF medicalRecord={medicalRecord} />
+              </MedicalRecordProvider>
             </div>
           )
       )}
