@@ -56,7 +56,7 @@ export default class ServiceUseCase {
 
       if (response instanceof ServiceFailure) throw response;
 
-      if(obj["media"]["data"] !== "") await this._repository.addMediaService({...obj["media"], id: obj["id"]}, response.id);
+      if(obj["media"]["data"] !== "" && obj["media"]["type"] !== "") await this._repository.addMediaService({...obj["media"], id: obj["id"]}, response.id);
 
       return response;
     } catch (error) {
