@@ -473,7 +473,7 @@ export default function BasicData({
               <IntlTelInput
                 preferredCountries={['mx']}
                 defaultValue={values.phone}
-                //value={values.phone}
+                value={values.phone}
                 onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
                 onPhoneNumberBlur={(e) => console.log(e)}
                 inputClassName={twMerge([
