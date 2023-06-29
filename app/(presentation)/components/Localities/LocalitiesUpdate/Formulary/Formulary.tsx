@@ -403,7 +403,6 @@ export default function Formulary({
                     }}
                   />
                 </div>
-                <div className="w-full flex justify-start items-center gap-5">
                   <div className="lg:flex justify-between items-center relative w-full gap-3">
                     <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                       Latitud
@@ -440,7 +439,6 @@ export default function Formulary({
                       }}
                     />
                   </div>
-                </div>
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     Dirección<span className="text-primary font-bold">*</span>
