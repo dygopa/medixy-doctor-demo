@@ -11,6 +11,7 @@ import { fromTreatmentMedicineSupabaseDocumentData, fromTreatmentSupabaseDocumen
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import jsPDF from "jspdf";
 import * as QRCode from "qrcode";
+import { parseString } from 'xml2js';
 
 export default interface ITreatmentRepository {
   getTreatments(obj: { 
@@ -150,36 +151,28 @@ export class TreatmentRepository implements ITreatmentRepository {
 
       var img = new Image();
       img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
-      doc.addImage(img, "jpg", 10, 0, 25, 30);
+      doc.addImage(img, "jpg", 10, 0, 30, 30);
 
       doc.setFontSize(11);
-      doc.setFont("helvetica", "normal", "bold");
-      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 112, 10);
-      doc.setFontSize(10);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Mx-Cedula Profesional: ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 105, 15);
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 40, 10);
+      doc.setFontSize(10);
+      doc.text(`Cedula Profesional: ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 40, 15);
+
+      doc.text(`${new Date(obj.treatment.treatmentMedicines[0].createdOn).getDate() - 1}-${new Date(obj.treatment.treatmentMedicines[0].createdOn).getMonth()}-${new Date(obj.treatment.treatmentMedicines[0].createdOn).getFullYear()}`, 170, 10);
 
       if (obj.doctor.pwaProfression.length > 0) {
-        doc.text(`${obj.doctor.pwaProfression}`, 122, 20);
-        doc.text(`Cert. 0000000`, 120, 25);
-        doc.text(`${obj.doctor.address}`, 80, 30);
+        doc.text(`${obj.doctor.pwaProfression}`, 40, 20);
       } else {
-        doc.text(`Cert. 0000000`, 120, 20);
-        doc.text(`${obj.doctor.address}`, 80, 25);
+        doc.text(`${obj.doctor.address}`, 40, 25);
       }
 
-      doc.setLineWidth(0.1); 
-      doc.line(10, 38, 200, 38);
-
       doc.setFontSize(12);
-      doc.setFont("helvetica", "normal", "bold");
-      doc.text(`DATOS DEL PACIENTE`, 20, 45);
+      doc.text(`${obj.treatment.subject?.lastName} ${obj.treatment.subject?.name}`, 20, 40);
       doc.setFontSize(11);
-      doc.text(`Apellidos y Nombres:`, 20, 53);
-      doc.setFont("helvetica", "normal", "normal");
-      doc.text(`${obj.treatment.subject?.lastName} ${obj.treatment.subject?.name}`, 65, 53);
+      
 
-      doc.setFont("helvetica", "normal", "bold");
+      /*doc.setFont("helvetica", "normal", "bold");
       doc.text(`Identificación:`, 20, 60);
       doc.setFont("helvetica", "normal", "normal");
       doc.text(`mx-CURP - ${obj.treatment.subject?.curp}`, 50, 60);
@@ -192,17 +185,16 @@ export class TreatmentRepository implements ITreatmentRepository {
       doc.setFont("helvetica", "normal", "bold");
       doc.text(`Fecha de nacimiento:`, 20, 67);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`${obj.treatment.subject?.birthDate ? `${new Date(obj.treatment.subject?.birthDate).getDate()}-${new Date(obj.treatment.subject?.birthDate).getMonth()}-${new Date(obj.treatment.subject?.birthDate).getFullYear()}` : ""} `, 65, 67);
+      doc.text(`${obj.treatment.subject?.birthDate ? `${new Date(obj.treatment.subject?.birthDate).getDate()}-${new Date(obj.treatment.subject?.birthDate).getMonth()}-${new Date(obj.treatment.subject?.birthDate).getFullYear()}` : ""} `, 65, 67);*/
 
-      doc.setFont("helvetica", "normal", "bold");
-      doc.text(`Edad:`, 120, 67);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`${obj.treatment.subject?.age} ${obj.treatment.subject?.ageType === "years" ? "años" : "meses"}`, 135, 67);
+      doc.text(`Edad del paciente:`, 20, 45);
+      doc.text(`${obj.treatment.subject?.age} ${obj.treatment.subject?.ageType === "years" ? "años" : "meses"}`, 55, 45);
 
       doc.setLineWidth(0.1); 
-      doc.line(10, 72, 200, 72);
+      doc.line(10, 50, 200, 50);
 
-      doc.setFontSize(12);
+      /*doc.setFontSize(12);
       doc.setFont("helvetica", "normal", "bold");
       doc.text(`RECETA DE MEDICAMENTOS:`, 25, 80);
       doc.setFont("helvetica", "normal", "normal");
@@ -211,41 +203,53 @@ export class TreatmentRepository implements ITreatmentRepository {
       doc.setFontSize(10);
       doc.setFont("helvetica", "normal", "bold");
       doc.text(`Fecha de Receta:`, 115, 80);
-      doc.setFont("helvetica", "normal", "normal");
-      doc.text(`${new Date(obj.treatment.treatmentMedicines[0].createdOn).getDate() - 1}-${new Date(obj.treatment.treatmentMedicines[0].createdOn).getMonth()}-${new Date(obj.treatment.treatmentMedicines[0].createdOn).getFullYear()}`, 150, 80);
+      doc.setFont("helvetica", "normal", "normal");*/
 
-      let y = 88;
+      let y = 60;
 
       obj.treatment.treatmentMedicines?.forEach((treatmentMedicine: ITreatmentMedicine) => {
         doc.setFontSize(10);
         doc.setFont("helvetica", "normal", "bold");
-        doc.text(`${treatmentMedicine.medicine}`, 28, y);
+        doc.text(`${treatmentMedicine.medicine}`, 20, y);
 
         doc.setFontSize(10);
         doc.setFont("helvetica", "normal", "normal");
-        doc.text(`Vía ${treatmentViaDosisEnum[treatmentMedicine.viaDosis]}, ${getDosisTypeText(treatmentMedicine)} cada ${getFrequencyText(treatmentMedicine)} por ${getDuringText(treatmentMedicine)}`, 28, y + 5);
+        doc.text(`Vía ${treatmentViaDosisEnum[treatmentMedicine.viaDosis]}, ${getDosisTypeText(treatmentMedicine)} cada ${getFrequencyText(treatmentMedicine)} por ${getDuringText(treatmentMedicine)}`, 20, y + 5);
 
-        y += 12;
+        y += 15;
       });
 
+      y += 15;
+
+      QRCode.toDataURL(obj.treatment.id.toString(),  (err, url) => {
+        if (err) return new TreatmentFailure(treatmentFailuresEnum.serverError);
+ 
+        var img = new Image();
+        img.src = url;
+        doc.addImage(img, "png", 160, y, 35, 35);
+       });
+
+      y += 15;
       doc.setLineWidth(0.1); 
-      doc.line(125, 265, 180, 265);
+      doc.line(15, y, 70, y);
 
+      y += 5;
       doc.setFontSize(10);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 135, 270);
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, y);
 
-      doc.setFontSize(10);
-      doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Mx-Cedula Profesional: ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 125, 275);
+      y += 25;
 
-      QRCode.toDataURL(obj.treatment.reference,  (err, url) => {
-       if (err) return new TreatmentFailure(treatmentFailuresEnum.serverError);
+      if (obj.doctor.address.length > 0) {
+        doc.text(`${obj.doctor.address}`, 85, y);
+      }
 
-       var img = new Image();
-       img.src = url;
-       doc.addImage(img, "png", 15, 250, 35, 35);
-      });
+      y += 5;
+      if (obj.doctor.phone.length > 0) {
+        doc.setFontSize(10);
+        doc.setFont("helvetica", "normal", "normal");
+        doc.text(`Tel: ${obj.doctor.phone}`, 90, y);
+      }
 
       doc.output('dataurlnewwindow');
 
