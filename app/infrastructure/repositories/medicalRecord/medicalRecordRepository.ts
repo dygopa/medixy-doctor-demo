@@ -198,79 +198,121 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       });
 
       var img = new Image();
-      img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-blue-1.png";
+      img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
       doc.addImage(img, "png", 10, 0, 25, 30);
 
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "normal", "bold");
-      doc.setTextColor(33, 106, 217);
-      doc.text(`${obj.doctor.names} ${obj.doctor.firstName}`, 115, 10);
-      doc.setTextColor(0,0,0);
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`${obj.doctor.pwaProfression.toUpperCase()}`, 115, 15);
+      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 35, 10);
+      doc.text(`${obj.doctor.pwaProfression}`, 35, 15);
 
       if (obj.doctor.pwaProfression.length > 0) {
-        doc.text(`Licencia de médico: ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 105, 20);
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 20);
 
-        if (obj.doctor.address.length > 0) doc.text(`direccion: ${obj.doctor.address}`, 95, 27);
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 27);
       } else {
-        doc.text(`Licencia de médico: ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 105, 15);
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 15);
 
-        if (obj.doctor.address.length > 0) doc.text(`direccion: ${obj.doctor.address}`, 95, 22);
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 22);
       }
 
-      doc.text(`Orden #: ${obj.medicalRecord.id}`, 10, 40);
-      doc.text(`Fecha: ${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getFullYear()}`, 10, 47);
+      doc.setFontSize(13);
+      doc.text(`Orden # ${obj.medicalRecord.id}`, 160, 20);
 
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "normal", "bold");
-      doc.text(`ORDEN MEDICA PARA`, 45, 57);
-
-      doc.setTextColor(33, 106, 217);
-      doc.text(`${obj.medicalRecord.medicalRecordValues[0].value}`, 93, 57);
-
-      doc.setTextColor(0,0,0);
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
-      doc.text(`Datos del paciente`, 10, 70);
+      doc.text(`SOLICITUD DE ESTUDIOS`, 65, 40);
 
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Nombre:`, 10, 77);
+      doc.setTextColor(130, 130, 130);
+      doc.text(`FECHA DE IMPRESIÓN:`, 130, 40);
+      doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
-      doc.text(`${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName}`, 26, 77);
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`, 175, 40);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 45, 200, 45);
 
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Sexo:`, 10, 83);
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Dr(a).`, 10, 51);
+      doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
-      doc.text(`${obj.medicalRecord.subject.sex === 0 ? "F" : "M"}`, 21, 83);
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.doctor.names} ${obj.doctor.firstName}`, 21, 51);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 55, 200, 55);
 
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Identificación:`, 10, 89);
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Especialidad:`, 10, 61);
+      doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
-      doc.text(`CURP, ${obj.medicalRecord.subject.curp}`, 35, 89);
-
-      if (obj.medicalRecord.subject.birthDate) {
-        doc.setFont("helvetica", "normal", "normal");
-        doc.text(`Fecha de nacimiento:`, 10, 95);
-        doc.setFont("helvetica", "normal", "bold");
-        doc.text(`${new Date(obj.medicalRecord.subject.birthDate).getDate()}-${new Date(obj.medicalRecord.subject.birthDate).getMonth()}-${new Date(obj.medicalRecord.subject.birthDate).getFullYear()}`, 49, 95);
-      }
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.doctor.pwaProfression}`, 34, 61);
 
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Se refiere al mencionado paciente para realizar los siguientes exámenes:`, 10, 105);
-
-      doc.setFontSize(12);
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Fecha de la orden:`, 140, 61);
+      doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
-      doc.text(`${obj.medicalRecord.medicalRecordValues[0].value}`, 10, 118);
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getFullYear()}`, 174, 61);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 65, 200, 65);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Nombre del paciente:`, 10, 75);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName}`, 10, 80);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Edad:`, 85, 75);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 80);
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`Favor de realizar`, 10, 90);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`${obj.medicalRecord.medicalRecordValues[0].value}`, 10, 97);
+      doc.setFontSize(10);
+
+      if (obj.medicalRecord.medicalRecordValues.length >= 1) doc.text(`${obj.medicalRecord.medicalRecordValues[1].value}`, 10, 102);
+
+      
+      doc.setLineWidth(0.1); 
+      doc.line(10, 110, 200, 110);
+
+      doc.setFontSize(11);
+
+      doc.setLineWidth(0.1); 
+      doc.line(30, 137, 60, 137);
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, 143);
 
       QRCode.toDataURL(obj.medicalRecord.medicalConsultyId.toString(),  (err, url) => {
         if (err) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
  
         var img = new Image();
         img.src = url;
-        doc.addImage(img, "png", 75, 130, 45, 45);
+        doc.addImage(img, "png", 150, 115, 45, 45);
       });
+
+      doc.text(`${obj.doctor.address}​`, 50, 165);
+      doc.text(`Tel: ${obj.doctor.phone}​​`, 75, 170);
 
       doc.output('dataurlnewwindow');
 
