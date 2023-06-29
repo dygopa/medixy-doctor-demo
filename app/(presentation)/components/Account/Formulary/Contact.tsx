@@ -19,15 +19,6 @@ export default function Contact({ account, setAccount }: IFormularyProps) {
 
   const handlephone = (value: string) => {
     setAccount({ ...account, phone: value });
-    if (value.length < 2) {
-      setErrors((previousState) => {
-        return {
-          ...previousState,
-          phone: "El teléfono del paciente es obligatorio",
-        };
-      });
-      return true;
-    }
     if (!VALIDATE_NUMBERS(value)) {
       setErrors((previousState) => {
         return {
@@ -56,16 +47,20 @@ export default function Contact({ account, setAccount }: IFormularyProps) {
             </p>
             <IntlTelInput
               preferredCountries={['mx']}
+              defaultCountry={"mx"}
               defaultValue={account.phone}
-              //value={values.phone}
+              value={account.phone}
               onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
               onPhoneNumberBlur={(e) => console.log(e)}
               inputClassName={twMerge([
-                "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
+                "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900",
                 "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
                 "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
               ])}
             />
+            {errors.phone.length > 0 && (
+              <span className="text-red-500">{errors.phone}</span>
+            )}
           </div>
           {/*<div className="flex flex-col justify-between items-start relative gap-1">
             <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
