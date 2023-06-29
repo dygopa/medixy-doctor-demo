@@ -165,7 +165,7 @@ export default function PatientsTable() {
               Un momento...
             </p>
             <p className="font-light text-slate-500 text-base text-center">
-              Cargando tus servicios.
+              Cargando tus pacientes.
             </p>
           </div>
         )}
@@ -173,10 +173,10 @@ export default function PatientsTable() {
         {successful && [...(patients.data as Array<ISubject>)].length === 0 && (
           <div className="w-full flex flex-col justify-center items-center text-center">
             <p className="font-bold text-slate-900 text-lg">
-              Vaya, no tienes servicios aún
+              Vaya, no tienes Pacientes aún
             </p>
             <p className="font-light text-slate-500 text-base text-center">
-              Lo sentimos, pero no tienes servicios agregados todavia.
+              Lo sentimos, pero no tienes pacientes agregados todavia.
             </p>
           </div>
         )}

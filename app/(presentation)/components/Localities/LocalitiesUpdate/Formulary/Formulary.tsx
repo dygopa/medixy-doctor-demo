@@ -207,11 +207,11 @@ export default function Formulary({
         description="Tu consultorio se ha actualizado exitosamente"
       />
 
-      <div className="w-full lg:flex justify-between items-start sticky top-[67px] z-[50]  bg-slate-100 py-3">
+      <div className="w-full md:flex justify-between items-start sticky top-[67px] z-[50]  bg-slate-100 py-3">
         <h2 className="lg:mr-5 lg:mb-0 mb-4 text-2xl font-bold truncate">
           Actualizar consultorio
         </h2>
-        <div className="lg:w-[20%] w-[40%] flex justify-center items-center">
+        <div className="md:w-[40%] lg:w-[20%] w-full flex justify-center items-center">
           <Button
             disabled={
               loadingUpdate || formData?.address === "" || formData?.name === ""

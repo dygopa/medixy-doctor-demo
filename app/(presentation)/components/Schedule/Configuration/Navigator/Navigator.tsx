@@ -34,12 +34,12 @@ export default function Navigator() {
         <h2 className="mr-5 text-2xl font-bold truncate">Configuración de la agenda</h2>
         <p>Mantén un seguimiento de tus citas médicos y asegúrate de estar preparado para cada consulta</p>
       </div>
-      <div className="w-full lg:w-fit flex flex-col lg:flex-row justify-start flex-wrap lg:flex-nowrap lg:justify-end items-center gap-2 h-full">
+      <div className="w-full lg:w-fit flex flex-row justify-center flex-wrap lg:flex-nowrap lg:justify-end items-center gap-2 h-full">
         {(localities && ([...(localities as any[])].length > 0) && (services && [...(services as any[])].length > 0)) && <>
-          <Button onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(1)(dispatch) }} variant="primary" type="button" className="w-full lg:w-fit">
+          <Button onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(1)(dispatch) }} variant="primary" type="button" className="w-[85%] lg:w-fit">
             <Lucide icon="Plus" className="w-5 h-5 mr-2" />Nueva venta de atención
           </Button>
-          <div onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(4)(dispatch)  }} className="cursor-pointer w-10 h-10 flex flex-col justify-center items-center bg-primary/10 hover:bg-primary/20 transition rounded-md">
+          <div onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(4)(dispatch)  }} className="cursor-pointer w-10 md:h-10 h-14 flex flex-col justify-center items-center bg-primary/10 hover:bg-primary/20 transition rounded-md">
             <Lucide icon={"Filter"} className="w-5 h-5" />
           </div>
         </>}

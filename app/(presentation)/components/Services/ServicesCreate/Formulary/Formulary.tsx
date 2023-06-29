@@ -208,7 +208,7 @@ export default function Formulary({
         <h2 className="lg:mr-5 lg:mb-0 mb-4 text-2xl font-bold truncate">
           Nuevo servicio
         </h2>
-        <div className="lg:w-[40%] flex justify-end items-center lg:gap-8 gap-2">
+        <div className="md:w-[40%]  flex justify-end items-center lg:gap-8 gap-2">
           <Button
             disabled={
               loadingCreationService ||
@@ -224,7 +224,7 @@ export default function Formulary({
               //console.log(localities, {...formData, id: userId})
             }}
             variant="primary"
-            className="lg:w-1/2 px-7"
+            className="lg:w-1/2 w-full px-7"
           >
             {loadingCreationService ? "Creando..." : "Crear servicio"}
           </Button>
