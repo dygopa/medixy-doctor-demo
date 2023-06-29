@@ -459,5 +459,67 @@ export const MedicalRecordReducer = (state: any, action: any) => {
             error: action.payload.error,
           },
         }
+
+      case 'GET_TREATMENT_PDF_LOADING':
+        return {
+          ...state,
+          getTreatmentPDF: {
+            ...state.getTreatmentPDF,
+            loading: true,
+            successful: false,
+            error: null,
+          },
+        };
+      case 'GET_TREATMENT_PDF_SUCCESSFUL':
+        return {
+          ...state,
+          getTreatmentPDF: {
+            ...state.getTreatmentPDF,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+        };
+      case 'GET_TREATMENT_PDF_ERROR':
+        return {
+          ...state,
+          getTreatmentPDF: {
+            ...state.getTreatmentPDF,
+            loading: false,
+            successful: false,
+            error: action.payload.error,
+          },
+        }
+
+      case 'GET_MEDICAL_RECORD_PDF_LOADING':
+        return {
+          ...state,
+          getMedicalRecordPDF: {
+            ...state.getMedicalRecordPDF,
+            loading: true,
+            successful: false,
+            error: null,
+          },
+        };
+      case 'GET_MEDICAL_RECORD_PDF_SUCCESSFUL':
+        return {
+          ...state,
+          getMedicalRecordPDF: {
+            ...state.getMedicalRecordPDF,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+        };
+      case 'GET_MEDICAL_RECORD_PDF_ERROR':
+        return {
+          ...state,
+          getMedicalRecordPDF: {
+            ...state.getMedicalRecordPDF,
+            loading: false,
+            successful: false,
+            error: action.payload.error,
+          },
+        }
       }
   }

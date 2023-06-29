@@ -12,3 +12,8 @@ export interface ICreateMedicalRecordResponse {
     data: IMedicalRecord;
     metadata: {}
 }
+
+export interface IGetMedicalRecordPDFResponse {
+    data: IMedicalRecord;
+    metadata: {}
+}

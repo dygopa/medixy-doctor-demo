@@ -21,7 +21,7 @@ export default function Order({ text, date }: IOrderProps) {
         </div>
       </div>
 
-      <div className="flex items-center">
+      {/* <div className="flex items-center">
         <div className="mr-14">
           <Lucide icon="FilePlus" color="#cfd0d1" />
         </div>
@@ -29,7 +29,7 @@ export default function Order({ text, date }: IOrderProps) {
         <div className="mr-4">
           <Lucide icon="Eye" color="#22345F" />
         </div>
-      </div>
+  </div> */}
     </div>
   );
 }

@@ -5,6 +5,7 @@ export function treatmentSupabaseToMap(data: any): ITreatment {
         id: data?.id ?? 0,
         status: data?.estado ?? 0,
         subjectId: data?.sujetoId ?? 0,
+        reference: data?.referencia ?? "",
         medicalConsultyId: data?.consultaMedicaId ?? 0,
         treatmentMedicines: [],
     } as ITreatment;
@@ -40,7 +41,6 @@ export function treatmentMedicineSupabaseToMap(data: any): ITreatmentMedicine {
 }
 
 export function fromTreatmentMedicineSupabaseDocumentData(treatmentMedicine: ITreatmentMedicine): any {
-  console.log(treatmentMedicine)
   const documentData = {
     viaDosis: treatmentMedicine.viaDosis,
     medicamento: treatmentMedicine.medicine,

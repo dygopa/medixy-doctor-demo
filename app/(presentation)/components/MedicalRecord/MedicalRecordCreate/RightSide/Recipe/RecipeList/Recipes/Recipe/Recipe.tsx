@@ -19,7 +19,6 @@ export default function Recipe({
   setRecipeEdit,
 }: IRecipeProps) {
   const getDosisTypeText = () => {
-    console.log(recipe.unit);
     switch (recipe.unit) {
       case TreatmentDosisTypeEnum.CAPSULE:
         return "Tomar una cápsula";

@@ -1,3 +1,9 @@
+import { monthsEnum } from "(presentation)/(enum)/dates/datesEnum";
+
+export const getFullDate = (date: Date) => {
+    return `${date.getDate()} de ${monthsEnum[date.getMonth()].toLowerCase()} del ${date.getFullYear()}`;
+}
+
 export const get12HoursFormat = (date: Date): string => {
     let hours: number = date.getHours();
     let minutes: number | string = date.getMinutes();

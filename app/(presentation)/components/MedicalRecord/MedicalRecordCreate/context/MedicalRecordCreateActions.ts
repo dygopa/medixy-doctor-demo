@@ -1,12 +1,12 @@
 import { ISubject } from "domain/core/entities/subjectEntity";
 import SubjectsUseCase from "domain/useCases/subject/subjectUseCase";
 import { Dispatch } from "react";
-import {  MedicalRecordTypesNumberEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
+import {  MedicalRecordTypesNumberEnum, MedicalRecordTypesOrdersEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
-import { IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
-import { IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
+import { IGetMedicalRecordPDFResponse, IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
+import { IGetTreatmentPDFResponse, IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
 import FederalEntitiesUseCase from "domain/useCases/federalEntity/federalEntityUseCase";
 import MedicalConsultyUseCase from "domain/useCases/medicalConsulty/medicalConsultyUseCases";
 import MedicalMeasureUseCase from "domain/useCases/medicalMeasure/medicalMeasureUseCases";
@@ -17,6 +17,9 @@ import SpecialtyUseCase from "domain/useCases/specialty/specialtyUseCases";
 import { IGetSubjectRelationsResponse } from "domain/core/response/subjectsResponse";
 import { IGetAppointmentResponse } from "domain/core/response/appointmentsResponse";
 import AppointmentUseCase from "domain/useCases/appointment/appointmentUseCases";
+import { IUser } from "domain/core/entities/userEntity";
+import { ITreatment } from "domain/core/entities/treatmentEntity";
+import { IMedicalRecord } from "domain/core/entities/medicalRecordEntity";
 
 export interface IMedicalRecordCreateActions {
     getSubjectById: (subjectId: number) => (dispatch: Dispatch<any>) => {};
@@ -31,6 +34,8 @@ export interface IMedicalRecordCreateActions {
     editSubject: (subject: ISubject) => (dispatch: Dispatch<any>) => {};
     getCompanions: (obj: { patientId: number }) => (dispatch: Dispatch<any>) => {};
     createCompanion: (patientId:number, companion:ISubject) => (dispatch: Dispatch<any>) => {};
+    getTreatmentPDF: (obj: { doctor: IUser; treatment: ITreatment }) => (dispatch: Dispatch<any>) => {};
+    getMedicalRecordPDF: (obj: { doctor: IUser; medicalRecord: IMedicalRecord }) => (dispatch: Dispatch<any>) => {};
 }
 
 const getSubjectById = (subjectId: number) => async (dispatch: Dispatch<any>) => {
@@ -206,6 +211,42 @@ const createCompanion = (patientId:number, companion:ISubject) => async (dispatc
   }
 }
 
+const getTreatmentPDF = (obj: { doctor: IUser; treatment: ITreatment }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_TREATMENT_PDF_LOADING" });
+
+    const res: IGetTreatmentPDFResponse = await new TreatmentUseCase().getTreatmentPDF({ doctor: obj.doctor, treatment: obj.treatment });
+
+    dispatch({ type: "GET_TREATMENT_PDF_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "GET_TREATMENT_PDF_ERROR", payload: { error: error } });
+  }
+}
+
+const getMedicalRecordPDF = (obj: { doctor: IUser; medicalRecord: IMedicalRecord }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_MEDICAL_RECORD_PDF_LOADING" });
+
+    let res: IGetMedicalRecordPDFResponse = {} as IGetMedicalRecordPDFResponse;
+
+    switch (obj.medicalRecord.medicalRecordType.name) {
+      case MedicalRecordTypesOrdersEnum.ORDER_DIAGNOSIS:
+        res = await new MedicalRecordUseCase().getMedicalRecordDiagnosisPDF({ doctor: obj.doctor, medicalRecord: obj.medicalRecord });
+        break;
+      case MedicalRecordTypesOrdersEnum.ORDER_LABORATORY:
+        res = await new MedicalRecordUseCase().getMedicalRecordDiagnosisPDF({ doctor: obj.doctor, medicalRecord: obj.medicalRecord });
+        break;
+    
+      default:
+        break;
+    }
+
+    dispatch({ type: "GET_MEDICAL_RECORD_PDF_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "GET_MEDICAL_RECORD_PDF_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IMedicalRecordCreateActions = {
     getSubjectById,
     getAppointmentById,
@@ -219,4 +260,6 @@ export const actions: IMedicalRecordCreateActions = {
     editSubject,
     getCompanions,
     createCompanion,
+    getTreatmentPDF,
+    getMedicalRecordPDF,
 }
