@@ -470,7 +470,7 @@ export default function Formulary() {
 
           {tabsActive != 1 ? (
             <Button
-              className="my-4 w-[100%] lg:w-auto"
+              className="my-4 w-[100%] md:w-auto"
               variant="primary"
               disabled={
                 loading ||
@@ -489,7 +489,7 @@ export default function Formulary() {
               {companionEdit ? (
                 <Button
                   disabled={loading}
-                  className="my-4 w-[100%] lg:w-auto"
+                  className="my-4 w-[100%] md:w-auto"
                   variant="primary"
                   onClick={(e: any) => onSubmitEditCompanion(e)}
                 >
@@ -498,7 +498,7 @@ export default function Formulary() {
               ) : (
                 <Button
                   disabled={loadingCompanion}
-                  className="my-4 w-[100%] lg:w-auto"
+                  className="my-4 w-[100%] md:w-auto"
                   variant="primary"
                   onClick={(e: any) => onNewCompanion(e)}
                 >

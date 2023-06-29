@@ -175,12 +175,12 @@ export default function WithoutSteps({
         description="Tu consultorio se ha creado exitosamente"
       />
 
-      <div className="w-full lg:flex justify-between items-center sticky top-[67px] z-[50] border-b bg-slate-100 py-2">
-        <div className="lg:mr-5 mb-4 lg:mb-0">
+      <div className="w-full md:flex justify-between items-center sticky top-[67px] z-[50] border-b bg-slate-100 py-2">
+        <div className="lg:mr-5 mb-4 md:mb-0">
           <h2 className=" text-2xl font-bold truncate">Nuevo consultorio</h2>
         </div>
         <Button
-          className="w-full lg:w-fit"
+          className="w-full md:w-fit"
           disabled={
             createUserLocalityLoading ||
             formData?.name === "" ||
@@ -295,14 +295,11 @@ export default function WithoutSteps({
               </div>
 
               <div className="lg:flex justify-between items-center relative w-full gap-3">
-                <div className="lg:w-[445px]">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     Municipio
                   </p>
-                </div>
-                <div className="w-full flex justify-end">
                   <FormSelect
-                    className="form-control w-full"
+                    className="form-control lg:w-[70%]"
                     disabled={formData.federalEntity === 0}
                     defaultValue={formData.municipality}
                     value={formData.municipality}
@@ -319,18 +316,14 @@ export default function WithoutSteps({
                       </option>
                     ))}
                   </FormSelect>
-                </div>
               </div>
 
               <div className="lg:flex justify-between items-center relative w-full gap-3">
-                <div className="lg:w-[445px]">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     Localidad
                   </p>
-                </div>
-                <div className="w-full flex justify-end">
                   <FormSelect
-                    className="form-control w-full"
+                    className="form-control lg:w-[70%]"
                     disabled={formData.municipality === 0}
                     defaultValue={formData.countryLocation}
                     value={formData.countryLocation}
@@ -347,7 +340,6 @@ export default function WithoutSteps({
                       </option>
                     ))}
                   </FormSelect>
-                </div>
               </div>
 
               <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
