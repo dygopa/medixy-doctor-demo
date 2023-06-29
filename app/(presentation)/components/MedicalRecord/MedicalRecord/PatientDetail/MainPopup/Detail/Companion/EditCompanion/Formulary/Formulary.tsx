@@ -423,7 +423,7 @@ export default function CompanionCreate({
           <IntlTelInput
             preferredCountries={["mx"]}
             defaultValue={values.phone}
-            //value={values.phone}
+            value={values.phone}
             onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
               handlephone(fullNumber)
             }
