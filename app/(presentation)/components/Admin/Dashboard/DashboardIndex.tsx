@@ -15,12 +15,12 @@ export default function DashboardIndex() {
         <Summary />
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <div>
+      <div className="md:grid grid-cols-2 gap-4">
+        <div className="my-6 md:my-0">
           <LastDoctors />
         </div>
 
-        <div>
+        <div className="my-6 md:my-0">
           <LastPatients />
         </div>
       </div>
