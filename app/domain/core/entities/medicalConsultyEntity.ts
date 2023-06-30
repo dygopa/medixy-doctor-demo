@@ -1,11 +1,13 @@
 import { IDiagnosis } from "./diagnosis";
 import { IMedicalMeasure } from "./medicalMeasureEntity";
 import { IMedicalRecord } from "./medicalRecordEntity";
+import { ISubject } from "./subjectEntity";
 import { ITreatment } from "./treatmentEntity";
 
 export interface IMedicalConsulty {
     id: number;
     subjectId: number;
+    subject: ISubject;
     consultationDate: Date;
     consultationReason: string;
     referrerBy?: string | null;

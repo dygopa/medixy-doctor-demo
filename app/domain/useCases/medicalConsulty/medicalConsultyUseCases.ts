@@ -1,7 +1,8 @@
 import { MedicalRecordStatusEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import { IUser } from "domain/core/entities/userEntity";
 import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
-import { ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
+import { ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse, IGetMedicalConsultyPDFResponse } from "domain/core/response/medicalConsultyResponse";
 import IAppointmentRepository, { AppointmentRepository } from "infrastructure/repositories/appointment/appointmentRepository";
 import IDiagnosisRepository, { DiagnosisRepository } from "infrastructure/repositories/diagnosis/diagnosisRepository";
 import { MedicalConsultyRepository } from "infrastructure/repositories/medicalConsulty/medicalConsultyRepository";
@@ -76,6 +77,21 @@ export default class MedicalConsultyUseCase {
       return response
     } catch (error) {
       throw error;
+    }
+  }
+
+  async getMedicalConsultyPDF(obj: { doctor: IUser; medicalConsulty: IMedicalConsulty }): Promise<IGetMedicalConsultyPDFResponse> {
+    try {
+        const response = await this._repository.getMedicalConsultyPDF({
+            doctor: obj.doctor,
+            medicalConsulty: obj.medicalConsulty
+        });
+
+        if (response instanceof MedicalConsultyFailure) throw response;
+
+        return response;
+    } catch (error) {
+        throw error;
     }
   }
 }

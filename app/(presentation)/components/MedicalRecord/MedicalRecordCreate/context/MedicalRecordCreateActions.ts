@@ -3,7 +3,7 @@ import SubjectsUseCase from "domain/useCases/subject/subjectUseCase";
 import { Dispatch } from "react";
 import {  MedicalRecordTypesNumberEnum, MedicalRecordTypesOrdersEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
-import { IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
+import { IGetMedicalConsultiesResponse, IGetMedicalConsultyPDFResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
 import { IGetMedicalRecordPDFResponse, IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
 import { IGetTreatmentPDFResponse, IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
@@ -20,6 +20,7 @@ import AppointmentUseCase from "domain/useCases/appointment/appointmentUseCases"
 import { IUser } from "domain/core/entities/userEntity";
 import { ITreatment } from "domain/core/entities/treatmentEntity";
 import { IMedicalRecord } from "domain/core/entities/medicalRecordEntity";
+import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 
 export interface IMedicalRecordCreateActions {
     getSubjectById: (subjectId: number) => (dispatch: Dispatch<any>) => {};
@@ -35,6 +36,7 @@ export interface IMedicalRecordCreateActions {
     getCompanions: (obj: { patientId: number }) => (dispatch: Dispatch<any>) => {};
     createCompanion: (patientId:number, companion:ISubject) => (dispatch: Dispatch<any>) => {};
     getTreatmentPDF: (obj: { doctor: IUser; treatment: ITreatment }) => (dispatch: Dispatch<any>) => {};
+    getMedicalConsultyPDF: (obj: { doctor: IUser; medicalConsulty: IMedicalConsulty }) => (dispatch: Dispatch<any>) => {};
     getMedicalRecordPDF: (obj: { doctor: IUser; medicalRecord: IMedicalRecord }) => (dispatch: Dispatch<any>) => {};
 }
 
@@ -223,6 +225,18 @@ const getTreatmentPDF = (obj: { doctor: IUser; treatment: ITreatment }) => async
   }
 }
 
+const getMedicalConsultyPDF = (obj: { doctor: IUser; medicalConsulty: IMedicalConsulty }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_MEDICAL_CONSULTY_PDF_LOADING" });
+
+    const res: IGetMedicalConsultyPDFResponse = await new MedicalConsultyUseCase().getMedicalConsultyPDF({ doctor: obj.doctor, medicalConsulty: obj.medicalConsulty });
+
+    dispatch({ type: "GET_MEDICAL_CONSULTY_PDF_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "GET_MEDICAL_CONSULTY_PDF_ERROR", payload: { error: error } });
+  }
+}
+
 const getMedicalRecordPDF = (obj: { doctor: IUser; medicalRecord: IMedicalRecord }) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "GET_MEDICAL_RECORD_PDF_LOADING" });
@@ -273,5 +287,6 @@ export const actions: IMedicalRecordCreateActions = {
     getCompanions,
     createCompanion,
     getTreatmentPDF,
+    getMedicalConsultyPDF,
     getMedicalRecordPDF,
 }

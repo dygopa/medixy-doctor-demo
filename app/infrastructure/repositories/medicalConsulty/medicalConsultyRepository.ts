@@ -1,11 +1,17 @@
+import { medicalRecordTypeEnum, medicalRecordTypePhysicalEnum } from '(presentation)/(enum)/medicalRecord/medicalRecordEnums';
+import { treatmentViaDosisEnum } from '(presentation)/(enum)/treatment/treatmentEnums';
+import { get12HoursFormat, getFullDate } from '(presentation)/(helper)/dates/datesHelper';
+import { getDosisTypeText, getDuringText, getFrequencyText } from '(presentation)/(helper)/medicalRecords/recipesHelper';
 import { IDiagnosis } from 'domain/core/entities/diagnosis';
 import { IMedicalConsulty } from 'domain/core/entities/medicalConsultyEntity';
 import { IMedicalMeasure, IMedicalMeasureType } from 'domain/core/entities/medicalMeasureEntity';
 import { IMedicalRecord, IMedicalRecordType, IMedicalRecordValue, IMedicalRecordValueType } from 'domain/core/entities/medicalRecordEntity';
 import { ISubject } from 'domain/core/entities/subjectEntity';
 import { ITreatment, ITreatmentMedicine } from 'domain/core/entities/treatmentEntity';
+import { IUser } from 'domain/core/entities/userEntity';
 import { MedicalConsultyFailure, medicalConsultyFailuresEnum } from 'domain/core/failures/medicalConsulty/medicalConsultyFailure';
-import { ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse } from 'domain/core/response/medicalConsultyResponse';
+import { MedicalRecordFailure, medicalRecordFailuresEnum } from 'domain/core/failures/medicalRecord/medicalRecordFailure';
+import { ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse, IGetMedicalConsultyPDFResponse } from 'domain/core/response/medicalConsultyResponse';
 import { diagnosisSupabaseToMap } from 'domain/mappers/diagnosis/diagnosisSupabaseMapper';
 import { fromMedicalConsultySupabaseDocumentData, medicalConsultySupabaseToMap } from "domain/mappers/medicalConsulty/supabase/medicalConsultySupabaseMapper";
 import { medicalMeasureSupabaseToMap, medicalMeasureTypeSupabaseToMap } from 'domain/mappers/medicalMeasure/supabase/medicalMeasureSupabaseMapper';
@@ -13,6 +19,10 @@ import { medicalRecordSupabaseToMap, medicalRecordTypeSupabaseToMap, medicalReco
 import { subjectSupabaseToMap } from 'domain/mappers/patient/supabase/subjectSupabaseMapper';
 import { treatmentMedicineSupabaseToMap, treatmentSupabaseToMap } from 'domain/mappers/treatment/supabase/treatmentSupabaseMapper';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
+import { getLetterByMeasureType, getMedicalMeasuresMap, getTitleByMeasureType } from 'infrastructure/utils/medicalMeasures/medicalMeasuresHelper';
+import { getMedicalRecordsHistory, getMedicalRecordsPhysical } from 'infrastructure/utils/medicalRecord/medicalRecordHelper';
+import jsPDF from "jspdf";
+import * as QRCode from "qrcode";
 
 export default interface IMedicalConsultyRepository {
   getMedicalConsulties(obj: { 
@@ -22,6 +32,10 @@ export default interface IMedicalConsultyRepository {
     subjectId?: number | null;
   }): Promise<IGetMedicalConsultiesResponse | MedicalConsultyFailure>;
   createMedicalConsulty(medicalConsulty: IMedicalConsulty): Promise<ICreateMedicalConsultyResponse | MedicalConsultyFailure>;
+  getMedicalConsultyPDF(obj: { 
+    doctor: IUser;
+    medicalConsulty: IMedicalConsulty;
+  }): Promise<IGetMedicalConsultyPDFResponse | MedicalConsultyFailure>;
 }
 
 export class MedicalConsultyRepository implements IMedicalConsultyRepository {
@@ -35,8 +49,10 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
       let query = supabase.from("ConsultasMedicas").select(`
       *,
       Diagnosticos (*),
+      Sujetos (*),
       RegistrosMedicos (
         *,
+        ConsultasMedicas (*),
         TiposRegistrosMedicos (*),
         ValoresRegistrosMedicos (
           *,
@@ -82,6 +98,12 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
           await Promise.all(res.data.map(async (data: any) => {
               const medicalConsultyMap: IMedicalConsulty = medicalConsultySupabaseToMap(data);
 
+              if (data?.Sujetos) {
+                const subject: ISubject = subjectSupabaseToMap(data.Sujetos);
+
+                medicalConsultyMap.subject = subject;
+              }
+
               if (data.Diagnosticos?.length > 0) {
                 data.Diagnosticos.forEach((diagnosisData: any) => {
                   const diagnose: IDiagnosis = diagnosisSupabaseToMap(diagnosisData);
@@ -92,7 +114,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
 
               if (data.RegistrosMedicos?.length > 0) {
                 data.RegistrosMedicos.forEach((medicalRecordData: any) => {
-                  const medicalRecord: IMedicalRecord = medicalRecordSupabaseToMap(medicalRecordData);
+                  let medicalRecord: IMedicalRecord = medicalRecordSupabaseToMap(medicalRecordData);
 
                   if (medicalRecordData?.TiposRegistrosMedicos) {
                     const medicalRecordType: IMedicalRecordType = medicalRecordTypeSupabaseToMap(medicalRecordData.TiposRegistrosMedicos);
@@ -120,7 +142,11 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
                     medicalRecord.subject = subject;
                   }
 
-                  medicalRecord.medicalConsulty = JSON.parse(JSON.stringify(medicalConsultyMap));
+                  if (medicalRecordData?.ConsultasMedicas) {
+                    const medicalConsulty: IMedicalConsulty = medicalConsultySupabaseToMap(medicalRecordData.ConsultasMedicas);
+    
+                    medicalRecord.medicalConsulty = medicalConsulty;
+                  }
 
                   if (medicalRecord.medicalRecordValues.length > 0) {
                     medicalRecord.medicalRecordValues = medicalRecord.medicalRecordValues.sort((a, b) => a.medicalRecordValueTypeId - b.medicalRecordValueTypeId);
@@ -150,8 +176,8 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
 
                   if (treatmentData?.Sujetos) {
                     const subject: ISubject = subjectSupabaseToMap(treatmentData.Sujetos);
-      
-                    if (subject.subjectId >= 0) treatmentMap.subject = subject;
+    
+                    treatmentMap.subject = subject;
                   }
 
                   if (treatmentData?.MedicamentosTratamiento?.length > 0) {
@@ -186,24 +212,430 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
     }
   }
 
-    async createMedicalConsulty(medicalConsulty: IMedicalConsulty): Promise<ICreateMedicalConsultyResponse | MedicalConsultyFailure> {
-      try {
-        const res = await supabase.from("ConsultasMedicas").insert(fromMedicalConsultySupabaseDocumentData(medicalConsulty)).select();
+  async createMedicalConsulty(medicalConsulty: IMedicalConsulty): Promise<ICreateMedicalConsultyResponse | MedicalConsultyFailure> {
+    try {
+      const res = await supabase.from("ConsultasMedicas").insert(fromMedicalConsultySupabaseDocumentData(medicalConsulty)).select();
 
-        if (res.error) return new MedicalConsultyFailure(medicalConsultyFailuresEnum.serverError);
+      if (res.error) return new MedicalConsultyFailure(medicalConsultyFailuresEnum.serverError);
 
-        if (res.data && res.data.length > 0) medicalConsulty.id = res.data[0].id;
+      if (res.data && res.data.length > 0) medicalConsulty.id = res.data[0].id;
 
-        const response: ICreateMedicalConsultyResponse = {
-            data: medicalConsulty,
-            metadata: {}
+      const response: ICreateMedicalConsultyResponse = {
+          data: medicalConsulty,
+          metadata: {}
+      }
+
+      return JSON.parse(JSON.stringify(response));
+    } catch (error) {
+      const exception = error as any;
+      return new MedicalConsultyFailure(medicalConsultyFailuresEnum.serverError);
+    }
+  }
+
+  async getMedicalConsultyPDF(obj: { 
+    doctor: IUser;
+    medicalConsulty: IMedicalConsulty;
+  }): Promise<IGetMedicalConsultyPDFResponse | MedicalConsultyFailure> {
+    try {
+      if (obj.doctor.pwaProfressionId) {
+        const res = await supabase.from("ProfesionesPQA").select("*").eq("id", obj.doctor.pwaProfressionId).limit(1);
+
+        if (res.data && res.data.length > 0) obj.doctor.pwaProfression = res.data[0].nombre;
+      }
+
+      const doc = new jsPDF();
+
+      doc.setProperties({
+        title: `Resumen de la consulta - ${getFullDate(new Date())} ${get12HoursFormat(new Date())}.pdf`
+      });
+
+      var img = new Image();
+      img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
+      doc.addImage(img, "png", 10, 0, 25, 30);
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 35, 10);
+      doc.text(`${obj.doctor.pwaProfression}`, 35, 15);
+
+      if (obj.doctor.pwaProfression.length > 0) {
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 20);
+
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 27);
+      } else {
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 15);
+
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 22);
+      }
+
+      doc.setFontSize(12);
+      doc.text(`${obj.medicalConsulty.subject.lastName} ${obj.medicalConsulty.subject.name}`, 10, 40);
+      doc.setFontSize(11);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`Edad del paciente:`, 10, 45);
+      doc.text(`${obj.medicalConsulty.subject?.age} ${obj.medicalConsulty.subject?.ageType === "years" ? "años" : "meses"}`, 45, 45);
+
+      doc.text(`Fecha:`, 130, 40);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${new Date(obj.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalConsulty.consultationDate).getFullYear()}`, 143, 40);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 50, 200, 50);
+
+      const medicalRecordsHistory = getMedicalRecordsHistory(obj.medicalConsulty.medicalRecords ?? []);
+
+      let y = 60;
+      let pageHeight = doc.internal.pageSize.height - 10;
+
+      if (medicalRecordsHistory?.length > 0) {
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "normal", "bold");
+        doc.text(`Antecedentes:`, 10, y);
+
+        y += 7;
+
+        if (y >= pageHeight) {
+          y = 0;
+          pageHeight = doc.internal.pageSize.height - 5;
+          doc.addPage();
         }
 
-        return JSON.parse(JSON.stringify(response));
-      } catch (error) {
-        const exception = error as any;
-        return new MedicalConsultyFailure(medicalConsultyFailuresEnum.serverError);
+        doc.setFont("helvetica", "normal", "normal");
+
+        medicalRecordsHistory.forEach((medicalRecordHistory) => {
+          doc.setFontSize(10);
+          doc.setFont("helvetica", "normal", "bold");
+          doc.text(`${medicalRecordTypeEnum[medicalRecordHistory.medicalRecordType.name]}`, 15, y);
+
+          medicalRecordHistory.medicalRecordValues.forEach((medicalRecordValue) => {
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal", "normal");
+            doc.text(`${medicalRecordValue.value}`, 15, y + 5);
+
+            y += 5;
+
+            if (y >= pageHeight) {
+              y = 0;
+              pageHeight = doc.internal.pageSize.height - 5;
+              doc.addPage();
+            }
+          });
+
+          y += 7;
+
+          if (y >= pageHeight) {
+            y = 0;
+            pageHeight = doc.internal.pageSize.height - 5;
+            doc.addPage();
+          }
+        });
       }
+
+      const medicalRecordsPhysical = getMedicalRecordsPhysical(obj.medicalConsulty.medicalRecords ?? []);
+
+      if (medicalRecordsPhysical?.length > 0) {
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "normal", "bold");
+        doc.text(`Exploración física:`, 10, y);
+
+        y += 7;
+
+        if (y >= pageHeight) {
+          y = 0;
+          pageHeight = doc.internal.pageSize.height - 5;
+          doc.addPage();
+        }
+
+        doc.setFont("helvetica", "normal", "normal");
+
+        medicalRecordsPhysical.forEach((medicalRecordPhysical) => {
+          console.log(medicalRecordPhysical)
+          doc.setFontSize(10);
+          doc.setFont("helvetica", "normal", "bold");
+          doc.text(`${medicalRecordTypePhysicalEnum[medicalRecordPhysical.medicalRecordType.name]}`, 15, y);
+
+          medicalRecordPhysical.medicalRecordValues.forEach((medicalRecordValue) => {
+            doc.setFontSize(10);
+            doc.setFont("helvetica", "normal", "normal");
+            doc.text(`${medicalRecordValue.value}`, 15, y + 5);
+
+            y += 5;
+
+            if (y >= pageHeight) {
+              y = 0;
+              pageHeight = doc.internal.pageSize.height - 5;
+              doc.addPage();
+            }
+          });
+
+          y += 7;
+
+          if (y >= pageHeight) {
+            y = 0;
+            pageHeight = doc.internal.pageSize.height - 5;
+            doc.addPage();
+          }
+        });
+      }
+
+      const medicalMeasures = getMedicalMeasuresMap(obj.medicalConsulty.medicalMeasures ?? []);
+
+      if (medicalMeasures?.length > 0) {
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "normal", "bold");
+        doc.text(`Signos vítales:`, 10, y);
+
+        y += 7;
+
+        if (y >= pageHeight) {
+          y = 0;
+          pageHeight = doc.internal.pageSize.height - 5;
+          doc.addPage();
+        }
+
+        doc.setFont("helvetica", "normal", "normal");
+
+        medicalMeasures.forEach((medicalMeasure) => {
+          doc.setFontSize(10);
+          doc.setFont("helvetica", "normal", "bold");
+          doc.text(`${getTitleByMeasureType(medicalMeasure.medicalMeasureType.type)}`, 15, y);
+
+          y += 5;
+
+          if (y >= pageHeight) {
+            y = 0;
+            pageHeight = doc.internal.pageSize.height - 5;
+            doc.addPage();
+          }
+
+          doc.setFontSize(10);
+          doc.setFont("helvetica", "normal", "normal");
+          doc.text(`${medicalMeasure.value.toFixed(2)} ${getLetterByMeasureType(medicalMeasure.medicalMeasureType.type)}`, 15, y);
+
+          y += 7;
+
+          if (y >= pageHeight) {
+            y = 0;
+            pageHeight = doc.internal.pageSize.height - 5;
+            doc.addPage();
+          }
+        });
+
+        y += 7;
+
+        if (y >= pageHeight) {
+          y = 0;
+          pageHeight = doc.internal.pageSize.height - 5;
+          doc.addPage();
+        }
+      }
+
+      if (obj.medicalConsulty.diagnose && obj.medicalConsulty.diagnose?.length > 0) {
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "normal", "bold");
+        doc.text(`Diagnósticos:`, 10, y);
+
+        y += 7;
+
+        if (y >= pageHeight) {
+          y = 0;
+          pageHeight = doc.internal.pageSize.height - 5;
+          doc.addPage();
+        }
+
+        doc.setFont("helvetica", "normal", "normal");
+
+        obj.medicalConsulty.diagnose.forEach((diagnose) => {
+          doc.setFontSize(10);
+          doc.text(`${diagnose.description}`, 15, y);
+
+          y += 7;
+
+          if (y >= pageHeight) {
+            y = 0;
+            pageHeight = doc.internal.pageSize.height - 5;
+            doc.addPage();
+          }
+        });
+      }
+
+      if (obj.medicalConsulty.treatments && obj.medicalConsulty.treatments?.length > 0) {
+        doc.setFontSize(11);
+        doc.setFont("helvetica", "normal", "bold");
+        doc.text(`Medicamentos:`, 10, y);
+
+        y += 7;
+
+        if (y >= pageHeight) {
+          y = 0;
+          pageHeight = doc.internal.pageSize.height - 5;
+          doc.addPage();
+        }
+
+        doc.setFont("helvetica", "normal", "normal");
+
+        obj.medicalConsulty.treatments.forEach((treatment) => {
+          if (treatment.treatmentMedicines.length > 0) {
+            treatment.treatmentMedicines.forEach((treatmentMedicine) => {
+              doc.setFontSize(10);
+              doc.text(`${treatmentMedicine.medicine}`, 15, y);
+              doc.setFontSize(9);
+              doc.text(`Vía ${treatmentViaDosisEnum[treatmentMedicine.viaDosis]}, ${getDosisTypeText(treatmentMedicine)} cada ${getFrequencyText(treatmentMedicine)} por ${getDuringText(treatmentMedicine)}`, 15, y + 4);
+
+              y += 10;
+
+              if (y >= pageHeight) {
+                y = 0;
+                pageHeight = doc.internal.pageSize.height - 5;
+                doc.addPage();
+              }
+            });
+          }
+        });
+
+        y += 30;
+
+        if (y >= pageHeight) {
+          y = 0;
+          pageHeight = doc.internal.pageSize.height - 5;
+          doc.addPage();
+        }
+      }
+
+      doc.setFontSize(11);
+
+      doc.setLineWidth(0.1); 
+      doc.line(30, y, 60, y);
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, y + 5);
+
+      QRCode.toDataURL(obj.medicalConsulty.id.toString(),  (err, url) => {
+        if (err) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+ 
+        var img = new Image();
+        img.src = url;
+        doc.addImage(img, "png", 150, y - 25, 45, 45);
+      });
+
+      doc.text(`${obj.doctor.address}`, 50, y + 20);
+      doc.text(`Tel: ${obj.doctor.phone}​​`, 75, y + 25);
+
+      /* doc.setFontSize(13);
+      doc.text(`Orden # ${obj.medicalRecord.id}`, 160, 20);
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.text(`SOLICITUD DE ESTUDIOS`, 65, 40);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`FECHA DE IMPRESIÓN:`, 130, 40);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`, 175, 40);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 45, 200, 45);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Dr(a).`, 10, 51);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.doctor.names} ${obj.doctor.firstName}`, 21, 51);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 55, 200, 55);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Especialidad:`, 10, 61);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.doctor.pwaProfression}`, 34, 61);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Fecha de la orden:`, 140, 61);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getFullYear()}`, 174, 61);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 65, 200, 65);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Nombre del paciente:`, 10, 75);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName}`, 10, 80);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Edad:`, 85, 75);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 80);
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`Favor de realizar`, 10, 90);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`${obj.medicalRecord.medicalRecordValues[0].value}`, 10, 97);
+      doc.setFontSize(10);
+
+      if (obj.medicalRecord.medicalRecordValues.length >= 1) doc.text(`${obj.medicalRecord.medicalRecordValues[1].value}`, 10, 102);
+
+      
+      doc.setLineWidth(0.1); 
+      doc.line(10, 110, 200, 110);
+
+      doc.setFontSize(11);
+
+      doc.setLineWidth(0.1); 
+      doc.line(30, 137, 60, 137);
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, 143);
+
+      QRCode.toDataURL(obj.medicalRecord.medicalConsultyId.toString(),  (err, url) => {
+        if (err) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+ 
+        var img = new Image();
+        img.src = url;
+        doc.addImage(img, "png", 150, 115, 45, 45);
+      });
+
+      doc.text(`${obj.doctor.address}​`, 50, 165);
+      doc.text(`Tel: ${obj.doctor.phone}​​`, 75, 170); */
+
+      doc.output('dataurlnewwindow');
+
+      const response: IGetMedicalConsultyPDFResponse = {
+          data: obj.medicalConsulty,
+          metadata: {}
+      }
+
+      return JSON.parse(JSON.stringify(response));
+    } catch (error) {
+      const exception = error as any;
+      console.log(exception)
+      return new MedicalConsultyFailure(medicalConsultyFailuresEnum.serverError);
     }
+  }
 }
   

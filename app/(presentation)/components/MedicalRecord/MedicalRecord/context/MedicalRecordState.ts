@@ -29,6 +29,7 @@ export interface IMedicalRecordState {
     createCompanion: ICompanionCreateCompanionState;
     editAppointmentStatus: IEditAppointmentStatusState;
     getTreatmentPDF: IGetTratmentPDFState;
+    getMedicalConsultyPDF: IGetMedicalConsultyPDFState;
     getMedicalRecordPDF: IGetMedicalRecordPDFState;
 }
 
@@ -128,6 +129,12 @@ interface IGetTratmentPDFState {
     error: TreatmentFailure | null;
 }
 
+interface IGetMedicalConsultyPDFState {
+    loading: boolean;
+    successful: boolean;
+    error: MedicalConsultyFailure | null;
+}
+
 interface IGetMedicalRecordPDFState {
     loading: boolean;
     successful: boolean;
@@ -213,6 +220,11 @@ export const initialState: IMedicalRecordState = {
         error: null,
     },
     getTreatmentPDF: {
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    getMedicalConsultyPDF: {
         loading: false,
         successful: false,
         error: null,
