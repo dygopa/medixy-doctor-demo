@@ -25,6 +25,7 @@ import jsPDF from "jspdf";
 import * as QRCode from "qrcode";
 
 export default interface IMedicalConsultyRepository {
+  getMedicalConsultiesById(id:number): Promise<IMedicalConsulty | MedicalConsultyFailure>;
   getMedicalConsulties(obj: { 
     skip?: number | string | null; 
     sort?: any; 
@@ -39,6 +40,143 @@ export default interface IMedicalConsultyRepository {
 }
 
 export class MedicalConsultyRepository implements IMedicalConsultyRepository {
+  async getMedicalConsultiesById(id:number): Promise<IMedicalConsulty | MedicalConsultyFailure> {
+    try {
+      const res = await supabase.from("ConsultasMedicas").select(`
+        *,
+        Diagnosticos (*),
+        Sujetos (*),
+        RegistrosMedicos (
+          *,
+          ConsultasMedicas (*),
+          TiposRegistrosMedicos (*),
+          ValoresRegistrosMedicos (
+            *,
+            TiposValorRegistrosMedicos (*)
+          ),
+          Sujetos (*)
+        ),
+        SignosVitales (
+          *,
+          TiposSignosVitales (*)
+        ),
+        Tratamientos (
+          *,
+          MedicamentosTratamiento (*),
+          Sujetos (*)
+        )
+      `,
+      { count: "exact" }).eq("id",id).limit(1);
+
+      let medicalConsulty: IMedicalConsulty = {} as IMedicalConsulty;
+
+      if (res.data && res.data.length > 0){ 
+        medicalConsulty = medicalConsultySupabaseToMap(res.data[0]);
+
+        if (res.data[0]?.Sujetos) {
+          const subject: ISubject = subjectSupabaseToMap(res.data[0]?.Sujetos);
+  
+          medicalConsulty.subject = subject;
+        }
+
+        if (res.data[0]?.Diagnosticos?.length > 0) {
+          res.data[0]?.Diagnosticos.forEach((diagnosisData: any) => {
+            const diagnose: IDiagnosis = diagnosisSupabaseToMap(diagnosisData);
+  
+            if (diagnose.id >= 0) medicalConsulty?.diagnose?.push(diagnose);
+          });
+        }
+
+        if (res.data[0].RegistrosMedicos?.length > 0) {
+          res.data[0].RegistrosMedicos.forEach((medicalRecordData: any) => {
+            let medicalRecord: IMedicalRecord = medicalRecordSupabaseToMap(medicalRecordData);
+  
+            if (medicalRecordData?.TiposRegistrosMedicos) {
+              const medicalRecordType: IMedicalRecordType = medicalRecordTypeSupabaseToMap(medicalRecordData.TiposRegistrosMedicos);
+  
+              medicalRecord.medicalRecordType = medicalRecordType;
+            }
+  
+            if (medicalRecordData?.ValoresRegistrosMedicos?.length > 0) {
+              medicalRecordData.ValoresRegistrosMedicos.forEach((medicalRecordValueData: any) => {
+                const medicalRecordValue: IMedicalRecordValue = medicalRecordValueSupabaseToMap(medicalRecordValueData);
+  
+                if (medicalRecordValueData?.TiposValorRegistrosMedicos) {
+                  const medicalRecordValueType: IMedicalRecordValueType = medicalRecordValueTypeSupabaseToMap(medicalRecordValueData.TiposValorRegistrosMedicos);
+  
+                  if (medicalRecordValueType.id > 0) medicalRecordValue.medicalRecordValueType = medicalRecordValueType;
+                }
+  
+                if (medicalRecordValue.id >= 0) medicalRecord.medicalRecordValues.push(medicalRecordValue)
+              })
+            }
+  
+            if (medicalRecordData?.Sujetos) {
+              const subject: ISubject = subjectSupabaseToMap(medicalRecordData.Sujetos);
+  
+              medicalRecord.subject = subject;
+            }
+  
+            if (medicalRecordData?.ConsultasMedicas) {
+              const medicalConsulty: IMedicalConsulty = medicalConsultySupabaseToMap(medicalRecordData.ConsultasMedicas);
+  
+              medicalRecord.medicalConsulty = medicalConsulty;
+            }
+  
+            if (medicalRecord.medicalRecordValues.length > 0) {
+              medicalRecord.medicalRecordValues = medicalRecord.medicalRecordValues.sort((a, b) => a.medicalRecordValueTypeId - b.medicalRecordValueTypeId);
+            }
+  
+            if (medicalRecord.id >= 0) medicalConsulty?.medicalRecords?.push(medicalRecord);
+          });
+        }
+  
+        if (res.data[0].SignosVitales?.length > 0) {
+          res.data[0].SignosVitales.map((medicalMeasureData: any) => {
+            const medicalMeasureMap: IMedicalMeasure = medicalMeasureSupabaseToMap(medicalMeasureData);
+  
+            if (medicalMeasureData?.TiposSignosVitales) {
+              const medicalMeasureType: IMedicalMeasureType = medicalMeasureTypeSupabaseToMap(medicalMeasureData.TiposSignosVitales);
+    
+              if (medicalMeasureType.id >= 0) medicalMeasureMap.medicalMeasureType = medicalMeasureType;
+            }
+  
+            if (medicalMeasureMap.id > 0) medicalConsulty.medicalMeasures?.push(medicalMeasureMap)
+          })
+        }
+  
+        if (res.data[0].Tratamientos?.length > 0) {
+          res.data[0].Tratamientos.forEach((treatmentData: any) => {
+            const treatmentMap: ITreatment = treatmentSupabaseToMap(treatmentData);
+  
+            if (treatmentData?.Sujetos) {
+              const subject: ISubject = subjectSupabaseToMap(treatmentData.Sujetos);
+  
+              treatmentMap.subject = subject;
+            }
+  
+            if (treatmentData?.MedicamentosTratamiento?.length > 0) {
+              treatmentData.MedicamentosTratamiento.forEach((medicineData: any) => {
+                const medicines: ITreatmentMedicine = treatmentMedicineSupabaseToMap(medicineData);
+                
+    
+                if (medicines.id >= 0) treatmentMap?.treatmentMedicines?.push(medicines);
+              });
+            }
+  
+            if (treatmentMap.id > 0) medicalConsulty.treatments?.push(treatmentMap);
+          })
+        }
+      
+      }
+
+      return medicalConsulty;
+    } catch (error) {
+      const exception = error as any;
+      return new MedicalConsultyFailure(medicalConsultyFailuresEnum.serverError);
+    }
+  }
+  
   async getMedicalConsulties(obj: { 
     skip?: number | string | null; 
     sort?: any; 

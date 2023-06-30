@@ -35,6 +35,18 @@ export default class MedicalConsultyUseCase {
     }
   }
 
+  async getMedicalConsultyById(consultyId:number): Promise<IMedicalConsulty> {
+    try {
+      const response = await this._repository.getMedicalConsultiesById(consultyId);
+
+      if (response instanceof MedicalConsultyFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createMedicalConsulty(obj: { medicalConsulty: IMedicalConsulty; appointmentId?: string | null }): Promise<ICreateMedicalConsultyResponse> {
     try {
       const response = await this._repository.createMedicalConsulty(obj.medicalConsulty);
