@@ -236,6 +236,18 @@ const getMedicalRecordPDF = (obj: { doctor: IUser; medicalRecord: IMedicalRecord
       case MedicalRecordTypesOrdersEnum.ORDER_LABORATORY:
         res = await new MedicalRecordUseCase().getMedicalRecordDiagnosisPDF({ doctor: obj.doctor, medicalRecord: obj.medicalRecord });
         break;
+      case MedicalRecordTypesOrdersEnum.ORDER_SPECIALTY:
+        res = await new MedicalRecordUseCase().getMedicalRecordSpecialityPDF({ doctor: obj.doctor, medicalRecord: obj.medicalRecord });
+        break;
+      case MedicalRecordTypesOrdersEnum.ORDER_MEDICAL_PROOF:
+        res = await new MedicalRecordUseCase().getMedicalRecordJustificativePDF({ doctor: obj.doctor, medicalRecord: obj.medicalRecord });
+        break;
+      case MedicalRecordTypesOrdersEnum.ORDER_MEDICAL_CERTIFICATE:
+        res = await new MedicalRecordUseCase().getMedicalRecordCertificatePDF({ doctor: obj.doctor, medicalRecord: obj.medicalRecord });
+        break;
+      case MedicalRecordTypesOrdersEnum.ORDER_HOSPITALIZATION:
+        res = await new MedicalRecordUseCase().getMedicalRecordHospitalizationPDF({ doctor: obj.doctor, medicalRecord: obj.medicalRecord });
+        break;
     
       default:
         break;

@@ -49,4 +49,62 @@ export default class MedicalRecordUseCase {
             throw error;
         }
     }
+
+    async getMedicalRecordSpecialityPDF(obj: { doctor: IUser; medicalRecord: IMedicalRecord }): Promise<IGetMedicalRecordPDFResponse> {
+        try {
+            const response = await this._repository.getMedicalRecordSpecialityPDF({
+                doctor: obj.doctor,
+                medicalRecord: obj.medicalRecord
+            });
+
+            if (response instanceof MedicalRecordFailure) throw response;
+
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getMedicalRecordJustificativePDF(obj: { doctor: IUser; medicalRecord: IMedicalRecord }): Promise<IGetMedicalRecordPDFResponse> {
+        try {
+            const response = await this._repository.getMedicalRecordJustificativePDF({
+                doctor: obj.doctor,
+                medicalRecord: obj.medicalRecord
+            });
+            if (response instanceof MedicalRecordFailure) throw response;
+
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getMedicalRecordCertificatePDF(obj: { doctor: IUser; medicalRecord: IMedicalRecord }): Promise<IGetMedicalRecordPDFResponse> {
+        try {
+            const response = await this._repository.getMedicalRecordCertificatePDF({
+                doctor: obj.doctor,
+                medicalRecord: obj.medicalRecord
+            });
+            if (response instanceof MedicalRecordFailure) throw response;
+
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getMedicalRecordHospitalizationPDF(obj: { doctor: IUser; medicalRecord: IMedicalRecord }): Promise<IGetMedicalRecordPDFResponse> {
+        try {
+            console.log(obj)
+            const response = await this._repository.getMedicalRecordHospitalizationPDF({
+                doctor: obj.doctor,
+                medicalRecord: obj.medicalRecord
+            });
+            if (response instanceof MedicalRecordFailure) throw response;
+
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
 }
