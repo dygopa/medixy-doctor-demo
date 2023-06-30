@@ -440,9 +440,11 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       doc.text(`${obj.medicalRecord.medicalRecordValues[0].value}`, 85, 97);
       doc.setFontSize(10);
 
-      if (obj.medicalRecord.medicalRecordValues.length >= 1) {
+      if (obj.medicalRecord.medicalRecordValues[1]) {
         doc.text(`${obj.medicalRecord.medicalRecordValues[1].value}`, 10, 97);
-        doc.text(`${obj.medicalRecord.medicalRecordValues[2].value}`, 10, 102);
+      }
+      if (obj.medicalRecord.medicalRecordValues[2]) {
+      doc.text(`${obj.medicalRecord.medicalRecordValues[2].value}`, 10, 102);
       }
 
       
