@@ -6,12 +6,10 @@ import { MedicalRecordFailure } from "domain/core/failures/medicalRecord/medical
 import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
 import { TreatmentFailure } from "domain/core/failures/treatment/treatmentFailure";
 import { IGetAppointmentResponse } from "domain/core/response/appointmentsResponse";
-import { ICreateMedicalConsultyResponse } from "domain/core/response/medicalConsultyResponse";
 
 export interface IMedicalRecordCreateSummaryState {
     subject: IGetSubjectState;
     appointment: IGetAppointmentState;
-    createMedicalConsulty: ICreateMedicalConsultyState;
     getTreatmentPDF: IGetTratmentPDFState;
     getMedicalConsultyPDF: IGetMedicalConsultyPDFState;
     getMedicalRecordPDF: IGetMedicalRecordPDFState;
@@ -30,13 +28,6 @@ interface IGetAppointmentState {
     loading: boolean;
     successful: boolean;
     error: AppointmentFailure | null; 
-}
-
-interface ICreateMedicalConsultyState {
-    data: ICreateMedicalConsultyResponse;
-    loading: boolean;
-    successful: boolean;
-    error: MedicalConsultyFailure | null;
 }
 
 interface IGetTratmentPDFState {
@@ -73,12 +64,6 @@ export const initialState: IMedicalRecordCreateSummaryState = {
     },
     appointment: {
         data: {} as IGetAppointmentResponse,
-        loading: false,
-        successful: false,
-        error: null,
-    },
-    createMedicalConsulty: {
-        data: {} as ICreateMedicalConsultyResponse,
         loading: false,
         successful: false,
         error: null,

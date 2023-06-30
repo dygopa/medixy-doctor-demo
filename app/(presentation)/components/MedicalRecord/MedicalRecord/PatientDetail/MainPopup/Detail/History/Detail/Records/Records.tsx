@@ -8,6 +8,7 @@ import {
   MedicalRecordCategoriesIdEnum,
 } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import { useEffect, useState } from "react";
+import { getMedicalRecordsForTypes } from "(presentation)/(helper)/medicalRecords/medicalRecordsHelper";
 
 interface IRecordsProps {
   medicalConsulty: IMedicalConsulty;
@@ -34,7 +35,16 @@ export default function Records({ medicalConsulty }: IRecordsProps) {
       }
     });
 
-    setMedicalRecords(medicalRecordsHistory);
+    if (medicalRecordsHistory.length > 0) {
+      const medicalRecordsList: IMedicalRecord[] = getMedicalRecordsForTypes(
+        medicalRecordsHistory
+      );
+
+      setMedicalRecords(medicalRecordsList);
+      return;
+    }
+
+    setMedicalRecords([]);
   };
 
   useEffect(() => {

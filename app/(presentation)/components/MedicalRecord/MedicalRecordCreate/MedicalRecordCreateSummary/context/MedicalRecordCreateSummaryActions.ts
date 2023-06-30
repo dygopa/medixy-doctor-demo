@@ -18,7 +18,6 @@ import { Dispatch } from "react";
 export interface IMedicalRecordCreateSummaryActions {
     getSubjectById: (subjectId: number) => (dispatch: Dispatch<any>) => {};
     getAppointmentById: (appointmentId: string) => (dispatch: Dispatch<any>) => {};
-    createMedicalConsulty: (obj: { medicalConsulty: IMedicalConsulty; appointmentId?: string | null }) => (dispatch: Dispatch<any>) => {};
     getTreatmentPDF: (obj: { doctor: IUser; treatment: ITreatment }) => (dispatch: Dispatch<any>) => {};
     getMedicalConsultyPDF: (obj: { doctor: IUser; medicalConsulty: IMedicalConsulty }) => (dispatch: Dispatch<any>) => {};
     getMedicalRecordPDF: (obj: { doctor: IUser; medicalRecord: IMedicalRecord }) => (dispatch: Dispatch<any>) => {};
@@ -46,18 +45,6 @@ const getAppointmentById = (appointmentId: string) => async (dispatch: Dispatch<
       dispatch({ type: "GET_APPOINTMENT_SUCCESSFUL", payload: { data: res } });
     } catch (error) {
       dispatch({ type: "GET_APPOINTMENT_ERROR", payload: { error: error } });
-    }
-}
-
-const createMedicalConsulty = (obj: { medicalConsulty: IMedicalConsulty; appointmentId?: string | null }) => async (dispatch: Dispatch<any>) => {
-    try {
-      dispatch({ type: "CREATE_MEDICAL_CONSULTY_LOADING" });
-      
-      const res: ICreateMedicalConsultyResponse = await new MedicalConsultyUseCase().createMedicalConsulty({ medicalConsulty: obj.medicalConsulty, appointmentId: obj.appointmentId });
-  
-      dispatch({ type: "CREATE_MEDICAL_CONSULTY_SUCCESSFUL", payload: { data: res } });
-    } catch (error) {
-      dispatch({ type: "CREATE_MEDICAL_CONSULTY_ERROR", payload: { error: error } });
     }
 }
 
@@ -136,7 +123,6 @@ const getMedicalConsultyById = (consultyId: number) => async (dispatch: Dispatch
 export const actions: IMedicalRecordCreateSummaryActions = {
     getSubjectById,
     getAppointmentById,
-    createMedicalConsulty,
     getTreatmentPDF,
     getMedicalConsultyPDF,
     getMedicalRecordPDF,

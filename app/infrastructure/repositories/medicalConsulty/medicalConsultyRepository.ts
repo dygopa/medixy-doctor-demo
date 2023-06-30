@@ -436,7 +436,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
         y += 7;
 
         if (y >= pageHeight) {
-          y = 0;
+          y = 5;
           pageHeight = doc.internal.pageSize.height - 5;
           doc.addPage();
         }
@@ -456,7 +456,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
             y += 5;
 
             if (y >= pageHeight) {
-              y = 0;
+              y = 5;
               pageHeight = doc.internal.pageSize.height - 5;
               doc.addPage();
             }
@@ -465,7 +465,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
           y += 7;
 
           if (y >= pageHeight) {
-            y = 0;
+            y = 5;
             pageHeight = doc.internal.pageSize.height - 5;
             doc.addPage();
           }
@@ -482,7 +482,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
         y += 7;
 
         if (y >= pageHeight) {
-          y = 0;
+          y = 5;
           pageHeight = doc.internal.pageSize.height - 5;
           doc.addPage();
         }
@@ -503,7 +503,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
             y += 5;
 
             if (y >= pageHeight) {
-              y = 0;
+              y = 5;
               pageHeight = doc.internal.pageSize.height - 5;
               doc.addPage();
             }
@@ -512,7 +512,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
           y += 7;
 
           if (y >= pageHeight) {
-            y = 0;
+            y = 5;
             pageHeight = doc.internal.pageSize.height - 5;
             doc.addPage();
           }
@@ -529,7 +529,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
         y += 7;
 
         if (y >= pageHeight) {
-          y = 0;
+          y = 5;
           pageHeight = doc.internal.pageSize.height - 5;
           doc.addPage();
         }
@@ -544,7 +544,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
           y += 5;
 
           if (y >= pageHeight) {
-            y = 0;
+            y = 5;
             pageHeight = doc.internal.pageSize.height - 5;
             doc.addPage();
           }
@@ -556,7 +556,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
           y += 7;
 
           if (y >= pageHeight) {
-            y = 0;
+            y = 5;
             pageHeight = doc.internal.pageSize.height - 5;
             doc.addPage();
           }
@@ -565,7 +565,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
         y += 7;
 
         if (y >= pageHeight) {
-          y = 0;
+          y = 5;
           pageHeight = doc.internal.pageSize.height - 5;
           doc.addPage();
         }
@@ -579,7 +579,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
         y += 7;
 
         if (y >= pageHeight) {
-          y = 0;
+          y = 5;
           pageHeight = doc.internal.pageSize.height - 5;
           doc.addPage();
         }
@@ -593,7 +593,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
           y += 7;
 
           if (y >= pageHeight) {
-            y = 0;
+            y = 5;
             pageHeight = doc.internal.pageSize.height - 5;
             doc.addPage();
           }
@@ -608,7 +608,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
         y += 7;
 
         if (y >= pageHeight) {
-          y = 0;
+          y = 5;
           pageHeight = doc.internal.pageSize.height - 5;
           doc.addPage();
         }
@@ -626,7 +626,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
               y += 10;
 
               if (y >= pageHeight) {
-                y = 0;
+                y = 5;
                 pageHeight = doc.internal.pageSize.height - 5;
                 doc.addPage();
               }
@@ -634,13 +634,21 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
           }
         });
 
-        y += 30;
+        y += 7;
 
         if (y >= pageHeight) {
-          y = 0;
+          y = 5;
           pageHeight = doc.internal.pageSize.height - 5;
           doc.addPage();
         }
+      }
+
+      y += 30;
+
+      if (y >= pageHeight) {
+        y = 5;
+        pageHeight = doc.internal.pageSize.height - 5;
+        doc.addPage();
       }
 
       doc.setFontSize(11);
@@ -662,104 +670,6 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
 
       doc.text(`${obj.doctor.address}`, 50, y + 20);
       doc.text(`Tel: ${obj.doctor.phone}​​`, 75, y + 25);
-
-      /* doc.setFontSize(13);
-      doc.text(`Orden # ${obj.medicalRecord.id}`, 160, 20);
-
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "normal", "bold");
-      doc.text(`SOLICITUD DE ESTUDIOS`, 65, 40);
-
-      doc.setFont("helvetica", "normal", "normal");
-      doc.setTextColor(130, 130, 130);
-      doc.text(`FECHA DE IMPRESIÓN:`, 130, 40);
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "normal", "bold");
-      doc.setTextColor(0, 0, 0);
-      doc.text(`${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`, 175, 40);
-
-      doc.setLineWidth(0.1); 
-      doc.line(10, 45, 200, 45);
-
-      doc.setFont("helvetica", "normal", "normal");
-      doc.setTextColor(130, 130, 130);
-      doc.text(`Dr(a).`, 10, 51);
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "normal", "bold");
-      doc.setTextColor(0, 0, 0);
-      doc.text(`${obj.doctor.names} ${obj.doctor.firstName}`, 21, 51);
-
-      doc.setLineWidth(0.1); 
-      doc.line(10, 55, 200, 55);
-
-      doc.setFont("helvetica", "normal", "normal");
-      doc.setTextColor(130, 130, 130);
-      doc.text(`Especialidad:`, 10, 61);
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "normal", "bold");
-      doc.setTextColor(0, 0, 0);
-      doc.text(`${obj.doctor.pwaProfression}`, 34, 61);
-
-      doc.setFont("helvetica", "normal", "normal");
-      doc.setTextColor(130, 130, 130);
-      doc.text(`Fecha de la orden:`, 140, 61);
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "normal", "bold");
-      doc.setTextColor(0, 0, 0);
-      doc.text(`${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getFullYear()}`, 174, 61);
-
-      doc.setLineWidth(0.1); 
-      doc.line(10, 65, 200, 65);
-
-      doc.setFont("helvetica", "normal", "normal");
-      doc.setTextColor(130, 130, 130);
-      doc.text(`Nombre del paciente:`, 10, 75);
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "normal", "bold");
-      doc.setTextColor(0, 0, 0);
-      doc.text(`${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName}`, 10, 80);
-
-      doc.setFont("helvetica", "normal", "normal");
-      doc.setTextColor(130, 130, 130);
-      doc.text(`Edad:`, 85, 75);
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "normal", "bold");
-      doc.setTextColor(0, 0, 0);
-      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 80);
-
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "normal", "bold");
-      doc.setTextColor(0, 0, 0);
-      doc.text(`Favor de realizar`, 10, 90);
-      doc.setFont("helvetica", "normal", "normal");
-      doc.text(`${obj.medicalRecord.medicalRecordValues[0].value}`, 10, 97);
-      doc.setFontSize(10);
-
-      if (obj.medicalRecord.medicalRecordValues.length >= 1) doc.text(`${obj.medicalRecord.medicalRecordValues[1].value}`, 10, 102);
-
-      
-      doc.setLineWidth(0.1); 
-      doc.line(10, 110, 200, 110);
-
-      doc.setFontSize(11);
-
-      doc.setLineWidth(0.1); 
-      doc.line(30, 137, 60, 137);
-
-      doc.setFontSize(10);
-      doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, 143);
-
-      QRCode.toDataURL(obj.medicalRecord.medicalConsultyId.toString(),  (err, url) => {
-        if (err) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
- 
-        var img = new Image();
-        img.src = url;
-        doc.addImage(img, "png", 150, 115, 45, 45);
-      });
-
-      doc.text(`${obj.doctor.address}​`, 50, 165);
-      doc.text(`Tel: ${obj.doctor.phone}​​`, 75, 170); */
 
       doc.output('dataurlnewwindow');
 

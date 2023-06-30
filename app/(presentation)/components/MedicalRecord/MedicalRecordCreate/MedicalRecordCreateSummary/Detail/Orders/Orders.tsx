@@ -1,43 +1,86 @@
-import { IOrderMedical } from "domain/core/entities/orderEntity";
+import {
+  MedicalRecordCategoriesIdEnum,
+  medicalRecordTypeOrderEnum,
+} from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
+import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import {
+  IMedicalRecord,
+  IMedicalRecordValue,
+} from "domain/core/entities/medicalRecordEntity";
 import { useEffect, useState } from "react";
+import MedicalRecordCreateSummaryProvider from "../../context/MedicalRecordCreateSummaryContext";
+import DownloadPDF from "./DownloadPDF/DownloadPDF";
 
-export default function Orders() {
-  const [orders, setOrders] = useState<IOrderMedical[]>([]);
+interface IOrdersProps {
+  medicalConsulty: IMedicalConsulty;
+}
 
-  const setValueFromLocalStorage = () => {
-    const valuesStorage = localStorage.getItem(
-      "prosit.storage.medical-record-create"
-    );
+export default function Orders({ medicalConsulty }: IOrdersProps) {
+  const [medicalRecords, setMedicalRecords] = useState<IMedicalRecord[]>([]);
 
-    if (!valuesStorage) return;
+  const setMedicalRecordsOrders = () => {
+    if (
+      medicalConsulty.medicalRecords &&
+      medicalConsulty.medicalRecords.length === 0
+    )
+      return;
 
-    const valuesJSON = JSON.parse(valuesStorage ?? "");
-    setOrders(valuesJSON.orders);
+    const medicalRecordsOrders: IMedicalRecord[] = [];
+
+    medicalConsulty.medicalRecords?.forEach((medicalRecord: IMedicalRecord) => {
+      if (
+        medicalRecord.medicalRecordType.medicalRecordCategoryId ===
+        MedicalRecordCategoriesIdEnum.ORDERS
+      ) {
+        medicalRecordsOrders.push(medicalRecord);
+      }
+    });
+
+    setMedicalRecords(medicalRecordsOrders);
   };
 
   useEffect(() => {
-    setValueFromLocalStorage();
-  }, []);
+    setMedicalRecordsOrders();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [medicalConsulty.medicalRecords]);
 
-  if (orders.length === 0) return <div />;
+  if (medicalRecords.length === 0) return <div />;
 
   return (
     <div>
       <div className="mb-2">
-        <h3 className="text-slate-400 text-lg">
-          Estudios y estudios con especialistas requeridos
-        </h3>
+        <h3 className="text-slate-400 text-lg">Ordenes</h3>
       </div>
 
-      <div>
-        {orders.map((order: IOrderMedical) => (
-          <div key={order.orderId} className="mb-1">
-            <h1 className="text-slate-900 font-bold text-lg">
-              {order.specialty ? order.specialty : order.medicalProfile.name}
-            </h1>
-          </div>
-        ))}
-      </div>
+      {medicalRecords.map(
+        (medicalRecord: IMedicalRecord) =>
+          medicalRecord.medicalRecordValues.length > 0 && (
+            <div key={medicalRecord.id} className="mb-3">
+              <h1 className="text-slate-900 font-bold text-lg flex">
+                {
+                  medicalRecordTypeOrderEnum[
+                    medicalRecord.medicalRecordType.name
+                  ]
+                }
+                :
+              </h1>
+
+              {medicalRecord.medicalRecordValues.map(
+                (medicalRecordValue: IMedicalRecordValue) => (
+                  <div key={medicalRecordValue.id}>
+                    <p className="text-grey font-normal text-lg">
+                      {medicalRecordValue.value}
+                    </p>
+                  </div>
+                )
+              )}
+
+              <MedicalRecordCreateSummaryProvider>
+                <DownloadPDF medicalRecord={medicalRecord} />
+              </MedicalRecordCreateSummaryProvider>
+            </div>
+          )
+      )}
     </div>
   );
 }

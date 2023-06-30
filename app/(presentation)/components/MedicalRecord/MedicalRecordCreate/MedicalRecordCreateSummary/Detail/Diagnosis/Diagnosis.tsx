@@ -1,24 +1,11 @@
-import { ICIE10 } from "domain/core/entities/cie10Entity";
-import { useEffect, useState } from "react";
+import { IDiagnosis } from "domain/core/entities/diagnosis";
+import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 
-export default function Diagnosis() {
-  const [diagnosis, setDiagnosis] = useState<ICIE10[]>([]);
+interface IDiagnosisProps {
+  medicalConsulty: IMedicalConsulty;
+}
 
-  const setValueFromLocalStorage = () => {
-    const valuesStorage = localStorage.getItem(
-      "prosit.storage.medical-record-create"
-    );
-
-    if (!valuesStorage) return;
-
-    const valuesJSON = JSON.parse(valuesStorage ?? "");
-    setDiagnosis(valuesJSON.currentConsultation.diagnose);
-  };
-
-  useEffect(() => {
-    setValueFromLocalStorage();
-  }, []);
-
+export default function Diagnosis({ medicalConsulty }: IDiagnosisProps) {
   return (
     <div>
       <div className="mb-2">
@@ -26,11 +13,11 @@ export default function Diagnosis() {
       </div>
 
       <div>
-        {diagnosis.length > 0 ? (
-          diagnosis.map((diagnose: ICIE10) => (
+        {medicalConsulty.diagnose && medicalConsulty.diagnose.length > 0 ? (
+          medicalConsulty.diagnose.map((diagnose: IDiagnosis) => (
             <div key={diagnose.id} className="mb-2">
               <h1 className="text-slate-900 font-bold text-lg">
-                {diagnose.code4} - {diagnose.description4}
+                {diagnose.description}
               </h1>
             </div>
           ))

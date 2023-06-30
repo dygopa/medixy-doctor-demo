@@ -1,45 +1,81 @@
+import { MedicalMeasureTypesEnum } from "(presentation)/(enum)/medicalMeasure/medicalMeasureEnums";
+import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import { IMedicalMeasure } from "domain/core/entities/medicalMeasureEntity";
 import { useEffect, useState } from "react";
 
-export default function VitalSigns() {
-  const [weight, setWeight] = useState("");
-  const [temperature, setTemperature] = useState("");
-  const [respiratoryFrequency, setRespiratoryFrequency] = useState("");
-  const [size, setSize] = useState("");
-  const [oximetry, setOximetry] = useState("");
-  const [muscleMass, setMuscleMass] = useState("");
-  const [glicemy, setGlicemy] = useState("");
+interface IVitalSignsProps {
+  medicalConsulty: IMedicalConsulty;
+}
 
-  const setValueFromLocalStorage = () => {
-    const valuesStorage = localStorage.getItem(
-      "prosit.storage.medical-record-create"
+export default function VitalSigns({ medicalConsulty }: IVitalSignsProps) {
+  const [medicalMeasures, setMedicalMeasures] = useState<IMedicalMeasure[]>([]);
+
+  const setMedicalMeasuresMap = () => {
+    if (
+      medicalConsulty.medicalMeasures &&
+      medicalConsulty.medicalMeasures.length === 0
+    )
+      return <div />;
+
+    const medicalMeasuresList: IMedicalMeasure[] = [];
+
+    medicalConsulty.medicalMeasures?.forEach(
+      (medicalMeasure: IMedicalMeasure) => {
+        const index = medicalMeasuresList.findIndex(
+          (medicalMeasureFind) =>
+            medicalMeasureFind.medicalMeasureTypeId ===
+            medicalMeasure.medicalMeasureTypeId
+        );
+
+        if (index < 0) medicalMeasuresList.push(medicalMeasure);
+      }
     );
 
-    if (!valuesStorage) return;
+    setMedicalMeasures(medicalMeasuresList);
+  };
 
-    const valuesJSON = JSON.parse(valuesStorage ?? "");
-    setWeight(valuesJSON.vitalSigns.weight);
-    setTemperature(valuesJSON.vitalSigns.temperature);
-    setRespiratoryFrequency(valuesJSON.vitalSigns.respiratoryFrequency);
-    setSize(valuesJSON.vitalSigns.size);
-    setOximetry(valuesJSON.vitalSigns.oximetry);
-    setMuscleMass(valuesJSON.vitalSigns.muscleMass);
-    setGlicemy(valuesJSON.vitalSigns.glicemy);
+  const getTitleByMeasureType = (medicalMeasureType: string): string => {
+    switch (medicalMeasureType) {
+      case MedicalMeasureTypesEnum.SIZE:
+        return "Talla";
+      case MedicalMeasureTypesEnum.TEMPERATURE:
+        return "Temperatura";
+      case MedicalMeasureTypesEnum.WEIGHT:
+        return "Peso";
+      case MedicalMeasureTypesEnum.GLICEMY:
+        return "Glicemia";
+      case MedicalMeasureTypesEnum.MUSCLE_MASS_INDEX:
+        return "Masa muscular";
+      case MedicalMeasureTypesEnum.OXIMETRY:
+        return "Oximetria";
+      case MedicalMeasureTypesEnum.RESPIRATORY_FREQUENCY:
+        return "Frecuencia respiratoria";
+
+      default:
+        return "";
+    }
+  };
+
+  const getLetterByMeasureType = (medicalMeasureType: string): string => {
+    switch (medicalMeasureType) {
+      case MedicalMeasureTypesEnum.SIZE:
+        return "mt(s)";
+      case MedicalMeasureTypesEnum.TEMPERATURE:
+        return "°C";
+      case MedicalMeasureTypesEnum.WEIGHT:
+        return "kg";
+
+      default:
+        return "";
+    }
   };
 
   useEffect(() => {
-    setValueFromLocalStorage();
-  }, []);
+    setMedicalMeasuresMap();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [medicalConsulty.medicalMeasures]);
 
-  if (
-    weight.length === 0 &&
-    temperature.length === 0 &&
-    size.length === 0 &&
-    oximetry.length === 0 &&
-    muscleMass.length === 0 &&
-    glicemy.length === 0 &&
-    respiratoryFrequency.length === 0
-  )
-    return <div />;
+  if (medicalMeasures.length === 0) return <div />;
 
   return (
     <div>
@@ -47,61 +83,21 @@ export default function VitalSigns() {
         <h3 className="text-slate-400 text-lg">Signos vitales</h3>
       </div>
 
-      {weight.length > 0 && (
-        <div>
-          <h1 className="text-slate-900 font-bold text-lg">
-            Peso: {weight} kg
+      {medicalMeasures.map((medicalMeasure: IMedicalMeasure) => (
+        <div key={medicalMeasure.id} className="mb-3">
+          <h1 className="text-slate-900 font-bold text-lg flex">
+            {getTitleByMeasureType(medicalMeasure.medicalMeasureType.type)}:
           </h1>
-        </div>
-      )}
 
-      {temperature.length > 0 && (
-        <div>
-          <h1 className="text-slate-900 font-bold text-lg">
-            Temperatura: {temperature}°
-          </h1>
+          <div>
+            <p className="text-grey font-normal text-lg">
+              {" "}
+              {medicalMeasure.value.toFixed(2)}
+              {getLetterByMeasureType(medicalMeasure.medicalMeasureType.type)}
+            </p>
+          </div>
         </div>
-      )}
-
-      {respiratoryFrequency.length > 0 && (
-        <div>
-          <h1 className="text-slate-900 font-bold text-lg">
-            Frecuencia respiratoria: {respiratoryFrequency}
-          </h1>
-        </div>
-      )}
-
-      {size.length > 0 && (
-        <div>
-          <h1 className="text-slate-900 font-bold text-lg">
-            Talla: {size} mt(s)
-          </h1>
-        </div>
-      )}
-
-      {oximetry.length > 0 && (
-        <div>
-          <h1 className="text-slate-900 font-bold text-lg">
-            Oximetria: {oximetry}
-          </h1>
-        </div>
-      )}
-
-      {muscleMass.length > 0 && (
-        <div>
-          <h1 className="text-slate-900 font-bold text-lg">
-            Indice de masa muscular: {muscleMass}
-          </h1>
-        </div>
-      )}
-
-      {glicemy.length > 0 && (
-        <div>
-          <h1 className="text-slate-900 font-bold text-lg">
-            Glicemia: {glicemy}
-          </h1>
-        </div>
-      )}
+      ))}
     </div>
   );
 }

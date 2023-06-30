@@ -3,7 +3,7 @@ import SubjectsUseCase from "domain/useCases/subject/subjectUseCase";
 import { Dispatch } from "react";
 import {  MedicalRecordTypesNumberEnum, MedicalRecordTypesOrdersEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
-import { IGetMedicalConsultiesResponse, IGetMedicalConsultyPDFResponse } from "domain/core/response/medicalConsultyResponse";
+import { ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse, IGetMedicalConsultyPDFResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
 import { IGetMedicalRecordPDFResponse, IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
 import { IGetTreatmentPDFResponse, IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
@@ -38,6 +38,7 @@ export interface IMedicalRecordCreateActions {
     getTreatmentPDF: (obj: { doctor: IUser; treatment: ITreatment }) => (dispatch: Dispatch<any>) => {};
     getMedicalConsultyPDF: (obj: { doctor: IUser; medicalConsulty: IMedicalConsulty }) => (dispatch: Dispatch<any>) => {};
     getMedicalRecordPDF: (obj: { doctor: IUser; medicalRecord: IMedicalRecord }) => (dispatch: Dispatch<any>) => {};
+    createMedicalConsulty: (obj: { medicalConsulty: IMedicalConsulty; appointmentId?: string | null }) => (dispatch: Dispatch<any>) => {};
 }
 
 const getSubjectById = (subjectId: number) => async (dispatch: Dispatch<any>) => {
@@ -273,6 +274,18 @@ const getMedicalRecordPDF = (obj: { doctor: IUser; medicalRecord: IMedicalRecord
   }
 }
 
+const createMedicalConsulty = (obj: { medicalConsulty: IMedicalConsulty; appointmentId?: string | null }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "CREATE_MEDICAL_CONSULTY_LOADING" });
+    
+    const res: ICreateMedicalConsultyResponse = await new MedicalConsultyUseCase().createMedicalConsulty({ medicalConsulty: obj.medicalConsulty, appointmentId: obj.appointmentId });
+
+    dispatch({ type: "CREATE_MEDICAL_CONSULTY_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "CREATE_MEDICAL_CONSULTY_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IMedicalRecordCreateActions = {
     getSubjectById,
     getAppointmentById,
@@ -289,4 +302,5 @@ export const actions: IMedicalRecordCreateActions = {
     getTreatmentPDF,
     getMedicalConsultyPDF,
     getMedicalRecordPDF,
+    createMedicalConsulty,
 }

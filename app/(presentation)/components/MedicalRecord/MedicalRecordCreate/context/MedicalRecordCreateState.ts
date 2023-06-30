@@ -6,7 +6,7 @@ import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/med
 import { MedicalMeasureFailure } from "domain/core/failures/medicalMeasure/medicalMeasureFailure";
 import { MedicalRecordFailure } from "domain/core/failures/medicalRecord/medicalRecordFailure";
 import { TreatmentFailure } from "domain/core/failures/treatment/treatmentFailure";
-import { IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
+import { ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
 import { IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
 import { IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
@@ -32,6 +32,7 @@ export interface IMedicalRecordCreateState {
     getTreatmentPDF: IGetTratmentPDFState;
     getMedicalConsultyPDF: IGetMedicalConsultyPDFState;
     getMedicalRecordPDF: IGetMedicalRecordPDFState;
+    createMedicalConsulty: ICreateMedicalConsultyState;
 }
 
 interface IGetSubjectState {
@@ -137,6 +138,13 @@ interface IGetMedicalRecordPDFState {
     error: MedicalRecordFailure | null;
 }
 
+interface ICreateMedicalConsultyState {
+    data: ICreateMedicalConsultyResponse;
+    loading: boolean;
+    successful: boolean;
+    error: MedicalConsultyFailure | null;
+}
+
 export const initialState: IMedicalRecordCreateState = {
     subject: {
         data: null,
@@ -221,6 +229,12 @@ export const initialState: IMedicalRecordCreateState = {
         error: null,
     },
     getMedicalRecordPDF: {
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    createMedicalConsulty: {
+        data: {} as ICreateMedicalConsultyResponse,
         loading: false,
         successful: false,
         error: null,

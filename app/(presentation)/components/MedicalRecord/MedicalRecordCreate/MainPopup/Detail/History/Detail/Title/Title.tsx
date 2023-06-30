@@ -114,7 +114,7 @@ export default function Title({
           </div>
         </div>
 
-        <div className="flex items-center">
+        <div className="flex items-center justify-end">
           <Menu as="div" className="relative inline-block text-left">
             <Menu.Button className="rounded-lg hover:bg-primary hover:bg-opacity-20 p-1 border border-primary">
               <Lucide icon="MoreVertical" className="h-5" />
