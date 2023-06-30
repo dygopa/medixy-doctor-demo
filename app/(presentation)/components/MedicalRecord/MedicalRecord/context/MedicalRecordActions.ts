@@ -1,11 +1,12 @@
 import { MedicalRecordCategoriesIdEnum, MedicalRecordTypesEnum, MedicalRecordTypesNumberEnum, MedicalRecordTypesOrdersEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
+import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import { IMedicalRecord } from "domain/core/entities/medicalRecordEntity";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import { ITreatment } from "domain/core/entities/treatmentEntity";
 import { IUser } from "domain/core/entities/userEntity";
 import { IGetAppointmentResponse, IUpdateAppointmentResponse } from "domain/core/response/appointmentsResponse";
-import { IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
+import { IGetMedicalConsultiesResponse, IGetMedicalConsultyPDFResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
 import { IGetMedicalRecordPDFResponse, IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
 import { IGetSubjectRelationsResponse } from "domain/core/response/subjectsResponse";
@@ -34,6 +35,7 @@ export interface IMedicalRecordActions {
     createCompanion: (patientId:number, companion:ISubject) => (dispatch: Dispatch<any>) => {};
     editAppointmentStatus: (obj: { appointmentId: string; status: number }) => (dispatch: Dispatch<any>) => {};
     getTreatmentPDF: (obj: { doctor: IUser; treatment: ITreatment }) => (dispatch: Dispatch<any>) => {};
+    getMedicalConsultyPDF: (obj: { doctor: IUser; medicalConsulty: IMedicalConsulty }) => (dispatch: Dispatch<any>) => {};
     getMedicalRecordPDF: (obj: { doctor: IUser; medicalRecord: IMedicalRecord }) => (dispatch: Dispatch<any>) => {};
 }
 
@@ -245,6 +247,18 @@ const getTreatmentPDF = (obj: { doctor: IUser; treatment: ITreatment }) => async
   }
 }
 
+const getMedicalConsultyPDF = (obj: { doctor: IUser; medicalConsulty: IMedicalConsulty }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_MEDICAL_CONSULTY_PDF_LOADING" });
+
+    const res: IGetMedicalConsultyPDFResponse = await new MedicalConsultyUseCase().getMedicalConsultyPDF({ doctor: obj.doctor, medicalConsulty: obj.medicalConsulty });
+
+    dispatch({ type: "GET_MEDICAL_CONSULTY_PDF_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "GET_MEDICAL_CONSULTY_PDF_ERROR", payload: { error: error } });
+  }
+}
+
 const getMedicalRecordPDF = (obj: { doctor: IUser; medicalRecord: IMedicalRecord }) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "GET_MEDICAL_RECORD_PDF_LOADING" });
@@ -257,6 +271,18 @@ const getMedicalRecordPDF = (obj: { doctor: IUser; medicalRecord: IMedicalRecord
         break;
       case MedicalRecordTypesOrdersEnum.ORDER_LABORATORY:
         res = await new MedicalRecordUseCase().getMedicalRecordDiagnosisPDF({ doctor: obj.doctor, medicalRecord: obj.medicalRecord });
+        break;
+      case MedicalRecordTypesOrdersEnum.ORDER_SPECIALTY:
+        res = await new MedicalRecordUseCase().getMedicalRecordSpecialityPDF({ doctor: obj.doctor, medicalRecord: obj.medicalRecord });
+        break;
+      case MedicalRecordTypesOrdersEnum.ORDER_MEDICAL_PROOF:
+        res = await new MedicalRecordUseCase().getMedicalRecordJustificativePDF({ doctor: obj.doctor, medicalRecord: obj.medicalRecord });
+        break;
+      case MedicalRecordTypesOrdersEnum.ORDER_MEDICAL_CERTIFICATE:
+        res = await new MedicalRecordUseCase().getMedicalRecordCertificatePDF({ doctor: obj.doctor, medicalRecord: obj.medicalRecord });
+        break;
+      case MedicalRecordTypesOrdersEnum.ORDER_HOSPITALIZATION:
+        res = await new MedicalRecordUseCase().getMedicalRecordHospitalizationPDF({ doctor: obj.doctor, medicalRecord: obj.medicalRecord });
         break;
     
       default:
@@ -284,5 +310,6 @@ export const actions: IMedicalRecordActions = {
     createCompanion,
     editAppointmentStatus,
     getTreatmentPDF,
+    getMedicalConsultyPDF,
     getMedicalRecordPDF,
 }

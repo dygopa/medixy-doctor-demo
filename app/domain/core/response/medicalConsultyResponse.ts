@@ -12,3 +12,8 @@ export interface ICreateMedicalConsultyResponse {
     data: IMedicalConsulty;
     metadata: {}
 }
+
+export interface IGetMedicalConsultyPDFResponse {
+    data: IMedicalConsulty;
+    metadata: { }
+}

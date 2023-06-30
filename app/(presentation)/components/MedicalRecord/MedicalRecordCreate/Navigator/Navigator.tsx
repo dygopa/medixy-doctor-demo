@@ -1,3 +1,13 @@
+import { MedicalMeasureTypesEnum } from "(presentation)/(enum)/medicalMeasure/medicalMeasureEnums";
+import {
+  TreatmentDosisTypeEnum,
+  TreatmentViaDosisEnum,
+} from "(presentation)/(enum)/treatment/treatmentEnums";
+import {
+  getMedicalRecordsHistory,
+  getMedicalRecordsOrders,
+  getMedicalRecordsPhysical,
+} from "(presentation)/(helper)/medicalRecords/medicalRecordsHelper";
 import {
   AuthContext,
   IAuthContext,
@@ -5,8 +15,27 @@ import {
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
+import { ICIE10 } from "domain/core/entities/cie10Entity";
+import { IDiagnosis } from "domain/core/entities/diagnosis";
+import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import {
+  IMedicalMeasure,
+  IMedicalMeasureType,
+} from "domain/core/entities/medicalMeasureEntity";
+import { IMedicalRecord } from "domain/core/entities/medicalRecordEntity";
+import { ISubject } from "domain/core/entities/subjectEntity";
+import {
+  ITreatment,
+  ITreatmentMedicine,
+} from "domain/core/entities/treatmentEntity";
 import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction, useContext, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import {
   IMedicalRecordCreateContext,
   MedicalRecordCreateContext,
@@ -35,16 +64,24 @@ export default function Navigator({
   const { state: authState } = useContext<IAuthContext>(AuthContext);
   const { data: user } = authState.getUserAuthenticated;
 
-  const { state } = useContext<IMedicalRecordCreateContext>(
+  const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
     MedicalRecordCreateContext
   );
+  const { createMedicalConsulty } = actions;
   const { data: subject } = state.subject;
   const { data: appointment } = state.appointment;
+  const {
+    data: medicalConsulty,
+    loading,
+    error,
+    successful,
+  } = state.createMedicalConsulty;
 
   const router = useRouter();
 
   const [isLoading, setIsLoading] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
+  const [alertMessage, setAlertMessage] = useState("");
 
   const getRedirectMedicalRecordCreate = () => {
     if (appointment.data?.id) {
@@ -53,7 +90,7 @@ export default function Navigator({
         appointment.data.id +
         MedicalRecordRoutesEnum.MedicalRecordCreate +
         MedicalRecordRoutesEnum.MedicalRecordCreateSummary +
-        "?type=appointment"
+        `?type=appointment&medical_consulty_id=${medicalConsulty.data.id}`
       );
     }
 
@@ -61,7 +98,8 @@ export default function Navigator({
       MedicalRecordRoutesEnum.MedicalRecord +
       subject?.subjectId +
       MedicalRecordRoutesEnum.MedicalRecordCreate +
-      MedicalRecordRoutesEnum.MedicalRecordCreateSummary
+      MedicalRecordRoutesEnum.MedicalRecordCreateSummary +
+      `?medical_consulty_id=${medicalConsulty.data.id}`
     );
   };
 
@@ -254,11 +292,7 @@ export default function Navigator({
     );
   };
 
-  const onCreateMedicalRecord = () => {
-    setIsLoading(true);
-
-    const valuesStorage = setValuesFromLocalStorage();
-
+  const onValidateForm = (valuesStorage: any) => {
     const {
       currentConsultationErrors,
       diagnosisErrors,
@@ -293,19 +327,346 @@ export default function Navigator({
 
     if (queryErrors.length > 0) {
       router.push(getRedirectMedicalRecordCreateWithErrors(queryErrors));
+      setAlertMessage(
+        "Debes completar la información requerida para generar un resumen de la consulta"
+      );
       setShowAlertError(true);
       setIsLoading(false);
 
       setTimeout(() => {
         setShowAlertError(false);
+        setAlertMessage("");
       }, 5000);
-      return;
+      return false;
     }
 
-    saveValuesInLocalStorage();
-
-    router.push(getRedirectMedicalRecordCreate());
+    return true;
   };
+
+  const getMedicalMeasures = (values: any): IMedicalMeasure[] => {
+    const medicalMeasures: IMedicalMeasure[] = [];
+
+    if (values.vitalSigns.size?.length > 0) {
+      const medicalMeasureSize: IMedicalMeasure = {
+        id: 0,
+        value: parseFloat(values.vitalSigns.size),
+        medicalMeasureTypeId: 0,
+        medicalMeasureType: {
+          id: 0,
+          type: MedicalMeasureTypesEnum.SIZE,
+          createdOn: new Date(),
+        } as IMedicalMeasureType,
+        subjectId: subject?.subjectId ?? 0,
+        createdOn: new Date(),
+      };
+
+      medicalMeasures.push(medicalMeasureSize);
+    }
+
+    if (values.vitalSigns.weight?.length > 0) {
+      const medicalMeasureWeight: IMedicalMeasure = {
+        id: 0,
+        value: parseFloat(values.vitalSigns.weight),
+        medicalMeasureTypeId: 0,
+        medicalMeasureType: {
+          id: 0,
+          type: MedicalMeasureTypesEnum.WEIGHT,
+          createdOn: new Date(),
+        } as IMedicalMeasureType,
+        subjectId: subject?.subjectId ?? 0,
+        createdOn: new Date(),
+      };
+
+      medicalMeasures.push(medicalMeasureWeight);
+    }
+
+    if (values.vitalSigns.temperature?.length > 0) {
+      const medicalMeasureTemperature: IMedicalMeasure = {
+        id: 0,
+        value: parseFloat(values.vitalSigns.temperature),
+        medicalMeasureTypeId: 0,
+        medicalMeasureType: {
+          id: 0,
+          type: MedicalMeasureTypesEnum.TEMPERATURE,
+          createdOn: new Date(),
+        } as IMedicalMeasureType,
+        subjectId: subject?.subjectId ?? 0,
+        createdOn: new Date(),
+      };
+
+      medicalMeasures.push(medicalMeasureTemperature);
+    }
+
+    if (values.vitalSigns.respiratoryFrequency?.length > 0) {
+      const medicalMeasureRespiratoryFrequency: IMedicalMeasure = {
+        id: 0,
+        value: parseFloat(values.vitalSigns.respiratoryFrequency),
+        medicalMeasureTypeId: 0,
+        medicalMeasureType: {
+          id: 0,
+          type: MedicalMeasureTypesEnum.RESPIRATORY_FREQUENCY,
+          createdOn: new Date(),
+        } as IMedicalMeasureType,
+        subjectId: subject?.subjectId ?? 0,
+        createdOn: new Date(),
+      };
+
+      medicalMeasures.push(medicalMeasureRespiratoryFrequency);
+    }
+
+    if (values.vitalSigns.oximetry?.length > 0) {
+      const medicalMeasureOximetry: IMedicalMeasure = {
+        id: 0,
+        value: parseFloat(values.vitalSigns.oximetry),
+        medicalMeasureTypeId: 0,
+        medicalMeasureType: {
+          id: 0,
+          type: MedicalMeasureTypesEnum.OXIMETRY,
+          createdOn: new Date(),
+        } as IMedicalMeasureType,
+        subjectId: subject?.subjectId ?? 0,
+        createdOn: new Date(),
+      };
+
+      medicalMeasures.push(medicalMeasureOximetry);
+    }
+
+    if (values.vitalSigns.muscleMass?.length > 0) {
+      const medicalMeasureMuscleMass: IMedicalMeasure = {
+        id: 0,
+        value: parseFloat(values.vitalSigns.muscleMass),
+        medicalMeasureTypeId: 0,
+        medicalMeasureType: {
+          id: 0,
+          type: MedicalMeasureTypesEnum.MUSCLE_MASS_INDEX,
+          createdOn: new Date(),
+        } as IMedicalMeasureType,
+        subjectId: subject?.subjectId ?? 0,
+        createdOn: new Date(),
+      };
+
+      medicalMeasures.push(medicalMeasureMuscleMass);
+    }
+
+    if (values.vitalSigns.glicemy?.length > 0) {
+      const medicalMeasureGlicemy: IMedicalMeasure = {
+        id: 0,
+        value: parseFloat(values.vitalSigns.glicemy),
+        medicalMeasureTypeId: 0,
+        medicalMeasureType: {
+          id: 0,
+          type: MedicalMeasureTypesEnum.GLICEMY,
+          createdOn: new Date(),
+        } as IMedicalMeasureType,
+        subjectId: subject?.subjectId ?? 0,
+        createdOn: new Date(),
+      };
+
+      medicalMeasures.push(medicalMeasureGlicemy);
+    }
+
+    return medicalMeasures;
+  };
+
+  const getDiagnosis = (values: any) => {
+    if (values?.diagnose?.length === 0) return;
+
+    let diagnoses: IDiagnosis[] = [];
+
+    values.diagnose.forEach((cie10: ICIE10) => {
+      let diagnosis: IDiagnosis = {
+        id: 0,
+        description: cie10.description4,
+        cie10Id: cie10.id,
+        medicalConsultyId: 0,
+      };
+      diagnoses.push(diagnosis);
+    });
+    return diagnoses;
+  };
+
+  const getTreatment = (values: any) => {
+    if (values?.recipes?.length === 0) return;
+
+    let treatment: ITreatment = {
+      id: 0,
+      status: 1,
+      subjectId: subject?.subjectId ?? 0,
+      medicalConsultyId: 0,
+      treatmentMedicines: [],
+      reference: "",
+    };
+
+    const treatmentMedicines: ITreatmentMedicine[] = [];
+
+    values.recipes.forEach((recipe: any) => {
+      const treatmentMedicine: ITreatmentMedicine = {
+        id: 0,
+        viaDosis:
+          recipe?.via?.length > 0
+            ? parseInt(recipe.via, 10)
+            : TreatmentViaDosisEnum.ORAL,
+        medicine: recipe.medicine,
+        dosisQuantity: recipe.quantity,
+        dosisType:
+          recipe?.unit?.length > 0
+            ? parseInt(recipe.unit, 10)
+            : TreatmentDosisTypeEnum.CAPSULE,
+        takeUntilMeasure: recipe.duringMeasure,
+        takeUntilValue:
+          recipe?.duringValue > 0 ? parseInt(recipe.duringValue) : 0,
+        takeEachMeasure: recipe.frequencyMeasure,
+        takeEachValue:
+          recipe?.frequencyValue > 0 ? parseInt(recipe.frequencyValue) : 0,
+        createdOn: new Date(),
+        treatmentId: 0,
+        status: 1,
+        observations: recipe?.indication ?? "",
+      };
+
+      treatmentMedicines.push(treatmentMedicine);
+    });
+
+    treatment.treatmentMedicines = treatmentMedicines;
+
+    return treatment;
+  };
+
+  const getMedicalRecords = (values: any) => {
+    const medicalRecords: IMedicalRecord[] = [];
+
+    const medicalRecordsHistory = getMedicalRecordsHistory(
+      values.records,
+      subject?.subjectId ?? 0
+    );
+
+    if (medicalRecordsHistory.length > 0) {
+      medicalRecords.push(...medicalRecordsHistory);
+    }
+
+    const medicalRecordsPhysical = getMedicalRecordsPhysical(
+      values.physical,
+      subject?.subjectId ?? 0
+    );
+
+    if (medicalRecordsPhysical.length > 0) {
+      medicalRecords.push(...medicalRecordsPhysical);
+    }
+
+    const medicalRecordsOrders = getMedicalRecordsOrders(
+      values.orders,
+      subject?.subjectId ?? 0
+    );
+
+    if (medicalRecordsOrders.length > 0) {
+      medicalRecords.push(...medicalRecordsOrders);
+    }
+
+    return medicalRecords;
+  };
+
+  const onCreateMedicalRecord = () => {
+    setIsLoading(true);
+
+    const values = setValuesFromLocalStorage();
+
+    const isValid = onValidateForm(values);
+
+    if (isValid) {
+      saveValuesInLocalStorage();
+
+      const medicalMeasures = getMedicalMeasures(values);
+
+      const treatment = getTreatment(values);
+
+      const diagnoses = getDiagnosis(values.currentConsultation);
+
+      const medicalRecords = getMedicalRecords(values);
+
+      const medicalConsulty: IMedicalConsulty = {
+        id: 0,
+        consultationDate: values.currentConsultation.consultationDate
+          ? new Date(
+              new Date(
+                values.currentConsultation.consultationDate
+              ).getFullYear(),
+              new Date(values.currentConsultation.consultationDate).getMonth(),
+              new Date(values.currentConsultation.consultationDate).getDate() +
+                1
+            )
+          : new Date(
+              new Date().getFullYear(),
+              new Date().getMonth(),
+              new Date().getDate() + 1
+            ),
+        consultationReason: values.currentConsultation.consultationReason,
+        referrerBy:
+          values.currentConsultation.referredBy.length > 0
+            ? values.currentConsultation.referredBy
+            : null,
+        sufferingDate: values.currentConsultation.sufferingDate
+          ? new Date(
+              new Date(values.currentConsultation.sufferingDate).getFullYear(),
+              new Date(values.currentConsultation.sufferingDate).getMonth(),
+              new Date(values.currentConsultation.sufferingDate).getDate() + 1,
+              0,
+              0,
+              0,
+              0
+            )
+          : null,
+        diagnose: diagnoses ?? [],
+        observations:
+          values.currentConsultation.observations.length > 0
+            ? values.currentConsultation.observations
+            : null,
+        medicalMeasures: medicalMeasures,
+        medicalRecords: medicalRecords,
+        treatments: treatment ? [treatment] : [],
+        createdOn: new Date(),
+        updatedOn: null,
+        deletedOn: null,
+        subjectId: subject?.subjectId ?? 0,
+        subject: subject ?? ({} as ISubject),
+      };
+
+      createMedicalConsulty({
+        medicalConsulty: medicalConsulty,
+        appointmentId: appointment.data?.id ? appointment.data.id : null,
+      })(dispatch);
+    }
+  };
+
+  const onShowAlertError = () => {
+    setShowAlertError(true);
+
+    setTimeout(() => {
+      setShowAlertError(false);
+      setAlertMessage("");
+    }, 3000);
+  };
+
+  const onCreateMedicalConsultySucessful = () => {
+    localStorage.removeItem("prosit.storage.medical-record-create");
+
+    setTimeout(() => {
+      router.push(getRedirectMedicalRecordCreate());
+    }, 2000);
+  };
+
+  useEffect(() => {
+    if (successful) onCreateMedicalConsultySucessful();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [successful]);
+
+  useEffect(() => {
+    if (error) {
+      setAlertMessage(
+        "Algo ha salido mal al intentar guardar la consulta. Vuelve a intentarlo."
+      );
+      onShowAlertError();
+    }
+  }, [error]);
 
   return (
     <>
@@ -333,10 +694,10 @@ export default function Navigator({
 
           <Button
             variant="primary"
-            disabled={isLoading}
+            disabled={isLoading || loading || successful}
             onClick={() => onCreateMedicalRecord()}
           >
-            {isLoading ? "Generando resumen..." : "Crear consulta"}
+            {isLoading ? "Creando consulta..." : "Crear consulta"}
           </Button>
         </div>
       </div>
@@ -344,7 +705,13 @@ export default function Navigator({
       <AlertComponent
         variant="error"
         show={showAlertError}
-        description="Debes completar la información requerida para generar un resumen de la consulta"
+        description={alertMessage}
+      />
+
+      <AlertComponent
+        variant="success"
+        show={successful}
+        description="¡Se ha guardado la consulta éxitosamente!"
       />
     </>
   );

@@ -459,6 +459,37 @@ export const MedicalRecordCreateReducer = (state: any, action: any) => {
                     error: action.payload.error,
                   },
                 }
+
+                case 'GET_MEDICAL_CONSULTY_PDF_LOADING':
+                return {
+                  ...state,
+                  getMedicalConsultyPDF: {
+                    ...state.getMedicalConsultyPDF,
+                    loading: true,
+                    successful: false,
+                    error: null,
+                  },
+                };
+              case 'GET_MEDICAL_CONSULTY_PDF_SUCCESSFUL':
+                return {
+                  ...state,
+                  getMedicalConsultyPDF: {
+                    ...state.getMedicalConsultyPDF,
+                    loading: false,
+                    successful: true,
+                    error: null,
+                  },
+                };
+              case 'GET_MEDICAL_CONSULTY_PDF_ERROR':
+                return {
+                  ...state,
+                  getMedicalConsultyPDF: {
+                    ...state.getMedicalConsultyPDF,
+                    loading: false,
+                    successful: false,
+                    error: action.payload.error,
+                  },
+                }
         
               case 'GET_MEDICAL_RECORD_PDF_LOADING':
                 return {
@@ -485,6 +516,40 @@ export const MedicalRecordCreateReducer = (state: any, action: any) => {
                   ...state,
                   getMedicalRecordPDF: {
                     ...state.getMedicalRecordPDF,
+                    loading: false,
+                    successful: false,
+                    error: action.payload.error,
+                  },
+                }
+
+              case 'CREATE_MEDICAL_CONSULTY_LOADING' :
+                return {
+                  ...state,
+                  createMedicalConsulty: {
+                    ...state.createMedicalConsulty,
+                    data: {},
+                    loading: true,
+                    successful: false,
+                    error: null,
+                  },
+                };
+              case 'CREATE_MEDICAL_CONSULTY_SUCCESSFUL' :
+                return {
+                  ...state,
+                  createMedicalConsulty: {
+                    ...state.createMedicalConsulty,
+                    data: action.payload.data,
+                    loading: false,
+                    successful: true,
+                    error: null,
+                  },
+                }
+              case 'CREATE_MEDICAL_CONSULTY_ERROR' :
+                return {
+                  ...state,
+                  createMedicalConsulty: {
+                    ...state.createMedicalConsulty,
+                    data: {},
                     loading: false,
                     successful: false,
                     error: action.payload.error,

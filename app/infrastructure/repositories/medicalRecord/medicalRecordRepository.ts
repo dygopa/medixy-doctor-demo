@@ -25,6 +25,22 @@ export default interface IMedicalRecordRepository {
     doctor: IUser;
     medicalRecord: IMedicalRecord;
   }): Promise<IGetMedicalRecordPDFResponse | MedicalRecordFailure>;
+  getMedicalRecordSpecialityPDF(obj: { 
+    doctor: IUser;
+    medicalRecord: IMedicalRecord;
+  }): Promise<IGetMedicalRecordPDFResponse | MedicalRecordFailure>;
+  getMedicalRecordJustificativePDF(obj: { 
+    doctor: IUser;
+    medicalRecord: IMedicalRecord;
+  }): Promise<IGetMedicalRecordPDFResponse | MedicalRecordFailure>;
+  getMedicalRecordCertificatePDF(obj: { 
+    doctor: IUser;
+    medicalRecord: IMedicalRecord;
+  }): Promise<IGetMedicalRecordPDFResponse | MedicalRecordFailure>;
+  getMedicalRecordHospitalizationPDF(obj: { 
+    doctor: IUser;
+    medicalRecord: IMedicalRecord;
+  }): Promise<IGetMedicalRecordPDFResponse | MedicalRecordFailure>;
 }
 
 export class MedicalRecordRepository implements IMedicalRecordRepository {
@@ -313,6 +329,570 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       doc.text(`${obj.doctor.address}​`, 50, 165);
       doc.text(`Tel: ${obj.doctor.phone}​​`, 75, 170);
+
+      doc.output('dataurlnewwindow');
+
+      const response: IGetMedicalRecordPDFResponse = {
+          data: obj.medicalRecord,
+          metadata: {}
+      }
+
+      return JSON.parse(JSON.stringify(response));
+    } catch (error) {
+      const exception = error as any;
+      return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+    }
+  }
+
+  async getMedicalRecordSpecialityPDF(obj: { 
+    doctor: IUser;
+    medicalRecord: IMedicalRecord;
+  }): Promise<IGetMedicalRecordPDFResponse | MedicalRecordFailure> {
+    try {
+      if (obj.medicalRecord.medicalRecordValues?.length === 0) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+
+      if (obj.doctor.pwaProfressionId) {
+        const res = await supabase.from("ProfesionesPQA").select("*").eq("id", obj.doctor.pwaProfressionId).limit(1);
+
+        if (res.data && res.data.length > 0) obj.doctor.pwaProfression = res.data[0].nombre;
+      }
+
+      const doc = new jsPDF();
+
+      doc.setProperties({
+        title: `Orden de estudio diagnóstico - ${getFullDate(new Date())} ${get12HoursFormat(new Date())}.pdf`
+      });
+
+      var img = new Image();
+      img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
+      doc.addImage(img, "png", 10, 0, 25, 30);
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 35, 10);
+      doc.text(`${obj.doctor.pwaProfression}`, 35, 15);
+
+      if (obj.doctor.pwaProfression.length > 0) {
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 20);
+
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 27);
+      } else {
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 15);
+
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 22);
+      }
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.text(`ORDEN A ESPECIALIDAD`, 65, 40);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`FECHA DE IMPRESIÓN:`, 130, 40);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`, 175, 40);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 45, 200, 45);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Dr(a).`, 10, 51);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.doctor.names} ${obj.doctor.firstName}`, 21, 51);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 55, 200, 55);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Especialidad:`, 10, 61);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.doctor.pwaProfression}`, 34, 61);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 65, 200, 65);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Nombre del paciente:`, 10, 75);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName}`, 10, 80);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Edad:`, 85, 75);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 80);
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`${obj.medicalRecord.medicalRecordValues[0].value}`, 85, 97);
+      doc.setFontSize(10);
+
+      if (obj.medicalRecord.medicalRecordValues[1]) {
+        doc.text(`${obj.medicalRecord.medicalRecordValues[1].value}`, 10, 97);
+      }
+      if (obj.medicalRecord.medicalRecordValues[2]) {
+      doc.text(`${obj.medicalRecord.medicalRecordValues[2].value}`, 10, 102);
+      }
+
+      
+      doc.setLineWidth(0.1); 
+      doc.line(10, 110, 200, 110);
+
+      doc.setFontSize(11);
+
+      doc.setLineWidth(0.1); 
+      doc.line(25, 137, 60, 137);
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, 143);
+
+      QRCode.toDataURL(obj.medicalRecord.medicalConsultyId.toString(),  (err, url) => {
+        if (err) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+ 
+        var img = new Image();
+        img.src = url;
+        doc.addImage(img, "png", 150, 115, 45, 45);
+      });
+
+      doc.text(`${obj.doctor.address}​`, 50, 165);
+      doc.text(`Tel: ${obj.doctor.phone}​​`, 75, 170);
+
+      doc.output('dataurlnewwindow');
+
+      const response: IGetMedicalRecordPDFResponse = {
+          data: obj.medicalRecord,
+          metadata: {}
+      }
+
+      return JSON.parse(JSON.stringify(response));
+    } catch (error) {
+      const exception = error as any;
+      return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+    }
+  }
+
+  async getMedicalRecordJustificativePDF(obj: { 
+    doctor: IUser;
+    medicalRecord: IMedicalRecord;
+  }): Promise<IGetMedicalRecordPDFResponse | MedicalRecordFailure> {
+    try {
+      if (obj.medicalRecord.medicalRecordValues?.length === 0) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+
+      if (obj.doctor.pwaProfressionId) {
+        const res = await supabase.from("ProfesionesPQA").select("*").eq("id", obj.doctor.pwaProfressionId).limit(1);
+
+        if (res.data && res.data.length > 0) obj.doctor.pwaProfression = res.data[0].nombre;
+      }
+
+      const doc = new jsPDF();
+
+      doc.setProperties({
+        title: `Justificante Médico- ${getFullDate(new Date())} ${get12HoursFormat(new Date())}.pdf`
+      });
+
+      var img = new Image();
+      img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
+      doc.addImage(img, "png", 10, 0, 25, 30);
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 35, 10);
+      doc.text(`${obj.doctor.pwaProfression}`, 35, 15);
+
+      if (obj.doctor.pwaProfression.length > 0) {
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 20);
+
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 27);
+      } else {
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 15);
+
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 22);
+      }
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.text(`JUSTIFICANTE MÉDICO`, 65, 40);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`FECHA:`, 155, 40);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`, 175, 40);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 45, 200, 45);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Dr(a).`, 10, 51);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.doctor.names} ${obj.doctor.firstName}`, 21, 51);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 55, 200, 55);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Especialidad:`, 10, 61);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.doctor.pwaProfression}`, 34, 61);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 65, 200, 65);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Nombre del paciente:`, 10, 75);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName}`, 10, 80);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Edad:`, 85, 75);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 80);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 88, 200, 88);
+      
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "normal");
+      const split = doc.splitTextToSize(`${obj.medicalRecord.medicalRecordValues[0].value}`,190)
+      doc.text(split, 10, 97);
+      doc.setFontSize(10);
+
+      
+      doc.setLineWidth(0.1); 
+      doc.line(10, 110, 200, 110);
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "normal")
+      doc.text(`De requerir mayor informacion quedo a sus ordenes`,10,120)
+      doc.text(`Médico tratante: Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`,10,125)
+      doc.text(`Especialidad: ${obj.doctor.pwaProfression}`, 10, 130);
+
+      doc.setFontSize(11);
+
+      doc.setLineWidth(0.1); 
+      doc.line(25, 160, 60, 160);
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, 165);
+
+      QRCode.toDataURL(obj.medicalRecord.medicalConsultyId.toString(),  (err, url) => {
+        if (err) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+ 
+        var img = new Image();
+        img.src = url;
+        doc.addImage(img, "png", 150, 145, 45, 45);
+      });
+
+      doc.text(`${obj.doctor.address}​`, 50, 195);
+      doc.text(`Tel: ${obj.doctor.phone}​​`, 75, 200);
+
+      doc.output('dataurlnewwindow');
+
+      const response: IGetMedicalRecordPDFResponse = {
+          data: obj.medicalRecord,
+          metadata: {}
+      }
+
+      return JSON.parse(JSON.stringify(response));
+    } catch (error) {
+      const exception = error as any;
+      return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+    }
+  }
+
+  async getMedicalRecordCertificatePDF(obj: { 
+    doctor: IUser;
+    medicalRecord: IMedicalRecord;
+  }): Promise<IGetMedicalRecordPDFResponse | MedicalRecordFailure> {
+    try {
+      if (obj.medicalRecord.medicalRecordValues?.length === 0) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+
+      if (obj.doctor.pwaProfressionId) {
+        const res = await supabase.from("ProfesionesPQA").select("*").eq("id", obj.doctor.pwaProfressionId).limit(1);
+
+        if (res.data && res.data.length > 0) obj.doctor.pwaProfression = res.data[0].nombre;
+      }
+
+      const doc = new jsPDF();
+
+      doc.setProperties({
+        title: `Certificado Médico- ${getFullDate(new Date())} ${get12HoursFormat(new Date())}.pdf`
+      });
+
+      var img = new Image();
+      img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
+      doc.addImage(img, "png", 10, 0, 25, 30);
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 35, 10);
+      doc.text(`${obj.doctor.pwaProfression}`, 35, 15);
+
+      if (obj.doctor.pwaProfression.length > 0) {
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 20);
+
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 27);
+      } else {
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 15);
+
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 22);
+      }
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.text(`CERTIFICADO MÉDICO`, 65, 40);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`FECHA:`, 155, 40);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`, 175, 40);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 45, 200, 45);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Dr(a).`, 10, 51);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.doctor.names} ${obj.doctor.firstName}`, 21, 51);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 55, 200, 55);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Especialidad:`, 10, 61);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.doctor.pwaProfression}`, 34, 61);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 65, 200, 65);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Nombre del paciente:`, 10, 75);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName}`, 10, 80);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Edad:`, 85, 75);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 80);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 88, 200, 88);
+      
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "normal");
+      const split = doc.splitTextToSize(`${obj.medicalRecord.medicalRecordValues[0].value}`,190)
+      doc.text(split, 10, 97);
+      doc.setFontSize(10);
+
+      
+      doc.setLineWidth(0.1); 
+      doc.line(10, 110, 200, 110);
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "normal")
+      doc.text(`De requerir mayor informacion quedo a sus ordenes`,10,120)
+      doc.text(`Médico tratante: Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`,10,125)
+      doc.text(`Especialidad: ${obj.doctor.pwaProfression}`, 10, 130);
+
+      doc.setFontSize(11);
+
+      doc.setLineWidth(0.1); 
+      doc.line(25, 160, 60, 160);
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, 165);
+
+      QRCode.toDataURL(obj.medicalRecord.medicalConsultyId.toString(),  (err, url) => {
+        if (err) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+ 
+        var img = new Image();
+        img.src = url;
+        doc.addImage(img, "png", 150, 145, 45, 45);
+      });
+
+      doc.text(`${obj.doctor.address}​`, 50, 195);
+      doc.text(`Tel: ${obj.doctor.phone}​​`, 75, 200);
+
+      doc.output('dataurlnewwindow');
+
+      const response: IGetMedicalRecordPDFResponse = {
+          data: obj.medicalRecord,
+          metadata: {}
+      }
+
+      return JSON.parse(JSON.stringify(response));
+    } catch (error) {
+      const exception = error as any;
+      return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+    }
+  }
+
+  async getMedicalRecordHospitalizationPDF(obj: { 
+    doctor: IUser;
+    medicalRecord: IMedicalRecord;
+  }): Promise<IGetMedicalRecordPDFResponse | MedicalRecordFailure> {
+    try {
+      if (obj.medicalRecord.medicalRecordValues?.length === 0) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+
+      if (obj.doctor.pwaProfressionId) {
+        const res = await supabase.from("ProfesionesPQA").select("*").eq("id", obj.doctor.pwaProfressionId).limit(1);
+
+        if (res.data && res.data.length > 0) obj.doctor.pwaProfression = res.data[0].nombre;
+      }
+
+      const doc = new jsPDF();
+
+      doc.setProperties({
+        title: `Orden de Hospitalización- ${getFullDate(new Date())} ${get12HoursFormat(new Date())}.pdf`
+      });
+
+      var img = new Image();
+      img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
+      doc.addImage(img, "png", 10, 0, 25, 30);
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 35, 10);
+      doc.text(`${obj.doctor.pwaProfression}`, 35, 15);
+
+      if (obj.doctor.pwaProfression.length > 0) {
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 20);
+
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 27);
+      } else {
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 15);
+
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 22);
+      }
+
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.text(`ORDEN DE HOSPITALIZACIÓN`, 65, 40);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`FECHA:`, 155, 40);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`, 175, 40);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 45, 200, 45);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Dr(a).`, 10, 51);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.doctor.names} ${obj.doctor.firstName}`, 21, 51);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 55, 200, 55);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Especialidad:`, 10, 61);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.doctor.pwaProfression}`, 34, 61);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 65, 200, 65);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Nombre del paciente:`, 10, 75);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName}`, 10, 80);
+
+      doc.setFont("helvetica", "normal", "normal");
+      doc.setTextColor(130, 130, 130);
+      doc.text(`Edad:`, 85, 75);
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 80);
+
+      doc.setLineWidth(0.1); 
+      doc.line(10, 88, 200, 88);
+      
+      doc.setFontSize(11);
+      doc.setFont("helvetica", "normal", "normal");
+      const split = doc.splitTextToSize(`${obj.medicalRecord.medicalRecordValues[0].value}`,190)
+      doc.text(split, 10, 97);
+      doc.text(`Se anexa informe médico y resultado de estudios`, 10, 125);
+      doc.setFontSize(10);
+
+      doc.setFontSize(11);
+
+      doc.setLineWidth(0.1); 
+      doc.line(25, 150, 60, 150);
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal", "normal");
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, 155);
+
+      QRCode.toDataURL(obj.medicalRecord.medicalConsultyId.toString(),  (err, url) => {
+        if (err) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
+ 
+        var img = new Image();
+        img.src = url;
+        doc.addImage(img, "png", 150, 135, 45, 45);
+      });
+
+      doc.text(`${obj.doctor.address}​`, 50, 185);
+      doc.text(`Tel: ${obj.doctor.phone}​​`, 75, 190);
 
       doc.output('dataurlnewwindow');
 

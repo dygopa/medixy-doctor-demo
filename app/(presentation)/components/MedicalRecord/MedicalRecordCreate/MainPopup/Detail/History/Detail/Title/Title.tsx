@@ -1,9 +1,24 @@
+import {
+  AuthContext,
+  IAuthContext,
+} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
-import Button from "(presentation)/components/core/BaseComponents/Button";
+import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
+import { Menu, Transition } from "@headlessui/react";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
+import {
+  IMedicalRecordCreateContext,
+  MedicalRecordCreateContext,
+} from "(presentation)/components/MedicalRecord/MedicalRecordCreate/context/MedicalRecordCreateContext";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Dispatch, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  Fragment,
+  SetStateAction,
+  useContext,
+  useState,
+} from "react";
 import { twMerge } from "tailwind-merge";
 import QrCodeModal from "./QrCodeModal/QrCodeModal";
 
@@ -18,6 +33,15 @@ export default function Title({
   setMedicalConsulty,
   appointmentId,
 }: ITitleProps) {
+  const { state: authState } = useContext<IAuthContext>(AuthContext);
+  const { data: user } = authState.getUserAuthenticated;
+
+  const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
+    MedicalRecordCreateContext
+  );
+  const { getMedicalConsultyPDF } = actions;
+  const { loading, error } = state.getMedicalConsultyPDF;
+
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -53,6 +77,12 @@ export default function Title({
 
   return (
     <>
+      <AlertComponent
+        variant="error"
+        show={error !== null}
+        description="Algo ha salido mal. Vuelve a intentarlo"
+      />
+
       <div className="lg:flex md:flex items-center justify-between py-3">
         <div className="flex items-center">
           <div className="mr-4">
@@ -84,14 +114,59 @@ export default function Title({
           </div>
         </div>
 
-        <div>
-          <Button
-            variant="primary"
-            className="w-[60px] px-0"
-            onClick={() => setShowQrCodeModal(true)}
-          >
-            <Lucide icon="QrCode" color="#fff" size={25} />
-          </Button>
+        <div className="flex items-center justify-end">
+          <Menu as="div" className="relative inline-block text-left">
+            <Menu.Button className="rounded-lg hover:bg-primary hover:bg-opacity-20 p-1 border border-primary">
+              <Lucide icon="MoreVertical" className="h-5" />
+            </Menu.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items className="absolute right-0 z-15 mt-1 w-[250px] origin-top-right rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5">
+                <Menu.Item>
+                  {({ active }) => (
+                    <div>
+                      <button
+                        type="button"
+                        disabled={loading}
+                        onClick={() =>
+                          getMedicalConsultyPDF({
+                            doctor: user,
+                            medicalConsulty: medicalConsulty,
+                          })(dispatch)
+                        }
+                        className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
+                      >
+                        <Lucide icon="FileText" size={20} />
+                        Generar PDF de la consulta
+                      </button>
+                    </div>
+                  )}
+                </Menu.Item>
+
+                <Menu.Item>
+                  {({ active }) => (
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => setShowQrCodeModal(true)}
+                        className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
+                      >
+                        <Lucide icon="QrCode" size={20} />
+                        Ver QR de la consulta
+                      </button>
+                    </div>
+                  )}
+                </Menu.Item>
+              </Menu.Items>
+            </Transition>
+          </Menu>
         </div>
       </div>
 

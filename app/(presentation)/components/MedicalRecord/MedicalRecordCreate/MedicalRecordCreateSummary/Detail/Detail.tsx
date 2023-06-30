@@ -1,5 +1,4 @@
-import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
-import { useRouter } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useContext, useEffect } from "react";
 import {
   IMedicalRecordCreateSummaryContext,
@@ -15,75 +14,106 @@ import Title from "./Title/Title";
 import VitalSigns from "./VitalSigns/VitalSigns";
 
 export default function Detail() {
-  const { state } = useContext<IMedicalRecordCreateSummaryContext>(
-    MedicalRecordCreateSummaryContext
-  );
-  const { data: subject } = state.subject;
-
-  const router = useRouter();
-
-  const setValueFromLocalStorage = () => {
-    const valuesStorage = localStorage.getItem(
-      "prosit.storage.medical-record-create"
+  const { state, actions, dispatch } =
+    useContext<IMedicalRecordCreateSummaryContext>(
+      MedicalRecordCreateSummaryContext
     );
+  const { getMedicalConsultyById } = actions;
+  const {
+    data: medicalConsulty,
+    loading,
+    successful,
+    error,
+  } = state.getMedicalConsultyById;
 
-    if (!valuesStorage) {
-      router.push(
-        MedicalRecordRoutesEnum.MedicalRecord +
-          subject?.subjectId +
-          MedicalRecordRoutesEnum.MedicalRecordCreate
-      );
-      return;
-    }
+  const searchParams = useSearchParams();
 
-    const valuesJSON = JSON.parse(valuesStorage ?? "");
-
-    if (!valuesJSON.isValid) {
-      router.push(
-        MedicalRecordRoutesEnum.MedicalRecord +
-          subject?.subjectId +
-          MedicalRecordRoutesEnum.MedicalRecordCreate
-      );
-    }
-  };
+  const medicalConsultyId = searchParams.get("medical_consulty_id");
 
   useEffect(() => {
-    setValueFromLocalStorage();
+    let isCleanup = true;
+
+    if (isCleanup)
+      getMedicalConsultyById(
+        medicalConsultyId ? parseInt(medicalConsultyId.toString(), 10) : 0
+      )(dispatch);
+
+    return () => {
+      isCleanup = false;
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (loading)
+    return (
+      <div className="w-full flex flex-col justify-center items-center py-8">
+        <p className="font-bold text-slate-900 text-lg">Un momento...</p>
+        <p className="font-light text-slate-500 text-base">
+          Cargando tu consulta.
+        </p>
+      </div>
+    );
+
+  if (error)
+    return (
+      <div className="w-full flex flex-col justify-center items-center py-8">
+        <p className="font-bold text-slate-900 text-lg">
+          Vaya, algo no ha salido como se esperaba
+        </p>
+        <p className="font-light text-slate-500 text-base">
+          Lo sentimos, algo no ha salido bien. Vuelve a intentarlo
+        </p>
+      </div>
+    );
+
+  if (!medicalConsulty?.id && successful) {
+    return (
+      <div className="w-full flex flex-col justify-center items-center py-8">
+        <p className="font-bold text-slate-900 text-lg">
+          Vaya, no se ha encontrado la consulta
+        </p>
+        <p className="font-light text-slate-500 text-base">
+          Lo sentimos, pero no hemos encontrado la consulta
+        </p>
+      </div>
+    );
+  }
+
+  if (!medicalConsulty?.id && !successful)
+    return <div className="mt-5" style={{ height: "80vh" }} />;
 
   return (
     <div>
       <div className="mb-4 border-b">
-        <Title />
+        <Title medicalConsulty={medicalConsulty} />
       </div>
 
       <div className="mb-4">
-        <Reason />
+        <Reason medicalConsulty={medicalConsulty} />
       </div>
 
       <div className="mb-4">
-        <Records />
+        <Diagnosis medicalConsulty={medicalConsulty} />
       </div>
 
       <div className="mb-4">
-        <Diagnosis />
+        <Records medicalConsulty={medicalConsulty} />
       </div>
 
       <div className="mb-4">
-        <Physical />
+        <Physical medicalConsulty={medicalConsulty} />
       </div>
 
       <div className="mb-4">
-        <VitalSigns />
+        <VitalSigns medicalConsulty={medicalConsulty} />
       </div>
 
       <div className="mb-4">
-        <Recipes />
+        <Recipes medicalConsulty={medicalConsulty} />
       </div>
 
       <div>
-        <Orders />
+        <Orders medicalConsulty={medicalConsulty} />
       </div>
     </div>
   );

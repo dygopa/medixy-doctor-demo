@@ -170,22 +170,6 @@ export class TreatmentRepository implements ITreatmentRepository {
       doc.setFontSize(12);
       doc.text(`${obj.treatment.subject?.lastName} ${obj.treatment.subject?.name}`, 20, 40);
       doc.setFontSize(11);
-      
-
-      /*doc.setFont("helvetica", "normal", "bold");
-      doc.text(`Identificación:`, 20, 60);
-      doc.setFont("helvetica", "normal", "normal");
-      doc.text(`mx-CURP - ${obj.treatment.subject?.curp}`, 50, 60);
-
-      doc.setFont("helvetica", "normal", "bold");
-      doc.text(`Sexo:`, 120, 60);
-      doc.setFont("helvetica", "normal", "normal");
-      doc.text(`${obj.treatment.subject?.sex === 0 ? "Femenino" : "Masculino"}`, 135, 60);
-
-      doc.setFont("helvetica", "normal", "bold");
-      doc.text(`Fecha de nacimiento:`, 20, 67);
-      doc.setFont("helvetica", "normal", "normal");
-      doc.text(`${obj.treatment.subject?.birthDate ? `${new Date(obj.treatment.subject?.birthDate).getDate()}-${new Date(obj.treatment.subject?.birthDate).getMonth()}-${new Date(obj.treatment.subject?.birthDate).getFullYear()}` : ""} `, 65, 67);*/
 
       doc.setFont("helvetica", "normal", "normal");
       doc.text(`Edad del paciente:`, 20, 45);
@@ -193,17 +177,6 @@ export class TreatmentRepository implements ITreatmentRepository {
 
       doc.setLineWidth(0.1); 
       doc.line(10, 50, 200, 50);
-
-      /*doc.setFontSize(12);
-      doc.setFont("helvetica", "normal", "bold");
-      doc.text(`RECETA DE MEDICAMENTOS:`, 25, 80);
-      doc.setFont("helvetica", "normal", "normal");
-      doc.text(`${obj.treatment.id}`, 95, 80);
-      
-      doc.setFontSize(10);
-      doc.setFont("helvetica", "normal", "bold");
-      doc.text(`Fecha de Receta:`, 115, 80);
-      doc.setFont("helvetica", "normal", "normal");*/
 
       let y = 60;
 

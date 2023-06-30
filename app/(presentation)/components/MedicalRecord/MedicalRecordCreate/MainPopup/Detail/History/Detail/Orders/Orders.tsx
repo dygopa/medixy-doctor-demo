@@ -2,7 +2,7 @@ import {
   MedicalRecordCategoriesIdEnum,
   medicalRecordTypeOrderEnum,
 } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
-import MedicalRecordProvider from "(presentation)/components/MedicalRecord/MedicalRecord/context/MedicalRecordContext";
+import MedicalRecordCreateProvider from "(presentation)/components/MedicalRecord/MedicalRecordCreate/context/MedicalRecordCreateContext";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import {
   IMedicalRecord,
@@ -75,9 +75,9 @@ export default function Orders({ medicalConsulty }: IOrdersProps) {
                 )
               )}
 
-              <MedicalRecordProvider>
+              <MedicalRecordCreateProvider>
                 <DownloadPDF medicalRecord={medicalRecord} />
-              </MedicalRecordProvider>
+              </MedicalRecordCreateProvider>
             </div>
           )
       )}
