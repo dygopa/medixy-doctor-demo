@@ -178,9 +178,9 @@ export default function Formulary({
     setFormData({ ...formData, media: obj });
   }
 
-  /*useMemo(() => {
+  useMemo(() => {
     if (successfulUpdate) window.location.href = "/localities";
-  }, [successfulUpdate]);*/
+  }, [successfulUpdate]);
 
   if (loading) {
     return (
@@ -403,42 +403,6 @@ export default function Formulary({
                     }}
                   />
                 </div>
-                  <div className="lg:flex justify-between items-center relative w-full gap-3">
-                    <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                      Latitud
-                    </p>
-                    <FormInput
-                      type={"number"}
-                      placeholder="0"
-                      min={0}
-                      value={formData.latitude}
-                      className="form-control lg:w-[70%]"
-                      onChange={(e: any) => {
-                        setFormData({
-                          ...formData,
-                          latitude: +e.target.value,
-                        });
-                      }}
-                    />
-                  </div>
-                  <div className="lg:flex justify-between items-center relative w-full gap-3">
-                    <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                      Longitud
-                    </p>
-                    <FormInput
-                      type={"number"}
-                      placeholder="0"
-                      min={0}
-                      value={formData.longitude}
-                      className="form-control lg:w-[70%]"
-                      onChange={(e: any) => {
-                        setFormData({
-                          ...formData,
-                          longitude: +e.target.value,
-                        });
-                      }}
-                    />
-                  </div>
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     Dirección<span className="text-primary font-bold">*</span>
