@@ -196,8 +196,8 @@ export default function WithoutSteps({
           {createUserLocalityLoading ? "Creando..." : "Crear consultorio"}
         </Button>
       </div>
-      <div className="flex lg:mt-5 mt-8">
-        <div className="relative lg:flex gap-4 w-full lg:w-[70%]">
+      <div className="flex justify-center items-center lg:mt-5 mt-8">
+        <div className="relative flex justify-center items-start gap-4 w-full lg:w-[70%]">
           <div className="bg-white w-full shadow-xl shadow-slate-100 rounded-md h-fit p-7">
             <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
               <div className="w-full border-b mb-2">
