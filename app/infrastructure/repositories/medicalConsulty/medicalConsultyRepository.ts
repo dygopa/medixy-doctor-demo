@@ -388,22 +388,28 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
       });
 
       var img = new Image();
-      img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
-      doc.addImage(img, "png", 10, 0, 25, 30);
 
+      if (obj.doctor.avatar?.length > 0) {
+        img.src = obj.doctor.avatar;
+        doc.addImage(img, "png", 10, 5, 25, 25);
+      } else {
+        img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
+        doc.addImage(img, "png", 10, 0, 25, 30);
+      }
+    
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 35, 10);
-      doc.text(`${obj.doctor.pwaProfression}`, 35, 15);
+      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 42, 10);
+      doc.text(`${obj.doctor.pwaProfression}`, 42, 15);
 
       if (obj.doctor.pwaProfression.length > 0) {
-        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 20);
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 20);
 
-        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 27);
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 42, 27);
       } else {
-        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 15);
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 15);
 
-        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 22);
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 42, 22);
       }
 
       doc.setFontSize(12);

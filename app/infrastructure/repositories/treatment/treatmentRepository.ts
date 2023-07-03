@@ -150,30 +150,36 @@ export class TreatmentRepository implements ITreatmentRepository {
       });
 
       var img = new Image();
-      img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
-      doc.addImage(img, "jpg", 10, 0, 30, 30);
+
+      if (obj.doctor.avatar?.length > 0) {
+        img.src = obj.doctor.avatar;
+        doc.addImage(img, "png", 10, 5, 25, 25);
+      } else {
+        img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
+        doc.addImage(img, "png", 10, 0, 25, 30);
+      }
 
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 40, 10);
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 42, 10);
       doc.setFontSize(10);
-      doc.text(`Cedula Profesional: ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 40, 15);
+      doc.text(`Cedula Profesional: ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 15);
 
-      doc.text(`${new Date(obj.treatment.treatmentMedicines[0].createdOn).getDate() - 1}-${new Date(obj.treatment.treatmentMedicines[0].createdOn).getMonth()}-${new Date(obj.treatment.treatmentMedicines[0].createdOn).getFullYear()}`, 170, 10);
+      doc.text(`${getFullDate(new Date(obj.treatment.treatmentMedicines[0].createdOn))}`, 170, 10);
 
       if (obj.doctor.pwaProfression.length > 0) {
-        doc.text(`${obj.doctor.pwaProfression}`, 40, 20);
+        doc.text(`${obj.doctor.pwaProfression}`, 42, 20);
       } else {
-        doc.text(`${obj.doctor.address}`, 40, 25);
+        doc.text(`${obj.doctor.address}`, 42, 25);
       }
 
       doc.setFontSize(12);
-      doc.text(`${obj.treatment.subject?.lastName} ${obj.treatment.subject?.name}`, 20, 40);
+      doc.text(`${obj.treatment.subject?.lastName} ${obj.treatment.subject?.name}`, 10, 40);
       doc.setFontSize(11);
 
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Edad del paciente:`, 20, 45);
-      doc.text(`${obj.treatment.subject?.age} ${obj.treatment.subject?.ageType === "years" ? "años" : "meses"}`, 55, 45);
+      doc.text(`Edad del paciente:`, 10, 45);
+      doc.text(`${obj.treatment.subject?.age} ${obj.treatment.subject?.ageType === "years" ? "años" : "meses"}`, 45, 45);
 
       doc.setLineWidth(0.1); 
       doc.line(10, 50, 200, 50);
@@ -183,11 +189,11 @@ export class TreatmentRepository implements ITreatmentRepository {
       obj.treatment.treatmentMedicines?.forEach((treatmentMedicine: ITreatmentMedicine) => {
         doc.setFontSize(10);
         doc.setFont("helvetica", "normal", "bold");
-        doc.text(`${treatmentMedicine.medicine}`, 20, y);
+        doc.text(`${treatmentMedicine.medicine}`, 10, y);
 
         doc.setFontSize(10);
         doc.setFont("helvetica", "normal", "normal");
-        doc.text(`Vía ${treatmentViaDosisEnum[treatmentMedicine.viaDosis]}, ${getDosisTypeText(treatmentMedicine)} cada ${getFrequencyText(treatmentMedicine)} por ${getDuringText(treatmentMedicine)}`, 20, y + 5);
+        doc.text(`Vía ${treatmentViaDosisEnum[treatmentMedicine.viaDosis]}, ${getDosisTypeText(treatmentMedicine)} cada ${getFrequencyText(treatmentMedicine)} por ${getDuringText(treatmentMedicine)}`, 10, y + 5);
 
         y += 15;
       });
@@ -199,17 +205,17 @@ export class TreatmentRepository implements ITreatmentRepository {
  
         var img = new Image();
         img.src = url;
-        doc.addImage(img, "png", 160, y, 35, 35);
+        doc.addImage(img, "png", 150, y, 45, 45);
        });
 
       y += 15;
       doc.setLineWidth(0.1); 
-      doc.line(15, y, 70, y);
+      doc.line(30, y, 70, y);
 
       y += 5;
       doc.setFontSize(10);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, y);
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 32, y);
 
       y += 25;
 
