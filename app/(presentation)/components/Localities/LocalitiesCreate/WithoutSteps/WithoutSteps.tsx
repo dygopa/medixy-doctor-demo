@@ -375,7 +375,7 @@ export default function WithoutSteps({
               />
             </div>
 
-            <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
+            {/*<div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                 Latitud
               </p>
@@ -408,7 +408,7 @@ export default function WithoutSteps({
                   });
                 }}
               />
-            </div>
+              </div>*/}
             <div className="lg:flex justify-between items-start relative w-full gap-3 mb-4">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                 Dirección
