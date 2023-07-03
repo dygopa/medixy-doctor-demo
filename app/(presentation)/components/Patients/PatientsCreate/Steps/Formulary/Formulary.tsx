@@ -308,7 +308,7 @@ export default function Formulary({
       </div>
 
       <div className="input-group w-full">
-        <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+        <p className="input-label py-2">
           Género
         </p>
         <FormSelect
