@@ -185,13 +185,14 @@ export default function CompanionCreate({
   };
 
   return (
-    <>
+    <div className="flex justify-center w-full">
+    <div className="w-auto">
       <div
         className="flex justify-start gap-3 items-center lg:w-[40%] cursor-pointer"
         onClick={() => setNewCompanion(false)}
       >
         <Lucide icon="ChevronLeft" className="w-4 h-4" />
-        <p className="text-base text-slate-500 pb-2">
+        <p className="text-base text-slate-500 py-2">
           Volver a la lista de Contactos
         </p>
       </div>
@@ -297,6 +298,7 @@ export default function CompanionCreate({
               preferredCountries={['mx']}
               onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
               onPhoneNumberBlur={(e) => console.log(e)}
+              containerClassName="intl-tel-input w-full"
               inputClassName={twMerge([
                 "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
                 "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
@@ -435,6 +437,8 @@ export default function CompanionCreate({
             />
         </div>
       </div>
-    </>
+      
+    </div>
+    </div>
   );
 }
