@@ -26,6 +26,7 @@ import { ICountryLocation } from "domain/core/entities/countryEntity";
 import IntlTelInput from 'react-intl-tel-input';
 import 'react-intl-tel-input/dist/main.css';
 import { twMerge } from "tailwind-merge";
+import { getCountriesDialCodeES } from "(presentation)/(helper)/intl/intlHelper";
 
 interface IBasicDataProps {
   values: {
@@ -340,6 +341,7 @@ export default function Formulary({
               onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
               onPhoneNumberBlur={(e) => console.log(e)}
               containerClassName="intl-tel-input w-full"
+              countriesData={getCountriesDialCodeES()}
               inputClassName={twMerge([
                 "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
                 "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
