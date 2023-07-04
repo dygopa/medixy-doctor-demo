@@ -22,8 +22,12 @@ import { FiCheck } from "react-icons/fi";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import {
   VALIDATE_EMAIL,
+  VALIDATE_NAMES,
+  VALIDATE_NUMBERS,
   VALIDATE_STRING,
 } from "(presentation)/(utils)/errors-validation";
+import IntlTelInput from 'react-intl-tel-input';
+import 'react-intl-tel-input/dist/main.css';
 
 export default function Formulary() {
   const { state, actions, dispatch } =
@@ -90,30 +94,122 @@ export default function Formulary() {
     );
   };
 
-  const handleEmail = (value: string) => {
-    if (value.length <= 2) {
-      setErrors({
-        ...errors,
-        email: "El correo debe contener más de 2 carácteres",
+  const handlename = (value: string, e:any) => {
+    setValues({ ...values, names: value });
+    if (value.length < 2) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          names: "El nombre del paciente es obligatorio",
+        };
       });
       return true;
-    } else {
-      setErrors({ ...errors, email: "" });
-      return false;
     }
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          names: "El nombre del paciente solo debe incluir letras",
+        };
+      });
+      return true;
+    }
+    setErrors({ ...errors, names: "" });
+    return false;
+  };
+
+  const handlelastname = (value: string) => {
+    setValues({ ...values, first_lastname: value });
+    if (value.length < 2) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          first_lastname: "El apellido del paciente es obligatorio",
+        };
+      });
+      return true;
+    }
+    if (!VALIDATE_NAMES(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          first_lastname: "El apellido del paciente solo debe incluir letras",
+        };
+      });
+      return true;
+    }
+    setErrors({ ...errors, first_lastname: "" });
+    return false;
+  };
+
+  const handlephone = (value: string) => {
+    setValues({ ...values, phone_number: value });
+    if (value.length < 2) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          phone_number: "El teléfono del paciente es obligatorio",
+        };
+      });
+      return true;
+    }
+    if (!VALIDATE_NUMBERS(value)) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          phone_number: "El teléfono del paciente solo lleva números",
+        };
+      });
+      return true;
+    }
+    setErrors({ ...errors, phone_number: "" });
+    return false;
+  };
+
+  const handleEmail = (value: string) => {
+    setValues({ ...values, email: value });
+    if (values.email.length > 1) {
+      if (!VALIDATE_EMAIL(values.email)) {
+        setErrors({ ...errors, email: "El email debe ser correcto" });
+        return true;
+      }
+    }
+    setErrors({ ...errors, email: "" });
+    return false;
   };
 
   const handlePassword = (value: string) => {
-    if (value.length <= 2) {
+    setValues({ ...values, password: value });
+    if (value.length <= 5) {
       setErrors({
         ...errors,
-        password: "La contraseña debe contener más de 2 carácteres",
+        password: "La contraseña debe contener al menos 6 carácteres",
       });
       return true;
     } else {
       setErrors({ ...errors, password: "" });
       return false;
     }
+  };
+
+  const validForm = () => {
+    let errorsFieldsCount = 0;
+
+    if (errors.global.length > 0) errorsFieldsCount++;
+
+    if (errors.names.length > 0) errorsFieldsCount++;
+
+    if (errors.first_lastname.length > 0) errorsFieldsCount++;
+
+    if (errors.second_lastname.length > 0) errorsFieldsCount++;
+
+    if (errors.phone_number.length > 0) errorsFieldsCount++;
+
+    if (errors.email.length > 0) errorsFieldsCount++;
+
+    if (errors.password.length > 0) errorsFieldsCount++;
+
+    return errorsFieldsCount;
   };
 
   const onSubmit = () => {
@@ -220,16 +316,14 @@ export default function Formulary() {
         <FormInput
           type="text"
           className="w-full py-3 pr-10 bg-white"
-          placeholder="Jose"
+          placeholder="Nombre(s)"
           value={values.names}
-          onChange={(e: any) => setValues({ ...values, names: e.target.value })}
+          onChange={(e: any) => handlename(e.target.value, e)}
         />
-        {wrongName && (
-          <span className="text-red-500 mt-1">
-            El nombre no puede contener números
-          </span>
+        {errors.names.length > 0 && (
+          <span className="text-red-500 mt-3">{errors.names}</span>
         )}
-        {listOfErrors.includes("names") && (
+        {!errors.names && listOfErrors.includes("names") && (
           <span className="text-red-500 mt-1">Campo requerido</span>
         )}
       </div>
@@ -238,18 +332,16 @@ export default function Formulary() {
           <FormInput
             type="text"
             className="w-full py-3 pr-10 bg-white"
-            placeholder="Ramirez"
+            placeholder="Apellido paterno"
             value={values.first_lastname}
             onChange={(e: any) =>
-              setValues({ ...values, first_lastname: e.target.value })
+              handlelastname(e.target.value)
             }
           />
-          {wrongFirstName && (
-            <span className="text-red-500 mt-1">
-              El primer apellido no puede contener números
-            </span>
+          {errors.first_lastname.length > 0 && (
+            <span className="text-red-500">{errors.first_lastname}</span>
           )}
-          {listOfErrors.includes("first_lastname") && (
+          {!errors.first_lastname && listOfErrors.includes("first_lastname") && (
             <span className="text-red-500 mt-1">Campo requerido</span>
           )}
         </div>
@@ -257,7 +349,7 @@ export default function Formulary() {
           <FormInput
             type="text"
             className="w-full py-3 pr-10 bg-white"
-            placeholder="Ortiz"
+            placeholder="Apellido materno"
             value={values.second_lastname}
             onChange={(e: any) =>
               setValues({ ...values, second_lastname: e.target.value })
@@ -266,33 +358,38 @@ export default function Formulary() {
         </div>
       </div>
       <div className="relative w-full">
-        <FormInput
-          type="text"
-          className="w-full py-3 pr-10 bg-white"
-          placeholder="+00 000-000-0000"
-          value={values.phone_number}
-          onChange={(e: any) =>
-            setValues({ ...values, phone_number: e.target.value })
-          }
+        <IntlTelInput
+          preferredCountries={['mx']}
+          onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
+          onPhoneNumberBlur={(e) => console.log(e)}
+          containerClassName="intl-tel-input w-full"
+          inputClassName={twMerge([
+            "disabled:bg-white disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
+            "[&[readonly]]:bg-white [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
+            "transition duration-200 ease-in-out w-full bg-white text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80 py-3 pr-10",
+          ])}
         />
-        {listOfErrors.includes("phone_number") && (
-          <span className="text-red-500 mt-1">Campo requerido</span>
-        )}
+        {errors.phone_number.length > 0 && (
+            <span className="text-red-500 mt-2">{errors.phone_number}</span>
+          )}
+        {!errors.phone_number && listOfErrors.includes("phone_number") && (
+            <span className="text-red-500 mt-1">Campo requerido</span>
+          )}
       </div>
       <div className="relative w-full">
         <FormInput
-          type="text"
+          type="email"
           className="w-full py-3 pr-10 bg-white"
           placeholder="Correo electrónico"
           value={values.email}
-          onChange={(e: any) => setValues({ ...values, email: e.target.value })}
+          onChange={(e: any) => handleEmail(e.target.value)}
         />
-        {listOfErrors.includes("email") && (
-          <span className="text-red-500 mt-1">Campo requerido</span>
+        {errors.email.length > 0 && (
+          <span className="text-red-500">{errors.email}</span>
         )}
-        {wrongEmail && (
-          <span className="text-red-500 mt-1">El email debe ser correcto</span>
-        )}
+        {!errors.email && listOfErrors.includes("email") && (
+            <span className="text-red-500 mt-1">Campo requerido</span>
+          )}
       </div>
 
       <div className="relative w-full">
@@ -302,12 +399,15 @@ export default function Formulary() {
           placeholder="Contraseña"
           value={values.password}
           onChange={(e: any) =>
-            setValues({ ...values, password: e.target.value })
+            handlePassword(e.target.value)
           }
         />
-        {listOfErrors.includes("password") && (
-          <span className="text-red-500 mt-1">Campo requerido</span>
+        {errors.password.length > 0 && (
+          <span className="text-red-500">{errors.password}</span>
         )}
+        {!errors.password && listOfErrors.includes("password") && (
+            <span className="text-red-500 mt-1">Campo requerido</span>
+          )}
       </div>
       {error && <span className="text-red-500 mt-1">{errors.global}</span>}
       <div className="w-full relative flex flex-col justify-between gap-3 items-start">
@@ -352,7 +452,7 @@ export default function Formulary() {
       </div>
       <Button
         onClick={() => !loading && onSubmit()}
-        disabled={loading || !termsContidions || !activePolicy}
+        disabled={loading || !termsContidions || !activePolicy || validForm() > 0}
         variant="primary"
         type="submit"
         className="mt-4 mb-8 w-full"
