@@ -8,6 +8,39 @@ import Loading from '(presentation)/components/core/Loading/Loading';
 import Link from 'next/link';
 import { twMerge } from 'tailwind-merge';
 import { FiUser } from 'react-icons/fi';
+import { AppointmentEnum } from '(presentation)/(enum)/appointment/appointmentEnum';
+
+const StatusComponent = ({data}:{data:any})=>{
+        
+  let status = data["estado"]
+
+  let color = 
+       status === AppointmentEnum.PENDING 
+    || status === AppointmentEnum.NOT_AVAILABLE 
+    || status === AppointmentEnum.APPROVED
+    ? 
+      "bg-yellow-500"
+    : 
+      "bg-green-500"
+  let text = 
+       status === AppointmentEnum.PENDING 
+    || status === AppointmentEnum.NOT_AVAILABLE 
+    || status === AppointmentEnum.APPROVED
+    ? 
+      "Por atender"
+    : 
+      "Completada"
+
+  return(
+    <div className="w-full flex justify-end items-center gap-2">
+      <p className='font-light text-[12px] text-gray-700'>{text}</p>
+      <span className={twMerge([
+        "w-2 h-2 rounded-full",
+        color
+      ])}></span>
+    </div>
+  )
+}
 
 const AppointmentComponent = ({onClick, data}:{
   onClick: MouseEventHandler;
@@ -33,13 +66,7 @@ const AppointmentComponent = ({onClick, data}:{
           <p className='font-semibold text-[12px] text-slate-900 whitespace-nowrap text-ellipsis'>{hour}</p>
           {/* <Lucide icon="MoreVertical" className="w-5 h-5 text-slate-500" /> */}
         </div>
-        <div className="w-full flex justify-end items-center gap-2">
-          <p className='font-light text-[12px] text-gray-700'>{"Por atender"}</p>
-          <span className={twMerge([
-            "w-2 h-2 rounded-full",
-            "bg-yellow-500"
-          ])}></span>
-        </div>
+        <StatusComponent data={data} />
       </div>
     </div>
   )

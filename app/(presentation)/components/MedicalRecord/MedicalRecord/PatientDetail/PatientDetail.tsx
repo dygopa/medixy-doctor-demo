@@ -7,6 +7,7 @@ import Allergies from "./Allergies/Allergies";
 import History from "./History/History";
 import MainPopup from "./MainPopup/MainPopup";
 import Orders from "./Orders/Orders";
+import QrScanner from "./QrScanner/QrScanner";
 import Record from "./Record/Record";
 import Treatments from "./Treatments/Treatments";
 import VitalSigns from "./VitalSigns/VitalSigns";
@@ -91,6 +92,8 @@ export default function PatientDetails({
           />
         </div>
       </div>
+
+      <QrScanner />
 
       {isOpen && (
         <MedicalRecordProvider>

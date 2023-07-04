@@ -428,6 +428,7 @@ export default function CompanionCreate({
               handlephone(fullNumber)
             }
             onPhoneNumberBlur={(e) => console.log(e)}
+            containerClassName="intl-tel-input w-full"
             inputClassName={twMerge([
               "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
               "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",

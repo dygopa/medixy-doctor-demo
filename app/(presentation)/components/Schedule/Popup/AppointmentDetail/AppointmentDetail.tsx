@@ -6,6 +6,7 @@ import { twMerge } from 'tailwind-merge';
 import moment from 'moment';
 import { FiUser } from 'react-icons/fi';
 import Link from 'next/link';
+import { AppointmentEnum } from '(presentation)/(enum)/appointment/appointmentEnum';
 
 function AppointmentDetail({cancelFuntion, customRef}:{
     cancelFuntion: Function;
@@ -32,6 +33,38 @@ function AppointmentDetail({cancelFuntion, customRef}:{
         )
     }
 
+    const StatusComponent = ()=>{
+        
+        let status = data["estado"]
+
+        let color = 
+                status === AppointmentEnum.PENDING 
+            ||  status === AppointmentEnum.NOT_AVAILABLE 
+            || status === AppointmentEnum.APPROVED
+            ? 
+                "bg-yellow-500"
+            : 
+                "bg-green-500"
+        let text = 
+                status === AppointmentEnum.PENDING 
+            || status === AppointmentEnum.NOT_AVAILABLE 
+            || status === AppointmentEnum.APPROVED
+            ? 
+                "Por atender"
+            : 
+                "Completada"
+
+        return(
+            <div className="w-full flex justify-start items-center gap-2">
+                <p className='font-light text-sm text-gray-700'>{text}</p>
+                <span className={twMerge([
+                    'w-3 h-3 rounded-full',
+                    color
+                ])}></span>
+            </div>
+        )
+    }
+
     function formatDateBirth(){
         var years = moment().utc().diff(moment(data["fechaNacimiento"], "YYYY-MM-DD"), 'years');
         setAgeBirth(years)
@@ -54,13 +87,7 @@ function AppointmentDetail({cancelFuntion, customRef}:{
                     <p className='font-semibold text-base text-slate-900'>{data["nombres"]} {data["primerApellido"]} {data["segundoApellido"]}</p>
                     <p className='font-light text-sm text-slate-500'>Edad: {ageBirth} años</p>
                     <p className='font-light text-sm text-slate-500'>CURP: {data["curp"] ?? "-"}</p>
-                    <div className="w-full flex justify-start items-center gap-2">
-                        <p className='font-light text-sm text-gray-700'>{'Por atender'}</p>
-                        <span className={twMerge([
-                            'w-3 h-3 rounded-full',
-                            'bg-yellow-500'
-                        ])}></span>
-                    </div>
+                    <StatusComponent/>
                 </div>
             </div>
             <div className="w-full flex flex-col justify-start items-center gap-5">

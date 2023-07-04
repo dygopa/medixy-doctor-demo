@@ -214,22 +214,28 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       });
 
       var img = new Image();
-      img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
-      doc.addImage(img, "png", 10, 0, 25, 30);
+
+      if (obj.doctor.avatar?.length > 0) {
+        img.src = obj.doctor.avatar;
+        doc.addImage(img, "png", 10, 5, 25, 25);
+      } else {
+        img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
+        doc.addImage(img, "png", 10, 0, 25, 30);
+      }
 
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 35, 10);
-      doc.text(`${obj.doctor.pwaProfression}`, 35, 15);
+      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 42, 10);
+      doc.text(`${obj.doctor.pwaProfression}`, 42, 15);
 
       if (obj.doctor.pwaProfression.length > 0) {
-        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 20);
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 20);
 
-        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 27);
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 42, 27);
       } else {
-        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 15);
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 15);
 
-        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 22);
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 42, 22);
       }
 
       doc.setFontSize(13);
@@ -241,11 +247,11 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       doc.setFont("helvetica", "normal", "normal");
       doc.setTextColor(130, 130, 130);
-      doc.text(`FECHA DE IMPRESIÓN:`, 130, 40);
+      doc.text(`FECHA DE IMPRESIÓN:`, 135, 40);
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
       doc.setTextColor(0, 0, 0);
-      doc.text(`${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`, 175, 40);
+      doc.text(`${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`, 180, 40);
 
       doc.setLineWidth(0.1); 
       doc.line(10, 45, 200, 45);
@@ -364,22 +370,28 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       });
 
       var img = new Image();
-      img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
-      doc.addImage(img, "png", 10, 0, 25, 30);
+
+      if (obj.doctor.avatar?.length > 0) {
+        img.src = obj.doctor.avatar;
+        doc.addImage(img, "png", 10, 5, 25, 25);
+      } else {
+        img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
+        doc.addImage(img, "png", 10, 0, 25, 30);
+      }
 
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 35, 10);
-      doc.text(`${obj.doctor.pwaProfression}`, 35, 15);
+      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 42, 10);
+      doc.text(`${obj.doctor.pwaProfression}`, 42, 15);
 
       if (obj.doctor.pwaProfression.length > 0) {
-        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 20);
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 20);
 
-        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 27);
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 42, 27);
       } else {
-        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 15);
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 15);
 
-        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 22);
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 42, 22);
       }
 
       doc.setFontSize(11);
@@ -388,11 +400,11 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       doc.setFont("helvetica", "normal", "normal");
       doc.setTextColor(130, 130, 130);
-      doc.text(`FECHA DE IMPRESIÓN:`, 130, 40);
+      doc.text(`FECHA DE IMPRESIÓN:`, 135, 40);
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
       doc.setTextColor(0, 0, 0);
-      doc.text(`${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`, 175, 40);
+      doc.text(`${new Date().getDate()}-${new Date().getMonth() + 1}-${new Date().getFullYear()}`, 180, 40);
 
       doc.setLineWidth(0.1); 
       doc.line(10, 45, 200, 45);
@@ -443,11 +455,11 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       if (obj.medicalRecord.medicalRecordValues[1]) {
         doc.text(`${obj.medicalRecord.medicalRecordValues[1].value}`, 10, 97);
       }
+
       if (obj.medicalRecord.medicalRecordValues[2]) {
-      doc.text(`${obj.medicalRecord.medicalRecordValues[2].value}`, 10, 102);
+        doc.text(`${obj.medicalRecord.medicalRecordValues[2].value}`, 10, 102);
       }
 
-      
       doc.setLineWidth(0.1); 
       doc.line(10, 110, 200, 110);
 
@@ -458,7 +470,7 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       doc.setFontSize(10);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, 143);
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 24, 143);
 
       QRCode.toDataURL(obj.medicalRecord.medicalConsultyId.toString(),  (err, url) => {
         if (err) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
@@ -505,22 +517,28 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       });
 
       var img = new Image();
-      img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
-      doc.addImage(img, "png", 10, 0, 25, 30);
+
+      if (obj.doctor.avatar?.length > 0) {
+        img.src = obj.doctor.avatar;
+        doc.addImage(img, "png", 10, 5, 25, 25);
+      } else {
+        img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
+        doc.addImage(img, "png", 10, 0, 25, 30);
+      }
 
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 35, 10);
-      doc.text(`${obj.doctor.pwaProfression}`, 35, 15);
+      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 42, 10);
+      doc.text(`${obj.doctor.pwaProfression}`, 42, 15);
 
       if (obj.doctor.pwaProfression.length > 0) {
-        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 20);
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 20);
 
-        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 27);
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 42, 27);
       } else {
-        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 15);
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 15);
 
-        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 22);
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 42, 22);
       }
 
       doc.setFontSize(11);
@@ -562,19 +580,24 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       doc.setFont("helvetica", "normal", "normal");
       doc.setTextColor(130, 130, 130);
-      doc.text(`Nombre del paciente:`, 10, 75);
+      doc.text(`Nombre del paciente:`, 10, 72);
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
       doc.setTextColor(0, 0, 0);
-      doc.text(`${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName}`, 10, 80);
+      doc.text(`${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName}`, 10, 77);
 
       doc.setFont("helvetica", "normal", "normal");
       doc.setTextColor(130, 130, 130);
-      doc.text(`Edad:`, 85, 75);
+      doc.text(`Edad:`, 85, 72);
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
       doc.setTextColor(0, 0, 0);
-      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 80);
+      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 77);
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`A quien corresponda`, 10, 85);
 
       doc.setLineWidth(0.1); 
       doc.line(10, 88, 200, 88);
@@ -602,7 +625,7 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       doc.setFontSize(10);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, 165);
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 24, 165);
 
       QRCode.toDataURL(obj.medicalRecord.medicalConsultyId.toString(),  (err, url) => {
         if (err) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
@@ -649,22 +672,28 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       });
 
       var img = new Image();
-      img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
-      doc.addImage(img, "png", 10, 0, 25, 30);
+
+      if (obj.doctor.avatar?.length > 0) {
+        img.src = obj.doctor.avatar;
+        doc.addImage(img, "png", 10, 5, 25, 25);
+      } else {
+        img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
+        doc.addImage(img, "png", 10, 0, 25, 30);
+      }
 
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 35, 10);
-      doc.text(`${obj.doctor.pwaProfression}`, 35, 15);
+      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 42, 10);
+      doc.text(`${obj.doctor.pwaProfression}`, 42, 15);
 
       if (obj.doctor.pwaProfression.length > 0) {
-        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 20);
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 20);
 
-        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 27);
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 42, 27);
       } else {
-        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 15);
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 15);
 
-        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 22);
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 42, 22);
       }
 
       doc.setFontSize(11);
@@ -706,19 +735,24 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       doc.setFont("helvetica", "normal", "normal");
       doc.setTextColor(130, 130, 130);
-      doc.text(`Nombre del paciente:`, 10, 75);
+      doc.text(`Nombre del paciente:`, 10, 72);
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
       doc.setTextColor(0, 0, 0);
-      doc.text(`${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName}`, 10, 80);
+      doc.text(`${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName}`, 10, 77);
 
       doc.setFont("helvetica", "normal", "normal");
       doc.setTextColor(130, 130, 130);
-      doc.text(`Edad:`, 85, 75);
+      doc.text(`Edad:`, 85, 72);
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
       doc.setTextColor(0, 0, 0);
-      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 80);
+      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 77);
+
+      doc.setFontSize(10);
+      doc.setFont("helvetica", "normal", "bold");
+      doc.setTextColor(0, 0, 0);
+      doc.text(`A quien corresponda`, 10, 85);
 
       doc.setLineWidth(0.1); 
       doc.line(10, 88, 200, 88);
@@ -746,7 +780,7 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       doc.setFontSize(10);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, 165);
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 24, 165);
 
       QRCode.toDataURL(obj.medicalRecord.medicalConsultyId.toString(),  (err, url) => {
         if (err) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
@@ -793,22 +827,28 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       });
 
       var img = new Image();
-      img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
-      doc.addImage(img, "png", 10, 0, 25, 30);
+
+      if (obj.doctor.avatar?.length > 0) {
+        img.src = obj.doctor.avatar;
+        doc.addImage(img, "png", 10, 5, 25, 25);
+      } else {
+        img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
+        doc.addImage(img, "png", 10, 0, 25, 30);
+      }
 
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 35, 10);
-      doc.text(`${obj.doctor.pwaProfression}`, 35, 15);
+      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 42, 10);
+      doc.text(`${obj.doctor.pwaProfression}`, 42, 15);
 
       if (obj.doctor.pwaProfression.length > 0) {
-        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 20);
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 20);
 
-        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 27);
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 42, 27);
       } else {
-        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 35, 15);
+        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 15);
 
-        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 35, 22);
+        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 42, 22);
       }
 
       doc.setFontSize(11);
@@ -881,7 +921,7 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       doc.setFontSize(10);
       doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, 155);
+      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 24, 155);
 
       QRCode.toDataURL(obj.medicalRecord.medicalConsultyId.toString(),  (err, url) => {
         if (err) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
