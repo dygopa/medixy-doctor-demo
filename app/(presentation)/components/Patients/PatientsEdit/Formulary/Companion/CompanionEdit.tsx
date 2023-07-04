@@ -25,6 +25,7 @@ import {
 } from "../../context/EditPatientContext";
 import IntlTelInput from "react-intl-tel-input";
 import 'react-intl-tel-input/dist/main.css';
+import { getCountriesDialCodeES } from "(presentation)/(helper)/intl/intlHelper";
 
 interface IEditProps {
   companionEdit: ISubject;
@@ -463,6 +464,7 @@ export default function CompanionEdit({
                   value={values.phone}
                   onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
                   onPhoneNumberBlur={(e) => console.log(e)}
+                  countriesData={getCountriesDialCodeES()}
                   containerClassName="intl-tel-input w-full"
                   inputClassName={twMerge([
                     "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",

@@ -1,3 +1,4 @@
+import { getCountriesDialCodeES } from "(presentation)/(helper)/intl/intlHelper";
 import {
   VALIDATE_EMAIL,
   VALIDATE_NAMES,
@@ -428,6 +429,7 @@ export default function CompanionCreate({
               handlephone(fullNumber)
             }
             onPhoneNumberBlur={(e) => console.log(e)}
+            countriesData={getCountriesDialCodeES()}
             containerClassName="intl-tel-input w-full"
             inputClassName={twMerge([
               "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
