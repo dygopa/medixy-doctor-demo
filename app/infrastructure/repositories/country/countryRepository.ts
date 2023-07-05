@@ -60,7 +60,7 @@ export class CountryRepository implements ICountryRepository {
   async getCountryLocations(obj: { limit?: number | null; federalEntityId?: number | null; municipalityId?: number | null }): Promise<IGetCountryLocationsResponse | CountryFailure> {
     try {
 
-      let query = supabase.from("LocalidadesPais").select("*", { count: "exact" });
+      let query = supabase.from("LocalidadesPais").select("*", { count: "exact" }).order("nombre", {ascending: true});
 
       if (obj.federalEntityId) {
         query = query.eq("entidadFederativaId", obj.federalEntityId);
