@@ -1,11 +1,13 @@
 import { get12HoursFormat, getFullDate } from '(presentation)/(helper)/dates/datesHelper';
 import { IMedicalConsulty } from 'domain/core/entities/medicalConsultyEntity';
 import { IMedicalRecord, IMedicalRecordType, IMedicalRecordValue, IMedicalRecordValueType } from 'domain/core/entities/medicalRecordEntity';
+import { ISubject } from 'domain/core/entities/subjectEntity';
 import { IUser } from 'domain/core/entities/userEntity';
 import { MedicalRecordFailure, medicalRecordFailuresEnum } from 'domain/core/failures/medicalRecord/medicalRecordFailure';
 import { ICreateMedicalRecordResponse, IGetMedicalRecordPDFResponse, IGetMedicalRecordsResponse } from 'domain/core/response/medicalRecordResponse';
 import { medicalConsultySupabaseToMap } from 'domain/mappers/medicalConsulty/supabase/medicalConsultySupabaseMapper';
 import { fromMedicalRecordSupabaseDocumentData, fromMedicalRecordValueSupabaseDocumentData, medicalRecordSupabaseToMap, medicalRecordTypeSupabaseToMap, medicalRecordValueSupabaseToMap, medicalRecordValueTypeSupabaseToMap } from 'domain/mappers/medicalRecord/supabase/medicalRecordSupabaseMapper';
+import { subjectSupabaseToMap } from 'domain/mappers/patient/supabase/subjectSupabaseMapper';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import jsPDF from "jspdf";
 import * as QRCode from "qrcode";
@@ -56,7 +58,10 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
     try {
       let query = supabase.from("RegistrosMedicos").select(`
         *,
-        ConsultasMedicas (*),
+        ConsultasMedicas (
+          *,
+          Sujetos (*)
+        ),
         TiposRegistrosMedicos!inner(*),
         ValoresRegistrosMedicos (
           *,
@@ -107,6 +112,13 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
               if (data?.ConsultasMedicas) {
                 const medicalConsulty: IMedicalConsulty = medicalConsultySupabaseToMap(data.ConsultasMedicas);
+
+                if (data?.ConsultasMedicas?.Sujetos) {
+                  const subject: ISubject = subjectSupabaseToMap(data.ConsultasMedicas.Sujetos);
+      
+                  medicalConsulty.subject = subject;
+                  medicalRecordMap.subject = subject;
+                }
 
                 medicalRecordMap.medicalConsulty = medicalConsulty;
               }

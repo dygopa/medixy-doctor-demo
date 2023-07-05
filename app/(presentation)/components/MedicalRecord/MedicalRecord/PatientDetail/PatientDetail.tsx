@@ -75,7 +75,10 @@ export default function PatientDetails({
         </div>
 
         <div className="xl:col-span-5 col-span-12 intro-y mb-6">
-          <Orders />
+          <Orders
+            setIsOpen={setIsOpen}
+            setPopupSectionActive={setPopupSectionActive}
+          />
         </div>
 
         <div className="xl:col-span-7 col-span-12 intro-y mb-6">

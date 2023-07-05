@@ -25,33 +25,33 @@ export default function Records({
         "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
       ])}
     >
-      <div className="p-5 box h-full overflow-y-hidden">
-        <div className="flex items-center justify-between pb-1 border-b mb-2 w-full h-[36px]">
-          <div>
-            <p className="w-full text-left font-bold text-md text-slate-900">
-              Antecedentes
-            </p>
+      <div className="px-4 py-2 box h-full overflow-y-hidden">
+        <div className="flex flex-col items-start w-full h-full">
+          <div className="flex items-center justify-between pb-1 border-b mb-2 w-full h-[36px]">
+            <div>
+              <p className="w-full text-left font-bold text-md text-slate-900">
+                Antecedentes
+              </p>
+            </div>
+
+            {data.data?.length > 0 && (
+              <div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setPopupSectionActive(6);
+                    setIsOpen(true);
+                  }}
+                  className="hover:bg-dark hover:bg-opacity-10 px-2 py-1 rounded-md"
+                >
+                  <p className="font-normal text-[13px] text-slate-500 cursor-pointer">
+                    Ver más
+                  </p>
+                </button>
+              </div>
+            )}
           </div>
 
-          {data.data?.length > 0 && (
-            <div>
-              <button
-                type="button"
-                onClick={() => {
-                  setPopupSectionActive(6);
-                  setIsOpen(true);
-                }}
-                className="hover:bg-dark hover:bg-opacity-10 px-2 py-1 rounded-md"
-              >
-                <p className="font-normal text-[13px] text-slate-500 cursor-pointer">
-                  Ver más
-                </p>
-              </button>
-            </div>
-          )}
-        </div>
-
-        <div className="col-span-12 overflow-auto intro-y lg:overflow-visible z-0">
           <RecordList />
         </div>
       </div>

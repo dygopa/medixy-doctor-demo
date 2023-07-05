@@ -25,9 +25,9 @@ export default function History({
         "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
       ])}
     >
-      <div className="p-4 box h-full overflow-y-hidden">
-        <div>
-          <div className="flex items-center justify-between pb-1 border-b mb-2 w-full h-[36px]">
+      <div className="px-4 box h-full overflow-y-hidden">
+        <div className="flex flex-col items-start w-full h-full">
+          <div className="flex items-center justify-between py-1 border-b mb-2 w-full h-[45px]">
             <div>
               <p className="w-full text-left font-bold text-md text-slate-900">
                 Historial de consultas
@@ -51,10 +51,10 @@ export default function History({
               </div>
             )}
           </div>
-        </div>
 
-        <div className="col-span-12 overflow-auto intro-y lg:overflow-visible z-0">
-          <HistoryTable />
+          <div className="col-span-12 overflow-auto intro-y lg:overflow-visible z-0 w-full">
+            <HistoryTable />
+          </div>
         </div>
       </div>
     </div>

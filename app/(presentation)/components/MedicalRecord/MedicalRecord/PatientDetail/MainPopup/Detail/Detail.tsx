@@ -9,6 +9,7 @@ import Companion from "./Companion/Companion";
 import Patient from "./Patient/Patient";
 import clsx from "clsx";
 import { IAppointment } from "domain/core/entities/appointmentEntity";
+import Orders from "./Orders/Orders";
 
 interface IDetailProps {
   subjectId: number;
@@ -31,6 +32,7 @@ export default function Detail({
     "Signos vítales",
     "Tratamientos",
     "Antecedentes",
+    "Ordenes",
   ];
 
   const TabComponentMobile = ({
@@ -97,6 +99,8 @@ export default function Detail({
         return <Treatments subjectId={subjectId} />;
       case 6:
         return <Records subjectId={subjectId} />;
+      case 7:
+        return <Orders subjectId={subjectId} />;
 
       default:
         return <div />;
