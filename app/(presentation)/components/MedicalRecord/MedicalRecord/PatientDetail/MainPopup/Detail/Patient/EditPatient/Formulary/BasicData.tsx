@@ -1,4 +1,8 @@
-import { VALIDATE_EMAIL, VALIDATE_NAMES, VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
+import {
+  VALIDATE_EMAIL,
+  VALIDATE_NAMES,
+  VALIDATE_NUMBERS,
+} from "(presentation)/(utils)/errors-validation";
 import {
   FormInput,
   FormSelect,
@@ -7,8 +11,9 @@ import { Dispatch, SetStateAction, useEffect } from "react";
 import { FiUser } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import IntlTelInput from "react-intl-tel-input";
-import 'react-intl-tel-input/dist/main.css';
+import "react-intl-tel-input/dist/main.css";
 import { getCountriesDialCodeES } from "(presentation)/(helper)/intl/intlHelper";
+import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
 
 interface IBasicDataProps {
   values: {
@@ -128,14 +133,14 @@ export default function BasicData({
   };
 
   const handleage = (value: string) => {
-    setValues({ ...values, birthDate: value })
+    setValues({ ...values, birthDate: value });
     if (value.length < 2) {
       setErrors((previousState: any) => {
         return {
           ...previousState,
           age: "La fecha de nacimiento es obligatorio",
-        }
-      })
+        };
+      });
       return true;
     }
     setErrors({ ...errors, age: "" });
@@ -209,7 +214,7 @@ export default function BasicData({
             <div className="lg:w-[70%] grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 justify-start items-center gap-3 lg:mt-0 mt-6">
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Nombre(s){" "}<span className="text-primary font-bold">*</span>
+                  Nombre(s) <span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"text"}
@@ -225,7 +230,8 @@ export default function BasicData({
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Apellido paterno{" "}<span className="text-primary font-bold">*</span>
+                  Apellido paterno{" "}
+                  <span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"text"}
@@ -270,7 +276,8 @@ export default function BasicData({
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Fecha de nacimiento{" "}<span className="text-primary font-bold">*</span>
+                  Fecha de nacimiento{" "}
+                  <span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"date"}
@@ -331,9 +338,7 @@ export default function BasicData({
                   placeholder="Correo Electrónico"
                   min={0}
                   className="form-control w-full"
-                  onChange={(e: any) =>
-                    handleEmail(e.target.value)
-                  }
+                  onChange={(e: any) => handleEmail(e.target.value)}
                 />
                 {errors.email.length > 0 && (
                   <span className="text-red-500">{errors.email}</span>
@@ -341,15 +346,19 @@ export default function BasicData({
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Teléfono{" "}<span className="text-primary font-bold">*</span>
+                  Teléfono <span className="text-primary font-bold">*</span>
                 </p>
-                <IntlTelInput
-                  preferredCountries={['mx']}
+                <IntlPhoneNumberInput
+                  preferredCountries={["mx"]}
                   defaultValue={values.phone}
                   value={values.phone}
-                  onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
+                  onPhoneNumberChange={(
+                    isValid,
+                    value,
+                    countryData,
+                    fullNumber
+                  ) => handlephone(fullNumber)}
                   onPhoneNumberBlur={(e) => console.log(e)}
-                  countriesData={getCountriesDialCodeES()}
                   containerClassName="intl-tel-input w-full"
                   inputClassName={twMerge([
                     "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",

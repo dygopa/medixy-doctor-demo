@@ -1,20 +1,35 @@
 import { getCountriesDialCodeES } from "(presentation)/(helper)/intl/intlHelper";
-import { VALIDATE_EMAIL, VALIDATE_NAMES, VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
+import {
+  VALIDATE_EMAIL,
+  VALIDATE_NAMES,
+  VALIDATE_NUMBERS,
+} from "(presentation)/(utils)/errors-validation";
 import {
   FormInput,
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
+import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
 import { ICountryLocation } from "domain/core/entities/countryEntity";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import moment from "moment";
 import Image from "next/image";
-import { ChangeEvent, Dispatch, SetStateAction, useContext, useEffect, useRef } from "react";
+import {
+  ChangeEvent,
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useRef,
+} from "react";
 import { FiUser } from "react-icons/fi";
 import IntlTelInput from "react-intl-tel-input";
-import 'react-intl-tel-input/dist/main.css';
+import "react-intl-tel-input/dist/main.css";
 import { twMerge } from "tailwind-merge";
-import { EditPatientContext, IEditPatientContext } from "../context/EditPatientContext";
+import {
+  EditPatientContext,
+  IEditPatientContext,
+} from "../context/EditPatientContext";
 
 interface IBasicDataProps {
   values: {
@@ -97,7 +112,8 @@ export default function BasicData({
   errors,
   setErrors,
 }: IBasicDataProps) {
-  const { state, actions, dispatch } = useContext<IEditPatientContext>(EditPatientContext);
+  const { state, actions, dispatch } =
+    useContext<IEditPatientContext>(EditPatientContext);
   const { updateAvatar } = actions;
   const { data, loading, error, successful } = state.updateAvatar;
 
@@ -178,15 +194,15 @@ export default function BasicData({
   };
 
   const handleage = (value: string) => {
-    setValues({ ...values, birthDate: value })
+    setValues({ ...values, birthDate: value });
     if (value.length < 2) {
       setErrors((previousState: any) => {
         return {
           ...previousState,
           age: "La fecha de nacimiento es obligatorio",
-        }
-      })
-      console.log(errors.age)
+        };
+      });
+      console.log(errors.age);
       return true;
     }
     setErrors({ ...errors, age: "" });
@@ -239,90 +255,92 @@ export default function BasicData({
         </div>
         <div className="w-full lg:flex justify-between items-center gap-4">
           <div className="lg:w-[30%] flex flex-col justify-center items-center text-center gap-3">
-          {values?.pictureUrl?.length > 0 ? (
-                <>
-                  <div className="w-[150px] h-[150px] relative flex justify-center hover:border hover:border-primary rounded-full">
-                    <input
-                      accept="image/png, image/jpeg, application/pdf"
-                      type="file"
-                      ref={avatarRef}
-                      className="opacity-0 top-0 h-full z-50 cursor-pointer"
-                      onChange={(e) => {
-                        handleChangeAvatar(e);
-                      }}
-                    />
-                    <Image
-                      className="object-cover rounded-full "
-                      src={values?.pictureUrl}
-                      alt=""
-                      fill
-                    />
-                  </div>
-
-                  <p className="text-[13px] text-slate-500 font-medium">
-                    Recomendado (.png, .jpg, .jpeg)
-                  </p>
-                  {loading && (
-                    <p className="text-[13px] text-slate-800 font-bold">
-                      Guardando foto del paciente...
-                    </p>
-                  )}
-                  {error?.code && (
-                    <p className="text-[13px] text-red-500">
-                      Ocurrio un error guardando la foto del paciente, intentelo nuevamente.
-                    </p>
-                  )}
-                  {successful && (
-                    <p className="text-[13px] text-slate-800 font-bold">
-                      Foto guardada correctamente. Recargue para ver el cambio.
-                    </p>
-                  )}
-                </>
-              ) : (
-                <>
+            {values?.pictureUrl?.length > 0 ? (
+              <>
+                <div className="w-[150px] h-[150px] relative flex justify-center hover:border hover:border-primary rounded-full">
                   <input
                     accept="image/png, image/jpeg, application/pdf"
                     type="file"
                     ref={avatarRef}
-                    className="hidden"
+                    className="opacity-0 top-0 h-full z-50 cursor-pointer"
                     onChange={(e) => {
                       handleChangeAvatar(e);
                     }}
                   />
-                  <div
-                    onClick={handleClickRef}
-                    className={twMerge([
-                      "transition w-[10rem] h-[10rem] rounded-full border flex flex-col justify-center items-center cursor-pointer",
-                      "hover:bg-slate-200",
-                    ])}
-                  >
-                    <FiUser size={60} />
-                  </div>
-                  <p className="text-[13px] text-slate-500 font-medium">
-                    Recomendado (.png, .jpg, .jpeg)
+                  <Image
+                    className="object-cover rounded-full "
+                    src={values?.pictureUrl}
+                    alt=""
+                    fill
+                  />
+                </div>
+
+                <p className="text-[13px] text-slate-500 font-medium">
+                  Recomendado (.png, .jpg, .jpeg)
+                </p>
+                {loading && (
+                  <p className="text-[13px] text-slate-800 font-bold">
+                    Guardando foto del paciente...
                   </p>
-                  {loading && (
-                    <p className="text-[13px] text-slate-800 font-bold">
-                      Guardando su foto de perfil...
-                    </p>
-                  )}
-                  {error?.code && (
-                    <p className="text-[13px] text-red-500">
-                      Ocurrio un error guardando la foto del paciente, intentelo nuevamente.
-                    </p>
-                  )}
-                  {successful && (
-                    <p className="text-[13px] text-slate-800 font-bold">
-                      Foto guardada correctamente. Recargue para ver el cambio.
-                    </p>
-                  )}
-                </>
-              )}
+                )}
+                {error?.code && (
+                  <p className="text-[13px] text-red-500">
+                    Ocurrio un error guardando la foto del paciente, intentelo
+                    nuevamente.
+                  </p>
+                )}
+                {successful && (
+                  <p className="text-[13px] text-slate-800 font-bold">
+                    Foto guardada correctamente. Recargue para ver el cambio.
+                  </p>
+                )}
+              </>
+            ) : (
+              <>
+                <input
+                  accept="image/png, image/jpeg, application/pdf"
+                  type="file"
+                  ref={avatarRef}
+                  className="hidden"
+                  onChange={(e) => {
+                    handleChangeAvatar(e);
+                  }}
+                />
+                <div
+                  onClick={handleClickRef}
+                  className={twMerge([
+                    "transition w-[10rem] h-[10rem] rounded-full border flex flex-col justify-center items-center cursor-pointer",
+                    "hover:bg-slate-200",
+                  ])}
+                >
+                  <FiUser size={60} />
+                </div>
+                <p className="text-[13px] text-slate-500 font-medium">
+                  Recomendado (.png, .jpg, .jpeg)
+                </p>
+                {loading && (
+                  <p className="text-[13px] text-slate-800 font-bold">
+                    Guardando su foto de perfil...
+                  </p>
+                )}
+                {error?.code && (
+                  <p className="text-[13px] text-red-500">
+                    Ocurrio un error guardando la foto del paciente, intentelo
+                    nuevamente.
+                  </p>
+                )}
+                {successful && (
+                  <p className="text-[13px] text-slate-800 font-bold">
+                    Foto guardada correctamente. Recargue para ver el cambio.
+                  </p>
+                )}
+              </>
+            )}
           </div>
           <div className="lg:w-[70%] grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 justify-start items-center gap-3 lg:mt-0 mt-6">
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Nombre(s){" "}<span className="text-primary font-bold">*</span>
+                Nombre(s) <span className="text-primary font-bold">*</span>
               </p>
               <FormInput
                 type={"text"}
@@ -338,7 +356,8 @@ export default function BasicData({
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Apellido paterno{" "}<span className="text-primary font-bold">*</span>
+                Apellido paterno{" "}
+                <span className="text-primary font-bold">*</span>
               </p>
               <FormInput
                 type={"text"}
@@ -383,7 +402,8 @@ export default function BasicData({
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Fecha de nacimiento{" "}<span className="text-primary font-bold">*</span>
+                Fecha de nacimiento{" "}
+                <span className="text-primary font-bold">*</span>
               </p>
               <FormInput
                 type={"date"}
@@ -469,15 +489,19 @@ export default function BasicData({
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Teléfono{" "}<span className="text-primary font-bold">*</span>
+                Teléfono <span className="text-primary font-bold">*</span>
               </p>
-              <IntlTelInput
-                preferredCountries={['mx']}
+              <IntlPhoneNumberInput
+                preferredCountries={["mx"]}
                 defaultValue={values.phone}
                 value={values.phone}
-                onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
+                onPhoneNumberChange={(
+                  isValid,
+                  value,
+                  countryData,
+                  fullNumber
+                ) => handlephone(fullNumber)}
                 onPhoneNumberBlur={(e) => console.log(e)}
-                countriesData={getCountriesDialCodeES()}
                 containerClassName="intl-tel-input w-full"
                 inputClassName={twMerge([
                   "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
