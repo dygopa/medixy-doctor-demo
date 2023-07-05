@@ -11,7 +11,7 @@ export default interface IMunicipalityRepository {
 export class MunicipalityRepository implements IMunicipalityRepository {
   async getMunicipalities(obj: { limit?: number | null; federalEntityId?: number | null }): Promise<IGetMunicipalitiesResponse | MunicipalityFailure > {
     try {
-      let query = supabase.from("Municipios").select("*", { count: "exact" });
+      let query = supabase.from("Municipios").select("*", { count: "exact" }).order("nombre", {ascending: true});
 
       if (obj.federalEntityId) {
         query = query.eq("entidadFederativaId", obj.federalEntityId);
