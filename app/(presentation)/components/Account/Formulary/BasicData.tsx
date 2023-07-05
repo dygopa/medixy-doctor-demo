@@ -257,7 +257,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Escribe tu apellido paterno..."
+                  placeholder="Apellido Paterno"
                   min={0}
                   defaultValue={user?.firstName}
                   className="form-control w-full"
@@ -273,7 +273,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Escribe tu apellido materno..."
+                  placeholder="Apellido Materno"
                   min={0}
                   defaultValue={user?.lastName}
                   className="form-control w-full"

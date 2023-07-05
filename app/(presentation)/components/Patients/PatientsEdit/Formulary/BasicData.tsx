@@ -361,7 +361,7 @@ export default function BasicData({
               </p>
               <FormInput
                 type={"text"}
-                placeholder="Apellido paterno..."
+                placeholder="Apellido paterno"
                 defaultValue={values.lastname}
                 min={0}
                 className="form-control w-full"
@@ -377,7 +377,7 @@ export default function BasicData({
               </p>
               <FormInput
                 type={"text"}
-                placeholder="Apellido materno..."
+                placeholder="Apellido materno"
                 defaultValue={values.motherlastname}
                 min={0}
                 className="form-control w-full"

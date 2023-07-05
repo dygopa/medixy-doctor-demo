@@ -235,7 +235,7 @@ export default function CompanionCreate({
               <FormInput
                 type="text"
                 onChange={(e: any) => handlelastname(e.target.value)}
-                placeholder="Primer apellido"
+                placeholder="Apellido paterno"
               />
               {errors.lastname.length > 0 && (
                 <span className="text-red-500">{errors.lastname}</span>
@@ -248,7 +248,7 @@ export default function CompanionCreate({
                 onChange={(e: any) =>
                   setValues({ ...values, motherlastname: e.target.value })
                 }
-                placeholder="Segundo apellido"
+                placeholder="Apellido materno"
               />
             </div>
           </div>
