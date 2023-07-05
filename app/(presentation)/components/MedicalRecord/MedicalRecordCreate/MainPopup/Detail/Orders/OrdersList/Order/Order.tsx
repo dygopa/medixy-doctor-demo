@@ -2,7 +2,7 @@ import {
   medicalRecordTypeOrderEnum,
   MedicalRecordTypesOrdersEnum,
 } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
-import MedicalRecordProvider from "(presentation)/components/MedicalRecord/MedicalRecord/context/MedicalRecordContext";
+import MedicalRecordCreateProvider from "(presentation)/components/MedicalRecord/MedicalRecordCreate/context/MedicalRecordCreateContext";
 import { IMedicalRecord } from "domain/core/entities/medicalRecordEntity";
 import DownloadPDF from "./DownloadPDF/DownloadPDF";
 
@@ -70,8 +70,8 @@ export default function Order({ medicalRecord }: IOrderProps) {
   };
 
   return (
-    <div className="flex items-center justify-between w-full">
-      <div className="flex items-center w-full">
+    <div className="lg:flex md:flex block items-center justify-between">
+      <div className="flex items-center">
         <div className="mr-8">
           <p className="text-slate-500 font-normal lg:text-md">
             {new Date(medicalRecord.medicalConsulty.consultationDate).getDate()}
@@ -93,11 +93,11 @@ export default function Order({ medicalRecord }: IOrderProps) {
         </div>
       </div>
 
-      {/* <div className="flex items-center">
-        <MedicalRecordProvider>
+      <div className="flex items-center lg:mt-0 md:mt-0 mt-3">
+        <MedicalRecordCreateProvider>
           <DownloadPDF medicalRecord={medicalRecord} />
-        </MedicalRecordProvider>
-            </div> */}
+        </MedicalRecordCreateProvider>
+      </div>
     </div>
   );
 }

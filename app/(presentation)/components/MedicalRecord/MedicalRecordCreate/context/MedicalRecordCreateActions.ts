@@ -1,7 +1,7 @@
 import { ISubject } from "domain/core/entities/subjectEntity";
 import SubjectsUseCase from "domain/useCases/subject/subjectUseCase";
 import { Dispatch } from "react";
-import {  MedicalRecordTypesNumberEnum, MedicalRecordTypesOrdersEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
+import {  MedicalRecordCategoriesIdEnum, MedicalRecordTypesNumberEnum, MedicalRecordTypesOrdersEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse, IGetMedicalConsultyPDFResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
@@ -30,6 +30,7 @@ export interface IMedicalRecordCreateActions {
     getMedicalConsulties: (obj: { subjectId: number, sort: Object; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getTreatments: (obj: { subjectId: number, sort?: Object; limit?: number | null }) => (dispatch: Dispatch<any>) => {};
     getAllergies: (obj: { subjectId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
+    getOrders: (obj: { subjectId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getMedicalRecords: (obj: { subjectId: number; medicalRecordCategoryId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getFederalEntities: () => (dispatch: Dispatch<any>) => {};
     editSubject: (subject: ISubject) => (dispatch: Dispatch<any>) => {};
@@ -158,6 +159,22 @@ const getMedicalRecords = (obj: { subjectId: number; medicalRecordCategoryId: nu
     dispatch({ type: "GET_MEDICAL_RECORDS_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
     dispatch({ type: "GET_MEDICAL_RECORDS_ERROR", payload: { error: error } });
+  }
+}
+
+const getOrders = (obj: { subjectId: number; limit?: number | null; }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_ORDERS_LOADING"});
+
+    const res: IGetMedicalRecordsResponse = await new MedicalRecordUseCase().getMedicalRecords({
+      limit: obj.limit,
+      subjectId: obj.subjectId,
+      medicalRecordCategory: MedicalRecordCategoriesIdEnum.ORDERS,
+    });
+
+    dispatch({ type: "GET_ORDERS_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "GET_ORDERS_ERROR", payload: { error: error } });
   }
 }
 
@@ -294,6 +311,7 @@ export const actions: IMedicalRecordCreateActions = {
     getMedicalConsulties,
     getTreatments,
     getAllergies,
+    getOrders,
     getMedicalRecords,
     getFederalEntities,
     editSubject,

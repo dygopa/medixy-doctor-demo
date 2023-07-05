@@ -25,6 +25,7 @@ export interface IMedicalRecordCreateState {
     treatments: IGetTreatmentsState;
     allergies: IGetAllergiesState;
     medicalRecords: IGetMedicalRecordsState;
+    orders: IGetOrdersState;
     getFederalEntities: IGetFederalEntitiesState;
     editSubject: IUpdateSubjectState;
     companions: IGetCompanionsState;
@@ -85,6 +86,13 @@ interface IGetAllergiesState {
 }
 
 interface IGetMedicalRecordsState {
+    data: IGetMedicalRecordsResponse;
+    loading: boolean;
+    successful: boolean;
+    error: MedicalRecordFailure | null; 
+}
+
+interface IGetOrdersState {
     data: IGetMedicalRecordsResponse;
     loading: boolean;
     successful: boolean;
@@ -183,6 +191,12 @@ export const initialState: IMedicalRecordCreateState = {
         error: null,
     },
     allergies: {
+        data: {} as IGetMedicalRecordsResponse,
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    orders: {
         data: {} as IGetMedicalRecordsResponse,
         loading: false,
         successful: false,
