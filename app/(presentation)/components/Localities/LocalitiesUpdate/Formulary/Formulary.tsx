@@ -267,6 +267,52 @@ export default function Formulary({
                 </div>
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                    Tipo de localidad
+                  </p>
+                  <FormSelect
+                    className="form-control lg:w-[70%]"
+                    defaultValue={formData.isVirtual}
+                    value={formData.isVirtual}
+                    onChange={(e: any) =>
+                      setFormData({
+                        ...formData,
+                        isVirtual: +e.target.value,
+                      })
+                    }
+                  >
+                    <option value={0}>
+                      Físico
+                    </option>
+                    <option value={1}>
+                      Virtual
+                    </option>
+                  </FormSelect>
+                </div>
+                <div className="lg:flex justify-between items-start relative w-full gap-3">
+                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                    Estado
+                  </p>
+                  <FormSelect
+                    className="form-control lg:w-[70%]"
+                    defaultValue={formData.isPublic}
+                    value={formData.isPublic}
+                    onChange={(e: any) =>
+                      setFormData({
+                        ...formData,
+                        isPublic: +e.target.value,
+                      })
+                    }
+                  >
+                    <option value={1}>
+                      Público
+                    </option>
+                    <option value={0}>
+                      Privado
+                    </option>
+                  </FormSelect>
+                </div>
+                <div className="lg:flex justify-between items-start relative w-full gap-3">
+                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     Nro. de consultorio
                   </p>
                   <FormInput
@@ -430,52 +476,6 @@ export default function Formulary({
                     type="file"
                     className="form-control lg:w-[70%]"
                   />
-                </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Tipo de localidad
-                  </p>
-                  <FormSelect
-                    className="form-control lg:w-[70%]"
-                    defaultValue={formData.isVirtual}
-                    value={formData.isVirtual}
-                    onChange={(e: any) =>
-                      setFormData({
-                        ...formData,
-                        isVirtual: +e.target.value,
-                      })
-                    }
-                  >
-                    <option value={0}>
-                      Físico
-                    </option>
-                    <option value={1}>
-                      Virtual
-                    </option>
-                  </FormSelect>
-                </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Estado
-                  </p>
-                  <FormSelect
-                    className="form-control lg:w-[70%]"
-                    defaultValue={formData.isPublic}
-                    value={formData.isPublic}
-                    onChange={(e: any) =>
-                      setFormData({
-                        ...formData,
-                        isPublic: +e.target.value,
-                      })
-                    }
-                  >
-                    <option value={1}>
-                      Público
-                    </option>
-                    <option value={0}>
-                      Privado
-                    </option>
-                  </FormSelect>
                 </div>
               </div>
             )}
