@@ -1,17 +1,21 @@
 import Button from "(presentation)/components/core/BaseComponents/Button";
+import {
+  IMedicalRecordCreateContext,
+  MedicalRecordCreateContext,
+} from "(presentation)/components/MedicalRecord/MedicalRecordCreate/context/MedicalRecordCreateContext";
 import { IMedicalRecord } from "domain/core/entities/medicalRecordEntity";
 import React, { useContext, useEffect, useState } from "react";
-import {
-  IMedicalRecordContext,
-  MedicalRecordContext,
-} from "../../../context/MedicalRecordContext";
 import Order from "./Order/Order";
 
-export default function OrdersList() {
-  const { state, actions, dispatch } =
-    useContext<IMedicalRecordContext>(MedicalRecordContext);
+interface IOrdersListProps {
+  subjectId: number;
+}
+
+export default function OrdersList({ subjectId }: IOrdersListProps) {
+  const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
+    MedicalRecordCreateContext
+  );
   const { getOrders } = actions;
-  const { data: subject } = state.subject;
   const { data, loading, error, successful } = state.orders;
 
   const [orders, setOrders] = useState<IMedicalRecord[]>([]);
@@ -35,10 +39,9 @@ export default function OrdersList() {
   };
 
   const onGetOrdersDispatch = () => {
-    if (subject?.subjectId) {
+    if (subjectId) {
       getOrders({
-        subjectId: subject.subjectId,
-        limit: 6,
+        subjectId: subjectId,
       })(dispatch);
     }
   };
@@ -92,11 +95,11 @@ export default function OrdersList() {
   if (!data.data) return <div />;
 
   return (
-    <div className="mt-4 w-full">
+    <div className="mt-4">
       {orders.map((medicalRecord: IMedicalRecord) => (
         <React.Fragment key={medicalRecord.id}>
           {medicalRecord.medicalRecordValues.length > 0 && (
-            <div className="mb-4 w-full">
+            <div className="mb-4">
               <Order medicalRecord={medicalRecord} />
             </div>
           )}
