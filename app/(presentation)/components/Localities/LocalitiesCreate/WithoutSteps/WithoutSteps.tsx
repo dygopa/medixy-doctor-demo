@@ -210,7 +210,7 @@ export default function WithoutSteps({
               </div>
               <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Nombre del consultorio
+                  Nombre del consultorio 
                   <span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
@@ -223,6 +223,48 @@ export default function WithoutSteps({
                     setFormData({ ...formData, name: e.target.value });
                   }}
                 />
+              </div>
+              <div className="lg:flex justify-between items-center relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Tipo de localidad <span className="text-primary font-bold">*</span>
+                </p>
+                <FormSelect
+                  className="form-control lg:w-[70%]"
+                  onChange={(e: any) =>
+                    setFormData({
+                      ...formData,
+                      isVirtual: +e.target.value,
+                    })
+                  }
+                >
+                  <option value={0}>
+                    Físico
+                  </option>
+                  <option value={1}>
+                    Virtual
+                  </option>
+                </FormSelect>
+              </div>
+              <div className="lg:flex justify-between items-center relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Estado <span className="text-primary font-bold">*</span>
+                </p>
+                <FormSelect
+                  className="form-control lg:w-[70%]"
+                  onChange={(e: any) =>
+                    setFormData({
+                      ...formData,
+                      isPublic: +e.target.value,
+                    })
+                  }
+                >
+                  <option value={1}>
+                    Público
+                  </option>
+                  <option value={0}>
+                    Privado
+                  </option>
+                </FormSelect>
               </div>
               <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
@@ -345,7 +387,7 @@ export default function WithoutSteps({
                   </FormSelect>
               </div>
 
-              <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
+              <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Ciudad <span className="text-primary font-bold">*</span>
                 </p>
@@ -360,90 +402,47 @@ export default function WithoutSteps({
                   }}
                 />
               </div>
-            </div>
-
-            <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
-              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Calle
-              </p>
-              <FormInput
-                type={"text"}
-                placeholder="Escribe la calle..."
-                min={0}
-                defaultValue={formData.street}
-                className="form-control lg:w-[70%]"
-                onChange={(e: any) => {
-                  setFormData({ ...formData, street: e.target.value });
-                }}
-              />
-            </div>
-            {/*<div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
-              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Dirección
-                <span className="text-primary font-bold">*</span>
-              </p>
-              <FormInput
-                type={"text"}
-                placeholder="Escribe la dirección del consultorio..."
-                min={0}
-                value={formData.address}
-                className="form-control lg:w-[70%]"
-                onChange={(e: any) => {
-                  setFormData({ ...formData, address: e.target.value });
-                }}
-              />
-              </div>*/}
-            <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
-              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Cargar imagen
-              </p>
-              <FormInput
-                onChange={(e) => handleChangeMedia(e)}
-                type="file"
-                className="form-control lg:w-[70%]"
-              />
-            </div>
-            <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
-              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Tipo de localidad
-              </p>
-              <FormSelect
-                className="form-control lg:w-[70%]"
-                onChange={(e: any) =>
-                  setFormData({
-                    ...formData,
-                    isVirtual: +e.target.value,
-                  })
-                }
-              >
-                <option value={0}>
-                  Físico
-                </option>
-                <option value={1}>
-                  Virtual
-                </option>
-              </FormSelect>
-            </div>
-            <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
-              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Estado
-              </p>
-              <FormSelect
-                className="form-control lg:w-[70%]"
-                onChange={(e: any) =>
-                  setFormData({
-                    ...formData,
-                    isPublic: +e.target.value,
-                  })
-                }
-              >
-                <option value={1}>
-                  Público
-                </option>
-                <option value={0}>
-                  Privado
-                </option>
-              </FormSelect>
+              <div className="lg:flex justify-between items-center relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Calle
+                </p>
+                <FormInput
+                  type={"text"}
+                  placeholder="Escribe la calle..."
+                  min={0}
+                  defaultValue={formData.street}
+                  className="form-control lg:w-[70%]"
+                  onChange={(e: any) => {
+                    setFormData({ ...formData, street: e.target.value });
+                  }}
+                />
+              </div>
+              {/*<div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Dirección
+                  <span className="text-primary font-bold">*</span>
+                </p>
+                <FormInput
+                  type={"text"}
+                  placeholder="Escribe la dirección del consultorio..."
+                  min={0}
+                  value={formData.address}
+                  className="form-control lg:w-[70%]"
+                  onChange={(e: any) => {
+                    setFormData({ ...formData, address: e.target.value });
+                  }}
+                />
+                </div>*/}
+              <div className="lg:flex justify-between items-center relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Cargar imagen
+                </p>
+                <FormInput
+                  onChange={(e) => handleChangeMedia(e)}
+                  type="file"
+                  className="form-control lg:w-[70%]"
+                />
+              </div>
             </div>
           </div>
         </div>
