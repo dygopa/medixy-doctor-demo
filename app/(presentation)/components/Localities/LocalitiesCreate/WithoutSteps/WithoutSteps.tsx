@@ -75,6 +75,8 @@ export default function WithoutSteps({
     federalEntity: 0,
     municipality: 0,
     countryLocation: 0,
+    isVirtual: 0,
+    isPublic: 1,
     street: "",
     address: "",
     media: {
@@ -96,6 +98,8 @@ export default function WithoutSteps({
       federalEntityId: formData.federalEntity,
     })(dispatch);
   }, [formData.federalEntity]);
+
+  console.log(formData);
 
   useMemo(() => {
     if (successfulMunicipalities) {
@@ -205,7 +209,7 @@ export default function WithoutSteps({
                   Definición del consultorio
                 </p>
               </div>
-              <div className="lg:flex justify-between items-start relative w-full gap-3">
+              <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Nombre del consultorio
                   <span className="text-primary font-bold">*</span>
@@ -221,7 +225,7 @@ export default function WithoutSteps({
                   }}
                 />
               </div>
-              <div className="lg:flex justify-between items-start relative w-full gap-3">
+              <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Nro. de consultorio
                 </p>
@@ -236,7 +240,7 @@ export default function WithoutSteps({
                   }}
                 />
               </div>
-              <div className="lg:flex justify-between items-start relative w-full gap-3">
+              <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   CLUES
                 </p>
@@ -251,7 +255,7 @@ export default function WithoutSteps({
                   }}
                 />
               </div>
-              <div className="lg:flex justify-between items-start relative w-full gap-3">
+              <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Código postal{" "}
                   <span className="text-primary font-bold">*</span>
@@ -374,7 +378,7 @@ export default function WithoutSteps({
                 }}
               />
             </div>
-            <div className="lg:flex justify-between items-start relative w-full gap-3 mb-4">
+            <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                 Dirección
                 <span className="text-primary font-bold">*</span>
@@ -390,8 +394,7 @@ export default function WithoutSteps({
                 }}
               />
             </div>
-            <div className="flex justify-between items-center relative w-full gap-3"></div>
-            <div className="lg:flex justify-between items-start relative w-full gap-3">
+            <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                 Cargar imagen
               </p>
@@ -400,6 +403,48 @@ export default function WithoutSteps({
                 type="file"
                 className="form-control lg:w-[70%]"
               />
+            </div>
+            <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Tipo de localidad
+              </p>
+              <FormSelect
+                className="form-control lg:w-[70%]"
+                onChange={(e: any) =>
+                  setFormData({
+                    ...formData,
+                    isVirtual: +e.target.value,
+                  })
+                }
+              >
+                <option value={0}>
+                  Físico
+                </option>
+                <option value={1}>
+                  Virtual
+                </option>
+              </FormSelect>
+            </div>
+            <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Estado
+              </p>
+              <FormSelect
+                className="form-control lg:w-[70%]"
+                onChange={(e: any) =>
+                  setFormData({
+                    ...formData,
+                    isPublic: +e.target.value,
+                  })
+                }
+              >
+                <option value={1}>
+                  Público
+                </option>
+                <option value={0}>
+                  Privado
+                </option>
+              </FormSelect>
             </div>
           </div>
         </div>

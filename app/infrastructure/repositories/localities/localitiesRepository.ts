@@ -128,6 +128,8 @@ export class LocalitiesRepository implements ILocalitiesRepository {
         municipality: obj["municipality"] ?? null,
         country_location: obj["countryLocation"] ?? null,
         street: obj["street"] ?? null,
+        is_public: obj["isPublic"] === 1 ? true : false,
+        is_virtual: obj["isVirtual"] === 1 ? true : false,
       });
 
       var requestOptions = {
@@ -177,7 +179,9 @@ export class LocalitiesRepository implements ILocalitiesRepository {
           street: obj["street"] ?? null,
           city: obj["city"] ?? "",
           latitude: obj["latitude"] ?? 0,
-          longitude: obj["longitude"] ?? 0
+          longitude: obj["longitude"] ?? 0,
+          is_public: obj["isPublic"] === 1 ? true : false,
+          is_virtual: obj["isVirtual"] === 1 ? true : false,
       });
 
       console.log(raw)
