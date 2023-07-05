@@ -67,7 +67,7 @@ export default function TreatmentsTable() {
   if (!treatments.data) return <div />;
 
   return (
-    <div className="">
+    <div className="w-full">
       {treatments.data.map((treatment: ITreatment) => (
         <div key={treatment.id} className="overflow-x-auto w-full">
           <Treatment treatment={treatment} />

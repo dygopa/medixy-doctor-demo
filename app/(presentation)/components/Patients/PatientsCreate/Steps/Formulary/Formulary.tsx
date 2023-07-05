@@ -20,13 +20,19 @@ import { ISubject } from "domain/core/entities/subjectEntity";
 import { subjectFailuresEnum } from "domain/core/failures/subject/subjectFailure";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { useRouter } from "next/navigation";
-import { VALIDATE_EMAIL, VALIDATE_NAMES, VALIDATE_NUMBERS, VALIDATE_STRING } from "(presentation)/(utils)/errors-validation";
+import {
+  VALIDATE_EMAIL,
+  VALIDATE_NAMES,
+  VALIDATE_NUMBERS,
+  VALIDATE_STRING,
+} from "(presentation)/(utils)/errors-validation";
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import { ICountryLocation } from "domain/core/entities/countryEntity";
-import IntlTelInput from 'react-intl-tel-input';
-import 'react-intl-tel-input/dist/main.css';
+import IntlTelInput from "react-intl-tel-input";
+import "react-intl-tel-input/dist/main.css";
 import { twMerge } from "tailwind-merge";
 import { getCountriesDialCodeES } from "(presentation)/(helper)/intl/intlHelper";
+import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
 
 interface IBasicDataProps {
   values: {
@@ -105,38 +111,39 @@ export default function Formulary({
   errors,
   setErrors,
 }: IBasicDataProps) {
-
-  const { state, actions, dispatch } = useContext<ICreatePatientContext>(CreatePatientContext);
-  const { getFederalEntities, getMunicipalities, getCountryLocations } = actions;
+  const { state, actions, dispatch } =
+    useContext<ICreatePatientContext>(CreatePatientContext);
+  const { getFederalEntities, getMunicipalities, getCountryLocations } =
+    actions;
   const { data: federalEntities } = state.getFederalEntities;
   const { data: municipalities, successful } = state.municipalities;
   const { data: countryLocations } = state.countryLocations;
 
   useEffect(() => {
     getFederalEntities()(dispatch);
-  }, [])
+  }, []);
 
   useEffect(() => {
     getMunicipalities({
       federalEntityId: values.federalEntity,
     })(dispatch);
-  }, [values.federalEntity])
+  }, [values.federalEntity]);
 
   useMemo(() => {
     if (successful) {
       if (municipalities.data.length > 0) {
         const municipalitySearch = municipalities.data.find((elem) => {
           return elem.id === values.municipality;
-        })
+        });
         getCountryLocations({
           federalEntityId: values.federalEntity,
           municipalityId: municipalitySearch?.catalogId,
         })(dispatch);
       }
     }
-  }, [values.federalEntity, values.municipality, successful])
+  }, [values.federalEntity, values.municipality, successful]);
 
-  const handlename = (value: string, e:any) => {
+  const handlename = (value: string, e: any) => {
     setValues({ ...values, name: value });
     if (value.length < 2) {
       setErrors((previousState) => {
@@ -309,15 +316,11 @@ export default function Formulary({
       </div>
 
       <div className="input-group w-full">
-        <p className="input-label py-2">
-          Género
-        </p>
+        <p className="input-label py-2">Género</p>
         <FormSelect
           value={values?.gender}
           className="form-control w-full"
-          onChange={(e) =>
-            setValues({ ...values, gender: +e.target.value })
-          }
+          onChange={(e) => setValues({ ...values, gender: +e.target.value })}
         >
           <option value={0}>No especificado</option>
           <option value={1}>Masculino</option>
@@ -336,12 +339,13 @@ export default function Formulary({
             Teléfono <span className="text-primary font-bold">*</span>
           </p>
           <div className="w-full">
-            <IntlTelInput
-              preferredCountries={['mx']}
-              onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
+            <IntlPhoneNumberInput
+              preferredCountries={["mx"]}
+              onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
+                handlephone(fullNumber)
+              }
               onPhoneNumberBlur={(e) => console.log(e)}
               containerClassName="intl-tel-input w-full"
-              countriesData={getCountriesDialCodeES()}
               inputClassName={twMerge([
                 "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
                 "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
@@ -370,18 +374,14 @@ export default function Formulary({
         <p className="input-label py-2">CURP</p>
         <FormInput
           type="text"
-          onChange={(e: any) =>
-            setValues({ ...values, curp: e.target.value })
-          }
+          onChange={(e: any) => setValues({ ...values, curp: e.target.value })}
           placeholder="CURP"
         />
       </div>
 
       <div className="md:flex gap-3 w-full">
         <div className="input-group md:w-[50%]">
-          <p className="input-label py-2">
-            Entidad Federativa
-          </p>
+          <p className="input-label py-2">Entidad Federativa</p>
           <FormSelect
             className="form-control w-full"
             defaultValue={values.federalEntity}
@@ -409,35 +409,34 @@ export default function Formulary({
             }
           >
             {municipalities.data?.map((elem: IMunicipality) => (
-                <option key={elem.id} value={elem.id}>
-                  {elem.name}
-                </option>
-              ))
-            }
+              <option key={elem.id} value={elem.id}>
+                {elem.name}
+              </option>
+            ))}
           </FormSelect>
         </div>
       </div>
 
       <div className="md:flex gap-3 w-full">
         <div className="input-group md:w-[50%]">
-          <p className="input-label py-2">
-            Localidad
-          </p>
+          <p className="input-label py-2">Localidad</p>
           <FormSelect
             className="form-control w-full"
             disabled={values.municipality === 0}
             defaultValue={values.countryLocation}
             value={values.countryLocation}
             onChange={(e: any) =>
-              setValues({ ...values, countryLocation: parseInt(e.target.value) })
+              setValues({
+                ...values,
+                countryLocation: parseInt(e.target.value),
+              })
             }
           >
             {countryLocations.data?.map((elem: ICountryLocation) => (
-                <option key={elem.id} value={elem.id}>
-                  {elem.name}
-                </option>
-              ))
-            }
+              <option key={elem.id} value={elem.id}>
+                {elem.name}
+              </option>
+            ))}
           </FormSelect>
         </div>
         <div className="input-group mt-3 md:mt-0 md:w-[50%]">
@@ -457,27 +456,27 @@ export default function Formulary({
       <div className="input-group w-full">
         <p className="input-label py-2">Calle</p>
         <FormInput
-            type={"text"}
-            placeholder="Calle"
-            min={0}
-            value={values.street}
-            className="form-control w-full"
-            onChange={(e: any) => {
-              setValues({ ...values, street: e.target.value });
-            }}
-          />
+          type={"text"}
+          placeholder="Calle"
+          min={0}
+          value={values.street}
+          className="form-control w-full"
+          onChange={(e: any) => {
+            setValues({ ...values, street: e.target.value });
+          }}
+        />
       </div>
       <div className="input-group w-full">
         <p className="input-label py-2">Dirección</p>
         <FormInput
-            type={"text"}
-            value={values.direction}
-            placeholder="Dirección completa de su residencia"
-            className="form-control w-full"
-            onChange={(e: any) => {
-              setValues({ ...values, direction: e.target.value });
-            }}
-          />
+          type={"text"}
+          value={values.direction}
+          placeholder="Dirección completa de su residencia"
+          className="form-control w-full"
+          onChange={(e: any) => {
+            setValues({ ...values, direction: e.target.value });
+          }}
+        />
       </div>
     </div>
   );
