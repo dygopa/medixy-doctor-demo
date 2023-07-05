@@ -188,7 +188,6 @@ export default function WithoutSteps({
           disabled={
             createUserLocalityLoading ||
             formData?.name === "" ||
-            formData?.address === "" ||
             formData?.postal_code === "" ||
             formData?.city === ""
           }
@@ -378,7 +377,7 @@ export default function WithoutSteps({
                 }}
               />
             </div>
-            <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
+            {/*<div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                 Dirección
                 <span className="text-primary font-bold">*</span>
@@ -393,7 +392,7 @@ export default function WithoutSteps({
                   setFormData({ ...formData, address: e.target.value });
                 }}
               />
-            </div>
+              </div>*/}
             <div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                 Cargar imagen
