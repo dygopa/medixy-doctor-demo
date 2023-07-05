@@ -197,7 +197,6 @@ export default function Formulary({
     );
   }
 
-  console.log(formData)
   return (
     <>
       <AlertComponent
@@ -218,7 +217,7 @@ export default function Formulary({
         <div className="md:w-[40%] lg:w-[20%] w-full flex justify-center items-center">
           <Button
             disabled={
-              loadingUpdate || formData?.address === "" || formData?.name === ""
+              loadingUpdate || formData?.postal_code === 0 || formData?.name === "" || formData?.city === ""
             }
             onClick={() => {
               updateUserLocality(formData, data.id)(dispatch);
@@ -407,7 +406,7 @@ export default function Formulary({
                     }}
                   />
                 </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
+                {/*<div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     Dirección<span className="text-primary font-bold">*</span>
                   </p>
@@ -421,7 +420,7 @@ export default function Formulary({
                       setFormData({ ...formData, address: e.target.value });
                     }}
                   />
-                </div>
+                  </div>*/}
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     Cargar imagen
