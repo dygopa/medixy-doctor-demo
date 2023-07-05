@@ -226,7 +226,7 @@ export default function WithoutSteps({
               </div>
               <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Tipo de localidad <span className="text-primary font-bold">*</span>
+                  Tipo de consultorio <span className="text-primary font-bold">*</span>
                 </p>
                 <FormSelect
                   className="form-control lg:w-[70%]"
@@ -247,7 +247,7 @@ export default function WithoutSteps({
               </div>
               <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Estado <span className="text-primary font-bold">*</span>
+                  Sector <span className="text-primary font-bold">*</span>
                 </p>
                 <FormSelect
                   className="form-control lg:w-[70%]"

@@ -267,7 +267,7 @@ export default function Formulary({
                 </div>
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Tipo de localidad
+                    Tipo de consultorio <span className="text-primary font-bold">*</span>
                   </p>
                   <FormSelect
                     className="form-control lg:w-[70%]"
@@ -290,7 +290,7 @@ export default function Formulary({
                 </div>
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Estado
+                    Sector <span className="text-primary font-bold">*</span>
                   </p>
                   <FormSelect
                     className="form-control lg:w-[70%]"
