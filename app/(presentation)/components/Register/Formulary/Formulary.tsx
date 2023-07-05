@@ -26,8 +26,9 @@ import {
   VALIDATE_NUMBERS,
   VALIDATE_STRING,
 } from "(presentation)/(utils)/errors-validation";
-import IntlTelInput from 'react-intl-tel-input';
-import 'react-intl-tel-input/dist/main.css';
+import IntlTelInput from "react-intl-tel-input";
+import "react-intl-tel-input/dist/main.css";
+import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
 
 export default function Formulary() {
   const { state, actions, dispatch } =
@@ -94,7 +95,7 @@ export default function Formulary() {
     );
   };
 
-  const handlename = (value: string, e:any) => {
+  const handlename = (value: string, e: any) => {
     setValues({ ...values, names: value });
     if (value.length < 2) {
       setErrors((previousState) => {
@@ -252,17 +253,15 @@ export default function Formulary() {
           "Algo no ha salido como se esperaba. Vuelve a intentarlo.";
         break;
       case registerFailuresEnum.emailAlreadyRegistered:
-        errors["global"] =
-          "El email ya esta siendo usado por otro proveedor.";
-          break;
+        errors["global"] = "El email ya esta siendo usado por otro proveedor.";
+        break;
       case registerFailuresEnum.badGateway:
         errors["global"] =
           "El servidor ha demorado mucho tiempo en responder, vuelve a intentarlo más tarde.";
         break;
       case registerFailuresEnum.curpAlreadyRegistered:
-        errors["global"] =
-          "El CURP ya esta registrado por otro proveedor.";
-          break;
+        errors["global"] = "El CURP ya esta registrado por otro proveedor.";
+        break;
       default:
         errors["global"] =
           "El servidor ha demorado mucho tiempo en responder, Vuelve a intentarlo más tarde.";
@@ -334,16 +333,15 @@ export default function Formulary() {
             className="w-full py-3 pr-10 bg-white"
             placeholder="Apellido paterno"
             value={values.first_lastname}
-            onChange={(e: any) =>
-              handlelastname(e.target.value)
-            }
+            onChange={(e: any) => handlelastname(e.target.value)}
           />
           {errors.first_lastname.length > 0 && (
             <span className="text-red-500">{errors.first_lastname}</span>
           )}
-          {!errors.first_lastname && listOfErrors.includes("first_lastname") && (
-            <span className="text-red-500 mt-1">Campo requerido</span>
-          )}
+          {!errors.first_lastname &&
+            listOfErrors.includes("first_lastname") && (
+              <span className="text-red-500 mt-1">Campo requerido</span>
+            )}
         </div>
         <div className="relative w-full">
           <FormInput
@@ -358,9 +356,11 @@ export default function Formulary() {
         </div>
       </div>
       <div className="relative w-full">
-        <IntlTelInput
-          preferredCountries={['mx']}
-          onPhoneNumberChange={(isValid,value, countryData, fullNumber) => handlephone(fullNumber)}
+        <IntlPhoneNumberInput
+          preferredCountries={["mx"]}
+          onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
+            handlephone(fullNumber)
+          }
           onPhoneNumberBlur={(e) => console.log(e)}
           containerClassName="intl-tel-input w-full"
           inputClassName={twMerge([
@@ -370,11 +370,11 @@ export default function Formulary() {
           ])}
         />
         {errors.phone_number.length > 0 && (
-            <span className="text-red-500 mt-2">{errors.phone_number}</span>
-          )}
+          <span className="text-red-500 mt-2">{errors.phone_number}</span>
+        )}
         {!errors.phone_number && listOfErrors.includes("phone_number") && (
-            <span className="text-red-500 mt-1">Campo requerido</span>
-          )}
+          <span className="text-red-500 mt-1">Campo requerido</span>
+        )}
       </div>
       <div className="relative w-full">
         <FormInput
@@ -388,8 +388,8 @@ export default function Formulary() {
           <span className="text-red-500">{errors.email}</span>
         )}
         {!errors.email && listOfErrors.includes("email") && (
-            <span className="text-red-500 mt-1">Campo requerido</span>
-          )}
+          <span className="text-red-500 mt-1">Campo requerido</span>
+        )}
       </div>
 
       <div className="relative w-full">
@@ -398,16 +398,14 @@ export default function Formulary() {
           className="w-full py-3 pr-10 bg-white"
           placeholder="Contraseña"
           value={values.password}
-          onChange={(e: any) =>
-            handlePassword(e.target.value)
-          }
+          onChange={(e: any) => handlePassword(e.target.value)}
         />
         {errors.password.length > 0 && (
           <span className="text-red-500">{errors.password}</span>
         )}
         {!errors.password && listOfErrors.includes("password") && (
-            <span className="text-red-500 mt-1">Campo requerido</span>
-          )}
+          <span className="text-red-500 mt-1">Campo requerido</span>
+        )}
       </div>
       {error && <span className="text-red-500 mt-1">{errors.global}</span>}
       <div className="w-full relative flex flex-col justify-between gap-3 items-start">
@@ -452,7 +450,9 @@ export default function Formulary() {
       </div>
       <Button
         onClick={() => !loading && onSubmit()}
-        disabled={loading || !termsContidions || !activePolicy || validForm() > 0}
+        disabled={
+          loading || !termsContidions || !activePolicy || validForm() > 0
+        }
         variant="primary"
         type="submit"
         className="mt-4 mb-8 w-full"

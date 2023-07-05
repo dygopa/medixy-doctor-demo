@@ -10,6 +10,7 @@ import {
   FormInput,
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
+import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import {
   IMedicalRecordContext,
@@ -421,7 +422,7 @@ export default function CompanionCreate({
           <p className="input-label py-2">
             Teléfono <span className="text-primary font-bold">*</span>
           </p>
-          <IntlTelInput
+          <IntlPhoneNumberInput
             preferredCountries={["mx"]}
             defaultValue={values.phone}
             value={values.phone}
@@ -429,7 +430,6 @@ export default function CompanionCreate({
               handlephone(fullNumber)
             }
             onPhoneNumberBlur={(e) => console.log(e)}
-            countriesData={getCountriesDialCodeES()}
             containerClassName="intl-tel-input w-full"
             inputClassName={twMerge([
               "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",

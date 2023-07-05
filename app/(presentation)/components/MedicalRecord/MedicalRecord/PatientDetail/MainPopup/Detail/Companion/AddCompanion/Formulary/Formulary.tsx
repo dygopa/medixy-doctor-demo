@@ -10,6 +10,7 @@ import {
   FormInput,
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
+import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
 import {
   IMedicalRecordContext,
   MedicalRecordContext,
@@ -390,13 +391,12 @@ export default function CompanionCreate({
             Teléfono <span className="text-primary font-bold">*</span>
           </p>
           <div className="w-full">
-            <IntlTelInput
+            <IntlPhoneNumberInput
               preferredCountries={["mx"]}
               onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
                 handlephone(fullNumber)
               }
               onPhoneNumberBlur={(e) => console.log(e)}
-              countriesData={getCountriesDialCodeES()}
               containerClassName="intl-tel-input w-full"
               inputClassName={twMerge([
                 "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
