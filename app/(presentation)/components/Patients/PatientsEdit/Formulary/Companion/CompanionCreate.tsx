@@ -229,26 +229,26 @@ export default function CompanionCreate({
           <div className="md:flex gap-3 w-full">
             <div className="input-group md:w-[50%]">
               <p className="input-label py-2">
-                Apellido Paterno{" "}
+              Primer apellido{" "}
                 <span className="text-primary font-bold">*</span>
               </p>
               <FormInput
                 type="text"
                 onChange={(e: any) => handlelastname(e.target.value)}
-                placeholder="Apellido paterno"
+                placeholder="Primer apellido"
               />
               {errors.lastname.length > 0 && (
                 <span className="text-red-500">{errors.lastname}</span>
               )}
             </div>
             <div className="input-group mt-3 md:mt-0 md:w-[50%]">
-              <p className="input-label py-2">Apellido Materno</p>
+              <p className="input-label py-2">Segundo apellido</p>
               <FormInput
                 type="text"
                 onChange={(e: any) =>
                   setValues({ ...values, motherlastname: e.target.value })
                 }
-                placeholder="Apellido materno"
+                placeholder="Segundo apellido"
               />
             </div>
           </div>

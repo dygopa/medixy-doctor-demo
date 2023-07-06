@@ -253,11 +253,11 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Apellido paterno{" "}<span className="text-primary font-bold">*</span>
+                Primer apellido{" "}<span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Apellido Paterno"
+                  placeholder="Primer apellido"
                   min={0}
                   defaultValue={user?.firstName}
                   className="form-control w-full"
@@ -269,11 +269,11 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Apellido materno
+                Segundo apellido
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Apellido Materno"
+                  placeholder="Segundo apellido"
                   min={0}
                   defaultValue={user?.lastName}
                   className="form-control w-full"
