@@ -18,13 +18,17 @@ export default class MedicalConsultyUseCase {
   private _medicalRecordRepository: IMedicalRecordRepository = new MedicalRecordRepository();
   private _appointmentRepository: IAppointmentRepository = new AppointmentRepository();
 
-  async getMedicalConsulties(obj: { skip?: number | null; sort?: any; limit?: number | null; subjectId?: number | null }): Promise<IGetMedicalConsultiesResponse> {
+  async getMedicalConsulties(obj: { skip?: number | null; sort?: any; limit?: number | null; doctorId?: number | null; subjectId?: number | null; searchQuery?: string | null; sinceAt?: Date | null; untilAt?: Date | null }): Promise<IGetMedicalConsultiesResponse> {
     try {
       const response = await this._repository.getMedicalConsulties({
         skip: obj.skip,
         sort: obj.sort,
         limit: obj.limit,
-        subjectId: obj.subjectId
+        searchQuery: obj.searchQuery,
+        doctorId: obj.doctorId,
+        subjectId: obj.subjectId,
+        sinceAt: obj.sinceAt,
+        untilAt: obj.untilAt,
       });
 
       if (response instanceof MedicalConsultyFailure) throw response;

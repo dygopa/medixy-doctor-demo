@@ -585,6 +585,7 @@ export default function Navigator({
 
       const medicalConsulty: IMedicalConsulty = {
         id: 0,
+        doctorId: user.userId ? parseInt(user.userId, 10) : 0,
         consultationDate: values.currentConsultation.consultationDate
           ? new Date(
               new Date(

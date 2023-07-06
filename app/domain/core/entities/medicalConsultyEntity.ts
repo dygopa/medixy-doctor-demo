@@ -8,6 +8,7 @@ export interface IMedicalConsulty {
     id: number;
     subjectId: number;
     subject: ISubject;
+    doctorId: number;
     consultationDate: Date;
     consultationReason: string;
     referrerBy?: string | null;
