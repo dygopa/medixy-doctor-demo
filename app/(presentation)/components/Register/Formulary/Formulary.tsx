@@ -331,7 +331,7 @@ export default function Formulary() {
           <FormInput
             type="text"
             className="w-full py-3 pr-10 bg-white"
-            placeholder="Apellido paterno"
+            placeholder="Primer apellido"
             value={values.first_lastname}
             onChange={(e: any) => handlelastname(e.target.value)}
           />
@@ -347,7 +347,7 @@ export default function Formulary() {
           <FormInput
             type="text"
             className="w-full py-3 pr-10 bg-white"
-            placeholder="Apellido materno"
+            placeholder="Segundo apellido"
             value={values.second_lastname}
             onChange={(e: any) =>
               setValues({ ...values, second_lastname: e.target.value })

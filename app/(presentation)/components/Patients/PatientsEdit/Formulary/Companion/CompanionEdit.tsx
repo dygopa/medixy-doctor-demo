@@ -333,11 +333,11 @@ export default function CompanionEdit({
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Apellido paterno
+                  Primer apellido
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Apellido paterno..."
+                  placeholder="Primer apellido..."
                   defaultValue={values.lastname}
                   min={0}
                   className="form-control w-full"
@@ -349,11 +349,11 @@ export default function CompanionEdit({
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Apellido materno
+                  Segundo apellido
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Apellido materno..."
+                  placeholder="Segundo apellido..."
                   defaultValue={values.motherlastname}
                   min={0}
                   className="form-control w-full"
