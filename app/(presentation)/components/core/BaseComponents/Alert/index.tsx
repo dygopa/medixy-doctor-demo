@@ -16,6 +16,9 @@ const AlertComponent = ({ variant, show, description }: IAlertProps) => {
 
   useMemo(() => {
     setIsVisible(show);
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 5000);
   }, [show]);
 
   return (
