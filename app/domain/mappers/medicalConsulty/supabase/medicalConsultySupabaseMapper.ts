@@ -1,10 +1,13 @@
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import { ISubject } from "domain/core/entities/subjectEntity";
 import { getDateFormatUTC } from "infrastructure/utils/dates/datesUtils";
 
 export function medicalConsultySupabaseToMap(data: any): IMedicalConsulty {
   return {
     id: data?.id ?? 0,
+    doctorId: data?.doctorId ?? 0,
     subjectId: data?.sujetoId ?? 0,
+    subject: {} as ISubject,
     consultationDate: data?.fechaConsulta ? getDateFormatUTC(data.fechaConsulta) : new Date(),
     consultationReason: data?.motivoConsulta ?? "",
     referrerBy: data?.referidoPor,
@@ -34,6 +37,7 @@ export function medicalConsultySupabaseToMap(data: any): IMedicalConsulty {
 export function fromMedicalConsultySupabaseDocumentData(medicalConsulty: IMedicalConsulty): any {
   const documentData = {
     sujetoId: medicalConsulty.subjectId,
+    doctorId: medicalConsulty.doctorId,
     fechaConsulta: medicalConsulty.consultationDate,
     motivoConsulta: medicalConsulty.consultationReason,
     referidoPor: medicalConsulty.referrerBy,

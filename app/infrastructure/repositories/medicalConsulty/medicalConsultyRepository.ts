@@ -30,7 +30,11 @@ export default interface IMedicalConsultyRepository {
     skip?: number | string | null; 
     sort?: any; 
     limit?: number | null; 
+    searchQuery?: string | null;
+    doctorId?: number | null;
     subjectId?: number | null;
+    sinceAt?: Date | null; 
+    untilAt?: Date | null
   }): Promise<IGetMedicalConsultiesResponse | MedicalConsultyFailure>;
   createMedicalConsulty(medicalConsulty: IMedicalConsulty): Promise<ICreateMedicalConsultyResponse | MedicalConsultyFailure>;
   getMedicalConsultyPDF(obj: { 
@@ -181,13 +185,17 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
     skip?: number | string | null; 
     sort?: any; 
     limit?: number | null; 
+    searchQuery?: string | null;
+    doctorId?: number | null;
     subjectId?: number | null;
+    sinceAt?: Date | null; 
+    untilAt?: Date | null
   }): Promise<IGetMedicalConsultiesResponse | MedicalConsultyFailure> {
     try {
       let query = supabase.from("ConsultasMedicas").select(`
       *,
       Diagnosticos (*),
-      Sujetos (*),
+      Sujetos!inner(*),
       RegistrosMedicos (
         *,
         ConsultasMedicas (*),
@@ -216,8 +224,24 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
           });
       }
 
+      if (obj.searchQuery) {
+        query = query.or(`or(nombres.ilike.%${obj.searchQuery.trim().toLowerCase()}%,primerApellido.ilike.%${obj.searchQuery.trim().toLowerCase()}%,curp.ilike.%${obj.searchQuery.trim().toLowerCase()}%,telefono.ilike.%${obj.searchQuery.trim().toLowerCase()}%),and(nombres.ilike.%${obj.searchQuery.trim().toLowerCase()}%,primerApellido.ilike.%${obj.searchQuery.trim().toLowerCase()}%,curp.ilike.%${obj.searchQuery.trim().toLowerCase()}%,telefono.ilike.%${obj.searchQuery.trim().toLowerCase()}%)`, { foreignTable: "Sujetos" } );
+      }
+
+      if (obj.doctorId) {
+        query = query.eq("doctorId", obj.doctorId);
+      }
+
       if (obj.subjectId) {
         query = query.eq("sujetoId", obj.subjectId);
+      }
+
+      if (obj.sinceAt) {
+        query = query.gte("fechaConsulta", obj.sinceAt.toISOString());
+      }
+  
+      if (obj.untilAt) {
+        query = query.lte("fechaConsulta", obj.untilAt.toISOString());
       }
 
       if (obj.skip && typeof obj.skip === "number" && obj.limit) {

@@ -8,6 +8,7 @@ import { TreatmentsRoutesEnum } from "(presentation)/(routes)/treatmentsRoutes";
 import { ServicesRoutesEnum } from "(presentation)/(routes)/servicesRoutes";
 import { FormattedMenu } from "./side-menu";
 import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
+import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
 
 export const navigationOptions: FormattedMenu[] = [
     {
@@ -64,6 +65,14 @@ export const navigationOptions: FormattedMenu[] = [
         title: "Mis pacientes",
         pathname: PatientsRoutesEnum.PatientsList,
         icon: "Contact",
+        ignore: false,
+    },
+    {
+        active: false,
+        subMenu: undefined,
+        title: "Expediente",
+        pathname: MedicalRecordRoutesEnum.MedicalRecordList,
+        icon: "FolderHeart",
         ignore: false,
     },
 ]

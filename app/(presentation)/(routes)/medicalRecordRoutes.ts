@@ -1,4 +1,5 @@
 export enum MedicalRecordRoutesEnum {
+    MedicalRecordList = "/medical-records",
     MedicalRecord = "/medical-record/",
     MedicalRecordSummary = "/summary",
     MedicalRecordCreate = "/create",
