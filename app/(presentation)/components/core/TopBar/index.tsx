@@ -2,7 +2,7 @@ import _ from "lodash";
 import Breadcrumb from "../BaseComponents/Breadcrumb";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FiChevronLeft, FiClipboard, FiGrid, FiShare, FiUser } from "react-icons/fi";
+import { FiChevronLeft, FiClipboard, FiGlobe, FiGrid, FiShare, FiUser } from "react-icons/fi";
 import { IUser } from "domain/core/entities/userEntity";
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -85,6 +85,24 @@ function Main({
             }
           </div>
         </CopyToClipboard>
+        <Link
+        href={userLink}
+        target="_blank"
+        className={twMerge([
+          "cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1",
+          "bg-slate-100 hover:bg-slate-200"
+        ])}>
+          <span 
+          className={twMerge([
+            "text-xl",
+            "text-slate-900"
+          ])}>
+            <FiGlobe/>
+          </span>
+          <p className="text-xs text-slate-500 text-center">
+            Ir al <br/> enlace
+          </p>
+        </Link>
       </div> 
     )
   }
