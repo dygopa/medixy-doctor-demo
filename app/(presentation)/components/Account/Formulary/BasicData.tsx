@@ -303,7 +303,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
                 <FormInput
                   type={"date"}
                   placeholder="Escribe el nombre del consultorio..."
-                  min={0}
+                  max={moment().format("YYYY-MM-DD")}
                   defaultValue={user?.birthDate}
                   className="form-control w-full"
                   onChange={(e: any) => handleage(e.target.value)}

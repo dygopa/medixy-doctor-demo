@@ -407,7 +407,7 @@ export default function BasicData({
               </p>
               <FormInput
                 type={"date"}
-                min={0}
+                max={moment().format("YYYY-MM-DD")}
                 defaultValue={values.birthDate}
                 value={values.birthDate}
                 className="form-control w-full"
