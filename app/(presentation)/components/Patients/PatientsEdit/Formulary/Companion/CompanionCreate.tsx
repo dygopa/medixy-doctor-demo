@@ -330,7 +330,7 @@ export default function CompanionCreate({
             </p>
             <div className="w-full">
               <IntlPhoneNumberInput
-                preferredCountries={["mx"]}
+                preferredCountries={["mx", "US"]}
                 onPhoneNumberChange={(
                   isValid,
                   value,

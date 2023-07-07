@@ -350,7 +350,7 @@ export default function BasicData({
                   Teléfono <span className="text-primary font-bold">*</span>
                 </p>
                 <IntlPhoneNumberInput
-                  preferredCountries={["mx"]}
+                  preferredCountries={["mx", "US"]}
                   defaultValue={values.phone}
                   value={values.phone}
                   onPhoneNumberChange={(
