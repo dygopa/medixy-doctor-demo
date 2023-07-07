@@ -163,6 +163,12 @@ export default function WithoutSteps({
     setFormData({ ...formData, media: obj });
   }
 
+  useMemo(() => {
+    if (createUserLocalitySuccess) {
+      createUserSteps(accountId, "LOCATION_CREATED")(dispatchStep);
+    }
+  }, [createUserLocalitySuccess]);
+
   const onClickButtonPrincipal: Function = () => {
     router.push(LocalitiesRoutesEnum.Localities);
   }
