@@ -400,6 +400,9 @@ export default function Formulary({
                       setFormData({ ...formData, municipality: parseInt(e.target.value) })
                     }
                   >
+                    <option>
+                      NO ESPECIFICADO
+                    </option>
                     {municipalities.data?.map((elem: IMunicipality) => (
                         <option key={elem.id} value={elem.id}>
                           {elem.name}
@@ -422,6 +425,9 @@ export default function Formulary({
                       setFormData({ ...formData, countryLocation: parseInt(e.target.value) })
                     }
                   >
+                    <option>
+                      NO ESPECIFICADO
+                    </option>
                     {countryLocations.data?.map((elem: ICountryLocation) => (
                         <option key={elem.id} value={elem.id}>
                           {elem.name}
