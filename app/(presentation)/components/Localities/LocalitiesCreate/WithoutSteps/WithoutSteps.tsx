@@ -364,6 +364,9 @@ export default function WithoutSteps({
                       })
                     }
                   >
+                    <option>
+                      NO ESPECIFICADO
+                    </option>
                     {municipalities.data?.map((elem: IMunicipality) => (
                       <option key={elem.id} value={elem.id}>
                         {elem.name}
@@ -388,6 +391,9 @@ export default function WithoutSteps({
                       })
                     }
                   >
+                    <option>
+                      NO ESPECIFICADO
+                    </option>
                     {countryLocations.data?.map((elem: ICountryLocation) => (
                       <option key={elem.id} value={elem.id}>
                         {elem.name}
