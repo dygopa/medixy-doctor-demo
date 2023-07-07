@@ -17,6 +17,7 @@ import {
   MedicalRecordContext,
 } from "(presentation)/components/MedicalRecord/MedicalRecord/context/MedicalRecordContext";
 import { ISubject } from "domain/core/entities/subjectEntity";
+import moment from "moment";
 import React, {
   Dispatch,
   SetStateAction,
@@ -375,7 +376,7 @@ export default function CompanionCreate({
           </p>
           <FormInput
             type={"date"}
-            min={0}
+            max={moment().format("YYYY-MM-DD")}
             value={values.birthDate}
             onChange={(e: any) => handleage(e.target.value)}
             className="form-control w-full"
