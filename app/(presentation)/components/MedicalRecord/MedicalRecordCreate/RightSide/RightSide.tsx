@@ -82,7 +82,7 @@ export default function RightSide({ width }: IRightSideProps) {
           showRecoveryStorageModal ? "visible" : "hidden",
         ])}
       >
-        <div className="w-full md:w-[60%] lg:w-[40%] h-[450px] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
+        <div className="w-full md:w-[60%] xl:w-[45%] lg:w-[60%] h-[450px] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
           <RecoveryStorageModal
             setShowRecoveryStorageModal={setShowRecoveryStorageModal}
             setValuesLocalStorage={setValuesLocalStorage}
