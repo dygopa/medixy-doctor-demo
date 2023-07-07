@@ -46,7 +46,7 @@ export default function DownloadPDF({ medicalRecord }: IDownloadPDFProps) {
           }
         >
           <div className="flex items-center">
-            <Lucide icon="FileText" color="#216AD9" size={15} />
+            <Lucide icon="FilePlus" color="#216AD9" size={15} />
           </div>
         </Button>
       </div>

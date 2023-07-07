@@ -78,7 +78,7 @@ export default function Recipes({ medicalConsulty }: IRecipesProps) {
           >
             <div className="flex items-center">
               <div className="mr-2">
-                <Lucide icon="FileText" color="#216AD9" size={20} />
+                <Lucide icon="FilePlus" color="#216AD9" size={20} />
               </div>
 
               <div>Generar PDF del tratamiento</div>
