@@ -3,6 +3,7 @@ import {
   ordersTypeNumberEnEnum,
 } from "(presentation)/(enum)/orders/ordersEnum";
 import Button from "(presentation)/components/core/BaseComponents/Button";
+import clsx from "clsx";
 import { IMedicalProfile } from "domain/core/entities/medicalProfileEntity";
 import { IOrderMedical } from "domain/core/entities/orderEntity";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
@@ -41,6 +42,29 @@ export default function AddOrder({
     doctor: "",
     otherDoctor: "",
   });
+
+  const [screenSize, setScreenSize] = useState({ width: 0, height: 0 });
+
+  function getCurrentDimension() {
+    return {
+      width: window.innerWidth,
+      height: window.innerHeight,
+    };
+  }
+
+  useEffect(() => {
+    const updateDimension = () => {
+      setScreenSize(getCurrentDimension());
+    };
+
+    if (screenSize.width === 0 && screenSize.height === 0) updateDimension();
+
+    window.addEventListener("resize", updateDimension);
+
+    return () => {
+      window.removeEventListener("resize", updateDimension);
+    };
+  }, [screenSize]);
 
   const onAddOrder = () => {
     const orderMedical: IOrderMedical = {
@@ -171,12 +195,20 @@ export default function AddOrder({
   }, [orderType]);
 
   return (
-    <div className="xl:flex">
+    <div className={clsx([screenSize.width > 1480 ? "xl:flex" : "xl:block"])}>
       <div>
-        <OrderType orderType={orderType} setOrderType={setOrderType} />
+        <OrderType
+          orderType={orderType}
+          setOrderType={setOrderType}
+          width={screenSize.width}
+        />
       </div>
 
-      <div className="xl:w-[1000px] xl:px-8">
+      <div
+        className={clsx([
+          screenSize.width > 1480 ? "xl:w-[1000px] xl:px-8" : "w-auto px-0",
+        ])}
+      >
         {orderType && (
           <Formulary
             orderType={orderType}
