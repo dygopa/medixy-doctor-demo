@@ -8,6 +8,7 @@ import Button from "(presentation)/components/core/BaseComponents/Button";
 import { IUserContext, UserContext } from "../context/UserContext";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { StickyNavbar } from "(presentation)/components/core/StickyNavbar/StickyNavbar";
+import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 
 interface IFormularyProps {
   account: IUser;
@@ -79,10 +80,10 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
         show={error !== null}
         description={"Ha ocurrido un error actualizando la cuenta"}
       />
-      <AlertComponent
-        variant="success"
-        show={successful === true}
-        description="Cuenta actualizada exitosamente"
+      <SuccessfulComponent
+        tittle="Actualizado con exito"
+        show={successful}
+        description={"Cuenta actualizada exitosamente"}
       />
       <div className="md:grid grid-cols-2 gap-5 w-full lg:flex justify-between items-center sticky top-[67px] z-[50] border-b bg-slate-100 pt-2">
         <div className="lg:w-[70%]">

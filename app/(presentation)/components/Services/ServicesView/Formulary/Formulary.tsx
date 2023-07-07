@@ -1,4 +1,4 @@
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React, {
   ChangeEvent,
   useContext,
@@ -29,6 +29,8 @@ import {
   b64toBlob,
   getBase64ImageFromUrl,
 } from "(presentation)/(helper)/files/filesHelper";
+import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
+import { ServicesRoutesEnum } from "(presentation)/(routes)/servicesRoutes";
 
 export default function Formulary({ userId }: { userId: string }) {
   const pathname = usePathname();
@@ -72,9 +74,9 @@ export default function Formulary({ userId }: { userId: string }) {
   const setFormDataValues = async () => {
     let imageUrl: any = "";
 
-    if (data.image_url.length > 0)
-      imageUrl = await getBase64ImageFromUrl(data.image_url);
-
+    if(data.image_url) {
+      if (data.image_url.length > 0) imageUrl = await getBase64ImageFromUrl(data.image_url);
+    }
     setFormData({
       ...formData,
       name: data?.name ?? "",
@@ -152,6 +154,12 @@ export default function Formulary({ userId }: { userId: string }) {
     );
   }
 
+  const router = useRouter();
+
+  const onClickButtonPrincipal: Function = () => {
+    router.push(ServicesRoutesEnum.Services);
+  }
+
   return (
     <>
       <AlertComponent
@@ -159,10 +167,12 @@ export default function Formulary({ userId }: { userId: string }) {
         show={errorUpdate !== null}
         description="Ha ocurrido un error inesperado en la actualización"
       />
-      <AlertComponent
-        variant="success"
+      <SuccessfulComponent
+        tittle="Actualizado con exito"
         show={successfulUpdate}
-        description="Tu servicio se ha actualizado exitosamente"
+        description={"Tu servicio se ha actualizado exitosamente"}
+        textButtonPrincipal={"Ir a lista de servicios"}
+        onClickButtonPrincipal={onClickButtonPrincipal}
       />
 
       <AlertComponent
@@ -170,10 +180,10 @@ export default function Formulary({ userId }: { userId: string }) {
         show={errorDelete !== null}
         description="Ha ocurrido un error inesperado en la eliminación"
       />
-      <AlertComponent
-        variant="success"
+      <SuccessfulComponent
+        tittle="Eliminado con exito"
         show={successfulDelete}
-        description="Tu servicio se ha elimanado exitosamente, redireccionando..."
+        description={"Tu servicio se ha eliminado exitosamente"}
       />
 
       <div className="w-full md:gap-5 md:flex justify-between items-start sticky top-[67px] z-[50] bg-slate-100 py-2">
