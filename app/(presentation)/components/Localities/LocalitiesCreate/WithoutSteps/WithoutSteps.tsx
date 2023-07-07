@@ -31,6 +31,10 @@ import {
 import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import { ICountryLocation } from "domain/core/entities/countryEntity";
+import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
+import { PatientsRoutesEnum } from "(presentation)/(routes)/patientsRoutes";
+import { useRouter } from "next/navigation";
+import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
 
 export default function WithoutSteps({
   userId,
@@ -84,6 +88,8 @@ export default function WithoutSteps({
       type: "",
     },
   });
+
+  const router = useRouter();
 
   let [errors, setErrors] = useState({
     postal_code: "",
@@ -157,14 +163,9 @@ export default function WithoutSteps({
     setFormData({ ...formData, media: obj });
   }
 
-  useMemo(() => {
-    if (createUserLocalitySuccess) {
-      createUserSteps(accountId, "LOCATION_CREATED")(dispatchStep);
-      setTimeout(() => {
-        window.location.href = "/localities";
-      }, 1000);
-    }
-  }, [createUserLocalitySuccess]);
+  const onClickButtonPrincipal: Function = () => {
+    router.push(LocalitiesRoutesEnum.Localities);
+  }
 
   return (
     <>
@@ -173,10 +174,12 @@ export default function WithoutSteps({
         show={createUserLocalityError !== null}
         description="Ha ocurrido un error inesperado en la creación"
       />
-      <AlertComponent
-        variant="success"
+      <SuccessfulComponent
+        tittle="Agregado con exito"
         show={createUserLocalitySuccess}
-        description="Tu consultorio se ha creado exitosamente"
+        description={"Tu consultorio se ha creado exitosamente"}
+        textButtonPrincipal={"Ir a lista de consultorios"}
+        onClickButtonPrincipal={onClickButtonPrincipal}
       />
 
       <div className="w-full md:flex justify-between items-center sticky top-[67px] z-[50] border-b bg-slate-100 py-2">

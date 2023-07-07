@@ -29,6 +29,7 @@ import CompanionEdit from "./Companion/CompanionEdit";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import { ICountryLocation } from "domain/core/entities/countryEntity";
+import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 
 export default function Formulary() {
   const { state, actions, dispatch } =
@@ -457,6 +458,10 @@ export default function Formulary() {
     }
   };
 
+  const onClickButton1: Function = () => {
+    router.push(PatientsRoutesEnum.PatientsList);
+  }
+
   return (
     <div>
       <AlertComponent
@@ -467,21 +472,25 @@ export default function Formulary() {
         }
       />
       <AlertComponent
-        variant="success"
-        show={successful}
-        description="Paciente actualizado exitosamente"
-      />
-      <AlertComponent
         variant="error"
         show={errorCompanion !== null}
         description={
           "Ha ocurrido un error creando el acompañante. Vuelve a intentarlo"
         }
       />
-      <AlertComponent
-        variant="success"
+      <SuccessfulComponent 
+        tittle="Actualizado con exito"
         show={successfulCompanion}
-        description="Acompañante actualizado exitosamente"
+        description={"Acompañante actualizado exitosamente"}
+        textButtonPrincipal={"Ir a lista de pacientes"}
+        onClickButtonPrincipal={onClickButton1}
+      />
+      <SuccessfulComponent 
+        tittle="Actualizado con exito"
+        show={successful}
+        description={"Paciente actualizado exitosamente"}
+        textButtonPrincipal={"Ir a lista de pacientes"}
+        onClickButtonPrincipal={onClickButton1}
       />
 
       <div className="w-full sticky top-[67px] z-[50]  bg-slate-100 pt-2">
