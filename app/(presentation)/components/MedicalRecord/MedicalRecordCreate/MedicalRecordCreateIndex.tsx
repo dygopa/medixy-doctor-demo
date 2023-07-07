@@ -186,7 +186,9 @@ export default function MedicalRecordCreateIndex({
             <LeftSide windowWidth={screenSize.width} />
           </div>
 
-          <div className={clsx([getRightSideColSpan()])}>
+          <div
+            className={clsx([getRightSideColSpan(), "lg:pl-5 md:pl-5 pl-0"])}
+          >
             <RightSide width={screenSize.width} />
           </div>
         </div>

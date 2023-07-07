@@ -96,27 +96,27 @@ export default function RightSide({ width }: IRightSideProps) {
 
   return (
     <div className="w-full">
-      <div className="w-full mb-8">
+      <div className="w-full mb-14">
         <VitalSigns />
       </div>
 
-      <div className="w-full mb-8">
+      <div className="w-full mb-14">
         <Records />
       </div>
 
-      <div className="w-full mb-8">
+      <div className="w-full mb-14">
         <CurrentConsultation width={width} />
       </div>
 
-      <div className="w-full mb-8">
+      <div className="w-full mb-14">
         <Diagnosis />
       </div>
 
-      <div className="w-full mb-8">
+      <div className="w-full mb-14">
         <Orders />
       </div>
 
-      <div className="w-full mb-8">
+      <div className="w-full mb-14">
         <Recipe />
       </div>
     </div>
