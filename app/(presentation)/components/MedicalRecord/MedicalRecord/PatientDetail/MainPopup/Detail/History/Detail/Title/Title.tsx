@@ -137,7 +137,7 @@ export default function Title({
                         }
                         className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
                       >
-                        <Lucide icon="FileText" size={20} />
+                        <Lucide icon="FilePlus" size={20} />
                         Generar PDF de la consulta
                       </button>
                     </div>

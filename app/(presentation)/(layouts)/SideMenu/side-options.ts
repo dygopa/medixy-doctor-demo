@@ -70,7 +70,7 @@ export const navigationOptions: FormattedMenu[] = [
     {
         active: false,
         subMenu: undefined,
-        title: "Expediente",
+        title: "Mis consultas",
         pathname: MedicalRecordRoutesEnum.MedicalRecordList,
         icon: "FolderHeart",
         ignore: false,
