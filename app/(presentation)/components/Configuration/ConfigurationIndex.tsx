@@ -1,13 +1,14 @@
 import Link from 'next/link';
 import React from 'react'
 import { FiCalendar } from 'react-icons/fi';
+import Lucide from '../core/BaseComponents/Lucide';
 
 export default function ConfigurationIndex() {
 
     const ConfigurationCard = ({children, title, description, path}:{children: any; title: string; description: string; path: string}) => {
         return(
             <Link href={path} className='cursor-pointer bg-white border rounded-md overflow-hidden h-fit p-5 flex justify-between items-start gap-4'>
-                <div className='w-12 h-fit flex flex-col justify-start items-center'>
+                <div className='w-12 h-[130px] flex flex-col justify-start items-center'>
                     <div className='w-12 h-12 bg-primary/20 text-primary text-lg flex flex-col justify-center items-center rounded-md overflow-hidden'>
                         {children}
                     </div>
@@ -31,6 +32,12 @@ export default function ConfigurationIndex() {
             <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-2 overflow-auto lg:overflow-visible pt-6">
                 <ConfigurationCard path={"/schedule/configuration"} title={"Configuración de la agenda"} description={"Configura los posibles horarios de atención o ventanas de atención para un servicio o varios"}>
                     <FiCalendar/>
+                </ConfigurationCard>
+                <ConfigurationCard path={"/localities"} title={"Administrar mis consultorios"} description={"Agrega y edita los consultorios donde ofreceras todos tues servicios"}>
+                    <Lucide icon="Building" />
+                </ConfigurationCard>
+                <ConfigurationCard path={"/services"} title={"Administrar mis servicios"} description={"Administra los servicios que ofrecerás a todos tus pacientes"}>
+                <Lucide icon="Briefcase" />
                 </ConfigurationCard>
             </div>
         </div>
