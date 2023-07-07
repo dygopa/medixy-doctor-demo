@@ -14,6 +14,7 @@ import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
 import { getCountriesDialCodeES } from "(presentation)/(helper)/intl/intlHelper";
 import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
+import moment from "moment";
 
 interface IBasicDataProps {
   values: {
@@ -281,7 +282,7 @@ export default function BasicData({
                 </p>
                 <FormInput
                   type={"date"}
-                  min={0}
+                  max={moment().format("YYYY-MM-DD")}
                   defaultValue={values?.birthDate}
                   value={values.birthDate}
                   className="form-control w-full"
