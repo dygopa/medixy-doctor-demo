@@ -33,6 +33,7 @@ import "react-intl-tel-input/dist/main.css";
 import { twMerge } from "tailwind-merge";
 import { getCountriesDialCodeES } from "(presentation)/(helper)/intl/intlHelper";
 import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
+import moment from "moment";
 
 interface IBasicDataProps {
   values: {
@@ -294,7 +295,7 @@ export default function Formulary({
         </p>
         <FormInput
           type={"date"}
-          min={0}
+          max={moment().format("YYYY-MM-DD")}
           onChange={(e: any) => handleage(e.target.value)}
           className="form-control w-full"
         />
