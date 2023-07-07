@@ -357,7 +357,7 @@ export default function Formulary() {
       </div>
       <div className="relative w-full">
         <IntlPhoneNumberInput
-          preferredCountries={["mx"]}
+          preferredCountries={["mx", "US"]}
           onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
             handlephone(fullNumber)
           }

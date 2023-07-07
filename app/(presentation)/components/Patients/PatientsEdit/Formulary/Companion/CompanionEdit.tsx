@@ -487,7 +487,7 @@ export default function CompanionEdit({
                   Teléfono
                 </p>
                 <IntlPhoneNumberInput
-                  preferredCountries={["mx"]}
+                  preferredCountries={["mx", "US"]}
                   defaultValue={values.phone}
                   value={values.phone}
                   onPhoneNumberChange={(

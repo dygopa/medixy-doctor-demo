@@ -442,7 +442,7 @@ export default function CompanionCreate({
             Teléfono <span className="text-primary font-bold">*</span>
           </p>
           <IntlPhoneNumberInput
-            preferredCountries={["mx"]}
+            preferredCountries={["mx", "US"]}
             defaultValue={values.phone}
             value={values.phone}
             onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
