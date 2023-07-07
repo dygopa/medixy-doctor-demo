@@ -9,6 +9,7 @@ import { AuthContext, IAuthContext } from "(presentation)/(layouts)/AppLayout/co
 import { ICreatePatientContext, CreatePatientContext } from "../context/CreatePatientContext";
 import { useRouter } from "next/navigation";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
+import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 
 export default function Steps() {
 
@@ -113,14 +114,9 @@ export default function Steps() {
     createSubject(patient)(dispatch);
   };
 
-  useEffect(() => {
-    if (successful) {
-      setTimeout(() => {
-        router.push(PatientsRoutesEnum.PatientsList);
-      }, 1500);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [successful]);
+  const onClickButtonPrincipal: Function = () => {
+    router.push(PatientsRoutesEnum.PatientsList);
+  }
 
   return (
     <div className="gap-5">
@@ -131,10 +127,13 @@ export default function Steps() {
           "Ha ocurrido un error creando al paciente. Vuelve a intentarlo"
         }
       />
-      <AlertComponent
-        variant="success"
+      <SuccessfulComponent 
+        tittle="Agregado con exito"
         show={successful}
-        description="Paciente creado exitosamente"
+        description={"Paciente creado exitosamente"}
+        textButtonPrincipal={"Ir a lista de pacientes"}
+        onClickButtonPrincipal={onClickButtonPrincipal}
+
       />
       <div className="md:grid md:grid-cols-2 py-3 sticky top-[67px] z-[50] bg-slate-100 pt-2">
         <div className="gap-4">

@@ -32,6 +32,8 @@ import { ICountryLocation } from "domain/core/entities/countryEntity";
 import AutocompleteInputMunicipalities from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMunicipalities/AutocompleteInputMunicipalities";
 import AutocompleteInputLocations from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputLocations/AutocompleteInputLocations";
 import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
+import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
+import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
 
 export default function Formulary({
   userId,
@@ -197,6 +199,12 @@ export default function Formulary({
     );
   }
 
+  const router = useRouter();
+
+  const onClickButtonPrincipal: Function = () => {
+    router.push(LocalitiesRoutesEnum.Localities);
+  }
+
   return (
     <>
       <AlertComponent
@@ -204,10 +212,12 @@ export default function Formulary({
         show={errorUpdate !== null}
         description="Ha ocurrido un error inesperado en la actualización"
       />
-      <AlertComponent
-        variant="success"
+      <SuccessfulComponent
+        tittle="Actualizado con exito"
         show={successfulUpdate}
-        description="Tu consultorio se ha actualizado exitosamente"
+        description={"Tu consultorio se ha actualizado exitosamente"}
+        textButtonPrincipal={"Ir a lista de consultorios"}
+        onClickButtonPrincipal={onClickButtonPrincipal}
       />
 
       <div className="w-full md:flex justify-between items-start sticky top-[67px] z-[50]  bg-slate-100 py-3">

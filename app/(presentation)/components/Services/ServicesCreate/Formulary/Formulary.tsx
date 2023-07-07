@@ -23,6 +23,9 @@ import {
 import { MdOutlineMedicalServices } from "react-icons/md";
 import Image from "next/image";
 import { b64toBlob } from "(presentation)/(helper)/files/filesHelper";
+import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
+import { useRouter } from "next/navigation";
+import { ServicesRoutesEnum } from "(presentation)/(routes)/servicesRoutes";
 
 interface ILocalityService {
   service_id: number;
@@ -177,9 +180,6 @@ export default function Formulary({
   useMemo(() => {
     if (successFulCreationService) {
       createUserSteps(accountId, "SERVICE_CREATED")(dispatchStep);
-      setTimeout(() => {
-        window.location.href = "/services";
-      }, 1000);
     }
   }, [successFulCreationService]);
 
@@ -191,6 +191,12 @@ export default function Formulary({
     loadAPI();
   }, [loadedAPI]);
 
+  const router = useRouter();
+
+  const onClickButtonPrincipal: Function = () => {
+    router.push(ServicesRoutesEnum.Services);
+  }
+
   return (
     <>
       <AlertComponent
@@ -198,10 +204,12 @@ export default function Formulary({
         show={errorCreationService !== null}
         description="Ha ocurrido un error inesperado en la creación"
       />
-      <AlertComponent
-        variant="success"
+      <SuccessfulComponent
+        tittle="Agregado con exito"
         show={successFulCreationService}
-        description="Tu servicio se ha creado exitosamente"
+        description={"Tu servicio se ha creado exitosamente"}
+        textButtonPrincipal={"Ir a lista de servicios"}
+        onClickButtonPrincipal={onClickButtonPrincipal}
       />
 
       <div className="w-full md:flex justify-between items-start sticky top-[67px] z-[50] bg-slate-100 py-2">
