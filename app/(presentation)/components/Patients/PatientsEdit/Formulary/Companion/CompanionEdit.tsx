@@ -180,7 +180,7 @@ export default function CompanionEdit({
       setErrors((previousState) => {
         return {
           ...previousState,
-          name: "El nombre del paciente es obligatorio",
+          name: "El nombre del contacto es obligatorio",
         };
       });
       return true;
@@ -189,7 +189,7 @@ export default function CompanionEdit({
       setErrors((previousState) => {
         return {
           ...previousState,
-          name: "El nombre del paciente solo debe incluir letras",
+          name: "El nombre del contacto solo debe incluir letras",
         };
       });
       return true;
@@ -204,7 +204,7 @@ export default function CompanionEdit({
       setErrors((previousState) => {
         return {
           ...previousState,
-          lastname: "El apellido del paciente es obligatorio",
+          lastname: "El apellido del contacto es obligatorio",
         };
       });
       return true;
@@ -213,7 +213,7 @@ export default function CompanionEdit({
       setErrors((previousState) => {
         return {
           ...previousState,
-          lastname: "El apellido del paciente solo debe incluir letras",
+          lastname: "El apellido del contacto solo debe incluir letras",
         };
       });
       return true;
@@ -224,11 +224,31 @@ export default function CompanionEdit({
 
   const handleage = (value: string) => {
     setValues({ ...values, birthDate: value });
+
+    let day = new Date()
+    let birthdate= new Date(value);
+    let age = day.getFullYear() - birthdate.getFullYear();
+    let month = day.getMonth() - birthdate.getMonth();
+
+    if (month < 0 || (month === 0 && day.getDate() < birthdate.getDate())) {
+      age--
+    }
+    
+    if(age <= 15) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          age: "El contacto debe tener al menos 15 años",
+        };
+      });
+      return true;
+    }
+
     if (value.length === 0) {
       setErrors((previousState) => {
         return {
           ...previousState,
-          age: "Escribe la fecha de nacimiento del paciente",
+          age: "Escribe la fecha de nacimiento del contacto",
         };
       });
       return true;
@@ -243,7 +263,7 @@ export default function CompanionEdit({
       setErrors((previousState) => {
         return {
           ...previousState,
-          phone: "El teléfono del paciente es obligatorio",
+          phone: "El teléfono del contacto es obligatorio",
         };
       });
       return true;
@@ -252,7 +272,7 @@ export default function CompanionEdit({
       setErrors((previousState) => {
         return {
           ...previousState,
-          phone: "El teléfono del paciente solo lleva números",
+          phone: "El teléfono del contacto solo lleva números",
         };
       });
       return true;
@@ -607,7 +627,7 @@ export default function CompanionEdit({
                 }}
               />
             </div>
-            <div className="flex col-span-2 flex-col justify-between items-start relative gap-1">
+            {/*<div className="flex col-span-2 flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                 Dirección Completa
               </p>
@@ -620,7 +640,7 @@ export default function CompanionEdit({
                   setValues({ ...values, direction: e.target.value });
                 }}
               />
-            </div>
+              </div>*/}
           </div>
         </div>
       </div>
