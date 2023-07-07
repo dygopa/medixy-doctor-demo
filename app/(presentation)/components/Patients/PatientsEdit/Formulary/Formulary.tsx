@@ -212,6 +212,34 @@ export default function Formulary() {
     return errorsFieldsCount;
   };
 
+  const validFormNewCompanion = () => {
+    let errorsFieldsCount = 0;
+
+    if (errorsNewCompanion.global.length > 0) errorsFieldsCount++;
+
+    if (errorsNewCompanion.name.length > 0) errorsFieldsCount++;
+
+    if (errorsNewCompanion.lastname.length > 0) errorsFieldsCount++;
+
+    if (errorsNewCompanion.motherlastname.length > 0) errorsFieldsCount++;
+
+    if (errorsNewCompanion.age.length > 0) errorsFieldsCount++;
+
+    if (errorsNewCompanion.curp.length > 0) errorsFieldsCount++;
+
+    if (errorsNewCompanion.sex.length > 0) errorsFieldsCount++;
+
+    if (errorsNewCompanion.country.length > 0) errorsFieldsCount++;
+
+    if (errorsNewCompanion.email.length > 0) errorsFieldsCount++;
+
+    if (errorsNewCompanion.phone.length > 0) errorsFieldsCount++;
+
+    if (errorsNewCompanion.federalEntity.length > 0) errorsFieldsCount++;
+
+    return errorsFieldsCount;
+  };
+
   const onSubmit = () => {
     const hasErrorsCount = validForm();
 
@@ -496,14 +524,33 @@ export default function Formulary() {
                   Actualizar Contacto
                 </Button>
               ) : (
-                <Button
-                  disabled={loadingCompanion}
-                  className="my-4 w-[100%] md:w-auto"
-                  variant="primary"
-                  onClick={(e: any) => onNewCompanion(e)}
-                >
-                  {!newCompanion ? "Nuevo contacto" : "Agregar contacto"}
-                </Button>
+                <>
+                  {!newCompanion ?
+                    <Button
+                    className="my-4 w-[100%] md:w-auto"
+                    variant="primary"
+                    onClick={(e: any) => onNewCompanion(e)}
+                    >
+                      Nuevo contacto
+                    </Button>
+                  :
+                    <Button
+                    disabled={
+                      loadingCompanion || 
+                      valuesNewCompanion.name === "" ||
+                      valuesNewCompanion.lastname === "" ||
+                      valuesNewCompanion.birthDate === "" ||
+                      valuesNewCompanion.phone === "" ||
+                      validFormNewCompanion() > 0
+                    }
+                    className="my-4 w-[100%] md:w-auto"
+                    variant="primary"
+                    onClick={(e: any) => onNewCompanion(e)}
+                    >
+                      Agregar contacto
+                    </Button>
+                  }
+                </>
               )}
             </>
           )}

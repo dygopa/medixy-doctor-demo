@@ -103,7 +103,7 @@ export default function CompanionCreate({
       setErrors((previousState: any) => {
         return {
           ...previousState,
-          name: "El nombre del paciente es obligatorio",
+          name: "El nombre del contacto es obligatorio",
         };
       });
       return true;
@@ -112,7 +112,7 @@ export default function CompanionCreate({
       setErrors((previousState: any) => {
         return {
           ...previousState,
-          name: "El nombre del paciente solo debe incluir letras",
+          name: "El nombre del contacto solo debe incluir letras",
         };
       });
       return true;
@@ -127,7 +127,7 @@ export default function CompanionCreate({
       setErrors((previousState: any) => {
         return {
           ...previousState,
-          lastname: "El apellido del paciente es obligatorio",
+          lastname: "El apellido del contacto es obligatorio",
         };
       });
       return true;
@@ -136,7 +136,7 @@ export default function CompanionCreate({
       setErrors((previousState: any) => {
         return {
           ...previousState,
-          lastname: "El apellido del paciente solo debe incluir letras",
+          lastname: "El apellido del contacto solo debe incluir letras",
         };
       });
       return true;
@@ -147,6 +147,26 @@ export default function CompanionCreate({
 
   const handleage = (value: string) => {
     setValues({ ...values, birthDate: value });
+
+    let day = new Date()
+    let birthdate= new Date(value);
+    let age = day.getFullYear() - birthdate.getFullYear();
+    let month = day.getMonth() - birthdate.getMonth();
+
+    if (month < 0 || (month === 0 && day.getDate() < birthdate.getDate())) {
+      age--
+    }
+    
+    if(age <= 15) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          age: "El contacto debe tener al menos 15 años",
+        };
+      });
+      return true;
+    }
+
     if (value.length < 2) {
       setErrors((previousState: any) => {
         return {
@@ -166,7 +186,7 @@ export default function CompanionCreate({
       setErrors((previousState: any) => {
         return {
           ...previousState,
-          phone: "El teléfono del paciente es obligatorio",
+          phone: "El teléfono del contacto es obligatorio",
         };
       });
       return true;
@@ -447,7 +467,7 @@ export default function CompanionCreate({
               }}
             />
           </div>
-          <div className="input-group w-full">
+          {/*<div className="input-group w-full">
             <p className="input-label py-2">Dirección</p>
             <FormInput
               type={"text"}
@@ -458,7 +478,7 @@ export default function CompanionCreate({
                 setValues({ ...values, direction: e.target.value });
               }}
             />
-          </div>
+            </div>*/}
         </div>
       </div>
     </div>
