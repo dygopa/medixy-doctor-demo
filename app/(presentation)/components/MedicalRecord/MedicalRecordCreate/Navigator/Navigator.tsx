@@ -36,10 +36,12 @@ import {
   useEffect,
   useState,
 } from "react";
+import { twMerge } from "tailwind-merge";
 import {
   IMedicalRecordCreateContext,
   MedicalRecordCreateContext,
 } from "../context/MedicalRecordCreateContext";
+import ConfirmModal from "./ConfirmModal/ConfirmModal";
 import {
   handleConsultationDateErrors,
   handleConsultationReasonErrors,
@@ -79,6 +81,7 @@ export default function Navigator({
 
   const router = useRouter();
 
+  const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showAlertError, setShowAlertError] = useState(false);
   const [alertMessage, setAlertMessage] = useState("");
@@ -671,6 +674,22 @@ export default function Navigator({
 
   return (
     <>
+      {showConfirmModal && (
+        <div
+          className={twMerge([
+            "z-[99] fixed top-0 left-0 w-full h-screen overflow-y-auto bg-gray-900/50 flex flex-col justify-center items-center",
+            showConfirmModal ? "visible" : "hidden",
+          ])}
+        >
+          <div className="w-full md:w-[60%] xl:w-[45%] lg:w-[60%] h-[450px] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
+            <ConfirmModal
+              setShowConfirmModal={setShowConfirmModal}
+              onCreateMedicalRecord={onCreateMedicalRecord}
+            />
+          </div>
+        </div>
+      )}
+
       <div className="w-full md:flex justify-between items-center sticky top-[67px] z-[97]  bg-slate-100 py-2 md:pb-0">
         <div className="md:w-[50%] lg:mb-0 mb-4">
           <h2 className="lg:mr-5 text-2xl font-bold truncate mb-2">
@@ -696,9 +715,9 @@ export default function Navigator({
           <Button
             variant="primary"
             disabled={isLoading || loading || successful}
-            onClick={() => onCreateMedicalRecord()}
+            onClick={() => setShowConfirmModal(true)}
           >
-            {isLoading ? "Creando consulta..." : "Crear consulta"}
+            {isLoading ? "Finalizando consulta..." : "Finalizar consulta"}
           </Button>
         </div>
       </div>
