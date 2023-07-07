@@ -1,20 +1,20 @@
-import {
-  FormInput,
-  FormSelect,
-} from "(presentation)/components/core/BaseComponents/Form";
+import { FormSelect } from "(presentation)/components/core/BaseComponents/Form";
+import clsx from "clsx";
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
 interface IOrderTypeProps {
   orderType: number | null;
   setOrderType: Dispatch<SetStateAction<number | null>>;
+  width: number;
 }
 
 export default function OrderType({
   orderType,
   setOrderType,
+  width,
 }: IOrderTypeProps) {
   return (
-    <div className="xl:w-[200px]">
+    <div className={clsx([width > 1480 ? "xl:w-[200px]" : "w-auto"])}>
       <div className="mb-5">
         <FormSelect
           defaultValue={orderType ? orderType.toString() : ""}
