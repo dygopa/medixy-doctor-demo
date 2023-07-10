@@ -122,8 +122,8 @@ function CreateAppointment({cancelFuntion, customRef}:{
 
     let list_patients = patients.data.map((elem:ISubject) => ({
       id: elem.subjectId,
-      title: elem.name,
-      description: elem.phoneNumber,
+      title: `${elem.name} ${elem.lastName}`,
+      description: `${elem.phoneNumber} ${elem.curp.length > 0 ? `- ${elem.curp}` : "" }`,
       type: "PATIENT",
     }))
     setListOfPatients(list_patients)
