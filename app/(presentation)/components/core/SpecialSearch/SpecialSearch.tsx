@@ -70,7 +70,7 @@ export default function SpecialSearch({
     function handleSearch(value:string){
         if(value !== ""){
             let l = list
-            l = l.filter(elem => elem["title"].toLowerCase().includes(value.toLocaleLowerCase()) )
+            l = l.filter(elem => elem["title"].toLowerCase().includes(value.toLocaleLowerCase()) ) && l.filter(elem => elem["description"].toLowerCase().includes(value.toLocaleLowerCase()) )
             setSearchedList(l)
         }else{
             setSearchedList(list)
