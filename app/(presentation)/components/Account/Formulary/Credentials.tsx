@@ -287,6 +287,7 @@ export default function Credentials({
               </p>
               <FormSelect
                 value={formData["specialty_id"]}
+                disabled={account.professionalLicense.length === 0}
                 className="form-control w-full"
                 onChange={(e) =>
                   setFormData({ ...formData, specialty_id: +e.target.value })
@@ -310,6 +311,7 @@ export default function Credentials({
                 placeholder="Escribe la cédula de la especialidad..."
                 min={0}
                 value={formData["code"]}
+                disabled={account.professionalLicense.length === 0}
                 className="form-control w-full"
                 onChange={(e) =>
                   setFormData({ ...formData, code: e.target.value })
@@ -325,6 +327,7 @@ export default function Credentials({
                 placeholder="Escribe el nombre de la institución..."
                 min={0}
                 value={formData["institution_name"]}
+                disabled={account.professionalLicense.length === 0}
                 className="form-control w-full"
                 onChange={(e) =>
                   setFormData({ ...formData, institution_name: e.target.value })
