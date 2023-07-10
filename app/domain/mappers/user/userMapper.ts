@@ -21,7 +21,7 @@ export function userAPIToMap(data: any): IUser {
     personType: data?.person_type ?? 0,
     role: data?.role ?? "",
     createdOn: data?.creation_date ?? null,
-    pwaProfressionId: data?.pwa_profression_id ?? 0,
+    pwaProfressionId: data?.pwa_profession_id ?? 0,
     pwaProfression: "",
     professionalLicense: data?.professional_license ?? "",
     professionalLicenseInstitution: data?.professional_license_institution ?? "",
