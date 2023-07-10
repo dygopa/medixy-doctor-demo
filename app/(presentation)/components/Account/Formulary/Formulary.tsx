@@ -20,12 +20,12 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
   const { updateUserData } = actions;
 
   const { loading, successful, error } = state.updateUserData;
-  
+
   const [errors, setErrors] = useState({
     global: "",
     name: "",
     lastname: "",
-    age: '',
+    age: "",
   });
 
   const validForm = () => {
@@ -36,14 +36,13 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
     if (errors.name.length > 0) errorsFieldsCount++;
 
     if (errors.lastname.length > 0) errorsFieldsCount++;
-    
+
     if (errors.age.length > 0) errorsFieldsCount++;
 
     return errorsFieldsCount;
   };
 
   const updateAccount = () => {
-
     const hasErrorsCount = validForm();
 
     if (hasErrorsCount > 0) return;
@@ -55,16 +54,20 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
       second_lastname: account.lastName ?? "",
       curp: account.curp ?? "",
       phone_number: account.phone ?? "",
-      birthdate: account.birthDate ?? null,
+      birthdate:
+        account.birthDate && account.birthDate.length > 0
+          ? account.birthDate
+          : null,
       birth_country: account.country ?? "",
       sex: account.sex ?? 0,
       person_type: account.personType ?? 0,
       about_me: account.aboutMe ?? "",
       website_url: account.websiteUrl ?? "",
       address: account.address ?? "",
-      pwa_profression_id: account.pwaProfressionId ?? "",
+      pwa_profession_id: account.pwaProfressionId ?? "",
       professional_license: account.professionalLicense ?? "",
-      professional_license_institution: account.professionalLicenseInstitution ?? "",
+      professional_license_institution:
+        account.professionalLicenseInstitution ?? "",
     };
     updateUserData(obj)(dispatch);
   };
@@ -96,7 +99,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
         <Button
           variant="primary"
           disabled={
-            loading || 
+            loading ||
             account.names === "" ||
             account.firstName === "" ||
             validForm() > 0
@@ -110,7 +113,12 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
         </Button>
       </div>
       <div className="w-full relative flex flex-col gap-4 mt-8">
-        <BasicData account={account} setAccount={setAccount} errors={errors} setErrors={setErrors} />
+        <BasicData
+          account={account}
+          setAccount={setAccount}
+          errors={errors}
+          setErrors={setErrors}
+        />
         <Credentials account={account} setAccount={setAccount} />
         <Contact account={account} setAccount={setAccount} />
         <AboutMe account={account} setAccount={setAccount} />

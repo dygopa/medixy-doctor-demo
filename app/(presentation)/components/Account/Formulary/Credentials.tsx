@@ -10,7 +10,10 @@ import { IUser } from "domain/core/entities/userEntity";
 import { FiPlus, FiSave, FiTrash } from "react-icons/fi";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
-import { IStepByStepContext, StepByStepContext } from "(presentation)/components/core/StepByStep/context/StepByStepContext";
+import {
+  IStepByStepContext,
+  StepByStepContext,
+} from "(presentation)/components/core/StepByStep/context/StepByStepContext";
 
 export default function Credentials({
   account,
@@ -47,19 +50,20 @@ export default function Credentials({
 
   const { data, loading, error, successful } = state.getUserMedicalSpecialities;
 
-  const { actions: actionsStep, dispatch: dispatchStep } = useContext<IStepByStepContext>(StepByStepContext);
+  const { actions: actionsStep, dispatch: dispatchStep } =
+    useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps } = actionsStep;
 
   let profesions = [
-    {id: 1, name: "Médico"},
-    {id: 2, name: "Odontólogo"},
-    {id: 3, name: "Fisioterapeuta"},
-    {id: 4, name: "Farmaceuta"},
-    {id: 5, name: "Técnico radiólogo"},
-    {id: 6, name: "Nutriólogo"},
-    {id: 7, name: "Enfermero/a"},
-    {id: 8, name: "Bioanalista"}
-  ]
+    { id: 1, name: "Médico" },
+    { id: 2, name: "Odontólogo" },
+    { id: 3, name: "Fisioterapeuta" },
+    { id: 4, name: "Farmaceuta" },
+    { id: 5, name: "Técnico radiólogo" },
+    { id: 6, name: "Nutriólogo" },
+    { id: 7, name: "Enfermero/a" },
+    { id: 8, name: "Bioanalista" },
+  ];
 
   const [formData, setFormData] = useState({
     id: account.userId,
@@ -102,7 +106,7 @@ export default function Credentials({
       institution_name,
     });
 
-    console.log(account)
+    console.log(account);
 
     return (
       <div className="w-full border bg-white grid lg:grid-cols-4 grid-cols-1 gap-3 p-4 rounded-md">
@@ -203,7 +207,8 @@ export default function Credentials({
   useMemo(() => {
     if (account.userId) {
       getUserMedicalSpecialities(account.userId)(dispatch);
-      if(successFulRegister) createUserSteps(account.accountId, "PROFILE_COMPLETED")(dispatchStep)
+      if (successFulRegister)
+        createUserSteps(account.accountId, "PROFILE_COMPLETED")(dispatchStep);
     }
   }, [successFulRegister, successFulDelete, successFulUpdate]);
 
@@ -233,18 +238,17 @@ export default function Credentials({
           </div>
           <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-start items-end gap-3 border-b pb-6">
             <div className="flex flex-col justify-between items-start relative gap-1">
-              <p className="input-label mb-2">
-                Profesional de la salud
-              </p>
+              <p className="input-label mb-2">Profesional de la salud</p>
               <FormSelect
+                value={account?.pwaProfressionId}
                 defaultValue={account?.pwaProfressionId}
                 className="form-control w-full"
                 onChange={(e) =>
-                  setAccount({ ...account,  pwaProfressionId: +e.target.value })
+                  setAccount({ ...account, pwaProfressionId: +e.target.value })
                 }
               >
                 <option value="">-</option>
-                { profesions.map((elem, i) => (
+                {profesions.map((elem, i) => (
                   <option key={i} value={elem["id"]}>
                     {elem["name"]}
                   </option>
@@ -253,7 +257,8 @@ export default function Credentials({
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="input-label mb-2">
-                Cédula profesional{" "}<span className="text-primary font-bold">*</span>
+                Cédula profesional{" "}
+                <span className="text-primary font-bold">*</span>
               </p>
               <FormInput
                 defaultValue={account?.professionalLicense}
@@ -261,33 +266,38 @@ export default function Credentials({
                 placeholder="Escribe tu cédula profesional..."
                 className="form-control w-full"
                 onChange={(e) =>
-                  setAccount({ ...account, professionalLicense: e.target.value })
+                  setAccount({
+                    ...account,
+                    professionalLicense: e.target.value,
+                  })
                 }
               />
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1">
-              <p className="input-label mb-2">
-                Institución
-              </p>
+              <p className="input-label mb-2">Institución</p>
               <FormInput
                 defaultValue={account?.professionalLicenseInstitution}
                 type={"text"}
                 placeholder="Escribe el nombre de la institución..."
                 className="form-control w-full"
                 onChange={(e) =>
-                  setAccount({ ...account, professionalLicenseInstitution: e.target.value })
+                  setAccount({
+                    ...account,
+                    professionalLicenseInstitution: e.target.value,
+                  })
                 }
               />
             </div>
           </div>
           <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-start items-end gap-3">
             <div className="flex flex-col justify-between items-start relative gap-1">
-              <p className="input-label mb-2">
-                Especialidad
-              </p>
+              <p className="input-label mb-2">Especialidad</p>
               <FormSelect
                 value={formData["specialty_id"]}
-                disabled={account?.professionalLicense?.length === 0}
+                disabled={
+                  account?.professionalLicense?.length === 0 ||
+                  !account.pwaProfressionId
+                }
                 className="form-control w-full"
                 onChange={(e) =>
                   setFormData({ ...formData, specialty_id: +e.target.value })
@@ -303,15 +313,16 @@ export default function Credentials({
               </FormSelect>
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1">
-              <p className="input-label mb-2">
-                Cédula de la especialidad
-              </p>
+              <p className="input-label mb-2">Cédula de la especialidad</p>
               <FormInput
                 type={"text"}
                 placeholder="Escribe la cédula de la especialidad..."
                 min={0}
                 value={formData["code"]}
-                disabled={account?.professionalLicense?.length === 0}
+                disabled={
+                  account?.professionalLicense?.length === 0 ||
+                  !account.pwaProfressionId
+                }
                 className="form-control w-full"
                 onChange={(e) =>
                   setFormData({ ...formData, code: e.target.value })
@@ -319,15 +330,16 @@ export default function Credentials({
               />
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1">
-              <p className="input-label mb-2">
-                Institución
-              </p>
+              <p className="input-label mb-2">Institución</p>
               <FormInput
                 type={"text"}
                 placeholder="Escribe el nombre de la institución..."
                 min={0}
                 value={formData["institution_name"]}
-                disabled={account?.professionalLicense?.length === 0}
+                disabled={
+                  account?.professionalLicense?.length === 0 ||
+                  !account.pwaProfressionId
+                }
                 className="form-control w-full"
                 onChange={(e) =>
                   setFormData({ ...formData, institution_name: e.target.value })
@@ -336,7 +348,12 @@ export default function Credentials({
             </div>
             <div className="flex flex-col justify-between items-end relative">
               <Button
-                disabled={loadingRegister || account.userId === undefined || formData.specialty_id === 0 || account.professionalLicense.length === 0 }
+                disabled={
+                  loadingRegister ||
+                  account.userId === undefined ||
+                  formData.specialty_id === 0 ||
+                  account.professionalLicense.length === 0
+                }
                 onClick={createSpeciality}
                 className="w-full flex justify-center items-center gap-2 text-white font-base"
                 variant="success"
@@ -351,6 +368,17 @@ export default function Credentials({
             <div className="w-full flex justify-center items-center">
               <p className="font-semibold text-center text-base text-slate-900">
                 Cargando...
+              </p>
+            </div>
+          ) : account?.professionalLicense?.length === 0 ||
+            !account.pwaProfressionId ? (
+            <div className="w-full flex flex-col justify-center items-center">
+              <p className="font-semibold text-center text-base text-slate-900">
+                Tus especialidades
+              </p>
+              <p className="font-light text-center text-sm text-slate-500">
+                Para agregar especialidades es necesario que selecciones tu
+                profesión de salud y cédula profesional
               </p>
             </div>
           ) : data && [...(data as Array<any>)].length > 0 ? (
@@ -374,7 +402,6 @@ export default function Credentials({
               </p>
             </div>
           )}
-
         </div>
       </div>
     </div>
