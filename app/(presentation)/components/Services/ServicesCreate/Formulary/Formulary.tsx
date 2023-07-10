@@ -26,6 +26,7 @@ import { b64toBlob } from "(presentation)/(helper)/files/filesHelper";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 import { useRouter } from "next/navigation";
 import { ServicesRoutesEnum } from "(presentation)/(routes)/servicesRoutes";
+import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
 
 interface ILocalityService {
   service_id: number;
@@ -197,6 +198,10 @@ export default function Formulary({
     router.push(ServicesRoutesEnum.Services);
   }
 
+  const onClickButtonSecondary: Function = () => {
+    router.push(ScheduleRoutesEnum.Configuration);
+  }
+
   return (
     <>
       <AlertComponent
@@ -205,11 +210,13 @@ export default function Formulary({
         description="Ha ocurrido un error inesperado en la creación"
       />
       <SuccessfulComponent
-        tittle="Agregado con exito"
+        tittle="Servicio agregado con exito"
         show={successFulCreationService}
-        description={"Tu servicio se ha creado exitosamente"}
-        textButtonPrincipal={"Ir a lista de servicios"}
-        onClickButtonPrincipal={onClickButtonPrincipal}
+        description={"Tu servicio se ha creado exitosamente. ¿Deseas configurar tu agenda con este servicio?"}
+        textButtonPrincipal={"Ir a configurar agenda"}
+        onClickButtonPrincipal={onClickButtonSecondary}
+        textButtonSecondary={"No, gracias"}
+        onClickButtonSecondary={onClickButtonPrincipal}
       />
 
       <div className="w-full md:flex justify-between items-start sticky top-[67px] z-[50] bg-slate-100 py-2">

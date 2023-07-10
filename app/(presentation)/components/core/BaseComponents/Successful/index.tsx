@@ -32,7 +32,7 @@ const SuccessfulComponent = ({ tittle, variant, show, description, textButtonPri
         isVisible ? "visible" : "hidden",
       ])}
     >
-      <div className="w-[80%] md:w-[60%] lg:w-[40%] h-auto overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
+      <div className="w-[80%] md:w-[60%] lg:w-[60%] h-auto overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
         <div className="w-full px-4">
           <div className="mb-14 w-full flex justify-between items-center">
               <p className="font-bold text-2xl text-slate-900">
@@ -51,9 +51,9 @@ const SuccessfulComponent = ({ tittle, variant, show, description, textButtonPri
             </p>
           </div>
 
-          <div className="lg:flex items-center text-center justify-center">
+          <div className="lg:grid grid-cols-2 gap-4 items-center text-center justify-center mb-4">
               { textButtonPrincipal && onClickButtonPrincipal &&
-                <div className="lg:mr-6 lg:mb-0 mb-4">
+                <div className="lg:mb-0 mb-4">
                   <Button
                       variant="primary"
                       className="w-full"
