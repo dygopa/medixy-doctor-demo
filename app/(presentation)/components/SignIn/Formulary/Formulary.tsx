@@ -152,6 +152,10 @@ export default function Formulary() {
             className="w-full py-3 pr-10"
             placeholder="Correo electrónico"
             value={values.email}
+            onFocus={(e: any) =>
+              setValues({ ...values, email: e.target.value })
+            }
+            onBlur={(e: any) => setValues({ ...values, email: e.target.value })}
             onChange={(e: any) =>
               setValues({ ...values, email: e.target.value })
             }
@@ -175,6 +179,12 @@ export default function Formulary() {
             className="w-full py-3 pr-10"
             placeholder="Contraseña"
             value={values.password}
+            onFocus={(e: any) =>
+              setValues({ ...values, password: e.target.value })
+            }
+            onBlur={(e: any) =>
+              setValues({ ...values, password: e.target.value })
+            }
             onChange={(e: any) =>
               setValues({ ...values, password: e.target.value })
             }
