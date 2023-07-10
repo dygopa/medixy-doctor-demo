@@ -101,16 +101,15 @@ const Side = () => {
         /> )}
         {(successful && data.length === 0) && 
           <div className="w-full h-auto rounded-md overflow-y-auto text-center mt-8">
-            <p className="font-medium text-lg text-slate-900">
+            <p className="font-medium text-lg text-slate-900 mb-3">
               Nada por aquí aún
             </p>
             <p className="font-light text-sm text-slate-500">
-              No tienes citas para esta fecha aún en la plataforma, te
-              recomendamos crear{" "}
+              No tienes citas para esta fecha aún en la plataforma, crea una consulta para hoy o revisa que tengas{" "}
               <Link href="/services" className="font-semibold text-primary">
                 servicios
               </Link>{" "}
-              para exponerte a los pacientes
+              creados para exponerte a tus pacientes.
             </p>
           </div>
         }
