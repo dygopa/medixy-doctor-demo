@@ -64,7 +64,7 @@ export default function MedicalConsultationCalendar({ user }: { user: IUser }) {
               ? 0
               : (pendingAppointments as any[])?.length
           }
-          label={"Citas pendientes"}
+          label={"Citas pendientes hoy"}
         >
           <div className="w-12 h-12 flex justify-center items-center rounded-lg bg-yellow-200 text-yellow-800 text-xl">
             <MdOutlineNotificationsActive />
@@ -82,12 +82,8 @@ export default function MedicalConsultationCalendar({ user }: { user: IUser }) {
             <BsCalendarDate />
           </div>
         </StatComponent>
-        <StatComponent 
-          value={
-            loadingSubjects
-              ? 0
-              : (patients as any[])?.length
-          } 
+        <StatComponent
+          value={loadingSubjects ? 0 : (patients as any[])?.length}
           label={"Pacientes"}
         >
           <div className="w-12 h-12 flex justify-center items-center rounded-lg bg-red-200 text-red-800 text-xl">
