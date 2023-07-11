@@ -12,7 +12,7 @@ export default function Diagnosis({ medicalConsulty }: IDiagnosisProps) {
         <h3 className="text-slate-400 text-lg">Diagnósticos</h3>
       </div>
 
-      <div>
+      <div className="mb-3">
         {medicalConsulty.diagnose && medicalConsulty.diagnose.length > 0 ? (
           medicalConsulty.diagnose.map((diagnose: IDiagnosis) => (
             <div key={diagnose.id} className="mb-2">
@@ -25,6 +25,21 @@ export default function Diagnosis({ medicalConsulty }: IDiagnosisProps) {
           <h1 className="text-slate-900 font-bold text-lg">Desconocido</h1>
         )}
       </div>
+
+      {medicalConsulty.observations &&
+        medicalConsulty.observations.length > 0 && (
+          <>
+            <div className="mb-2">
+              <h3 className="text-slate-400 text-lg">Observación</h3>
+            </div>
+
+            <div>
+              <h1 className="text-slate-900 font-bold text-lg">
+                {medicalConsulty.observations}
+              </h1>
+            </div>
+          </>
+        )}
     </div>
   );
 }
