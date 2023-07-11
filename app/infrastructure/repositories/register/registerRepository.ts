@@ -37,7 +37,17 @@ export class RegisterRepository implements IRegisterRepository {
 
       if (response.status >= 400) {
         const type = data?.detail?.meta?.error?.type ?? null;
+
         if (!type) return new RegisterFailure(registerFailuresEnum.serverError);
+
+        if (type === "LOCATION_CREATED_ERROR" || type === "SERVICE_CREATED_ERROR") {
+          const access_token = data?.detail?.meta?.authentication?.access_token ?? "";
+
+          nookies.set(undefined, 'access_token', access_token, { path: '/' });
+
+          return "SUCCESS";
+        }
+
         return new RegisterFailure(type);
       }
       
