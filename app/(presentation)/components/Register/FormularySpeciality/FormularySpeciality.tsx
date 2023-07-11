@@ -47,7 +47,7 @@ export default function FormularySpeciality() {
 
   const setInitialsValues = () => {
     let val = {
-      pwaProfessionId: formData?.pwa_profression_id ?? 0,
+      pwaProfessionId: formData?.pwa_profession_id ?? 0,
       specialty_id: formData?.specialty_id ?? 0
     }
 
@@ -131,7 +131,7 @@ export default function FormularySpeciality() {
             setValues({ ...values, specialty_id: +e.target.value })
           }
         >
-          <option value="0">Selecctiona tu especialidad</option>
+          <option value="0">Selecciona tu especialidad</option>
           {specialities &&
             [...(specialities as Array<any>)].map((elem, i) => (
               <option key={i} value={elem["id"]}>

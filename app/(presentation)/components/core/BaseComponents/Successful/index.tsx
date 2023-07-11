@@ -51,7 +51,11 @@ const SuccessfulComponent = ({ tittle, variant, show, description, textButtonPri
             </p>
           </div>
 
-          <div className="lg:grid grid-cols-2 gap-4 items-center text-center justify-center mb-4">
+          <div className={twMerge([
+              "items-center text-center justify-center mb-4",
+              textButtonSecondary && onClickButtonSecondary ? "lg:grid grid-cols-2 gap-4" : "w-full",
+            ])}  
+          >
               { textButtonPrincipal && onClickButtonPrincipal &&
                 <div className="lg:mb-0 mb-4">
                   <Button
