@@ -439,7 +439,7 @@ export default function Formulary({
 
                 <div className="lg:flex justify-between items-center relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Ciudad
+                    Ciudad <span className="text-primary font-bold">*</span>
                   </p>
                   <FormInput
                     type={"text"}

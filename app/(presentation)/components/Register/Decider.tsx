@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { IStepsContext, StepsContext } from "./Steps/context/StepsContext";
 import Formulary from "./Formulary/Formulary";
-import FormularyCURP from "./FormularyCURP/FormularyCURP";
-import FormularyTypeUser from "./FormularyTypeUser/FormularyTypeUser";
+import FormularySpeciality from "./FormularySpeciality/FormularySpeciality";
+import FormularyLocality from "./FormularyLocality/FormularyLocality";
 
 export default function Decider() {
     const { state } = useContext<IStepsContext>(StepsContext);
@@ -10,8 +10,8 @@ export default function Decider() {
 
     return(
         <>
-            {data === 0 && <FormularyCURP/>}
-            {data === 1 && <FormularyTypeUser/>}
+            {data === 0 && <FormularySpeciality/>}
+            {data === 1 && <FormularyLocality/>}
             {data === 2 && <Formulary/>}
         </>
     )

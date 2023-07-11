@@ -10,11 +10,11 @@ export default function Steps() {
 
   let steps_list = [
     {
-      title: "¿Cuál es tú CURP?",
+      title: "Especialidad",
       value: 0,
     },
     {
-      title: "¿Qué tipo de proveedor eres?",
+      title: "Consultorio",
       value: 1,
     },
     {
