@@ -53,6 +53,7 @@ export default function Formulary() {
     first_lastname: formData?.first_lastname ?? "",
     second_lastname: formData?.second_lastname ?? "",
     phone_number: formData?.phone_number ?? "",
+    curp: formData?.curp ?? "",
   });
 
   const [errors, setErrors] = useState({
@@ -63,6 +64,7 @@ export default function Formulary() {
     first_lastname: "",
     second_lastname: "",
     phone_number: "",
+    curp: "",
   });
 
   const [wrongEmail, setWrongEmail] = useState(false);
@@ -193,6 +195,16 @@ export default function Formulary() {
     }
   };
 
+  const handleCURP = (value: string) => {
+    setValues({ ...values, curp: value });
+    if (values.curp.length <= 9) {
+      setErrors({ ...errors, curp: "El CURP debe tener más de 10 caracteres" });
+      return true;
+    } else {
+      setErrors({ ...errors, curp: "" });
+    }
+  };
+
   const validForm = () => {
     let errorsFieldsCount = 0;
 
@@ -221,6 +233,7 @@ export default function Formulary() {
     values.names === "" && list.push("names");
     values.first_lastname === "" && list.push("first_lastname");
     values.phone_number === "" && list.push("phone_number");
+    values.curp === "" && list.push("curp");
 
     setListOfErrors(list);
     if (list.length > 0) {
@@ -353,6 +366,30 @@ export default function Formulary() {
               setValues({ ...values, second_lastname: e.target.value })
             }
           />
+        </div>
+      </div>
+      <div className="relative w-full">
+        <FormInput
+          type="text"
+          className="w-full py-3 pr-10 bg-white"
+          placeholder="Ingresa tu CURP"
+          value={values.curp}
+          onChange={(e: any) => handleCURP(e.target.value)}
+        />
+        {errors.curp.length > 0 && (
+          <p className="text-red-500">{errors.curp}</p>
+        )}
+        {!errors.curp && listOfErrors.includes("curp") && (
+          <span className="text-red-500 mt-1">Campo requerido</span>
+        )}
+        <div className="w-full mt-2">
+          <Link
+            target="_blank"
+            href="https://www.gob.mx/curp/"
+            className="text-primary font-light lg:text-base md:text-base text-md"
+          >
+            ¿No sabes cual es tu CURP? Visita este sitio
+          </Link>
         </div>
       </div>
       <div className="relative w-full">
