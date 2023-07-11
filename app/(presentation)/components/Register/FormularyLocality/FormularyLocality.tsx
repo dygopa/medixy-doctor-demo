@@ -29,14 +29,14 @@ export default function FormularyLocality() {
   const [values, setValues] = useState({
     federalEntity: formData?.state_id ?? -1,
     municipality: formData?.municipality_id ?? -1,
-    locality_is_public: typeof formData?.locality_is_public === "undefined" ? -1 : formData.locality_is_public ? 1 : 0,
+    locality_is_virtual: typeof formData?.locality_is_virtual === "undefined" ? -1 : formData.locality_is_virtual ? 1 : 0,
   });
 
   const onSubmit = () => {
       formData = { ...(formData as Object), 
         state_id: values.federalEntity,
         municipality_id: values.municipality,
-        locality_is_public: values.locality_is_public === 1 ? true : false,
+        locality_is_virtual: values.locality_is_virtual === 1 ? true : false,
       };
       updateRegisterData(formData)(dispatch);
       console.log(formData);
@@ -114,30 +114,30 @@ export default function FormularyLocality() {
       <div className="relative w-full text-slate-500">
         <FormSelect
           className="form-control w-full bg-white"
-          defaultValue={values.locality_is_public}
-          value={values.locality_is_public}
+          defaultValue={values.locality_is_virtual}
+          value={values.locality_is_virtual}
           onChange={(e: any) =>
             setValues({
               ...values,
-              locality_is_public: +e.target.value,
+              locality_is_virtual: +e.target.value,
             })
           }
         >
           <option value={-1}>
-            Selecciona el sector
-          </option>
-          <option value={1}>
-            Público
+            Selecciona el tipo de consultorio
           </option>
           <option value={0}>
-            Privado
+            Físico
+          </option>
+          <option value={1}>
+            Virtual
           </option>
         </FormSelect>
       </div>
 
       <Button
         onClick={() => onSubmit()}
-        disabled={values.federalEntity < 0 || values.municipality < 0 || values.locality_is_public < 0}
+        disabled={values.federalEntity < 0 || values.municipality < 0 || values.locality_is_virtual < 0}
         variant="primary"
         type="submit"
         className="mt-4 w-full"
