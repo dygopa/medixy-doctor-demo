@@ -6,7 +6,7 @@ export interface IRegister{
     first_lastname: string,
     second_lastname: string,
     phone_number: string,
-    pwa_profression_id: number,
+    pwa_profession_id: number,
     specialty_id: number,
     state_id: number,
     municipality_id: number,

@@ -36,7 +36,7 @@ export default function FormularySpeciality() {
   ];
 
   const [values, setValues] = useState({
-    pwaProfressionId: 0,
+    pwaProfessionId: 0,
     specialty_id: 0
   });
 
@@ -47,7 +47,7 @@ export default function FormularySpeciality() {
 
   const setInitialsValues = () => {
     let val = {
-      pwaProfressionId: formData?.pwaProfressionId ?? 0,
+      pwaProfessionId: formData?.pwa_profression_id ?? 0,
       specialty_id: formData?.specialty_id ?? 0
     }
 
@@ -63,13 +63,13 @@ export default function FormularySpeciality() {
   };
 
   const onSubmit = () => {
-    if (values.pwaProfressionId === 0) {
+    if (values.pwaProfessionId === 0) {
       setErrors({ ...errors, curp: "El CURP debe tener más de 10 caracteres" });
       return;
     } else {
       setErrors({ ...errors, curp: "" });
       formData = { ...(formData as Object), 
-        pwa_profression_id: values.pwaProfressionId,
+        pwa_profession_id: values.pwaProfessionId,
         specialty_id: values.specialty_id,
       };
       updateRegisterData(formData)(dispatch);
@@ -104,9 +104,10 @@ export default function FormularySpeciality() {
       <div className="relative w-full text-slate-500">
         <FormSelect
           className="form-control w-full bg-white"
-          defaultValue={formData.pwaProfressionId}
+          defaultValue={values.pwaProfessionId}
+          value={values.pwaProfessionId}
           onChange={(e) =>
-            setValues({ ...values, pwaProfressionId: +e.target.value })
+            setValues({ ...values, pwaProfessionId: +e.target.value })
           }
         >
           <option value="0">Selecciona tu profesión</option>
@@ -124,7 +125,8 @@ export default function FormularySpeciality() {
         <FormSelect
           className="form-control w-full bg-white"
           defaultValue={formData.specialty_id}
-          disabled={values.pwaProfressionId===0}
+          value={formData.specialty_id}
+          disabled={values.pwaProfessionId===0}
           onChange={(e) =>
             setValues({ ...values, specialty_id: +e.target.value })
           }
@@ -142,7 +144,7 @@ export default function FormularySpeciality() {
       <div className="w-full text-center">
         <Button
           onClick={() => onSubmit()}
-          disabled={values.pwaProfressionId === 0 || values.specialty_id===0}
+          disabled={values.pwaProfessionId === 0 || values.specialty_id===0}
           variant="primary"
           type="submit"
           className="mt-4 w-full"

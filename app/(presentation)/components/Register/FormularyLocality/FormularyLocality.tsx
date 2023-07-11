@@ -29,7 +29,7 @@ export default function FormularyLocality() {
   const [values, setValues] = useState({
     federalEntity: formData?.state_id ?? -1,
     municipality: formData?.municipality_id ?? -1,
-    locality_is_public: formData?.locality_is_public === true ? 1 : 0 ?? -1,
+    locality_is_public: typeof formData?.locality_is_public === "undefined" ? -1 : formData.locality_is_public ? 1 : 0,
   });
 
   const onSubmit = () => {
@@ -70,7 +70,8 @@ export default function FormularyLocality() {
       <div className="relative w-full text-slate-500">
         <FormSelect
           className="form-control w-full bg-white"
-          defaultValue={values.federalEntity ?? -1}
+          defaultValue={values.federalEntity.toString()}
+          value={values.federalEntity.toString()}
           onChange={(e: any) =>
             setValues({ ...values, federalEntity: parseInt(e.target.value) })
           }
@@ -89,7 +90,8 @@ export default function FormularyLocality() {
        <FormSelect
           className="form-control w-full bg-white"
           disabled={values.federalEntity < 0}
-          defaultValue={values.municipality ?? '-1'}
+          value={values.municipality.toString()}
+          defaultValue={values.municipality.toString()}
           onChange={(e: any) =>
             setValues({ ...values, municipality: parseInt(e.target.value) })
           }
@@ -112,7 +114,8 @@ export default function FormularyLocality() {
       <div className="relative w-full text-slate-500">
         <FormSelect
           className="form-control w-full bg-white"
-          defaultValue={values.locality_is_public ?? -1}
+          defaultValue={values.locality_is_public}
+          value={values.locality_is_public}
           onChange={(e: any) =>
             setValues({
               ...values,
