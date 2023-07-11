@@ -25,6 +25,19 @@ export default function Diagnosis({ medicalConsulty }: IDiagnosisProps) {
           <h1 className="text-slate-900 font-bold text-lg">Desconocido</h1>
         )}
       </div>
+
+      {medicalConsulty.observations &&
+        medicalConsulty.observations.length > 0 && (
+          <>
+            <div className="mb-2">
+              <h3 className="text-slate-400 text-lg">Observación</h3>
+            </div>
+
+            <div>
+              <h1 className="text-slate-900 font-bold text-lg">Se le vio</h1>
+            </div>
+          </>
+        )}
     </div>
   );
 }
