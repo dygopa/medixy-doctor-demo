@@ -35,7 +35,7 @@ export default class ScheduleUseCase {
     }
   }
 
-  async getAttentionWindows(id:number): Promise<Array<any>> {
+  async getAttentionWindows(id?:number | null): Promise<Array<any>> {
     try {
       const response = await this._repository.getAttentionWindows(id);
       if (response instanceof ScheduleFailure) throw response;
