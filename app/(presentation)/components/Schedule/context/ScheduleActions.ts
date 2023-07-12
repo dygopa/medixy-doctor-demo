@@ -74,7 +74,7 @@ const getAppointments = (id:number, date?:string) => async (dispatch: Dispatch<a
     }
 }
 
-const getAttentionWindows = (id:number) => async (dispatch: Dispatch<any>) => {
+const getAttentionWindows = (id?:number | null) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "GET_ATTENTION_WINDOWS_LOADING" });
       
