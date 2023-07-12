@@ -8,7 +8,7 @@ import { AppointmentEnum } from '(presentation)/(enum)/appointment/appointmentEn
 export default interface IScheduleRepository {
     getCalendarEvents(id:number, serviceId:number, sinceDate:any, untilDate:any): Promise<any[] | ScheduleFailure>;
     getAppointments(id:number, date?:string, status?:number): Promise<any[] | ScheduleFailure>;
-    getAttentionWindows(id?:number | null): Promise<any[] | ScheduleFailure>;
+    getAttentionWindows(id:number | null): Promise<any[] | ScheduleFailure>;
     createAppointment(obj:any): Promise<any | ScheduleFailure>;
     getAttentionWindowsByService(id:number, date?:string): Promise<any[] | ScheduleFailure>;
     getListOfTimeBaseOnSpan(): Promise<any[] | ScheduleFailure>;
@@ -110,18 +110,14 @@ export class ScheduleRepository implements IScheduleRepository {
         }
     }
 
-    async getAttentionWindows(id?:number | null): Promise<any[] | ScheduleFailure> {
+    async getAttentionWindows(id:number | null): Promise<any[] | ScheduleFailure> {
         try {
             let query = supabase.from("VentanasAtencion").select(`
                 *,
                 Servicios (
                     nombre
                 )
-            `);
-
-            if (id) {
-                query = query.eq("servicioId", id);
-            }
+            `).eq("servicioId", id);
 
             let res = await query
 
