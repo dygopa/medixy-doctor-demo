@@ -84,9 +84,10 @@ export default function CalendarIndex() {
       title: text,
       start: moment(elem["fechaReserva"]).utc().format("YYYY-MM-DD HH:mm"),
       end: moment(elem["fechaFinReserva"]).utc().format("YYYY-MM-DD HH:mm"),
-      textColor: textColor,
+      textColor: moment(elem["fechaReserva"]).isBefore(moment().utc(true)) && type === "FREE_SLOT"? "#242424" : textColor,
+      backgroundColor: moment(elem["fechaReserva"]).isBefore(moment().utc(true)) && type === "FREE_SLOT"? "#CCCCCC30" : backgroundColor,
+      borderColor: moment(elem["fechaReserva"]).isBefore(moment().utc(true)) && type === "FREE_SLOT"? "#CCCCCC30" : textColor,
       type: type,
-      borderColor: textColor,
       dateEvent: moment(elem["fechaReserva"]).toDate(),
       dateEndEvent: moment(elem["fechaFinReserva"]).toDate(),
       description: "-",
@@ -98,7 +99,6 @@ export default function CalendarIndex() {
         sujetoId: elem["sujetoId"],
         appoinmentId: elem["id"],
       },
-      backgroundColor: backgroundColor,
     };
     return object;
   }

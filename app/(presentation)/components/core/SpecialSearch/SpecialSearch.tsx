@@ -56,68 +56,75 @@ const ValueOnList = ({customClick, data, isSelected}:ValueOnListProps) => {
 }
 
 const EmptyList = ({
-    customClickEmpty
-    }:EmptyStateProps) => {
-    return(
-        <div className='w-full text-center h-full flex flex-col justify-center items-center gap-2 p-4'>
-            <p className='font-semibold text-lg text-slate-950 w-[50%]'>Sin resultados</p>
-            <p className='font-light text-sm text-slate-500 w-[70%]'>Tal parece que no hay resultados en tu busqueda, lo sentimos</p>
-        </div>
-    )
+  customClickEmpty
+  }:EmptyStateProps) => {
+  return(
+    <div className='w-full text-center h-full flex flex-col justify-center items-center gap-2 p-4'>
+      <p className='font-semibold text-lg text-slate-950 w-[50%]'>Sin resultados</p>
+      <p className='font-light text-sm text-slate-500 w-[70%]'>Tal parece que no hay resultados en tu busqueda, lo sentimos</p>
+    </div>
+  )
 }
   
 export default function SpecialSearch({
-    customClick,
-    customClickEmpty,
-    list,
-    placeholder,
-    selectedItem
+  customClick,
+  customClickEmpty,
+  list,
+  placeholder,
+  selectedItem
 }:SpecialSearchProps){
 
-    const [active, setActive] = useState(false)
-    const searchbox: Variants = {
-        active: { translateY: 0, opacity: 1, visibility: "visible"},
-        disabled: { translateY: 10, opacity: 0, visibility: "hidden"}
-    };
+  const [active, setActive] = useState(false)
+  const searchbox: Variants = {
+    active: { translateY: 0, opacity: 1, visibility: "visible"},
+    disabled: { translateY: 10, opacity: 0, visibility: "hidden"}
+  };
 
-    let [searchedList, setSearchedList] = useState([...list as any[]])
+  let [searchedList, setSearchedList] = useState(list)
 
-    function handleSearch(value:string){
-        if(value !== ""){
-            let l = list
-            l = l.filter(elem => elem["title"].toLowerCase().includes(value.toLocaleLowerCase()) ) && l.filter(elem => elem["description"].toLowerCase().includes(value.toLocaleLowerCase()) )
-            setSearchedList(l)
-        }else{
-            setSearchedList(list)
-        }
+  function handleSearch(value:string){
+    if(value !== ""){
+      let l = list
+      l = l.filter(elem => 
+        elem["title"].toLowerCase().includes(value.toLocaleLowerCase()) || 
+        elem["description"].toLowerCase().includes(value.toLocaleLowerCase())
+      )
+      setSearchedList(l)
+    }else{
+      setSearchedList(list)
     }
+  }
 
-    return (
-        <div className={twMerge([
-            "w-full h-full relative block" 
-        ])}>
-            <FormInput
-                type='text'
-                onBlur={() => setTimeout(() => {
-                    setActive(false)
-                }, 500)}
-                onFocus={() => setActive(true)}
-                className="w-full form-control" 
-                placeholder={placeholder} 
-                onChange={(e)=>{ handleSearch(e.target.value) }} 
-            />
-            <motion.div 
-            variants={searchbox}
-            animate={active ? "active" : "disabled"}
-            className={twMerge([
-                "absolute top-10 right-0 w-full bg-white border rounded-md border-slate-100 shadow-md z-[20]"
-            ])}>
-                <div className="max-h-[30vh] min-h-[10vh] h-fit overflow-y-auto">
-                    {searchedList.length === 0 ? <EmptyList customClickEmpty={customClickEmpty} /> : searchedList.map((elem, i) => <ValueOnList data={elem} isSelected={selectedItem === elem} customClick={customClick} /> )}
-                </div>
-            </motion.div>
+  useMemo(()=>{
+    if(list) setSearchedList(list)
+  },[list])
+
+  return (
+    <div className={twMerge([
+      "w-full h-full relative block" 
+    ])}>
+      <FormInput
+        type='text'
+        onBlur={() => setTimeout(() => {
+          setActive(false)
+        }, 500)}
+        onFocus={() => setActive(true)}
+        className="w-full form-control" 
+        placeholder={placeholder} 
+        onChange={(e)=>{ handleSearch(e.target.value) }} 
+      />
+      <motion.div 
+      variants={searchbox}
+      animate={active ? "active" : "disabled"}
+      className={twMerge([
+        "absolute top-10 right-0 w-full bg-white border rounded-md border-slate-100 shadow-md z-[20]"
+      ])}>
+        <div className="max-h-[30vh] min-h-[10vh] h-fit overflow-y-auto">
+          {searchedList.length === 0 ? <EmptyList customClickEmpty={customClickEmpty} /> : searchedList.map((elem, i) => <ValueOnList data={elem} isSelected={selectedItem === elem} customClick={customClick} /> )}
         </div>
-    )
+      </motion.div>
+    </div>
+  )
 }
 
 
