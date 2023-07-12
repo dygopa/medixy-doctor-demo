@@ -10,6 +10,7 @@ import {
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { DatesSetArg, EventClickArg } from "@fullcalendar/core";
+import { useSearchParams } from "next/navigation";
 
 export default function CalendarIndex() {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
@@ -24,7 +25,6 @@ export default function CalendarIndex() {
     changeStatusPopup,
     predifinedReservationData,
     getCalendarEvents,
-    getServices,
     activeService,
   } = actions;
 
@@ -48,6 +48,8 @@ export default function CalendarIndex() {
     error: servicesError,
     data: services,
   } = state.getServices;
+
+  const params = useSearchParams()
 
   const [appointments, setAppointments] = useState([]);
   const [loadedAppointments, setLoadedAppointments] = useState(false);
@@ -147,7 +149,6 @@ export default function CalendarIndex() {
       changeTypePopup(2)(dispatch);
     }
 
-    console.log(data);
   }
 
   useMemo(() => {
@@ -182,6 +183,23 @@ export default function CalendarIndex() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser, service]);
 
+  useMemo(()=>{
+    if(params.get("service") && services > 0 ){
+      let id = params.get("service")?.toString()
+      let serviceFinded = [...services].find((elem:any)=> elem["id"] === parseInt(id!) )
+      console.log(serviceFinded)
+      if(serviceFinded){
+        activeService({
+          id: params.get("service"),
+          title: serviceFinded["name"],
+          description: serviceFinded["description"],
+          type: "SERVICE",
+        })(dispatch)
+      }
+      getCalendarEvents(user.userId, params.get("service"), {}, {})(dispatch);
+    }
+  },[params, services])
+
   return (
     <div className="mt-8 flex flex-col lg:flex-row justify-between flex-wrap lg:flex-nowrap items-start gap-5">
       <AlertComponent
@@ -197,7 +215,7 @@ export default function CalendarIndex() {
       <div className="w-full lg:w-2/3 h-[64vh]">
         <Calendar
           handleChangeInWeek={(param: DatesSetArg) => {
-            console.log(param.end, " - ", param.start);
+            console.log(param.start, " - ", param.end);
           }}
           events={appointments}
           initialEvent={""}
