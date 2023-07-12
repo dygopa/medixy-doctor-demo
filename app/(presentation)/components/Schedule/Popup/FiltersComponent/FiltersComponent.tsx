@@ -7,12 +7,16 @@ import { IService } from 'domain/core/entities/serviceEntity';
 import { FiBriefcase, FiHome } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
 import { ILocality } from 'domain/core/entities/localityEntity';
+import { useRouter, useSearchParams, usePathname } from 'next/navigation';
 
 export default function FiltersComponent({cancelFuntion, customRef}:{
   cancelFuntion: Function;
   customRef: React.LegacyRef<HTMLDivElement>;
 }) {
-  
+
+  const params = useSearchParams();
+  const pathname = usePathname();
+    
   const { state: auth} = useContext<IAuthContext>(AuthContext);
   const { data: user, successful: loadedUser} = auth.getUserAuthenticated;
 
@@ -20,6 +24,8 @@ export default function FiltersComponent({cancelFuntion, customRef}:{
   const { getServices, getLocalities, getAttentionWindows, activeLocality, activeService } = actions;
   const { data: services, successful: loadedServices } = state.getServices;
   const { data: localities, successful: loadedLocalities } = state.getLocalities;
+
+  const router = useRouter()
 
   const [selectedService, setSelectedService] = useState({
     id: 0,
@@ -37,6 +43,22 @@ export default function FiltersComponent({cancelFuntion, customRef}:{
 
   const [listOfServices, setListOfServices] = useState([])
   const [listOfLocalities, setListOfLocalities] = useState([])
+
+  function filterFunction(){
+    let listOfQuerys = []
+    let path = pathname!.toString()
+    
+    if(selectedService.id > 0 || selectedLocality.id > 0) path = path + "?"
+    
+    if(selectedService.id > 0) listOfQuerys.push(`service=${selectedService.id}`)
+    if(selectedLocality.id > 0) listOfQuerys.push(`locality=${selectedLocality.id}`)
+
+    path = path + listOfQuerys.join("&")
+
+    router.replace(path)
+    cancelFuntion()
+    
+  }
 
   function handleFormatList(){
 
@@ -135,7 +157,7 @@ export default function FiltersComponent({cancelFuntion, customRef}:{
 
       </div>
       <div className="w-full flex flex-col justify-center items-center gap-4">
-        <Button onClick={()=>{ cancelFuntion() }} variant="primary" type="button" className="w-full">Filtrar</Button>
+        <Button onClick={()=>{ filterFunction() }} variant="primary" type="button" className="w-full">Filtrar</Button>
         <p onClick={()=>{ cancelFuntion() }} className='cursor-pointer font-normal text-sm text-primary text-center'>Cancelar</p>
       </div>
     </div>
