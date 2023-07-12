@@ -137,10 +137,15 @@ export default function CalendarIndex() {
   }, [successful]);
 
   useMemo(() => {
+    if (servicesSuccessful && services.length > 0)
+      getAttentionWindows(services[0].id)(dispatch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [servicesSuccessful, services]);
+
+  useMemo(() => {
     if (loadedUser) {
       getServices(user.userId)(dispatch);
       getLocalities(user.userId)(dispatch);
-      getAttentionWindows()(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser]);
