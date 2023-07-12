@@ -11,26 +11,48 @@ import { FiUser } from 'react-icons/fi';
 import { AppointmentEnum } from '(presentation)/(enum)/appointment/appointmentEnum';
 
 const StatusComponent = ({data}:{data:any})=>{
-        
+                
   let status = data["estado"]
+  
+  let text = ""
+  let color = ""
 
-  let color = 
-       status === AppointmentEnum.PENDING 
-    || status === AppointmentEnum.NOT_AVAILABLE 
-    || status === AppointmentEnum.APPROVED
-    ? 
-      "bg-yellow-500"
-    : 
-      "bg-green-500"
-  let text = 
-       status === AppointmentEnum.PENDING 
-    || status === AppointmentEnum.NOT_AVAILABLE 
-    || status === AppointmentEnum.APPROVED
-    ? 
-      "Por atender"
-    : 
-      "Completada"
+  if(status === AppointmentEnum.NOT_AVAILABLE){
+    text = "No disponible"
+    color = "bg-yellow-500"
+  }
 
+  if(status === AppointmentEnum.APPROVED && moment(data["fechaReserva"]).isBefore(moment().utc(true))){
+    text = "No asistió"
+    color = "bg-slate-200"
+  }
+  if(status === AppointmentEnum.PENDING && moment(data["fechaReserva"]).isBefore(moment().utc(true))){
+    text = "No asistió"
+    color = "bg-slate-200"
+  }
+
+  if(status === AppointmentEnum.APPROVED && moment(data["fechaReserva"]).isAfter(moment().utc(true))){
+    text = "Aprovada"
+    color = "bg-yellow-500"
+  }
+  if(status === AppointmentEnum.PENDING && moment(data["fechaReserva"]).isAfter(moment().utc(true))){
+    text = "Por atender"
+    color = "bg-yellow-500"
+  }
+
+  if(status === AppointmentEnum.CANCELED){
+    text = "Cancelada"
+    color = "bg-red-500"
+  }
+  if(status === AppointmentEnum.COMPLETE){
+    text = "Completada"
+    color = "bg-green-500"
+  }
+  if(status === AppointmentEnum.PROCESSING){
+    text = "En curso"
+    color = "bg-green-500"
+  }
+  
   return(
     <div className="w-full flex justify-end items-center gap-2">
       <p className='font-light text-[12px] text-gray-700'>{text}</p>
