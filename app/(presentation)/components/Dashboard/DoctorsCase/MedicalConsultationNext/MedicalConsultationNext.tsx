@@ -18,8 +18,6 @@ export default function MedicalConsultationNext({ user }: { user: IUser }) {
     if (user.userId) getLatestAppointment(user.userId)(dispatch);
   }, [user.userId]);
 
-  console.log(data)
-
   const LoadingAppointment = () => {
     return(
       <div className="w-full h-full lg:flex md:flex sm:flex block justify-between items-start gap-4 p-5 bg-white rounded-md shadow-md">

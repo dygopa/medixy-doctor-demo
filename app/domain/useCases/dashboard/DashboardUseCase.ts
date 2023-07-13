@@ -14,7 +14,7 @@ export default class DashboardUseCase {
     async getPendingAppointments(id:number, date?:string): Promise<Array<any>> {
         try {
             
-            const response = await this._repositorySchedule.getAppointments(id, date, AppointmentEnum.APPROVED);
+            const response = await this._repositorySchedule.getAppointments(id, date, AppointmentEnum.PENDING);
 
             if (response instanceof ScheduleFailure) throw response;
 
