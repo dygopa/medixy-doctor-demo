@@ -140,9 +140,9 @@ export default function MedicalConsultationList({ user }: { user: IUser }) {
                 <p className='font-semibold text-sm text-slate-900 w-full whitespace-nowrap text-ellipsis'>{data["nombres"]} {data["primerApellido"]}</p>
                 <p className='font-light text-sm text-slate-500 w-full whitespace-nowrap text-ellipsis'>{data["nombre"]}</p>
               </div>
-              <div className="w-[30%] h-full flex flex-col justify-center items-end">
+              <div className="w-[40%] h-full flex flex-col justify-center items-end">
                 <div className="w-full flex justify-end items-center gap-1 overflow-hidden">
-                  <p className='font-semibold text-[12px] text-slate-900 whitespace-nowrap text-ellipsis'>{moment(data["fechaReserva"]).utc().format("hh:mm a")}</p>
+                  <p className='font-semibold text-[12px] text-slate-900 whitespace-nowrap text-ellipsis'>{moment(data["fechaReserva"]).utc().format("DD/MM")} - {moment(data["fechaReserva"]).utc().format("hh:mm a")}</p>
                   {/* <Lucide icon="MoreVertical" className="w-5 h-5 text-slate-500" /> */}
                 </div>
                 <StatusComponent data={data} />
