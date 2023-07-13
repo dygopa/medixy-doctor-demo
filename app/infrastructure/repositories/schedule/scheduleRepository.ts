@@ -103,6 +103,8 @@ export class ScheduleRepository implements IScheduleRepository {
                 list = list.filter(elem => elem["estado"] === status )
             }
 
+            console.log(list)
+
             return list ?? [];
         } catch (error) {
             const exception = error as any;
