@@ -75,7 +75,7 @@ function AppointmentDetail({cancelFuntion, customRef}:{
     },[successful])
 
     return (
-        <div ref={customRef} className='w-full md:w-[35%] lg:w-[35%] h-screen  md:min-h-[60vh] md:max-h-[90vh] lg:min-h-[60vh] lg:max-h-[90vh] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8'>
+        <div ref={customRef} className='w-full md:w-[35%] lg:w-[35%] h-screen  md:min-h-[60vh] md:max-h-[90vh] lg:min-h-[60vh] lg:max-h-[90vh] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 pb-0 gap-8'>
             <p className="font-bold text-2xl text-slate-900">Cita</p>
             <div className="w-full flex justify-between items-center gap-2">
                 <div className="w-1/4 flex justify-center items-center">
@@ -110,7 +110,7 @@ function AppointmentDetail({cancelFuntion, customRef}:{
                     <DataSpan label={"Quien hizo la cita"} value={`${user.names} ${user.lastName}`} />
                 </div>
             </div>
-            <div className="w-full flex flex-col justify-center items-center gap-4">
+            <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white">
                 <div className="w-full">
                     <Link href={{
                         pathname: "/medical-record/" + data["appoinmentId"],
