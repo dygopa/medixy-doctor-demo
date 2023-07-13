@@ -199,7 +199,7 @@ export default function Formulary({
   }
 
   const onClickButtonSecondary: Function = () => {
-    router.push(ScheduleRoutesEnum.Configuration);
+    router.push(ScheduleRoutesEnum.Configuration + `?service=${creationServiceData.id}`);
   }
 
   return (
