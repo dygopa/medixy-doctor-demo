@@ -6,7 +6,7 @@ export default function Loading() {
           <div className="flex justify-center w-full mt-5">
             <div role="status">
               <svg
-                className="inline  w-8 h-8 text-primary animate-spin dark:text-gray-600 fill-gray-600 dark:fill-gray-300"
+                className="inline  w-8 h-8 text-primary animate-spin dark:text-gray-600 fill-slate-200 dark:fill-slate-200"
                 viewBox="0 0 100 101"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
