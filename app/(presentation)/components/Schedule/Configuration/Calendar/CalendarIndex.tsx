@@ -16,6 +16,9 @@ import { FiBriefcase, FiHome } from "react-icons/fi";
 import { AiFillBuild } from "react-icons/ai";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
+import { EventClickArg } from "@fullcalendar/core";
+import { twMerge } from "tailwind-merge";
+import AttentionWindow from "./AttentionWindowModal/AttentionWindowModal";
 
 export default function CalendarIndex() {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
@@ -39,6 +42,10 @@ export default function CalendarIndex() {
   } = state.getServices;
 
   const [windows, setWindows] = useState([]);
+  const [showWindowModal, setShowWindowModal] = useState(false);
+  const [eventSelected, setEventSelected] = useState<EventClickArg>(
+    {} as EventClickArg
+  );
 
   function formatHour(value: number) {
     let h: string = value.toString();
@@ -150,44 +157,63 @@ export default function CalendarIndex() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser]);
 
-  console.log(windows);
-
   return (
-    <div className="mt-8 flex justify-between items-start gap-5">
-      <AlertComponent
-        variant="error"
-        show={errorWindowCreated !== null}
-        description={"Ha ocurrido un error creando la ventana de atención"}
-      />
-      <AlertComponent
-        variant="success"
-        show={successfulWindowCreated === true}
-        description="Ventana de atención creada exitosamente"
-      />
-      {/* BEGIN: Calendar Content */}
-      <div className="w-full h-[64vh]">
-        {user !== null &&
-          user.userId &&
-          localities &&
-          [...(localities as any[])].length === 0 &&
-          services &&
-          [...(services as any[])].length === 0 && <RowCards />}
-        {user !== null &&
-          user.userId &&
-          localities &&
-          [...(localities as any[])].length > 0 &&
-          services &&
-          [...(services as any[])].length > 0 && (
-            <Calendar
-              handleChangeInWeek={() => {}}
-              events={windows}
-              initialEvent={""}
-              handleClick={() => {}}
-            />
-          )}
-        {loading && <Loading />}
+    <>
+      <div className="mt-8 flex justify-between items-start gap-5">
+        <AlertComponent
+          variant="error"
+          show={errorWindowCreated !== null}
+          description={"Ha ocurrido un error creando la ventana de atención"}
+        />
+        <AlertComponent
+          variant="success"
+          show={successfulWindowCreated === true}
+          description="Ventana de atención creada exitosamente"
+        />
+        {/* BEGIN: Calendar Content */}
+        <div className="w-full h-[64vh]">
+          {user !== null &&
+            user.userId &&
+            localities &&
+            [...(localities as any[])].length === 0 &&
+            services &&
+            [...(services as any[])].length === 0 && <RowCards />}
+          {user !== null &&
+            user.userId &&
+            localities &&
+            [...(localities as any[])].length > 0 &&
+            services &&
+            [...(services as any[])].length > 0 && (
+              <Calendar
+                handleChangeInWeek={() => {}}
+                events={windows}
+                initialEvent={""}
+                handleClick={(e: EventClickArg) => {
+                  setEventSelected(e);
+                  setShowWindowModal(true);
+                }}
+              />
+            )}
+          {loading && <Loading />}
+        </div>
+        {/* END: Calendar Content */}
       </div>
-      {/* END: Calendar Content */}
-    </div>
+
+      {showWindowModal && (
+        <div
+          className={twMerge([
+            "z-[99] fixed top-0 left-0 w-full h-screen overflow-y-auto bg-gray-900/50 flex flex-col justify-center items-center",
+            showWindowModal ? "visible" : "hidden",
+          ])}
+        >
+          <div className="w-full md:w-[60%] xl:w-[45%] lg:w-[60%] h-[500px] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
+            <AttentionWindow
+              setShowAttentionWindow={setShowWindowModal}
+              eventSelected={eventSelected}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
