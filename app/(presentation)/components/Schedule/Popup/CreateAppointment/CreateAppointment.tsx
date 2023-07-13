@@ -188,7 +188,7 @@ function CreateAppointment({cancelFuntion, customRef}:{
   }, [loadedUser]);
 
   return (
-    <div ref={customRef} className='w-full md:w-[60%] lg:w-[40%] h-screen  md:min-h-[60vh] md:max-h-[90vh] lg:min-h-[60vh] lg:max-h-[90vh] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8'>
+    <div ref={customRef} className='w-full md:w-[60%] lg:w-[40%] h-screen  md:min-h-[60vh] md:max-h-[90vh] lg:min-h-[60vh] lg:max-h-[90vh] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 pb-0 gap-8'>
       <p className="font-bold text-2xl text-slate-900">Agendar cita</p>
       <div className="w-full flex flex-col justify-center items-center gap-5">
         {!fromCalendar && <div className="w-full flex flex-col justify-center items-start">
@@ -306,7 +306,7 @@ function CreateAppointment({cancelFuntion, customRef}:{
 
         </div>}
       </div>
-      <div className="w-full flex flex-col justify-center items-center gap-4">
+      <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white">
         <Button 
         disabled={
           selectedPatient.id === 0 ||

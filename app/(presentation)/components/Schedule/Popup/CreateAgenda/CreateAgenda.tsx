@@ -155,11 +155,11 @@ function CreateAgenda({cancelFuntion, customRef}:{
   }, [loadedUser]);
 
   return (
-    <div ref={customRef} className='w-full md:w-[60%] lg:w-[40%] h-screen  md:min-h-[60vh] md:max-h-[90vh] lg:min-h-[60vh] lg:max-h-[90vh] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8'>
+    <div ref={customRef} className='w-full md:w-[60%] lg:w-[40%] h-screen  md:min-h-[60vh] md:max-h-[90vh] lg:min-h-[60vh] lg:max-h-[90vh] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 pb-0 gap-8'>
       <div className="w-full flex justify-between items-center">
-        <p className="font-bold text-2xl text-slate-900">Nueva venta de atención</p>
-        <div onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(3)(dispatch) }} className='cursor-pointer text-primary rounded-md w-fit h-fit flex justify-center items-center text-sm font-normal gap-2'>
-          <p>Necesito ayuda</p>
+        <p className="font-bold text-2xl text-slate-900">Nueva ventana de atención</p>
+        <div onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(3)(dispatch) }} className='cursor-pointer text-primary rounded-md w-fit h-fit flex justify-end items-center text-sm font-normal gap-2'>
+          <p className='text-end'>Necesito ayuda</p>
           <FiHelpCircle/>
         </div>
       </div>
@@ -306,7 +306,7 @@ function CreateAgenda({cancelFuntion, customRef}:{
         </div>
 
       </div>
-      <div className="w-full flex flex-col justify-center items-center gap-4">
+      <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white">
         <Button disabled={
           loading ||
           daysRepeatedList.length === 0 ||
