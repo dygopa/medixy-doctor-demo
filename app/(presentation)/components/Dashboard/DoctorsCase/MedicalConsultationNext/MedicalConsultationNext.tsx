@@ -2,15 +2,23 @@ import Button from "(presentation)/components/core/BaseComponents/Button";
 import Link from "next/link";
 import { HiOutlineBell } from "react-icons/hi";
 import { DashboardContext, IDashboardContext } from "../context/DashboardContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { IUser } from "domain/core/entities/userEntity";
 import moment from "moment";
+import { actions } from "../MedicalConsultationList/context/MedicalConsultationListActions";
 
 export default function MedicalConsultationNext({ user }: { user: IUser }) {
 
-  const { state } = useContext<IDashboardContext>(DashboardContext);
+  const { state, actions, dispatch } = useContext<IDashboardContext>(DashboardContext);
 
   const { data, loading, error, successful } = state.getLatestAppointment;
+  const { getLatestAppointment } = actions;
+
+  useMemo(() => {
+    if (user.userId) getLatestAppointment(user.userId)(dispatch);
+  }, [user.userId]);
+
+  console.log(data)
 
   const LoadingAppointment = () => {
     return(
