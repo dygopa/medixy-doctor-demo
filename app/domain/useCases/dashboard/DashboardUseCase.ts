@@ -54,8 +54,6 @@ export default class DashboardUseCase {
                 let date = moment(elem["fechaReserva"]).toDate()
                 return moment(date).isSameOrAfter(moment().utc(true))
             })
-
-            console.log(list)
             
             return response;
         } catch (error) {
