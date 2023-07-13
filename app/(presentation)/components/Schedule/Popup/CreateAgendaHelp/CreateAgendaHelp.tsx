@@ -54,7 +54,7 @@ function CreateAgendaHelp({cancelFuntion, customRef}:{
     }
 
     return (
-        <div ref={customRef} className='w-full md:w-[60%] lg:w-[40%] h-screen  md:min-h-[60vh] md:max-h-[90vh] lg:min-h-[60vh] lg:max-h-[90vh] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8'>
+        <div ref={customRef} className='w-full md:w-[60%] lg:w-[40%] h-screen  md:min-h-[60vh] md:max-h-[90vh] lg:min-h-[60vh] lg:max-h-[90vh] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 pb-0 gap-8'>
             <p className="font-bold text-2xl text-slate-900">Ayuda</p>
             <div className="w-full flex flex-col justify-start items-start gap-5">
                 <div className="w-full flex flex-col justify-start items-center gap-3">
@@ -78,7 +78,7 @@ function CreateAgendaHelp({cancelFuntion, customRef}:{
                     {examples.map(elem => <ExampleComponent data={elem} />)}
                 </div>
             </div>
-            <div className="w-full flex flex-col justify-center items-center gap-4">
+            <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white">
                 <Button onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(1)(dispatch) }} variant="primary" type="button" className="w-full">Regresar</Button>
             </div>
         </div>
