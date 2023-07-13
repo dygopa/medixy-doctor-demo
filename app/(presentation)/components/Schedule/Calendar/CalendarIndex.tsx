@@ -11,6 +11,8 @@ import {
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { DatesSetArg, EventClickArg } from "@fullcalendar/core";
 import { useSearchParams } from "next/navigation";
+import { twMerge } from "tailwind-merge";
+import AppointmentEndModal from "./AppointmentEndModal/AppointmentEndModal";
 
 export default function CalendarIndex() {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
@@ -49,10 +51,11 @@ export default function CalendarIndex() {
     data: services,
   } = state.getServices;
 
-  const params = useSearchParams()
+  const params = useSearchParams();
 
   const [appointments, setAppointments] = useState([]);
   const [loadedAppointments, setLoadedAppointments] = useState(false);
+  const [showAppointmentEndModal, setShowAppointmentEndModal] = useState(false);
 
   function formatEvent(elem: any) {
     let object = {};
@@ -84,9 +87,21 @@ export default function CalendarIndex() {
       title: text,
       start: moment(elem["fechaReserva"]).utc().format("YYYY-MM-DD HH:mm"),
       end: moment(elem["fechaFinReserva"]).utc().format("YYYY-MM-DD HH:mm"),
-      textColor: moment(elem["fechaReserva"]).isBefore(moment().utc(true)) && type === "FREE_SLOT"? "#242424" : textColor,
-      backgroundColor: moment(elem["fechaReserva"]).isBefore(moment().utc(true)) && type === "FREE_SLOT"? "#CCCCCC30" : backgroundColor,
-      borderColor: moment(elem["fechaReserva"]).isBefore(moment().utc(true)) && type === "FREE_SLOT"? "#CCCCCC30" : textColor,
+      textColor:
+        moment(elem["fechaReserva"]).isBefore(moment().utc(true)) &&
+        type === "FREE_SLOT"
+          ? "#242424"
+          : textColor,
+      backgroundColor:
+        moment(elem["fechaReserva"]).isBefore(moment().utc(true)) &&
+        type === "FREE_SLOT"
+          ? "#CCCCCC30"
+          : backgroundColor,
+      borderColor:
+        moment(elem["fechaReserva"]).isBefore(moment().utc(true)) &&
+        type === "FREE_SLOT"
+          ? "#CCCCCC30"
+          : textColor,
       type: type,
       dateEvent: moment(elem["fechaReserva"]).toDate(),
       dateEndEvent: moment(elem["fechaFinReserva"]).toDate(),
@@ -115,6 +130,8 @@ export default function CalendarIndex() {
       moment(data["dateEvent"]).isBefore(moment().utc(true)) &&
       data["type"] !== "APPOINMENT"
     ) {
+      setShowAppointmentEndModal(true);
+
       return;
     }
 
@@ -148,7 +165,6 @@ export default function CalendarIndex() {
       changeStatusPopup(true)(dispatch);
       changeTypePopup(2)(dispatch);
     }
-
   }
 
   useMemo(() => {
@@ -183,48 +199,67 @@ export default function CalendarIndex() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser, service]);
 
-  useMemo(()=>{
-    if(params.get("service") && services > 0 ){
-      let id = params.get("service")?.toString()
-      let serviceFinded = [...services].find((elem:any)=> elem["id"] === parseInt(id!) )
-      console.log(serviceFinded)
-      if(serviceFinded){
+  useMemo(() => {
+    if (params.get("service") && services > 0) {
+      let id = params.get("service")?.toString();
+      let serviceFinded = [...services].find(
+        (elem: any) => elem["id"] === parseInt(id!)
+      );
+      console.log(serviceFinded);
+      if (serviceFinded) {
         activeService({
           id: params.get("service"),
           title: serviceFinded["name"],
           description: serviceFinded["description"],
           type: "SERVICE",
-        })(dispatch)
+        })(dispatch);
       }
       getCalendarEvents(user.userId, params.get("service"), {}, {})(dispatch);
     }
-  },[params, services])
+  }, [params, services]);
 
   return (
-    <div className="mt-8 flex flex-col lg:flex-row justify-between flex-wrap lg:flex-nowrap items-start gap-5">
-      <AlertComponent
-        variant="error"
-        show={createAppointmentError !== null}
-        description={"Ha ocurrido un error creando la cita"}
-      />
-      <AlertComponent
-        variant="success"
-        show={createAppointmentSuccessful === true}
-        description="Cita creada exitosamente"
-      />
-      <div className="w-full lg:w-2/3 h-[64vh]">
-        <Calendar
-          handleChangeInWeek={(param: DatesSetArg) => {
-            console.log(param.start, " - ", param.end);
-          }}
-          events={appointments}
-          initialEvent={""}
-          handleClick={(param: EventClickArg) => {
-            handleClickOnEvent(param.event._def.extendedProps);
-          }}
+    <>
+      <div className="mt-8 flex flex-col lg:flex-row justify-between flex-wrap lg:flex-nowrap items-start gap-5">
+        <AlertComponent
+          variant="error"
+          show={createAppointmentError !== null}
+          description={"Ha ocurrido un error creando la cita"}
         />
+        <AlertComponent
+          variant="success"
+          show={createAppointmentSuccessful === true}
+          description="Cita creada exitosamente"
+        />
+        <div className="w-full lg:w-2/3 h-[64vh]">
+          <Calendar
+            handleChangeInWeek={(param: DatesSetArg) => {
+              console.log(param.start, " - ", param.end);
+            }}
+            events={appointments}
+            initialEvent={""}
+            handleClick={(param: EventClickArg) => {
+              handleClickOnEvent(param.event._def.extendedProps);
+            }}
+          />
+        </div>
+        <Side />
       </div>
-      <Side />
-    </div>
+
+      {showAppointmentEndModal && (
+        <div
+          className={twMerge([
+            "z-[99] fixed top-0 left-0 w-full h-screen overflow-y-auto bg-gray-900/50 flex flex-col justify-center items-center",
+            showAppointmentEndModal ? "visible" : "hidden",
+          ])}
+        >
+          <div className="w-full md:w-[60%] xl:w-[45%] lg:w-[60%] h-[325px] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
+            <AppointmentEndModal
+              setShowAppointmentEndModal={setShowAppointmentEndModal}
+            />
+          </div>
+        </div>
+      )}
+    </>
   );
 }

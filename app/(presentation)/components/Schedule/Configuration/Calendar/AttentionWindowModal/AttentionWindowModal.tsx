@@ -6,15 +6,15 @@ import Button from "(presentation)/components/core/BaseComponents/Button";
 import { EventClickArg } from "@fullcalendar/core";
 import { Dispatch, SetStateAction } from "react";
 
-interface AttentionWindow {
+interface AttentionWindowModalProps {
   setShowAttentionWindow: Dispatch<SetStateAction<boolean>>;
   eventSelected: EventClickArg;
 }
 
-export default function AttentionWindow({
+export default function AttentionWindowModal({
   setShowAttentionWindow,
   eventSelected,
-}: AttentionWindow) {
+}: AttentionWindowModalProps) {
   return (
     <div className="w-full px-4">
       <div className="mb-14">
