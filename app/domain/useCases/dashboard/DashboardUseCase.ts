@@ -17,7 +17,6 @@ export default class DashboardUseCase {
             const response = await this._repositorySchedule.getAppointments(id, date, AppointmentEnum.APPROVED);
 
             if (response instanceof ScheduleFailure) throw response;
-            console.log(response)
 
             return response;
         } catch (error) {
@@ -32,6 +31,10 @@ export default class DashboardUseCase {
 
             if (list instanceof ScheduleFailure) throw list;
 
+
+            console.log(list)
+            
+            
             console.log(list)
             
             return list;
@@ -43,7 +46,7 @@ export default class DashboardUseCase {
     async getLatestAppointment(id:number): Promise<any> {
         try {
 
-            const list:any[] | ScheduleFailure = await this._repositorySchedule.getAppointments(id, undefined, AppointmentEnum.APPROVED);
+            const list:any[] | ScheduleFailure = await this._repositorySchedule.getAppointments(id, undefined, AppointmentEnum.PENDING);
 
             if (list instanceof ScheduleFailure) throw list;
 
@@ -51,6 +54,8 @@ export default class DashboardUseCase {
                 let date = moment(elem["fechaReserva"]).toDate()
                 return moment(date).isSameOrAfter(moment().utc(true))
             })
+
+            console.log(list)
             
             return response;
         } catch (error) {
