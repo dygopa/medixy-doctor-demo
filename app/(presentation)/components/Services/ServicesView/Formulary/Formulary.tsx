@@ -31,6 +31,7 @@ import {
 } from "(presentation)/(helper)/files/filesHelper";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 import { ServicesRoutesEnum } from "(presentation)/(routes)/servicesRoutes";
+import { NumericFormat } from "react-number-format";
 
 export default function Formulary({ userId }: { userId: string }) {
   const pathname = usePathname();
@@ -347,15 +348,21 @@ export default function Formulary({ userId }: { userId: string }) {
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Precio
                 </p>
-                <FormInput
-                  type={"number"}
-                  placeholder="0.0"
-                  min={0}
+                <NumericFormat  
+                  defaultValue={formData?.base_price}
                   value={formData?.base_price}
-                  className="form-control lg:w-[70%]"
-                  onChange={(e) =>
-                    setFormData({ ...formData, base_price: +e.target.value })
+                  thousandSeparator="," 
+                  decimalScale={2} 
+                  fixedDecimalScale
+                  prefix={'$'}
+                  onValueChange={ (values, sourceInfo) =>
+                    setFormData({ ...formData, base_price: values.floatValue ? values.floatValue : 0 })
                   }
+                  className={twMerge([
+                    "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 lg:w-[70%]",
+                    "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
+                    "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
+                  ])}
                 />
               </div>
               <div className="lg:flex justify-between items-start relative w-full gap-3">
