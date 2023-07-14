@@ -14,7 +14,7 @@ import {
   IServicesContext,
   ServicesContext,
 } from "../../context/ServicesContext";
-import { ILocality } from "domain/core/entities/localityEntity";
+import { ILocality, ILocalityService } from "domain/core/entities/localityEntity";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import {
   IStepByStepContext,
@@ -27,12 +27,6 @@ import SuccessfulComponent from "(presentation)/components/core/BaseComponents/S
 import { useRouter } from "next/navigation";
 import { ServicesRoutesEnum } from "(presentation)/(routes)/servicesRoutes";
 import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
-
-interface ILocalityService {
-  service_id: number;
-  location_id: number;
-  price: number;
-}
 
 export default function Formulary({
   userId,

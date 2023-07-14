@@ -28,8 +28,6 @@ export default class ServiceUseCase {
   async getService(id:number, userId:number): Promise<IService> {
     try {
 
-      console.log(id, userId)
-
       const services = await this._repository.getUserServices(userId);
       let findedService = [...services as Array<IService>].find(elem => elem["id"] === id)
       
@@ -64,7 +62,7 @@ export default class ServiceUseCase {
     }
   }
 
-  async updateService(obj:any, id:number): Promise<number> {
+  async updateService(obj:any, id:number, list:Array<any>): Promise<number> {
     try {
       const response = await this._repository.updateService(obj, id);
 

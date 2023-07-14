@@ -115,7 +115,7 @@ export class ServicesRepository implements IServiceRepository {
       const response = await fetch(URL, requestOptions)
       let data = await response.json()
 
-      console.log("CREATE_USER_SERVICE_ENDPOINT", data["data"])
+      console.log("CREATE_USER_SERVICE_ENDPOINT", data)
 
       return data["data"];
     } catch (error) {
@@ -201,7 +201,8 @@ export class ServicesRepository implements IServiceRepository {
         description: obj["description"],
         conditions: obj["conditions"],
         base_price: obj["base_price"],
-        status: obj["status"]
+        status: obj["status"],
+        locations: obj["locations"],
       });
 
       var requestOptions = {
