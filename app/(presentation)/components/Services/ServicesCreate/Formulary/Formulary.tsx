@@ -27,6 +27,8 @@ import SuccessfulComponent from "(presentation)/components/core/BaseComponents/S
 import { useRouter } from "next/navigation";
 import { ServicesRoutesEnum } from "(presentation)/(routes)/servicesRoutes";
 import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
+import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
+import { NumericFormat } from 'react-number-format';
 
 interface ILocalityService {
   service_id: number;
@@ -83,6 +85,10 @@ export default function Formulary({
       type: "",
     },
   });
+
+  const [errors, setErrors] = useState({
+    base_price: "",
+  })
 
   let avatarRef = useRef<HTMLInputElement>(null);
 
@@ -202,6 +208,15 @@ export default function Formulary({
     router.push(ScheduleRoutesEnum.Configuration + `?service=${creationServiceData.id}`);
   }
 
+  console.log(formData);
+
+  const onSubmit = () => {
+    createUserService(
+      { ...formData, id: userId },
+      localities
+    )(dispatch);
+  }
+
   return (
     <>
       <AlertComponent
@@ -231,13 +246,7 @@ export default function Formulary({
               formData.service_category_id === 0 ||
               formData.name === ""
             }
-            onClick={() => {
-              createUserService(
-                { ...formData, id: userId },
-                localities
-              )(dispatch);
-              //console.log(localities, {...formData, id: userId})
-            }}
+            onClick={() => onSubmit()}
             variant="primary"
             className="lg:w-1/2 w-full px-7"
           >
@@ -373,19 +382,25 @@ export default function Formulary({
                                     />
                                 </div> */}
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  <p className="text-[13px] w-fit lg:w-[30%] text-slate-900 font-medium mb-2">
                     Precio
                   </p>
-                  <FormInput
-                    type={"number"}
-                    placeholder="0.0"
-                    min={0}
-                    value={formData.base_price}
-                    className="form-control lg:w-[70%]"
-                    onChange={(e) =>
-                      setFormData({ ...formData, base_price: +e.target.value })
-                    }
-                  />
+                    <NumericFormat  
+                      defaultValue={0}
+                      value={548241.04}
+                      thousandSeparator="," 
+                      decimalScale={2} 
+                      fixedDecimalScale
+                      prefix={'$'}
+                      onValueChange={ (values, sourceInfo) =>
+                        setFormData({ ...formData, base_price: values.floatValue ? values.floatValue : 0 })
+                      }
+                      className={twMerge([
+                        "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 lg:w-[70%]",
+                        "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
+                        "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
+                      ])}
+                    />
                 </div>
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
