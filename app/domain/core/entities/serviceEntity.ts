@@ -13,6 +13,14 @@ export interface IService {
     localities: Array<ILocalityService>,
 }
 
+export interface IServiceToLocality {
+    id: number,
+    price: number,
+    state: number,
+    service_id: number;
+    location_id: number;
+}
+
 interface IServiceCategory {
     id: number,
     name: string

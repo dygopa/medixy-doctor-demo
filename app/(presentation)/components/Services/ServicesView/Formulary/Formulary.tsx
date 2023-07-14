@@ -39,7 +39,7 @@ export default function Formulary({ userId }: { userId: string }) {
 
   const { state, actions, dispatch } =
     useContext<IServicesContext>(ServicesContext);
-  const { getService, updateService, deleteService, getCategories, getUserMedicalCenters } = actions;
+  const { getService, updateService, deleteService, getCategories, getUserMedicalCenters, getLocalitiesToService } = actions;
   const { data, loading, successful, error } = state.getService;
   const {
     data: dataUpdate,
@@ -47,6 +47,12 @@ export default function Formulary({ userId }: { userId: string }) {
     successful: successfulUpdate,
     error: errorUpdate,
   } = state.updateService;
+  const {
+    data: localitiesToService,
+    loading: loadingLocalities,
+    successful: successfulLocalities,
+    error: errorLocalities,
+  } = state.getLocalitiesToService;
   const { data: categories } = state.getCategories;
   const {
     data: dataDelete,
@@ -62,7 +68,6 @@ export default function Formulary({ userId }: { userId: string }) {
   } = state.getUserMedicalCenters;
 
   const [loadedAPI, setLoadedAPI] = useState(false);
-  let [localities, setLocalities] = useState<Array<ILocalityService>>([]);
   const [formData, setFormData] = useState({
     name: "",
     service_category_id: 0,
@@ -114,9 +119,13 @@ export default function Formulary({ userId }: { userId: string }) {
       const url = pathname?.split("/");
       let id = url![url!.length - 1];
       getService(parseInt(id), userId)(dispatch);
+      getLocalitiesToService(parseInt(id))(dispatch);
       getUserMedicalCenters(userId)(dispatch);
     }
   }, [userId, pathname]);
+
+  let [localities, setLocalities] = useState<Array<ILocalityService>>([]);
+  let [deleteLocalities, setDeleteLocalities] = useState<Array<ILocalityService>>([]);
 
   const loadAPI = () => {
     getCategories()(dispatch);
@@ -130,6 +139,12 @@ export default function Formulary({ userId }: { userId: string }) {
   useMemo(() => {
     if (successfulDelete) window.location.href = "/services";
   }, [successfulDelete]);
+
+  useMemo(() => {
+    if (successfulLocalities) setLocalities(localitiesToService);
+  }, [successfulLocalities]);
+
+  console.log(localities, deleteLocalities);
 
   const toBase64 = (file: File) =>
     new Promise((resolve, reject) => {
@@ -167,8 +182,16 @@ export default function Formulary({ userId }: { userId: string }) {
 
   function manageAddToList({ data, serviceId }: { data: ILocality, serviceId:number, }) {
     let list: Array<ILocalityService> = [...localities];
+    let isDelete: Array<ILocalityService> = [...deleteLocalities];
     if (list.some((elem) => elem["location_id"] === data.id)) {
+      isDelete.push ({
+        service_id: serviceId,
+        location_id: data.id,
+        price: formData.base_price,
+      });
       list = list.filter((elem) => elem["location_id"] !== data.id);
+
+      setDeleteLocalities(isDelete);
     } else {
       list.push({
         service_id: serviceId,
@@ -186,6 +209,7 @@ export default function Formulary({ userId }: { userId: string }) {
   }
 
   const LocalityComponent = ({ data, serviceId }: { data: ILocality, serviceId:number, }) => {
+    
     let isInList = localities.find((elem) => elem["location_id"] === data.id);
 
     return (
@@ -271,7 +295,13 @@ export default function Formulary({ userId }: { userId: string }) {
               formData?.service_category_id === 0
             }
             onClick={() => {
-              updateService(formData, data.id)(dispatch);
+              updateService({
+                dataService: formData, 
+                serviceId: data.id,
+                localities: localities,
+                deleteLocalities: deleteLocalities,
+              })(dispatch);
+              setDeleteLocalities([]);
             }}
             variant="primary"
             className="w-[275px]"

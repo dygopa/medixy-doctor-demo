@@ -1,5 +1,5 @@
 import { ServiceFailure, serviceFailuresEnum } from 'domain/core/failures/service/serviceFailure';
-import { IService } from "domain/core/entities/serviceEntity";
+import { IService, IServiceToLocality } from "domain/core/entities/serviceEntity";
 import { 
   ADD_SERVICE_TO_LOCATION_ENDPOINT, 
   CREATE_USER_SERVICE_ENDPOINT, 
@@ -12,6 +12,8 @@ import nookies from 'nookies';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import { nanoid } from 'nanoid';
 import { getFileFromBase64 } from 'infrastructure/utils/files/filesUtils';
+import { ILocalityService } from 'domain/core/entities/localityEntity';
+import { serviceToLocalitiesSupabaseToMap } from 'domain/mappers/services/servicesSupabaseMapper';
 
 export default interface IServiceRepository {
   getCategories(): Promise<Array<any> | ServiceFailure>;
@@ -20,6 +22,7 @@ export default interface IServiceRepository {
   createUserService(obj:any): Promise<string | ServiceFailure>;
   updateService(obj:any, id:number): Promise<number | ServiceFailure>;
   addMediaService(obj:any, serviceId: string): Promise<string | ServiceFailure>;
+  getLocalitiesToService(serviceId: number): Promise<Array<IServiceToLocality> | ServiceFailure>
 }
 
 export class ServicesRepository implements IServiceRepository {
@@ -44,7 +47,7 @@ export class ServicesRepository implements IServiceRepository {
       const response = await fetch(URL, requestOptions)
       let data = await response.json()
 
-      console.log("GET_CATEGORIES_SERVICES_ENDPOINT", data["data"])
+      //console.log("GET_CATEGORIES_SERVICES_ENDPOINT", data["data"])
 
       return data["data"] ?? [];
     } catch (error) {
@@ -74,7 +77,7 @@ export class ServicesRepository implements IServiceRepository {
       const response = await fetch(URL, requestOptions)
       let data = await response.json()
 
-      console.log("GET_USER_SERVICES_ENDPOINT", data["data"])
+      //console.log("GET_USER_SERVICES_ENDPOINT", data["data"])
 
       return data["data"] ?? [];
     } catch (error) {
@@ -186,7 +189,7 @@ export class ServicesRepository implements IServiceRepository {
     }
   }
 
-  async updateService(obj:any, id:number): Promise<number | ServiceFailure> {
+  async updateService(obj: {dataService: any; serviceId: number; localities: ILocalityService[]; deleteLocalities: ILocalityService[];}): Promise<number | ServiceFailure> {
     try {
       let cookies = nookies.get(undefined, 'access_token');
 
@@ -196,13 +199,13 @@ export class ServicesRepository implements IServiceRepository {
       myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
 
       var raw = JSON.stringify({
-        name: obj["name"],
-        service_category_id: obj["service_category_id"],
-        description: obj["description"],
-        conditions: obj["conditions"],
-        base_price: obj["base_price"],
-        status: obj["status"],
-        locations: obj["locations"],
+        name: obj["dataService"]["name"],
+        service_category_id: obj["dataService"]["service_category_id"],
+        description: obj["dataService"]["description"],
+        conditions: obj["dataService"]["conditions"],
+        base_price: obj["dataService"]["base_price"],
+        status: obj["dataService"]["status"],
+        locations: obj["dataService"]["locations"],
       });
 
       var requestOptions = {
@@ -212,10 +215,22 @@ export class ServicesRepository implements IServiceRepository {
         redirect: 'follow'
       } as RequestInit;
 
-      let URL = UPDATE_USER_SERVICE_ENDPOINT(id as number) as RequestInfo
+      let URL = UPDATE_USER_SERVICE_ENDPOINT(obj.serviceId as number) as RequestInfo
 
       const response = await fetch(URL, requestOptions)
       let data = await response.json()
+
+      obj.localities.map(async (relation) => {
+        const query = async () => { 
+          await supabase.from("ServiciosPorLocalidades").select().eq("localidadId", relation.location_id).eq("servicioId", relation.service_id).limit(1)
+        };
+
+        const res = query();
+
+        
+      })
+
+      console.log(obj)
 
       console.log("UPDATE_USER_SERVICE_ENDPOINT", data["data"])
 
@@ -294,4 +309,24 @@ export class ServicesRepository implements IServiceRepository {
     }
   }
 
+  async getLocalitiesToService(serviceId: number): Promise<Array<IServiceToLocality> | ServiceFailure> {
+    try {
+      const res = await supabase.from("ServiciosPorLocalidades").select("*", { count: "exact" }).eq("servicioId", serviceId);
+
+      const localities: IServiceToLocality[] = [];
+
+      if (res.data && res.data.length > 0) {
+        await Promise.all(res.data.map(async (data: any) => {
+          const localitieMap: IServiceToLocality = serviceToLocalitiesSupabaseToMap(data);
+
+          localities.push(localitieMap);
+      }));
+      }
+      return localities;
+    } catch (error) { 
+      const exception = error as any;
+      return new ServiceFailure(serviceFailuresEnum.serverError);
+    }
+
+  }
 }
