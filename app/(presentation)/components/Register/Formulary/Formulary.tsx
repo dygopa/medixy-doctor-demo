@@ -328,6 +328,30 @@ export default function Formulary() {
         <FormInput
           type="text"
           className="w-full py-3 pr-10 bg-white"
+          placeholder="Ingresa tu CURP"
+          value={values.curp}
+          onChange={(e: any) => handleCURP(e.target.value)}
+        />
+        {errors.curp.length > 0 && (
+          <p className="text-red-500">{errors.curp}</p>
+        )}
+        {!errors.curp && listOfErrors.includes("curp") && (
+          <span className="text-red-500 mt-1">Campo requerido</span>
+        )}
+        <div className="w-full mt-2">
+          <Link
+            target="_blank"
+            href="https://www.gob.mx/curp/"
+            className="text-primary font-light lg:text-base md:text-base text-md"
+          >
+            ¿No sabes cual es tu CURP? Visita este sitio
+          </Link>
+        </div>
+      </div>
+      <div className="relative w-full">
+        <FormInput
+          type="text"
+          className="w-full py-3 pr-10 bg-white"
           placeholder="Nombre(s)"
           value={values.names}
           onChange={(e: any) => handlename(e.target.value, e)}
@@ -368,30 +392,7 @@ export default function Formulary() {
           />
         </div>
       </div>
-      <div className="relative w-full">
-        <FormInput
-          type="text"
-          className="w-full py-3 pr-10 bg-white"
-          placeholder="Ingresa tu CURP"
-          value={values.curp}
-          onChange={(e: any) => handleCURP(e.target.value)}
-        />
-        {errors.curp.length > 0 && (
-          <p className="text-red-500">{errors.curp}</p>
-        )}
-        {!errors.curp && listOfErrors.includes("curp") && (
-          <span className="text-red-500 mt-1">Campo requerido</span>
-        )}
-        <div className="w-full mt-2">
-          <Link
-            target="_blank"
-            href="https://www.gob.mx/curp/"
-            className="text-primary font-light lg:text-base md:text-base text-md"
-          >
-            ¿No sabes cual es tu CURP? Visita este sitio
-          </Link>
-        </div>
-      </div>
+
       <div className="relative w-full">
         <IntlPhoneNumberInput
           preferredCountries={["mx", "US"]}
