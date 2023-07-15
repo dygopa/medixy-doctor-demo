@@ -2,11 +2,18 @@ import _ from "lodash";
 import Breadcrumb from "../BaseComponents/Breadcrumb";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FiChevronLeft, FiClipboard, FiGlobe, FiGrid, FiShare, FiUser } from "react-icons/fi";
+import {
+  FiChevronLeft,
+  FiClipboard,
+  FiGlobe,
+  FiSend,
+  FiShare,
+  FiUser,
+} from "react-icons/fi";
 import { IUser } from "domain/core/entities/userEntity";
 import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
-import {CopyToClipboard} from "react-copy-to-clipboard";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { twMerge } from "tailwind-merge";
 
 interface INavigation {
@@ -23,136 +30,142 @@ function Main({
 }) {
   const pathname = usePathname();
 
-  const [activeShortcuts, setActiveShortcuts] = useState(false)
-  
+  const [activeShortcuts, setActiveShortcuts] = useState(false);
+
   const wrapperRef = useRef(null);
 
-  function useOutsideAlerter(ref:React.MutableRefObject<any>) {
+  function useOutsideAlerter(ref: React.MutableRefObject<any>) {
     useEffect(() => {
-      function handleClickOutside(event:MouseEvent) {
+      function handleClickOutside(event: MouseEvent) {
         if (ref.current && !ref.current.contains(event.target)) {
-          setActiveShortcuts(false)
+          setActiveShortcuts(false);
         }
       }
       document.addEventListener("mousedown", handleClickOutside);
       return () => {
         document.removeEventListener("mousedown", handleClickOutside);
       };
-    }, [ref]); 
+    }, [ref]);
   }
 
   useOutsideAlerter(wrapperRef);
 
   const ShareLinkComponent = () => {
-    
-    const [copied, setCopied] = useState(false)
-    let userLink = process.env.NEXT_PUBLIC_MARKETPLACE_PROJECT_DOMAIN + `/discover/specialists/${user.userId}`;
+    const [copied, setCopied] = useState(false);
+    let userLink =
+      process.env.NEXT_PUBLIC_MARKETPLACE_PROJECT_DOMAIN +
+      `/discover/specialists/${user.userId}`;
 
-    useMemo(()=>{
-      if(copied){
+    useMemo(() => {
+      if (copied) {
         setTimeout(() => {
-          setCopied(false)
+          setCopied(false);
         }, 1000);
       }
-    },[copied])
+    }, [copied]);
 
-    return(
+    return (
       <div className="w-full grid grid-cols-3 gap-1 relative pt-3">
-        <CopyToClipboard
-          text={userLink}
-          onCopy={() => setCopied(true)}>
+        <CopyToClipboard text={userLink} onCopy={() => setCopied(true)}>
           <div
-          className={twMerge([
-            "cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1",
-            copied ? "bg-green-600 text-white" : "bg-slate-100 hover:bg-slate-200"
-          ])}>
-            <span 
             className={twMerge([
-              "text-xl",
-              copied ? "text-white" : "text-slate-900"
-            ])}>
-              <FiClipboard/>
+              "cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1",
+              copied
+                ? "bg-green-600 text-white"
+                : "bg-slate-100 hover:bg-slate-200",
+            ])}
+          >
+            <span
+              className={twMerge([
+                "text-xl",
+                copied ? "text-white" : "text-slate-900",
+              ])}
+            >
+              <FiClipboard />
             </span>
-            {
-              copied ? 
-              <p className="text-xs text-white text-center">
-                Enlace copiado
-              </p>
-              : 
+            {copied ? (
+              <p className="text-xs text-white text-center">Enlace copiado</p>
+            ) : (
               <p className="text-xs text-slate-500 text-center">
-                Copiar <br/> enlace
+                Copiar <br /> enlace
               </p>
-            }
+            )}
           </div>
         </CopyToClipboard>
         <Link
-        href={userLink}
-        target="_blank"
-        className={twMerge([
-          "cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1",
-          "bg-slate-100 hover:bg-slate-200"
-        ])}>
-          <span 
+          href={userLink}
+          target="_blank"
           className={twMerge([
-            "text-xl",
-            "text-slate-900"
-          ])}>
-            <FiGlobe/>
+            "cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1",
+            "bg-slate-100 hover:bg-slate-200",
+          ])}
+        >
+          <span className={twMerge(["text-xl", "text-slate-900"])}>
+            <FiGlobe />
           </span>
           <p className="text-xs text-slate-500 text-center">
-            Ir al <br/> enlace
+            Ir al <br /> enlace
           </p>
         </Link>
-      </div> 
-    )
-  }
+      </div>
+    );
+  };
 
-  const PopupShortcuts = ({customRef}:{
+  const PopupShortcuts = ({
+    customRef,
+  }: {
     customRef: React.LegacyRef<HTMLDivElement>;
   }) => {
+    const [activeShortcut, setActiveShortcut] = useState(1);
 
-    const [activeShortcut, setActiveShortcut] = useState(0)
-
-    return(
-      <div ref={customRef} className={twMerge([
-        "border rounded-lg overflow-hidden bg-white fixed flex flex-col justify-start items-start p-3 shadow-md right-[5%] w-[20rem]",
-        "lg:h-[35vh] lg:top-[4rem]",
-        "md:h-[35vh] md:top-[4rem]",
-        "h-[40vh] top-[9rem]",
-      ])}>
+    return (
+      <div
+        ref={customRef}
+        className={twMerge([
+          "border rounded-lg overflow-hidden bg-white fixed flex flex-col justify-start items-start p-3 shadow-md right-[5%] w-[20rem]",
+          "lg:h-[35vh] lg:top-[4rem]",
+          "md:h-[35vh] md:top-[4rem]",
+          "h-[40vh] top-[9rem]",
+        ])}
+      >
         <div className="w-full border-b pb-2 text-left flex justify-start items-center gap-2">
-          {activeShortcut > 0 && 
-            <span 
-            onClick={()=>{ setActiveShortcut(0) }}
-            className="text-slate-900 cursor-pointer transition w-[1rem] h-[1rem] flex flex-col justify-center items-center rounded-xl text-base ">
-              <FiChevronLeft/>
+          {/* activeShortcut > 0 && (
+            <span
+              onClick={() => {
+                setActiveShortcut(0);
+              }}
+              className="text-slate-900 cursor-pointer transition w-[1rem] h-[1rem] flex flex-col justify-center items-center rounded-xl text-base "
+            >
+              <FiChevronLeft />
             </span>
-          }
+            ) */}
           <p className="font-medium text-base text-slate-900">
             {activeShortcut === 0 && "Acceso rápido"}
             {activeShortcut === 1 && "Compartir perfíl"}
           </p>
         </div>
-        {activeShortcut === 0 ? 
+        {activeShortcut === 0 ? (
           <div className="w-full grid grid-cols-3 gap-1 relative pt-3">
-            <div 
-            onClick={()=>{ setActiveShortcut(1) }}
-            className="cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1 bg-slate-100 hover:bg-slate-200">
+            <div
+              onClick={() => {
+                setActiveShortcut(1);
+              }}
+              className="cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1 bg-slate-100 hover:bg-slate-200"
+            >
               <span className="text-xl text-slate-900">
-                <FiShare/>
+                <FiShare />
               </span>
-              <p className="text-xs text-slate-500 text-center">Compartir <br/> perfíl</p>
+              <p className="text-xs text-slate-500 text-center">
+                Compartir <br /> perfíl
+              </p>
             </div>
-
-          </div> 
-        : 
-          <>
-            {activeShortcut === 1 && <ShareLinkComponent/>}
-          </>
-        }
+          </div>
+        ) : (
+          <>{activeShortcut === 1 && <ShareLinkComponent />}</>
+        )}
       </div>
-    )
-  }
+    );
+  };
 
   return (
     <div className="h-[67px] z-[50] flex items-center border-b border-slate-200 sticky bg-slate-100 top-0 left-0 w-full">
@@ -172,9 +185,23 @@ function Main({
         ))}
       </Breadcrumb>
       <div className="lg:w-fit md:w-fit w-full h-full flex justify-end items-center gap-1 relative">
-        <div onClick={()=>{ setActiveShortcuts(!activeShortcuts) }} className="cursor-pointer transition w-[2.5rem] h-[2.5rem] flex flex-col justify-center items-center rounded-xl text-lg overflow-hidden text-slate-700 bg-slate-100 hover:bg-slate-300">  
-          <FiGrid />
-        </div>
+        <button
+          onClick={() => {
+            setActiveShortcuts(!activeShortcuts);
+          }}
+          className="cursor-pointer transition flex flex-col justify-center items-center rounded-lg px-4 py-2 text-lg overflow-hidden text-slate-700 bg-slate-100 hover:bg-slate-300 mr-6"
+          style={{ backgroundColor: "#FFC127" }}
+        >
+          <div className="flex items-center">
+            <div className="mr-2">
+              <p className="text-sm">Compartir link</p>
+            </div>
+
+            <div>
+              <FiSend />
+            </div>
+          </div>
+        </button>
         {activeShortcuts && <PopupShortcuts customRef={wrapperRef} />}
         <Link
           href="/account"
