@@ -281,7 +281,7 @@ export default function VitalSignsForm({
           </div>
         </div>
 
-        <div className="xl:flex items-center xl:mb-4 mb-4">
+        <div className="xl:flex items-center xl:mb-4 mb-4 xl:ml-6 ml-0">
           <div className="xl:mr-5 mb-1 xl:w-[200px] w-full xl:text-star">
             <p className="text-md">Peso (Kg)</p>
           </div>
@@ -330,7 +330,7 @@ export default function VitalSignsForm({
           </div>
         </div>
 
-        <div className="xl:flex items-center xl:mb-4 mb-4">
+        <div className="xl:flex items-center xl:mb-4 mb-4 xl:ml-6 ml-0">
           <div className="xl:mr-5 mb-1 xl:w-[200px] w-full xl:text-star">
             <p className="text-md">Frecuencia respiratoria</p>
           </div>
@@ -380,7 +380,7 @@ export default function VitalSignsForm({
           </div>
         </div>
 
-        <div className="xl:flex items-center xl:mb-4 mb-4">
+        <div className="xl:flex items-center xl:mb-4 mb-4 xl:ml-6 ml-0">
           <div className="xl:mr-5 mb-1 xl:w-[200px] w-full xl:text-star">
             <p className="text-md">Índice masa muscular</p>
           </div>
