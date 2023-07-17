@@ -169,7 +169,7 @@ export default function BasicDetails({
           </div>
         </div>
 
-        <div className="xl:flex lg:flex items-center xl:mt-0 mt-4">
+        <div className="xl:flex lg:flex items-center xl:mt-0 mt-4 xl:ml-6 ml-0">
           <div className="mr-5 xl:w-[170px] w-[150px] xl:mb-0 lg:mb-0 mb-1">
             <p className="text-md">Referido por</p>
           </div>

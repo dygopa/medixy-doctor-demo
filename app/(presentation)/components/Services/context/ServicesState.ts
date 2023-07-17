@@ -1,5 +1,5 @@
 import { ServiceFailure } from './../../../../domain/core/failures/service/serviceFailure';
-import { IService } from '../../../../domain/core/entities/serviceEntity';
+import { IService, IServiceToLocality } from '../../../../domain/core/entities/serviceEntity';
 
 export interface IServicesState {
   getCategories: IServicesServicesState;
@@ -9,6 +9,7 @@ export interface IServicesState {
   createUserService: IServiceServicesState;
   updateService: IServiceServicesState;
   deleteService: IServiceServicesState;
+  getLocalitiesToService: IGetLocalitiesToService;
 }
 
 interface IServicesServicesState {
@@ -20,6 +21,13 @@ interface IServicesServicesState {
 
 interface IServiceServicesState {
   data: IService;
+  loading: boolean;
+  successful: boolean;
+  error: ServiceFailure | null; 
+}
+
+interface IGetLocalitiesToService {
+  data: IServiceToLocality[];
   loading: boolean;
   successful: boolean;
   error: ServiceFailure | null; 
@@ -64,6 +72,12 @@ export const initialState: IServicesState = {
   },
   deleteService: {
     data: {} as IService,
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  getLocalitiesToService: {
+    data: [],
     loading: false,
     successful: false,
     error: null,

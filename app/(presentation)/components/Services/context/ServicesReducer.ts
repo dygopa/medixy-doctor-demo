@@ -231,6 +231,39 @@ export const ServicesReducer = (state: any, action: any) => {
           error: action.payload.error,
         },
       };
+    case 'GET_LOCALITIES_LOADING':
+      return {
+        ...state,
+        getLocalitiesToService: {
+          ...state.getLocalitiesToService,
+          data: null,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'GET_LOCALITIES_SUCCESSFUL':
+      return {
+        ...state,
+        getLocalitiesToService: {
+          ...state.getLocalitiesToService,
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'GET_LOCALITIES_ERROR':
+      return {
+        ...state,
+        getLocalitiesToService: {
+          ...state.getLocalitiesToService,
+          data: null,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
     default:
       return state;
   }
