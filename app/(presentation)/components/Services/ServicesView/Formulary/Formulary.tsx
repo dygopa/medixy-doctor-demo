@@ -106,7 +106,6 @@ export default function Formulary({ userId }: { userId: string }) {
         type: "",
       },
     });
-    setLocalities(data?.localities ?? []);
   };
   useEffect(() => {
     if (successful) {
@@ -180,20 +179,23 @@ export default function Formulary({ userId }: { userId: string }) {
     );
   }
 
-  function manageAddToList({ data, serviceId }: { data: ILocality, serviceId:number, }) {
+  function manageAddToList({ data, serviceId }: { data: ILocality, serviceId:number}) {
     let list: Array<ILocalityService> = [...localities];
     let isDelete: Array<ILocalityService> = [...deleteLocalities];
+    const relation: ILocalityService | undefined = localities.find((elem) => elem["location_id"] === data.id);
     if (list.some((elem) => elem["location_id"] === data.id)) {
       isDelete.push ({
+        id: relation?.id ?? 0,
         service_id: serviceId,
         location_id: data.id,
         price: formData.base_price,
       });
-      list = list.filter((elem) => elem["location_id"] !== data.id);
+      //list = list.filter((elem) => elem["location_id"] !== data.id);
 
       setDeleteLocalities(isDelete);
     } else {
       list.push({
+        id: relation?.id ?? 0,
         service_id: serviceId,
         location_id: data.id,
         price: formData.base_price,
@@ -208,7 +210,7 @@ export default function Formulary({ userId }: { userId: string }) {
     setLocalities(localities);
   }
 
-  const LocalityComponent = ({ data, serviceId }: { data: ILocality, serviceId:number, }) => {
+  const LocalityComponent = ({ data, serviceId }: { data: ILocality, serviceId:number }) => {
     
     let isInList = localities.find((elem) => elem["location_id"] === data.id);
 

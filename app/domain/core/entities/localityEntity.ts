@@ -20,6 +20,7 @@ export interface ILocality {
 }
 
 export interface ILocalityService {
+    id: number,
     service_id: number;
     location_id: number;
     price: number;

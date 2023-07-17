@@ -13,7 +13,7 @@ import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import { nanoid } from 'nanoid';
 import { getFileFromBase64 } from 'infrastructure/utils/files/filesUtils';
 import { ILocalityService } from 'domain/core/entities/localityEntity';
-import { serviceToLocalitiesSupabaseToMap } from 'domain/mappers/services/servicesSupabaseMapper';
+import { fromServiceToLocalitiesSupabaseDocumentData, serviceToLocalitiesSupabaseToMap } from 'domain/mappers/services/servicesSupabaseMapper';
 
 export default interface IServiceRepository {
   getCategories(): Promise<Array<any> | ServiceFailure>;
@@ -220,17 +220,19 @@ export class ServicesRepository implements IServiceRepository {
       const response = await fetch(URL, requestOptions)
       let data = await response.json()
 
-      obj.localities.map(async (relation) => {
-        const query = async () => { 
-          await supabase.from("ServiciosPorLocalidades").select().eq("localidadId", relation.location_id).eq("servicioId", relation.service_id).limit(1)
-        };
+      await Promise.all(obj.localities.map(async (relation) => {
+        const res = await supabase.from("ServiciosPorLocalidades").select().eq("servicioId", relation.service_id).eq("localidadId", relation.location_id).limit(1);
 
-        const res = query();
+        if (res.data && res.data.length > 0) {
 
-        
-      })
+          await supabase.from("ServiciosPorLocalidades").update(fromServiceToLocalitiesSupabaseDocumentData(relation)).match({ id: relation.id });
 
-      console.log(obj)
+        } else {
+
+          await supabase.from("ServiciosPorLocalidades").insert(fromServiceToLocalitiesSupabaseDocumentData(relation));
+
+        }
+      }));
 
       console.log("UPDATE_USER_SERVICE_ENDPOINT", data["data"])
 
