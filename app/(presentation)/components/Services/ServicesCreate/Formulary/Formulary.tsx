@@ -117,6 +117,7 @@ export default function Formulary({
       list = list.filter((elem) => elem["location_id"] !== data.id);
     } else {
       list.push({
+        id: 0,
         service_id: 0,
         location_id: data.id,
         price: formData.base_price,

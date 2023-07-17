@@ -223,16 +223,24 @@ export default function Formulary({ userId }: { userId: string }) {
         </div>
         <div className="flex justify-between items-center gap-2">
           <div className="w-3/4 flex flex-col justify-start items-start gap-1 text-left">
-            <FormInput
+            <NumericFormat  
+              value={isInList?.price}
               defaultValue={isInList?.price}
               disabled={!isInList}
-              type={"number"}
               placeholder="Precio"
               min={0}
-              className="form-control w-[100%]"
-              onChange={(e) =>
-                managePriceChangeInList(+e.target.value, data.id)
+              thousandSeparator="," 
+              decimalScale={2} 
+              fixedDecimalScale
+              prefix={'$'}
+              onValueChange={ (values, sourceInfo) =>
+                managePriceChangeInList(values.floatValue ? values.floatValue : 0, data.id)
               }
+              className={twMerge([
+                "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 form-control w-[100%]",
+                "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
+                "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
+              ])}
             />
           </div>
           <div className="w-1/4 flex flex-col justify-center items-center">
