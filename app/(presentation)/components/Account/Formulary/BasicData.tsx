@@ -24,6 +24,7 @@ interface IFormularyProps {
     global: string;
     name: string;
     lastname: string;
+    secondLastname: string;
     age: string;
   };
   setErrors: any;
@@ -139,6 +140,21 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
       return true;
     };
     setErrors({ ...errors, lastname: "" });
+    return false;
+  };
+
+  const handleSecondLastname = (value: string) => {
+    setAccount({ ...account, lastName: value })
+    if (value.length > 0 && !VALIDATE_NAMES(value)) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          secondLastname: "El apellido del paciente solo debe incluir letras",
+        };
+      });
+      return true;
+    };
+    setErrors({ ...errors, secondLastname: "" });
     return false;
   };
 
@@ -278,9 +294,12 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
                   defaultValue={user?.lastName}
                   className="form-control w-full"
                   onChange={(e) =>
-                    setAccount({ ...account, lastName: e.target.value })
+                    handleSecondLastname(e.target.value)
                   }
                 />
+                {errors.secondLastname.length > 0 && (
+                  <span className="text-red-500">{errors.secondLastname}</span>
+                )}
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">

@@ -25,6 +25,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
     global: "",
     name: "",
     lastname: "",
+    secondLastname: "",
     age: "",
   });
 
@@ -36,6 +37,8 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
     if (errors.name.length > 0) errorsFieldsCount++;
 
     if (errors.lastname.length > 0) errorsFieldsCount++;
+
+    if (errors.secondLastname.length > 0) errorsFieldsCount++;
 
     if (errors.age.length > 0) errorsFieldsCount++;
 

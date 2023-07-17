@@ -122,6 +122,21 @@ export default function CompanionCreate({
     return false;
   };
 
+  const handleSecondLastname = (value: string) => {
+    setValues({ ...values, motherlastname: value })
+    if (value.length > 0 && !VALIDATE_NAMES(value)) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          motherlastname: "El apellido del paciente solo debe incluir letras",
+        };
+      });
+      return true;
+    };
+    setErrors({ ...errors, motherlastname: "" });
+    return false;
+  };
+
   const handleage = (value: string) => {
     setValues({ ...values, birthDate: value });
     let day = new Date()
@@ -350,10 +365,13 @@ export default function CompanionCreate({
             <FormInput
               type="text"
               onChange={(e: any) =>
-                setValues({ ...values, motherlastname: e.target.value })
+                handleSecondLastname(e.target.value)
               }
               placeholder="Segundo apellido"
             />
+            {errors.motherlastname.length > 0 && (
+              <span className="text-red-500">{errors.motherlastname}</span>
+            )}
           </div>
         </div>
 
