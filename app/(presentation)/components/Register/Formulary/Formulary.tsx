@@ -146,7 +146,7 @@ export default function Formulary() {
   };
 
   const handlephone = (value: string) => {
-    setValues({ ...values, phone_number: value });
+    setValues({ ...values, phone_number: value.trim() });
     if (value.length < 2) {
       setErrors((previousState) => {
         return {
@@ -170,7 +170,7 @@ export default function Formulary() {
   };
 
   const handleEmail = (value: string) => {
-    setValues({ ...values, email: value });
+    setValues({ ...values, email: value.trim() });
     if (values.email.length > 1) {
       if (!VALIDATE_EMAIL(values.email)) {
         setErrors({ ...errors, email: "El email debe ser correcto" });
@@ -196,7 +196,7 @@ export default function Formulary() {
   };
 
   const handleCURP = (value: string) => {
-    setValues({ ...values, curp: value });
+    setValues({ ...values, curp: value.trim() });
     if (values.curp.length <= 9) {
       setErrors({ ...errors, curp: "El CURP debe tener más de 10 caracteres" });
       return true;

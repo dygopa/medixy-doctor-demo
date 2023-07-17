@@ -7,7 +7,7 @@ export function VALIDATE_STRING(text: string) {
 }
 
 export function VALIDATE_NAMES(text: string) {
-    return /^[a-zA-Z.]+$/.test(text);
+    return /^[ a-zA-Zñ. ]+$/.test(text);
 }
 
 
