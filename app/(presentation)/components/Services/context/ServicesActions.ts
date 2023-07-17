@@ -1,6 +1,7 @@
-import { ILocality } from "domain/core/entities/localityEntity";
+import { ILocality, ILocalityService } from "domain/core/entities/localityEntity";
 import { IService } from "domain/core/entities/serviceEntity";
 import LocalitiesUseCase from "domain/useCases/localities/localitiesUseCase";
+import ServiceUseCase from "domain/useCases/service/serviceUseCase";
 import ServicesUseCase from "domain/useCases/service/serviceUseCase";
 import { Dispatch } from "react";
 
@@ -12,6 +13,7 @@ export interface IServicesActions {
   createUserService: Function;
   updateService: Function;
   deleteService: Function;
+  getLocalitiesToService: Function;
 }
 
 const getCategories = () => async (dispatch: Dispatch<any>) => {
@@ -79,11 +81,11 @@ const createUserService = (obj:any, list:Array<any>) => async (dispatch: Dispatc
   }
 }
 
-const updateService = (obj:any, id:number) => async (dispatch: Dispatch<any>) => {
+const updateService = (obj: {dataService: any; serviceId: number; localities: ILocalityService[]; deleteLocalities: ILocalityService[];}) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "UPDATE_USER_SERVICE_LOADING" });
     
-    const res: number = await new ServicesUseCase().updateService(obj, id);
+    const res: number = await new ServicesUseCase().updateService(obj);
 
     dispatch({ type: "UPDATE_USER_SERVICE_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
@@ -105,6 +107,19 @@ const deleteService = (id:number, userId:number) => async (dispatch: Dispatch<an
   }
 }
 
+const getLocalitiesToService = (serviceId: number) => async (dispatch: Dispatch<any>) => {
+  try {
+      dispatch({ type: "GET_LOCALITIES_LOADING" });
+
+      const res = await new ServiceUseCase().getLocalitiesToService(serviceId);
+
+      dispatch({ type: "GET_LOCALITIES_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+      console.log("Error calling action", error)
+      dispatch({ type: "GET_LOCALITIES_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IServicesActions = {
   getCategories,
   getUserMedicalCenters,
@@ -113,4 +128,5 @@ export const actions: IServicesActions = {
   createUserService,
   updateService,
   deleteService,
+  getLocalitiesToService,
 }

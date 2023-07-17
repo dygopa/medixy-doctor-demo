@@ -1,3 +1,5 @@
+import { ILocalityService } from "./localityEntity";
+
 export interface IService {
     id: number,
     name: string,
@@ -7,7 +9,16 @@ export interface IService {
     description: string,
     conditions: string,
     status: number,
-    base_price: number
+    base_price: number,
+    localities: Array<ILocalityService>,
+}
+
+export interface IServiceToLocality {
+    id: number,
+    price: number,
+    state: number,
+    service_id: number;
+    location_id: number;
 }
 
 interface IServiceCategory {

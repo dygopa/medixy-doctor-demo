@@ -14,7 +14,7 @@ import {
   IServicesContext,
   ServicesContext,
 } from "../../context/ServicesContext";
-import { ILocality } from "domain/core/entities/localityEntity";
+import { ILocality, ILocalityService } from "domain/core/entities/localityEntity";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import {
   IStepByStepContext,
@@ -29,12 +29,6 @@ import { ServicesRoutesEnum } from "(presentation)/(routes)/servicesRoutes";
 import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
 import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import { NumericFormat } from 'react-number-format';
-
-interface ILocalityService {
-  service_id: number;
-  location_id: number;
-  price: number;
-}
 
 export default function Formulary({
   userId,

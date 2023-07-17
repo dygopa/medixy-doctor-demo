@@ -19,6 +19,13 @@ export interface ILocality {
     longitude: number;
 }
 
+export interface ILocalityService {
+    id: number,
+    service_id: number;
+    location_id: number;
+    price: number;
+}
+
 interface IState {
     id: number;
     name: string;

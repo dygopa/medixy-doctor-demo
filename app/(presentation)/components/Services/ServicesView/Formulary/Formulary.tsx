@@ -31,6 +31,8 @@ import {
 } from "(presentation)/(helper)/files/filesHelper";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 import { ServicesRoutesEnum } from "(presentation)/(routes)/servicesRoutes";
+import { ILocality, ILocalityService } from "domain/core/entities/localityEntity";
+import { FiCheck } from "react-icons/fi";
 import { NumericFormat } from "react-number-format";
 
 export default function Formulary({ userId }: { userId: string }) {
@@ -38,7 +40,7 @@ export default function Formulary({ userId }: { userId: string }) {
 
   const { state, actions, dispatch } =
     useContext<IServicesContext>(ServicesContext);
-  const { getService, updateService, deleteService, getCategories } = actions;
+  const { getService, updateService, deleteService, getCategories, getUserMedicalCenters, getLocalitiesToService } = actions;
   const { data, loading, successful, error } = state.getService;
   const {
     data: dataUpdate,
@@ -46,6 +48,12 @@ export default function Formulary({ userId }: { userId: string }) {
     successful: successfulUpdate,
     error: errorUpdate,
   } = state.updateService;
+  const {
+    data: localitiesToService,
+    loading: loadingLocalities,
+    successful: successfulLocalities,
+    error: errorLocalities,
+  } = state.getLocalitiesToService;
   const { data: categories } = state.getCategories;
   const {
     data: dataDelete,
@@ -53,6 +61,12 @@ export default function Formulary({ userId }: { userId: string }) {
     successful: successfulDelete,
     error: errorDelete,
   } = state.deleteService;
+  const {
+    data: medicalCenters,
+    loading: loadingMedicalCenters,
+    error: errorMedicalCenters,
+    successful: successFulMedicalCenters,
+  } = state.getUserMedicalCenters;
 
   const [loadedAPI, setLoadedAPI] = useState(false);
   const [formData, setFormData] = useState({
@@ -105,8 +119,13 @@ export default function Formulary({ userId }: { userId: string }) {
       const url = pathname?.split("/");
       let id = url![url!.length - 1];
       getService(parseInt(id), userId)(dispatch);
+      getLocalitiesToService(parseInt(id))(dispatch);
+      getUserMedicalCenters(userId)(dispatch);
     }
   }, [userId, pathname]);
+
+  let [localities, setLocalities] = useState<Array<ILocalityService>>([]);
+  let [deleteLocalities, setDeleteLocalities] = useState<Array<ILocalityService>>([]);
 
   const loadAPI = () => {
     getCategories()(dispatch);
@@ -120,6 +139,12 @@ export default function Formulary({ userId }: { userId: string }) {
   useMemo(() => {
     if (successfulDelete) window.location.href = "/services";
   }, [successfulDelete]);
+
+  useMemo(() => {
+    if (successfulLocalities) setLocalities(localitiesToService);
+  }, [successfulLocalities]);
+
+  console.log(localities, deleteLocalities);
 
   const toBase64 = (file: File) =>
     new Promise((resolve, reject) => {
@@ -154,6 +179,80 @@ export default function Formulary({ userId }: { userId: string }) {
       </div>
     );
   }
+
+  function manageAddToList({ data, serviceId }: { data: ILocality, serviceId:number}) {
+    let list: Array<ILocalityService> = [...localities];
+    let isDelete: Array<ILocalityService> = [...deleteLocalities];
+    const relation: ILocalityService | undefined = localities.find((elem) => elem["location_id"] === data.id);
+    if (list.some((elem) => elem["location_id"] === data.id)) {
+      isDelete.push ({
+        id: relation?.id ?? 0,
+        service_id: serviceId,
+        location_id: data.id,
+        price: formData.base_price,
+      });
+      //list = list.filter((elem) => elem["location_id"] !== data.id);
+
+      setDeleteLocalities(isDelete);
+    } else {
+      list.push({
+        id: relation?.id ?? 0,
+        service_id: serviceId,
+        location_id: data.id,
+        price: formData.base_price,
+      });
+    }
+    setLocalities(list);
+  }
+
+  function managePriceChangeInList(value: number, id: number) {
+    let index = localities.findIndex((elem) => elem["location_id"] === id);
+    localities[index].price = value;
+    setLocalities(localities);
+  }
+
+  const LocalityComponent = ({ data, serviceId }: { data: ILocality, serviceId:number }) => {
+    
+    let isInList = localities.find((elem) => elem["location_id"] === data.id);
+
+    return (
+      <div className="w-full border rounded-sm bg-white p-3 grid grid-cols-2 justify-between items-center gap-2">
+        <div className="flex flex-col justify-start items-start text-left">
+          <p className="font-normal text-base text-slate-950">{data["name"]}</p>
+          <p className="font-light text-sm text-slate-400">{data.state.name}</p>
+        </div>
+        <div className="flex justify-between items-center gap-2">
+          <div className="w-3/4 flex flex-col justify-start items-start gap-1 text-left">
+            <FormInput
+              defaultValue={isInList?.price}
+              disabled={!isInList}
+              type={"number"}
+              placeholder="Precio"
+              min={0}
+              className="form-control w-[100%]"
+              onChange={(e) =>
+                managePriceChangeInList(+e.target.value, data.id)
+              }
+            />
+          </div>
+          <div className="w-1/4 flex flex-col justify-center items-center">
+            <span
+              onClick={() => {
+                manageAddToList({data, serviceId});
+              }}
+              className={twMerge([
+                "transition w-8 h-8 cursor-pointer rounded-full text-slate-400 border border-slate-400 flex flex-col justify-center items-center bg-white",
+                "hover:bg-primary hover:border-primary hover:text-white",
+                isInList && "bg-green-500 border-green-500 text-white",
+              ])}
+            >
+              <FiCheck />
+            </span>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   const router = useRouter();
 
@@ -199,7 +298,13 @@ export default function Formulary({ userId }: { userId: string }) {
               formData?.service_category_id === 0
             }
             onClick={() => {
-              updateService(formData, data.id)(dispatch);
+              updateService({
+                dataService: formData, 
+                serviceId: data.id,
+                localities: localities,
+                deleteLocalities: deleteLocalities,
+              })(dispatch);
+              setDeleteLocalities([]);
             }}
             variant="primary"
             className="w-[275px]"
@@ -220,8 +325,8 @@ export default function Formulary({ userId }: { userId: string }) {
         </div>
       </div>
       <div className="flex mt-5">
-        <div className="relative flex justify-center items-start gap-4 w-full">
-          <div className="bg-white lg:w-[60%] shadow-xl shadow-slate-100 rounded-md h-fit p-7">
+        <div className="relative lg:flex justify-center items-start gap-4 w-full">
+          <div className="bg-white lg:w-[60%] shadow-xl shadow-slate-100 rounded-md h-fit p-7 lg:mb-0 mb-8">
             <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
               <div className="w-full border-b mb-2">
                 <p className="font-medium text-base text-slate-900 pb-2">
@@ -413,6 +518,35 @@ export default function Formulary({ userId }: { userId: string }) {
                   </FormSelect>
                 </div>
               </div>
+            </div>
+          </div>
+          <div className="bg-white lg:w-[40%] shadow-xl shadow-slate-100 rounded-md h-fit p-7">
+            <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
+              <div className="w-full border-b mb-2 flex flex-col justify-between items-start gap-1 pb-3">
+                <p className="font-medium text-base text-slate-900">
+                  Consultorios(*)
+                </p>
+                <p className="font-light text-sm text-slate-500">
+                  Indica los consultorios donde prestas este servicio y ajusta
+                  el precio si es requerido
+                </p>
+              </div>
+              {medicalCenters?.length === 0 && successFulMedicalCenters && (
+                <div className="w-full flex flex-col justify-center items-center text-center">
+                  <p className="font-bold text-slate-900 text-lg">
+                    Vaya, no tienes consultorios aún
+                  </p>
+                  <p className="font-light text-slate-500 text-base">
+                    Lo sentimos, pero en la plataforma no hay centros médicos
+                    todavia.
+                  </p>
+                </div>
+              )}
+              {medicalCenters?.length > 0 &&
+                successFulMedicalCenters &&
+                [...(medicalCenters as Array<ILocality>)].map((l, i) => (
+                  <LocalityComponent data={l} serviceId={data.id} key={i} />
+                ))}
             </div>
           </div>
         </div>
