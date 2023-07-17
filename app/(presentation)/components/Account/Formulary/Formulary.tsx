@@ -52,25 +52,25 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
 
     let obj = {
       id: account.userId,
-      names: account.names ?? "",
-      first_lastname: account.firstName ?? "",
-      second_lastname: account.lastName ?? "",
-      curp: account.curp ?? "",
-      phone_number: account.phone ?? "",
+      names: account.names.trim() ?? "",
+      first_lastname: account.firstName.trim() ?? "",
+      second_lastname: account.lastName.trim() ?? "",
+      curp: account.curp.trim() ?? "",
+      phone_number: account.phone.trim() ?? "",
       birthdate:
         account.birthDate && account.birthDate.length > 0
           ? account.birthDate
           : null,
-      birth_country: account.country ?? "",
+      birth_country: account.country.trim() ?? "",
       sex: account.sex ?? 0,
       person_type: account.personType ?? 0,
-      about_me: account.aboutMe ?? "",
-      website_url: account.websiteUrl ?? "",
-      address: account.address ?? "",
+      about_me: account.aboutMe.trim() ?? "",
+      website_url: account.websiteUrl.trim() ?? "",
+      address: account.address.trim() ?? "",
       pwa_profession_id: account.pwaProfressionId ?? "",
-      professional_license: account.professionalLicense ?? "",
+      professional_license: account.professionalLicense.trim() ?? "",
       professional_license_institution:
-        account.professionalLicenseInstitution ?? "",
+        account.professionalLicenseInstitution.trim() ?? "",
     };
     updateUserData(obj)(dispatch);
   };
