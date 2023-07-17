@@ -106,8 +106,6 @@ export default function Credentials({
       institution_name,
     });
 
-    console.log(account);
-
     return (
       <div className="w-full border bg-white grid lg:grid-cols-4 grid-cols-1 gap-3 p-4 rounded-md">
         <div className="flex flex-col justify-center items-start pr-5 gap-1">
@@ -352,7 +350,9 @@ export default function Credentials({
                   loadingRegister ||
                   account.userId === undefined ||
                   formData.specialty_id === 0 ||
-                  account.professionalLicense.length === 0
+                  account.professionalLicense.length === 0 ||
+                  formData.code.length === 0 ||
+                  formData.institution_name.length === 0
                 }
                 onClick={createSpeciality}
                 className="w-full flex justify-center items-center gap-2 text-white font-base"
