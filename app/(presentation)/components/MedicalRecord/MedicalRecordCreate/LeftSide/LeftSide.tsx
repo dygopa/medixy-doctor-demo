@@ -35,7 +35,7 @@ export default function LeftSide({ windowWidth }: ILeftSideProps) {
 
       <div
         className={clsx([
-          "xl:w-[375px] lg:w-[350px]",
+          "xl:w-[300px] lg:w-[300px] w-[300px]",
           windowWidth <= 992 ? "hidden" : "block",
         ])}
       >
