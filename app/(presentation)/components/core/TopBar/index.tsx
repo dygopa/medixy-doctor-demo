@@ -168,7 +168,7 @@ function Main({
   };
 
   return (
-    <div className="h-[67px] z-[50] flex items-center border-b border-slate-200 sticky bg-slate-100 top-0 left-0 w-full">
+    <div className="h-[67px] z-[90] flex items-center border-b border-slate-200 sticky bg-slate-100 top-0 left-0 w-full">
       <Breadcrumb className="hidden mr-auto sm:flex">
         {navigation.map((nav) => (
           <Link key={nav.title} href={nav.pathname}>

@@ -55,10 +55,6 @@ export default function PatientsTable() {
               <Table.Th className="border-b-0 whitespace-nowrap text-base">
                 Estatus
               </Table.Th>
-
-              <Table.Th className="text-center border-b-0 whitespace-nowrap">
-                Opciones
-              </Table.Th>
             </Table.Tr>
           </Table.Thead>
 
@@ -68,91 +64,42 @@ export default function PatientsTable() {
                 <Table.Tr
                   key={patient.subjectId}
                   className="hover:cursor-pointer"
+                  onClick={() =>
+                    router.push(
+                      MedicalRecordRoutesEnum.MedicalRecord + patient.subjectId
+                    )
+                  }
                 >
                   <Table.Td
                     className="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5"
-                    onClick={() =>
-                      router.push(
-                        PatientsRoutesEnum.PatientsEdit + patient.subjectId
-                      )
-                    }
+                    
                   >
-                    <Link
-                      href={{
-                        pathname:
-                          PatientsRoutesEnum.PatientsEdit + patient.subjectId,
-                      }}
-                    >
-                      {patient.name} {patient.lastName}
-                    </Link>
+                    {patient.name} {patient.lastName}
                   </Table.Td>
 
                   <Table.Td
                     className="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5"
-                    onClick={() =>
-                      router.push(
-                        PatientsRoutesEnum.PatientsEdit + patient.subjectId
-                      )
-                    }
+                    
                   >
                     {patient.curp}
                   </Table.Td>
 
                   <Table.Td
                     className="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5"
-                    onClick={() =>
-                      router.push(
-                        PatientsRoutesEnum.PatientsEdit + patient.subjectId
-                      )
-                    }
+                    
                   >
                     {patient.phoneNumber}
                   </Table.Td>
 
                   <Table.Td
                     className="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5"
-                    onClick={() =>
-                      router.push(
-                        PatientsRoutesEnum.PatientsEdit + patient.subjectId
-                      )
-                    }
+                    
                   >
                     <div className="w-full flex justify-start items-center gap-2">
                       <span className="rounded-full w-[12px] h-[12px] bg-success"></span>
                       <p className="text-sm font-medium text-slate-900">
                         Activo
                       </p>
-                    </div>
-                  </Table.Td>
-
-                  <Table.Td className="first:rounded-l-md last:rounded-r-md w-56 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-0 relative before:block before:w-px before:h-8 before:bg-slate-200 before:absolute before:left-0 before:inset-y-0 before:my-auto before:dark:bg-darkmode-400">
-                    <div className="flex items-center justify-center">
-                      <Link
-                        className="flex items-center mr-3"
-                        href={{
-                          pathname:
-                            MedicalRecordRoutesEnum.MedicalRecord +
-                            patient.subjectId,
-                        }}
-                      >
-                        <Button variant="primary" className="p-2 text-center">
-                          <Lucide icon="FileText" className="w-4 h-4" />
-                        </Button>
-                      </Link>
-                      {/*<Link
-                        className="flex items-center"
-                        href={{
-                          pathname:
-                            PatientsRoutesEnum.PatientsEdit + patient.subjectId,
-                        }}
-                      >
-                        <Button
-                          variant="outline-primary"
-                          className="px-5 text-center"
-                        >
-                          <Lucide icon="Edit" className="w-5 h-5 mr-1" />
-                        </Button>
-                      </Link>*/}
                     </div>
                   </Table.Td>
                 </Table.Tr>

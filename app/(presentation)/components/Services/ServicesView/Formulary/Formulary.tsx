@@ -144,7 +144,7 @@ export default function Formulary({ userId }: { userId: string }) {
     if (successfulLocalities) setLocalities(localitiesToService);
   }, [successfulLocalities]);
 
-  console.log(localities, deleteLocalities);
+  categories && categories !== null ? categories.sort((x: { name: string; },y: { name: any; }) => x.name.localeCompare(y.name)): categories;
 
   const toBase64 = (file: File) =>
     new Promise((resolve, reject) => {
