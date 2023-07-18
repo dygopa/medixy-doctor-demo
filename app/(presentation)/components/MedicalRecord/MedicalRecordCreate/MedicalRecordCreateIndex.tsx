@@ -52,21 +52,22 @@ export default function MedicalRecordCreateIndex({
   const getLeftSideColSpan = () => {
     if (screenSize.width <= 992) return "xl:col-span-0";
 
-    if (screenSize.width <= 1500) return "xl:col-span-5";
+    if (screenSize.width <= 1500) return "xl:col-span-3 col-span-3";
 
-    if (screenSize.width <= 1862) return "xl:col-span-4";
+    if (screenSize.width <= 1862) return "xl:col-span-2";
 
-    return "xl:col-span-3";
+    return "xl:col-span-2";
   };
 
   const getRightSideColSpan = () => {
     if (screenSize.width <= 992) return "xl:col-span-12 col-span-12";
 
-    if (screenSize.width <= 1500) return "xl:col-span-7 col-span-7";
+    if (screenSize.width <= 1500)
+      return "xl:col-span-9 col-span-9 xl:ml-12 ml-24";
 
-    if (screenSize.width <= 1862) return "xl:col-span-8";
+    if (screenSize.width <= 1862) return "xl:col-span-10 ml-24";
 
-    return "xl:col-span-9";
+    return "xl:col-span-10 ml-12";
   };
 
   useEffect(() => {
