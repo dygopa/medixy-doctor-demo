@@ -30,20 +30,13 @@ function Filters() {
     changeStatusPopup,
     predifinedReservationData,
     getServices,
-    getLocalities,
     getAttentionWindows,
-    activeLocality,
     activeService,
   } = actions;
-  const { data: locality } = state.activeLocality;
   const { data: service } = state.activeService;
-
-  const { data: localities, successful: loadedLocalities } =
-    state.getLocalities;
 
   const { data: services, successful: loadedServices } = state.getServices;
 
-  const [listOfLocalities, setListOfLocalities] = useState([]);
   const [listOfServices, setListOfServices] = useState([]);
 
   const [selectedService, setSelectedService] = useState({
@@ -52,43 +45,24 @@ function Filters() {
     description: "",
   });
 
-  const [selectedLocality, setSelectedLocality] = useState({
-    id: 0,
-    title: "",
-    description: "",
-  });
-
   function handleFormatList() {
+
     let list_services = services.map((elem: IService) => ({
       id: elem.id,
       title: elem.name,
-      description: elem.description,
+      description: elem.locality.address,
     }));
 
-    console.log(list_services);
     setListOfServices(list_services);
-
-    let list = localities.map((elem: ILocality) => ({
-      id: elem.id,
-      title: elem.name,
-      description: elem.address,
-    }));
-
-    console.log(list);
-    setListOfLocalities(list);
   }
 
   useMemo(() => {
-    if (selectedLocality.id > 0) {
-      console.log(selectedLocality);
-      activeLocality(selectedLocality)(dispatch);
-    }
     if (selectedService.id > 0) {
       console.log(selectedService);
       activeService(selectedService)(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedLocality, selectedService]);
+  }, [selectedService]);
 
   useMemo(() => {
     if (selectedService.id > 0) {
@@ -97,14 +71,13 @@ function Filters() {
   }, [selectedService]);
 
   useMemo(() => {
-    if (loadedLocalities && loadedServices) handleFormatList();
+    if (loadedServices) handleFormatList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedLocalities, loadedServices]);
+  }, [loadedServices]);
 
   useMemo(() => {
     if (loadedUser) {
       getServices(user.userId)(dispatch);
-      getLocalities(user.userId)(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser]);
@@ -112,18 +85,7 @@ function Filters() {
   return (
     <div className="w-full h-fit mt-4 flex flex-col justify-center items-start gap-4">
       <div className="w-full lg:h-[5vh] flex flex-col lg:flex-row flex-wrap lg:flex-nowrap justify-between items-center lg:gap-0 gap-3">
-        <div className="w-full flex flex-col lg:w-[40%] lg:grid lg:grid-cols-2 items-center gap-2 lg:h-full">
-          <SpecialSelect
-            emptySelectedValue={{
-              title: "Consultorio",
-              description: "Selecciona un consultorio de la lista",
-            }}
-            customClick={(value: any) => {
-              setSelectedLocality(value);
-            }}
-            selectedItem={locality}
-            list={listOfLocalities}
-          />
+        <div className="w-full flex lg:w-[25%] lg:h-full">
           <SpecialSelect
             emptySelectedValue={{
               title: "Servicio",
