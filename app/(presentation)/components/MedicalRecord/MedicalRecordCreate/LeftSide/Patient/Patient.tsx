@@ -24,14 +24,6 @@ export default function Patient({
   );
   const { data: subject } = state.subject;
 
-  const getSizeCard = () => {
-    if (windowWidth <= 992) return "w-full";
-
-    if (windowWidth <= 1862) return "xl:w-[400px]";
-
-    return "xl:w-[375px] w-full";
-  };
-
   return (
     <div
       onClick={
@@ -44,18 +36,18 @@ export default function Patient({
         "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
         !showCompleteDetails && "zoom-in",
         windowWidth <= 992
-          ? "w-full"
+          ? "w-[305px]"
           : showCompleteDetails
           ? "w-full"
-          : getSizeCard(),
+          : "w-[305px]",
       ])}
     >
       <div className="p-4 box h-full">
         <div className="lg:flex md:flex block">
           <div className="text-center lg:border-r border-grey">
-            <div className="flex w-full justify-center mb-4 mr-24">
+            <div className="flex w-full justify-center mb-4 mr-10">
               {subject && subject?.pictureUrl.length > 0 ? (
-                <div className="relative w-[100px] h-[100px]">
+                <div className="relative w-[75px] h-[75px]">
                   <Image
                     className="object-cover rounded-full"
                     src={subject.pictureUrl}
@@ -74,14 +66,14 @@ export default function Patient({
 
             <div>
               <div className="w-full flex justify-center items-center gap-2">
-                <p className="font-medium p-[1.0%_7%] rounded text-sm text-yellow-800 bg-yellow-300">
+                <p className="font-medium p-[1.0%_7%] rounded text-xs text-yellow-800 bg-yellow-300">
                   Por atención
                 </p>
               </div>
             </div>
           </div>
 
-          <div className="lg:pl-8 w-full flex justify-between xl:mt-0 mt-4">
+          <div className="lg:pl-4 w-full flex justify-between xl:mt-0 mt-4">
             <div
               className={clsx([
                 windowWidth <= 992
