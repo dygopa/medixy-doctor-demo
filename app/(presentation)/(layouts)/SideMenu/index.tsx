@@ -49,7 +49,7 @@ function SideMenu({
     }
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     loadUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -63,7 +63,7 @@ function SideMenu({
     if (error !== null) redirect("/login");
   }, [error]);
 
-  if ((loading || !data.userId) && pathname === "/") return <Splash />;
+  if ((loading || !data.userId) && pathname === "/") return <Splash />;*/
 
   return (
     <div className="py-5 md:py-0 -mx-3 px-3 sm:-mx-8 sm:px-8 bg-primary dark:bg-transparent">
