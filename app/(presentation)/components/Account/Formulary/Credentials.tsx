@@ -55,14 +55,14 @@ export default function Credentials({
   const { createUserSteps } = actionsStep;
 
   let profesions = [
-    { id: 1, name: "Médico" },
-    { id: 2, name: "Odontólogo" },
-    { id: 3, name: "Fisioterapeuta" },
-    { id: 4, name: "Farmaceuta" },
-    { id: 5, name: "Técnico radiólogo" },
-    { id: 6, name: "Nutriólogo" },
-    { id: 7, name: "Enfermero/a" },
     { id: 8, name: "Bioanalista" },
+    { id: 7, name: "Enfermero/a" },
+    { id: 4, name: "Farmaceuta" },
+    { id: 3, name: "Fisioterapeuta" },
+    { id: 1, name: "Médico" },
+    { id: 6, name: "Nutriólogo" },
+    { id: 2, name: "Odontólogo" },
+    { id: 5, name: "Técnico radiólogo" },
   ];
 
   const [formData, setFormData] = useState({
@@ -72,6 +72,8 @@ export default function Credentials({
     institution_name: "",
     main_specialty: false,
   });
+
+  specialities && specialities !== null ? specialities.sort((x: { name: string; },y: { name: any; }) => x.name.localeCompare(y.name)): specialities;
 
   const [loadedAPI, setLoadedAPI] = useState(false);
 

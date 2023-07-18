@@ -132,6 +132,8 @@ export default function Formulary({
     setLocalities(localities);
   }
 
+  categories && categories !== null ? categories.sort((x: { name: string; },y: { name: any; }) => x.name.localeCompare(y.name)): categories;
+
   const LocalityComponent = ({ data }: { data: ILocality }) => {
     let isInList = localities.find((elem) => elem["location_id"] === data.id);
 

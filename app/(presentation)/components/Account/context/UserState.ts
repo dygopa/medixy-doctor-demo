@@ -5,7 +5,7 @@ import { CountryFailure} from 'domain/core/failures/country/countryFailure';
 
 export interface IUserState {
   updateUserData: IUserUserState;
-  medicalSpecialities: IUserUserState;
+  medicalSpecialities: IMedicalSpecialitiesState;
   getUserMedicalSpecialities: IUserUserState;
   createMedicalSpeciality: IUserUserState;
   updateMedicalSpeciality: IUserUserState;
@@ -22,6 +22,13 @@ interface IGetCountriesISOState {
 }
 interface IUserUserState {
   data: string | null | Object | Array<any>;
+  loading: boolean;
+  successful: boolean;
+  error: UserFailure | null; 
+}
+
+interface IMedicalSpecialitiesState {
+  data: Array<any>;
   loading: boolean;
   successful: boolean;
   error: UserFailure | null; 

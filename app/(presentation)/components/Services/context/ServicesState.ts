@@ -2,7 +2,7 @@ import { ServiceFailure } from './../../../../domain/core/failures/service/servi
 import { IService, IServiceToLocality } from '../../../../domain/core/entities/serviceEntity';
 
 export interface IServicesState {
-  getCategories: IServicesServicesState;
+  getCategories: ICategoriesState;
   getUserMedicalCenters: IServicesServicesState;
   getUserServices: IServicesServicesState;
   getService: IServiceServicesState;
@@ -14,6 +14,13 @@ export interface IServicesState {
 
 interface IServicesServicesState {
   data: Array<any> | string;
+  loading: boolean;
+  successful: boolean;
+  error: ServiceFailure | null; 
+}
+
+interface ICategoriesState {
+  data: Array<any>;
   loading: boolean;
   successful: boolean;
   error: ServiceFailure | null; 
