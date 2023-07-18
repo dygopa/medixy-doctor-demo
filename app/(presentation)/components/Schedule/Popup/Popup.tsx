@@ -34,7 +34,7 @@ function Popup() {
 
   return (
     <div className={twMerge([
-      'z-[52] fixed top-0 left-0 w-full h-screen overflow-y-auto bg-gray-900/50 flex flex-col justify-center items-center',
+      'z-[80] fixed top-0 left-0 w-full h-screen overflow-y-auto bg-gray-900/50 flex flex-col justify-center items-center',
       status ? "visible" : "hidden"
     ])}>
       {type === 0 && <CreateAppointment customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
