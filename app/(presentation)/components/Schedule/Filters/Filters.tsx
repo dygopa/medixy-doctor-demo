@@ -46,7 +46,6 @@ function Filters() {
   });
 
   function handleFormatList() {
-
     let list_services = services.map((elem: IService) => ({
       id: elem.id,
       title: elem.name,
