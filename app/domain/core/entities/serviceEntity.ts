@@ -1,4 +1,4 @@
-import { ILocalityService } from "./localityEntity";
+import { ILocality, ILocalityService } from "./localityEntity";
 
 export interface IService {
     id: number,
@@ -10,6 +10,7 @@ export interface IService {
     conditions: string,
     status: number,
     base_price: number,
+    locality: ILocality,
     localities: Array<ILocalityService>,
 }
 
