@@ -19,6 +19,7 @@ import AlertComponent from "(presentation)/components/core/BaseComponents/Alert"
 import { EventClickArg } from "@fullcalendar/core";
 import { twMerge } from "tailwind-merge";
 import AttentionWindow from "./AttentionWindowModal/AttentionWindowModal";
+import { useSearchParams } from "next/navigation";
 
 export default function CalendarIndex() {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
@@ -26,7 +27,7 @@ export default function CalendarIndex() {
 
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
-  const { getLocalities, getServices, getAttentionWindows } = actions;
+  const { getLocalities, getServices, getAttentionWindows, activeService } = actions;
   const { data, loading, successful, error } = state.getAttentionWindows;
   const { successful: successfulWindowCreated, error: errorWindowCreated } =
     state.createWindowAttention;
@@ -40,6 +41,8 @@ export default function CalendarIndex() {
     successful: servicesSuccessful,
     loading: servicesLoading,
   } = state.getServices;
+
+  const params = useSearchParams();
 
   const [windows, setWindows] = useState([]);
   const [showWindowModal, setShowWindowModal] = useState(false);
@@ -83,6 +86,7 @@ export default function CalendarIndex() {
   function formatList() {
     let list = [];
     list = data.map((elem: any) => formatEvent(elem));
+    console.log("list", list)
     setWindows(list);
   }
 
@@ -158,7 +162,12 @@ export default function CalendarIndex() {
 
   useMemo(() => {
     if (servicesSuccessful && services.length > 0)
-      getAttentionWindows(services[0].id)(dispatch);
+      if(params.get("service")){
+        let id = params.get("service")?.toString();
+        getAttentionWindows(parseInt(id!))(dispatch);
+      }else{
+        getAttentionWindows(services[0].id)(dispatch);
+      }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [servicesSuccessful, services]);
 
@@ -169,6 +178,24 @@ export default function CalendarIndex() {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser]);
+
+  useMemo(() => {
+    if (params.get("service") && services > 0) {
+      let id = params.get("service")?.toString();
+      let serviceFinded = [...services].find(
+        (elem: any) => elem["id"] === parseInt(id!)
+      );
+      console.log(serviceFinded);
+      if (serviceFinded) {
+        activeService({
+          id: params.get("service"),
+          title: serviceFinded["name"],
+          description: serviceFinded["description"],
+          type: "SERVICE",
+        })(dispatch);
+      }
+    }
+  }, [params, services]);
 
   return (
     <>

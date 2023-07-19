@@ -83,6 +83,16 @@ export const ScheduleReducer = (state: any, action: any) => {
           error: null,
         },
       };
+    case 'CHANGE_ACTIVE_DAY':
+      return {
+        ...state,
+        activeDay: {
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
     case 'CHANGE_STATUS_POPUP':
       return {
         ...state,
