@@ -6,6 +6,7 @@ import { twMerge } from 'tailwind-merge'
 import { IScheduleContext, ScheduleContext } from '../../context/ScheduleContext';
 import { AuthContext, IAuthContext } from '(presentation)/(layouts)/AppLayout/context/AuthContext';
 import moment from 'moment';
+import { useSearchParams } from 'next/navigation';
 
 function CreateAgenda({cancelFuntion, customRef}:{
   cancelFuntion: Function;
@@ -17,8 +18,11 @@ function CreateAgenda({cancelFuntion, customRef}:{
 
   const { state, actions, dispatch } = useContext<IScheduleContext>(ScheduleContext);
   const { changeTypePopup, changeStatusPopup, getServices, createWindowAttention, getAttentionWindows} = actions;
-  const { data: services } = state.getServices;
+  const { data: services, successful: loadedServices } = state.getServices;
   const { loading, successful, error,  } = state.createWindowAttention;
+  const { data: activeService, successful: changedActiveService  } = state.activeService;
+
+  const params = useSearchParams();
 
   let type_agenda = [
     {
@@ -154,6 +158,12 @@ function CreateAgenda({cancelFuntion, customRef}:{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser]);
 
+  useMemo(()=>{
+    if(params.get("service") !== null && loadedServices){
+      setFormData({...formData, serviceId: parseInt(params.get("service")!) })
+    }
+  },[loadedServices])
+
   return (
     <div ref={customRef} className='w-full md:w-[60%] lg:w-[40%] h-screen  md:min-h-[60vh] md:max-h-[90vh] lg:min-h-[60vh] lg:max-h-[90vh] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 pb-0 gap-8'>
       <div className="w-full flex justify-between items-center">
@@ -167,6 +177,7 @@ function CreateAgenda({cancelFuntion, customRef}:{
         <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className='font-normal text-sm text-slate-600'>Para que servicio</p>
           <FormSelect
+            defaultValue={formData.serviceId}
             value={formData.serviceId}
             className="form-control"
             onChange={(e)=> setFormData({...formData, serviceId: +e.target.value}) }

@@ -23,6 +23,7 @@ export default function CalendarIndex() {
   const {
     appointmentDetail,
     getAppointments,
+    activeDay,
     changeTypePopup,
     changeStatusPopup,
     predifinedReservationData,
@@ -234,7 +235,7 @@ export default function CalendarIndex() {
         <div className="w-full lg:w-2/3 h-[64vh]">
           <Calendar
             handleChangeInWeek={(param: DatesSetArg) => {
-              console.log(param.start, " - ", param.end);
+              activeDay(param.start)(dispatch)
             }}
             events={appointments}
             initialEvent={""}
