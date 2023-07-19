@@ -290,39 +290,10 @@ export default function Formulary({
                     <option value={0}>Privado</option>
                   </FormSelect>
                 </div>
+
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Nro. de consultorio
-                  </p>
-                  <FormInput
-                    type={"text"}
-                    placeholder="Escribe el número del consultorio..."
-                    min={0}
-                    value={formData?.code}
-                    className="form-control lg:w-[70%]"
-                    onChange={(e: any) => {
-                      setFormData({ ...formData, code: e.target.value });
-                    }}
-                  />
-                </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    CLUES
-                  </p>
-                  <FormInput
-                    type={"text"}
-                    placeholder="Escribe el CLUES del consultorio..."
-                    min={0}
-                    value={formData?.clues}
-                    className="form-control lg:w-[70%]"
-                    onChange={(e: any) => {
-                      setFormData({ ...formData, clues: e.target.value });
-                    }}
-                  />
-                </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Código postal
+                    Código Postal
                     <span className="text-primary font-bold">*</span>
                   </p>
                   <FormInput
@@ -341,7 +312,22 @@ export default function Formulary({
                 )}
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Entidad Federativa
+                    CLUES
+                  </p>
+                  <FormInput
+                    type={"text"}
+                    placeholder="Escribe el CLUES del consultorio..."
+                    min={0}
+                    value={formData?.clues}
+                    className="form-control lg:w-[70%]"
+                    onChange={(e: any) => {
+                      setFormData({ ...formData, clues: e.target.value });
+                    }}
+                  />
+                </div>
+                <div className="lg:flex justify-between items-start relative w-full gap-3">
+                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                    Estado
                   </p>
                   <div className="lg:w-[70%]">
                     <AutocompleteInputStates
@@ -420,7 +406,7 @@ export default function Formulary({
 
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Localidad
+                    Colonia
                   </p>
 
                   <div className="lg:w-[70%]">
