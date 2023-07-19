@@ -162,7 +162,7 @@ function CreateAgenda({cancelFuntion, customRef}:{
     if(params.get("service") !== null && loadedServices){
       setFormData({...formData, serviceId: parseInt(params.get("service")!) })
     }
-  },[loadedServices])
+  },[loadedServices, params])
 
   return (
     <div ref={customRef} className='w-full md:w-[60%] lg:w-[40%] h-screen  md:min-h-[60vh] md:max-h-[90vh] lg:min-h-[60vh] lg:max-h-[90vh] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 pb-0 gap-8'>
