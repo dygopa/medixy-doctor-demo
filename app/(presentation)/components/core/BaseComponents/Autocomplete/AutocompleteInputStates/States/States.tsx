@@ -41,9 +41,12 @@ export default function States({
 
   const [field, setField] = useState("");
   const [itemsShow, setItemsShow] = useState<IFederalEntity[]>([]);
+  const [focus, setFocus] = useState(false);
 
-  const getFederalEntitiesDispatch = (value: string) =>
-    getFederalEntities({ searchQuery: value.toLowerCase().trim() })(dispatch);
+  const getFederalEntitiesDispatch = (value?: string | null) =>
+    getFederalEntities({
+      searchQuery: value ? value.toLowerCase().trim() : null,
+    })(dispatch);
 
   const handleAutocomplete = (e: ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -57,14 +60,13 @@ export default function States({
       return;
     }
 
-    setItemsShow([]);
+    getFederalEntitiesDispatch();
   };
 
   const onClickItem = (item: IFederalEntity) => {
     onClick(item);
     setItemsShow([]);
-
-    if (!setDefaultValue) setField("");
+    setField(item.nameEntity);
   };
 
   const isAdded = (item: IFederalEntity): boolean => {
@@ -100,24 +102,30 @@ export default function States({
           onChange={(e: ChangeEvent<HTMLInputElement>) => handleAutocomplete(e)}
           className={clsx([className])}
           onFocus={() => {
-            if (field.length > 0) {
-              getFederalEntitiesDispatch(field);
-              return;
-            }
+            setFocus(true);
 
-            setItemsShow([]);
+            if (federalEntities.length === 0)
+              getFederalEntitiesDispatch(field.length > 0 ? field : null);
+          }}
+          onBlur={() => {
+            setTimeout(() => {
+              setFocus(false);
+            }, 100);
           }}
         />
       </div>
 
-      {itemsShow.length > 0 && !loading && !error && (
+      {itemsShow.length > 0 && !loading && !error && focus && (
         <div className="absolute w-full bg-white shadow-md py-2 z-50 max-h-[140px] overflow-y-auto">
           {itemsShow.map((itemShow: IFederalEntity) => (
             <button
               type="button"
               key={itemShow.entityId}
               className="py-2 hover:bg-gray-500 hover:bg-opacity-10 w-full text-left"
-              onClick={() => onClickItem(itemShow)}
+              onClick={() => {
+                onClickItem(itemShow);
+                setFocus(false);
+              }}
             >
               <div className="flex justify-between px-2">
                 <div>

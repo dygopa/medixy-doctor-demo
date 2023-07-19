@@ -35,6 +35,10 @@ import SuccessfulComponent from "(presentation)/components/core/BaseComponents/S
 import { PatientsRoutesEnum } from "(presentation)/(routes)/patientsRoutes";
 import { useRouter } from "next/navigation";
 import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
+import AutocompleteInputStates from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputStates/AutocompleteInputStates";
+import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
+import AutocompleteInputMunicipalities from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMunicipalities/AutocompleteInputMunicipalities";
+import AutocompleteInputLocations from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputLocations/AutocompleteInputLocations";
 
 export default function WithoutSteps({
   userId,
@@ -59,11 +63,6 @@ export default function WithoutSteps({
     error: createUserLocalityError,
   } = state.createUserLocality;
 
-  const { data: federalEntities } = state.getFederalEntities;
-  const { data: municipalities, successful: successfulMunicipalities } =
-    state.municipalities;
-  const { data: countryLocations } = state.countryLocations;
-
   const { actions: actionsStep, dispatch: dispatchStep } =
     useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps } = actionsStep;
@@ -78,6 +77,7 @@ export default function WithoutSteps({
     longitude: 0,
     federalEntity: 0,
     municipality: 0,
+    municipalityCatalogId: 0,
     countryLocation: 0,
     isVirtual: 0,
     isPublic: 1,
@@ -94,32 +94,6 @@ export default function WithoutSteps({
   let [errors, setErrors] = useState({
     postal_code: "",
   });
-
-  useEffect(() => {
-    getFederalEntities()(dispatch);
-  }, []);
-
-  useEffect(() => {
-    getMunicipalities({
-      federalEntityId: formData.federalEntity,
-    })(dispatch);
-  }, [formData.federalEntity]);
-
-  console.log(formData);
-
-  useMemo(() => {
-    if (successfulMunicipalities) {
-      if (municipalities.data.length > 0) {
-        const municipalitySearch = municipalities.data.find((elem) => {
-          return elem.id === formData.municipality;
-        });
-        getCountryLocations({
-          federalEntityId: formData.federalEntity,
-          municipalityId: municipalitySearch?.catalogId,
-        })(dispatch);
-      }
-    }
-  }, [formData.federalEntity, formData.municipality, successfulMunicipalities]);
 
   const handlePostalCode = (value: string) => {
     setFormData({ ...formData, postal_code: value });
@@ -171,7 +145,7 @@ export default function WithoutSteps({
 
   const onClickButtonPrincipal: Function = () => {
     router.push(LocalitiesRoutesEnum.Localities);
-  }
+  };
 
   return (
     <>
@@ -219,7 +193,7 @@ export default function WithoutSteps({
               </div>
               <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Nombre del consultorio 
+                  Nombre del consultorio
                   <span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
@@ -235,7 +209,8 @@ export default function WithoutSteps({
               </div>
               <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Tipo de consultorio <span className="text-primary font-bold">*</span>
+                  Tipo de consultorio{" "}
+                  <span className="text-primary font-bold">*</span>
                 </p>
                 <FormSelect
                   className="form-control lg:w-[70%]"
@@ -246,12 +221,8 @@ export default function WithoutSteps({
                     })
                   }
                 >
-                  <option value={0}>
-                    Físico
-                  </option>
-                  <option value={1}>
-                    Virtual
-                  </option>
+                  <option value={0}>Físico</option>
+                  <option value={1}>Virtual</option>
                 </FormSelect>
               </div>
               <div className="lg:flex justify-between items-center relative w-full gap-3">
@@ -267,12 +238,8 @@ export default function WithoutSteps({
                     })
                   }
                 >
-                  <option value={1}>
-                    Público
-                  </option>
-                  <option value={0}>
-                    Privado
-                  </option>
+                  <option value={1}>Público</option>
+                  <option value={0}>Privado</option>
                 </FormSelect>
               </div>
               <div className="lg:flex justify-between items-center relative w-full gap-3">
@@ -329,7 +296,21 @@ export default function WithoutSteps({
                   Entidad Federativa{" "}
                   <span className="text-primary font-bold">*</span>
                 </p>
-                <FormSelect
+                <div className="lg:w-[70%]">
+                  <AutocompleteInputStates
+                    onClick={(item: IFederalEntity) =>
+                      setFormData({
+                        ...formData,
+                        federalEntity: item.entityId,
+                        municipality: 0,
+                        municipalityCatalogId: 0,
+                        countryLocation: 0,
+                      })
+                    }
+                    className="form-control lg:w-full"
+                  />
+                </div>
+                {/* <FormSelect
                   className="form-control lg:w-[70%]"
                   defaultValue={formData.federalEntity}
                   value={formData.federalEntity}
@@ -345,61 +326,83 @@ export default function WithoutSteps({
                       {elem.nameEntity}
                     </option>
                   ))}
-                </FormSelect>
+                  </FormSelect> */}
               </div>
 
               <div className="lg:flex justify-between items-center relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Municipio
-                  </p>
-                  <FormSelect
-                    className="form-control lg:w-[70%]"
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Municipio
+                </p>
+                <div className="lg:w-[70%]">
+                  <AutocompleteInputMunicipalities
+                    onClick={(item: IMunicipality) =>
+                      setFormData({
+                        ...formData,
+                        municipality: item.id,
+                        municipalityCatalogId: item.catalogId,
+                        countryLocation: 0,
+                      })
+                    }
                     disabled={formData.federalEntity === 0}
-                    defaultValue={formData.municipality}
-                    value={formData.municipality}
-                    onChange={(e: any) =>
-                      setFormData({
-                        ...formData,
-                        municipality: parseInt(e.target.value),
-                      })
-                    }
-                  >
-                    <option>
-                      NO ESPECIFICADO
+                    className="form-control lg:w-full"
+                    federalEntityId={formData.federalEntity}
+                  />
+                </div>
+                {/*<FormSelect
+                  className="form-control lg:w-[70%]"
+                  disabled={formData.federalEntity === 0}
+                  defaultValue={formData.municipality}
+                  value={formData.municipality}
+                  onChange={(e: any) =>
+                    setFormData({
+                      ...formData,
+                      municipality: parseInt(e.target.value),
+                    })
+                  }
+                >
+                  <option>NO ESPECIFICADO</option>
+                  {municipalities.data?.map((elem: IMunicipality) => (
+                    <option key={elem.id} value={elem.id}>
+                      {elem.name}
                     </option>
-                    {municipalities.data?.map((elem: IMunicipality) => (
-                      <option key={elem.id} value={elem.id}>
-                        {elem.name}
-                      </option>
-                    ))}
-                  </FormSelect>
+                  ))}
+                  </FormSelect> */}
               </div>
 
               <div className="lg:flex justify-between items-center relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Localidad
-                  </p>
-                  <FormSelect
-                    className="form-control lg:w-[70%]"
-                    disabled={formData.municipality === 0}
-                    defaultValue={formData.countryLocation}
-                    value={formData.countryLocation}
-                    onChange={(e: any) =>
-                      setFormData({
-                        ...formData,
-                        countryLocation: parseInt(e.target.value),
-                      })
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Localidad
+                </p>
+                <div className="lg:w-[70%]">
+                  <AutocompleteInputLocations
+                    onClick={(item: ICountryLocation) =>
+                      setFormData({ ...formData, countryLocation: item.id })
                     }
-                  >
-                    <option>
-                      NO ESPECIFICADO
+                    disabled={formData.municipality === 0}
+                    className="form-control lg:w-full"
+                    municipalityId={formData.municipalityCatalogId}
+                    federalEntityId={formData.federalEntity}
+                  />
+                </div>
+                {/*  <FormSelect
+                  className="form-control lg:w-[70%]"
+                  disabled={formData.municipality === 0}
+                  defaultValue={formData.countryLocation}
+                  value={formData.countryLocation}
+                  onChange={(e: any) =>
+                    setFormData({
+                      ...formData,
+                      countryLocation: parseInt(e.target.value),
+                    })
+                  }
+                >
+                  <option>NO ESPECIFICADO</option>
+                  {countryLocations.data?.map((elem: ICountryLocation) => (
+                    <option key={elem.id} value={elem.id}>
+                      {elem.name}
                     </option>
-                    {countryLocations.data?.map((elem: ICountryLocation) => (
-                      <option key={elem.id} value={elem.id}>
-                        {elem.name}
-                      </option>
-                    ))}
-                  </FormSelect>
+                  ))}
+                  </FormSelect> */}
               </div>
 
               <div className="lg:flex justify-between items-center relative w-full gap-3">

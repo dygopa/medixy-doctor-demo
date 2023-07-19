@@ -32,9 +32,9 @@ export default class CountriesUseCase {
     }
   }
 
-  async getCountryLocations(obj: { limit?: number | null; federalEntityId?: number | null; municipalityId?: number | null }): Promise<IGetCountryLocationsResponse> {
+  async getCountryLocations(obj: { searchQuery?: string | null; limit?: number | null; federalEntityId?: number | null; municipalityId?: number | null }): Promise<IGetCountryLocationsResponse> {
     try {
-        const response = await this._repository.getCountryLocations({ limit: obj.limit, federalEntityId: obj.federalEntityId, municipalityId: obj.municipalityId });
+        const response = await this._repository.getCountryLocations({ searchQuery: obj.searchQuery, limit: obj.limit, federalEntityId: obj.federalEntityId, municipalityId: obj.municipalityId });
 
         if (response instanceof CountryFailure) throw response;
 
