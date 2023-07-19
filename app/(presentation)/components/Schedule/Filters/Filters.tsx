@@ -142,9 +142,6 @@ function Filters() {
               </Menu.Items>
             </Transition>
           </Menu>
-          {/* <Link href={"/schedule/configuration"} className="cursor-pointer w-10 h-10 flex flex-col justify-center items-center bg-primary/10 hover:bg-primary/20 transition rounded-md">
-                        <Lucide icon={"Settings"} className="w-5 h-5" />
-                    </Link> */}
         </div>
       </div>
     </div>

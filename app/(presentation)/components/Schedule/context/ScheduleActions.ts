@@ -8,6 +8,7 @@ export interface IScheduleActions {
   appointmentDetail: Function;
   activeLocality: Function;
   activeService: Function;
+  activeDay: Function;
   changeTypePopup: Function;
   changeStatusPopup: Function;
   getAppointments: Function;
@@ -51,6 +52,10 @@ const activeLocality = (value:any) => async (dispatch: Dispatch<any>) => {
 
 const activeService = (value:any) => async (dispatch: Dispatch<any>) => {
     dispatch({ type: "CHANGE_ACTIVE_SERVICE", payload: { data: value } });
+}
+
+const activeDay = (value:any) => async (dispatch: Dispatch<any>) => {
+    dispatch({ type: "CHANGE_ACTIVE_DAY", payload: { data: value } });
 }
 
 const changeTypePopup = (value:number) => async (dispatch: Dispatch<any>) => {
@@ -172,6 +177,7 @@ export const actions: IScheduleActions = {
   appointmentDetail,
   activeLocality,
   activeService,
+  activeDay,
   changeTypePopup,
   changeStatusPopup,
   getAppointments,
