@@ -47,10 +47,11 @@ export default function Locations({
 
   const [field, setField] = useState("");
   const [itemsShow, setItemsShow] = useState<ICountryLocation[]>([]);
+  const [focus, setFocus] = useState(false);
 
-  const getCountryLocationsDispatch = (value: string) =>
+  const getCountryLocationsDispatch = (value?: string | null) =>
     getCountryLocations({
-      searchQuery: value.toLowerCase().trim(),
+      searchQuery: value ? value.toLowerCase().trim() : "",
       federalEntityId: federalEntityId,
       municipalityId: municipalityId,
     })(dispatch);
@@ -67,14 +68,13 @@ export default function Locations({
       return;
     }
 
-    setItemsShow([]);
+    getCountryLocationsDispatch();
   };
 
   const onClickItem = (item: ICountryLocation) => {
     onClick(item);
     setItemsShow([]);
-
-    if (!setDefaultValue) setField("");
+    setField(item.name);
   };
 
   const isAdded = (item: ICountryLocation): boolean => {
@@ -109,24 +109,31 @@ export default function Locations({
           onChange={(e: ChangeEvent<HTMLInputElement>) => handleAutocomplete(e)}
           className={clsx([className])}
           onFocus={() => {
-            if (field.length > 0) {
-              getCountryLocationsDispatch(field);
-              return;
-            }
+            setFocus(true);
+
+            if (field.length === 0) getCountryLocationsDispatch();
 
             setItemsShow([]);
+          }}
+          onBlur={() => {
+            setTimeout(() => {
+              setFocus(false);
+            }, 100);
           }}
         />
       </div>
 
-      {itemsShow.length > 0 && !loading && !error && (
+      {itemsShow.length > 0 && !loading && !error && focus && (
         <div className="absolute w-full bg-white shadow-md py-2 z-50 max-h-[140px] overflow-y-auto">
           {itemsShow.map((itemShow: ICountryLocation) => (
             <button
               type="button"
               key={itemShow.id}
               className="py-2 hover:bg-gray-500 hover:bg-opacity-10 w-full text-left"
-              onClick={() => onClickItem(itemShow)}
+              onClick={() => {
+                onClickItem(itemShow);
+                setFocus(false);
+              }}
             >
               <div className="flex justify-between px-2">
                 <div>

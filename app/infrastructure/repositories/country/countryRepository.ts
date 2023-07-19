@@ -57,10 +57,13 @@ export class CountryRepository implements ICountryRepository {
     }
   }
 
-  async getCountryLocations(obj: { limit?: number | null; federalEntityId?: number | null; municipalityId?: number | null }): Promise<IGetCountryLocationsResponse | CountryFailure> {
+  async getCountryLocations(obj: { searchQuery?: string | null; limit?: number | null; federalEntityId?: number | null; municipalityId?: number | null }): Promise<IGetCountryLocationsResponse | CountryFailure> {
     try {
-
       let query = supabase.from("LocalidadesPais").select("*", { count: "exact" }).order("nombre", {ascending: true});
+
+      if (obj.searchQuery) {
+        query = query.or(`or(nombre.ilike.%${obj.searchQuery.trim().toLowerCase()}%),and(nombre.ilike.%${obj.searchQuery.trim().toLowerCase()}%)`);
+      }
 
       if (obj.federalEntityId) {
         query = query.eq("entidadFederativaId", obj.federalEntityId);

@@ -5,15 +5,21 @@ import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import { FiCheck } from "react-icons/fi";
 import Formulary from "./Formulary/Formulary";
-import { AuthContext, IAuthContext } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
-import { ICreatePatientContext, CreatePatientContext } from "../context/CreatePatientContext";
+import {
+  AuthContext,
+  IAuthContext,
+} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import {
+  ICreatePatientContext,
+  CreatePatientContext,
+} from "../context/CreatePatientContext";
 import { useRouter } from "next/navigation";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 
 export default function Steps() {
-
-  const { state, actions, dispatch } = useContext<ICreatePatientContext>(CreatePatientContext);
+  const { state, actions, dispatch } =
+    useContext<ICreatePatientContext>(CreatePatientContext);
   const { createSubject } = actions;
 
   const { data, loading, error, successful } = state.createSubject;
@@ -36,6 +42,7 @@ export default function Steps() {
     birthDate: "",
     federalEntity: 0,
     municipality: 0,
+    municipalityCatalogId: 0,
     countryLocation: 0,
     city: "",
     direction: "",
@@ -96,7 +103,8 @@ export default function Steps() {
       phoneNumber: values.phone.trim(),
       federativeEntityId: values.federalEntity,
       municipalityId: values.municipality !== 0 ? values.municipality : null,
-      countryLocationId: values.countryLocation !== 0 ? values.countryLocation : null,
+      countryLocationId:
+        values.countryLocation !== 0 ? values.countryLocation : null,
       street: values.street.trim(),
       country: values.country.trim(),
       state: 0,
@@ -104,8 +112,7 @@ export default function Steps() {
       city: values.city.trim(),
       pictureUrl: "",
       isPatient: true,
-      birthDate:
-        values.age.length > 0 ? new Date(values.age) : null,
+      birthDate: values.age.length > 0 ? new Date(values.age) : null,
       createdOn: new Date(),
       updatedOn: new Date(),
       deletedOn: null,
@@ -116,7 +123,7 @@ export default function Steps() {
 
   const onClickButtonPrincipal: Function = () => {
     router.push(PatientsRoutesEnum.PatientsList);
-  }
+  };
 
   return (
     <div className="gap-5">
@@ -127,13 +134,12 @@ export default function Steps() {
           "Ha ocurrido un error creando al paciente. Vuelve a intentarlo"
         }
       />
-      <SuccessfulComponent 
+      <SuccessfulComponent
         tittle="Agregado con exito"
         show={successful}
         description={"Paciente creado exitosamente"}
         textButtonPrincipal={"Ir a lista de pacientes"}
         onClickButtonPrincipal={onClickButtonPrincipal}
-
       />
       <div className="md:grid md:grid-cols-2 py-3 sticky top-[67px] z-[50] bg-slate-100 pt-2">
         <div className="gap-4">
@@ -146,22 +152,32 @@ export default function Steps() {
           </p>*/}
         </div>
         <div className="flex justify-end items-center">
-          <Button className=" w-[100%] md:w-56" variant="primary" disabled={
-            loading || 
-            values.name === "" ||
-            values.lastname === "" ||
-            values.age === "" ||
-            values.phone === "" ||
-            validForm() > 0
-           } onClick={() => onSubmit()}>
+          <Button
+            className=" w-[100%] md:w-56"
+            variant="primary"
+            disabled={
+              loading ||
+              values.name === "" ||
+              values.lastname === "" ||
+              values.age === "" ||
+              values.phone === "" ||
+              validForm() > 0
+            }
+            onClick={() => onSubmit()}
+          >
             {loading ? "Creando paciente..." : "Crear paciente"}
           </Button>
         </div>
       </div>
       <div className="gap-10 md:mt-0">
-          <div className="mt-5 flex justify-center">
-            <Formulary values={values} setValues={setValues} errors={errors} setErrors={setErrors} />
-          </div>
+        <div className="mt-5 flex justify-center">
+          <Formulary
+            values={values}
+            setValues={setValues}
+            errors={errors}
+            setErrors={setErrors}
+          />
+        </div>
       </div>
     </div>
   );
