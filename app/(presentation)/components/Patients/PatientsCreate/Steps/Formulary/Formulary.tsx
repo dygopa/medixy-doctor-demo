@@ -34,6 +34,10 @@ import { twMerge } from "tailwind-merge";
 import { getCountriesDialCodeES } from "(presentation)/(helper)/intl/intlHelper";
 import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
 import moment from "moment";
+import AutocompleteInputStates from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputStates/AutocompleteInputStates";
+import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
+import AutocompleteInputMunicipalities from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMunicipalities/AutocompleteInputMunicipalities";
+import AutocompleteInputLocations from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputLocations/AutocompleteInputLocations";
 
 interface IBasicDataProps {
   values: {
@@ -50,6 +54,7 @@ interface IBasicDataProps {
     birthDate: string;
     federalEntity: number;
     municipality: number;
+    municipalityCatalogId: number;
     countryLocation: number;
     city: string;
     direction: string;
@@ -70,6 +75,7 @@ interface IBasicDataProps {
       email: string;
       federalEntity: number;
       municipality: number;
+      municipalityCatalogId: number;
       countryLocation: number;
       city: string;
       direction: string;
@@ -112,38 +118,6 @@ export default function Formulary({
   errors,
   setErrors,
 }: IBasicDataProps) {
-  const { state, actions, dispatch } =
-    useContext<ICreatePatientContext>(CreatePatientContext);
-  const { getFederalEntities, getMunicipalities, getCountryLocations } =
-    actions;
-  const { data: federalEntities } = state.getFederalEntities;
-  const { data: municipalities, successful } = state.municipalities;
-  const { data: countryLocations } = state.countryLocations;
-
-  useEffect(() => {
-    getFederalEntities()(dispatch);
-  }, []);
-
-  useEffect(() => {
-    getMunicipalities({
-      federalEntityId: values.federalEntity,
-    })(dispatch);
-  }, [values.federalEntity]);
-
-  useMemo(() => {
-    if (successful) {
-      if (municipalities.data.length > 0) {
-        const municipalitySearch = municipalities.data.find((elem) => {
-          return elem.id === values.municipality;
-        });
-        getCountryLocations({
-          federalEntityId: values.federalEntity,
-          municipalityId: municipalitySearch?.catalogId,
-        })(dispatch);
-      }
-    }
-  }, [values.federalEntity, values.municipality, successful]);
-
   const handlename = (value: string, e: any) => {
     setValues({ ...values, name: value });
     if (value.length < 2) {
@@ -193,7 +167,7 @@ export default function Formulary({
   };
 
   const handleSecondLastname = (value: string) => {
-    setValues({ ...values, motherlastname: value })
+    setValues({ ...values, motherlastname: value });
     if (value.length > 0 && !VALIDATE_NAMES(value)) {
       setErrors((previousState: any) => {
         return {
@@ -202,7 +176,7 @@ export default function Formulary({
         };
       });
       return true;
-    };
+    }
     setErrors({ ...errors, motherlastname: "" });
     return false;
   };
@@ -296,9 +270,7 @@ export default function Formulary({
           <p className="input-label py-2">Segundo apellido</p>
           <FormInput
             type="text"
-            onChange={(e: any) =>
-              handleSecondLastname(e.target.value)
-            }
+            onChange={(e: any) => handleSecondLastname(e.target.value)}
             placeholder="Segundo apellido"
           />
           {errors.motherlastname.length > 0 && (
@@ -401,7 +373,19 @@ export default function Formulary({
       <div className="md:flex gap-3 w-full">
         <div className="input-group md:w-[50%]">
           <p className="input-label py-2">Entidad Federativa</p>
-          <FormSelect
+          <AutocompleteInputStates
+            onClick={(item: IFederalEntity) =>
+              setValues({
+                ...values,
+                federalEntity: item.entityId,
+                municipality: 0,
+                municipalityCatalogId: 0,
+                countryLocation: 0,
+              })
+            }
+            className="form-control w-full"
+          />
+          {/*<FormSelect
             className="form-control w-full"
             defaultValue={values.federalEntity}
             value={values.federalEntity}
@@ -414,11 +398,24 @@ export default function Formulary({
                 {elem.nameEntity}
               </option>
             ))}
-          </FormSelect>
+            </FormSelect>*/}
         </div>
         <div className="input-group mt-3 md:mt-0 md:w-[50%]">
           <p className="input-label py-2">Municipio</p>
-          <FormSelect
+          <AutocompleteInputMunicipalities
+            onClick={(item: IMunicipality) =>
+              setValues({
+                ...values,
+                municipality: item.id,
+                municipalityCatalogId: item.catalogId,
+                countryLocation: 0,
+              })
+            }
+            disabled={values.federalEntity === 0}
+            className="form-control w-full"
+            federalEntityId={values.federalEntity}
+          />
+          {/* <FormSelect
             className="form-control w-full"
             disabled={values.federalEntity === 0}
             defaultValue={values.municipality}
@@ -432,14 +429,23 @@ export default function Formulary({
                 {elem.name}
               </option>
             ))}
-          </FormSelect>
+            </FormSelect> */}
         </div>
       </div>
 
       <div className="md:flex gap-3 w-full">
         <div className="input-group md:w-[50%]">
           <p className="input-label py-2">Localidad</p>
-          <FormSelect
+          <AutocompleteInputLocations
+            onClick={(item: ICountryLocation) =>
+              setValues({ ...values, countryLocation: item.id })
+            }
+            disabled={values.municipality === 0}
+            className="form-control w-full"
+            municipalityId={values.municipalityCatalogId}
+            federalEntityId={values.federalEntity}
+          />
+          {/* <FormSelect
             className="form-control w-full"
             disabled={values.municipality === 0}
             defaultValue={values.countryLocation}
@@ -456,7 +462,7 @@ export default function Formulary({
                 {elem.name}
               </option>
             ))}
-          </FormSelect>
+            </FormSelect> */}
         </div>
         <div className="input-group mt-3 md:mt-0 md:w-[50%]">
           <p className="input-label py-2">Ciudad</p>
