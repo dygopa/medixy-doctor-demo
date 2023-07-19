@@ -223,7 +223,7 @@ export default function AboutPatient() {
                 </span>
               </div>
 
-              <div>
+              <div className="col-span-3">
                 <p className="font-normal text-slate-500 mb-1 text-[13px]">
                   Correo electrónico
                 </p>
