@@ -26,7 +26,7 @@ export default function Detail({
 }: IDetailProps) {
   let listTabs = [
     "Paciente",
-    "Contactos",
+    "Contacto de emergencia",
     "Historial",
     "Alergias",
     "Signos vítales",
@@ -48,7 +48,7 @@ export default function Detail({
           setPopupSectionActive(index);
         }}
         className={clsx([
-          "w-[150px] p-2 rounded-full hover:bg-primary hover:text-white cursor-pointer",
+          "h-14 w-[150px] p-2 rounded-full hover:bg-primary hover:text-white cursor-pointer",
           popupSectionActive === index
             ? "text-white bg-primary"
             : "bg-dark bg-opacity-10",
@@ -65,7 +65,7 @@ export default function Detail({
         onClick={() => {
           setPopupSectionActive(index);
         }}
-        className={`lg:text-[0.9rem] font-bold md:text-[0.9rem] text-[12px] px-2 mr-2 py-2 cursor-pointer hover:border-primary hover:border-b-[3px] text-center hover:text-slate-900 hover:font-bold
+        className={`flex items-center h-14 lg:text-[0.9rem] font-bold md:text-[0.9rem] text-[12px] px-2 mr-2 py-2 cursor-pointer hover:border-primary hover:border-b-[3px] text-center hover:text-slate-900 hover:font-bold
     ${
       popupSectionActive === index
         ? "border-primary border-b-[3px] font-bold text-slate-900"
