@@ -65,7 +65,7 @@ export default function Formulary({
     name: "",
     code: "",
     city: "",
-    postal_code: 0,
+    postal_code: "",
     latitude: 0,
     longitude: 0,
     clues: "",
@@ -88,7 +88,7 @@ export default function Formulary({
   });
 
   const handlePostalCode = (value: string) => {
-    setFormData({ ...formData, postal_code: parseInt(value) });
+    setFormData({ ...formData, postal_code: value });
     if (value.length > 0) {
       if (!VALIDATE_NUMBERS(value)) {
         setErrors((previousState) => {
@@ -127,7 +127,7 @@ export default function Formulary({
       countryLocation: data?.countryLocationId ?? 0,
       street: data?.street ?? "",
       city: data?.city ?? "",
-      postal_code: data?.postal_code ?? "",
+      postal_code: data?.postal_code ? data.postal_code.toString() : "",
       address: data?.address ?? "",
       latitude: data?.latitude ?? "",
       longitude: data?.longitude ?? "",
@@ -217,7 +217,7 @@ export default function Formulary({
           <Button
             disabled={
               loadingUpdate ||
-              formData?.postal_code === 0 ||
+              formData?.postal_code === "" ||
               formData?.name === "" ||
               formData?.city === ""
             }
