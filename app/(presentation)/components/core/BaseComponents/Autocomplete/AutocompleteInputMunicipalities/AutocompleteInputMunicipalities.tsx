@@ -11,6 +11,7 @@ interface IAutocompleteInputMunicipalitiesProps {
   className?: string;
   onChange?: (item: string) => void;
   onClick?: (item: IMunicipality) => void;
+  municipalityId?: number | null;
   federalEntityId?: number | null;
 }
 
@@ -23,6 +24,7 @@ export default function AutocompleteInputMunicipalities({
   className = "",
   onChange = (item: string) => {},
   onClick = (item: IMunicipality) => {},
+  municipalityId,
   federalEntityId,
 }: IAutocompleteInputMunicipalitiesProps) {
   return (
@@ -37,6 +39,7 @@ export default function AutocompleteInputMunicipalities({
         onClick={onClick}
         onChange={onChange}
         federalEntityId={federalEntityId}
+        municipalityId={municipalityId}
       />
     </AutocompleteInputMunProvider>
   );

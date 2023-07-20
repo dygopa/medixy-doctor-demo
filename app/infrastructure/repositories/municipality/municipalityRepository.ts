@@ -1,6 +1,6 @@
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import { MunicipalityFailure, municipalityFailuresEnum } from "domain/core/failures/municipality/municipalityFailure";
-import { IGetMunicipalitiesResponse } from "domain/core/response/municipalityResponse";
+import { IGetMunicipalitiesResponse, IGetMunicipalityResponse } from "domain/core/response/municipalityResponse";
 import { municipalitySupabaseToMap } from "domain/mappers/municipality/supabase/municipalitySupabaseMapper";
 import { supabase } from "infrastructure/config/supabase/supabase-client";
 
@@ -43,6 +43,26 @@ export class MunicipalityRepository implements IMunicipalityRepository {
           total: res.count ?? 0,
           limit: obj.limit ?? 0,
         }
+      }
+
+      return response;
+    } catch (error) {
+      const exception = error as any;
+      return new MunicipalityFailure(municipalityFailuresEnum.serverError);
+    }
+  }
+
+  async getMunicipalityById(obj: { id: number }): Promise<IGetMunicipalityResponse | MunicipalityFailure > {
+    try {
+      const res = await supabase.from("Municipios").select("*", { count: "exact" }).eq("id", obj.id);
+
+      let municipality: IMunicipality = {} as IMunicipality;
+
+      if (res.data && res.data.length > 0) municipality = municipalitySupabaseToMap(res.data[0]);
+
+      const response: IGetMunicipalityResponse = {
+        data: municipality,
+        metadata: {}
       }
 
       return response;
