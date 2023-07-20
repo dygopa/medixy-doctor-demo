@@ -95,7 +95,7 @@ export default class SubjectsUseCase {
     }
   }
 
-  async editSubject(patient: ISubject): Promise<boolean> {
+  async editSubject(patient: any): Promise<boolean> {
     try {
       const response = await this._repository.editSubject(patient);
 
