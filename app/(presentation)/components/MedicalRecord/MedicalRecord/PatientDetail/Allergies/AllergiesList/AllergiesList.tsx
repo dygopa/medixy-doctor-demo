@@ -93,7 +93,9 @@ export default function AllergiesList() {
     <>
       {allergies.map((allergy: string, i: number) => (
         <div key={i} className="flex justify-between items-center w-full mb-1">
-          <p className="font-medium text-md text-secondary">{allergy}</p>
+          <p className="font-medium text-md text-secondary text-ellipsis overflow-hidden whitespace-nowrap">
+            {allergy}
+          </p>
         </div>
       ))}
     </>

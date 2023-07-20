@@ -134,10 +134,11 @@ export default function VitalSignsList() {
           key={medicalMeasure.id}
           className="flex justify-between items-center w-full mb-1"
         >
-          <p className="font-light text-md text-slate-500">
+          <p className="font-light text-md text-slate-500 text-ellipsis overflow-hidden whitespace-nowrap">
             {getTitleByMeasureType(medicalMeasure.medicalMeasureType.type)}
           </p>
-          <p className="font-semibold text-md text-secondary">
+
+          <p className="font-semibold text-md text-secondary text-ellipsis overflow-hidden whitespace-nowrap">
             {medicalMeasure.value.toFixed(2)}
             {getLetterByMeasureType(medicalMeasure.medicalMeasureType.type)}
           </p>
