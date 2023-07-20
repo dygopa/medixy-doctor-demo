@@ -6,6 +6,7 @@ import {
   FiChevronLeft,
   FiClipboard,
   FiGlobe,
+  FiMail,
   FiSend,
   FiShare,
   FiUser,
@@ -15,6 +16,24 @@ import Image from "next/image";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { twMerge } from "tailwind-merge";
+import {
+  EmailShareButton,
+  FacebookShareButton,
+  LineShareButton,
+  LinkedinShareButton,
+  RedditShareButton,
+  TelegramShareButton,
+  TwitterShareButton,
+  WhatsappShareButton,
+  EmailIcon,
+  FacebookIcon,
+  LineIcon,
+  LinkedinIcon,
+  RedditIcon,
+  TelegramIcon,
+  TwitterIcon,
+  WhatsappIcon,
+} from "react-share";
 
 interface INavigation {
   title: string;
@@ -107,6 +126,113 @@ function Main({
             Ir al <br /> enlace
           </p>
         </Link>
+        <EmailShareButton url={userLink}>
+          <div
+            className={twMerge([
+              "cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1",
+              "bg-slate-100 hover:bg-slate-200",
+            ])}
+          >
+            <span className={twMerge(["text-xl", "text-slate-900"])}>
+              <FiMail />
+            </span>
+            <p className="text-xs text-slate-500 text-center">
+              Email
+            </p>
+          </div>
+        </EmailShareButton>
+        <WhatsappShareButton url={userLink}>
+          <div
+            className={twMerge([
+              "cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1",
+              "bg-slate-100 hover:bg-slate-200",
+            ])}
+          >
+            <WhatsappIcon color="#FFF" size={30} borderRadius={20} />
+            <p className="text-xs text-slate-500 text-center">
+              Whatsapp
+            </p>
+          </div>
+        </WhatsappShareButton>
+        <FacebookShareButton url={userLink}>
+          <div
+            className={twMerge([
+              "cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1",
+              "bg-slate-100 hover:bg-slate-200",
+            ])}
+          >
+            <FacebookIcon color="#FFF" size={30} borderRadius={20} />
+            <p className="text-xs text-slate-500 text-center">
+              Facebook
+            </p>
+          </div>
+        </FacebookShareButton>
+        <TwitterShareButton url={userLink}>
+          <div
+            className={twMerge([
+              "cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1",
+              "bg-slate-100 hover:bg-slate-200",
+            ])}
+          >
+            <TwitterIcon color="#FFF" size={30} borderRadius={20} />
+            <p className="text-xs text-slate-500 text-center">
+              Twitter
+            </p>
+          </div>
+        </TwitterShareButton>
+        <TelegramShareButton url={userLink}>
+          <div
+            className={twMerge([
+              "cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1",
+              "bg-slate-100 hover:bg-slate-200",
+            ])}
+          >
+            <TelegramIcon color="#FFF" size={30} borderRadius={20} />
+            <p className="text-xs text-slate-500 text-center">
+              Telegram
+            </p>
+          </div>
+        </TelegramShareButton>
+        <LineShareButton url={userLink}>
+          <div
+            className={twMerge([
+              "cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1",
+              "bg-slate-100 hover:bg-slate-200",
+            ])}
+          >
+            <LineIcon color="#FFF" size={30} borderRadius={20} />
+            <p className="text-xs text-slate-500 text-center">
+              Line
+            </p>
+          </div>
+        </LineShareButton>
+        <LinkedinShareButton url={userLink}>
+          <div
+            className={twMerge([
+              "cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1",
+              "bg-slate-100 hover:bg-slate-200",
+            ])}
+          >
+            <LinkedinIcon color="#FFF" size={30} borderRadius={20} />
+            <p className="text-xs text-slate-500 text-center">
+              Linkedin
+            </p>
+          </div>
+        </LinkedinShareButton>
+        <RedditShareButton url={userLink}>
+          <div
+            className={twMerge([
+              "cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1",
+              "bg-slate-100 hover:bg-slate-200",
+            ])}
+          >
+            <RedditIcon color="#FFF" size={30} borderRadius={20} />
+            <p className="text-xs text-slate-500 text-center">
+              Reddit
+            </p>
+          </div>
+        </RedditShareButton>
+        
       </div>
     );
   };
@@ -122,7 +248,7 @@ function Main({
       <div
         ref={customRef}
         className={twMerge([
-          "border rounded-lg overflow-hidden bg-white fixed flex flex-col justify-start items-start p-3 shadow-md right-[5%] w-[20rem]",
+          "border rounded-lg overflow-y-scroll bg-white fixed flex flex-col justify-start items-start p-3 shadow-md right-[5%] w-[20rem]",
           "lg:h-[35vh] lg:top-[4rem]",
           "md:h-[35vh] md:top-[4rem]",
           "h-[40vh] top-[9rem]",

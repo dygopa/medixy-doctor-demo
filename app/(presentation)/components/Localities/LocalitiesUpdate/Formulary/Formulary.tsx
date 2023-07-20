@@ -13,9 +13,10 @@ import {
   useContext,
   useMemo,
   ChangeEvent,
+  useRef,
 } from "react";
 import { FiCheck, FiCheckCircle, FiX } from "react-icons/fi";
-import { BiBuildingHouse } from "react-icons/bi";
+import { BiBuilding, BiBuildingHouse } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
@@ -34,6 +35,8 @@ import AutocompleteInputLocations from "(presentation)/components/core/BaseCompo
 import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
+import Image from "next/image";
+import { b64toBlob, getBase64ImageFromUrl } from "(presentation)/(helper)/files/filesHelper";
 
 export default function Formulary({
   userId,
@@ -104,7 +107,12 @@ export default function Formulary({
     gettingUserLocality(localityId, userId)(dispatch);
   }, []);
 
-  const setFormDataValues = () => {
+  const setFormDataValues = async () => {
+    let imageUrl: any = "";
+
+    if(data.image_url) {
+      if (data.image_url.length > 0) imageUrl = await getBase64ImageFromUrl(data.image_url);
+    }
     setFormData({
       ...formData,
       name: data?.name ?? "",
@@ -122,7 +130,7 @@ export default function Formulary({
       isPublic: data?.isPublic === true ? 1 : 0,
       isVirtual: data?.isVirtual === true ? 1 : 0,
       media: {
-        data: data?.image_url ?? "",
+        data: imageUrl.toString().split(",")[1],
         type: data?.type,
       },
     });
@@ -133,6 +141,10 @@ export default function Formulary({
       setFormDataValues();
     }
   }, [successful]);
+
+  let avatarRef = useRef<HTMLInputElement>(null);
+
+  const handleClickRef = () => avatarRef.current && avatarRef.current.click();
 
   const toBase64 = (file: File) =>
     new Promise((resolve, reject) => {
@@ -234,6 +246,73 @@ export default function Formulary({
                   <p className="font-medium text-base text-slate-900 pb-2">
                     Definición del consultorio
                   </p>
+                </div>
+                <div className="text-center relative w-full gap-3">
+                {formData?.media?.data?.length > 0 ? (
+                  <>
+                    <div className="flex text-center w-full justify-center">
+                      <div className="w-[150px] h-[150px] relative flex justify-center hover:border hover:border-primary rounded-xl">
+                        <input
+                          accept="image/png, image/jpeg, application/pdf"
+                          type="file"
+                          ref={avatarRef}
+                          className="opacity-0 top-0 h-full z-50 cursor-pointer"
+                          onChange={(e) => {
+                            handleChangeMedia(e);
+                          }}
+                        />
+                        <Image
+                          className="object-cover rounded-xl "
+                          src={URL.createObjectURL(
+                            b64toBlob(formData.media.data)
+                          )}
+                          alt=""
+                          fill
+                        />
+                      </div>
+                    </div>
+
+                    <p className="text-[13px] text-slate-500 font-medium pt-2">
+                      Recomendado (.png, .jpg, .jpeg)
+                    </p>
+                    {loadingUpdate && (
+                      <p className="text-[13px] text-slate-800 font-bold pt-2">
+                        Guardando su foto...
+                      </p>
+                    )}
+                  </>
+                ) : (
+                  <>
+                    <div className="flex text-center w-full justify-center">
+                      <input
+                        accept="image/png, image/jpeg, application/pdf"
+                        type="file"
+                        ref={avatarRef}
+                        className="hidden"
+                        onChange={(e) => {
+                          handleChangeMedia(e);
+                        }}
+                      />
+                      <div
+                        onClick={handleClickRef}
+                        className={twMerge([
+                          "transition w-[10rem] h-[10rem] rounded-xl border flex flex-col justify-center items-center cursor-pointer",
+                          "hover:bg-slate-200",
+                        ])}
+                      >
+                        <BiBuilding size={60} />
+                      </div>
+                    </div>
+                    <p className="text-[13px] text-slate-500 font-medium pt-2">
+                      Recomendado (.png, .jpg, .jpeg)
+                    </p>
+                    {loadingUpdate && (
+                      <p className="text-[13px] text-slate-800 font-bold pt-2">
+                        Guardando su foto de perfil...
+                      </p>
+                    )}
+                  </>
+                )}
                 </div>
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">

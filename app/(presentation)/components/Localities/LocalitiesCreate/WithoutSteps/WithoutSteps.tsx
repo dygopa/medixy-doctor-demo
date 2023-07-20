@@ -13,9 +13,10 @@ import {
   useContext,
   ChangeEvent,
   useMemo,
+  useRef,
 } from "react";
 import { FiCheck, FiCheckCircle, FiX } from "react-icons/fi";
-import { BiBuildingHouse } from "react-icons/bi";
+import { BiBuilding, BiBuildingHouse } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
@@ -39,6 +40,9 @@ import AutocompleteInputStates from "(presentation)/components/core/BaseComponen
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import AutocompleteInputMunicipalities from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMunicipalities/AutocompleteInputMunicipalities";
 import AutocompleteInputLocations from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputLocations/AutocompleteInputLocations";
+import Image from "next/image";
+import { b64toBlob } from "(presentation)/(helper)/files/filesHelper";
+import { BsBuilding } from "react-icons/bs";
 
 export default function WithoutSteps({
   userId,
@@ -113,6 +117,10 @@ export default function WithoutSteps({
   };
 
   const [loadedStates, setLoadedStates] = useState(false);
+
+  let avatarRef = useRef<HTMLInputElement>(null);
+
+  const handleClickRef = () => avatarRef.current && avatarRef.current.click();
 
   const toBase64 = (file: File) =>
     new Promise((resolve, reject) => {
@@ -190,6 +198,63 @@ export default function WithoutSteps({
                 <p className="font-medium text-base text-slate-900 pb-2">
                   Definición del consultorio
                 </p>
+              </div>
+              <div className="text-center relative w-full gap-3">
+              {formData?.media?.data?.length > 0 ? (
+                  <>
+                    <div className="flex text-center w-full justify-center">
+                      <div className="w-[150px] h-[150px] relative flex justify-center hover:border hover:border-primary rounded-xl">
+                        <input
+                          accept="image/png, image/jpeg, application/pdf"
+                          type="file"
+                          ref={avatarRef}
+                          className="opacity-0 top-0 h-full z-50 cursor-pointer"
+                          onChange={(e) => {
+                            handleChangeMedia(e);
+                          }}
+                        />
+                        <Image
+                          className="object-cover rounded-xl "
+                          src={URL.createObjectURL(
+                            b64toBlob(formData.media.data)
+                          )}
+                          alt=""
+                          fill
+                        />
+                      </div>
+                    </div>
+
+                    <p className="text-[13px] text-slate-500 font-medium pt-2">
+                      Recomendado (.png, .jpg, .jpeg)
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <div className="flex text-center w-full justify-center">
+                      <input
+                        accept="image/png, image/jpeg, application/pdf"
+                        type="file"
+                        ref={avatarRef}
+                        className="hidden"
+                        onChange={(e) => {
+                          handleChangeMedia(e);
+                        }}
+                      />
+                      <div
+                        onClick={handleClickRef}
+                        className={twMerge([
+                          "transition w-[10rem] h-[10rem] rounded-xl border flex flex-col justify-center items-center cursor-pointer",
+                          "hover:bg-slate-200",
+                        ])}
+                      >
+                        <BiBuilding size={60} />
+                      </div>
+                    </div>
+                    <p className="text-[13px] text-slate-500 font-medium pt-2">
+                      Recomendado (.png, .jpg, .jpeg)
+                    </p>
+                  </>
+                )}
               </div>
               <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
@@ -437,16 +502,6 @@ export default function WithoutSteps({
                   }}
                 />
                 </div>*/}
-              <div className="lg:flex justify-between items-center relative w-full gap-3">
-                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Cargar imagen
-                </p>
-                <FormInput
-                  onChange={(e) => handleChangeMedia(e)}
-                  type="file"
-                  className="form-control lg:w-[70%]"
-                />
-              </div>
             </div>
           </div>
         </div>
