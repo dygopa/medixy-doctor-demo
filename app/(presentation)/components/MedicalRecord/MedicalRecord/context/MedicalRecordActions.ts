@@ -6,16 +6,20 @@ import { ISubject } from "domain/core/entities/subjectEntity";
 import { ITreatment } from "domain/core/entities/treatmentEntity";
 import { IUser } from "domain/core/entities/userEntity";
 import { IGetAppointmentResponse, IUpdateAppointmentResponse } from "domain/core/response/appointmentsResponse";
+import { IGetCountryLocationsResponse } from "domain/core/response/countryResponse";
 import { IGetMedicalConsultiesResponse, IGetMedicalConsultyPDFResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
 import { IGetMedicalRecordPDFResponse, IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
+import { IGetMunicipalitiesResponse } from "domain/core/response/municipalityResponse";
 import { IGetSubjectRelationsResponse } from "domain/core/response/subjectsResponse";
 import { IGetTreatmentPDFResponse, IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
 import AppointmentUseCase from "domain/useCases/appointment/appointmentUseCases";
+import CountriesUseCase from "domain/useCases/country/countryUseCase";
 import FederalEntitiesUseCase from "domain/useCases/federalEntity/federalEntityUseCase";
 import MedicalConsultyUseCase from "domain/useCases/medicalConsulty/medicalConsultyUseCases";
 import MedicalMeasureUseCase from "domain/useCases/medicalMeasure/medicalMeasureUseCases";
 import MedicalRecordUseCase from "domain/useCases/medicalRecord/medicalRecordUseCases";
+import MunicipalitiesUseCase from "domain/useCases/municipality/municipalityUseCases";
 import SubjectsUseCase from "domain/useCases/subject/subjectUseCase";
 import TreatmentUseCase from "domain/useCases/treatments/treatmentsUseCase";
 import { Dispatch } from "react";
@@ -30,13 +34,16 @@ export interface IMedicalRecordActions {
     getOrders: (obj: { subjectId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getMedicalRecords: (obj: { subjectId: number; medicalRecordCategoryId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getFederalEntities: () => (dispatch: Dispatch<any>) => {};
-    editSubject: (subject: ISubject) => (dispatch: Dispatch<any>) => {};
+    getMunicipalities: (obj: { federalEntityId?: number | null }) => (dispatch: Dispatch<any>) => {};
+    getCountryLocations: (obj: { federalEntityId?: number | null; municipalityId?: number | null }) => (dispatch: Dispatch<any>) => {};
+    editSubject: Function;
     getCompanions: (obj: { patientId: number }) => (dispatch: Dispatch<any>) => {};
     createCompanion: (patientId:number, companion:ISubject) => (dispatch: Dispatch<any>) => {};
     editAppointmentStatus: (obj: { appointmentId: string; status: number }) => (dispatch: Dispatch<any>) => {};
     getTreatmentPDF: (obj: { doctor: IUser; treatment: ITreatment }) => (dispatch: Dispatch<any>) => {};
     getMedicalConsultyPDF: (obj: { doctor: IUser; medicalConsulty: IMedicalConsulty }) => (dispatch: Dispatch<any>) => {};
     getMedicalRecordPDF: (obj: { doctor: IUser; medicalRecord: IMedicalRecord }) => (dispatch: Dispatch<any>) => {};
+    updateAvatar: Function;
 }
 
 const getSubjectById = (subjectId: number) => async (dispatch: Dispatch<any>) => {
@@ -196,7 +203,31 @@ const getFederalEntities = () => async (dispatch: Dispatch<any>) => {
   }
 }
 
-const editSubject = (subject: ISubject) => async (dispatch: Dispatch<any>) => {
+const getMunicipalities = (obj: { federalEntityId?: number | null }) => async (dispatch: Dispatch<any>) => {
+  try {
+      dispatch({ type: "GET_MUNICIPALITIES_LOADING" });
+
+      const res: IGetMunicipalitiesResponse = await new MunicipalitiesUseCase().getMunicipalities({ limit: 100, federalEntityId: obj.federalEntityId });
+
+      dispatch({ type: "GET_MUNICIPALITIES_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+      dispatch({ type: "GET_MUNICIPALITIES_ERROR", payload: { error: error } });
+  }
+}
+
+const getCountryLocations = (obj: { federalEntityId?: number | null; municipalityId?: number | null }) => async (dispatch: Dispatch<any>) => {
+  try {
+      dispatch({ type: "GET_COUNTRY_LOCATIONS_LOADING" });
+
+      const res: IGetCountryLocationsResponse = await new CountriesUseCase().getCountryLocations({ limit: 100, federalEntityId: obj.federalEntityId, municipalityId: obj.municipalityId });
+
+      dispatch({ type: "GET_COUNTRY_LOCATIONS_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+      dispatch({ type: "GET_COUNTRY_LOCATIONS_ERROR", payload: { error: error } });
+  }
+}
+
+const editSubject = (subject: any) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "EDIT_SUBJECT_LOADING" });
   
@@ -295,6 +326,19 @@ const getMedicalRecordPDF = (obj: { doctor: IUser; medicalRecord: IMedicalRecord
   }
 }
 
+const updateAvatar = (obj:any, doctorId: string) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "UPDATE_AVATAR_LOADING" });
+    
+    const res: string = await new SubjectsUseCase().updateAvatar(obj, doctorId);
+
+    dispatch({ type: "UPDATE_AVATAR_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "UPDATE_AVATAR_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IMedicalRecordActions = {
     getSubjectById,
     getAppointmentById,
@@ -306,10 +350,13 @@ export const actions: IMedicalRecordActions = {
     getOrders,
     getCompanions,
     getFederalEntities,
+    getMunicipalities,
+    getCountryLocations,
     editSubject,
     createCompanion,
     editAppointmentStatus,
     getTreatmentPDF,
     getMedicalConsultyPDF,
     getMedicalRecordPDF,
+    updateAvatar,
 }
