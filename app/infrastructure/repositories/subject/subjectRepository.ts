@@ -259,7 +259,7 @@ export class SubjectRepository implements ISubjectRepository {
       }
     }
 
-    async editSubject(subject: ISubject): Promise<boolean | SubjectFailure> {
+    async editSubject(subject: any): Promise<boolean | SubjectFailure> {
       try {
         subject.updatedOn = new Date();
 

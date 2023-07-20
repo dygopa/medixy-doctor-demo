@@ -1,16 +1,20 @@
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import { AppointmentFailure } from "domain/core/failures/appointment/appintmentFailure";
+import { CountryFailure } from "domain/core/failures/country/countryFailure";
 import { FederalEntityFailure } from "domain/core/failures/federalEntity/federalEntityFailure";
 import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
 import { MedicalMeasureFailure } from "domain/core/failures/medicalMeasure/medicalMeasureFailure";
 import { MedicalRecordFailure } from "domain/core/failures/medicalRecord/medicalRecordFailure";
+import { MunicipalityFailure } from "domain/core/failures/municipality/municipalityFailure";
 import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
 import { TreatmentFailure } from "domain/core/failures/treatment/treatmentFailure";
 import { IGetAppointmentResponse } from "domain/core/response/appointmentsResponse";
+import { IGetCountryLocationsResponse } from "domain/core/response/countryResponse";
 import { IGetMedicalConsultiesResponse } from "domain/core/response/medicalConsultyResponse";
 import { IGetMedicalMeasuresResponse } from "domain/core/response/medicalMeasureResponses";
 import { IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
+import { IGetMunicipalitiesResponse } from "domain/core/response/municipalityResponse";
 import { IGetSubjectRelationsResponse } from "domain/core/response/subjectsResponse";
 import { IGetTreatmentsResponse } from "domain/core/response/treatmentResponses";
 
@@ -24,6 +28,8 @@ export interface IMedicalRecordState {
     medicalRecords: IGetMedicalRecordsState;
     orders: IGetOrdersState;
     getFederalEntities: IGetFederalEntitiesState;
+    municipalities: IGetMunicipalitiesState;
+    countryLocations: IGetCountryLocationsState;
     editSubject: IUpdateSubjectState;
     companions: IGetCompanionsState;
     createCompanion: ICompanionCreateCompanionState;
@@ -31,6 +37,7 @@ export interface IMedicalRecordState {
     getTreatmentPDF: IGetTratmentPDFState;
     getMedicalConsultyPDF: IGetMedicalConsultyPDFState;
     getMedicalRecordPDF: IGetMedicalRecordPDFState;
+    updateAvatar: ISubjectAvatarState;
 }
 
 interface IGetSubjectState {
@@ -38,6 +45,20 @@ interface IGetSubjectState {
     loading: boolean;
     successful: boolean;
     error: SubjectFailure | null; 
+}
+
+interface IGetCountryLocationsState {
+    data: IGetCountryLocationsResponse;
+    loading: boolean;
+    successful: boolean;
+    error: CountryFailure | null; 
+}
+
+interface IGetMunicipalitiesState {
+    data: IGetMunicipalitiesResponse;
+    loading: boolean;
+    successful: boolean;
+    error: MunicipalityFailure | null; 
 }
 
 interface IGetAppointmentState {
@@ -141,6 +162,13 @@ interface IGetMedicalRecordPDFState {
     error: MedicalRecordFailure | null;
 }
 
+interface ISubjectAvatarState{
+    data: string;
+    loading: boolean;
+    successful: boolean;
+    error: SubjectFailure | null; 
+}
+
 export const initialState: IMedicalRecordState = {
     subject: {
         data: null,
@@ -196,6 +224,18 @@ export const initialState: IMedicalRecordState = {
         successful: false,
         error: null,
     },
+    municipalities: {
+        data: {} as IGetMunicipalitiesResponse,
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    countryLocations: {
+        data: {} as IGetCountryLocationsResponse,
+        loading: false,
+        successful: false,
+        error: null,
+    },
     editSubject: {
         data: false,
         loading: false,
@@ -230,6 +270,12 @@ export const initialState: IMedicalRecordState = {
         error: null,
     },
     getMedicalRecordPDF: {
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    updateAvatar: {
+        data: "",
         loading: false,
         successful: false,
         error: null,
