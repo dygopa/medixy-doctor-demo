@@ -7,3 +7,8 @@ export interface IGetMunicipalitiesResponse {
         limit: number | null;
     }
 }
+
+export interface IGetMunicipalityResponse {
+    data: IMunicipality;
+    metadata: {}
+}

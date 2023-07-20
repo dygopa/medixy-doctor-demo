@@ -13,6 +13,7 @@ interface IAutocompleteInputLocationsProps {
   onClick?: (item: ICountryLocation) => void;
   federalEntityId?: number | null;
   municipalityId?: number | null;
+  countryLocationId?: number | null;
 }
 
 export default function AutocompleteInputLocations({
@@ -26,6 +27,7 @@ export default function AutocompleteInputLocations({
   onClick = (item: ICountryLocation) => {},
   federalEntityId,
   municipalityId,
+  countryLocationId,
 }: IAutocompleteInputLocationsProps) {
   return (
     <AutocompleteInputLocationsProvider>
@@ -40,6 +42,7 @@ export default function AutocompleteInputLocations({
         onChange={onChange}
         federalEntityId={federalEntityId}
         municipalityId={municipalityId}
+        countryLocationId={countryLocationId}
       />
     </AutocompleteInputLocationsProvider>
   );

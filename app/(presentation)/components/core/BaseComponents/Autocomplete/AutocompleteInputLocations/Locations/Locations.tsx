@@ -19,6 +19,7 @@ interface ILocationsProps {
   onClick?: (item: ICountryLocation) => void;
   federalEntityId?: number | null;
   municipalityId?: number | null;
+  countryLocationId?: number | null;
 }
 
 export default function Locations({
@@ -32,18 +33,20 @@ export default function Locations({
   onClick = (item: ICountryLocation) => {},
   federalEntityId,
   municipalityId,
+  countryLocationId,
 }: ILocationsProps) {
   const { state, actions, dispatch } =
     useContext<IAutocompleteInputLocationsContext>(
       AutocompleteInputLocationsContext
     );
-  const { getCountryLocations } = actions;
+  const { getCountryLocations, getCountryLocationById } = actions;
   const {
     data: countryLocations,
     loading,
     error,
     successful,
   } = state.countryLocations;
+  const { data: countryLocation } = state.countryLocation;
 
   const [field, setField] = useState("");
   const [itemsShow, setItemsShow] = useState<ICountryLocation[]>([]);
@@ -96,6 +99,16 @@ export default function Locations({
   useEffect(() => {
     setField(defaultValue);
   }, [defaultValue]);
+
+  useEffect(() => {
+    if (countryLocationId)
+      getCountryLocationById({ id: countryLocationId })(dispatch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [countryLocationId]);
+
+  useEffect(() => {
+    if (countryLocation.data?.id) setField(countryLocation.data.name);
+  }, [countryLocation]);
 
   return (
     <div className="w-full relative">
