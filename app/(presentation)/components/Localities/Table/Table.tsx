@@ -11,6 +11,7 @@ import {
 } from "../context/LocalitiesContext";
 import { ILocality } from "domain/core/entities/localityEntity";
 import { AiFillBuild } from "react-icons/ai";
+import Image from "next/image";
 
 export default function Table({ user }: { user: IUser }) {
   const { state, actions, dispatch } =
@@ -27,7 +28,17 @@ export default function Table({ user }: { user: IUser }) {
       >
         <div className="w-full flex justify-start items-center gap-4">
           <div className="w-10 h-10 bg-primary/40 text-primary flex justify-center items-center rounded-md text-xl">
-            <AiFillBuild />
+            {data?.image_url?.length > 0 ? (
+              <Image
+                src={data?.image_url}
+                alt=""
+                width={200}
+                height={200}
+                className="w-[3rem] h-[2.5rem] rounded-md"
+              />
+            ) : (
+              <AiFillBuild />
+            )}
           </div>
           <div className="relative flex flex-col justify-center items-start">
             <p className="font-semibold text-xl text-gray-950">{data.name}</p>
