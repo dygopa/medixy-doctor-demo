@@ -18,11 +18,11 @@ export default function Nav() {
       case "current-consultation":
         return "top-32";
       case "diagnosis":
-        return "top-52";
+        return "top-48";
       case "orders":
-        return "top-64";
+        return "top-60";
       case "recipe":
-        return "top-[375px]";
+        return "top-[305px]";
 
       default:
         return "top-0";
@@ -67,22 +67,17 @@ export default function Nav() {
           />
         </div>
 
-        <div className="w-full">
+        <div className="py-1">
           <NavItem
             text="Consulta actual"
             href={`${pathname}?view=current-consultation&type=${
               type ?? "medical-record"
             }`}
-            subItems={[
-              {
-                text: "Exploración física",
-              },
-            ]}
             isActive={getNavIsActive("current-consultation")}
           />
         </div>
 
-        <div className="w-full">
+        <div className="py-1">
           <NavItem
             text="Diagnóstico"
             href={`${pathname}?view=diagnosis&type=${type ?? "medical-record"}`}
@@ -90,21 +85,15 @@ export default function Nav() {
           />
         </div>
 
-        <div className="w-full">
+        <div className="py-1">
           <NavItem
             text="Ordenes"
             href={`${pathname}?view=orders&type=${type ?? "medical-record"}`}
-            subItems={[
-              {
-                text: "Estudios",
-              },
-              { text: "Especialidad" },
-            ]}
             isActive={getNavIsActive("orders")}
           />
         </div>
 
-        <div className="w-full">
+        <div className="py-1">
           <NavItem
             text="Receta"
             href={`${pathname}?view=recipe&type=${type ?? "medical-record"}`}
