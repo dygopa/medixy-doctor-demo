@@ -7,3 +7,8 @@ export interface IGetCountryLocationsResponse {
         limit: number | null;
     }
 }
+
+export interface IGetCountryLocationResponse {
+    data: ICountryLocation;
+    metadata: {}
+}

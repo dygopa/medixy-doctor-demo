@@ -33,5 +33,39 @@ export const AutocompleteInputLocationsReducer = (state: any, action: any) => {
             error: action.payload.error,
           },
         }
+
+      case 'GET_COUNTRY_LOCATION_LOADING' :
+        return {
+          ...state,
+          countryLocation: {
+            ...state.countryLocation,
+            data: {},
+            loading: true,
+            successful: false,
+            error: null,
+          },
+        };
+      case 'GET_COUNTRY_LOCATION_SUCCESSFUL' :
+        return {
+          ...state,
+          countryLocation: {
+            ...state.countryLocation,
+            data: action.payload.data,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+        };
+      case 'GET_COUNTRY_LOCATION_ERROR' :
+        return {
+          ...state,
+          countryLocation: {
+            ...state.countryLocation,
+            data: {},
+            loading: false,
+            successful: false,
+            error: action.payload.error,
+          },
+        }
       }
   }
