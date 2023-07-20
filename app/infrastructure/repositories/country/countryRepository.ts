@@ -1,6 +1,6 @@
 import { ICountry, ICountryLocation } from "domain/core/entities/countryEntity";
 import { CountryFailure, countryFailuresEnum } from "domain/core/failures/country/countryFailure";
-import { IGetCountryLocationsResponse } from "domain/core/response/countryResponse";
+import { IGetCountryLocationResponse, IGetCountryLocationsResponse } from "domain/core/response/countryResponse";
 import { countryLocationSupabaseToMap, countrySupabaseToMap } from "domain/mappers/country/supabase/countrySupabaseMapper";
 import { supabase } from "infrastructure/config/supabase/supabase-client";
 
@@ -95,6 +95,26 @@ export class CountryRepository implements ICountryRepository {
           total: res.count ?? 0,
           limit: obj.limit ?? 0,
         }
+      }
+
+      return response;
+    } catch (error) {
+      const exception = error as any;
+      return new CountryFailure(countryFailuresEnum.serverError);
+    }
+  }
+
+  async getCountryLocationById(obj: { id: number }): Promise<IGetCountryLocationResponse | CountryFailure> {
+    try {
+      const res = await supabase.from("LocalidadesPais").select("*", { count: "exact" }).eq("id", obj.id);
+
+      let countryLocation: ICountryLocation = {} as ICountryLocation;
+
+      if (res.data && res.data.length > 0) countryLocation = countryLocationSupabaseToMap(res.data[0]);
+
+      const response: IGetCountryLocationResponse = {
+        data: countryLocation,
+        metadata: {}
       }
 
       return response;

@@ -17,6 +17,7 @@ interface IMunicipalitiesProps {
   className?: string;
   onChange?: (item: string) => void;
   onClick?: (item: IMunicipality) => void;
+  municipalityId?: number | null;
   federalEntityId?: number | null;
 }
 
@@ -29,18 +30,20 @@ export default function Municipalities({
   className = "",
   onChange = (item: string) => {},
   onClick = (item: IMunicipality) => {},
+  municipalityId,
   federalEntityId,
 }: IMunicipalitiesProps) {
   const { state, actions, dispatch } = useContext<IAutocompleteInputMunContext>(
     AutocompleteInputMunContext
   );
-  const { getMunicipalities } = actions;
+  const { getMunicipalities, getMunicipalityById } = actions;
   const {
     data: municipalities,
     loading,
     error,
     successful,
   } = state.municipalities;
+  const { data: municipality } = state.municipality;
 
   const [field, setField] = useState("");
   const [itemsShow, setItemsShow] = useState<IMunicipality[]>([]);
@@ -92,6 +95,15 @@ export default function Municipalities({
   useEffect(() => {
     setField(defaultValue);
   }, [defaultValue]);
+
+  useEffect(() => {
+    if (municipalityId) getMunicipalityById({ id: municipalityId })(dispatch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [municipalityId]);
+
+  useEffect(() => {
+    if (municipality.data?.id) setField(municipality.data.name);
+  }, [municipality]);
 
   return (
     <div className="w-full relative">
