@@ -86,14 +86,14 @@ export default function Patient({
               <div>
                 <p className="font-normal text-slate-500 mb-1">Nombre(s)</p>
 
-                <span className="font-medium text-[16px]">
+                <p className="font-medium text-[16px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject?.name} {subject?.lastName}
-                </span>
+                </p>
               </div>
               <div>
                 <p className="font-normal text-slate-500 mb-1">Edad</p>
 
-                <span className="font-medium text-[16px]">
+                <p className="font-medium text-[16px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject?.age
                     ? subject.age > 1
                       ? `${subject.age} ${
@@ -102,8 +102,8 @@ export default function Patient({
                       : `${subject.age} ${
                           subject?.ageType === "years" ? "año" : "mes"
                         }`
-                    : "No especificado"}{" "}
-                </span>
+                    : "No especificado"}
+                </p>
               </div>
 
               <div
@@ -119,9 +119,9 @@ export default function Patient({
                   Primer apellido
                 </p>
 
-                <span className="font-medium text-[16px]">
+                <p className="font-medium text-[16px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject?.lastName}
-                </span>
+                </p>
               </div>
 
               <div
@@ -137,11 +137,11 @@ export default function Patient({
                   Segundo apellido
                 </p>
 
-                <span className="font-medium text-[16px]">
+                <p className="font-medium text-[16px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject && subject.motherLastName?.length > 0
                     ? subject.motherLastName
                     : "No especificado"}
-                </span>
+                </p>
               </div>
 
               <div
@@ -155,11 +155,11 @@ export default function Patient({
               >
                 <p className="font-normal text-slate-500 mb-1">CURP</p>
 
-                <span className="font-medium text-[16px]">
+                <p className="font-medium text-[16px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject && subject.curp?.length > 0
                     ? subject.curp
                     : "No especificado"}
-                </span>
+                </p>
               </div>
 
               <div
@@ -173,11 +173,11 @@ export default function Patient({
               >
                 <p className="font-normal text-slate-500 mb-1">Teléfono</p>
 
-                <span className="font-medium text-[16px]">
+                <p className="font-medium text-[16px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject && subject.phoneNumber?.length > 0
                     ? subject.phoneNumber
                     : "No especificado"}
-                </span>
+                </p>
               </div>
 
               <div
@@ -193,11 +193,11 @@ export default function Patient({
                   Correo electrónico
                 </p>
 
-                <span className="font-medium text-[16px]">
+                <p className="font-medium text-[16px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject && subject.email?.length > 0
                     ? subject.email
                     : "No especificado"}
-                </span>
+                </p>
               </div>
             </div>
 
