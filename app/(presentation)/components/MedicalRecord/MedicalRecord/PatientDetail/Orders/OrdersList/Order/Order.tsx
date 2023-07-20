@@ -87,7 +87,7 @@ export default function Order({ medicalRecord }: IOrderProps) {
         </div>
 
         <div className="lg:w-auto w-[250px]">
-          <p className="text-slate-900 lg:text-md">
+          <p className="text-slate-900 lg:text-md text-ellipsis overflow-hidden whitespace-nowrap">
             {getTextByOrderType(medicalRecord)}
           </p>
         </div>

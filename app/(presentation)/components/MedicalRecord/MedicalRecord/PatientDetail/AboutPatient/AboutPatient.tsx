@@ -156,9 +156,9 @@ export default function AboutPatient() {
                   Nombre(s)
                 </p>
 
-                <span className="font-medium text-[14px]">
+                <p className="font-medium text-[14px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject?.name} {subject?.lastName}
-                </span>
+                </p>
               </div>
 
               <div>
@@ -166,9 +166,9 @@ export default function AboutPatient() {
                   Primer apellido
                 </p>
 
-                <span className="font-medium text-[14px]">
+                <p className="font-medium text-[14px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject?.lastName}
-                </span>
+                </p>
               </div>
 
               <div>
@@ -176,11 +176,11 @@ export default function AboutPatient() {
                   Segundo apellido
                 </p>
 
-                <span className="font-medium text-[14px]">
+                <p className="font-medium text-[14px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject && subject.motherLastName?.length > 0
                     ? subject?.motherLastName
                     : "No especificado"}
-                </span>
+                </p>
               </div>
 
               <div>
@@ -188,7 +188,7 @@ export default function AboutPatient() {
                   Edad
                 </p>
 
-                <span className="font-medium text-[14px]">
+                <p className="font-medium text-[14px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject?.age
                     ? subject.age > 1
                       ? `${subject.age} ${
@@ -197,8 +197,8 @@ export default function AboutPatient() {
                       : `${subject.age} ${
                           subject?.ageType === "years" ? "año" : "mes"
                         }`
-                    : "No especificado"}{" "}
-                </span>
+                    : "No especificado"}
+                </p>
               </div>
 
               <div>
@@ -206,11 +206,11 @@ export default function AboutPatient() {
                   CURP
                 </p>
 
-                <span className="font-medium text-[14px]">
+                <p className="font-medium text-[14px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject && subject.curp?.length > 0
                     ? subject?.curp
                     : "No especificado"}
-                </span>
+                </p>
               </div>
 
               <div>
@@ -218,9 +218,9 @@ export default function AboutPatient() {
                   Teléfono
                 </p>
 
-                <span className="font-medium text-[14px]">
+                <p className="font-medium text-[14px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject?.phoneNumber}
-                </span>
+                </p>
               </div>
 
               <div className="col-span-3">
@@ -228,11 +228,11 @@ export default function AboutPatient() {
                   Correo electrónico
                 </p>
 
-                <span className="font-medium text-[14px]">
+                <p className="font-medium text-[14px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject && subject.email?.length > 0
                     ? subject?.email
                     : "No especificado"}
-                </span>
+                </p>
               </div>
             </div>
           </div>
