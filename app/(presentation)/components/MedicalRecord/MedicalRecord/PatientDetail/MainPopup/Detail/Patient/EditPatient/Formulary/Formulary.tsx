@@ -14,6 +14,9 @@ import {
   IMedicalRecordContext,
   MedicalRecordContext,
 } from "(presentation)/components/MedicalRecord/MedicalRecord/context/MedicalRecordContext";
+import { useRouter, useSearchParams } from "next/navigation";
+import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
+import { getBase64ImageFromUrl } from "(presentation)/(helper)/files/filesHelper";
 
 export default function Formulary() {
   const { state, actions, dispatch } =
@@ -25,20 +28,25 @@ export default function Formulary() {
   const [hasSucessful, setHasSucessful] = useState(false);
 
   const [values, setValues] = useState({
+    id: 0,
     name: "",
     lastname: "",
     motherlastname: "",
     age: "",
     curp: "",
     sex: 0,
-    phone: "",
     gender: 0,
+    phone: "",
     country: "",
     email: "",
     birthDate: "",
     federalEntity: 0,
+    municipality: 0,
+    countryLocation: 0,
     city: "",
     direction: "",
+    street: "",
+    pictureUrl: "",
   });
 
   const [errors, setErrors] = useState({
@@ -52,24 +60,31 @@ export default function Formulary() {
     country: "",
     email: "",
     phone: "",
+    federalEntity: "",
   });
 
   const setInitialValues = () => {
+
     setValues({
       ...values,
+      id: subject?.subjectId ?? 0,
       name: subject?.name ?? "",
       lastname: subject?.lastName ?? "",
       motherlastname: subject?.motherLastName ?? "",
       curp: subject?.curp ?? "",
-      gender: subject?.gender ?? 0,
       sex: subject?.sex ?? 0,
+      gender: subject?.gender ?? 0,
       email: subject?.email ?? "",
       birthDate: subject?.birthDate ?? "",
       phone: subject?.phoneNumber ?? "",
       country: subject?.country ?? "",
       federalEntity: subject?.federativeEntityId ?? 0,
+      municipality: subject?.municipalityId ?? 0,
+      countryLocation: subject?.countryLocationId ?? 0,
       city: subject?.city ?? "",
+      street: subject?.street ?? "",
       direction: subject?.address ?? "",
+      pictureUrl: subject?.pictureUrl ?? "",
     });
   };
 
@@ -101,6 +116,8 @@ export default function Formulary() {
 
     if (errors.phone.length > 0) errorsFieldsCount++;
 
+    if (errors.federalEntity.length > 0) errorsFieldsCount++;
+
     return errorsFieldsCount;
   };
 
@@ -109,7 +126,7 @@ export default function Formulary() {
 
     if (hasErrorsCount > 0) return;
 
-    const subjectEdit: ISubject = {
+    const subjectEdit = {
       subjectId: subject?.subjectId ?? 0,
       name: values.name.trim(),
       lastName: values.lastname.trim(),
@@ -117,23 +134,35 @@ export default function Formulary() {
       curp: values.curp.trim(),
       email: values.email.trim(),
       sex: values.sex,
+      gender: values.gender,
       phoneNumber: values.phone.trim(),
       federativeEntityId: values.federalEntity,
+      municipalityId: values.municipality !== 0
+        ? values.municipality
+        : null,
+      countryLocationId: values.countryLocation !== 0
+       ? values.countryLocation
+       : null,
+      street: values.street.trim(),
       country: values.country.trim(),
       state: 0,
       address: values.direction.trim(),
       city: values.city.trim(),
-      pictureUrl: "",
+      isPatient: true,
       birthDate: values.birthDate ?? null,
       createdOn: subject?.createdOn ?? new Date(),
       updatedOn: new Date(),
       deletedOn: null,
-      gender: values.gender,
-      isPatient: true,
     };
 
     editSubject(subjectEdit)(dispatch);
   };
+
+  const searchParams = useSearchParams();
+
+  const type = searchParams.get("edit_subject");
+
+  const router = useRouter();
 
   useEffect(() => {
     if (successful) {
@@ -142,12 +171,18 @@ export default function Formulary() {
       setTimeout(() => {
         setHasSucessful(false);
       }, 3000);
+
+      if(type === "1") {
+        router.push(MedicalRecordRoutesEnum.MedicalRecord + subject?.subjectId + "?type=medical-record&view_edit_subject=true" + "&edit_subject=2");
+      } else {
+        router.push(MedicalRecordRoutesEnum.MedicalRecord + subject?.subjectId + "?type=medical-record&view_edit_subject=true" + "&edit_subject=1");
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [successful]);
 
   return (
-    <div>
+    <div className="pb-10">
       <AlertComponent
         variant="error"
         show={error !== null}
@@ -166,7 +201,7 @@ export default function Formulary() {
 
       <div className="w-full md:flex block justify-end items-center">
         <Button
-          className="my-4 lg:w-auto"
+          className="lg:w-auto"
           variant="primary"
           disabled={
             loading ||
@@ -174,7 +209,8 @@ export default function Formulary() {
             values.lastname === "" ||
             values.birthDate === "" ||
             values.phone === "" ||
-            validForm() > 0
+            validForm() > 0 ||
+            values.federalEntity === 0
           }
           onClick={() => onSubmit()}
         >
@@ -182,7 +218,7 @@ export default function Formulary() {
         </Button>
       </div>
 
-      <div className="w-full relative flex flex-col gap-4 mt-4">
+      <div className="w-full relative flex flex-col gap-4 my-4">
         <BasicData
           values={values}
           setValues={setValues}
@@ -190,7 +226,12 @@ export default function Formulary() {
           setErrors={setErrors}
         />
         {/*<Credentials />*/}
-        <Direction values={values} setValues={setValues} />
+        <Direction 
+          values={values} 
+          setValues={setValues} 
+          errors={errors}
+          setErrors={setErrors}
+        />
       </div>
     </div>
   );
