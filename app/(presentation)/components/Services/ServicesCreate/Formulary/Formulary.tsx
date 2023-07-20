@@ -333,6 +333,21 @@ export default function Formulary({
                 </div>
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                    Servicio
+                    <span className="text-primary font-bold">*</span>
+                  </p>
+                  <FormInput
+                    type="text"
+                    value={formData.name}
+                    placeholder="Nombre del servicio..."
+                    className="form-control lg:w-[70%]"
+                    onChange={(e) =>
+                      setFormData({ ...formData, name: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="lg:flex justify-between items-start relative w-full gap-3">
+                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     Categoría
                     <span className="text-primary font-bold">*</span>
                   </p>
@@ -354,21 +369,6 @@ export default function Formulary({
                         </option>
                       ))}
                   </FormSelect>
-                </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Servicio
-                    <span className="text-primary font-bold">*</span>
-                  </p>
-                  <FormInput
-                    type="text"
-                    value={formData.name}
-                    placeholder="Nombre del servicio..."
-                    className="form-control lg:w-[70%]"
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                  />
                 </div>
                 {/* <div className="flex justify-between items-start relative w-full gap-3">
                                     <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">Etiquetas</p>
