@@ -1,9 +1,6 @@
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import React, { useContext, useMemo, useState } from "react";
-import {
-  IScheduleContext,
-  ScheduleContext,
-} from "../../context/ScheduleContext";
+
 import {
   AuthContext,
   IAuthContext,
@@ -13,6 +10,7 @@ import moment from "moment";
 import { FiUser } from "react-icons/fi";
 import Link from "next/link";
 import { AppointmentEnum } from "(presentation)/(enum)/appointment/appointmentEnum";
+import { IScheduleContext, ScheduleContext } from "(presentation)/components/Schedule/context/ScheduleContext";
 
 function AppointmentDetail({
   cancelFuntion,

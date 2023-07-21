@@ -2,12 +2,12 @@ import { AuthContext, IAuthContext } from '(presentation)/(layouts)/AppLayout/co
 import Button from '(presentation)/components/core/BaseComponents/Button';
 import SpecialSearch from '(presentation)/components/core/SpecialSearch/SpecialSearch'
 import React, { useContext, useMemo, useState } from 'react'
-import { IScheduleContext, ScheduleContext } from '../../context/ScheduleContext';
 import { IService } from 'domain/core/entities/serviceEntity';
 import { FiBriefcase, FiHome } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
 import { ILocality } from 'domain/core/entities/localityEntity';
 import { useRouter, useSearchParams, usePathname } from 'next/navigation';
+import { IScheduleContext, ScheduleContext } from '(presentation)/components/Schedule/context/ScheduleContext';
 
 export default function FiltersComponent({cancelFuntion, customRef}:{
   cancelFuntion: Function;

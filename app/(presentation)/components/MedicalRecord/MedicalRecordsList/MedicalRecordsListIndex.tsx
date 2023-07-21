@@ -11,6 +11,8 @@ import {
   IAuthContext,
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import { IUser } from "domain/core/entities/userEntity";
+import ScheduleProvider from "(presentation)/components/Schedule/context/ScheduleContext";
+import Popup from "(presentation)/components/core/Popup/Popup";
 
 export default function MedicalRecordsListIndex() {
   const { state } = useContext<IAuthContext>(AuthContext);
@@ -26,26 +28,29 @@ export default function MedicalRecordsListIndex() {
   if (!user?.userId) return <div />;
 
   return (
-    <MedicalRecordsListProvider>
-      <div className="py-5">
-        <Navigator />
+    <ScheduleProvider>
+      <MedicalRecordsListProvider>
+        <Popup/>
+        <div className="py-5">
+          <Navigator />
 
-        <div className="mt-5 md:mt-7">
-          <div className="">
-            <Filters />
-          </div>
-
-          <div className="">
-            <div className="md:block hidden">
-              <Table />
+          <div className="mt-5 md:mt-7">
+            <div className="">
+              <Filters />
             </div>
 
-            <div className="lg:hidden md:hidden block">
-              <TableResponsive />
+            <div className="">
+              <div className="md:block hidden">
+                <Table />
+              </div>
+
+              <div className="lg:hidden md:hidden block">
+                <TableResponsive />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </MedicalRecordsListProvider>
+      </MedicalRecordsListProvider>
+    </ScheduleProvider>
   );
 }

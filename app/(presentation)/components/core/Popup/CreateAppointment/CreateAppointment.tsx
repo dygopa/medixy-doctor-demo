@@ -5,13 +5,13 @@ import Link from 'next/link';
 import React, { useContext, useMemo, useState } from 'react'
 import { FiBriefcase, FiCheck, FiUser } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
-import { IScheduleContext, ScheduleContext } from '../../context/ScheduleContext';
 import SpecialSearch from '(presentation)/components/core/SpecialSearch/SpecialSearch';
 import { IService } from 'domain/core/entities/serviceEntity';
 import { ISubject } from 'domain/core/entities/subjectEntity';
 import Loading from '(presentation)/components/core/Loading/Loading';
 import moment from 'moment';
 import 'moment/locale/es';
+import { IScheduleContext, ScheduleContext } from '(presentation)/components/Schedule/context/ScheduleContext';
 
 function CreateAppointment({cancelFuntion, customRef}:{
   cancelFuntion: Function;
@@ -26,11 +26,12 @@ function CreateAppointment({cancelFuntion, customRef}:{
   const { data: services, successful: loadedServices, error: errorServices } = state.getServices;
   const { data: patients, successful: loadedPatients, error: errorPatients } = state.getPatients;
   const { data: windows, loading: loadingWindows, successful: loadedWindows, error: errorWindows } = state.getAttentionWindowsByService;
-  const { loading: loadingCreationAppointment, successful: loadedCreationAppointment, error: errorCreationAppointment } = state.createAppointment;
+  const { data: appointmentCreated, loading: loadingCreationAppointment, successful: loadedCreationAppointment, error: errorCreationAppointment } = state.createAppointment;
   const { successful: predifinedReservationSuccessful, data: predifinedReservation } = state.predifinedReservationData;
   const { successful: typeOfAppointmentCreationSuccessful, data: typeOfAppointmentCreation } = state.typeOfAppointmentCreation;
 
   const [fromCalendar, setFromCalendar] = useState(false)
+  const [isNow, setIsNow] = useState(false)
   const [loadedLists, setLoadedLists] = useState(false)
 
   const [selectedDate, setSelectedDate] = useState("")
@@ -169,8 +170,14 @@ function CreateAppointment({cancelFuntion, customRef}:{
 
   useMemo(()=>{
     if(loadedCreationAppointment){
-      getAppointments(user.userId, moment().format("YYYY-MM-DD"))(dispatch)
-      changeStatusPopup(false)(dispatch)
+      if(isNow){
+        setTimeout(() => {
+          window.location.href = `/medical-record/${appointmentCreated["id"]}/create?type=appointment`;
+        }, 1000);
+      }else{
+        getAppointments(user.userId, moment().format("YYYY-MM-DD"))(dispatch)
+        changeStatusPopup(false)(dispatch)
+      }
     }
   },[loadedCreationAppointment])
 
@@ -240,45 +247,69 @@ function CreateAppointment({cancelFuntion, customRef}:{
         </div>
         {!fromCalendar && <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className='font-normal text-sm text-slate-600'>Para cuando</p> 
-          <div className="w-full flex justify-between items-center gap-6">
+          <div className="w-full grid grid-cols-2 justify-between items-center gap-5">            
+            <div className={twMerge([
+              "cursor-pointer border py-2 font-light text-sm rounded-md flex justify-center items-center gap-2",
+              !isNow ? "bg-green-500 text-white border-green-500" : "bg-transparent text-secondary border-secondary"
+            ])} 
+            onClick={()=>{ setIsNow(false) }}
+            >
+              En otro momento
+              {!isNow && <FiCheck/>}
+            </div>
+            
+            <div className={twMerge([
+              "cursor-pointer border py-2 font-light text-sm rounded-md flex justify-center items-center gap-2",
+              isNow ? "bg-green-500 text-white border-green-500" : "bg-transparent text-secondary border-secondary"
+            ])} 
+            onClick={()=>{ setIsNow(true) }}
+            >
+              Ahora mismo
+              {isNow && <FiCheck/>}
+            </div>
+
+          </div>
+          { !isNow &&
             <FormInput
               type={"date"}
               min={moment().format("YYYY-MM-DD")}
-              disabled={selectedService["title"] === ""}
+              disabled={selectedService["title"] === "" || isNow}
               placeholder={""}
               value={selectedDate}
-              className="form-control w-full"
+              className="form-control mt-3"
               onChange={(e)=>{ getAttentionWindowsByService(selectedService.id, e.target.value)(dispatch); setSelectedDate(e.target.value) }}
             />
-          </div>
+          }
         </div>}
-        <div className="w-full flex flex-col justify-center items-start gap-2">
-          <p className='font-normal text-sm text-slate-600'>Ventanas de atención</p>
-          {fromCalendar ? 
-            <ExampleComponent data={{
-              id: predifinedReservation["attentionWindowId"],
-              fechaInicio: predifinedReservation["date"],
-              horaInicio: moment(predifinedReservation["date"]).utc().format("hh:mm a"),
-              horaFin: moment(predifinedReservation["dateEnd"]).utc().format("hh:mm a"),
-              tipo: predifinedReservation["type"] === "WINDOW" ? 1 : 2,
-            }} />
-          : <div className="w-full flex flex-col justify-start items-center gap-6">
-            {(!loadedWindows && !loadingWindows) && 
-              <div className="w-full h-fit flex flex-col justify-center items-center text-center gap-2">
-                <p className="text-base text-slate-900 font-medium">Nada por aquí</p>
-                <p className='text-sm text-slate-500 font-light'>Seleccina una servicio seguido de una fecha para conocer la disponibilidad</p>
-              </div>
-            }
-            {(loadedWindows && windows.length === 0) && 
-              <div className="w-full h-fit flex flex-col justify-center items-center text-center gap-2">
-                <p className="text-base text-slate-900 font-medium">Sin ventanas de atención</p>
-                <p className='text-sm text-slate-500 font-light'>No hay ventanas de atención disponibles para esta fecha y este servicio</p>
-              </div>
-            }
-            {loadingWindows && <Loading/>}
-            {(loadedWindows && windows.length > 0) && windows.map((elem:any) => <ExampleComponent data={elem} />)}
-          </div>}
-        </div>
+        {!isNow &&
+          <div className="w-full flex flex-col justify-center items-start gap-2">
+            <p className='font-normal text-sm text-slate-600'>Ventanas de atención</p>
+            {fromCalendar ? 
+              <ExampleComponent data={{
+                id: predifinedReservation["attentionWindowId"],
+                fechaInicio: predifinedReservation["date"],
+                horaInicio: moment(predifinedReservation["date"]).utc().format("hh:mm a"),
+                horaFin: moment(predifinedReservation["dateEnd"]).utc().format("hh:mm a"),
+                tipo: predifinedReservation["type"] === "WINDOW" ? 1 : 2,
+              }} />
+            : <div className="w-full flex flex-col justify-start items-center gap-6">
+              {(!loadedWindows && !loadingWindows) && 
+                <div className="w-full h-fit flex flex-col justify-center items-center text-center gap-2">
+                  <p className="text-base text-slate-900 font-medium">Nada por aquí</p>
+                  <p className='text-sm text-slate-500 font-light'>Seleccina una servicio seguido de una fecha para conocer la disponibilidad</p>
+                </div>
+              }
+              {(loadedWindows && windows.length === 0) && 
+                <div className="w-full h-fit flex flex-col justify-center items-center text-center gap-2">
+                  <p className="text-base text-slate-900 font-medium">Sin ventanas de atención</p>
+                  <p className='text-sm text-slate-500 font-light'>No hay ventanas de atención disponibles para esta fecha y este servicio</p>
+                </div>
+              }
+              {loadingWindows && <Loading/>}
+              {(loadedWindows && windows.length > 0) && windows.map((elem:any) => <ExampleComponent data={elem} />)}
+            </div>}
+          </div>
+        }
         {fromCalendar && <div className="w-full flex flex-col justify-center items-start">
           <p className='font-normal text-sm text-slate-600'>Busca el nombre del paciente</p>
           <SpecialSearch
@@ -311,8 +342,8 @@ function CreateAppointment({cancelFuntion, customRef}:{
         disabled={
           selectedPatient.id === 0 ||
           selectedService.id === 0 ||
-          selectedDate === "" ||
-          formData.windowId === 0 ||
+          (!isNow && (selectedDate === "" ||
+          formData.windowId === 0)) ||
           loadingCreationAppointment
         }
         onClick={()=>{ createAppointment({
@@ -321,7 +352,7 @@ function CreateAppointment({cancelFuntion, customRef}:{
           servicioId: selectedService.id,
           pacienteId: selectedPatient.id,
           doctorId: user.userId,
-        })(dispatch) }} variant="primary" type="button" className="w-full">{loadingCreationAppointment ? "Agendando..." : "Guardar"}</Button>
+        }, isNow)(dispatch) }} variant="primary" type="button" className="w-full">{loadingCreationAppointment ? "Agendando..." : "Guardar"}</Button>
         <p onClick={()=>{ cancelFuntion() }} className='cursor-pointer font-normal text-sm text-primary text-center'>Cancelar</p>
       </div>
     </div>
