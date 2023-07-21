@@ -40,7 +40,7 @@ export default function Formulary({ userId }: { userId: string }) {
 
   const { state, actions, dispatch } =
     useContext<IServicesContext>(ServicesContext);
-  const { getService, updateService, deleteService, getCategories, getUserMedicalCenters, getLocalitiesToService } = actions;
+  const { getService, updateService, deleteService, getCategories } = actions;
   const { data, loading, successful, error } = state.getService;
   const {
     data: dataUpdate,
@@ -48,12 +48,6 @@ export default function Formulary({ userId }: { userId: string }) {
     successful: successfulUpdate,
     error: errorUpdate,
   } = state.updateService;
-  const {
-    data: localitiesToService,
-    loading: loadingLocalities,
-    successful: successfulLocalities,
-    error: errorLocalities,
-  } = state.getLocalitiesToService;
   const { data: categories } = state.getCategories;
   const {
     data: dataDelete,
@@ -61,12 +55,6 @@ export default function Formulary({ userId }: { userId: string }) {
     successful: successfulDelete,
     error: errorDelete,
   } = state.deleteService;
-  const {
-    data: medicalCenters,
-    loading: loadingMedicalCenters,
-    error: errorMedicalCenters,
-    successful: successFulMedicalCenters,
-  } = state.getUserMedicalCenters;
 
   const [loadedAPI, setLoadedAPI] = useState(false);
   const [formData, setFormData] = useState({
@@ -76,11 +64,15 @@ export default function Formulary({ userId }: { userId: string }) {
     conditions: "",
     base_price: 0,
     status: 1,
+    location: {} as ILocality,
+    locationId: 0,
     media: {
       data: "",
       type: "",
     },
   });
+
+  console.log(data)
 
   let avatarRef = useRef<HTMLInputElement>(null);
 
@@ -102,6 +94,8 @@ export default function Formulary({ userId }: { userId: string }) {
       conditions: data?.conditions ?? "",
       base_price: data?.base_price ?? "",
       status: data?.status ?? "",
+      location: data?.location ?? {},
+      locationId: data?.location_id ?? 0,
       media: {
         data: imageUrl.toString().split(",")[1],
         type: "",
@@ -119,13 +113,8 @@ export default function Formulary({ userId }: { userId: string }) {
       const url = pathname?.split("/");
       let id = url![url!.length - 1];
       getService(parseInt(id), userId)(dispatch);
-      getLocalitiesToService(parseInt(id))(dispatch);
-      getUserMedicalCenters(userId)(dispatch);
     }
   }, [userId, pathname]);
-
-  let [localities, setLocalities] = useState<Array<ILocalityService>>([]);
-  let [deleteLocalities, setDeleteLocalities] = useState<Array<ILocalityService>>([]);
 
   const loadAPI = () => {
     getCategories()(dispatch);
@@ -139,10 +128,6 @@ export default function Formulary({ userId }: { userId: string }) {
   useMemo(() => {
     if (successfulDelete) window.location.href = "/services";
   }, [successfulDelete]);
-
-  useMemo(() => {
-    if (successfulLocalities) setLocalities(localitiesToService);
-  }, [successfulLocalities]);
 
   categories && categories !== null ? categories.sort((x: { name: string; },y: { name: any; }) => x.name.localeCompare(y.name)): categories;
 
@@ -179,88 +164,6 @@ export default function Formulary({ userId }: { userId: string }) {
       </div>
     );
   }
-
-  function manageAddToList({ data, serviceId }: { data: ILocality, serviceId:number}) {
-    let list: Array<ILocalityService> = [...localities];
-    let isDelete: Array<ILocalityService> = [...deleteLocalities];
-    const relation: ILocalityService | undefined = localities.find((elem) => elem["location_id"] === data.id);
-    if (list.some((elem) => elem["location_id"] === data.id)) {
-      isDelete.push ({
-        id: relation?.id ?? 0,
-        service_id: serviceId,
-        location_id: data.id,
-        price: formData.base_price,
-      });
-      //list = list.filter((elem) => elem["location_id"] !== data.id);
-
-      setDeleteLocalities(isDelete);
-    } else {
-      list.push({
-        id: relation?.id ?? 0,
-        service_id: serviceId,
-        location_id: data.id,
-        price: formData.base_price,
-      });
-    }
-    setLocalities(list);
-  }
-
-  function managePriceChangeInList(value: number, id: number) {
-    let index = localities.findIndex((elem) => elem["location_id"] === id);
-    localities[index].price = value;
-    setLocalities(localities);
-  }
-
-  const LocalityComponent = ({ data, serviceId }: { data: ILocality, serviceId:number }) => {
-    
-    let isInList = localities.find((elem) => elem["location_id"] === data.id);
-
-    return (
-      <div className="w-full border rounded-sm bg-white p-3 grid grid-cols-2 justify-between items-center gap-2">
-        <div className="flex flex-col justify-start items-start text-left">
-          <p className="font-normal text-base text-slate-950">{data["name"]}</p>
-          <p className="font-light text-sm text-slate-400">{data.state.name}</p>
-        </div>
-        <div className="flex justify-between items-center gap-2">
-          <div className="w-3/4 flex flex-col justify-start items-start gap-1 text-left">
-            <NumericFormat  
-              value={isInList?.price}
-              defaultValue={isInList?.price}
-              disabled={!isInList}
-              placeholder="Precio"
-              min={0}
-              thousandSeparator="," 
-              decimalScale={2} 
-              fixedDecimalScale
-              prefix={'$'}
-              onValueChange={ (values, sourceInfo) =>
-                managePriceChangeInList(values.floatValue ? values.floatValue : 0, data.id)
-              }
-              className={twMerge([
-                "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 form-control w-[100%]",
-                "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
-                "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
-              ])}
-            />
-          </div>
-          <div className="w-1/4 flex flex-col justify-center items-center">
-            <span
-              onClick={() => {
-                manageAddToList({data, serviceId});
-              }}
-              className={twMerge([
-                "transition w-8 h-8 cursor-pointer rounded-full text-slate-400 border border-slate-400 flex flex-col justify-center items-center bg-white",
-                "hover:bg-primary hover:border-primary hover:text-white",
-                isInList && "bg-green-500 border-green-500 text-white",
-              ])}
-            >
-              <FiCheck />
-            </span>
-          </div>
-        </div>
-      </div>
-    );
-  };
 
   const router = useRouter();
 
@@ -303,17 +206,13 @@ export default function Formulary({ userId }: { userId: string }) {
             disabled={
               loadingUpdate ||
               formData?.name === "" ||
-              formData?.service_category_id === 0 ||
-              localities.length === 0
+              formData?.service_category_id === 0
             }
             onClick={() => {
               updateService({
                 dataService: formData, 
                 serviceId: data.id,
-                localities: localities,
-                deleteLocalities: deleteLocalities,
               })(dispatch);
-              setDeleteLocalities([]);
             }}
             variant="primary"
             className="w-[275px]"
@@ -435,6 +334,21 @@ export default function Formulary({ userId }: { userId: string }) {
               </div>
               <div className="lg:flex justify-between items-start relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                  Consultorio
+                </p>
+                <FormInput
+                  type="text"
+                  disabled={true}
+                  value={formData?.location?.name}
+                  placeholder="Nombre del consultorio..."
+                  className="form-control lg:w-[70%]"
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                />
+              </div>
+              <div className="lg:flex justify-between items-start relative w-full gap-3">
+                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Categoría
                   <span className="text-primary font-bold">*</span>
                 </p>
@@ -527,35 +441,6 @@ export default function Formulary({ userId }: { userId: string }) {
                   </FormSelect>
                 </div>
               </div>
-            </div>
-          </div>
-          <div className="bg-white lg:w-[40%] shadow-xl shadow-slate-100 rounded-md h-fit p-7">
-            <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
-              <div className="w-full border-b mb-2 flex flex-col justify-between items-start gap-1 pb-3">
-                <p className="font-medium text-base text-slate-900">
-                  Consultorios(*)
-                </p>
-                <p className="font-light text-sm text-slate-500">
-                  Indica los consultorios donde prestas este servicio y ajusta
-                  el precio si es requerido
-                </p>
-              </div>
-              {medicalCenters?.length === 0 && successFulMedicalCenters && (
-                <div className="w-full flex flex-col justify-center items-center text-center">
-                  <p className="font-bold text-slate-900 text-lg">
-                    Vaya, no tienes consultorios aún
-                  </p>
-                  <p className="font-light text-slate-500 text-base">
-                    Lo sentimos, pero en la plataforma no hay centros médicos
-                    todavia.
-                  </p>
-                </div>
-              )}
-              {medicalCenters?.length > 0 &&
-                successFulMedicalCenters &&
-                [...(medicalCenters as Array<ILocality>)].map((l, i) => (
-                  <LocalityComponent data={l} serviceId={data.id} key={i} />
-                ))}
             </div>
           </div>
         </div>
