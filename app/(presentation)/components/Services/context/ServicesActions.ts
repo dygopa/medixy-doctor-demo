@@ -81,7 +81,7 @@ const createUserService = (obj:any, list:Array<any>) => async (dispatch: Dispatc
   }
 }
 
-const updateService = (obj: {dataService: any; serviceId: number; localities: ILocalityService[]; deleteLocalities: ILocalityService[];}) => async (dispatch: Dispatch<any>) => {
+const updateService = (obj: {dataService: any; serviceId: number;}) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "UPDATE_USER_SERVICE_LOADING" });
     

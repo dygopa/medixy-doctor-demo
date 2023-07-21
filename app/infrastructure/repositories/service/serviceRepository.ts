@@ -189,7 +189,7 @@ export class ServicesRepository implements IServiceRepository {
     }
   }
 
-  async updateService(obj: {dataService: any; serviceId: number; localities: ILocalityService[]; deleteLocalities: ILocalityService[];}): Promise<number | ServiceFailure> {
+  async updateService(obj: {dataService: any; serviceId: number;}): Promise<number | ServiceFailure> {
     try {
       let cookies = nookies.get(undefined, 'access_token');
 
@@ -198,7 +198,7 @@ export class ServicesRepository implements IServiceRepository {
       myHeaders.append("Content-Type", "application/json");
       myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
 
-      console.log(obj)
+      console.log(obj["serviceId"])
 
       var raw = JSON.stringify({
         name: obj["dataService"]["name"],
@@ -218,7 +218,7 @@ export class ServicesRepository implements IServiceRepository {
         redirect: 'follow'
       } as RequestInit;
 
-      let URL = UPDATE_USER_SERVICE_ENDPOINT(obj.serviceId as number) as RequestInfo
+      let URL = UPDATE_USER_SERVICE_ENDPOINT(obj["serviceId"] as number) as RequestInfo
 
       const response = await fetch(URL, requestOptions)
       let data = await response.json()
