@@ -33,9 +33,6 @@ export interface IMedicalRecordActions {
     getAllergies: (obj: { subjectId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getOrders: (obj: { subjectId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getMedicalRecords: (obj: { subjectId: number; medicalRecordCategoryId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
-    getFederalEntities: () => (dispatch: Dispatch<any>) => {};
-    getMunicipalities: (obj: { federalEntityId?: number | null }) => (dispatch: Dispatch<any>) => {};
-    getCountryLocations: (obj: { federalEntityId?: number | null; municipalityId?: number | null }) => (dispatch: Dispatch<any>) => {};
     editSubject: Function;
     getCompanions: (obj: { patientId: number }) => (dispatch: Dispatch<any>) => {};
     createCompanion: (patientId:number, companion:ISubject) => (dispatch: Dispatch<any>) => {};
@@ -191,42 +188,6 @@ const getCompanions = (obj: { patientId: number }) => async (dispatch: Dispatch<
   }
 }
 
-const getFederalEntities = () => async (dispatch: Dispatch<any>) => {
-  try {
-      dispatch({ type: "GET_FEDERAL_ENTITIES_LOADING" });
-
-      const res: Array<IFederalEntity> = await new FederalEntitiesUseCase().getFederalEntities({});
-
-      dispatch({ type: "GET_FEDERAL_ENTITIES_SUCCESSFUL", payload: { data: res } });
-  } catch (error) {
-      dispatch({ type: "GET_FEDERAL_ENTITIES_ERROR", payload: { error: error } });
-  }
-}
-
-const getMunicipalities = (obj: { federalEntityId?: number | null }) => async (dispatch: Dispatch<any>) => {
-  try {
-      dispatch({ type: "GET_MUNICIPALITIES_LOADING" });
-
-      const res: IGetMunicipalitiesResponse = await new MunicipalitiesUseCase().getMunicipalities({ limit: 100, federalEntityId: obj.federalEntityId });
-
-      dispatch({ type: "GET_MUNICIPALITIES_SUCCESSFUL", payload: { data: res } });
-  } catch (error) {
-      dispatch({ type: "GET_MUNICIPALITIES_ERROR", payload: { error: error } });
-  }
-}
-
-const getCountryLocations = (obj: { federalEntityId?: number | null; municipalityId?: number | null }) => async (dispatch: Dispatch<any>) => {
-  try {
-      dispatch({ type: "GET_COUNTRY_LOCATIONS_LOADING" });
-
-      const res: IGetCountryLocationsResponse = await new CountriesUseCase().getCountryLocations({ limit: 100, federalEntityId: obj.federalEntityId, municipalityId: obj.municipalityId });
-
-      dispatch({ type: "GET_COUNTRY_LOCATIONS_SUCCESSFUL", payload: { data: res } });
-  } catch (error) {
-      dispatch({ type: "GET_COUNTRY_LOCATIONS_ERROR", payload: { error: error } });
-  }
-}
-
 const editSubject = (subject: any) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "EDIT_SUBJECT_LOADING" });
@@ -349,9 +310,6 @@ export const actions: IMedicalRecordActions = {
     getMedicalRecords,
     getOrders,
     getCompanions,
-    getFederalEntities,
-    getMunicipalities,
-    getCountryLocations,
     editSubject,
     createCompanion,
     editAppointmentStatus,

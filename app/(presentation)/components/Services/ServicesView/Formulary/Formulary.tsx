@@ -303,7 +303,8 @@ export default function Formulary({ userId }: { userId: string }) {
             disabled={
               loadingUpdate ||
               formData?.name === "" ||
-              formData?.service_category_id === 0
+              formData?.service_category_id === 0 ||
+              localities.length === 0
             }
             onClick={() => {
               updateService({

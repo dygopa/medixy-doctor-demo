@@ -572,16 +572,6 @@ export default function Formulary({
                     }}
                   />
                   </div>*/}
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Cargar imagen
-                  </p>
-                  <FormInput
-                    onChange={(e) => handleChangeMedia(e)}
-                    type="file"
-                    className="form-control lg:w-[70%]"
-                  />
-                </div>
               </div>
             )}
           </div>

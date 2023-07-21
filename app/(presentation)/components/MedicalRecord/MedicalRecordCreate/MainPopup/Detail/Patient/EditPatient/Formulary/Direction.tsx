@@ -1,3 +1,6 @@
+import AutocompleteInputLocations from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputLocations/AutocompleteInputLocations";
+import AutocompleteInputMunicipalities from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMunicipalities/AutocompleteInputMunicipalities";
+import AutocompleteInputStates from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputStates/AutocompleteInputStates";
 import {
   FormInput,
   FormSelect,
@@ -6,33 +9,44 @@ import {
   IMedicalRecordCreateContext,
   MedicalRecordCreateContext,
 } from "(presentation)/components/MedicalRecord/MedicalRecordCreate/context/MedicalRecordCreateContext";
+import { ICountryLocation } from "domain/core/entities/countryEntity";
+import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
+import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import {
   ChangeEvent,
   Dispatch,
   SetStateAction,
   useContext,
   useEffect,
+  useMemo,
 } from "react";
 
 interface IContactProps {
   values: {
+    id: number;
     name: string;
     lastname: string;
     motherlastname: string;
     age: string;
     curp: string;
-    gender: number;
     sex: number;
+    gender: number;
     phone: string;
     country: string;
-    birthDate: string;
     email: string;
+    birthDate: string;
     federalEntity: number;
+    municipality: number;
+    countryLocation: number;
+    municipalityCatalogId: number;
     city: string;
     direction: string;
+    street: string;
+    pictureUrl: string;
   };
   setValues: Dispatch<
     SetStateAction<{
+      id: number;
       name: string;
       lastname: string;
       motherlastname: string;
@@ -40,27 +54,53 @@ interface IContactProps {
       curp: string;
       sex: number;
       gender: number;
-      birthDate: string;
       phone: string;
       country: string;
       email: string;
+      birthDate: string;
       federalEntity: number;
+      municipality: number;
+      countryLocation: number;
+      municipalityCatalogId: number;
       city: string;
       direction: string;
+      street: string;
+      pictureUrl: string;
+    }>
+  >;
+  errors: {
+    global: string;
+    name: string;
+    lastname: string;
+    motherlastname: string;
+    age: string;
+    curp: string;
+    sex: string;
+    country: string;
+    email: string;
+    phone: string;
+    federalEntity: string;
+  };
+  setErrors: Dispatch<
+    SetStateAction<{
+      global: string;
+      name: string;
+      lastname: string;
+      motherlastname: string;
+      age: string;
+      curp: string;
+      sex: string;
+      country: string;
+      email: string;
+      phone: string;
+      federalEntity: string;
     }>
   >;
 }
-export default function Contact({ values, setValues }: IContactProps) {
+export default function Contact({ values, setValues, errors, setErrors }: IContactProps) {
   const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
     MedicalRecordCreateContext
   );
-  const { getFederalEntities } = actions;
-  const { data: federalEntities } = state.getFederalEntities;
-
-  useEffect(() => {
-    getFederalEntities()(dispatch);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <div className="w-full bg-white  rounded-md h-fit mt-4">
@@ -74,23 +114,60 @@ export default function Contact({ values, setValues }: IContactProps) {
           <div className="w-full md:grid md:grid-cols-2 grid-cols-1 justify-start items-center gap-3">
             <div className="md:flex md:flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Entidad Federativa
+                Estado{" "}<span className="text-primary font-bold">*</span>
               </p>
-              <FormSelect
-                className="form-control w-full"
-                defaultValue={values.federalEntity}
-                value={values.federalEntity}
-                onChange={(e: ChangeEvent<HTMLSelectElement>) => {
-                  setValues({ ...values, federalEntity: +e.target.value });
-                }}
-              >
-                {federalEntities.length > 0 &&
-                  federalEntities.map((elem) => (
-                    <option key={elem.entityId} value={elem.entityId}>
-                      {elem.nameEntity} - {elem.abbrevation}
-                    </option>
-                  ))}
-              </FormSelect>
+                <AutocompleteInputStates
+                  setDefaultValue
+                  onClick={(item: IFederalEntity) =>
+                    setValues({
+                      ...values,
+                      federalEntity: item.entityId,
+                      municipality: 0,
+                      municipalityCatalogId: 0,
+                      countryLocation: 0,
+                    })
+                  }
+                  className="form-control lg:w-full"
+                />
+              {errors.federalEntity && (
+                <p className="text-danger mt-1">
+                  Debe seleccionar la entidad federativa
+                </p>
+              )}
+            </div>
+            <div className="md:flex md:flex-col justify-between items-start relative gap-1">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Municipio
+              </p>
+              <AutocompleteInputMunicipalities
+                onClick={(item: IMunicipality) =>
+                  setValues({
+                    ...values,
+                    municipality: item.id,
+                    municipalityCatalogId: item.catalogId,
+                    countryLocation: 0,
+                  })
+                }
+                disabled={values.federalEntity === 0}
+                className="form-control lg:w-full"
+                municipalityId={values.municipality}
+                federalEntityId={values.federalEntity}
+              />
+            </div>
+            <div className="md:flex md:flex-col justify-between items-start relative gap-1">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Colonia
+              </p>
+              <AutocompleteInputLocations
+                onClick={(item: ICountryLocation) =>
+                  setValues({ ...values, countryLocation: item.id })
+                }
+                disabled={values.municipality === 0}
+                className="form-control lg:w-full"
+                municipalityId={values.municipalityCatalogId}
+                federalEntityId={values.federalEntity}
+                countryLocationId={values.countryLocation}
+              />
             </div>
             <div className="my-3 md:my-0 md:flex md:flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
@@ -107,17 +184,18 @@ export default function Contact({ values, setValues }: IContactProps) {
                 }}
               />
             </div>
-            <div className="flex col-span-2 flex-col justify-between items-start relative gap-1">
+            <div className="lex col-span-2 flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Dirección Completa
+                Calle
               </p>
               <FormInput
                 type={"text"}
-                value={values.direction}
-                placeholder="Dirección completa de su residencia"
+                placeholder="Calle"
+                min={0}
+                value={values.street}
                 className="form-control w-full"
                 onChange={(e: any) => {
-                  setValues({ ...values, direction: e.target.value });
+                  setValues({ ...values, street: e.target.value });
                 }}
               />
             </div>

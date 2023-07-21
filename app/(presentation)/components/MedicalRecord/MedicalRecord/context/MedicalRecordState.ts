@@ -27,9 +27,6 @@ export interface IMedicalRecordState {
     allergies: IGetAllergiesState;
     medicalRecords: IGetMedicalRecordsState;
     orders: IGetOrdersState;
-    getFederalEntities: IGetFederalEntitiesState;
-    municipalities: IGetMunicipalitiesState;
-    countryLocations: IGetCountryLocationsState;
     editSubject: IUpdateSubjectState;
     companions: IGetCompanionsState;
     createCompanion: ICompanionCreateCompanionState;
@@ -45,20 +42,6 @@ interface IGetSubjectState {
     loading: boolean;
     successful: boolean;
     error: SubjectFailure | null; 
-}
-
-interface IGetCountryLocationsState {
-    data: IGetCountryLocationsResponse;
-    loading: boolean;
-    successful: boolean;
-    error: CountryFailure | null; 
-}
-
-interface IGetMunicipalitiesState {
-    data: IGetMunicipalitiesResponse;
-    loading: boolean;
-    successful: boolean;
-    error: MunicipalityFailure | null; 
 }
 
 interface IGetAppointmentState {
@@ -108,13 +91,6 @@ interface IGetOrdersState {
     loading: boolean;
     successful: boolean;
     error: MedicalRecordFailure | null; 
-}
-
-interface IGetFederalEntitiesState {
-    data: Array<IFederalEntity>;
-    loading: boolean;
-    successful: boolean;
-    error: FederalEntityFailure | null; 
 }
 
 interface IUpdateSubjectState {
@@ -214,24 +190,6 @@ export const initialState: IMedicalRecordState = {
     },
     orders: {
         data: {} as IGetMedicalRecordsResponse,
-        loading: false,
-        successful: false,
-        error: null,
-    },
-    getFederalEntities: {
-        data: [],
-        loading: false,
-        successful: false,
-        error: null,
-    },
-    municipalities: {
-        data: {} as IGetMunicipalitiesResponse,
-        loading: false,
-        successful: false,
-        error: null,
-    },
-    countryLocations: {
-        data: {} as IGetCountryLocationsResponse,
         loading: false,
         successful: false,
         error: null,

@@ -43,6 +43,7 @@ export default function Formulary() {
     federalEntity: 0,
     municipality: 0,
     countryLocation: 0,
+    municipalityCatalogId: 0,
     city: "",
     direction: "",
     street: "",
