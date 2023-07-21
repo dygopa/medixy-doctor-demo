@@ -1,12 +1,14 @@
 import Button from '(presentation)/components/core/BaseComponents/Button'
 import { FormInput, FormSelect } from '(presentation)/components/core/BaseComponents/Form'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
-import { FiCheck, FiHelpCircle } from 'react-icons/fi';
+import { FiBriefcase, FiCheck, FiHelpCircle } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge'
 import { AuthContext, IAuthContext } from '(presentation)/(layouts)/AppLayout/context/AuthContext';
 import moment from 'moment';
 import { useSearchParams } from 'next/navigation';
 import { IScheduleContext, ScheduleContext } from '(presentation)/components/Schedule/context/ScheduleContext';
+import SpecialSearch from '(presentation)/components/core/SpecialSearch/SpecialSearch';
+import { IService } from 'domain/core/entities/serviceEntity';
 
 function CreateAgenda({cancelFuntion, customRef}:{
   cancelFuntion: Function;
@@ -62,6 +64,9 @@ function CreateAgenda({cancelFuntion, customRef}:{
     }
   ]
 
+  const [loadedLists, setLoadedLists] = useState<boolean>(false)
+
+  const [listOfServices, setListOfServices] = useState<Array<any>>([])
   const [daysRepeatedList, setDaysRepeatedList] = useState<Array<any>>([])
   const [listOfHours, setListOfHours] = useState<Array<any>>([])
 
@@ -77,6 +82,13 @@ function CreateAgenda({cancelFuntion, customRef}:{
       description: "31 de Abril 2023"
     },
   ]
+
+  const [selectedService, setSelectedService] = useState({
+    id: 0,
+    title: "",
+    description: "",
+    type: "SERVICE",
+  })
 
   let [formData, setFormData] = useState({
     typeEnd: 1,
@@ -140,6 +152,32 @@ function CreateAgenda({cancelFuntion, customRef}:{
     setListOfHours(list)
   }
 
+  function handleFormatList(){
+
+    let list_services = services.map((elem:IService) => ({
+      id: elem.id,
+      title: elem.name,
+      description: elem.description,
+      type: "SERVICE",
+    }))
+    setListOfServices(list_services)
+
+    setLoadedLists(true)
+  }
+
+  useMemo(()=>{
+    if(selectedService["title"] !== ""){
+      let id:number = selectedService.id
+      setFormData({...formData, serviceId: id })
+      console.log(selectedService["id"])
+    }
+  },[selectedService])
+
+  useMemo(() => {
+    if (loadedServices) handleFormatList()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadedServices]);
+
   useMemo(()=>{
     if(successful){
       getAttentionWindows(formData.serviceId, "")(dispatch)
@@ -176,7 +214,25 @@ function CreateAgenda({cancelFuntion, customRef}:{
       <div className="w-full flex flex-col justify-center items-center gap-5">
         <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className='font-normal text-sm text-slate-600'>Para que servicio</p>
-          <FormSelect
+          <SpecialSearch
+            customClick={setSelectedService}
+            customClickEmpty={()=>{}}
+            list={listOfServices} 
+            placeholder={"Buscar..."} 
+            selectedItem={selectedService}
+          />
+          {selectedService["title"] !== "" && <div className={twMerge([
+            "transition w-full h-[10vh] flex justify-between items-center gap-3 bg-white"
+          ])}>
+            <div className='w-12 h-12 overflow-hidden rounded-lg bg-primary/20 text-primary text-lg flex flex-col justify-center items-center'>
+              <FiBriefcase/>
+            </div>
+            <div className="w-[90%] h-full flex flex-col justify-center items-start">
+              <p className='font-semibold text-gray-950 text-[0.9rem]'>Servicio - {selectedService["title"]}</p>
+              <p className='font-light text-gray-600 text-sm'>{selectedService["description"]}</p>
+            </div>
+          </div>}
+          {/* <FormSelect
             defaultValue={formData.serviceId}
             value={formData.serviceId}
             className="form-control"
@@ -190,7 +246,7 @@ function CreateAgenda({cancelFuntion, customRef}:{
                 </option>
               ))
             }
-          </FormSelect>
+          </FormSelect> */}
         </div>
         <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className='font-normal text-sm text-slate-600'>Tipo</p>
