@@ -46,6 +46,8 @@ export default function TableServices({ user }: { user: IUser }) {
     );
   };
 
+  console.log(data)
+
   const CardData = ({ data }: { data: IService }) => {
     return (
       <>
@@ -94,7 +96,7 @@ export default function TableServices({ user }: { user: IUser }) {
               </Table.Th>
 
               <Table.Th className="border-b-0 whitespace-nowrap text-base">
-                Categoría
+                Consultorio
               </Table.Th>
 
               <Table.Th className="border-b-0 whitespace-nowrap text-base">
@@ -124,7 +126,7 @@ export default function TableServices({ user }: { user: IUser }) {
 
                   <Table.Td>
                     <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">
-                      {service.service_category.name}
+                      {service.location.name}
                     </p>
                   </Table.Td>
 
