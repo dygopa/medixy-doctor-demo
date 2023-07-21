@@ -60,7 +60,7 @@ const SuccessfulComponent = ({ tittle, variant, show, description, textButtonPri
                 <div className="lg:mb-0 mb-4">
                   <Button
                       variant="primary"
-                      className="w-full"
+                      className={ textButtonSecondary && onClickButtonSecondary ? "w-full" : "w-auto" }
                       onClick={() => onClickButtonPrincipal()}
                   >
                       {textButtonPrincipal}
