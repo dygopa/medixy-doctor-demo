@@ -49,7 +49,7 @@ function Filters() {
     let list_services = services.map((elem: IService) => ({
       id: elem.id,
       title: elem.name,
-      description: elem.locality ? elem.locality.address : "Sin consultorio",
+      description: elem.location ? elem.location.name : "Sin consultorio",
     }));
 
     setListOfServices(list_services);
