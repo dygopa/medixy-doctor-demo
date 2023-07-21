@@ -485,6 +485,7 @@ export default function CompanionCreate({
             type="email"
             onChange={(e) => handleEmail(e.target.value)}
             placeholder="Email"
+            value={values.email}
           />
           {errors.email.length > 0 && (
             <span className="text-red-500">{errors.email}</span>
