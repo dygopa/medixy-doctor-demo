@@ -2,11 +2,11 @@
 
 import { IUser } from "domain/core/entities/userEntity";
 import {useContext, useState} from "react"
-import Popup from "../Popup/Popup";
 import ScheduleProvider from "../context/ScheduleContext";
 import Calendar from "(presentation)/components/core/Calendar";
 import Navigator from "./Navigator/Navigator";
 import CalendarIndex from "./Calendar/CalendarIndex";
+import Popup from "(presentation)/components/core/Popup/Popup";
 
 
 export default function ConfigurationIndex() {

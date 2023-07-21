@@ -75,9 +75,9 @@ export default class ScheduleUseCase {
     }
   }
 
-  async createAppointment(obj:any): Promise<any> {
+  async createAppointment(obj:any, now?:boolean): Promise<any> {
     try {
-      const response = await this._repository.createAppointment(obj);
+      const response = await this._repository.createAppointment(obj, now);
       if (response instanceof ScheduleFailure) throw response;
       return response;
     } catch (error) {

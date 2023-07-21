@@ -9,7 +9,7 @@ export default interface IScheduleRepository {
     getCalendarEvents(id:number, serviceId:number, sinceDate:any, untilDate:any): Promise<any[] | ScheduleFailure>;
     getAppointments(id:number, date?:string, status?:number): Promise<any[] | ScheduleFailure>;
     getAttentionWindows(id:number | null): Promise<any[] | ScheduleFailure>;
-    createAppointment(obj:any): Promise<any | ScheduleFailure>;
+    createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
     getAttentionWindowsByService(id:number, date?:string): Promise<any[] | ScheduleFailure>;
     getListOfTimeBaseOnSpan(): Promise<any[] | ScheduleFailure>;
     getListOfAvailableHours(): Promise<any[] | ScheduleFailure>;
@@ -128,22 +128,39 @@ export class ScheduleRepository implements IScheduleRepository {
         }
     }
 
-    async createAppointment(obj:any): Promise<any | ScheduleFailure> {
+    async createAppointment(obj:any, now?: boolean): Promise<any | ScheduleFailure> {
         try {
+            if(now){
+                let appointment = {
+                    sujetoId: obj["pacienteId"],
+                    doctorId: obj["doctorId"],
+                    estado: AppointmentEnum.PENDING,
+                    servicioId: obj["servicioId"],
+                    fechaReserva: moment().toDate(),
+                    fechaFinReserva: moment().add(30, "minutes").toDate(),
+                }
 
-            let appointment = {
-                sujetoId: obj["pacienteId"],
-                doctorId: obj["doctorId"],
-                estado: AppointmentEnum.PENDING
+                let query = supabase.from("Citas")
+                .insert(appointment).select("*").single()
+                
+                let res = await query
+    
+                return res.data ?? {};
+            }else{
+                let appointment = {
+                    sujetoId: obj["pacienteId"],
+                    doctorId: obj["doctorId"],
+                    estado: AppointmentEnum.PENDING
+                }
+
+                let query = supabase.from("Citas")
+                .update(appointment)
+                .eq('id', obj["id"])
+
+                let res = await query
+    
+                return res.data ?? {};
             }
-
-            let query = supabase.from("Citas")
-            .update(appointment)
-            .eq('id', obj["id"])
-
-            let res = await query
-
-            return res.data ?? {};
         } catch (error) {
             const exception = error as any;
             return new ScheduleFailure(scheduleFailuresEnum.serverError);

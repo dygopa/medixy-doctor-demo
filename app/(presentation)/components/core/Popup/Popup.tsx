@@ -1,11 +1,11 @@
 import React, { useContext, useEffect, useRef } from 'react'
-import { IScheduleContext, ScheduleContext } from '../context/ScheduleContext';
 import CreateAgenda from './CreateAgenda/CreateAgenda';
 import CreateAppointment from './CreateAppointment/CreateAppointment';
 import { twMerge } from 'tailwind-merge';
 import AppointmentDetail from './AppointmentDetail/AppointmentDetail';
 import CreateAgendaHelp from './CreateAgendaHelp/CreateAgendaHelp';
 import FiltersComponent from './FiltersComponent/FiltersComponent';
+import { IScheduleContext, ScheduleContext } from '(presentation)/components/Schedule/context/ScheduleContext';
 
 function Popup() {
 
