@@ -165,6 +165,18 @@ function CreateAgenda({cancelFuntion, customRef}:{
     setLoadedLists(true)
   }
 
+  function getDataFromPredifined(){
+    let findedService = listOfServices.find((elem:IService) => elem.id === parseInt(params.get("service")!))
+    if(findedService !== undefined){
+      setSelectedService({
+        id: findedService!["id"],
+        title: findedService!["title"],
+        description: findedService!["description"],
+        type: "SERVICE",
+      })
+    }
+  }
+
   useMemo(()=>{
     if(selectedService["title"] !== ""){
       let id:number = selectedService.id
@@ -199,6 +211,7 @@ function CreateAgenda({cancelFuntion, customRef}:{
   useMemo(()=>{
     if(params.get("service") !== null && loadedServices){
       setFormData({...formData, serviceId: parseInt(params.get("service")!) })
+      getDataFromPredifined()
     }
   },[loadedServices, params])
 
