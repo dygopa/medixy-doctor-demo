@@ -63,7 +63,7 @@ export default class ServiceUseCase {
     }
   }
 
-  async updateService(obj: {dataService: any; serviceId: number; localities: ILocalityService[]; deleteLocalities: ILocalityService[];}): Promise<number> {
+  async updateService(obj: {dataService: any; serviceId: number;}): Promise<number> {
     try {
       const response = await this._repository.updateService(obj);
 
