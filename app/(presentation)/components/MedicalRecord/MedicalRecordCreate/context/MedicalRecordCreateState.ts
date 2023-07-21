@@ -34,6 +34,7 @@ export interface IMedicalRecordCreateState {
     getMedicalConsultyPDF: IGetMedicalConsultyPDFState;
     getMedicalRecordPDF: IGetMedicalRecordPDFState;
     createMedicalConsulty: ICreateMedicalConsultyState;
+    updateAvatar: ISubjectAvatarState;
 }
 
 interface IGetSubjectState {
@@ -153,6 +154,13 @@ interface ICreateMedicalConsultyState {
     error: MedicalConsultyFailure | null;
 }
 
+interface ISubjectAvatarState{
+    data: string;
+    loading: boolean;
+    successful: boolean;
+    error: SubjectFailure | null; 
+}
+
 export const initialState: IMedicalRecordCreateState = {
     subject: {
         data: null,
@@ -249,6 +257,12 @@ export const initialState: IMedicalRecordCreateState = {
     },
     createMedicalConsulty: {
         data: {} as ICreateMedicalConsultyResponse,
+        loading: false,
+        successful: false,
+        error: null,
+    },
+    updateAvatar: {
+        data: "",
         loading: false,
         successful: false,
         error: null,

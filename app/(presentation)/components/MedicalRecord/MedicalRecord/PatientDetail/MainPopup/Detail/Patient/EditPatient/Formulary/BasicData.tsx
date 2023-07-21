@@ -41,6 +41,7 @@ interface IBasicDataProps {
     federalEntity: number;
     municipality: number;
     countryLocation: number;
+    municipalityCatalogId: number;
     city: string;
     direction: string;
     street: string;
@@ -63,6 +64,7 @@ interface IBasicDataProps {
       federalEntity: number;
       municipality: number;
       countryLocation: number;
+      municipalityCatalogId: number;
       city: string;
       direction: string;
       street: string;

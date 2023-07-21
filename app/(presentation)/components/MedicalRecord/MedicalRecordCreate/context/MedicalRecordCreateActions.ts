@@ -33,13 +33,14 @@ export interface IMedicalRecordCreateActions {
     getOrders: (obj: { subjectId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getMedicalRecords: (obj: { subjectId: number; medicalRecordCategoryId: number; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getFederalEntities: () => (dispatch: Dispatch<any>) => {};
-    editSubject: (subject: ISubject) => (dispatch: Dispatch<any>) => {};
+    editSubject: (subject: any) => (dispatch: Dispatch<any>) => {};
     getCompanions: (obj: { patientId: number }) => (dispatch: Dispatch<any>) => {};
     createCompanion: (patientId:number, companion:ISubject) => (dispatch: Dispatch<any>) => {};
     getTreatmentPDF: (obj: { doctor: IUser; treatment: ITreatment }) => (dispatch: Dispatch<any>) => {};
     getMedicalConsultyPDF: (obj: { doctor: IUser; medicalConsulty: IMedicalConsulty }) => (dispatch: Dispatch<any>) => {};
     getMedicalRecordPDF: (obj: { doctor: IUser; medicalRecord: IMedicalRecord }) => (dispatch: Dispatch<any>) => {};
     createMedicalConsulty: (obj: { medicalConsulty: IMedicalConsulty; appointmentId?: string | null }) => (dispatch: Dispatch<any>) => {};
+    updateAvatar: (obj:any, doctorId: string) => (dispatch: Dispatch<any>) => {};
 }
 
 const getSubjectById = (subjectId: number) => async (dispatch: Dispatch<any>) => {
@@ -190,7 +191,7 @@ const getFederalEntities = () => async (dispatch: Dispatch<any>) => {
   }
 }
 
-const editSubject = (subject: ISubject) => async (dispatch: Dispatch<any>) => {
+const editSubject = (subject: any) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "EDIT_SUBJECT_LOADING" });
     
@@ -303,6 +304,19 @@ const createMedicalConsulty = (obj: { medicalConsulty: IMedicalConsulty; appoint
   }
 }
 
+const updateAvatar = (obj:any, doctorId: string) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "UPDATE_AVATAR_LOADING" });
+    
+    const res: string = await new SubjectsUseCase().updateAvatar(obj, doctorId);
+
+    dispatch({ type: "UPDATE_AVATAR_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "UPDATE_AVATAR_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IMedicalRecordCreateActions = {
     getSubjectById,
     getAppointmentById,
@@ -321,4 +335,5 @@ export const actions: IMedicalRecordCreateActions = {
     getMedicalConsultyPDF,
     getMedicalRecordPDF,
     createMedicalConsulty,
+    updateAvatar,
 }
