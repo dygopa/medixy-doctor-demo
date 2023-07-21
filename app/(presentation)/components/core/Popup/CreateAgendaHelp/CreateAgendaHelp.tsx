@@ -1,9 +1,9 @@
+import { IScheduleContext, ScheduleContext } from '(presentation)/components/Schedule/context/ScheduleContext';
 import Button from '(presentation)/components/core/BaseComponents/Button'
 import { FormInput } from '(presentation)/components/core/BaseComponents/Form'
 import React, { useContext, useState } from 'react'
 import { FiArrowLeft, FiHelpCircle } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge'
-import { IScheduleContext, ScheduleContext } from '../../context/ScheduleContext';
 
 function CreateAgendaHelp({cancelFuntion, customRef}:{
   cancelFuntion: Function;

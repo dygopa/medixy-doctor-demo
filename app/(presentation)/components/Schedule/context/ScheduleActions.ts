@@ -92,11 +92,11 @@ const getAttentionWindows = (id:number) => async (dispatch: Dispatch<any>) => {
     }
 }
 
-const createAppointment = (obj:any) => async (dispatch: Dispatch<any>) => {
+const createAppointment = (obj:any, now?:boolean) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "CREATE_APPOINTMENT_LOADING" });
       
-      const res: any = await new ScheduleUseCase().createAppointment(obj);
+      const res: any = await new ScheduleUseCase().createAppointment(obj, now);
   
       dispatch({ type: "CREATE_APPOINTMENT_SUCCESSFUL", payload: { data: res } });
     } catch (error) {

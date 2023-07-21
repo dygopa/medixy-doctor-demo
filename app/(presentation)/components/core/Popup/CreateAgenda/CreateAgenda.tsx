@@ -3,10 +3,10 @@ import { FormInput, FormSelect } from '(presentation)/components/core/BaseCompon
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { FiCheck, FiHelpCircle } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge'
-import { IScheduleContext, ScheduleContext } from '../../context/ScheduleContext';
 import { AuthContext, IAuthContext } from '(presentation)/(layouts)/AppLayout/context/AuthContext';
 import moment from 'moment';
 import { useSearchParams } from 'next/navigation';
+import { IScheduleContext, ScheduleContext } from '(presentation)/components/Schedule/context/ScheduleContext';
 
 function CreateAgenda({cancelFuntion, customRef}:{
   cancelFuntion: Function;
