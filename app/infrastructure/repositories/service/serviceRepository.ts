@@ -198,6 +198,8 @@ export class ServicesRepository implements IServiceRepository {
       myHeaders.append("Content-Type", "application/json");
       myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
 
+      console.log(obj)
+
       var raw = JSON.stringify({
         name: obj["dataService"]["name"],
         service_category_id: obj["dataService"]["service_category_id"],
@@ -205,7 +207,8 @@ export class ServicesRepository implements IServiceRepository {
         conditions: obj["dataService"]["conditions"],
         base_price: obj["dataService"]["base_price"],
         status: obj["dataService"]["status"],
-        locations: obj["dataService"]["locations"],
+        // location: obj["dataService"]["location"],
+        // location_id: obj["dataService"]["locationId"],
       });
 
       var requestOptions = {
@@ -219,20 +222,6 @@ export class ServicesRepository implements IServiceRepository {
 
       const response = await fetch(URL, requestOptions)
       let data = await response.json()
-
-      await Promise.all(obj.localities.map(async (relation) => {
-        const res = await supabase.from("ServiciosPorLocalidades").select().eq("servicioId", relation.service_id).eq("localidadId", relation.location_id).limit(1);
-
-        if (res.data && res.data.length > 0) {
-
-          await supabase.from("ServiciosPorLocalidades").update(fromServiceToLocalitiesSupabaseDocumentData(relation)).match({ id: relation.id });
-
-        } else {
-
-          await supabase.from("ServiciosPorLocalidades").insert(fromServiceToLocalitiesSupabaseDocumentData(relation));
-
-        }
-      }));
 
       console.log("UPDATE_USER_SERVICE_ENDPOINT", data["data"])
 
