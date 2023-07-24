@@ -3,6 +3,8 @@ export const AUTH_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL + '/doctor
 export const REGISTER_USER_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL + '/doctors';
 export const UPDATE_USER_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}`;
 export const UPDATE_AVATAR_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}/avatar`;
+export const GET_OTP_CODE = () => process.env.NEXT_PUBLIC_API_URL + `/doctor/otp`;
+export const SEND_OTP_CODE = () => process.env.NEXT_PUBLIC_API_URL + `/doctor/otp/verify`;
 
 export const GET_MEDICAL_SPECIALITIES_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL + '/medical_specialty';
 export const GET_USER_MEDICAL_SPECIALITIES_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}/medical_specialty`;

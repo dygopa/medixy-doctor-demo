@@ -79,4 +79,16 @@ export default class AuthUseCase {
       throw error;
     }
   }
+
+  async updatePasswordByEmail(obj: { email: string; password: string; }): Promise<boolean> {
+    try {
+      const response = await this._repository.updatePasswordByEmail({ email: obj.email, password: obj.password });
+
+      if (response instanceof AuthFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
