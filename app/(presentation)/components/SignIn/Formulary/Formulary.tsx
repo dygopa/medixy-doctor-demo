@@ -14,12 +14,19 @@ import {
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Link from "next/link";
 import { VALIDATE_EMAIL } from "(presentation)/(utils)/errors-validation";
+import { useSearchParams } from "next/navigation";
 
 export default function Formulary() {
   const { state, actions, dispatch } =
     useContext<IFormularyContext>(FormularyContext);
   const { signInUser } = actions;
   const { data, loading, error, successful } = state.signInUser;
+
+  const searchParams = useSearchParams();
+
+  const from = searchParams.get("from");
+
+  const [showAlertSuccess, setShowAlertSuccess] = useState(false);
 
   const [values, setValues] = useState({
     email: "",
@@ -30,6 +37,18 @@ export default function Formulary() {
     email: "",
     password: "",
   });
+
+  const onShowAlertSuccess = () => {
+    setShowAlertSuccess(true);
+
+    setTimeout(() => {
+      setShowAlertSuccess(false);
+    }, 6000);
+  };
+
+  useEffect(() => {
+    if (from && from === "recovery-password") onShowAlertSuccess();
+  }, [from]);
 
   const handleEmail = () => {
     let hasError = false;
@@ -137,6 +156,11 @@ export default function Formulary() {
         show={successful === true}
         description="Redireccionando a tu cuenta..."
       />
+      <AlertComponent
+        variant="success"
+        show={showAlertSuccess}
+        description="¡Se ha reestablecido tu contraseña satisfactoriamente!"
+      />
       <div className="w-[70%] mx-auto flex flex-col justify-center items-center gap-2 mb-8 text-center">
         <h2 className="text-2xl font-bold text-center intro-x xl:text-3xl xl:text-left">
           Inicio de sesión
@@ -201,6 +225,14 @@ export default function Formulary() {
             <span className="text-red-500">{errors.password}</span>
           )}
         </div>
+      </div>
+      <div className="text-end">
+        <Link
+          className="text-base text-primary font-light"
+          href="/recovery-password"
+        >
+          ¿Olvidaste tu <span className="font-semibold">contraseña</span>?
+        </Link>
       </div>
       <div className="w-full flex flex-col justify-center items-center gap-4 text-center mt-8">
         <Button

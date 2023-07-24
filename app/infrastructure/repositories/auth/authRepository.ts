@@ -1,5 +1,5 @@
 import { IUser } from 'domain/core/entities/userEntity';
-import { SignInWithPasswordCredentials } from '@supabase/supabase-js';
+import { createClient, SignInWithPasswordCredentials, User } from '@supabase/supabase-js';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import nookies from 'nookies';
 import { getTokenMessaging } from 'infrastructure/config/firebase/firebase-client';
@@ -7,6 +7,7 @@ import { AuthFailure, authFailuresEnum } from 'domain/core/failures/auth/authFai
 import { AUTH_ENDPOINT, CHECK_OTP_ENDPOINT, GET_USER_ENDPOINT, UPDATE_USER_OTP_ENDPOINT } from 'infrastructure/config/api/dictionary';
 import { redirect } from "next/navigation";
 import { userAPIToMap } from 'domain/mappers/user/userMapper';
+
 export default interface IAuthRepository {
   signInUser(obj: {
     email: string;
@@ -18,10 +19,10 @@ export default interface IAuthRepository {
     currentPassword: string;
     newPassword: string;
   }): Promise<boolean | AuthFailure>;
+  updatePasswordByEmail(obj: { email: string; password: string }): Promise<any | AuthFailure>;
 }
 
 export class AuthRepository implements IAuthRepository {
-
   async signInUser(obj: {
     email: string;
     password: string;
@@ -186,6 +187,43 @@ export class AuthRepository implements IAuthRepository {
       nookies.set(undefined, 'access_token', access_token, { path: '/' });
 
       return "SUCCESS";
+    } catch (error) {
+      const exception = error as any;
+      return new AuthFailure(authFailuresEnum.serverError);
+    }
+  }
+
+  async updatePasswordByEmail(obj: { email: string; password: string }): Promise<any | AuthFailure> {
+    try {
+      const supabase = createClient("https://tokexynaxhnsroxlpatn.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRva2V4eW5heGhuc3JveGxwYXRuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY4MDg5MDk5OSwiZXhwIjoxOTk2NDY2OTk5fQ.EySZaRFwnxYgnoqqBEAriZyGBJdhjvtk_r33f4CtI3g", {
+          auth: {
+              autoRefreshToken: false,
+              persistSession: false
+          }
+      });
+
+      const users = await supabase.auth.admin.listUsers({
+        perPage: 1000
+      });
+
+      let user: User = {} as User;
+
+      if (users.data.users.length > 0) {
+        for (let i = 0; i < users.data.users.length; i++) {
+          if (users.data.users[i].email === obj.email) {
+            user = users.data.users[i];
+            break;
+          }
+        }
+      }
+
+      if (!user || !user.id) return new AuthFailure(authFailuresEnum.serverError);
+
+      supabase.auth.admin.updateUserById(user.id, {
+        password: obj.password
+      });
+
+      return "SUCCESS"
     } catch (error) {
       const exception = error as any;
       return new AuthFailure(authFailuresEnum.serverError);
