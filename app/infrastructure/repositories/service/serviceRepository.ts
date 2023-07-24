@@ -128,7 +128,7 @@ export class ServicesRepository implements IServiceRepository {
     }
   }
 
-  async addMediaService(obj:any, serviceId: string | number): Promise<string | ServiceFailure> {
+  async addMediaService(obj:any, serviceId?: string | number | null): Promise<string | ServiceFailure> {
     try {
       const id = nanoid(11);
       const fileName = `${id}.${obj["type"]}`;
@@ -149,7 +149,9 @@ export class ServicesRepository implements IServiceRepository {
         .from("services")
         .getPublicUrl(data.path);
 
-      await supabase.from("Servicios").update({ fotoUrl: res.data.publicUrl }).match({ id: serviceId });
+      if (serviceId) {
+        await supabase.from("Servicios").update({ fotoUrl: res.data.publicUrl }).match({ id: serviceId });
+      };
 
       return res.data.publicUrl;
       /* let cookies = nookies.get(undefined, 'access_token');

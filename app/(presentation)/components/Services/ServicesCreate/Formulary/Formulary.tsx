@@ -7,14 +7,24 @@ import {
   FormSwitch,
 } from "(presentation)/components/core/BaseComponents/Form";
 import { IService } from "domain/core/entities/serviceEntity";
-import { useState, useEffect, useContext, useMemo, ChangeEvent, useRef } from "react";
+import {
+  useState,
+  useEffect,
+  useContext,
+  useMemo,
+  ChangeEvent,
+  useRef,
+} from "react";
 import { FiCheck } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import {
   IServicesContext,
   ServicesContext,
 } from "../../context/ServicesContext";
-import { ILocality, ILocalityService } from "domain/core/entities/localityEntity";
+import {
+  ILocality,
+  ILocalityService,
+} from "domain/core/entities/localityEntity";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import {
   IStepByStepContext,
@@ -28,7 +38,8 @@ import { useRouter } from "next/navigation";
 import { ServicesRoutesEnum } from "(presentation)/(routes)/servicesRoutes";
 import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
 import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
-import { NumericFormat } from 'react-number-format';
+import { NumericFormat } from "react-number-format";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 export default function Formulary({
   userId,
@@ -82,7 +93,7 @@ export default function Formulary({
 
   const [errors, setErrors] = useState({
     base_price: "",
-  })
+  });
 
   let avatarRef = useRef<HTMLInputElement>(null);
 
@@ -132,7 +143,11 @@ export default function Formulary({
     setLocalities(localities);
   }
 
-  categories && categories !== null ? categories.sort((x: { name: string; },y: { name: any; }) => x.name.localeCompare(y.name)): categories;
+  categories && categories !== null
+    ? categories.sort((x: { name: string }, y: { name: any }) =>
+        x.name.localeCompare(y.name)
+      )
+    : categories;
 
   const LocalityComponent = ({ data }: { data: ILocality }) => {
     let isInList = localities.find((elem) => elem["location_id"] === data.id);
@@ -145,25 +160,40 @@ export default function Formulary({
         </div>
         <div className="flex justify-between items-center gap-2">
           <div className="w-3/4 flex flex-col justify-start items-start gap-1 text-left">
-            <NumericFormat  
-              value={isInList?.price}
-              disabled={!isInList}
-              placeholder="Precio"
-              min={0}
-              thousandSeparator="," 
-              decimalScale={2} 
-              fixedDecimalScale
-              prefix={'$'}
-              onValueChange={ (values, sourceInfo) =>
-                managePriceChangeInList(values.floatValue ? values.floatValue : 0, data.id)
-              }
-              className={twMerge([
-                "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 form-control w-[100%]",
-                "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
-                "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
-              ])}
-            />
+            <div className="relative lg:w-[70%]">
+              <div className="w-full">
+                <NumericFormat
+                  value={
+                    isInList?.price && isInList.price > 0
+                      ? isInList.price
+                      : undefined
+                  }
+                  disabled={!isInList}
+                  placeholder="Precio"
+                  decimalScale={2}
+                  thousandSeparator="."
+                  decimalSeparator=","
+                  prefix={""}
+                  onValueChange={(values, sourceInfo) =>
+                    managePriceChangeInList(
+                      values.floatValue ? values.floatValue : 0,
+                      data.id
+                    )
+                  }
+                  className={twMerge([
+                    "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 form-control w-[100%]",
+                    "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
+                    "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
+                  ])}
+                />
+              </div>
+
+              <div className="absolute right-4 top-2 text-md text-gray-400">
+                $
+              </div>
+            </div>
           </div>
+
           <div className="w-1/4 flex flex-col justify-center items-center">
             <span
               onClick={() => {
@@ -206,18 +236,17 @@ export default function Formulary({
 
   const onClickButtonPrincipal: Function = () => {
     router.push(ServicesRoutesEnum.Services);
-  }
+  };
 
   const onClickButtonSecondary: Function = () => {
-    router.push(ScheduleRoutesEnum.Configuration + `?service=${creationServiceData.id}`);
-  }
+    router.push(
+      ScheduleRoutesEnum.Configuration + `?service=${creationServiceData.id}`
+    );
+  };
 
   const onSubmit = () => {
-    createUserService(
-      { ...formData, id: userId },
-      localities
-    )(dispatch);
-  }
+    createUserService({ ...formData, id: userId }, localities)(dispatch);
+  };
 
   return (
     <>
@@ -229,7 +258,9 @@ export default function Formulary({
       <SuccessfulComponent
         tittle="Servicio agregado con exito"
         show={successFulCreationService}
-        description={"Tu servicio se ha creado exitosamente. ¿Deseas configurar tu agenda con este servicio?"}
+        description={
+          "Tu servicio se ha creado exitosamente. ¿Deseas configurar tu agenda con este servicio?"
+        }
         textButtonPrincipal={"Ir a configurar agenda"}
         onClickButtonPrincipal={onClickButtonSecondary}
         textButtonSecondary={"No, gracias"}
@@ -276,60 +307,60 @@ export default function Formulary({
                     onChange={(e) => handleChangeMedia(e)}
                   />*/}
                   {formData?.media?.data?.length > 0 ? (
-                  <>
-                    <div className="flex text-center w-full justify-center">
-                      <div className="w-[150px] h-[150px] relative flex justify-center hover:border hover:border-primary rounded-xl">
+                    <>
+                      <div className="flex text-center w-full justify-center">
+                        <div className="w-[150px] h-[150px] relative flex justify-center hover:border hover:border-primary rounded-xl">
+                          <input
+                            accept="image/png, image/jpeg, application/pdf"
+                            type="file"
+                            ref={avatarRef}
+                            className="opacity-0 top-0 h-full z-50 cursor-pointer"
+                            onChange={(e) => {
+                              handleChangeMedia(e);
+                            }}
+                          />
+                          <Image
+                            className="object-cover rounded-xl "
+                            src={URL.createObjectURL(
+                              b64toBlob(formData.media.data)
+                            )}
+                            alt=""
+                            fill
+                          />
+                        </div>
+                      </div>
+
+                      <p className="text-[13px] text-slate-500 font-medium pt-2">
+                        Recomendado (.png, .jpg, .jpeg)
+                      </p>
+                    </>
+                  ) : (
+                    <>
+                      <div className="flex text-center w-full justify-center">
                         <input
                           accept="image/png, image/jpeg, application/pdf"
                           type="file"
                           ref={avatarRef}
-                          className="opacity-0 top-0 h-full z-50 cursor-pointer"
+                          className="hidden"
                           onChange={(e) => {
                             handleChangeMedia(e);
                           }}
                         />
-                        <Image
-                          className="object-cover rounded-xl "
-                          src={URL.createObjectURL(
-                            b64toBlob(formData.media.data)
-                          )}
-                          alt=""
-                          fill
-                        />
+                        <div
+                          onClick={handleClickRef}
+                          className={twMerge([
+                            "transition w-[10rem] h-[10rem] rounded-xl border flex flex-col justify-center items-center cursor-pointer",
+                            "hover:bg-slate-200",
+                          ])}
+                        >
+                          <MdOutlineMedicalServices size={60} />
+                        </div>
                       </div>
-                    </div>
-
-                    <p className="text-[13px] text-slate-500 font-medium pt-2">
-                      Recomendado (.png, .jpg, .jpeg)
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <div className="flex text-center w-full justify-center">
-                      <input
-                        accept="image/png, image/jpeg, application/pdf"
-                        type="file"
-                        ref={avatarRef}
-                        className="hidden"
-                        onChange={(e) => {
-                          handleChangeMedia(e);
-                        }}
-                      />
-                      <div
-                        onClick={handleClickRef}
-                        className={twMerge([
-                          "transition w-[10rem] h-[10rem] rounded-xl border flex flex-col justify-center items-center cursor-pointer",
-                          "hover:bg-slate-200",
-                        ])}
-                      >
-                        <MdOutlineMedicalServices size={60} />
-                      </div>
-                    </div>
-                    <p className="text-[13px] text-slate-500 font-medium pt-2">
-                      Recomendado (.png, .jpg, .jpeg)
-                    </p>
-                  </>
-                )}
+                      <p className="text-[13px] text-slate-500 font-medium pt-2">
+                        Recomendado (.png, .jpg, .jpeg)
+                      </p>
+                    </>
+                  )}
                 </div>
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
@@ -384,25 +415,41 @@ export default function Formulary({
                                     />
                                 </div> */}
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit lg:w-[30%] text-slate-900 font-medium mb-2">
+                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     Precio
                   </p>
-                    <NumericFormat  
-                      defaultValue={0}
-                      min={0}
-                      thousandSeparator="," 
-                      decimalScale={2} 
-                      fixedDecimalScale
-                      prefix={'$'}
-                      onValueChange={ (values, sourceInfo) =>
-                        setFormData({ ...formData, base_price: values.floatValue ? values.floatValue : 0 })
-                      }
-                      className={twMerge([
-                        "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 lg:w-[70%]",
-                        "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
-                        "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
-                      ])}
-                    />
+                  <div className="relative lg:w-[70%]">
+                    <div className="w-full">
+                      <NumericFormat
+                        value={
+                          formData.base_price > 0
+                            ? formData.base_price
+                            : undefined
+                        }
+                        decimalScale={2}
+                        prefix={""}
+                        placeholder=""
+                        thousandSeparator="."
+                        decimalSeparator=","
+                        onValueChange={(values, sourceInfo) =>
+                          setFormData({
+                            ...formData,
+                            base_price: values.floatValue
+                              ? values.floatValue
+                              : 0,
+                          })
+                        }
+                        className={twMerge([
+                          "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
+                          "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
+                          "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
+                        ])}
+                      />
+                    </div>
+                    <div className="absolute right-4 top-1 text-lg text-gray-400">
+                      $
+                    </div>
+                  </div>
                 </div>
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
