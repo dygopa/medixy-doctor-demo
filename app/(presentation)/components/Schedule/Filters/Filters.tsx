@@ -131,7 +131,7 @@ function Filters() {
                     <div>
                       <Link
                         className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100"
-                        href="/schedule/configuration"
+                        href={ selectedService["id"] === 0 ? `/schedule/configuration` : `/schedule/configuration?service=${selectedService["id"]}`}
                       >
                         <Lucide icon="Settings" className="w-5 h-5" />
                         Configurar agenda

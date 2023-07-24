@@ -180,15 +180,26 @@ export default function CalendarIndex() {
   }, [loadedUser]);
 
   useMemo(() => {
-    if (params.get("service") && services > 0) {
-      let id = params.get("service")?.toString();
-      let serviceFinded = [...services].find(
-        (elem: any) => elem["id"] === parseInt(id!)
-      );
-      console.log(serviceFinded);
-      if (serviceFinded) {
+    if(servicesSuccessful){
+      if (params.get("service") && services.length > 0) {
+        let id = params.get("service")?.toString();
+        let serviceFinded = [...services].find(
+          (elem: any) => elem["id"] === parseInt(id!)
+        );
+        console.log(serviceFinded);
+        if (serviceFinded) {
+          activeService({
+            id: params.get("service"),
+            title: serviceFinded["name"],
+            description: serviceFinded["description"],
+            type: "SERVICE",
+          })(dispatch);
+        }
+      }
+      if(!params.get("service") && services.length > 0){
+        let serviceFinded = [...services][0]
         activeService({
-          id: params.get("service"),
+          id: serviceFinded["id"],
           title: serviceFinded["name"],
           description: serviceFinded["description"],
           type: "SERVICE",
