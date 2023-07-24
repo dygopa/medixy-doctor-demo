@@ -31,7 +31,10 @@ import {
 } from "(presentation)/(helper)/files/filesHelper";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 import { ServicesRoutesEnum } from "(presentation)/(routes)/servicesRoutes";
-import { ILocality, ILocalityService } from "domain/core/entities/localityEntity";
+import {
+  ILocality,
+  ILocalityService,
+} from "domain/core/entities/localityEntity";
 import { FiCheck } from "react-icons/fi";
 import { NumericFormat } from "react-number-format";
 
@@ -72,17 +75,20 @@ export default function Formulary({ userId }: { userId: string }) {
     },
   });
 
-  console.log(data)
+  console.log(data);
 
   let avatarRef = useRef<HTMLInputElement>(null);
+
+  const router = useRouter();
 
   const handleClickRef = () => avatarRef.current && avatarRef.current.click();
 
   const setFormDataValues = async () => {
     let imageUrl: any = "";
 
-    if(data.image_url) {
-      if (data.image_url.length > 0) imageUrl = await getBase64ImageFromUrl(data.image_url);
+    if (data.image_url) {
+      if (data.image_url.length > 0)
+        imageUrl = await getBase64ImageFromUrl(data.image_url);
     }
     setFormData({
       ...formData,
@@ -129,7 +135,11 @@ export default function Formulary({ userId }: { userId: string }) {
     if (successfulDelete) window.location.href = "/services";
   }, [successfulDelete]);
 
-  categories && categories !== null ? categories.sort((x: { name: string; },y: { name: any; }) => x.name.localeCompare(y.name)): categories;
+  categories && categories !== null
+    ? categories.sort((x: { name: string }, y: { name: any }) =>
+        x.name.localeCompare(y.name)
+      )
+    : categories;
 
   const toBase64 = (file: File) =>
     new Promise((resolve, reject) => {
@@ -165,11 +175,9 @@ export default function Formulary({ userId }: { userId: string }) {
     );
   }
 
-  const router = useRouter();
-
   const onClickButtonPrincipal: Function = () => {
     router.push(ServicesRoutesEnum.Services);
-  }
+  };
 
   return (
     <>
@@ -210,7 +218,7 @@ export default function Formulary({ userId }: { userId: string }) {
             }
             onClick={() => {
               updateService({
-                dataService: formData, 
+                dataService: formData,
                 serviceId: data.id,
               })(dispatch);
             }}
@@ -376,15 +384,20 @@ export default function Formulary({ userId }: { userId: string }) {
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Precio
                 </p>
-                <NumericFormat  
-                  defaultValue={formData?.base_price}
-                  value={formData?.base_price}
-                  thousandSeparator="," 
-                  decimalScale={2} 
-                  fixedDecimalScale
-                  prefix={'$'}
-                  onValueChange={ (values, sourceInfo) =>
-                    setFormData({ ...formData, base_price: values.floatValue ? values.floatValue : 0 })
+                <NumericFormat
+                  value={
+                    formData.base_price > 0 ? formData.base_price : undefined
+                  }
+                  decimalScale={2}
+                  prefix={""}
+                  placeholder=""
+                  thousandSeparator="."
+                  decimalSeparator=","
+                  onValueChange={(values, sourceInfo) =>
+                    setFormData({
+                      ...formData,
+                      base_price: values.floatValue ? values.floatValue : 0,
+                    })
                   }
                   className={twMerge([
                     "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 lg:w-[70%]",
