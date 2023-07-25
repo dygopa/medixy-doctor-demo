@@ -12,8 +12,8 @@ export interface ILocality {
     municipalityId?: number | null;
     countryLocationId?: number | null;
     street?: string | null;
-    isPublic: boolean;
-    isVirtual: boolean;
+    is_public: boolean;
+    is_virtual: boolean;
     image_url: string;
     latitude: number;
     longitude: number;
