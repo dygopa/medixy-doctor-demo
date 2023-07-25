@@ -1,3 +1,4 @@
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
 import { Dispatch, SetStateAction, useContext } from "react";
 import {
@@ -45,7 +46,7 @@ export default function Orders({
                   className="hover:bg-dark hover:bg-opacity-10 px-2 py-1 rounded-md"
                 >
                   <p className="font-normal text-[13px] text-slate-500 cursor-pointer">
-                    Ver más
+                    <Lucide icon="Eye" className="w-5 h-5" />
                   </p>
                 </button>
               </div>
