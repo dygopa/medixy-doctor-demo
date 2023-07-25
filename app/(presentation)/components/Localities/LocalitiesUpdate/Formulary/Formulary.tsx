@@ -110,6 +110,8 @@ export default function Formulary({
     gettingUserLocality(localityId, userId)(dispatch);
   }, []);
 
+  console.log(data)
+
   const setFormDataValues = async () => {
     let imageUrl: any = "";
 
@@ -131,8 +133,8 @@ export default function Formulary({
       address: data?.address ?? "",
       latitude: data?.latitude ?? "",
       longitude: data?.longitude ?? "",
-      isPublic: data?.isPublic === true ? 1 : 0,
-      isVirtual: data?.isVirtual === true ? 1 : 0,
+      isPublic: data?.is_public ? 1 : 0,
+      isVirtual: data?.is_virtual ? 1 : 0,
       media: {
         data: imageUrl.toString().split(",")[1],
         type: data?.type,
