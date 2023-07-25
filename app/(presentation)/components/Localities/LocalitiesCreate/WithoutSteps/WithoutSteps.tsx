@@ -180,7 +180,8 @@ export default function WithoutSteps({
             createUserLocalityLoading ||
             formData?.name === "" ||
             formData?.postal_code === "" ||
-            formData?.city === ""
+            formData?.city === "" ||
+            formData?.federalEntity === 0
           }
           onClick={() => {
             createUserLocality({ ...formData, id: userId })(dispatch);
