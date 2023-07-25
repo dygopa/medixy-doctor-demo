@@ -219,7 +219,8 @@ export default function Formulary({
               loadingUpdate ||
               formData?.postal_code === "" ||
               formData?.name === "" ||
-              formData?.city === ""
+              formData?.city === "" ||
+              formData?.federalEntity === 0
             }
             onClick={() => {
               updateUserLocality(formData, data.id)(dispatch);
@@ -410,7 +411,7 @@ export default function Formulary({
                 </div>
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Estado
+                    Estado <span className="text-primary font-bold">*</span>
                   </p>
                   <div className="lg:w-[70%]">
                     <AutocompleteInputStates

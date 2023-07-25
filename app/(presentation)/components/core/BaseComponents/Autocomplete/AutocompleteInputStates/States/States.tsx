@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
+import Button from "../../../Button";
 import { FormInput } from "../../../Form";
 import Lucide from "../../../Lucide";
 import {
@@ -126,7 +127,28 @@ export default function States({
           }}
         />
       </div>
-
+      { field.length > 0 &&
+        <div className="absolute top-2 right-3">
+          <Button onClick={
+              () => {
+                setField("")
+                getFederalEntitiesDispatch(null);
+                setItemsShow([]);
+                onClickItem({
+                  entityId: 0,
+                  nameEntity: "",
+                  abbrevation: "",
+                })
+              }
+            }
+            className="p-0 border-none hover:bg-gray-400 radius-lg"
+          >
+            
+              <Lucide icon="X" className="" size={20}/>
+            
+          </Button>
+        </div>
+      }
       {itemsShow.length > 0 && !loading && !error && focus && (
         <div className="absolute w-full bg-white shadow-md py-2 z-50 max-h-[140px] overflow-y-auto">
           {itemsShow.map((itemShow: IFederalEntity) => (

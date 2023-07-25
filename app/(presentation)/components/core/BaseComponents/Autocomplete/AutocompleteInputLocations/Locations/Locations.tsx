@@ -1,6 +1,8 @@
 import clsx from "clsx";
 import { ICountryLocation } from "domain/core/entities/countryEntity";
+import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
+import Button from "../../../Button";
 import { FormInput } from "../../../Form";
 import Lucide from "../../../Lucide";
 import {
@@ -100,6 +102,10 @@ export default function Locations({
     setField(defaultValue);
   }, [defaultValue]);
 
+  useEffect (() => {
+    setField("");
+  }, [federalEntityId, municipalityId])
+
   useEffect(() => {
     if (countryLocationId)
       getCountryLocationById({ id: countryLocationId })(dispatch);
@@ -135,6 +141,31 @@ export default function Locations({
           }}
         />
       </div>
+
+      { field.length > 0 &&
+        <div className="absolute top-2 right-3">
+          <Button onClick={
+              () => {
+                setField("")
+                getCountryLocationsDispatch();
+                setItemsShow([]);
+                onClickItem({
+                  id: 0,
+                  municipalityId: municipalityId ?? 0,
+                  name: "",
+                  federalEntityId: federalEntityId ?? 0,
+                  federalEntity: {} as IFederalEntity,
+                })
+              }
+            }
+            className="p-0 border-none hover:bg-gray-400 radius-lg"
+          >
+            
+              <Lucide icon="X" className="" size={20}/>
+            
+          </Button>
+        </div>
+      }
 
       {itemsShow.length > 0 && !loading && !error && focus && (
         <div className="absolute w-full bg-white shadow-md py-2 z-50 max-h-[140px] overflow-y-auto">
