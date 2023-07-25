@@ -41,7 +41,8 @@ export default function Locations({
     useContext<IAutocompleteInputLocationsContext>(
       AutocompleteInputLocationsContext
     );
-  const { getCountryLocations, getCountryLocationById } = actions;
+  const { getCountryLocations, getCountryLocationById, getMunicipalityById } = actions;
+  const { data: municipality } = state.municipality;
   const {
     data: countryLocations,
     loading,
@@ -54,11 +55,16 @@ export default function Locations({
   const [itemsShow, setItemsShow] = useState<ICountryLocation[]>([]);
   const [focus, setFocus] = useState(false);
 
+  useEffect(() => {
+    if (municipalityId) getMunicipalityById({ id: municipalityId })(dispatch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [municipalityId]);
+
   const getCountryLocationsDispatch = (value?: string | null) =>
     getCountryLocations({
       searchQuery: value ? value.toLowerCase().trim() : "",
       federalEntityId: federalEntityId,
-      municipalityId: municipalityId,
+      municipalityId: municipality.data?.catalogId,
     })(dispatch);
 
   const handleAutocomplete = (e: ChangeEvent<HTMLInputElement>) => {
@@ -146,12 +152,11 @@ export default function Locations({
         <div className="absolute top-2 right-3">
           <Button onClick={
               () => {
-                setField("")
                 getCountryLocationsDispatch();
                 setItemsShow([]);
                 onClickItem({
                   id: 0,
-                  municipalityId: municipalityId ?? 0,
+                  municipalityId: municipality.data?.catalogId ?? 0,
                   name: "",
                   federalEntityId: federalEntityId ?? 0,
                   federalEntity: {} as IFederalEntity,

@@ -164,7 +164,7 @@ export default function Contact({ values, setValues, errors, setErrors }: IConta
                 }
                 disabled={values.municipality === 0}
                 className="form-control lg:w-full"
-                municipalityId={values.municipalityCatalogId}
+                municipalityId={values.municipality}
                 federalEntityId={values.federalEntity}
                 countryLocationId={values.countryLocation}
               />
