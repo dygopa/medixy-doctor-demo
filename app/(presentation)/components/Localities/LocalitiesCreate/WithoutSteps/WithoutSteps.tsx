@@ -432,7 +432,7 @@ export default function WithoutSteps({
                     }
                     disabled={formData.municipality === 0}
                     className="form-control lg:w-full"
-                    municipalityId={formData.municipalityCatalogId}
+                    municipalityId={formData.municipality}
                     federalEntityId={formData.federalEntity}
                   />
                 </div>

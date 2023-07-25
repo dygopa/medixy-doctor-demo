@@ -67,5 +67,38 @@ export const AutocompleteInputLocationsReducer = (state: any, action: any) => {
             error: action.payload.error,
           },
         }
+        case 'GET_MUNICIPALITY_LOADING' :
+          return {
+            ...state,
+            municipality: {
+              ...state.municipality,
+              data: {},
+              loading: true,
+              successful: false,
+              error: null,
+            },
+          };
+        case 'GET_MUNICIPALITY_SUCCESSFUL' :
+          return {
+            ...state,
+            municipality: {
+              ...state.municipality,
+              data: action.payload.data,
+              loading: false,
+              successful: true,
+              error: null,
+            },
+          };
+        case 'GET_MUNICIPALITY_ERROR' :
+          return {
+            ...state,
+            municipality: {
+              ...state.municipality,
+              data: {},
+              loading: false,
+              successful: false,
+              error: action.payload.error,
+            },
+          }
       }
   }

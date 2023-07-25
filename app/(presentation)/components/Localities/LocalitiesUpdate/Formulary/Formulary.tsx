@@ -110,7 +110,7 @@ export default function Formulary({
     gettingUserLocality(localityId, userId)(dispatch);
   }, []);
 
-  console.log(data)
+  console.log(formData)
 
   const setFormDataValues = async () => {
     let imageUrl: any = "";
@@ -504,7 +504,7 @@ export default function Formulary({
                       }
                       disabled={formData.municipality === 0}
                       className="form-control lg:w-full"
-                      municipalityId={formData.municipalityCatalogId}
+                      municipalityId={formData.municipality}
                       federalEntityId={formData.federalEntity}
                       countryLocationId={formData.countryLocation}
                     />
