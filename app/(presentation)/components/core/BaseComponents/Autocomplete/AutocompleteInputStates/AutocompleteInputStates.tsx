@@ -11,6 +11,7 @@ interface IAutocompleteInputStatesProps {
   className?: string;
   onChange?: (item: string) => void;
   onClick?: (item: IFederalEntity) => void;
+  federalEntityId?: number | null;
 }
 
 export default function AutocompleteInputStates({
@@ -22,6 +23,7 @@ export default function AutocompleteInputStates({
   className = "",
   onChange = (item: string) => {},
   onClick = (item: IFederalEntity) => {},
+  federalEntityId,
 }: IAutocompleteInputStatesProps) {
   return (
     <AutocompleteInputStatesProvider>
@@ -34,6 +36,7 @@ export default function AutocompleteInputStates({
         className={className}
         onClick={onClick}
         onChange={onChange}
+        federalEntityId={federalEntityId}
       />
     </AutocompleteInputStatesProvider>
   );
