@@ -442,7 +442,7 @@ export default function Formulary({
             }
             disabled={values.municipality === 0}
             className="form-control w-full"
-            municipalityId={values.municipalityCatalogId}
+            municipalityId={values.municipality}
             federalEntityId={values.federalEntity}
           />
           {/* <FormSelect

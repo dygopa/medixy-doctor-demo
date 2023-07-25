@@ -1,10 +1,13 @@
 import { IGetCountryLocationResponse, IGetCountryLocationsResponse } from "domain/core/response/countryResponse";
+import { IGetMunicipalityResponse } from "domain/core/response/municipalityResponse";
 import CountriesUseCase  from "domain/useCases/country/countryUseCase"
+import MunicipalitiesUseCase from "domain/useCases/municipality/municipalityUseCases";
 import { Dispatch } from "react";
 
 export interface IAutocompleteInputLocationsActions {
     getCountryLocations: (obj: { searchQuery?: string | null; federalEntityId?: number | null; municipalityId?: number | null }) => (dispatch: Dispatch<any>) => {};
     getCountryLocationById: (obj: { id: number }) => (dispatch: Dispatch<any>) => {};
+    getMunicipalityById: (obj: { id: number }) => (dispatch: Dispatch<any>) => {};
 }
 
 const getCountryLocations = (obj: { searchQuery?: string | null; federalEntityId?: number | null; municipalityId?: number | null }) => async (dispatch: Dispatch<any>) => {
@@ -31,7 +34,20 @@ const getCountryLocationById = (obj: { id: number }) => async (dispatch: Dispatc
     }
 }
 
+const getMunicipalityById = (obj: { id: number }) => async (dispatch: Dispatch<any>) => {
+    try {
+        dispatch({ type: "GET_MUNICIPALITY_LOADING" });
+
+        const res: IGetMunicipalityResponse = await new MunicipalitiesUseCase().getMunicipalityById({ id: obj.id });
+
+        dispatch({ type: "GET_MUNICIPALITY_SUCCESSFUL", payload: { data: res } });
+    } catch (error) {
+        dispatch({ type: "GET_MUNICIPALITY_ERROR", payload: { error: error } });
+    }
+}
+
 export const actions: IAutocompleteInputLocationsActions = {
     getCountryLocations,
     getCountryLocationById,
+    getMunicipalityById,
 }
