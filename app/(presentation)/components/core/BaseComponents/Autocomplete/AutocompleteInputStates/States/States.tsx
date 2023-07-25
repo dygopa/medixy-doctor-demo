@@ -10,6 +10,7 @@ import {
 
 interface IStatesProps {
   defaultValue?: string;
+  federalEntityId?: number | null;
   setDefaultValue?: boolean;
   itemsAdded?: IFederalEntity[];
   placeholder?: string;
@@ -22,6 +23,7 @@ interface IStatesProps {
 export default function States({
   defaultValue = "",
   setDefaultValue = false,
+  federalEntityId,
   itemsAdded = [],
   placeholder = "",
   disabled,
@@ -31,13 +33,14 @@ export default function States({
 }: IStatesProps) {
   const { state, actions, dispatch } =
     useContext<IAutocompleteInputStatesContext>(AutocompleteInputStatesContext);
-  const { getFederalEntities } = actions;
+  const { getFederalEntities, getFederalEntityById } = actions;
   const {
     data: federalEntities,
     loading,
     error,
     successful,
   } = state.federalEntities;
+  const { data: federalEntity } = state.federalEntity
 
   const [field, setField] = useState("");
   const [itemsShow, setItemsShow] = useState<IFederalEntity[]>([]);
@@ -80,6 +83,15 @@ export default function States({
 
     return false;
   };
+
+  useEffect(() => {
+    if (federalEntityId) getFederalEntityById({ id: federalEntityId })(dispatch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [federalEntityId]);
+
+  useEffect(() => {
+    if (federalEntity.entityId) setField(federalEntity.nameEntity);
+  }, [federalEntity]);
 
   useEffect(() => {
     if (successful && federalEntities.length > 0) setItemsShow(federalEntities);
