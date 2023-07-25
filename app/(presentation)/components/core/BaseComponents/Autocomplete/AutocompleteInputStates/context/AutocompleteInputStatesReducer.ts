@@ -33,5 +33,38 @@ export const AutocompleteInputStatesReducer = (state: any, action: any) => {
             error: action.payload.error,
           },
         }
+        case 'GET_FEDERAL_ENTITY_LOADING' :
+          return {
+            ...state,
+            federalEntity: {
+              ...state.federalEntity,
+              data: {},
+              loading: true,
+              successful: false,
+              error: null,
+            },
+          };
+        case 'GET_FEDERAL_ENTITY_SUCCESSFUL' :
+          return {
+            ...state,
+            federalEntity: {
+              ...state.federalEntity,
+              data: action.payload.data,
+              loading: false,
+              successful: true,
+              error: null,
+            },
+          };
+        case 'GET_FEDERAL_ENTITY_ERROR' :
+          return {
+            ...state,
+            federalEntity: {
+              ...state.federalEntity,
+              data: {},
+              loading: false,
+              successful: false,
+              error: action.payload.error,
+            },
+          }
       }
   }

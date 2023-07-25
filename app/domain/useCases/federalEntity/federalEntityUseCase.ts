@@ -16,4 +16,16 @@ export default class FederalEntitiesUseCase {
             throw error;
         }
     }
+
+    async getFederalEntityById(obj: { id: number; }): Promise<IFederalEntity> {
+        try {
+            const response = await this._repository.getFederalEntityById({ id: obj.id });
+
+            if (response instanceof FederalEntityFailure) throw response;
+
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
 }

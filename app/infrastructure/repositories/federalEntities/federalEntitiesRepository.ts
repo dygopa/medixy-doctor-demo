@@ -38,5 +38,20 @@ export class FederalEntityRepository implements IFederalEntityRepository {
       return new FederalEntityFailure(federalEntityFailuresEnum.serverError);
     }
   }
+
+  async getFederalEntityById(obj: { id: number }): Promise<IFederalEntity | FederalEntityFailure> {
+    try {
+      const res = await supabase.from("EntidadFederativa").select("*", { count: "exact" }).eq("id", obj.id);
+
+      let municipality: IFederalEntity = {} as IFederalEntity;
+
+      if (res.data && res.data.length > 0) municipality = federalEntitySupabaseToMap(res.data[0]);
+
+      return municipality;
+    } catch (error) {
+      const exception = error as any;
+      return new FederalEntityFailure(federalEntityFailuresEnum.serverError);
+    }
+  }
   
 }
