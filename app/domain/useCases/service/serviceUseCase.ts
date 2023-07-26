@@ -26,6 +26,16 @@ export default class ServiceUseCase {
     }
   }
 
+  async getUserBaseServices(id:number): Promise<Array<IService>> {
+    try {
+      const response = await this._repository.getUserBaseServices(id);
+      if (response instanceof ServiceFailure) throw response;
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getService(id:number, userId:number): Promise<IService> {
     try {
 
@@ -43,13 +53,9 @@ export default class ServiceUseCase {
     }
   }
 
-  async createUserService(obj:any, list:Array<any>): Promise<string> {
+  async createUserService(obj:any): Promise<string> {
     try {
-      list = list.map(elem => ({
-        location_id: elem["location_id"],
-        price: elem["price"]
-      }))
-      const response: any = await this._repository.createUserService({...obj, locations: list});
+      const response: any = await this._repository.createUserService({...obj});
 
       console.log(response)
 

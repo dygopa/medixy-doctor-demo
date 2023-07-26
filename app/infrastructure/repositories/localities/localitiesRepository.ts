@@ -9,8 +9,8 @@ import { getFileFromBase64 } from 'infrastructure/utils/files/filesUtils';
 export default interface ILocalitiesRepository {
   getMedicalCenters(): Promise<Array<ILocality> | LocalityFailure>;
   getUserLocalities(id:number): Promise<Array<ILocality> | LocalityFailure>;
-  createUserLocality(obj:any): Promise<string | LocalityFailure>;
-  updateUserLocality(obj:any, id:number): Promise<string | LocalityFailure>;
+  createUserLocality(obj:any, services: any[]): Promise<string | LocalityFailure>;
+  updateUserLocality(obj:any, id:number, services: any[]): Promise<string | LocalityFailure>;
   addMediaLocality(obj:any, localityId: string): Promise<string | LocalityFailure>;
 }
 
@@ -105,7 +105,7 @@ export class LocalitiesRepository implements ILocalitiesRepository {
     }
   }
 
-  async createUserLocality(obj:any): Promise<string | LocalityFailure> {
+  async createUserLocality(obj:any, services: any[]): Promise<string | LocalityFailure> {
     try {
       let cookies = nookies.get(undefined, 'access_token');
 
@@ -130,6 +130,7 @@ export class LocalitiesRepository implements ILocalitiesRepository {
         street: obj["street"] ?? null,
         is_public: obj["isPublic"] === 1 ? true : false,
         is_virtual: obj["isVirtual"] === 1 ? true : false,
+        services: services,
       });
 
       var requestOptions = {
@@ -156,7 +157,7 @@ export class LocalitiesRepository implements ILocalitiesRepository {
     }
   }
 
-  async updateUserLocality(obj:any, id:number): Promise<string | LocalityFailure> {
+  async updateUserLocality(obj:any, id:number, services: any[]): Promise<string | LocalityFailure> {
     try {
       let cookies = nookies.get(undefined, 'access_token');
 
@@ -179,9 +180,10 @@ export class LocalitiesRepository implements ILocalitiesRepository {
           street: obj["street"] ?? null,
           city: obj["city"] ?? "",
           latitude: obj["latitude"].length > 0 ? obj["latitude"] : null,
-        longitude: obj["longitude"].length > 0 ? obj["longitude"] : null,
+          longitude: obj["longitude"].length > 0 ? obj["longitude"] : null,
           is_public: obj["isPublic"] === 1 ? true : false,
           is_virtual: obj["isVirtual"] === 1 ? true : false,
+          services: services,
       });
 
       console.log(raw)

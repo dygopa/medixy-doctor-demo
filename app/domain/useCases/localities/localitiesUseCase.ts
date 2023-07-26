@@ -41,9 +41,9 @@ export default class LocalitiesUseCase {
         }
     }
 
-    async createUserLocality(obj:any): Promise<string> {
+    async createUserLocality(obj:any, services: any[]): Promise<string> {
         try {
-            const response: any = await this._repository.createUserLocality(obj);
+            const response: any = await this._repository.createUserLocality(obj, services);
 
             if (response instanceof LocalityFailure) throw response;
             
@@ -55,9 +55,9 @@ export default class LocalitiesUseCase {
         }
     }
 
-    async updateUserLocality(obj:any, id:number): Promise<string> {
+    async updateUserLocality(obj:any, id:number, services: any[]): Promise<string> {
         try {
-            const response: any = await this._repository.updateUserLocality(obj, id);
+            const response: any = await this._repository.updateUserLocality(obj, id, services);
   
             if (response instanceof LocalityFailure) throw response;
             

@@ -308,6 +308,72 @@ export const LocalitiesReducer = (state: any, action: any) => {
             error: action.payload.error,
           },
         }
+      case 'GET_USER_SERVICES_LOADING':
+        return {
+          ...state,
+          getUserServices: {
+            ...state.getUserServices,
+            data: null,
+            loading: true,
+            successful: false,
+            error: null,
+          },
+        };
+      case 'GET_USER_SERVICES_SUCCESSFUL':
+        return {
+          ...state,
+          getUserServices: {
+            ...state.getUserServices,
+            data: action.payload.data,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+        };
+      case 'GET_USER_SERVICES_ERROR':
+        return {
+          ...state,
+          getUserServices: {
+            ...state.getUserServices,
+            data: null,
+            loading: false,
+            successful: false,
+            error: action.payload.error,
+          },
+        };
+        case 'GET_USER_BASE_SERVICES_LOADING':
+          return {
+            ...state,
+            getUserBaseServices: {
+              ...state.getUserBaseServices,
+              data: null,
+              loading: true,
+              successful: false,
+              error: null,
+            },
+          };
+        case 'GET_USER_BASE_SERVICES_SUCCESSFUL':
+          return {
+            ...state,
+            getUserBaseServices: {
+              ...state.getUserBaseServices,
+              data: action.payload.data,
+              loading: false,
+              successful: true,
+              error: null,
+            },
+          };
+        case 'GET_USER_BASE_SERVICES_ERROR':
+          return {
+            ...state,
+            getUserBaseServices: {
+              ...state.getUserBaseServices,
+              data: null,
+              loading: false,
+              successful: false,
+              error: action.payload.error,
+            },
+          };
     default:
       return state;
   }

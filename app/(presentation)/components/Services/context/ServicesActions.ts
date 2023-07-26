@@ -46,7 +46,7 @@ const getUserServices = (id:number) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "GET_USER_SERVICES_LOADING" });
     
-    const res: Array<IService> = await new ServicesUseCase().getUserServices(id);
+    const res: Array<IService> = await new ServicesUseCase().getUserBaseServices(id);
 
     dispatch({ type: "GET_USER_SERVICES_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
@@ -68,11 +68,11 @@ const getService = (id:number, userId:number) => async (dispatch: Dispatch<any>)
   }
 }
 
-const createUserService = (obj:any, list:Array<any>) => async (dispatch: Dispatch<any>) => {
+const createUserService = (obj:any) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "CREATE_USER_SERVICE_LOADING" });
     
-    const res: string = await new ServicesUseCase().createUserService(obj, list);
+    const res: string = await new ServicesUseCase().createUserService(obj);
 
     dispatch({ type: "CREATE_USER_SERVICE_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
