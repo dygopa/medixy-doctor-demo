@@ -6,7 +6,8 @@ import {
   UPDATE_USER_SERVICE_ENDPOINT, 
   GET_CATEGORIES_SERVICES_ENDPOINT, 
   GET_USER_SERVICES_ENDPOINT, 
-  DELETE_USER_SERVICE_ENDPOINT
+  DELETE_USER_SERVICE_ENDPOINT,
+  GET_USER_BASE_SERVICES_ENDPOINT
 } from "infrastructure/config/api/dictionary";
 import nookies from 'nookies';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
@@ -23,6 +24,7 @@ export default interface IServiceRepository {
   updateService(obj:any, id:number): Promise<number | ServiceFailure>;
   addMediaService(obj:any, serviceId: string): Promise<string | ServiceFailure>;
   getLocalitiesToService(serviceId: number): Promise<Array<IServiceToLocality> | ServiceFailure>
+  getUserBaseServices(id:number): Promise<Array<any> | ServiceFailure>
 }
 
 export class ServicesRepository implements IServiceRepository {
@@ -87,6 +89,36 @@ export class ServicesRepository implements IServiceRepository {
     }
   }
 
+  async getUserBaseServices(id:number): Promise<Array<any> | ServiceFailure> {
+    try {
+      let cookies = nookies.get(undefined, 'access_token');
+
+      var myHeaders = new Headers();
+
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
+
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+      } as RequestInit;
+
+      let URL = GET_USER_BASE_SERVICES_ENDPOINT(id) as RequestInfo
+
+      const response = await fetch(URL, requestOptions)
+      let data = await response.json()
+
+      //console.log("GET_USER_SERVICES_ENDPOINT", data["data"])
+
+      return data["data"] ?? [];
+    } catch (error) {
+      console.log("Error", error)
+      const exception = error as any;
+      return new ServiceFailure(serviceFailuresEnum.serverError);
+    }
+  }
+
   async createUserService(obj:any): Promise<string | ServiceFailure> {
     try {
       let cookies = nookies.get(undefined, 'access_token');
@@ -103,7 +135,6 @@ export class ServicesRepository implements IServiceRepository {
         conditions: obj["conditions"],
         base_price: obj["base_price"],
         status: obj["status"],
-        locations: obj["locations"]
       });
 
       var requestOptions = {

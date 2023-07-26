@@ -1,5 +1,6 @@
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { ILocality } from "domain/core/entities/localityEntity";
+import { IService } from "domain/core/entities/serviceEntity";
 import { IGetCountryLocationsResponse } from "domain/core/response/countryResponse";
 import { IGetMunicipalitiesResponse } from "domain/core/response/municipalityResponse";
 import CountriesUseCase from "domain/useCases/country/countryUseCase";
@@ -7,6 +8,7 @@ import FederalEntitiesUseCase from "domain/useCases/federalEntity/federalEntityU
 import LocalitiesUseCase from "domain/useCases/localities/localitiesUseCase";
 import MunicipalitiesUseCase from "domain/useCases/municipality/municipalityUseCases";
 import { Dispatch } from "react";
+import ServicesUseCase from "domain/useCases/service/serviceUseCase";
 
 export interface ILocalitiesActions {
   getMedicalCenters: Function;
@@ -19,6 +21,8 @@ export interface ILocalitiesActions {
   updateUserLocality: Function;
   gettingUserLocality: Function;
   updateLocalityData: Function;
+  getUserServices: Function;
+  getUserBaseServices: Function;
 }
 
 const getMedicalCenters = () => async (dispatch: Dispatch<any>) => {
@@ -97,11 +101,11 @@ const getUserLocalities = (id:number) => async (dispatch: Dispatch<any>) => {
   }
 }
 
-const createUserLocality = (obj:any) => async (dispatch: Dispatch<any>) => {
+const createUserLocality = (obj:any, services: any[]) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "CREATE_USER_LOCALITY_LOADING" });
     
-    const res: string = await new LocalitiesUseCase().createUserLocality(obj);
+    const res: string = await new LocalitiesUseCase().createUserLocality(obj, services);
 
     dispatch({ type: "CREATE_USER_LOCALITY_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
@@ -110,11 +114,11 @@ const createUserLocality = (obj:any) => async (dispatch: Dispatch<any>) => {
   }
 }
 
-const updateUserLocality = (obj:any, id:number) => async (dispatch: Dispatch<any>) => {
+const updateUserLocality = (obj:any, id:number, services: any[]) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "UPDATE_USER_LOCALITY_LOADING" });
     
-    const res: string = await new LocalitiesUseCase().updateUserLocality(obj, id);
+    const res: string = await new LocalitiesUseCase().updateUserLocality(obj, id, services);
 
     dispatch({ type: "UPDATE_USER_LOCALITY_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
@@ -136,6 +140,32 @@ const gettingUserLocality = (id:number, userId:number) => async (dispatch: Dispa
   }
 }
 
+const getUserServices = (id:number) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_USER_SERVICES_LOADING" });
+    
+    const res: Array<IService> = await new ServicesUseCase().getUserServices(id);
+
+    dispatch({ type: "GET_USER_SERVICES_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "GET_USER_SERVICES_ERROR", payload: { error: error } });
+  }
+}
+
+const getUserBaseServices = (id:number) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_USER_BASE_SERVICES_LOADING" });
+    
+    const res: Array<IService> = await new ServicesUseCase().getUserBaseServices(id);
+
+    dispatch({ type: "GET_USER_BASE_SERVICES_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "GET_USER_BASE_SERVICES_ERROR", payload: { error: error } });
+  }
+}
+
 const updateLocalityData = (obj:Object) => async (dispatch: Dispatch<any>) => dispatch({ type: "UPDATE_LOCALITY_DATA", payload: { data: obj } });
 
 export const actions: ILocalitiesActions = {
@@ -148,5 +178,7 @@ export const actions: ILocalitiesActions = {
   createUserLocality,
   updateUserLocality,
   gettingUserLocality,
-  updateLocalityData
+  updateLocalityData,
+  getUserServices,
+  getUserBaseServices
 }

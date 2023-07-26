@@ -21,6 +21,7 @@ export const GET_COUNTRY_STATES_ENDPOINT : string = process.env.NEXT_PUBLIC_API_
 
 export const GET_CATEGORIES_SERVICES_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL + `/service_category`;
 export const GET_USER_SERVICES_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}/service`;
+export const GET_USER_BASE_SERVICES_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}/service-base`;
 export const CREATE_USER_SERVICE_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}/service`;
 export const UPDATE_USER_SERVICE_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/service/${id}`;
 export const DELETE_USER_SERVICE_ENDPOINT = (id:number, service_id:number) => process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}/service/${service_id}`;

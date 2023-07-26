@@ -46,7 +46,7 @@ export default function TableServices({ user }: { user: IUser }) {
     );
   };
 
-  console.log(data)
+  console.log(data);
 
   const CardData = ({ data }: { data: IService }) => {
     return (
@@ -95,9 +95,9 @@ export default function TableServices({ user }: { user: IUser }) {
                 Servicio
               </Table.Th>
 
-              <Table.Th className="border-b-0 whitespace-nowrap text-base">
+              {/* <Table.Th className="border-b-0 whitespace-nowrap text-base">
                 Consultorio
-              </Table.Th>
+    </Table.Th> */}
 
               <Table.Th className="border-b-0 whitespace-nowrap text-base">
                 Estatus
@@ -124,11 +124,11 @@ export default function TableServices({ user }: { user: IUser }) {
                     </p>
                   </Table.Td>
 
-                  <Table.Td>
+                  {/*  <Table.Td>
                     <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">
                       {service.location.name}
                     </p>
-                  </Table.Td>
+              </Table.Td> */}
 
                   <Table.Td>
                     <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">

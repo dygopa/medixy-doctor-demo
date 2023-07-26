@@ -40,6 +40,7 @@ import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
 import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import { NumericFormat } from "react-number-format";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
+import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
 
 export default function Formulary({
   userId,
@@ -76,7 +77,6 @@ export default function Formulary({
   const [loadedAPI, setLoadedAPI] = useState(false);
 
   const [tags, setTags] = useState(["1", "2"]);
-  let [localities, setLocalities] = useState<Array<ILocalityService>>([]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -122,7 +122,7 @@ export default function Formulary({
     setFormData({ ...formData, media: obj });
   }
 
-  function manageAddToList(data: ILocality) {
+  /* function manageAddToList(data: ILocality) {
     let list: Array<ILocalityService> = [...localities];
     if (list.some((elem) => elem["location_id"] === data.id)) {
       list = list.filter((elem) => elem["location_id"] !== data.id);
@@ -141,7 +141,7 @@ export default function Formulary({
     let index = localities.findIndex((elem) => elem["location_id"] === id);
     localities[index].price = value;
     setLocalities(localities);
-  }
+  } */
 
   categories && categories !== null
     ? categories.sort((x: { name: string }, y: { name: any }) =>
@@ -149,7 +149,8 @@ export default function Formulary({
       )
     : categories;
 
-  const LocalityComponent = ({ data }: { data: ILocality }) => {
+  {
+    /* const LocalityComponent = ({ data }: { data: ILocality }) => {
     let isInList = localities.find((elem) => elem["location_id"] === data.id);
 
     return (
@@ -211,7 +212,8 @@ export default function Formulary({
         </div>
       </div>
     );
-  };
+  }; */
+  }
 
   const loadAPI = () => {
     getCategories()(dispatch);
@@ -235,17 +237,15 @@ export default function Formulary({
   const router = useRouter();
 
   const onClickButtonPrincipal: Function = () => {
-    router.push(ServicesRoutesEnum.Services);
+    router.push(LocalitiesRoutesEnum.Localities);
   };
 
   const onClickButtonSecondary: Function = () => {
-    router.push(
-      ScheduleRoutesEnum.Configuration + `?service=${creationServiceData.id}`
-    );
+    router.push(ServicesRoutesEnum.Services);
   };
 
   const onSubmit = () => {
-    createUserService({ ...formData, id: userId }, localities)(dispatch);
+    createUserService({ ...formData, id: userId })(dispatch);
   };
 
   return (
@@ -259,12 +259,12 @@ export default function Formulary({
         tittle="Servicio agregado con exito"
         show={successFulCreationService}
         description={
-          "Tu servicio se ha creado exitosamente. ¿Deseas configurar tu agenda con este servicio?"
+          "Tu servicio se ha creado exitosamente. Ahora podrás asociar este servicio a uno de tus consultorios"
         }
-        textButtonPrincipal={"Ir a configurar agenda"}
-        onClickButtonPrincipal={onClickButtonSecondary}
-        textButtonSecondary={"No, gracias"}
-        onClickButtonSecondary={onClickButtonPrincipal}
+        textButtonPrincipal={"Ir a mis consultorios"}
+        onClickButtonPrincipal={onClickButtonPrincipal}
+        textButtonSecondary={"Ir a mis servicios"}
+        onClickButtonSecondary={onClickButtonSecondary}
       />
 
       <div className="w-full md:flex justify-between items-start sticky top-[67px] z-[50] bg-slate-100 py-2">
@@ -275,7 +275,7 @@ export default function Formulary({
           <Button
             disabled={
               loadingCreationService ||
-              localities.length === 0 ||
+              // localities.length === 0 ||
               formData.service_category_id === 0 ||
               formData.name === ""
             }
@@ -287,8 +287,8 @@ export default function Formulary({
           </Button>
         </div>
       </div>
-      <div className="flex mt-5">
-        <div className="relative lg:flex gap-4 w-full ">
+      <div className="flex mt-5 justify-center w-full">
+        <div className="relative flex w-full justify-center">
           <div className="bg-white lg:w-[60%] shadow-xl shadow-slate-100 rounded-md h-fit p-7 lg:mb-0 mb-8">
             <div className=" w-full flex">
               <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
@@ -504,7 +504,7 @@ export default function Formulary({
               </div>
             </div>
           </div>
-          <div className="bg-white lg:w-[40%] shadow-xl shadow-slate-100 rounded-md h-fit p-7">
+          {/* <div className="bg-white lg:w-[40%] shadow-xl shadow-slate-100 rounded-md h-fit p-7">
             <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
               <div className="w-full border-b mb-2 flex flex-col justify-between items-start gap-1 pb-3">
                 <p className="font-medium text-base text-slate-900">
@@ -532,7 +532,7 @@ export default function Formulary({
                   <LocalityComponent data={l} key={i} />
                 ))}
             </div>
-          </div>
+                </div> */}
         </div>
       </div>
     </>

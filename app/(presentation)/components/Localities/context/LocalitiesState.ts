@@ -6,6 +6,7 @@ import { IGetMunicipalitiesResponse } from 'domain/core/response/municipalityRes
 import { MunicipalityFailure } from 'domain/core/failures/municipality/municipalityFailure';
 import { IGetCountryLocationsResponse } from 'domain/core/response/countryResponse';
 import { CountryFailure } from 'domain/core/failures/country/countryFailure';
+import { ServiceFailure } from 'domain/core/failures/service/serviceFailure';
 
 export interface ILocalitiesState {
   getMedicalCenters: ILocalitiesLocalitiesState;
@@ -18,6 +19,15 @@ export interface ILocalitiesState {
   updateUserLocality: ILocalitiesLocalityState;
   gettingUserLocality: ILocalitiesLocalityState;
   localityData: ILocalitiesLocalityState;
+  getUserBaseServices: IServicesServicesState;
+  getUserServices: IServicesServicesState;
+}
+
+interface IServicesServicesState {
+  data: Array<any> | string;
+  loading: boolean;
+  successful: boolean;
+  error: ServiceFailure | null; 
 }
 
 interface ILocalitiesLocalitiesState {
@@ -115,5 +125,17 @@ export const initialState: ILocalitiesState = {
       loading: false,
       successful: false,
       error: null,
+  },
+  getUserBaseServices: {
+    data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  getUserServices: {
+    data: [],
+    loading: false,
+    successful: false,
+    error: null,
   },
 }

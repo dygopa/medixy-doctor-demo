@@ -23,7 +23,10 @@ import {
   ILocalitiesContext,
   LocalitiesContext,
 } from "../../context/LocalitiesContext";
-import { ILocality } from "domain/core/entities/localityEntity";
+import {
+  ILocality,
+  ILocalityService,
+} from "domain/core/entities/localityEntity";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import {
   IStepByStepContext,
@@ -43,6 +46,8 @@ import AutocompleteInputLocations from "(presentation)/components/core/BaseCompo
 import Image from "next/image";
 import { b64toBlob } from "(presentation)/(helper)/files/filesHelper";
 import { BsBuilding } from "react-icons/bs";
+import { IService } from "domain/core/entities/serviceEntity";
+import { NumericFormat } from "react-number-format";
 
 export default function WithoutSteps({
   userId,
@@ -54,12 +59,7 @@ export default function WithoutSteps({
   const { state, actions, dispatch } =
     useContext<ILocalitiesContext>(LocalitiesContext);
 
-  const {
-    createUserLocality,
-    getFederalEntities,
-    getMunicipalities,
-    getCountryLocations,
-  } = actions;
+  const { createUserLocality, getUserBaseServices } = actions;
 
   const {
     loading: createUserLocalityLoading,
@@ -67,9 +67,18 @@ export default function WithoutSteps({
     error: createUserLocalityError,
   } = state.createUserLocality;
 
+  const {
+    data: servicesData,
+    loading: loadingServices,
+    error: errorServices,
+    successful: successFulServices,
+  } = state.getUserBaseServices;
+
   const { actions: actionsStep, dispatch: dispatchStep } =
     useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps } = actionsStep;
+
+  const [services, setServices] = useState<any>([]);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -151,8 +160,97 @@ export default function WithoutSteps({
     }
   }, [createUserLocalitySuccess]);
 
+  useMemo(() => {
+    if (userId) getUserBaseServices(userId)(dispatch);
+  }, [userId]);
+
   const onClickButtonPrincipal: Function = () => {
     router.push(LocalitiesRoutesEnum.Localities);
+  };
+
+  function manageAddToList(data: IService) {
+    let list: Array<ILocalityService> = [...services];
+    if (list.some((elem) => elem["service_id"] === data.id)) {
+      list = list.filter((elem) => elem["service_id"] !== data.id);
+    } else {
+      list.push({
+        id: 0,
+        service_id: data.id,
+        location_id: 0,
+        price: 0,
+      });
+    }
+    setServices(list);
+  }
+
+  function managePriceChangeInList(value: number, id: number) {
+    let index = services.findIndex((elem: any) => elem["service_id"] === id);
+    services[index].price = value;
+    setServices(services);
+  }
+
+  const ServiceComponent = ({ data }: { data: IService }) => {
+    let isInList = services.find((elem: any) => elem["service_id"] === data.id);
+
+    return (
+      <div className="w-full border rounded-sm bg-white p-3 grid grid-cols-2 justify-between items-center gap-2">
+        <div className="flex flex-col justify-start items-start text-left">
+          <p className="font-normal text-base text-slate-950">{data["name"]}</p>
+          {/*  <p className="font-light text-sm text-slate-400">{data.state.name}</p> */}
+        </div>
+        <div className="flex justify-between items-center gap-2">
+          <div className="w-3/4 flex flex-col justify-start items-start gap-1 text-left">
+            <div className="relative lg:w-[70%]">
+              <div className="w-full">
+                <NumericFormat
+                  value={
+                    isInList?.price && isInList.price > 0
+                      ? isInList.price
+                      : undefined
+                  }
+                  disabled={!isInList}
+                  placeholder="Precio"
+                  decimalScale={2}
+                  thousandSeparator="."
+                  decimalSeparator=","
+                  prefix={""}
+                  onValueChange={(values, sourceInfo) =>
+                    managePriceChangeInList(
+                      values.floatValue ? values.floatValue : 0,
+                      data.id
+                    )
+                  }
+                  className={twMerge([
+                    "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 form-control w-[100%]",
+                    "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
+                    "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
+                  ])}
+                />
+              </div>
+
+              <div className="absolute right-4 top-2 text-md text-gray-400">
+                $
+              </div>
+            </div>
+          </div>
+
+          <div className="w-1/4 flex flex-col justify-center items-center">
+            <span
+              onClick={() => {
+                manageAddToList(data);
+              }}
+              className={twMerge([
+                "transition w-8 h-8 cursor-pointer rounded-full text-slate-400 border border-slate-400 flex flex-col justify-center items-center bg-white",
+                "hover:bg-primary hover:border-primary hover:text-white",
+                isInList && "bg-green-500 border-green-500 text-white",
+              ])}
+            >
+              <FiCheck />
+            </span>
+          </div>
+        </div>
+      </div>
+    );
   };
 
   return (
@@ -181,17 +279,18 @@ export default function WithoutSteps({
             formData?.name === "" ||
             formData?.postal_code === "" ||
             formData?.city === "" ||
-            formData?.federalEntity === 0
+            formData?.federalEntity === 0 ||
+            services.length === 0
           }
           onClick={() => {
-            createUserLocality({ ...formData, id: userId })(dispatch);
+            createUserLocality({ ...formData, id: userId }, services)(dispatch);
           }}
           variant="primary"
         >
           {createUserLocalityLoading ? "Creando..." : "Crear consultorio"}
         </Button>
       </div>
-      <div className="flex justify-center items-center lg:mt-5 mt-8">
+      <div className="flex justify-center lg:mt-5 mt-8">
         <div className="relative flex justify-center items-start gap-4 w-full lg:w-[70%]">
           <div className="bg-white w-full shadow-xl shadow-slate-100 rounded-md h-fit p-7">
             <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
@@ -201,7 +300,7 @@ export default function WithoutSteps({
                 </p>
               </div>
               <div className="text-center relative w-full gap-3">
-              {formData?.media?.data?.length > 0 ? (
+                {formData?.media?.data?.length > 0 ? (
                   <>
                     <div className="flex text-center w-full justify-center">
                       <div className="w-[150px] h-[150px] relative flex justify-center hover:border hover:border-primary rounded-xl">
@@ -504,6 +603,33 @@ export default function WithoutSteps({
                 />
                 </div>*/}
             </div>
+          </div>
+        </div>
+        <div className="bg-white lg:w-[40%] shadow-xl shadow-slate-100 rounded-md h-fit p-7 ml-4">
+          <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
+            <div className="w-full border-b mb-2 flex flex-col justify-between items-start gap-1 pb-3">
+              <p className="font-medium text-base text-slate-900">
+                Servicios(*)
+              </p>
+              <p className="font-light text-sm text-slate-500">
+                Indica los servicios que prestaras en este consultorio
+              </p>
+            </div>
+            {servicesData?.length === 0 && successFulServices && (
+              <div className="w-full flex flex-col justify-center items-center text-center">
+                <p className="font-bold text-slate-900 text-lg">
+                  Vaya, no tienes servicios aún
+                </p>
+                <p className="font-light text-slate-500 text-base">
+                  Lo sentimos, pero en la plataforma no hay servicios todavia.
+                </p>
+              </div>
+            )}
+            {servicesData?.length > 0 &&
+              successFulServices &&
+              [...(servicesData as Array<IService>)].map((l, i) => (
+                <ServiceComponent data={l} key={i} />
+              ))}
           </div>
         </div>
       </div>
