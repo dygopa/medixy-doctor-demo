@@ -6,7 +6,7 @@ import moment from 'moment';
 import { AppointmentEnum } from '(presentation)/(enum)/appointment/appointmentEnum';
 
 export default interface IScheduleRepository {
-    getCalendarEvents(id:number, serviceId:number, sinceDate:any, untilDate:any): Promise<any[] | ScheduleFailure>;
+    getCalendarEvents(id:number, localityId:number, sinceDate:any, untilDate:any, serviceId?:number): Promise<any[] | ScheduleFailure>;
     getAppointments(id:number, date?:string, status?:number): Promise<any[] | ScheduleFailure>;
     getAttentionWindows(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure>;
     createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
@@ -16,8 +16,13 @@ export default interface IScheduleRepository {
 
 export class ScheduleRepository implements IScheduleRepository {
     
-    async getCalendarEvents(id:number, serviceId:number, sinceDate:any, untilDate:any): Promise<any[] | ScheduleFailure> {
+    async getCalendarEvents(id:number, localityId:number, sinceDate:any, untilDate:any, serviceId?:number): Promise<any[] | ScheduleFailure> {
         try {
+
+            let queryOfServices = supabase.from("Servicios").select(`*`).eq("localidadId", localityId);
+
+            let resServices = await queryOfServices
+            if(resServices.error || resServices.data.length === 0) return new ScheduleFailure(scheduleFailuresEnum.serverError);
 
             let query = supabase.from("ServiciosEnVentanasAtencion").select(`
                 *,
@@ -46,7 +51,7 @@ export class ScheduleRepository implements IScheduleRepository {
                         )
                     )
                 )
-            `).eq("servicioId", serviceId)
+            `).in("servicioId", resServices.data.map((elem:any)=> elem["id"] ))
 
             let res = await query
             
@@ -117,12 +122,7 @@ export class ScheduleRepository implements IScheduleRepository {
     async getAttentionWindows(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure> {
         try {
             if(by === "LOCALITY"){
-                let queryOfServices = supabase.from("ServiciosPorLocalidades").select(`
-                    *,
-                    Servicios (
-                        id
-                    )
-                `).eq("localidadId", id);
+                let queryOfServices = supabase.from("Servicios").select(`*`).eq("localidadId", id);
                         
                 let res = await queryOfServices
                 
@@ -135,7 +135,7 @@ export class ScheduleRepository implements IScheduleRepository {
                         Servicios (
                             nombre
                         )
-                    `).in("servicioId", res.data.map((elem:any)=> elem["servicioId"] ))
+                    `).in("servicioId", res.data.map((elem:any)=> elem["id"] ))
 
                     let response = await query
                     return response.data ?? []
