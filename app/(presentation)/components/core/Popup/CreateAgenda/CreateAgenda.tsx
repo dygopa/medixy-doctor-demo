@@ -1,7 +1,7 @@
 import Button from '(presentation)/components/core/BaseComponents/Button'
 import { FormInput, FormSelect } from '(presentation)/components/core/BaseComponents/Form'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
-import { FiBriefcase, FiCheck, FiHelpCircle } from 'react-icons/fi';
+import { FiBriefcase, FiCheck, FiHelpCircle, FiHome } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge'
 import { AuthContext, IAuthContext } from '(presentation)/(layouts)/AppLayout/context/AuthContext';
 import moment from 'moment';
@@ -9,6 +9,7 @@ import { useSearchParams } from 'next/navigation';
 import { IScheduleContext, ScheduleContext } from '(presentation)/components/Schedule/context/ScheduleContext';
 import SpecialSearch from '(presentation)/components/core/SpecialSearch/SpecialSearch';
 import { IService } from 'domain/core/entities/serviceEntity';
+import { ILocality } from 'domain/core/entities/localityEntity';
 
 function CreateAgenda({cancelFuntion, customRef}:{
   cancelFuntion: Function;
@@ -19,10 +20,12 @@ function CreateAgenda({cancelFuntion, customRef}:{
   const { data: user, successful: loadedUser} = auth.getUserAuthenticated;
 
   const { state, actions, dispatch } = useContext<IScheduleContext>(ScheduleContext);
-  const { changeTypePopup, changeStatusPopup, getServices, createWindowAttention, getAttentionWindows} = actions;
+  const { changeTypePopup, changeStatusPopup, getServices, getLocalities, createWindowAttention, getAttentionWindows} = actions;
   const { data: services, successful: loadedServices } = state.getServices;
+  const { data: localities, successful: loadedLocalities } = state.getLocalities;
   const { loading, successful, error,  } = state.createWindowAttention;
   const { data: activeService, successful: changedActiveService  } = state.activeService;
+  const { data: activeLocality, successful: changedActiveLocality  } = state.activeLocality;
 
   const params = useSearchParams();
 
@@ -66,6 +69,7 @@ function CreateAgenda({cancelFuntion, customRef}:{
 
   const [loadedLists, setLoadedLists] = useState<boolean>(false)
 
+  const [listOfLocalities, setListOfLocalities] = useState<Array<any>>([])
   const [listOfServices, setListOfServices] = useState<Array<any>>([])
   const [daysRepeatedList, setDaysRepeatedList] = useState<Array<any>>([])
   const [listOfHours, setListOfHours] = useState<Array<any>>([])
@@ -90,11 +94,19 @@ function CreateAgenda({cancelFuntion, customRef}:{
     type: "SERVICE",
   })
 
+  const [selectedLocality, setSelectedLocality] = useState({
+    id: 0,
+    title: "",
+    description: "",
+    type: "LOCALITY",
+  })
+
   let [formData, setFormData] = useState({
     typeEnd: 1,
     daysRepeated: daysRepeatedList,
     type: 2,
     serviceId: 0,
+    localityId: 0,
     availableSpots: 0,
     startDate: moment().format("YYYY-MM-DD"),
     until: moment().add(1, "month").format("YYYY-MM-DD"),
@@ -162,6 +174,14 @@ function CreateAgenda({cancelFuntion, customRef}:{
     }))
     setListOfServices(list_services)
 
+    let list_localities = localities.map((elem:ILocality) => ({
+      id: elem.id,
+      title: elem.name,
+      description: elem.address,
+      type: "LOCALITY",
+    }))
+    setListOfLocalities(list_localities)
+
     setLoadedLists(true)
   }
 
@@ -178,6 +198,14 @@ function CreateAgenda({cancelFuntion, customRef}:{
   }
 
   useMemo(()=>{
+    if(selectedLocality["title"] !== ""){
+      let id:number = selectedLocality.id
+      setFormData({...formData, localityId: id })
+      console.log(selectedLocality["id"])
+    }
+  },[selectedLocality])
+
+  useMemo(()=>{
     if(selectedService["title"] !== ""){
       let id:number = selectedService.id
       setFormData({...formData, serviceId: id })
@@ -186,9 +214,9 @@ function CreateAgenda({cancelFuntion, customRef}:{
   },[selectedService])
 
   useMemo(() => {
-    if (loadedServices) handleFormatList()
+    if (loadedServices && loadedLocalities) handleFormatList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedServices]);
+  }, [loadedServices, loadedLocalities]);
 
   useMemo(()=>{
     if(successful){
@@ -204,7 +232,10 @@ function CreateAgenda({cancelFuntion, customRef}:{
   },[formData.spanTime])
 
   useMemo(() => {
-    if (loadedUser) getServices(user.userId)(dispatch)
+    if (loadedUser){
+      getServices(user.userId)(dispatch)
+      getLocalities(user.userId)(dispatch)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser]);
 
@@ -226,6 +257,27 @@ function CreateAgenda({cancelFuntion, customRef}:{
       </div>
       <div className="w-full flex flex-col justify-center items-center gap-5">
         <div className="w-full flex flex-col justify-center items-start gap-2">
+          <p className='font-normal text-sm text-slate-600'>En que consultorio</p>
+          <SpecialSearch
+            customClick={setSelectedLocality}
+            customClickEmpty={()=>{}}
+            list={listOfLocalities} 
+            placeholder={"Buscar..."} 
+            selectedItem={selectedLocality}
+          />
+          {selectedLocality["title"] !== "" && <div className={twMerge([
+            "transition w-full h-[10vh] flex justify-between items-center gap-3 bg-white"
+          ])}>
+            <div className='w-12 h-12 overflow-hidden rounded-lg bg-primary/20 text-primary text-lg flex flex-col justify-center items-center'>
+              <FiHome/>
+            </div>
+            <div className="w-[90%] h-full flex flex-col justify-center items-start">
+              <p className='font-semibold text-gray-950 text-[0.9rem]'>Consultorio - {selectedLocality["title"]}</p>
+              <p className='font-light text-gray-600 text-sm'>{selectedLocality["description"]}</p>
+            </div>
+          </div>}
+        </div>
+        <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className='font-normal text-sm text-slate-600'>Para que servicio</p>
           <SpecialSearch
             customClick={setSelectedService}
@@ -245,21 +297,6 @@ function CreateAgenda({cancelFuntion, customRef}:{
               <p className='font-light text-gray-600 text-sm'>{selectedService["description"]}</p>
             </div>
           </div>}
-          {/* <FormSelect
-            defaultValue={formData.serviceId}
-            value={formData.serviceId}
-            className="form-control"
-            onChange={(e)=> setFormData({...formData, serviceId: +e.target.value}) }
-          >
-            <option>-</option>
-            {services &&
-              [...(services as Array<any>)].map((elem, i) => (
-                <option key={i} value={elem["id"]}>
-                  {elem["name"]}
-                </option>
-              ))
-            }
-          </FormSelect> */}
         </div>
         <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className='font-normal text-sm text-slate-600'>Tipo</p>
@@ -390,6 +427,7 @@ function CreateAgenda({cancelFuntion, customRef}:{
         <Button disabled={
           loading ||
           daysRepeatedList.length === 0 ||
+          formData.localityId === 0 ||
           formData.serviceId === 0 ||
           formData.startDate === "" ||
           formData.fromHour === "" ||

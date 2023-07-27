@@ -29,54 +29,54 @@ function Filters() {
     changeTypePopup,
     changeStatusPopup,
     predifinedReservationData,
-    getServices,
+    getLocalities,
     getAttentionWindows,
-    activeService,
+    activeLocality,
   } = actions;
-  const { data: service } = state.activeService;
+  const { data: locality } = state.activeLocality;
 
-  const { data: services, successful: loadedServices } = state.getServices;
+  const { data: localities, successful: loadedLocalities } = state.getLocalities;
 
-  const [listOfServices, setListOfServices] = useState([]);
+  const [listOfLocalities, setListOfLocalities] = useState([]);
 
-  const [selectedService, setSelectedService] = useState({
+  const [selectedLocality, setSelectedLocality] = useState({
     id: 0,
     title: "",
     description: "",
   });
 
   function handleFormatList() {
-    let list_services = services.map((elem: IService) => ({
+    let list_localities = localities.map((elem: ILocality) => ({
       id: elem.id,
       title: elem.name,
-      description: elem.location ? elem.location.name : "Sin consultorio",
+      description: elem.address,
     }));
 
-    setListOfServices(list_services);
+    setListOfLocalities(list_localities);
   }
 
   useMemo(() => {
-    if (selectedService.id > 0) {
-      console.log(selectedService);
-      activeService(selectedService)(dispatch);
+    if (selectedLocality.id > 0) {
+      console.log(selectedLocality);
+      activeLocality(selectedLocality)(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedService]);
+  }, [selectedLocality]);
 
   useMemo(() => {
-    if (selectedService.id > 0) {
-      getAttentionWindows(selectedService.id, "")(dispatch);
+    if (selectedLocality.id > 0) {
+      getAttentionWindows(selectedLocality.id, "LOCALITY")(dispatch);
     }
-  }, [selectedService]);
+  }, [selectedLocality]);
 
   useMemo(() => {
-    if (loadedServices) handleFormatList();
+    if (loadedLocalities) handleFormatList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedServices]);
+  }, [loadedLocalities]);
 
   useMemo(() => {
     if (loadedUser) {
-      getServices(user.userId)(dispatch);
+      getLocalities(user.userId)(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser]);
@@ -87,14 +87,14 @@ function Filters() {
         <div className="w-full flex lg:w-[25%] lg:h-full">
           <SpecialSelect
             emptySelectedValue={{
-              title: "Servicio",
-              description: "Selecciona un servicio de la lista",
+              title: "Consultorio",
+              description: "Selecciona un consultorio de la lista",
             }}
             customClick={(value: any) => {
-              setSelectedService(value);
+              setSelectedLocality(value);
             }}
-            selectedItem={service}
-            list={listOfServices}
+            selectedItem={locality}
+            list={listOfLocalities}
           />
         </div>
         <div className="w-full lg:w-fit flex flex-row justify-center flex-wrap lg:flex-nowrap lg:justify-end items-center gap-2 h-full">
@@ -131,7 +131,7 @@ function Filters() {
                     <div>
                       <Link
                         className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100"
-                        href={ selectedService["id"] === 0 ? `/schedule/configuration` : `/schedule/configuration?service=${selectedService["id"]}`}
+                        href={ selectedLocality["id"] === 0 ? `/schedule/configuration` : `/schedule/configuration?locality=${selectedLocality["id"]}`}
                       >
                         <Lucide icon="Settings" className="w-5 h-5" />
                         Configurar agenda
