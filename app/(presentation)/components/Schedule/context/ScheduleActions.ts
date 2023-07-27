@@ -79,11 +79,11 @@ const getAppointments = (id:number, date?:string) => async (dispatch: Dispatch<a
     }
 }
 
-const getAttentionWindows = (id:number) => async (dispatch: Dispatch<any>) => {
+const getAttentionWindows = (id:number, by?:string) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "GET_ATTENTION_WINDOWS_LOADING" });
       
-      const res: Array<any> = await new ScheduleUseCase().getAttentionWindows(id);
+      const res: Array<any> = await new ScheduleUseCase().getAttentionWindows(id, by);
   
       dispatch({ type: "GET_ATTENTION_WINDOWS_SUCCESSFUL", payload: { data: res } });
     } catch (error) {

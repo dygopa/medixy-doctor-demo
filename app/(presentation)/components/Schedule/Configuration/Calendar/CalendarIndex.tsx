@@ -158,7 +158,7 @@ export default function CalendarIndex() {
   
   useMemo(() => {
     if (successful) formatList();
-  }, [successful]);
+  }, [loading, successful]);
 
   useMemo(() => {
     if (servicesSuccessful && services.length > 0)

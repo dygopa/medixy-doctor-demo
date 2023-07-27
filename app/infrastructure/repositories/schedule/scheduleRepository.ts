@@ -8,11 +8,9 @@ import { AppointmentEnum } from '(presentation)/(enum)/appointment/appointmentEn
 export default interface IScheduleRepository {
     getCalendarEvents(id:number, serviceId:number, sinceDate:any, untilDate:any): Promise<any[] | ScheduleFailure>;
     getAppointments(id:number, date?:string, status?:number): Promise<any[] | ScheduleFailure>;
-    getAttentionWindows(id:number | null): Promise<any[] | ScheduleFailure>;
+    getAttentionWindows(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure | undefined>;
     createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
     getAttentionWindowsByService(id:number, date?:string): Promise<any[] | ScheduleFailure>;
-    getListOfTimeBaseOnSpan(): Promise<any[] | ScheduleFailure>;
-    getListOfAvailableHours(): Promise<any[] | ScheduleFailure>;
     createWindowAttention(obj:any): Promise<any | ScheduleFailure>;
 }
 
@@ -20,38 +18,44 @@ export class ScheduleRepository implements IScheduleRepository {
     
     async getCalendarEvents(id:number, serviceId:number, sinceDate:any, untilDate:any): Promise<any[] | ScheduleFailure> {
         try {
-            
-            let query = supabase.from("VentanasAtencion").select(`
+
+            let query = supabase.from("ServiciosEnVentanasAtencion").select(`
                 *,
-                Citas (
-                    *, 
-                    Sujetos(
-                        nombres,
-                        primerApellido,
-                        segundoApellido,
-                        curp,
-                        email,
-                        fechaNacimiento,
-                        sexo,
-                        telefono,
-                        ciudad,
-                        direccion,
-                        avatar
-                    ),
-                    Servicios (
-                        nombre
+                VentanasAtencionBase(
+                    *,
+                    VentanasAtencion(
+                        *,
+                        Citas (
+                            *, 
+                            Sujetos(
+                                nombres,
+                                primerApellido,
+                                segundoApellido,
+                                curp,
+                                email,
+                                fechaNacimiento,
+                                sexo,
+                                telefono,
+                                ciudad,
+                                direccion,
+                                avatar
+                            ),
+                            Servicios (
+                                nombre
+                            )
+                        )
                     )
                 )
             `).eq("servicioId", serviceId)
 
             let res = await query
             
-            let list = res.data?.map((elem:any)=> [...elem["Citas"]] )
+            let list = res.data![0]["VentanasAtencionBase"]["VentanasAtencion"].map((elem:any)=> [...elem["Citas"]] )
             
             let listOfDates:any = []
             listOfDates = listOfDates.concat(...list!)
-            //list = list!.map((elem:any)=> [...elem] )
             
+            console.log(listOfDates)
             return listOfDates ?? [];
         } catch (error) {
             const exception = error as any;
@@ -110,15 +114,41 @@ export class ScheduleRepository implements IScheduleRepository {
         }
     }
 
-    async getAttentionWindows(id:number | null): Promise<any[] | ScheduleFailure> {
+    async getAttentionWindows(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure | undefined> {
         try {
+            if(by === "LOCALITY"){
+                let queryOfServices = supabase.from("ServiciosPorLocalidades").select(`
+                    *,
+                    Servicios (
+                        id
+                    )
+                `).eq("localidadId", id);
+                        
+                let res = await queryOfServices
+                
+                if(res.error) return new ScheduleFailure(scheduleFailuresEnum.serverError);
+                
+                if(res.data.length > 0){
+                    
+                    let query = supabase.from("VentanasAtencion").select(`
+                        *,
+                        Servicios (
+                            nombre
+                        )
+                    `).in("servicioId", res.data.map((elem:any)=> elem["servicioId"] ))
+
+                    let response = await query
+                    return response.data ?? []
+                }
+            }
+            
             let query = supabase.from("VentanasAtencion").select(`
                 *,
                 Servicios (
                     nombre
                 )
             `).eq("servicioId", id);
-
+                    
             let res = await query
 
             return res.data ?? [];
@@ -149,6 +179,7 @@ export class ScheduleRepository implements IScheduleRepository {
             }else{
                 let appointment = {
                     sujetoId: obj["pacienteId"],
+                    servicioId: obj["servicioId"],
                     doctorId: obj["doctorId"],
                     estado: AppointmentEnum.PENDING
                 }
@@ -170,43 +201,30 @@ export class ScheduleRepository implements IScheduleRepository {
     async getAttentionWindowsByService(id:number, date?:string): Promise<any[] | ScheduleFailure> {
         try {
 
-            let queryToGetFreeTypeAttentionWindows = supabase.from("VentanasAtencion").select(`
-            *,
-            Servicios (
-                nombre
-            )
-            `).eq("servicioId", id).eq("tipo", 1)
-
-            let queryToGetSlotsTypeAttentionWindows = supabase.from("VentanasAtencion").select(`
-            *,
-            Citas (*),
-            Servicios (
-                nombre
-            )
-            `).eq("servicioId", id).eq("tipo", 2)
+            let queryToGetSlotsTypeAttentionWindows = supabase.from("ServiciosEnVentanasAtencion").select(`
+                *,
+                VentanasAtencionBase(
+                    *,
+                    VentanasAtencion(
+                        *,
+                        Citas (*),
+                        Servicios (
+                            nombre
+                        )
+                    )
+                )
+            `).eq("servicioId", id)
 
             //if(date) query = query.eq("fechaInicio", date)
 
-            let resFreeTypeAttentionWindows = await queryToGetFreeTypeAttentionWindows
             let resSlotsTypeAttentionWindows = await queryToGetSlotsTypeAttentionWindows
             
             let list:any[] = []
-
-            if(resFreeTypeAttentionWindows.data?.length! > 0){
-                resFreeTypeAttentionWindows.data?.forEach((elem:any)=>{
-                    list.push({
-                        id: elem["id"],
-                        servicioId: elem["servicioId"],
-                        fechaInicio: moment(elem["fechaReserva"]).format("DD-MM-YYYY"),
-                        horaInicio: ["horaInicio"],
-                        horaFin: ["horaFin"],
-                        tipo: 1
-                    })
-                })
-            }
+            
+            console.log(resSlotsTypeAttentionWindows.data)
 
             if(resSlotsTypeAttentionWindows.data?.length! > 0){
-                let listOfSlots = resSlotsTypeAttentionWindows.data?.map((elem:any)=> [...elem["Citas"]] )
+                let listOfSlots = resSlotsTypeAttentionWindows.data![0]["VentanasAtencionBase"]["VentanasAtencion"].map((elem:any)=> [...elem["Citas"]] )
             
                 let listOfDates:any = []
                 listOfDates = listOfDates.concat(...listOfSlots!)
@@ -234,62 +252,6 @@ export class ScheduleRepository implements IScheduleRepository {
         }
     }
 
-    async getListOfTimeBaseOnSpan(): Promise<any[] | ScheduleFailure> {
-        try {
-            let cookies = nookies.get(undefined, 'access_token');
-
-            var myHeaders = new Headers();
-
-            myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
-
-            var requestOptions = {
-                method: 'GET',
-                headers: myHeaders,
-                redirect: 'follow'
-            } as RequestInit;
-
-            let URL = GET_CATEGORIES_SERVICES_ENDPOINT as RequestInfo
-
-            const response = await fetch(URL, requestOptions)
-            //let data = await response.json()
-            let data = {data: []}
-
-            return data["data"] ?? [];
-        } catch (error) {
-            const exception = error as any;
-            return new ScheduleFailure(scheduleFailuresEnum.serverError);
-        }
-    }
-
-    async getListOfAvailableHours(): Promise<any[] | ScheduleFailure> {
-        try {
-            let cookies = nookies.get(undefined, 'access_token');
-
-            var myHeaders = new Headers();
-
-            myHeaders.append("Content-Type", "application/json");
-            myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
-
-            var requestOptions = {
-                method: 'GET',
-                headers: myHeaders,
-                redirect: 'follow'
-            } as RequestInit;
-
-            let URL = GET_CATEGORIES_SERVICES_ENDPOINT as RequestInfo
-
-            const response = await fetch(URL, requestOptions)
-            //let data = await response.json()
-            let data = {data: []}
-
-            return data["data"] ?? [];
-        } catch (error) {
-            const exception = error as any;
-            return new ScheduleFailure(scheduleFailuresEnum.serverError);
-        }
-    }
-
     async createWindowAttention(obj:any): Promise<any | ScheduleFailure> {
         try {
             let cookies = nookies.get(undefined, 'access_token');
@@ -309,7 +271,8 @@ export class ScheduleRepository implements IScheduleRepository {
                 end_time: parseInt(obj["toHour"]),
                 appointment_period: obj["spanTime"],
                 days: days,
-                service_id: obj["serviceId"]
+                service_id: obj["serviceId"],
+                location_id: obj["localityId"]
             });
 
             var requestOptions = {

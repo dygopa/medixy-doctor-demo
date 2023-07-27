@@ -6,8 +6,8 @@ import { IScheduleContext, ScheduleContext } from "../../context/ScheduleContext
 import { IPopupContext, PopupContext } from "(presentation)/components/core/BaseComponents/Popup/context/PopupContext";
 import { AuthContext, IAuthContext } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import { SpecialSelect } from "(presentation)/components/core/SpecialSearch/SpecialSearch";
-import { IService } from "domain/core/entities/serviceEntity";
 import { useRouter } from "next/navigation";
+import { ILocality } from "domain/core/entities/localityEntity";
 
 export default function Navigator() {
      
@@ -17,57 +17,55 @@ export default function Navigator() {
   const { data: user, successful: loadedUser} = auth.getUserAuthenticated;
 
   const { state, actions, dispatch } = useContext<IScheduleContext>(ScheduleContext);
-  const { activeService, getAttentionWindows, changeTypePopup, changeStatusPopup, getLocalities, getServices} = actions;
-  const { data: service } = state.activeService;
+  const { activeLocality, getAttentionWindows, changeTypePopup, changeStatusPopup, getLocalities} = actions;
+  const { data: locality } = state.activeLocality;
   const { data } = state.typePopupActive;
   const { data: localities, successful: localitiesSuccessful, loading: localitiesLoading } = state.getLocalities;
-  const { data: services, successful: servicesSuccessful, loading: servicesLoading } = state.getServices;
 
   const { actions: actionsPopup, dispatch: dispatchPopup } = useContext<IPopupContext>(PopupContext);
   const { changeChildrenPopup, changeStatusPopup: showPopup } = actionsPopup;
 
-  const [listOfServices, setListOfServices] = useState([]);
+  const [listOfLocalities, setListOfLocalities] = useState([]);
 
-  const [selectedService, setSelectedService] = useState({
+  const [selectedLocality, setSelectedLocality] = useState({
     id: 0,
     title: "",
     description: "",
   });
 
   function handleFormatList() {
-    let list_services = services.map((elem: IService) => ({
+    let list_localities = localities.map((elem: ILocality) => ({
       id: elem.id,
       title: elem.name,
-      description: elem.location ? elem.location.name : "Sin consultorio",
+      description: elem.address ? elem.address : "Sin dirección",
     }));
 
-    setListOfServices(list_services);
+    setListOfLocalities(list_localities);
   }
 
   useMemo(() => {
-    if (selectedService.id > 0) {
-      activeService(selectedService)(dispatch);
+    if (selectedLocality.id > 0) {
+      activeLocality(selectedLocality)(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedService]);
+  }, [selectedLocality]);
   
   useMemo(() => {
-    if (selectedService.id > 0) {
-      getAttentionWindows(selectedService.id, "")(dispatch);
-      setTimeout(() => {
-        router.replace(`/schedule/configuration?service=${selectedService.id}`)
-      }, 0);
+    if (selectedLocality.id > 0) {
+      getAttentionWindows(selectedLocality.id, "LOCALITY")(dispatch);
+      //setTimeout(() => {
+      //  router.replace(`/schedule/configuration?service=${selectedLocality.id}`)
+      //}, 0);
     }
-  }, [selectedService]);
+  }, [selectedLocality]);
 
   useMemo(() => {
-    if (servicesSuccessful) handleFormatList();
+    if (localitiesSuccessful) handleFormatList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [servicesSuccessful]);
+  }, [localitiesSuccessful]);
 
   useMemo(() => {
     if (loadedUser){
-      getServices(user.userId)(dispatch)
       getLocalities(user.userId)(dispatch)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,18 +78,18 @@ export default function Navigator() {
         <p>Mantén un seguimiento de tus citas médicos y asegúrate de estar preparado para cada consulta</p>
       </div>
       <div className="w-full flex flex-row justify-center flex-wrap lg:justify-between items-center gap-2 h-full">
-        {(localities && ([...(localities as any[])].length > 0) && (services && [...(services as any[])].length > 0)) && <>
+        {(localities && ([...(localities as any[])].length > 0)) && <>
           <div className="w-full flex lg:w-[25%] lg:h-full">
             <SpecialSelect
               emptySelectedValue={{
-                title: "Servicio",
-                description: "Selecciona un servicio de la lista",
+                title: "Consultorio",
+                description: "Selecciona un consultorio de la lista",
               }}
               customClick={(value: any) => {
-                setSelectedService(value);
+                setSelectedLocality(value);
               }}
-              selectedItem={service}
-              list={listOfServices}
+              selectedItem={locality}
+              list={listOfLocalities}
             />
           </div>
           <Button onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(1)(dispatch) }} variant="primary" type="button" className="w-[85%] lg:w-fit">
