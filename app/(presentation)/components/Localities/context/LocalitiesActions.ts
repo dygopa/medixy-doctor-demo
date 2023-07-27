@@ -105,7 +105,7 @@ const createUserLocality = (obj:any, services: any[]) => async (dispatch: Dispat
   try {
     dispatch({ type: "CREATE_USER_LOCALITY_LOADING" });
     
-    const res: string = await new LocalitiesUseCase().createUserLocality(obj, services);
+    const res: ILocality = await new LocalitiesUseCase().createUserLocality(obj, services);
 
     dispatch({ type: "CREATE_USER_LOCALITY_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

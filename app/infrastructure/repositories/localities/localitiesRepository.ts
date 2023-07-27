@@ -105,7 +105,7 @@ export class LocalitiesRepository implements ILocalitiesRepository {
     }
   }
 
-  async createUserLocality(obj:any, services: any[]): Promise<string | LocalityFailure> {
+  async createUserLocality(obj:any, services: any[]): Promise<ILocality | LocalityFailure> {
     try {
       let cookies = nookies.get(undefined, 'access_token');
 
