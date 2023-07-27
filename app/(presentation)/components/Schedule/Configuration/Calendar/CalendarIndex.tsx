@@ -27,7 +27,8 @@ export default function CalendarIndex() {
 
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
-  const { getLocalities, getServices, getAttentionWindows, activeService } = actions;
+  const { getLocalities, getServices, getAttentionWindows, activeLocality } =
+    actions;
   const { data, loading, successful, error } = state.getAttentionWindows;
   const { successful: successfulWindowCreated, error: errorWindowCreated } =
     state.createWindowAttention;
@@ -86,13 +87,13 @@ export default function CalendarIndex() {
   function formatList() {
     let list = [];
     list = data.map((elem: any) => formatEvent(elem));
-    console.log("list", list)
+    console.log("list", list);
     setWindows(list);
   }
 
   const EmptyLocalities = () => {
-    if(localitiesSuccessful && [...(localities as any[])].length === 0){
-      return(
+    if (localitiesSuccessful && [...(localities as any[])].length === 0) {
+      return (
         <div className="w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4">
           <div className="w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center">
             <span className="h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center">
@@ -114,22 +115,19 @@ export default function CalendarIndex() {
             </Button>
           </Link>
         </div>
-      )
-    }else{
-      return(
-        <div></div>
-      )
+      );
+    } else {
+      return <div></div>;
     }
-    
-  }
+  };
 
   const EmptyServices = () => {
-    if(servicesSuccessful && [...(services as any[])].length === 0){
-      return(
+    if (servicesSuccessful && [...(services as any[])].length === 0) {
+      return (
         <div className="w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4">
           <div className="w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center">
             <span className="h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center">
-              <FiBriefcase />
+              <Lucide icon="Building" />
             </span>
           </div>
           <div className="w-full h-fit flex flex-col justify-center items-center gap-1 text-center px-2">
@@ -137,8 +135,8 @@ export default function CalendarIndex() {
               No hay servicios
             </p>
             <p className="font-light text-slate-500 text-sm">
-              Crea tu primer servicio y empieza a configurar las ventanas de
-              atención para esos servicios
+              Crea tu primer servicio y empieza a crear los servicios que
+              prestas
             </p>
           </div>
           <Link className="w-full block" href={"/services/new-service"}>
@@ -147,20 +145,18 @@ export default function CalendarIndex() {
             </Button>
           </Link>
         </div>
-      )
-    }else{
-      return(
-        <div></div>
-      )
+      );
+    } else {
+      return <div></div>;
     }
-    
-  }
-  
+  };
+
   useMemo(() => {
     if (successful) formatList();
   }, [loading, successful]);
 
-  useMemo(() => {
+  {
+    /* useMemo(() => {
     if (servicesSuccessful && services.length > 0)
       if(params.get("service")){
         let id = params.get("service")?.toString();
@@ -169,7 +165,19 @@ export default function CalendarIndex() {
         getAttentionWindows(services[0].id)(dispatch);
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [servicesSuccessful, services]);
+  }, [servicesSuccessful, services]); */
+  }
+
+  useMemo(() => {
+    if (localitiesSuccessful && localities.length > 0)
+      if (params.get("locality")) {
+        let id = params.get("locality")?.toString();
+        getAttentionWindows(parseInt(id!))(dispatch);
+      } else {
+        getAttentionWindows(localities[0].id)(dispatch);
+      }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [localitiesSuccessful, localities]);
 
   useMemo(() => {
     if (loadedUser) {
@@ -180,6 +188,36 @@ export default function CalendarIndex() {
   }, [loadedUser]);
 
   useMemo(() => {
+    if (localitiesSuccessful) {
+      if (params.get("locality") && localities.length > 0) {
+        let id = params.get("locality")?.toString();
+        let localityFinded = [...localities].find(
+          (elem: any) => elem["id"] === parseInt(id!)
+        );
+        console.log(localityFinded);
+        if (localityFinded) {
+          activeLocality({
+            id: params.get("locality"),
+            title: localityFinded["name"],
+            description: localityFinded["description"],
+            type: "LOCALITY",
+          })(dispatch);
+        }
+      }
+      if (!params.get("locality") && localities.length > 0) {
+        let localityFinded = [...localities][0];
+        activeLocality({
+          id: localityFinded["id"],
+          title: localityFinded["name"],
+          description: localityFinded["description"],
+          type: "LOCALITY",
+        })(dispatch);
+      }
+    }
+  }, [params, localities]);
+
+  {
+    /* useMemo(() => {
     if(servicesSuccessful){
       if (params.get("service") && services.length > 0) {
         let id = params.get("service")?.toString();
@@ -206,7 +244,8 @@ export default function CalendarIndex() {
         })(dispatch);
       }
     }
-  }, [params, services]);
+  }, [params, services]); */
+  }
 
   return (
     <>
@@ -223,15 +262,12 @@ export default function CalendarIndex() {
         />
         {/* BEGIN: Calendar Content */}
         <div className="w-full h-[64vh]">
-          {(user !== null && user.userId) ? 
+          {user !== null && user.userId ? (
             <>
-              {
-                (
-                  (localitiesSuccessful && [...(localities as any[])].length > 0) 
-                  && 
-                  (servicesSuccessful && [...(services as any[])].length > 0)
-                ) 
-                ?
+              {localitiesSuccessful &&
+              [...(localities as any[])].length > 0 &&
+              servicesSuccessful &&
+              [...(services as any[])].length > 0 ? (
                 <Calendar
                   handleChangeInWeek={() => {}}
                   events={windows}
@@ -240,17 +276,17 @@ export default function CalendarIndex() {
                     setEventSelected(e);
                     setShowWindowModal(true);
                   }}
-                /> 
-                :
+                />
+              ) : (
                 <div className="w-full h-full flex justify-center items-center flex-wrap gap-5">
-                  <EmptyLocalities/>
-                  <EmptyServices/>
+                  <EmptyLocalities />
+                  <EmptyServices />
                 </div>
-              }
+              )}
             </>
-          :
-            <Loading/>
-          }
+          ) : (
+            <Loading />
+          )}
         </div>
         {/* END: Calendar Content */}
       </div>
