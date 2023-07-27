@@ -8,7 +8,7 @@ import { AppointmentEnum } from '(presentation)/(enum)/appointment/appointmentEn
 export default interface IScheduleRepository {
     getCalendarEvents(id:number, serviceId:number, sinceDate:any, untilDate:any): Promise<any[] | ScheduleFailure>;
     getAppointments(id:number, date?:string, status?:number): Promise<any[] | ScheduleFailure>;
-    getAttentionWindows(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure | undefined>;
+    getAttentionWindows(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure>;
     createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
     getAttentionWindowsByService(id:number, date?:string): Promise<any[] | ScheduleFailure>;
     createWindowAttention(obj:any): Promise<any | ScheduleFailure>;
@@ -114,7 +114,7 @@ export class ScheduleRepository implements IScheduleRepository {
         }
     }
 
-    async getAttentionWindows(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure | undefined> {
+    async getAttentionWindows(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure> {
         try {
             if(by === "LOCALITY"){
                 let queryOfServices = supabase.from("ServiciosPorLocalidades").select(`

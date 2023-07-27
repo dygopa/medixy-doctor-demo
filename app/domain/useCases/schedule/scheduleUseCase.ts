@@ -55,6 +55,16 @@ export default class ScheduleUseCase {
     }
   }
 
+  async getServicesByLocality(id:number, localityId: number): Promise<any[]> {
+    try {
+      const response = await this._repositoryServices.getServicesByLocality(id, localityId);
+      if (response instanceof ServiceFailure) throw response;
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getLocalites(id:number): Promise<any[]> {
     try {
       const response = await this._repositoryLocalities.getUserLocalities(id);

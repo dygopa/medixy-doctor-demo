@@ -322,6 +322,72 @@ export const ScheduleReducer = (state: any, action: any) => {
           error: action.payload.error,
         },
       };
+    case 'GET_SERVICES_LOADING':
+      return {
+        ...state,
+        getServices: {
+          ...state.getServices,
+          data: null,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'GET_SERVICES_SUCCESSFUL':
+      return {
+        ...state,
+        getServices: {
+          ...state.getServices,
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'GET_SERVICES_ERROR':
+      return {
+        ...state,
+        getServices: {
+          ...state.getServices,
+          data: null,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
+    case 'GET_SERVICES_BY_LOCALITIES_LOADING':
+      return {
+        ...state,
+        getServicesByLocality: {
+          ...state.getServicesByLocality,
+          data: null,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'GET_SERVICES_BY_LOCALITIES_SUCCESSFUL':
+      return {
+        ...state,
+        getServicesByLocality: {
+          ...state.getServicesByLocality,
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'GET_SERVICES_BY_LOCALITIES_ERROR':
+      return {
+        ...state,
+        getServicesByLocality: {
+          ...state.getServicesByLocality,
+          data: null,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
     case 'GET_LOCALITIES_LOADING':
       return {
         ...state,
