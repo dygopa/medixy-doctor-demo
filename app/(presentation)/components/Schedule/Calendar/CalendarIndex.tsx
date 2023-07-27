@@ -23,12 +23,13 @@ export default function CalendarIndex() {
   const {
     appointmentDetail,
     getAppointments,
+    getLocalities,
     activeDay,
     changeTypePopup,
     changeStatusPopup,
     predifinedReservationData,
     getCalendarEvents,
-    activeService,
+    activeLocality,
   } = actions;
 
   const {
@@ -51,6 +52,11 @@ export default function CalendarIndex() {
     error: servicesError,
     data: services,
   } = state.getServices;
+  const {
+    successful: localitiesSuccessful,
+    error: localitiesError,
+    data: localities,
+  } = state.getLocalities;
 
   const params = useSearchParams();
 
@@ -179,7 +185,7 @@ export default function CalendarIndex() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [calendarEventsSuccessful]);
 
-  useMemo(() => {
+  /* useMemo(() => {
     if (loadedUser && servicesSuccessful) {
       if (services.length === 1) {
         activeService({
@@ -191,33 +197,54 @@ export default function CalendarIndex() {
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadedUser, services]); */
+
+  useMemo(() => {
+    if (loadedUser && localitiesSuccessful) {
+      if (localities.length === 1) {
+        activeLocality({
+          id: localities[0]["id"],
+          title: localities[0]["name"],
+          description: localities[0]["description"],
+          type: "LOCALITY",
+        })(dispatch);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser, services]);
 
   useMemo(() => {
-    if (loadedUser && serviceSuccessful) {
-      getCalendarEvents(user.userId, service.id, {}, {})(dispatch);
+    if (loadedUser && localitiesSuccessful && localities.length > 0) {
+      getCalendarEvents(user.userId, localities[0].id, {}, {})(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedUser, service]);
+  }, [loadedUser, localities, localitiesSuccessful]);
 
   useMemo(() => {
-    if (params.get("service") && services > 0) {
-      let id = params.get("service")?.toString();
-      let serviceFinded = [...services].find(
+    if (params.get("locality") && localities > 0) {
+      let id = params.get("locality")?.toString();
+      let localityFinded = [...localities].find(
         (elem: any) => elem["id"] === parseInt(id!)
       );
-      console.log(serviceFinded);
-      if (serviceFinded) {
-        activeService({
-          id: params.get("service"),
-          title: serviceFinded["name"],
-          description: serviceFinded["description"],
+      console.log(localityFinded);
+      if (localityFinded) {
+        activeLocality({
+          id: params.get("locality"),
+          title: localityFinded["name"],
+          description: localityFinded["description"],
           type: "SERVICE",
         })(dispatch);
       }
-      getCalendarEvents(user.userId, params.get("service"), {}, {})(dispatch);
+      getCalendarEvents(user.userId, params.get("locality"), {}, {})(dispatch);
     }
-  }, [params, services]);
+  }, [params, localities]);
+
+  useMemo(() => {
+    if (loadedUser) {
+      getLocalities(user.userId)(dispatch);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadedUser]);
 
   return (
     <>
@@ -235,7 +262,7 @@ export default function CalendarIndex() {
         <div className="w-full lg:w-2/3 h-[64vh]">
           <Calendar
             handleChangeInWeek={(param: DatesSetArg) => {
-              activeDay(param.start)(dispatch)
+              activeDay(param.start)(dispatch);
             }}
             events={appointments}
             initialEvent={""}
