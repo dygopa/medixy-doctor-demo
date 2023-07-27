@@ -15,7 +15,7 @@ export interface ILocalitiesState {
   countryLocations: IGetCountryLocationsState;
   getCountryStates: ILocalitiesLocalitiesState;
   getUserLocalities: ILocalitiesLocalitiesState;
-  createUserLocality: ILocalitiesLocalitiesState;
+  createUserLocality: ILocalitiesCreateState;
   updateUserLocality: ILocalitiesLocalityState;
   gettingUserLocality: ILocalitiesLocalityState;
   localityData: ILocalitiesLocalityState;
@@ -31,7 +31,14 @@ interface IServicesServicesState {
 }
 
 interface ILocalitiesLocalitiesState {
-  data: ILocality[];
+  data: ILocality[] | ILocality;
+  loading: boolean;
+  successful: boolean;
+  error: LocalityFailure | null; 
+}
+
+interface ILocalitiesCreateState {
+  data: ILocality;
   loading: boolean;
   successful: boolean;
   error: LocalityFailure | null; 
@@ -85,7 +92,7 @@ export const initialState: ILocalitiesState = {
     error: null,
   },
   createUserLocality: {
-    data: [],
+    data: {} as ILocality,
     loading: false,
     successful: false,
     error: null,

@@ -41,7 +41,7 @@ export default class LocalitiesUseCase {
         }
     }
 
-    async createUserLocality(obj:any, services: any[]): Promise<string> {
+    async createUserLocality(obj:any, services: any[]): Promise<ILocality> {
         try {
             const response: any = await this._repository.createUserLocality(obj, services);
 

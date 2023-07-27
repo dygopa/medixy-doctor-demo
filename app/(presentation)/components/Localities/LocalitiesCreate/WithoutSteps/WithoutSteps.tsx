@@ -48,6 +48,7 @@ import { b64toBlob } from "(presentation)/(helper)/files/filesHelper";
 import { BsBuilding } from "react-icons/bs";
 import { IService } from "domain/core/entities/serviceEntity";
 import { NumericFormat } from "react-number-format";
+import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
 
 export default function WithoutSteps({
   userId,
@@ -62,6 +63,7 @@ export default function WithoutSteps({
   const { createUserLocality, getUserBaseServices } = actions;
 
   const {
+    data: locality,
     loading: createUserLocalityLoading,
     successful: createUserLocalitySuccess,
     error: createUserLocalityError,
@@ -164,7 +166,15 @@ export default function WithoutSteps({
     if (userId) getUserBaseServices(userId)(dispatch);
   }, [userId]);
 
+  console.log(locality)
+
   const onClickButtonPrincipal: Function = () => {
+    router.push(
+      ScheduleRoutesEnum.Configuration + `?locality=${locality.id}`
+    );
+  };
+
+  const onClickButtonSecondary: Function = () => {
     router.push(LocalitiesRoutesEnum.Localities);
   };
 
@@ -263,9 +273,11 @@ export default function WithoutSteps({
       <SuccessfulComponent
         tittle="Agregado con exito"
         show={createUserLocalitySuccess}
-        description={"Tu consultorio se ha creado exitosamente"}
-        textButtonPrincipal={"Ir a lista de consultorios"}
+        description={"Tu consultorio se ha creado exitosamente. Ahora puedes configurar su agenda."}
+        textButtonPrincipal={"Ir a configurar la agenda"}
         onClickButtonPrincipal={onClickButtonPrincipal}
+        textButtonSecondary={"Ir a la lista de consultorios"}
+        onClickButtonSecondary={onClickButtonSecondary}
       />
 
       <div className="w-full md:flex justify-between items-center sticky top-[67px] z-[50] border-b bg-slate-100 py-2">
@@ -290,7 +302,7 @@ export default function WithoutSteps({
           {createUserLocalityLoading ? "Creando..." : "Crear consultorio"}
         </Button>
       </div>
-      <div className="flex justify-center lg:mt-5 mt-8">
+      <div className="lg:flex justify-center lg:mt-5 mt-8">
         <div className="relative flex justify-center items-start gap-4 w-full lg:w-[70%]">
           <div className="bg-white w-full shadow-xl shadow-slate-100 rounded-md h-fit p-7">
             <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
@@ -605,7 +617,7 @@ export default function WithoutSteps({
             </div>
           </div>
         </div>
-        <div className="bg-white lg:w-[40%] shadow-xl shadow-slate-100 rounded-md h-fit p-7 ml-4">
+        <div className="bg-white lg:w-[40%] w-full shadow-xl shadow-slate-100 rounded-md h-fit p-7 lg:ml-4 lg:mt-0 mt-5">
           <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
             <div className="w-full border-b mb-2 flex flex-col justify-between items-start gap-1 pb-3">
               <p className="font-medium text-base text-slate-900">
