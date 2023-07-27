@@ -154,9 +154,20 @@ function CreateAppointment({cancelFuntion, customRef}:{
           description: findedService!["description"],
           type: "SERVICE",
         })
-        setFormData({...formData, windowId: predifinedReservation["attentionWindowId"] })
       }
     }
+    if(predifinedReservation["localityId"] !== undefined){
+      let findedLocality = listOfLocalities.find((elem:ILocality) => elem.id === predifinedReservation["localityId"])
+      if(findedLocality !== undefined){
+        setSelectedLocality({
+          id: findedLocality!["id"],
+          title: findedLocality!["title"],
+          description: findedLocality!["address"],
+          type: "LOCALITY",
+        })
+      }
+    }
+    setFormData({...formData, windowId: predifinedReservation["attentionWindowId"] })
   }
 
   useMemo(() => {
@@ -181,7 +192,8 @@ function CreateAppointment({cancelFuntion, customRef}:{
 
   useMemo(()=>{
     if(loadedLists){
-      if(predifinedReservation["serviceId"] !== undefined){
+      if(predifinedReservation["serviceId"] !== undefined && predifinedReservation["localityId"] !== undefined){
+        getServicesByLocality(user.userId, predifinedReservation["localityId"])(dispatch)
         getDataFromPredifined()
         setFromCalendar(true)
       }else{

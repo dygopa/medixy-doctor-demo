@@ -18,6 +18,7 @@ import {
   AuthContext,
   IAuthContext,
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import moment from "moment";
 
 function Filters() {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
@@ -27,6 +28,7 @@ function Filters() {
     useContext<IScheduleContext>(ScheduleContext);
   const {
     changeTypePopup,
+    getCalendarEvents,
     changeStatusPopup,
     predifinedReservationData,
     getLocalities,
@@ -36,6 +38,7 @@ function Filters() {
   const { data: locality } = state.activeLocality;
 
   const { data: localities, successful: loadedLocalities } = state.getLocalities;
+  const { data: activeDay, successful: changedActiveDay} = state.activeDay;
 
   const [listOfLocalities, setListOfLocalities] = useState([]);
 
@@ -57,16 +60,10 @@ function Filters() {
 
   useMemo(() => {
     if (selectedLocality.id > 0) {
-      console.log(selectedLocality);
       activeLocality(selectedLocality)(dispatch);
+      getCalendarEvents(user.userId, selectedLocality.id, moment(activeDay).format('YYYY-MM-DD'), moment(activeDay, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedLocality]);
-
-  useMemo(() => {
-    if (selectedLocality.id > 0) {
-      getAttentionWindows(selectedLocality.id, "LOCALITY")(dispatch);
-    }
   }, [selectedLocality]);
 
   useMemo(() => {

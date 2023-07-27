@@ -113,10 +113,6 @@ const Side = () => {
     if(changedActiveDay) getAppointments(user.userId, moment(activeDay).format("YYYY-MM-DD"))(dispatch)
   },[activeDay])
 
-  useMemo(()=>{
-    if(successful) console.log(data)
-  },[successful])
-
   return (
     <div className='w-full lg:w-1/3 flex flex-col justify-start items-center gap-3'>
       <div className="w-full flex justify-between items-center">

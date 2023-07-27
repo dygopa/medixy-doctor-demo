@@ -38,6 +38,7 @@ export default function CalendarIndex() {
   } = state.createAppointment;
   const {
     successful: calendarEventsSuccessful,
+    loading: calendarEventsLoading,
     error: calendarEventsError,
     data: calendarEvents,
   } = state.getCalendarEvents;
@@ -46,6 +47,11 @@ export default function CalendarIndex() {
     error: serviceError,
     data: service,
   } = state.activeService;
+  const {
+    successful: localitySuccessful,
+    error: localityError,
+    data: locality,
+  } = state.activeLocality;
   const { successful: loadedCreationAppointment } = state.createAppointment;
   const {
     successful: servicesSuccessful,
@@ -57,6 +63,7 @@ export default function CalendarIndex() {
     error: localitiesError,
     data: localities,
   } = state.getLocalities;
+  const { data: activeDayInCalendar, successful: changedActiveDayInCalendar, loading: changingDayInCalendar} = state.activeDay;
 
   const params = useSearchParams();
 
@@ -115,6 +122,7 @@ export default function CalendarIndex() {
       description: "-",
       attentionWindowId: elem["id"],
       serviceId: elem["servicioId"],
+      localityId: locality["id"],
       sujetos: {
         ...elem["Sujetos"],
         nombre: elem["Servicios"]["nombre"],
@@ -138,7 +146,6 @@ export default function CalendarIndex() {
       data["type"] !== "APPOINMENT"
     ) {
       setShowAppointmentEndModal(true);
-
       return;
     }
 
@@ -149,6 +156,7 @@ export default function CalendarIndex() {
         dateEnd: data["dateEndEvent"],
         type: "WINDOW",
         serviceId: data["serviceId"],
+        localityId: data["localityId"],
       })(dispatch);
       changeStatusPopup(true)(dispatch);
       changeTypePopup(0)(dispatch);
@@ -160,6 +168,7 @@ export default function CalendarIndex() {
         dateEnd: data["dateEndEvent"],
         type: "FREE_SLOT",
         serviceId: data["serviceId"],
+        localityId: data["localityId"],
       })(dispatch);
       changeStatusPopup(true)(dispatch);
       changeTypePopup(0)(dispatch);
@@ -176,14 +185,14 @@ export default function CalendarIndex() {
 
   useMemo(() => {
     if (loadedCreationAppointment) {
-      getCalendarEvents(user.userId, service.id, {}, {})(dispatch);
+      getCalendarEvents(user.userId, service.id, moment(activeDayInCalendar).format('YYYY-MM-DD'), moment(activeDayInCalendar, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
     }
   }, [loadedCreationAppointment]);
 
   useMemo(() => {
     if (calendarEventsSuccessful) formatList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [calendarEventsSuccessful]);
+  }, [calendarEventsLoading]);
 
   /* useMemo(() => {
     if (loadedUser && servicesSuccessful) {
@@ -213,9 +222,15 @@ export default function CalendarIndex() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser, services]);
 
+  useMemo(()=>{
+    if(changedActiveDayInCalendar){
+      getCalendarEvents(user.userId, locality["id"], moment(activeDayInCalendar).format('YYYY-MM-DD'), moment(activeDayInCalendar, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
+    }
+  },[activeDayInCalendar])
+
   useMemo(() => {
     if (loadedUser && localitiesSuccessful && localities.length > 0) {
-      getCalendarEvents(user.userId, localities[0].id, {}, {})(dispatch);
+      getCalendarEvents(user.userId, localities[0].id, moment(activeDayInCalendar).format('YYYY-MM-DD'), moment(activeDayInCalendar, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser, localities, localitiesSuccessful]);
@@ -235,7 +250,7 @@ export default function CalendarIndex() {
           type: "SERVICE",
         })(dispatch);
       }
-      getCalendarEvents(user.userId, params.get("locality"), {}, {})(dispatch);
+      getCalendarEvents(user.userId, params.get("locality"), moment(activeDayInCalendar).format('YYYY-MM-DD'), moment(activeDayInCalendar, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
     }
   }, [params, localities]);
 

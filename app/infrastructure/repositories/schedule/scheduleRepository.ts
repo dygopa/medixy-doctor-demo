@@ -22,47 +22,53 @@ export class ScheduleRepository implements IScheduleRepository {
             let queryOfServices = supabase.from("Servicios").select(`*`).eq("localidadId", localityId);
 
             let resServices = await queryOfServices
-            if(resServices.error || resServices.data.length === 0) return new ScheduleFailure(scheduleFailuresEnum.serverError);
+            
+            if(resServices.data?.length === 0) return []
 
-            let query = supabase.from("ServiciosEnVentanasAtencion").select(`
-                *,
-                VentanasAtencionBase(
-                    *,
-                    VentanasAtencion(
-                        *,
-                        Citas (
-                            *, 
-                            Sujetos(
-                                nombres,
-                                primerApellido,
-                                segundoApellido,
-                                curp,
-                                email,
-                                fechaNacimiento,
-                                sexo,
-                                telefono,
-                                ciudad,
-                                direccion,
-                                avatar
-                            ),
-                            Servicios (
-                                nombre
-                            )
-                        )
-                    )
+            let queryServiciosEnVentanasAtencion = supabase.from("ServiciosEnVentanasAtencion")
+            .select(`*, VentanasAtencionBase(*)`).in("servicioId", resServices.data!.map((elem:any)=> elem["id"] ))
+
+            let resServiciosEnVentanasAtencion = await queryServiciosEnVentanasAtencion
+            
+            if(resServiciosEnVentanasAtencion.data?.length === 0) return []
+
+            let windowAttentionId = resServiciosEnVentanasAtencion.data![0]["ventanaAtencionBaseId"].toString()
+
+            console.log(sinceDate + " - " + untilDate)
+
+            let queryVentanasAtencion = supabase.from("VentanasAtencion")
+            .select(`*`).eq("ventanaAtencionBaseId", windowAttentionId)
+            .filter('fechaInicio', 'gte', sinceDate).filter('fechaFin', 'lte', untilDate)
+            
+            let resVentanasAtencion = await queryVentanasAtencion
+
+            if(resVentanasAtencion.data?.length === 0) return []
+
+            let queryCitas = supabase.from("Citas").select(`
+                *, 
+                Sujetos(
+                    nombres,
+                    primerApellido,
+                    segundoApellido,
+                    curp,
+                    email,
+                    fechaNacimiento,
+                    sexo,
+                    telefono,
+                    ciudad,
+                    direccion,
+                    avatar
+                ),
+                Servicios (
+                    nombre
                 )
-            `).in("servicioId", resServices.data.map((elem:any)=> elem["id"] ))
+            `).in("ventanaAtencionId", resVentanasAtencion.data!.map((elem:any)=> elem["id"] ))
+            
+            let resCitas = await queryCitas
 
-            let res = await query
-            
-            let list = res.data![0]["VentanasAtencionBase"]["VentanasAtencion"].map((elem:any)=> [...elem["Citas"]] )
-            
-            let listOfDates:any = []
-            listOfDates = listOfDates.concat(...list!)
-            
-            console.log(listOfDates)
-            return listOfDates ?? [];
+            return resCitas.data ?? [];
         } catch (error) {
+            console.log(error)
             const exception = error as any;
             return new ScheduleFailure(scheduleFailuresEnum.serverError);
         }
