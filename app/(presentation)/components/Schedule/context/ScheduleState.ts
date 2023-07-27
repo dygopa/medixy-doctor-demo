@@ -17,6 +17,7 @@ export interface IScheduleState {
   getAttentionWindowsByService: IScheduleUserState;
   createWindowAttention: IScheduleUserState;
   getServices: IScheduleUserState;
+  getServicesByLocality: IScheduleUserState;
   getLocalities: IScheduleUserState;
   getPatients: IScheduleUserState;
 }
@@ -120,6 +121,12 @@ export const initialState: IScheduleState = {
     error: null,
   },
   getServices: {
+    data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  getServicesByLocality: {
     data: [],
     loading: false,
     successful: false,

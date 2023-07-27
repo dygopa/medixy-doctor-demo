@@ -3,7 +3,7 @@ import Button from '(presentation)/components/core/BaseComponents/Button'
 import { FormInput, FormSelect } from '(presentation)/components/core/BaseComponents/Form'
 import Link from 'next/link';
 import React, { useContext, useMemo, useState } from 'react'
-import { FiBriefcase, FiCheck, FiUser } from 'react-icons/fi';
+import { FiBriefcase, FiCheck, FiHome, FiUser } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
 import SpecialSearch from '(presentation)/components/core/SpecialSearch/SpecialSearch';
 import { IService } from 'domain/core/entities/serviceEntity';
@@ -12,6 +12,7 @@ import Loading from '(presentation)/components/core/Loading/Loading';
 import moment from 'moment';
 import 'moment/locale/es';
 import { IScheduleContext, ScheduleContext } from '(presentation)/components/Schedule/context/ScheduleContext';
+import { ILocality } from 'domain/core/entities/localityEntity';
 
 function CreateAppointment({cancelFuntion, customRef}:{
   cancelFuntion: Function;
@@ -22,8 +23,9 @@ function CreateAppointment({cancelFuntion, customRef}:{
   const { data: user, successful: loadedUser} = auth.getUserAuthenticated;
 
   const { state, actions, dispatch } = useContext<IScheduleContext>(ScheduleContext);
-  const { getServices, getPatients, getAttentionWindowsByService, createAppointment, getAppointments, changeStatusPopup } = actions;
-  const { data: services, successful: loadedServices, error: errorServices } = state.getServices;
+  const { getServicesByLocality, getLocalities, getPatients, getAttentionWindowsByService, createAppointment, getAppointments, changeStatusPopup } = actions;
+  const { data: localities, successful: loadedLocalities, error: errorLocalities } = state.getLocalities;
+  const { data: services, successful: loadedServices, error: errorServices } = state.getServicesByLocality;
   const { data: patients, successful: loadedPatients, error: errorPatients } = state.getPatients;
   const { data: windows, loading: loadingWindows, successful: loadedWindows, error: errorWindows } = state.getAttentionWindowsByService;
   const { data: appointmentCreated, loading: loadingCreationAppointment, successful: loadedCreationAppointment, error: errorCreationAppointment } = state.createAppointment;
@@ -37,6 +39,7 @@ function CreateAppointment({cancelFuntion, customRef}:{
   const [selectedDate, setSelectedDate] = useState("")
 
   const [listOfPatients, setListOfPatients] = useState([])
+  const [listOfLocalities, setListOfLocalities] = useState([])
   const [listOfServices, setListOfServices] = useState([])
 
   const [selectedPatient, setSelectedPatient] = useState({
@@ -46,6 +49,13 @@ function CreateAppointment({cancelFuntion, customRef}:{
     type: "PATIENT",
   })
   
+  const [selectedLocality, setSelectedLocality] = useState({
+    id: 0,
+    title: "",
+    description: "",
+    type: "LOCALITY",
+  })
+
   const [selectedService, setSelectedService] = useState({
     id: 0,
     title: "",
@@ -113,13 +123,13 @@ function CreateAppointment({cancelFuntion, customRef}:{
 
   function handleFormatList(){
 
-    let list_services = services.map((elem:IService) => ({
+    let list_localities = localities.map((elem:ILocality) => ({
       id: elem.id,
       title: elem.name,
-      description: elem.description,
-      type: "SERVICE",
+      description: elem.address,
+      type: "LOCALITY",
     }))
-    setListOfServices(list_services)
+    setListOfLocalities(list_localities)
 
     let list_patients = patients.data.map((elem:ISubject) => ({
       id: elem.subjectId,
@@ -148,6 +158,26 @@ function CreateAppointment({cancelFuntion, customRef}:{
       }
     }
   }
+
+  useMemo(() => {
+    if (loadedServices){
+      let list_services = services.map((elem:IService) => ({
+        id: elem.id,
+        title: elem.name,
+        description: elem.description,
+        type: "SERVICE",
+      }))
+      setListOfServices(list_services)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadedServices]);
+
+  useMemo(() => {
+    if (selectedLocality.id !== 0){
+      getServicesByLocality(user.userId, selectedLocality["id"])(dispatch)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLocality]);
 
   useMemo(()=>{
     if(loadedLists){
@@ -182,13 +212,20 @@ function CreateAppointment({cancelFuntion, customRef}:{
   },[loadedCreationAppointment])
 
   useMemo(() => {
-    if (loadedServices && loadedPatients) handleFormatList()
+    if (selectedLocality.id !== 0){
+      getServicesByLocality(user.userId, selectedLocality["id"])(dispatch)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedServices, loadedPatients]);
+  }, [selectedLocality]);
+
+  useMemo(() => {
+    if (loadedLocalities && loadedPatients) handleFormatList()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadedLocalities, loadedPatients]);
 
   useMemo(() => {
     if (loadedUser){
-      getServices(user.userId)(dispatch)
+      getLocalities(user.userId)(dispatch)
       getPatients()(dispatch)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -224,6 +261,27 @@ function CreateAppointment({cancelFuntion, customRef}:{
           </div>}
 
         </div>}
+        <div className="w-full flex flex-col justify-center items-start gap-2">
+          <p className='font-normal text-sm text-slate-600'>Consultorio</p>
+          {!fromCalendar && <SpecialSearch
+            customClick={setSelectedLocality}
+            customClickEmpty={()=>{}}
+            list={listOfLocalities} 
+            placeholder={"Buscar..."} 
+            selectedItem={selectedLocality}
+          />}
+          {selectedLocality["title"] !== "" && <div className={twMerge([
+            "transition w-full h-[10vh] flex justify-between items-center gap-3 bg-white"
+          ])}>
+            <div className='w-12 h-12 overflow-hidden rounded-lg bg-primary/20 text-primary text-lg flex flex-col justify-center items-center'>
+              <FiHome/>
+            </div>
+            <div className="w-[90%] h-full flex flex-col justify-center items-start">
+              <p className='font-semibold text-gray-950 text-[0.9rem]'>Consultorio - {selectedLocality["title"]}</p>
+              <p className='font-light text-gray-600 text-sm'>{selectedLocality["description"]}</p>
+            </div>
+          </div>}
+        </div>
         <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className='font-normal text-sm text-slate-600'>Servicio</p>
           {!fromCalendar && <SpecialSearch

@@ -20,9 +20,9 @@ function CreateAgenda({cancelFuntion, customRef}:{
   const { data: user, successful: loadedUser} = auth.getUserAuthenticated;
 
   const { state, actions, dispatch } = useContext<IScheduleContext>(ScheduleContext);
-  const { changeTypePopup, changeStatusPopup, getServices, getLocalities, createWindowAttention, getAttentionWindows} = actions;
-  const { data: services, successful: loadedServices } = state.getServices;
+  const { changeTypePopup, changeStatusPopup, getServicesByLocality, getLocalities, createWindowAttention, getAttentionWindows} = actions;
   const { data: localities, successful: loadedLocalities } = state.getLocalities;
+  const { data: services, successful: loadedServices } = state.getServicesByLocality;
   const { loading, successful, error,  } = state.createWindowAttention;
   const { data: activeService, successful: changedActiveService  } = state.activeService;
   const { data: activeLocality, successful: changedActiveLocality  } = state.activeLocality;
@@ -166,14 +166,6 @@ function CreateAgenda({cancelFuntion, customRef}:{
 
   function handleFormatList(){
 
-    let list_services = services.map((elem:IService) => ({
-      id: elem.id,
-      title: elem.name,
-      description: elem.description,
-      type: "SERVICE",
-    }))
-    setListOfServices(list_services)
-
     let list_localities = localities.map((elem:ILocality) => ({
       id: elem.id,
       title: elem.name,
@@ -186,13 +178,13 @@ function CreateAgenda({cancelFuntion, customRef}:{
   }
 
   function getDataFromPredifined(){
-    let findedService = listOfServices.find((elem:IService) => elem.id === parseInt(params.get("service")!))
-    if(findedService !== undefined){
-      setSelectedService({
-        id: findedService!["id"],
-        title: findedService!["title"],
-        description: findedService!["description"],
-        type: "SERVICE",
+    let findedLocality = listOfLocalities.find((elem:ILocality) => elem.id === parseInt(params.get("locality")!))
+    if(findedLocality !== undefined){
+      setSelectedLocality({
+        id: findedLocality!["id"],
+        title: findedLocality!["title"],
+        description: findedLocality!["address"],
+        type: "LOCALITY",
       })
     }
   }
@@ -214,13 +206,26 @@ function CreateAgenda({cancelFuntion, customRef}:{
   },[selectedService])
 
   useMemo(() => {
-    if (loadedServices && loadedLocalities) handleFormatList()
+    if (loadedLocalities) handleFormatList()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedServices, loadedLocalities]);
+  }, [loadedLocalities]);
+
+  useMemo(() => {
+    if (loadedServices){
+      let list_services = services.map((elem:IService) => ({
+        id: elem.id,
+        title: elem.name,
+        description: elem.description,
+        type: "SERVICE",
+      }))
+      setListOfServices(list_services)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadedServices]);
 
   useMemo(()=>{
     if(successful){
-      getAttentionWindows(formData.serviceId, "")(dispatch)
+      getAttentionWindows(formData.localityId, "LOCALITY")(dispatch)
       setTimeout(() => {
         changeStatusPopup(false)(dispatch)
       }, 2000);
@@ -233,18 +238,24 @@ function CreateAgenda({cancelFuntion, customRef}:{
 
   useMemo(() => {
     if (loadedUser){
-      getServices(user.userId)(dispatch)
       getLocalities(user.userId)(dispatch)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser]);
 
+  useMemo(() => {
+    if (selectedLocality.id !== 0){
+      getServicesByLocality(user.userId, selectedLocality["id"])(dispatch)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedLocality]);
+
   useMemo(()=>{
-    if(params.get("service") !== null && loadedServices){
-      setFormData({...formData, serviceId: parseInt(params.get("service")!) })
+    if(params.get("locality") !== null && loadedLocalities){
+      setFormData({...formData, localityId: parseInt(params.get("locality")!) })
       getDataFromPredifined()
     }
-  },[loadedServices, params])
+  },[loadedLocalities, params])
 
   return (
     <div ref={customRef} className='w-full md:w-[60%] lg:w-[40%] h-screen  md:min-h-[60vh] md:max-h-[90vh] lg:min-h-[60vh] lg:max-h-[90vh] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 pb-0 gap-8'>
@@ -282,8 +293,8 @@ function CreateAgenda({cancelFuntion, customRef}:{
           <SpecialSearch
             customClick={setSelectedService}
             customClickEmpty={()=>{}}
-            list={listOfServices} 
-            placeholder={"Buscar..."} 
+            list={listOfServices}
+            placeholder={"Buscar..."}
             selectedItem={selectedService}
           />
           {selectedService["title"] !== "" && <div className={twMerge([
