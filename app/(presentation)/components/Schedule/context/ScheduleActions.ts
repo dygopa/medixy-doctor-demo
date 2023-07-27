@@ -22,11 +22,11 @@ export interface IScheduleActions {
   getPatients: Function;
 }
 
-const getCalendarEvents = (id:number, serviceId:number, sinceDate:any, untilDate:any) => async (dispatch: Dispatch<any>) => {
+const getCalendarEvents = (id:number, localityId:number, sinceDate:any, untilDate:any, serviceId:number) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "GET_CALENDAR_EVENTS_LOADING" });
     
-    const res: any = await new ScheduleUseCase().getCalendarEvents(id, serviceId, sinceDate, untilDate);
+    const res: any = await new ScheduleUseCase().getCalendarEvents(id, localityId, sinceDate, untilDate, serviceId);
 
     dispatch({ type: "GET_CALENDAR_EVENTS_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

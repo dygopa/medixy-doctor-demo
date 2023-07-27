@@ -15,9 +15,9 @@ export default class ScheduleUseCase {
   private _repositorySubjects: SubjectRepository = new SubjectRepository();
   private _repositoryServices: ServicesRepository = new ServicesRepository();
       
-  async getCalendarEvents(id:number, serviceId:number, sinceDate:any, untilDate:any): Promise<any[]> {
+  async getCalendarEvents(id:number, localityId:number, sinceDate:any, untilDate:any, serviceId?:number): Promise<any[]> {
     try {
-      const response = await this._repository.getCalendarEvents(id, serviceId, sinceDate, untilDate);
+      const response = await this._repository.getCalendarEvents(id, localityId, sinceDate, untilDate, serviceId);
       if (response instanceof ScheduleFailure) throw response;
       return response;
     } catch (error) {
