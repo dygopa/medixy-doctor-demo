@@ -145,17 +145,17 @@ function CreateAppointment({cancelFuntion, customRef}:{
   function getDataFromPredifined(){
     
     setSelectedDate(moment(predifinedReservation["date"]).format("YYYY-MM-DD"))
-    if(predifinedReservation["serviceId"] !== undefined){
-      let findedService = listOfServices.find((elem:IService) => elem.id === predifinedReservation["serviceId"])
-      if(findedService !== undefined){
-        setSelectedService({
-          id: findedService!["id"],
-          title: findedService!["title"],
-          description: findedService!["description"],
-          type: "SERVICE",
-        })
-      }
-    }
+    //if(predifinedReservation["serviceId"] !== undefined){
+    //  let findedService = listOfServices.find((elem:IService) => elem.id === predifinedReservation["serviceId"])
+    //  if(findedService !== undefined){
+    //    setSelectedService({
+    //      id: findedService!["id"],
+    //      title: findedService!["title"],
+    //      description: findedService!["description"],
+    //      type: "SERVICE",
+    //    })
+    //  }
+    //}
     if(predifinedReservation["localityId"] !== undefined){
       let findedLocality = listOfLocalities.find((elem:ILocality) => elem.id === predifinedReservation["localityId"])
       if(findedLocality !== undefined){
@@ -192,7 +192,7 @@ function CreateAppointment({cancelFuntion, customRef}:{
 
   useMemo(()=>{
     if(loadedLists){
-      if(predifinedReservation["serviceId"] !== undefined && predifinedReservation["localityId"] !== undefined){
+      if(predifinedReservation["localityId"] !== undefined){
         getServicesByLocality(user.userId, predifinedReservation["localityId"])(dispatch)
         getDataFromPredifined()
         setFromCalendar(true)
@@ -296,13 +296,13 @@ function CreateAppointment({cancelFuntion, customRef}:{
         </div>
         <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className='font-normal text-sm text-slate-600'>Servicio</p>
-          {!fromCalendar && <SpecialSearch
+          <SpecialSearch
             customClick={setSelectedService}
             customClickEmpty={()=>{}}
             list={listOfServices} 
             placeholder={"Buscar..."} 
             selectedItem={selectedService}
-          />}
+          />
           {selectedService["title"] !== "" && <div className={twMerge([
             "transition w-full h-[10vh] flex justify-between items-center gap-3 bg-white"
           ])}>
