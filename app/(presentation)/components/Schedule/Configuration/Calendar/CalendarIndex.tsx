@@ -75,7 +75,7 @@ export default function CalendarIndex() {
     let end = moment(elem["fechaFin"]).utc();
 
     object = {
-      title: elem["Servicios"]["nombre"],
+      title: "Horario",
       start: start.format("YYYY-MM-DD HH:mm"),
       end: end.format("YYYY-MM-DD HH:mm"),
       textColor: "#FFF",

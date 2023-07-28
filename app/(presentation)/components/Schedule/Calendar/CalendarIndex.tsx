@@ -125,7 +125,7 @@ export default function CalendarIndex() {
       localityId: locality["id"],
       sujetos: {
         ...elem["Sujetos"],
-        nombre: elem["Servicios"]["nombre"],
+        nombre: "-",
         sujetoId: elem["sujetoId"],
         appoinmentId: elem["id"],
       },
