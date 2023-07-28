@@ -102,7 +102,7 @@ export default function MedicalConsultationList({ user }: { user: IUser }) {
             Citas pendientes
           </p>
         </div>
-        <div className="w-full h-auto rounded-md overflow-y-auto text-center mt-8">
+        <div className="w-full h-auto rounded-md overflow-y-auto mt-10">
           <p className="font-medium text-lg text-slate-900">
             Nada por aquí aún
           </p>
