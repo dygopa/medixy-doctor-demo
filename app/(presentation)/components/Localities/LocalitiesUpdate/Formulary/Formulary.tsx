@@ -296,7 +296,7 @@ export default function Formulary({
 
     if (
       !isInList &&
-      servicesData.length > 0 &&
+      servicesData?.length > 0 &&
       typeof servicesData !== "string"
     ) {
       const service = servicesData.find(
