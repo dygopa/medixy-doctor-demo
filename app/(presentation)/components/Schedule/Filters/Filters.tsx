@@ -67,6 +67,17 @@ function Filters() {
   }, [selectedLocality]);
 
   useMemo(() => {
+    if (loadedLocalities && localities.length > 0){
+      getCalendarEvents(user.userId, localities[0].id, moment(activeDay).format('YYYY-MM-DD'), moment(activeDay, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
+      setSelectedLocality({
+        id: localities[0].id,
+        title: localities[0].name,
+        description: localities[0].address,
+      })
+    }
+  }, [loadedLocalities, localities]);
+
+  useMemo(() => {
     if (loadedLocalities) handleFormatList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedLocalities]);

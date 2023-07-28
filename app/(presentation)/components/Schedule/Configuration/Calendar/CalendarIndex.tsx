@@ -75,7 +75,7 @@ export default function CalendarIndex() {
     let end = moment(elem["fechaFin"]).utc();
 
     object = {
-      title: elem["Servicios"]["nombre"],
+      title: "Horario",
       start: start.format("YYYY-MM-DD HH:mm"),
       end: end.format("YYYY-MM-DD HH:mm"),
       textColor: "#FFF",
@@ -172,9 +172,9 @@ export default function CalendarIndex() {
     if (localitiesSuccessful && localities.length > 0)
       if (params.get("locality")) {
         let id = params.get("locality")?.toString();
-        getAttentionWindows(parseInt(id!))(dispatch);
+        getAttentionWindows(parseInt(id!), "LOCALITY")(dispatch);
       } else {
-        getAttentionWindows(localities[0].id)(dispatch);
+        getAttentionWindows(localities[0].id, "LOCALITY")(dispatch);
       }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [localitiesSuccessful, localities]);
@@ -195,6 +195,7 @@ export default function CalendarIndex() {
           (elem: any) => elem["id"] === parseInt(id!)
         );
         console.log(localityFinded);
+        getAttentionWindows(localityFinded["id"], "LOCALITY")(dispatch);
         if (localityFinded) {
           activeLocality({
             id: params.get("locality"),
@@ -206,6 +207,7 @@ export default function CalendarIndex() {
       }
       if (!params.get("locality") && localities.length > 0) {
         let localityFinded = [...localities][0];
+        getAttentionWindows(localityFinded["id"], "LOCALITY")(dispatch);
         activeLocality({
           id: localityFinded["id"],
           title: localityFinded["name"],

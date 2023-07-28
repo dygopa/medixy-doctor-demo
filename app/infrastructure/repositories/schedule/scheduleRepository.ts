@@ -128,24 +128,35 @@ export class ScheduleRepository implements IScheduleRepository {
     async getAttentionWindows(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure> {
         try {
             if(by === "LOCALITY"){
+
                 let queryOfServices = supabase.from("Servicios").select(`*`).eq("localidadId", id);
                         
-                let res = await queryOfServices
+                let resServices = await queryOfServices
                 
-                if(res.error) return new ScheduleFailure(scheduleFailuresEnum.serverError);
+                if(resServices.error) return new ScheduleFailure(scheduleFailuresEnum.serverError);
                 
-                if(res.data.length > 0){
-                    
-                    let query = supabase.from("VentanasAtencion").select(`
-                        *,
-                        Servicios (
-                            nombre
-                        )
-                    `).in("servicioId", res.data.map((elem:any)=> elem["id"] ))
+                if(resServices.data?.length === 0) return []
 
-                    let response = await query
-                    return response.data ?? []
-                }
+                let queryServiciosEnVentanasAtencion = supabase.from("ServiciosEnVentanasAtencion")
+                .select(`*, VentanasAtencionBase(*)`).in("servicioId", resServices.data!.map((elem:any)=> elem["id"] ))
+
+                let resServiciosEnVentanasAtencion = await queryServiciosEnVentanasAtencion
+
+                if(resServiciosEnVentanasAtencion.data?.length === 0) return []
+
+                let windowAttentionId = resServiciosEnVentanasAtencion.data![0]["ventanaAtencionBaseId"].toString()
+
+                let queryVentanasAtencion = supabase.from("VentanasAtencion")
+                .select(`
+                    *,
+                    Servicios (
+                        nombre
+                    )
+                `).eq("ventanaAtencionBaseId", windowAttentionId)
+
+                let resVentanasAtencion = await queryVentanasAtencion
+
+                return resVentanasAtencion.data ?? []
             }
             
             let query = supabase.from("VentanasAtencion").select(`
@@ -207,49 +218,52 @@ export class ScheduleRepository implements IScheduleRepository {
     async getAttentionWindowsByService(id:number, date?:string): Promise<any[] | ScheduleFailure> {
         try {
 
-            let queryToGetSlotsTypeAttentionWindows = supabase.from("ServiciosEnVentanasAtencion").select(`
-                *,
-                VentanasAtencionBase(
-                    *,
-                    VentanasAtencion(
-                        *,
-                        Citas (*),
-                        Servicios (
-                            nombre
-                        )
-                    )
-                )
-            `).eq("servicioId", id)
+            let queryServiciosEnVentanasAtencion = supabase.from("ServiciosEnVentanasAtencion")
+            .select(`*, VentanasAtencionBase(*)`).eq("servicioId", id)
 
-            //if(date) query = query.eq("fechaInicio", date)
+            let resServiciosEnVentanasAtencion = await queryServiciosEnVentanasAtencion
 
-            let resSlotsTypeAttentionWindows = await queryToGetSlotsTypeAttentionWindows
+            if(resServiciosEnVentanasAtencion.data?.length === 0) return []
+
+            let windowAttentionId = resServiciosEnVentanasAtencion.data![0]["ventanaAtencionBaseId"].toString()
+
+            let endDate = moment(date, "YYYY-MM-DD").add(1, "day").format("YYYY-MM-DD")
+            console.log(date)
+            console.log(endDate)
+
+            let queryVentanasAtencion = supabase.from("VentanasAtencion")
+            .select(`*`).eq("ventanaAtencionBaseId", windowAttentionId)
+            .filter('fechaInicio', 'gte', date)
+            .filter('fechaFin', 'lte', endDate)
             
+            let resVentanasAtencion = await queryVentanasAtencion
+            console.log(resVentanasAtencion.data)
+
+            if(resVentanasAtencion.data?.length === 0) return []
+
+            let queryCitas = supabase.from("Citas").select(`*`)
+            .in("ventanaAtencionId", resVentanasAtencion.data!.map((elem:any)=> elem["id"] ))
+
+            let resCitas = await queryCitas
+
+            console.log(resCitas.data)
             let list:any[] = []
-            
-            console.log(resSlotsTypeAttentionWindows.data)
 
-            if(resSlotsTypeAttentionWindows.data?.length! > 0){
-                let listOfSlots = resSlotsTypeAttentionWindows.data![0]["VentanasAtencionBase"]["VentanasAtencion"].map((elem:any)=> [...elem["Citas"]] )
-            
-                let listOfDates:any = []
-                listOfDates = listOfDates.concat(...listOfSlots!)
-                listOfDates!.forEach((elem:any)=>{
-                    list.push({
-                        id: elem["id"],
-                        servicioId: elem["servicioId"],
-                        dateToFilter: moment(elem["fechaReserva"]).format("YYYY-MM-DD"),
-                        fechaInicio: elem["fechaReserva"],
-                        fechaFin: elem["fechaFinReserva"],
-                        horaInicio: parseInt(moment(elem["fechaReserva"]).utc().format("HH:mm").split(":").join("")),
-                        horaFin: parseInt(moment(elem["fechaFinReserva"]).utc().format("HH:mm").split(":").join("")),
-                        tipo: 2,
-                        disponible: elem["sujetoId"] !== null ? false : true
-                    })
-                })
+            if(resCitas.data?.length! > 0){
+                let listOfSlots = resCitas.data
+                
+                list = listOfSlots!.map((elem:any)=>({
+                    id: elem["id"],
+                    servicioId: elem["servicioId"],
+                    dateToFilter: moment(elem["fechaReserva"]).format("YYYY-MM-DD"),
+                    fechaInicio: elem["fechaReserva"],
+                    fechaFin: elem["fechaFinReserva"],
+                    horaInicio: parseInt(moment(elem["fechaReserva"]).utc().format("HH:mm").split(":").join("")),
+                    horaFin: parseInt(moment(elem["fechaFinReserva"]).utc().format("HH:mm").split(":").join("")),
+                    tipo: 2,
+                    disponible: elem["sujetoId"] !== null ? false : true
+                }))
             }
-
-            list = list.filter((elem:any)=> elem["dateToFilter"] === date && elem["disponible"] === true)
 
             return list;
         } catch (error) {
@@ -277,7 +291,7 @@ export class ScheduleRepository implements IScheduleRepository {
                 end_time: parseInt(obj["toHour"]),
                 appointment_period: obj["spanTime"],
                 days: days,
-                service_id: obj["serviceId"],
+                service_id: null,
                 location_id: obj["localityId"]
             });
 
