@@ -243,12 +243,12 @@ function CreateAgenda({cancelFuntion, customRef}:{
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser]);
 
-  useMemo(() => {
+  /* useMemo(() => {
     if (selectedLocality.id !== 0){
       getServicesByLocality(user.userId, selectedLocality["id"])(dispatch)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedLocality]);
+  }, [selectedLocality]); */
 
   useMemo(()=>{
     if(params.get("locality") !== null && loadedLocalities){
@@ -288,7 +288,7 @@ function CreateAgenda({cancelFuntion, customRef}:{
             </div>
           </div>}
         </div>
-        <div className="w-full flex flex-col justify-center items-start gap-2">
+        {/* <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className='font-normal text-sm text-slate-600'>Para que servicio</p>
           <SpecialSearch
             customClick={setSelectedService}
@@ -308,7 +308,7 @@ function CreateAgenda({cancelFuntion, customRef}:{
               <p className='font-light text-gray-600 text-sm'>{selectedService["description"]}</p>
             </div>
           </div>}
-        </div>
+        </div> */}
         <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className='font-normal text-sm text-slate-600'>Tipo</p>
           <div className="w-full flex justify-start items-center gap-3">
@@ -439,7 +439,6 @@ function CreateAgenda({cancelFuntion, customRef}:{
           loading ||
           daysRepeatedList.length === 0 ||
           formData.localityId === 0 ||
-          formData.serviceId === 0 ||
           formData.startDate === "" ||
           formData.fromHour === "" ||
           formData.toHour === ""

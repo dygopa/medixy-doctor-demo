@@ -277,7 +277,7 @@ export class ScheduleRepository implements IScheduleRepository {
                 end_time: parseInt(obj["toHour"]),
                 appointment_period: obj["spanTime"],
                 days: days,
-                service_id: obj["serviceId"],
+                service_id: null,
                 location_id: obj["localityId"]
             });
 
