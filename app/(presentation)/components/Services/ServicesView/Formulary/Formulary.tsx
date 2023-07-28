@@ -43,7 +43,8 @@ export default function Formulary({ userId }: { userId: string }) {
 
   const { state, actions, dispatch } =
     useContext<IServicesContext>(ServicesContext);
-  const { getService, updateService, deleteService, getCategories } = actions;
+  const { getServiceByBase, updateService, deleteService, getCategories } =
+    actions;
   const { data, loading, successful, error } = state.getService;
   const {
     data: dataUpdate,
@@ -74,8 +75,6 @@ export default function Formulary({ userId }: { userId: string }) {
       type: "",
     },
   });
-
-  console.log(data);
 
   let avatarRef = useRef<HTMLInputElement>(null);
 
@@ -118,7 +117,7 @@ export default function Formulary({ userId }: { userId: string }) {
     if (userId) {
       const url = pathname?.split("/");
       let id = url![url!.length - 1];
-      getService(parseInt(id), userId)(dispatch);
+      getServiceByBase(parseInt(id), userId)(dispatch);
     }
   }, [userId, pathname]);
 
