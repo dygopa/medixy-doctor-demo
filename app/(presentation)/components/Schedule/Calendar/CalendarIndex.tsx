@@ -185,7 +185,7 @@ export default function CalendarIndex() {
 
   useMemo(() => {
     if (loadedCreationAppointment) {
-      getCalendarEvents(user.userId, service.id, moment(activeDayInCalendar).format('YYYY-MM-DD'), moment(activeDayInCalendar, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
+      getCalendarEvents(user.userId, locality["id"], moment(activeDayInCalendar).format('YYYY-MM-DD'), moment(activeDayInCalendar, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
     }
   }, [loadedCreationAppointment]);
 
