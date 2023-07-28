@@ -14,6 +14,7 @@ export interface IServicesActions {
   updateService: Function;
   deleteService: Function;
   getLocalitiesToService: Function;
+  getServiceByBase: Function;
 }
 
 const getCategories = () => async (dispatch: Dispatch<any>) => {
@@ -60,6 +61,19 @@ const getService = (id:number, userId:number) => async (dispatch: Dispatch<any>)
     dispatch({ type: "GET_SERVICE_LOADING" });
     
     const res: IService = await new ServicesUseCase().getService(id, userId);
+
+    dispatch({ type: "GET_SERVICE_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "GET_SERVICE_ERROR", payload: { error: error } });
+  }
+}
+
+const getServiceByBase = (id:number, userId:number) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_SERVICE_LOADING" });
+    
+    const res: IService = await new ServicesUseCase().getServiceByBase(id, userId);
 
     dispatch({ type: "GET_SERVICE_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
@@ -129,4 +143,5 @@ export const actions: IServicesActions = {
   updateService,
   deleteService,
   getLocalitiesToService,
+  getServiceByBase,
 }

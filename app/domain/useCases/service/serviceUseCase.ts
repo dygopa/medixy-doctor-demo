@@ -53,6 +53,23 @@ export default class ServiceUseCase {
     }
   }
 
+  async getServiceByBase(id:number, userId:number): Promise<IService> {
+    try {
+
+      const services = await this._repository.getUserBaseServices(userId);
+      let findedService = [...services as Array<IService>].find(elem => elem["id"] === id)
+      
+      //console.log(findedService)
+
+      if (services instanceof ServiceFailure) throw services;
+      if (findedService === undefined) throw ServiceFailure;
+
+      return findedService;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createUserService(obj:any): Promise<string> {
     try {
       const response: any = await this._repository.createUserService({...obj});
