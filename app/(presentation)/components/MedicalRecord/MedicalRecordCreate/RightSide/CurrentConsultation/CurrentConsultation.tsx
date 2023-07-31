@@ -55,6 +55,7 @@ export default function CurrentConsultation({
     let currentConsultation = valuesJSON.currentConsultation;
     currentConsultation = values;
 
+    currentConsultation.diagnose = valuesJSON.currentConsultation.diagnose;
     valuesJSON.currentConsultation = currentConsultation;
 
     localStorage.setItem(
