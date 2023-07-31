@@ -73,9 +73,7 @@ export default function AttentionWindowModal({
 
           <div>
             <p className="font-normal text-lg text-slate-900">
-              {get12HoursFormat(
-                eventSelected.event._instance?.range.start ?? new Date()
-              )}
+              {get12HoursFormat(eventSelected.event.start ?? new Date())}
             </p>
           </div>
         </div>
@@ -87,9 +85,7 @@ export default function AttentionWindowModal({
 
           <div>
             <p className="font-normal text-lg text-slate-900">
-              {get12HoursFormat(
-                eventSelected.event._instance?.range.end ?? new Date()
-              )}
+              {get12HoursFormat(eventSelected.event.end ?? new Date())}
             </p>
           </div>
         </div>
