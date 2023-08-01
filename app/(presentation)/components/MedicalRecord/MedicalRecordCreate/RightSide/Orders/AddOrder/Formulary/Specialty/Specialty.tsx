@@ -1,4 +1,8 @@
 import {
+  AuthContext,
+  IAuthContext,
+} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import {
   FormInput,
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
@@ -22,6 +26,9 @@ interface ISpecialtyProps {
 }
 
 export default function Specialty({ values, setValues }: ISpecialtyProps) {
+  const { state: authState } = useContext<IAuthContext>(AuthContext);
+  const { data: user } = authState.getUserAuthenticated;
+
   const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
     MedicalRecordCreateContext
   );
@@ -29,7 +36,9 @@ export default function Specialty({ values, setValues }: ISpecialtyProps) {
   const { data: specialties, loading, error, successful } = state.specialties;
 
   useEffect(() => {
-    getSpecialties()(dispatch);
+    getSpecialties({ doctorId: user.userId ? parseInt(user.userId, 10) : 0 })(
+      dispatch
+    );
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

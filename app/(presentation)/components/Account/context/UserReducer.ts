@@ -264,6 +264,7 @@ export const UserReducer = (state: any, action: any) => {
           error: action.payload.error,
         },
       };
+
     default:
       return state;
   }

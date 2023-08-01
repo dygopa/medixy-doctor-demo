@@ -37,6 +37,7 @@ import {
 } from "domain/core/entities/localityEntity";
 import { FiCheck } from "react-icons/fi";
 import { NumericFormat } from "react-number-format";
+import AutocompleteInput from "(presentation)/components/core/Autocomplete";
 
 export default function Formulary({ userId }: { userId: string }) {
   const pathname = usePathname();
@@ -61,9 +62,11 @@ export default function Formulary({ userId }: { userId: string }) {
   } = state.deleteService;
 
   const [loadedAPI, setLoadedAPI] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<any>({
     name: "",
     service_category_id: 0,
+    service_category_name: "",
+    service_category_doctor_id: null,
     description: "",
     conditions: "",
     base_price: 0,
@@ -95,6 +98,9 @@ export default function Formulary({ userId }: { userId: string }) {
       service_category_id: data?.service_category_id
         ? parseInt(data.service_category_id, 10)
         : 0,
+      service_category_name: data?.service_category
+        ? data.service_category.name
+        : "",
       description: data?.description ?? "",
       conditions: data?.conditions ?? "",
       base_price: data?.base_price ?? "",
@@ -213,7 +219,7 @@ export default function Formulary({ userId }: { userId: string }) {
             disabled={
               loadingUpdate ||
               formData?.name === "" ||
-              formData?.service_category_id === 0
+              formData?.service_category_name.length === 0
             }
             onClick={() => {
               updateService({
@@ -359,24 +365,30 @@ export default function Formulary({ userId }: { userId: string }) {
                   Categoría
                   <span className="text-primary font-bold">*</span>
                 </p>
-                <FormSelect
-                  value={formData?.service_category_id}
-                  className="form-control lg:w-[70%]"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      service_category_id: +e.target.value,
-                    })
-                  }
-                >
-                  <option value="">Seleccione la categoria</option>
-                  {categories &&
-                    [...(categories as Array<any>)].map((elem, i) => (
-                      <option key={i} value={elem["id"]}>
-                        {elem["name"]}
-                      </option>
-                    ))}
-                </FormSelect>
+                <div className="lg:w-[70%]">
+                  <AutocompleteInput
+                    defaultValue={formData.service_category_name}
+                    onClick={(item) =>
+                      setFormData({
+                        ...formData,
+                        service_category_id: item.id,
+                        service_category_name: item.name,
+                        service_category_doctor_id: item.doctorId,
+                      })
+                    }
+                    onChange={(item) =>
+                      setFormData({
+                        ...formData,
+                        service_category_id: 0,
+                        service_category_name: item,
+                        service_category_doctor_id: userId,
+                      })
+                    }
+                    doctorId={userId ? parseInt(userId, 10) : 0}
+                    typeAutocomplete="SERVICES_CATEGORIES"
+                    className="form-control w-full"
+                  />
+                </div>
               </div>
 
               <div className="lg:flex justify-between items-start relative w-full gap-3">

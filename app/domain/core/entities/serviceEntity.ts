@@ -22,7 +22,8 @@ export interface IServiceToLocality {
     location_id: number;
 }
 
-interface IServiceCategory {
+export interface IServiceCategory {
     id: number,
     name: string
+    doctorId?: number | null;
 }

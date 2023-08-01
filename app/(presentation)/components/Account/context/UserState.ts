@@ -2,6 +2,7 @@ import { IUser } from '../../../../domain/core/entities/userEntity';
 import { UserFailure } from "domain/core/failures/user/userFailure";
 import { ICountriesISO } from 'domain/core/entities/countryEntity';
 import { CountryFailure} from 'domain/core/failures/country/countryFailure';
+import { SpecialtyFailure } from 'domain/core/failures/specialty/specialtyFailure';
 
 export interface IUserState {
   updateUserData: IUserUserState;
@@ -33,6 +34,7 @@ interface IMedicalSpecialitiesState {
   successful: boolean;
   error: UserFailure | null; 
 }
+
 
 export const initialState: IUserState = {
   updateUserData: {
