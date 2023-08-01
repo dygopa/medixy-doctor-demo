@@ -80,7 +80,8 @@ const StatusComponent = ({data}:{data:any})=>{
 export default function MedicalConsultationList({ user }: { user: IUser }) {
 
   const { actions: actionsSchedule, dispatch: dispatchSchedule } = useContext<IScheduleContext>(ScheduleContext);
-  const { changeStatusPopup, changeTypePopup, appointmentDetail} = actionsSchedule;
+  const { changeStatusPopup, changeTypePopup, appointmentDetail, predifinedReservationData} = actionsSchedule;
+
 
   const { state } = useContext<IDashboardContext>(DashboardContext);
   const {
@@ -114,6 +115,19 @@ export default function MedicalConsultationList({ user }: { user: IUser }) {
             </Link>{" "}
             para exponerte a los pacientes
           </p>
+          <Button
+            onClick={() => {
+              predifinedReservationData({})(dispatchSchedule);
+              changeStatusPopup(true)(dispatchSchedule);
+              changeTypePopup(0)(dispatchSchedule);
+            }}
+            variant="primary"
+            type="button"
+            className="w-[85%] lg:w-fit my-4"
+          >
+            <Lucide icon="Plus" className="w-5 h-5 mr-2" />
+            Nueva consulta
+          </Button>
         </div>
       </div>
     );
