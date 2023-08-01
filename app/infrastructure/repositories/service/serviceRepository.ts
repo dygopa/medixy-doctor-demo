@@ -1,5 +1,5 @@
 import { ServiceFailure, serviceFailuresEnum } from 'domain/core/failures/service/serviceFailure';
-import { IService, IServiceToLocality } from "domain/core/entities/serviceEntity";
+import { IService, IServiceCategory, IServiceToLocality } from "domain/core/entities/serviceEntity";
 import { 
   ADD_SERVICE_TO_LOCATION_ENDPOINT, 
   CREATE_USER_SERVICE_ENDPOINT, 
@@ -15,6 +15,7 @@ import { nanoid } from 'nanoid';
 import { getFileFromBase64 } from 'infrastructure/utils/files/filesUtils';
 import { ILocalityService } from 'domain/core/entities/localityEntity';
 import { fromServiceToLocalitiesSupabaseDocumentData, serviceToLocalitiesSupabaseToMap } from 'domain/mappers/services/servicesSupabaseMapper';
+import { ICreateServiceCategoryResponse } from 'domain/core/response/servicesResponse';
 
 export default interface IServiceRepository {
   getCategories(): Promise<Array<any> | ServiceFailure>;
@@ -26,6 +27,8 @@ export default interface IServiceRepository {
   getLocalitiesToService(serviceId: number): Promise<Array<IServiceToLocality> | ServiceFailure>
   getUserBaseServices(id:number): Promise<Array<any> | ServiceFailure>
   getServicesByLocality(id:number, localityId:number): Promise<Array<any> | ServiceFailure>
+  getCategoriesDoctor(doctorId: number, searchQuery?: string | null): Promise<Array<any> | ServiceFailure>;
+  createServiceCategory(serviceCategory: IServiceCategory): Promise<ICreateServiceCategoryResponse | ServiceFailure>
 }
 
 export class ServicesRepository implements IServiceRepository {
@@ -387,4 +390,51 @@ export class ServicesRepository implements IServiceRepository {
     }
   }
 
+  async getCategoriesDoctor(doctorId: number, searchQuery?: string | null): Promise<Array<any> | ServiceFailure> {
+    try {
+      let query = supabase.from("CategoriaServicios").select(`
+      *
+      `,
+      { count: "exact" });
+
+      if (searchQuery) {
+        query = query.or(`or(nombre.ilike.%${searchQuery.trim().toLowerCase()}%),and(nombre.ilike.%${searchQuery.trim().toLowerCase()}%)`);
+      }
+
+      if (doctorId) {
+        query = query.or(`doctorId.eq.${doctorId},doctorId.is.null`)
+      }
+
+      const res = await query;
+
+      return res.data && res.data.length > 0 ? res.data : [];
+    } catch (error) {
+      console.log("Error", error)
+      const exception = error as any;
+      return new ServiceFailure(serviceFailuresEnum.serverError);
+    }
+  }
+
+  async createServiceCategory(serviceCategory: IServiceCategory): Promise<ICreateServiceCategoryResponse | ServiceFailure> {
+    try {
+      const res = await supabase.from("CategoriaServicios").insert({
+        nombre: serviceCategory.name,
+        doctorId: serviceCategory.doctorId
+      }).select();
+
+      if (res.error) return new ServiceFailure(serviceFailuresEnum.serverError);
+
+      if (res.data && res.data.length > 0) serviceCategory.id = res.data[0].id;
+
+      const response: ICreateServiceCategoryResponse = {
+          data: serviceCategory,
+          metadata: {}
+      }
+
+      return JSON.parse(JSON.stringify(response));
+    } catch (error) {
+      const exception = error as any;
+      return new ServiceFailure(serviceFailuresEnum.serverError);
+    }
+  }
 }

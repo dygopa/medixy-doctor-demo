@@ -1,5 +1,5 @@
 import { ILocality, ILocalityService } from "domain/core/entities/localityEntity";
-import { IService } from "domain/core/entities/serviceEntity";
+import { IService, IServiceCategory } from "domain/core/entities/serviceEntity";
 import LocalitiesUseCase from "domain/useCases/localities/localitiesUseCase";
 import ServiceUseCase from "domain/useCases/service/serviceUseCase";
 import ServicesUseCase from "domain/useCases/service/serviceUseCase";
@@ -85,6 +85,18 @@ const getServiceByBase = (id:number, userId:number) => async (dispatch: Dispatch
 const createUserService = (obj:any) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "CREATE_USER_SERVICE_LOADING" });
+
+    if (obj.service_category_id === 0) {
+      const serviceCategory: IServiceCategory = {
+        id: 0,
+        name: obj.service_category_name,
+        doctorId: obj.service_category_doctor_id 
+      }
+
+      const resServiceCategory = await new ServiceUseCase().createServiceCategory({ serviceCategory: serviceCategory });
+
+      if (resServiceCategory.data.id) obj.service_category_id = resServiceCategory.data.id;
+    }
     
     const res: string = await new ServicesUseCase().createUserService(obj);
 
@@ -98,6 +110,18 @@ const createUserService = (obj:any) => async (dispatch: Dispatch<any>) => {
 const updateService = (obj: {dataService: any; serviceId: number;}) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "UPDATE_USER_SERVICE_LOADING" });
+
+    if (obj.dataService.service_category_id === 0) {
+      const serviceCategory: IServiceCategory = {
+        id: 0,
+        name: obj.dataService.service_category_name,
+        doctorId: obj.dataService.service_category_doctor_id 
+      }
+
+      const resServiceCategory = await new ServiceUseCase().createServiceCategory({ serviceCategory: serviceCategory });
+
+      if (resServiceCategory.data.id) obj.dataService.service_category_id = resServiceCategory.data.id;
+    }
     
     const res: number = await new ServicesUseCase().updateService(obj);
 
@@ -133,6 +157,7 @@ const getLocalitiesToService = (serviceId: number) => async (dispatch: Dispatch<
       dispatch({ type: "GET_LOCALITIES_ERROR", payload: { error: error } });
   }
 }
+
 
 export const actions: IServicesActions = {
   getCategories,

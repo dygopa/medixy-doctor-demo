@@ -1,4 +1,4 @@
-import { IService } from "../entities/serviceEntity";
+import { IService, IServiceCategory } from "../entities/serviceEntity";
 
 export interface IGetServicesResponse {
     data: IService[];
@@ -6,4 +6,9 @@ export interface IGetServicesResponse {
         total: number;
         limit: number | null;
     }
+}
+
+export interface ICreateServiceCategoryResponse {
+    data: IServiceCategory;
+    metadata: {}
 }

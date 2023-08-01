@@ -1,7 +1,8 @@
 import { ServiceFailure } from './../../core/failures/service/serviceFailure';
 import { ServicesRepository } from 'infrastructure/repositories/service/serviceRepository';
-import { IService, IServiceToLocality } from './../../core/entities/serviceEntity';
+import { IService, IServiceCategory, IServiceToLocality } from './../../core/entities/serviceEntity';
 import { ILocalityService } from 'domain/core/entities/localityEntity';
+import { ICreateServiceCategoryResponse } from 'domain/core/response/servicesResponse';
 
 export default class ServiceUseCase {
   private _repository: ServicesRepository = new ServicesRepository();
@@ -121,6 +122,28 @@ export default class ServiceUseCase {
       return response;
     } catch (error) {
       throw error;
+    }
+  }
+
+  async getCategoriesDoctor(doctorId: number, searchQuery?: string | null): Promise<Array<any>> {
+    try {
+      const response = await this._repository.getCategoriesDoctor(doctorId, searchQuery);
+      if (response instanceof ServiceFailure) throw response;
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async createServiceCategory(obj: { serviceCategory: IServiceCategory }): Promise<ICreateServiceCategoryResponse> {
+    try {
+        const response = await this._repository.createServiceCategory(obj.serviceCategory);
+
+        if (response instanceof ServiceFailure) throw response;
+
+        return response;
+    } catch (error) {
+        throw error;
     }
   }
 }

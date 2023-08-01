@@ -1,5 +1,5 @@
 import { ServiceFailure } from './../../../../domain/core/failures/service/serviceFailure';
-import { IService, IServiceToLocality } from '../../../../domain/core/entities/serviceEntity';
+import { IService, IServiceCategory, IServiceToLocality } from '../../../../domain/core/entities/serviceEntity';
 
 export interface IServicesState {
   getCategories: ICategoriesState;

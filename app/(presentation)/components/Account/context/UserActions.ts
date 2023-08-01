@@ -3,6 +3,10 @@ import { IUser } from "domain/core/entities/userEntity";
 import UserUseCase from "domain/useCases/user/userUseCase";
 import { Dispatch } from "react";
 import CountriesUseCase from "domain/useCases/country/countryUseCase";
+import { IServiceCategory } from "domain/core/entities/serviceEntity";
+import ServiceUseCase from "domain/useCases/service/serviceUseCase";
+import { ISpecialty } from "domain/core/entities/specialtyEntity";
+import SpecialtyUseCase from "domain/useCases/specialty/specialtyUseCases";
 
 export interface IUserActions {
   updateUserData: Function;
@@ -56,6 +60,18 @@ const getUserMedicalSpecialities = (id:number) => async (dispatch: Dispatch<any>
 const createMedicalSpeciality = (obj:any) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "CREATE_MEDICAL_SPECIALITY_LOADING" });
+
+    if (obj.specialty_id === 0) {
+      const specialty: ISpecialty = {
+        id: 0,
+        name: obj.specialty_name,
+        doctorId: obj.specialty_doctor_id,
+      }
+
+      const res = await new SpecialtyUseCase().createSpecialty({ specialty: specialty });
+
+      if (res.data) obj.specialty_id = res.data.id;
+    }
     
     const res: Array<any> = await new UserUseCase().createMedicalSpeciality(obj);
 
