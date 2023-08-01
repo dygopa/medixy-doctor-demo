@@ -5,7 +5,7 @@ import SpecialtyUseCase from "domain/useCases/specialty/specialtyUseCases";
 import { Dispatch } from "react";
 
 export interface IAutocompleteActions {
-    getData: (obj: { type: "SPECIALTIES" | "SERVICES_CATEGORIES"; doctorId: number }) => (dispatch: Dispatch<any>) => {};
+    getData: (obj: { type: "SPECIALTIES" | "SERVICES_CATEGORIES"; doctorId: number; searchQuery?: string | null }) => (dispatch: Dispatch<any>) => {};
 }
 
 export interface IAutocompleteData {
@@ -14,7 +14,7 @@ export interface IAutocompleteData {
     doctorId?: number | null;
 }
 
-const getData = (obj: { type: "SPECIALTIES" | "SERVICES_CATEGORIES", doctorId: number }) => async (dispatch: Dispatch<any>) => {
+const getData = (obj: { type: "SPECIALTIES" | "SERVICES_CATEGORIES", doctorId: number, searchQuery?: string | null }) => async (dispatch: Dispatch<any>) => {
     try {
         dispatch({ type: "GET_DATA_LOADING" });
         
@@ -22,7 +22,7 @@ const getData = (obj: { type: "SPECIALTIES" | "SERVICES_CATEGORIES", doctorId: n
 
         switch (obj.type) {
             case "SPECIALTIES":
-                const responseSpecialties: IGetSpecialtiesResponse = await new SpecialtyUseCase().getSpecialties({ doctorId: obj.doctorId, generics: true });
+                const responseSpecialties: IGetSpecialtiesResponse = await new SpecialtyUseCase().getSpecialties({ doctorId: obj.doctorId, generics: true, searchQuery: obj.searchQuery });
 
                 if (responseSpecialties.data.length > 0) {
                     responseSpecialties.data.forEach((specialty: ISpecialty) => {
@@ -37,13 +37,13 @@ const getData = (obj: { type: "SPECIALTIES" | "SERVICES_CATEGORIES", doctorId: n
                 }
                 break;
             case "SERVICES_CATEGORIES":
-                const responseCategories: any = await new ServiceUseCase().getCategoriesDoctor(obj.doctorId);
+                const responseCategories: any = await new ServiceUseCase().getCategoriesDoctor(obj.doctorId, obj.searchQuery);
 
-                if (responseCategories.data.length > 0) {
-                    responseCategories.data.forEach((category: any) => {
+                if (responseCategories.length > 0) {
+                    responseCategories.forEach((category: any) => {
                         const data: IAutocompleteData = {
                             id: category.id,
-                            name: category.name,
+                            name: category.nombre,
                             doctorId: category.doctorId
                         }
 
@@ -56,7 +56,6 @@ const getData = (obj: { type: "SPECIALTIES" | "SERVICES_CATEGORIES", doctorId: n
                 break;
         }
 
-        
 
         dispatch({ type: "GET_DATA_SUCCESSFUL", payload: { data: res } });
     } catch (error) {

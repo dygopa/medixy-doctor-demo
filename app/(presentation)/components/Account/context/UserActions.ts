@@ -17,7 +17,6 @@ export interface IUserActions {
   getUserMedicalSpecialities: Function;
   updateAvatar: Function;
   getCountriesISO: Function;
-  createSpecialty: Function;
 }
 
 const updateUserData = (obj:any) => async (dispatch: Dispatch<any>) => {
@@ -61,6 +60,18 @@ const getUserMedicalSpecialities = (id:number) => async (dispatch: Dispatch<any>
 const createMedicalSpeciality = (obj:any) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "CREATE_MEDICAL_SPECIALITY_LOADING" });
+
+    if (obj.specialty_id === 0) {
+      const specialty: ISpecialty = {
+        id: 0,
+        name: obj.specialty_name,
+        doctorId: obj.specialty_doctor_id,
+      }
+
+      const res = await new SpecialtyUseCase().createSpecialty({ specialty: specialty });
+
+      if (res.data) obj.specialty_id = res.data.id;
+    }
     
     const res: Array<any> = await new UserUseCase().createMedicalSpeciality(obj);
 
@@ -123,18 +134,6 @@ const getCountriesISO = () => async (dispatch: Dispatch<any>) => {
   }
 }
 
-const createSpecialty = (specialty: ISpecialty) => async (dispatch: Dispatch<any>) => {
-  try {
-      dispatch({ type: "CREATE_SPECIALTY_LOADING" });
-
-      const res = await new SpecialtyUseCase().createSpecialty({ specialty: specialty });
-
-      dispatch({ type: "CREATE_SPECIALTY_SUCCESSFUL", payload: { data: res } });
-  } catch (error) {
-      dispatch({ type: "CREATE_SPECIALTY_ERROR", payload: { error: error } });
-  }
-}
-
 export const actions: IUserActions = {
   updateUserData,
   getMedicalSpecialities,
@@ -144,5 +143,4 @@ export const actions: IUserActions = {
   deleteMedicalSpeciality,
   updateAvatar,
   getCountriesISO,
-  createSpecialty,
 }

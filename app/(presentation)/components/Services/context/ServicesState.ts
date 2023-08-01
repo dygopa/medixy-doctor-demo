@@ -10,7 +10,6 @@ export interface IServicesState {
   updateService: IServiceServicesState;
   deleteService: IServiceServicesState;
   getLocalitiesToService: IGetLocalitiesToService;
-  createServiceCategory: ICreateServiceCategoryState;
 }
 
 interface IServicesServicesState {
@@ -36,12 +35,6 @@ interface IServiceServicesState {
 
 interface IGetLocalitiesToService {
   data: IServiceToLocality[];
-  loading: boolean;
-  successful: boolean;
-  error: ServiceFailure | null; 
-}
-
-interface ICreateServiceCategoryState {
   loading: boolean;
   successful: boolean;
   error: ServiceFailure | null; 
@@ -92,11 +85,6 @@ export const initialState: IServicesState = {
   },
   getLocalitiesToService: {
     data: [],
-    loading: false,
-    successful: false,
-    error: null,
-  },
-  createServiceCategory: {
     loading: false,
     successful: false,
     error: null,

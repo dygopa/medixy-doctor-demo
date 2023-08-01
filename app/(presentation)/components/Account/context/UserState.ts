@@ -13,7 +13,6 @@ export interface IUserState {
   deleteMedicalSpeciality: IUserUserState;
   updateAvatar: IUserUserState;
   getCountriesISO: IGetCountriesISOState;
-  createSpecialty: ICreateSpecialtyState;
 }
 
 interface IGetCountriesISOState {
@@ -36,11 +35,6 @@ interface IMedicalSpecialitiesState {
   error: UserFailure | null; 
 }
 
-interface ICreateSpecialtyState {
-  loading: boolean;
-  successful: boolean;
-  error: SpecialtyFailure | null; 
-}
 
 export const initialState: IUserState = {
   updateUserData: {
@@ -87,11 +81,6 @@ export const initialState: IUserState = {
   },
   getCountriesISO: {
     data: [],
-    loading: false,
-    successful: false,
-    error: null,
-  },
-  createSpecialty: {
     loading: false,
     successful: false,
     error: null,

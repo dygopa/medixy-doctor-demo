@@ -15,7 +15,6 @@ export interface IServicesActions {
   deleteService: Function;
   getLocalitiesToService: Function;
   getServiceByBase: Function;
-  createServiceCategory: Function;
 }
 
 const getCategories = () => async (dispatch: Dispatch<any>) => {
@@ -86,6 +85,18 @@ const getServiceByBase = (id:number, userId:number) => async (dispatch: Dispatch
 const createUserService = (obj:any) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "CREATE_USER_SERVICE_LOADING" });
+
+    if (obj.service_category_id === 0) {
+      const serviceCategory: IServiceCategory = {
+        id: 0,
+        name: obj.service_category_name,
+        doctorId: obj.service_category_doctor_id 
+      }
+
+      const resServiceCategory = await new ServiceUseCase().createServiceCategory({ serviceCategory: serviceCategory });
+
+      if (resServiceCategory.data.id) obj.service_category_id = resServiceCategory.data.id;
+    }
     
     const res: string = await new ServicesUseCase().createUserService(obj);
 
@@ -99,6 +110,18 @@ const createUserService = (obj:any) => async (dispatch: Dispatch<any>) => {
 const updateService = (obj: {dataService: any; serviceId: number;}) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "UPDATE_USER_SERVICE_LOADING" });
+
+    if (obj.dataService.service_category_id === 0) {
+      const serviceCategory: IServiceCategory = {
+        id: 0,
+        name: obj.dataService.service_category_name,
+        doctorId: obj.dataService.service_category_doctor_id 
+      }
+
+      const resServiceCategory = await new ServiceUseCase().createServiceCategory({ serviceCategory: serviceCategory });
+
+      if (resServiceCategory.data.id) obj.dataService.service_category_id = resServiceCategory.data.id;
+    }
     
     const res: number = await new ServicesUseCase().updateService(obj);
 
@@ -135,17 +158,6 @@ const getLocalitiesToService = (serviceId: number) => async (dispatch: Dispatch<
   }
 }
 
-const createServiceCategory = (serviceCategory: IServiceCategory) => async (dispatch: Dispatch<any>) => {
-  try {
-      dispatch({ type: "CREATE_SERVICE_CATEGORY_LOADING" });
-
-      const res = await new ServiceUseCase().createServiceCategory({ serviceCategory: serviceCategory });
-
-      dispatch({ type: "CREATE_SERVICE_CATEGORY_SUCCESSFUL", payload: { data: res } });
-  } catch (error) {
-      dispatch({ type: "CREATE_SERVICE_CATEGORY_ERROR", payload: { error: error } });
-  }
-}
 
 export const actions: IServicesActions = {
   getCategories,
@@ -157,5 +169,4 @@ export const actions: IServicesActions = {
   deleteService,
   getLocalitiesToService,
   getServiceByBase,
-  createServiceCategory
 }

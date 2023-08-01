@@ -41,6 +41,7 @@ import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import { NumericFormat } from "react-number-format";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
+import AutocompleteInput from "(presentation)/components/core/Autocomplete";
 
 export default function Formulary({
   userId,
@@ -78,9 +79,11 @@ export default function Formulary({
 
   const [tags, setTags] = useState(["1", "2"]);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<any>({
     name: "",
     service_category_id: 0,
+    service_category_name: "",
+    service_category_doctor_id: null,
     description: "",
     conditions: "",
     base_price: 0,
@@ -276,7 +279,7 @@ export default function Formulary({
             disabled={
               loadingCreationService ||
               // localities.length === 0 ||
-              formData.service_category_id === 0 ||
+              formData.service_category_name.length === 0 ||
               formData.name === ""
             }
             onClick={() => onSubmit()}
@@ -382,7 +385,30 @@ export default function Formulary({
                     Categoría
                     <span className="text-primary font-bold">*</span>
                   </p>
-                  <FormSelect
+                  <div className="lg:w-[70%]">
+                    <AutocompleteInput
+                      onClick={(item) =>
+                        setFormData({
+                          ...formData,
+                          service_category_id: item.id,
+                          service_category_name: item.name,
+                          service_category_doctor_id: item.doctorId,
+                        })
+                      }
+                      onChange={(item) =>
+                        setFormData({
+                          ...formData,
+                          service_category_id: 0,
+                          service_category_name: item,
+                          service_category_doctor_id: userId,
+                        })
+                      }
+                      doctorId={userId ? parseInt(userId, 10) : 0}
+                      typeAutocomplete="SERVICES_CATEGORIES"
+                      className="form-control w-full"
+                    />
+                  </div>
+                  {/* <FormSelect
                     value={formData.service_category_id}
                     className="form-control lg:w-[70%]"
                     onChange={(e) =>
@@ -399,7 +425,7 @@ export default function Formulary({
                           {elem["name"]}
                         </option>
                       ))}
-                  </FormSelect>
+                      </FormSelect> */}
                 </div>
                 {/* <div className="flex justify-between items-start relative w-full gap-3">
                                     <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">Etiquetas</p>

@@ -6,26 +6,28 @@ interface IAutocompleteInputProps {
   defaultValue?: string;
   setDefaultValue?: boolean;
   itemsAdded?: IAutocompleteData[];
-  typeAutocomplete: string;
+  typeAutocomplete: "SPECIALTIES" | "SERVICES_CATEGORIES";
   placeholder?: string;
   disabled?: boolean | undefined;
   className?: string;
   onChange?: (item: string) => void;
   onClick?: (item: IAutocompleteData) => void;
   valueId?: number | null;
+  doctorId: number;
 }
 
 export default function AutocompleteInput({
   defaultValue = "",
   setDefaultValue = false,
   itemsAdded = [],
-  typeAutocomplete = "",
+  typeAutocomplete = "SPECIALTIES",
   placeholder = "",
   disabled,
   className = "",
   onChange = (item: string) => {},
   onClick = (item: IAutocompleteData) => {},
   valueId,
+  doctorId,
 }: IAutocompleteInputProps) {
   return (
     <AutocompleteProvider>
@@ -40,6 +42,7 @@ export default function AutocompleteInput({
         onClick={onClick}
         onChange={onChange}
         valueId={valueId}
+        doctorId={doctorId}
       />
     </AutocompleteProvider>
   );

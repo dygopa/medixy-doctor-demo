@@ -10,7 +10,6 @@ export function specialtySupabaseToMap(data: any): ISpecialty {
   
 export function fromSpecialtySupabaseDocumentData(specialty: ISpecialty): any {
   return {
-    id: specialty.id,
     nombre: specialty.name,
     doctorId: specialty.doctorId,
   } as any;

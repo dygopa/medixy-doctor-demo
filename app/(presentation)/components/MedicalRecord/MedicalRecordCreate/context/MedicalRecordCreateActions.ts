@@ -25,7 +25,7 @@ import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 export interface IMedicalRecordCreateActions {
     getSubjectById: (subjectId: number) => (dispatch: Dispatch<any>) => {};
     getAppointmentById: (appointmentId: string) => (dispatch: Dispatch<any>) => {};
-    getSpecialties: () => (dispatch: Dispatch<any>) => {};
+    getSpecialties: (obj: { doctorId: number }) => (dispatch: Dispatch<any>) => {};
     getMedicalMeasures: (obj: { subjectId: number; sort?: Object | null; }) => (dispatch: Dispatch<any>) => {};
     getMedicalConsulties: (obj: { subjectId: number, sort: Object; limit?: number | null; }) => (dispatch: Dispatch<any>) => {};
     getTreatments: (obj: { subjectId: number, sort?: Object; limit?: number | null }) => (dispatch: Dispatch<any>) => {};
@@ -67,11 +67,11 @@ const getAppointmentById = (appointmentId: string) => async (dispatch: Dispatch<
   }
 }
 
-const getSpecialties = () => async (dispatch: Dispatch<any>) => {
+const getSpecialties = (obj: { doctorId: number }) => async (dispatch: Dispatch<any>) => {
   try {
       dispatch({ type: "GET_SPECIALTIES_LOADING" });
 
-      const res: IGetSpecialtiesResponse = await new SpecialtyUseCase().getSpecialties({});
+      const res: IGetSpecialtiesResponse = await new SpecialtyUseCase().getSpecialties({ doctorId: obj.doctorId, generics: true });
 
       dispatch({ type: "GET_SPECIALTIES_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

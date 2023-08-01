@@ -27,7 +27,7 @@ export default interface IServiceRepository {
   getLocalitiesToService(serviceId: number): Promise<Array<IServiceToLocality> | ServiceFailure>
   getUserBaseServices(id:number): Promise<Array<any> | ServiceFailure>
   getServicesByLocality(id:number, localityId:number): Promise<Array<any> | ServiceFailure>
-  getCategoriesDoctor(doctorId: number): Promise<Array<any> | ServiceFailure>;
+  getCategoriesDoctor(doctorId: number, searchQuery?: string | null): Promise<Array<any> | ServiceFailure>;
   createServiceCategory(serviceCategory: IServiceCategory): Promise<ICreateServiceCategoryResponse | ServiceFailure>
 }
 
@@ -390,15 +390,19 @@ export class ServicesRepository implements IServiceRepository {
     }
   }
 
-  async getCategoriesDoctor(doctorId: number): Promise<Array<any> | ServiceFailure> {
+  async getCategoriesDoctor(doctorId: number, searchQuery?: string | null): Promise<Array<any> | ServiceFailure> {
     try {
       let query = supabase.from("CategoriaServicios").select(`
       *
       `,
-      { count: "exact" }).is("doctorId", null);
+      { count: "exact" });
+
+      if (searchQuery) {
+        query = query.or(`or(nombre.ilike.%${searchQuery.trim().toLowerCase()}%),and(nombre.ilike.%${searchQuery.trim().toLowerCase()}%)`);
+      }
 
       if (doctorId) {
-        query = query.eq("doctorId", doctorId);
+        query = query.or(`doctorId.eq.${doctorId},doctorId.is.null`)
       }
 
       const res = await query;

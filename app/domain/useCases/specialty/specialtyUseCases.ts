@@ -11,7 +11,8 @@ export default class SpecialtyUseCase {
         sort?: any; 
         limit?: number | null; 
         doctorId?: number | null;
-        generics?: boolean | null
+        generics?: boolean | null;
+        searchQuery?: string | null;
     }): Promise<IGetSpecialtiesResponse> {
         try {
             const response = await this._repository.getSpecialties({
@@ -19,7 +20,8 @@ export default class SpecialtyUseCase {
                 sort: obj.sort,
                 limit: obj.limit,
                 doctorId: obj.doctorId,
-                generics: obj.generics
+                generics: obj.generics,
+                searchQuery: obj.searchQuery,
             });
 
             if (response instanceof SpecialtyFailure) throw response;

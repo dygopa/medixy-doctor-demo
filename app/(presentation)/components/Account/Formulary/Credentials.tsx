@@ -14,6 +14,7 @@ import {
   IStepByStepContext,
   StepByStepContext,
 } from "(presentation)/components/core/StepByStep/context/StepByStepContext";
+import AutocompleteInput from "(presentation)/components/core/Autocomplete";
 
 export default function Credentials({
   account,
@@ -65,15 +66,21 @@ export default function Credentials({
     { id: 5, name: "Técnico radiólogo" },
   ];
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<any>({
     id: account.userId,
     specialty_id: 0,
+    specialty_name: "",
+    specialty_doctor_id: null,
     code: "",
     institution_name: "",
     main_specialty: false,
   });
 
-  specialities && specialities !== null ? specialities.sort((x: { name: string; },y: { name: any; }) => x.name.localeCompare(y.name)): specialities;
+  specialities && specialities !== null
+    ? specialities.sort((x: { name: string }, y: { name: any }) =>
+        x.name.localeCompare(y.name)
+      )
+    : specialities;
 
   const [loadedAPI, setLoadedAPI] = useState(false);
 
@@ -182,7 +189,7 @@ export default function Credentials({
 
   const createSpeciality = () => {
     if (
-      formData["specialty_id"] === 0 ||
+      formData["specialty_name"].length === 0 ||
       formData["code"] === "" ||
       formData["institution_name"] === ""
     ) {
@@ -292,7 +299,29 @@ export default function Credentials({
           <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-start items-end gap-3">
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="input-label mb-2">Especialidad</p>
-              <FormSelect
+              <AutocompleteInput
+                onClick={(item) =>
+                  setFormData({
+                    ...formData,
+                    specialty_id: item.id,
+                    specialty_name: item.name,
+                    specialty_doctor_id: item.doctorId,
+                  })
+                }
+                onChange={(item) =>
+                  setFormData({
+                    ...formData,
+                    specialty_id: 0,
+                    specialty_name: item,
+                    specialty_doctor_id: account.userId,
+                  })
+                }
+                doctorId={account.userId ? parseInt(account.userId, 10) : 0}
+                typeAutocomplete="SPECIALTIES"
+                className="form-control w-full"
+              />
+
+              {/* <FormSelect
                 value={formData["specialty_id"]}
                 disabled={
                   account?.professionalLicense?.length === 0 ||
@@ -310,7 +339,7 @@ export default function Credentials({
                       {elem["name"]}
                     </option>
                   ))}
-              </FormSelect>
+                  </FormSelect> */}
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="input-label mb-2">Cédula de la especialidad</p>
@@ -351,7 +380,7 @@ export default function Credentials({
                 disabled={
                   loadingRegister ||
                   account.userId === undefined ||
-                  formData.specialty_id === 0 ||
+                  formData.specialty_name.length === 0 ||
                   account.professionalLicense.length === 0 ||
                   formData.code.length === 0 ||
                   formData.institution_name.length === 0

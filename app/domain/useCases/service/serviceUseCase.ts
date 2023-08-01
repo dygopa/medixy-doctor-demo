@@ -125,9 +125,9 @@ export default class ServiceUseCase {
     }
   }
 
-  async getCategoriesDoctor(doctorId: number): Promise<Array<any>> {
+  async getCategoriesDoctor(doctorId: number, searchQuery?: string | null): Promise<Array<any>> {
     try {
-      const response = await this._repository.getCategoriesDoctor(doctorId);
+      const response = await this._repository.getCategoriesDoctor(doctorId, searchQuery);
       if (response instanceof ServiceFailure) throw response;
       return response;
     } catch (error) {

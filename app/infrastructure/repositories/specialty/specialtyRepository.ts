@@ -11,6 +11,7 @@ export default interface ISpecialtyRepository {
     limit?: number | null; 
     doctorId?: number | null;
     generics?: boolean | null
+    searchQuery?: string | null;
   }): Promise<IGetSpecialtiesResponse | SpecialtyFailure>;
   createSpecialty(specialty: ISpecialty): Promise<ICreateSpecialtyResponse | SpecialtyFailure>;
 }
@@ -21,7 +22,8 @@ export class SpecialtyRepository implements ISpecialtyRepository {
     sort?: any; 
     limit?: number | null; 
     doctorId?: number | null;
-    generics?: boolean | null
+    generics?: boolean | null;
+    searchQuery?: string | null;
   }): Promise<IGetSpecialtiesResponse | SpecialtyFailure> {
     try {
       let query = supabase.from("Especialidades").select(`
@@ -35,12 +37,20 @@ export class SpecialtyRepository implements ISpecialtyRepository {
         });
       }
 
-      if (obj.doctorId) {
-        query = query.eq("doctorId", obj.doctorId);
+      if (obj.searchQuery) {
+        query = query.or(`or(nombre.ilike.%${obj.searchQuery.trim().toLowerCase()}%),and(nombre.ilike.%${obj.searchQuery.trim().toLowerCase()}%)`);
       }
 
-      if (typeof obj.generics !== "undefined") {
-        query = query.is("doctorId", null);
+      if (obj.doctorId) {
+        
+      }
+
+      if (typeof obj.generics !== "undefined" && !obj.doctorId) {
+        query = query.or(`doctorId.is.null`)
+      }
+
+      if (typeof obj.generics !== "undefined" && obj.doctorId) {
+        query = query.or(`doctorId.eq.${obj.doctorId},doctorId.is.null`)
       }
 
       if (obj.skip && typeof obj.skip === "number" && obj.limit) {

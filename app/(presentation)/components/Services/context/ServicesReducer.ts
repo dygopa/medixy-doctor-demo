@@ -264,36 +264,6 @@ export const ServicesReducer = (state: any, action: any) => {
           error: action.payload.error,
         },
       };
-    case 'CREATE_SERVICE_CATEGORY_LOADING':
-      return {
-        ...state,
-        createServiceCategory: {
-          ...state.createServiceCategory,
-          loading: true,
-          successful: false,
-          error: null,
-        },
-      };
-    case 'CREATE_SERVICE_CATEGORY_SUCCESSFUL':
-      return {
-        ...state,
-        createServiceCategory: {
-          ...state.createServiceCategory,
-          loading: false,
-          successful: true,
-          error: null,
-        },
-      };
-    case 'CREATE_SERVICE_CATEGORY_ERROR':
-      return {
-        ...state,
-        createServiceCategory: {
-          ...state.createServiceCategory,
-          loading: false,
-          successful: false,
-          error: action.payload.error,
-        },
-      };
     default:
       return state;
   }
