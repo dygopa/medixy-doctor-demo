@@ -3,6 +3,10 @@ import { IUser } from "domain/core/entities/userEntity";
 import UserUseCase from "domain/useCases/user/userUseCase";
 import { Dispatch } from "react";
 import CountriesUseCase from "domain/useCases/country/countryUseCase";
+import { IServiceCategory } from "domain/core/entities/serviceEntity";
+import ServiceUseCase from "domain/useCases/service/serviceUseCase";
+import { ISpecialty } from "domain/core/entities/specialtyEntity";
+import SpecialtyUseCase from "domain/useCases/specialty/specialtyUseCases";
 
 export interface IUserActions {
   updateUserData: Function;
@@ -13,6 +17,7 @@ export interface IUserActions {
   getUserMedicalSpecialities: Function;
   updateAvatar: Function;
   getCountriesISO: Function;
+  createSpecialty: Function;
 }
 
 const updateUserData = (obj:any) => async (dispatch: Dispatch<any>) => {
@@ -118,6 +123,18 @@ const getCountriesISO = () => async (dispatch: Dispatch<any>) => {
   }
 }
 
+const createSpecialty = (specialty: ISpecialty) => async (dispatch: Dispatch<any>) => {
+  try {
+      dispatch({ type: "CREATE_SPECIALTY_LOADING" });
+
+      const res = await new SpecialtyUseCase().createSpecialty({ specialty: specialty });
+
+      dispatch({ type: "CREATE_SPECIALTY_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+      dispatch({ type: "CREATE_SPECIALTY_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IUserActions = {
   updateUserData,
   getMedicalSpecialities,
@@ -127,4 +144,5 @@ export const actions: IUserActions = {
   deleteMedicalSpeciality,
   updateAvatar,
   getCountriesISO,
+  createSpecialty,
 }
