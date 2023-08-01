@@ -18,6 +18,7 @@ interface IInputProp {
   federalEntityId?: number | null;
   setDefaultValue?: boolean;
   itemsAdded?: IListEntity[];
+  typeAutocomplete: string;
   placeholder?: string;
   disabled?: boolean | undefined;
   className?: string;
@@ -30,6 +31,7 @@ export default function Input({
   setDefaultValue = false,
   federalEntityId,
   itemsAdded = [],
+  typeAutocomplete = "",
   placeholder = "",
   disabled,
   className = "",
@@ -158,7 +160,7 @@ export default function Input({
           {itemsShow.map((itemShow: IListEntity) => (
             <button
               type="button"
-              key={itemShow.entityId}
+              key={itemShow.value}
               className="py-2 hover:bg-gray-500 hover:bg-opacity-10 w-full text-left"
               onClick={() => {
                 onClickItem(itemShow);
@@ -168,7 +170,7 @@ export default function Input({
               <div className="flex justify-between px-2">
                 <div>
                   <p className="text-slate-900 text-md">
-                    {itemShow.abbrevation} - {itemShow.nameEntity}
+                    {itemShow.abbrevation}
                   </p>
                 </div>
 

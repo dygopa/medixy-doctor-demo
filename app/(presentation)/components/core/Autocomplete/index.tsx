@@ -9,6 +9,7 @@ interface IAutocompleteInputProps {
   defaultValue?: string;
   setDefaultValue?: boolean;
   itemsAdded?: IListEntity[];
+  typeAutocomplete: string;
   placeholder?: string;
   disabled?: boolean | undefined;
   className?: string;
@@ -21,6 +22,7 @@ export default function AutocompleteInput({
   defaultValue = "",
   setDefaultValue = false,
   itemsAdded = [],
+  typeAutocomplete = "",
   placeholder = "",
   disabled,
   className = "",
@@ -35,6 +37,7 @@ export default function AutocompleteInput({
         defaultValue={defaultValue}
         setDefaultValue={setDefaultValue}
         itemsAdded={itemsAdded}
+        typeAutocomplete={typeAutocomplete}
         placeholder={placeholder}
         className={className}
         onClick={onClick}
