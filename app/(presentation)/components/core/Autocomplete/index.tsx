@@ -1,22 +1,18 @@
+import { IAutocompleteData } from "./context/AutocompleteActions";
 import AutocompleteProvider from "./context/AutocompleteContext";
 import Input from "./Input/Input";
-
-interface IListEntity {
-  title: string;
-  value: number;
-}
 
 interface IAutocompleteInputProps {
   defaultValue?: string;
   setDefaultValue?: boolean;
-  itemsAdded?: IListEntity[];
+  itemsAdded?: IAutocompleteData[];
   typeAutocomplete: string;
   placeholder?: string;
   disabled?: boolean | undefined;
   className?: string;
   onChange?: (item: string) => void;
-  onClick?: (item: IListEntity) => void;
-  federalEntityId?: number | null;
+  onClick?: (item: IAutocompleteData) => void;
+  valueId?: number | null;
 }
 
 export default function AutocompleteInput({
@@ -28,8 +24,8 @@ export default function AutocompleteInput({
   disabled,
   className = "",
   onChange = (item: string) => {},
-  onClick = (item: IListEntity) => {},
-  federalEntityId,
+  onClick = (item: IAutocompleteData) => {},
+  valueId,
 }: IAutocompleteInputProps) {
   return (
     <AutocompleteProvider>
@@ -43,7 +39,7 @@ export default function AutocompleteInput({
         className={className}
         onClick={onClick}
         onChange={onChange}
-        federalEntityId={federalEntityId}
+        valueId={valueId}
       />
     </AutocompleteProvider>
   );

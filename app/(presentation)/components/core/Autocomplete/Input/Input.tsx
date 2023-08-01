@@ -7,55 +7,55 @@ import {
   AutocompleteContext,
   IAutocompleteContext,
 } from "../context/AutocompleteContext";
-
-interface IListEntity {
-  title: string;
-  value: number;
-}
+import { IAutocompleteData } from "../context/AutocompleteActions";
 
 interface IInputProp {
   defaultValue?: string;
-  federalEntityId?: number | null;
+  valueId?: number | null;
   setDefaultValue?: boolean;
-  itemsAdded?: IListEntity[];
+  itemsAdded?: IAutocompleteData[];
   typeAutocomplete: string;
   placeholder?: string;
   disabled?: boolean | undefined;
   className?: string;
   onChange?: (item: string) => void;
-  onClick?: (item: IListEntity) => void;
+  onClick?: (item: IAutocompleteData) => void;
 }
 
 export default function Input({
   defaultValue = "",
   setDefaultValue = false,
-  federalEntityId,
+  valueId,
   itemsAdded = [],
-  typeAutocomplete = "",
+  typeAutocomplete = "SPECIALTIES" | "SERVICES_CATEGORIES",
   placeholder = "",
   disabled,
   className = "",
   onChange = (item: string) => {},
-  onClick = (item: IListEntity) => {},
+  onClick = (item: IAutocompleteData) => {},
 }: IInputProp) {
   const { state, actions, dispatch } =
     useContext<IAutocompleteContext>(AutocompleteContext);
-  const { getFederalEntities, getFederalEntityById } = actions;
+  const { 
+    getData,
+    //getFederalEntityById 
+  } = actions;
   const {
-    data: federalEntities,
+    data: listData,
     loading,
     error,
     successful,
-  } = state.federalEntities;
-  const { data: federalEntity } = state.federalEntity;
+  } = state.data;
+  //const { data: federalEntity } = state.federalEntity;
 
   const [field, setField] = useState("");
-  const [itemsShow, setItemsShow] = useState<IListEntity[]>([]);
+  const [itemsShow, setItemsShow] = useState<IAutocompleteData[]>([]);
   const [focus, setFocus] = useState(false);
 
-  const getFederalEntitiesDispatch = (value?: string | null) =>
-    getFederalEntities({
-      searchQuery: value ? value.toLowerCase().trim() : null,
+  const getDataDispatch = (value?: string | null) =>
+    getData({
+      type: typeAutocomplete,
+      doctorId: 0
     })(dispatch);
 
   const handleAutocomplete = (e: ChangeEvent<HTMLInputElement>) => {
@@ -66,24 +66,24 @@ export default function Input({
     if (onChange) onChange(value);
 
     if (value.length > 0) {
-      getFederalEntitiesDispatch(value);
+      getDataDispatch(value);
       return;
     }
 
-    getFederalEntitiesDispatch();
+    getDataDispatch();
   };
 
-  const onClickItem = (item: IListEntity) => {
+  const onClickItem = (item: IAutocompleteData) => {
     onClick(item);
     setItemsShow([]);
-    setField(item.nameEntity);
+    setField(item.name);
   };
 
-  const isAdded = (item: IListEntity): boolean => {
+  const isAdded = (item: IAutocompleteData): boolean => {
     if (
       itemsAdded.length > 0 &&
       itemsAdded.findIndex(
-        (itemAdded) => itemAdded.entityId === item.entityId
+        (itemAdded) => itemAdded.id === item.id
       ) >= 0
     )
       return true;
@@ -91,18 +91,18 @@ export default function Input({
     return false;
   };
 
-  useEffect(() => {
-    if (federalEntityId)
-      getFederalEntityById({ id: federalEntityId })(dispatch);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [federalEntityId]);
+  //useEffect(() => {
+  //  if (federalEntityId)
+  //    getFederalEntityById({ id: federalEntityId })(dispatch);
+  //  // eslint-disable-next-line react-hooks/exhaustive-deps
+  //}, [federalEntityId]);
 
   useEffect(() => {
     if (federalEntity.entityId) setField(federalEntity.nameEntity);
   }, [federalEntity]);
 
   useEffect(() => {
-    if (successful && federalEntities.length > 0) setItemsShow(federalEntities);
+    if (successful && listData.length > 0) setItemsShow(listData);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [successful]);
 
@@ -124,8 +124,8 @@ export default function Input({
           onFocus={() => {
             setFocus(true);
 
-            if (federalEntities.length === 0)
-              getFederalEntitiesDispatch(field.length > 0 ? field : null);
+            if (listData.length === 0)
+              getDataDispatch(field.length > 0 ? field : null);
           }}
           onBlur={() => {
             setTimeout(() => {
@@ -139,7 +139,7 @@ export default function Input({
           <Button
             onClick={() => {
               setField("");
-              getFederalEntitiesDispatch(null);
+              getDataDispatch(null);
               setItemsShow([]);
               onClickItem({
                 entityId: 0,
@@ -155,10 +155,10 @@ export default function Input({
       )}
       {itemsShow.length > 0 && !loading && !error && focus && (
         <div className="absolute w-full bg-white shadow-md py-2 z-50 max-h-[140px] overflow-y-auto">
-          {itemsShow.map((itemShow: IListEntity) => (
+          {itemsShow.map((itemShow: IAutocompleteData) => (
             <button
               type="button"
-              key={itemShow.value}
+              key={itemShow.id}
               className="py-2 hover:bg-gray-500 hover:bg-opacity-10 w-full text-left"
               onClick={() => {
                 onClickItem(itemShow);
@@ -168,7 +168,7 @@ export default function Input({
               <div className="flex justify-between px-2">
                 <div>
                   <p className="text-slate-900 text-md">
-                    {itemShow.abbrevation}
+                    {itemShow.name}
                   </p>
                 </div>
 
