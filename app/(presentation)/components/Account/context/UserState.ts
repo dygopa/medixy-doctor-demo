@@ -2,6 +2,7 @@ import { IUser } from '../../../../domain/core/entities/userEntity';
 import { UserFailure } from "domain/core/failures/user/userFailure";
 import { ICountriesISO } from 'domain/core/entities/countryEntity';
 import { CountryFailure} from 'domain/core/failures/country/countryFailure';
+import { SpecialtyFailure } from 'domain/core/failures/specialty/specialtyFailure';
 
 export interface IUserState {
   updateUserData: IUserUserState;
@@ -12,6 +13,7 @@ export interface IUserState {
   deleteMedicalSpeciality: IUserUserState;
   updateAvatar: IUserUserState;
   getCountriesISO: IGetCountriesISOState;
+  createSpecialty: ICreateSpecialtyState;
 }
 
 interface IGetCountriesISOState {
@@ -32,6 +34,12 @@ interface IMedicalSpecialitiesState {
   loading: boolean;
   successful: boolean;
   error: UserFailure | null; 
+}
+
+interface ICreateSpecialtyState {
+  loading: boolean;
+  successful: boolean;
+  error: SpecialtyFailure | null; 
 }
 
 export const initialState: IUserState = {
@@ -79,6 +87,11 @@ export const initialState: IUserState = {
   },
   getCountriesISO: {
     data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  createSpecialty: {
     loading: false,
     successful: false,
     error: null,

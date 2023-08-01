@@ -1,3 +1,4 @@
+import AutocompleteProvider from "./context/AutocompleteContext";
 import Input from "./Input/Input";
 
 interface IListEntity {
@@ -31,7 +32,7 @@ export default function AutocompleteInput({
   federalEntityId,
 }: IAutocompleteInputProps) {
   return (
-    <AutocompleteInputStatesProvider>
+    <AutocompleteProvider>
       <Input
         disabled={disabled}
         defaultValue={defaultValue}
@@ -44,6 +45,6 @@ export default function AutocompleteInput({
         onChange={onChange}
         federalEntityId={federalEntityId}
       />
-    </AutocompleteInputStatesProvider>
+    </AutocompleteProvider>
   );
 }

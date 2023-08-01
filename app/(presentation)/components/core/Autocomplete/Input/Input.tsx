@@ -1,12 +1,12 @@
 import clsx from "clsx";
 import { ChangeEvent, useContext, useEffect, useState } from "react";
-import {
-  AutocompleteInputStatesContext,
-  IAutocompleteInputStatesContext,
-} from "../context/AutocompleteInputStatesContext";
 import { FormInput } from "../../BaseComponents/Form";
 import Lucide from "../../BaseComponents/Lucide";
 import Button from "../../BaseComponents/Button";
+import {
+  AutocompleteContext,
+  IAutocompleteContext,
+} from "../context/AutocompleteContext";
 
 interface IListEntity {
   title: string;
@@ -39,7 +39,7 @@ export default function Input({
   onClick = (item: IListEntity) => {},
 }: IInputProp) {
   const { state, actions, dispatch } =
-    useContext<IAutocompleteInputStatesContext>(AutocompleteInputStatesContext);
+    useContext<IAutocompleteContext>(AutocompleteContext);
   const { getFederalEntities, getFederalEntityById } = actions;
   const {
     data: federalEntities,
@@ -47,7 +47,7 @@ export default function Input({
     error,
     successful,
   } = state.federalEntities;
-  const { data: federalEntity } = state.federalEntity
+  const { data: federalEntity } = state.federalEntity;
 
   const [field, setField] = useState("");
   const [itemsShow, setItemsShow] = useState<IListEntity[]>([]);
@@ -92,7 +92,8 @@ export default function Input({
   };
 
   useEffect(() => {
-    if (federalEntityId) getFederalEntityById({ id: federalEntityId })(dispatch);
+    if (federalEntityId)
+      getFederalEntityById({ id: federalEntityId })(dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [federalEntityId]);
 
@@ -133,28 +134,25 @@ export default function Input({
           }}
         />
       </div>
-      { field.length > 0 &&
+      {field.length > 0 && (
         <div className="absolute top-2 right-3">
-          <Button onClick={
-              () => {
-                setField("")
-                getFederalEntitiesDispatch(null);
-                setItemsShow([]);
-                onClickItem({
-                  entityId: 0,
-                  nameEntity: "",
-                  abbrevation: "",
-                })
-              }
-            }
+          <Button
+            onClick={() => {
+              setField("");
+              getFederalEntitiesDispatch(null);
+              setItemsShow([]);
+              onClickItem({
+                entityId: 0,
+                nameEntity: "",
+                abbrevation: "",
+              });
+            }}
             className="p-0 border-none hover:bg-gray-400 radius-lg"
           >
-            
-              <Lucide icon="X" className="" size={20}/>
-            
+            <Lucide icon="X" className="" size={20} />
           </Button>
         </div>
-      }
+      )}
       {itemsShow.length > 0 && !loading && !error && focus && (
         <div className="absolute w-full bg-white shadow-md py-2 z-50 max-h-[140px] overflow-y-auto">
           {itemsShow.map((itemShow: IListEntity) => (

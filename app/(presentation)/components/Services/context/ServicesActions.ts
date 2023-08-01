@@ -1,5 +1,5 @@
 import { ILocality, ILocalityService } from "domain/core/entities/localityEntity";
-import { IService } from "domain/core/entities/serviceEntity";
+import { IService, IServiceCategory } from "domain/core/entities/serviceEntity";
 import LocalitiesUseCase from "domain/useCases/localities/localitiesUseCase";
 import ServiceUseCase from "domain/useCases/service/serviceUseCase";
 import ServicesUseCase from "domain/useCases/service/serviceUseCase";
@@ -15,6 +15,7 @@ export interface IServicesActions {
   deleteService: Function;
   getLocalitiesToService: Function;
   getServiceByBase: Function;
+  createServiceCategory: Function;
 }
 
 const getCategories = () => async (dispatch: Dispatch<any>) => {
@@ -134,6 +135,18 @@ const getLocalitiesToService = (serviceId: number) => async (dispatch: Dispatch<
   }
 }
 
+const createServiceCategory = (serviceCategory: IServiceCategory) => async (dispatch: Dispatch<any>) => {
+  try {
+      dispatch({ type: "CREATE_SERVICE_CATEGORY_LOADING" });
+
+      const res = await new ServiceUseCase().createServiceCategory({ serviceCategory: serviceCategory });
+
+      dispatch({ type: "CREATE_SERVICE_CATEGORY_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+      dispatch({ type: "CREATE_SERVICE_CATEGORY_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IServicesActions = {
   getCategories,
   getUserMedicalCenters,
@@ -144,4 +157,5 @@ export const actions: IServicesActions = {
   deleteService,
   getLocalitiesToService,
   getServiceByBase,
+  createServiceCategory
 }

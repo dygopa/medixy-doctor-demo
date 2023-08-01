@@ -7,3 +7,8 @@ export interface IGetSpecialtiesResponse {
         limit: number | null;
     }
 }
+
+export interface ICreateSpecialtyResponse {
+    data: ISpecialty;
+    metadata: {}
+}

@@ -264,6 +264,36 @@ export const UserReducer = (state: any, action: any) => {
           error: action.payload.error,
         },
       };
+    case 'CREATE_SPECIALTY_LOADING':
+      return {
+        ...state,
+        createSpecialty: {
+          ...state.createSpecialty,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'CREATE_SPECIALTY_SUCCESSFUL':
+      return {
+        ...state,
+        createSpecialty: {
+          ...state.createSpecialty,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'CREATE_SPECIALTY_ERROR':
+      return {
+        ...state,
+        createSpecialty: {
+          ...state.createSpecialty,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
     default:
       return state;
   }

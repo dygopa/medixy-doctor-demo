@@ -1,7 +1,7 @@
 import { ISpecialty } from "domain/core/entities/specialtyEntity";
 import { SpecialtyFailure, specialtyFailuresEnum } from "domain/core/failures/specialty/specialtyFailure";
-import { IGetSpecialtiesResponse } from "domain/core/response/specialtiesResponse";
-import { specialtySupabaseToMap } from "domain/mappers/specialty/supabase/specialtySupabaseMapper";
+import { ICreateSpecialtyResponse, IGetSpecialtiesResponse } from "domain/core/response/specialtiesResponse";
+import { fromSpecialtySupabaseDocumentData, specialtySupabaseToMap } from "domain/mappers/specialty/supabase/specialtySupabaseMapper";
 import { supabase } from "infrastructure/config/supabase/supabase-client";
 
 export default interface ISpecialtyRepository {
@@ -9,7 +9,10 @@ export default interface ISpecialtyRepository {
     skip?: number | string | null; 
     sort?: any; 
     limit?: number | null; 
+    doctorId?: number | null;
+    generics?: boolean | null
   }): Promise<IGetSpecialtiesResponse | SpecialtyFailure>;
+  createSpecialty(specialty: ISpecialty): Promise<ICreateSpecialtyResponse | SpecialtyFailure>;
 }
 
 export class SpecialtyRepository implements ISpecialtyRepository {
@@ -17,6 +20,8 @@ export class SpecialtyRepository implements ISpecialtyRepository {
     skip?: number | string | null; 
     sort?: any; 
     limit?: number | null; 
+    doctorId?: number | null;
+    generics?: boolean | null
   }): Promise<IGetSpecialtiesResponse | SpecialtyFailure> {
     try {
       let query = supabase.from("Especialidades").select(`
@@ -28,6 +33,14 @@ export class SpecialtyRepository implements ISpecialtyRepository {
         query = query.order(obj.sort.field, {
             ascending: obj.sort.ascending
         });
+      }
+
+      if (obj.doctorId) {
+        query = query.eq("doctorId", obj.doctorId);
+      }
+
+      if (typeof obj.generics !== "undefined") {
+        query = query.is("doctorId", null);
       }
 
       if (obj.skip && typeof obj.skip === "number" && obj.limit) {
@@ -56,6 +69,26 @@ export class SpecialtyRepository implements ISpecialtyRepository {
               total: res.count ?? 0,
               limit: obj.limit ?? null,
           }
+      }
+
+      return JSON.parse(JSON.stringify(response));
+    } catch (error) {
+      const exception = error as any;
+      return new SpecialtyFailure(specialtyFailuresEnum.serverError);
+    }
+  }
+
+  async createSpecialty(specialty: ISpecialty): Promise<ICreateSpecialtyResponse | SpecialtyFailure> {
+    try {
+      const res = await supabase.from("Especialidades").insert(fromSpecialtySupabaseDocumentData(specialty)).select();
+
+      if (res.error) return new SpecialtyFailure(specialtyFailuresEnum.serverError);
+
+      if (res.data && res.data.length > 0) specialty.id = res.data[0].id;
+
+      const response: ICreateSpecialtyResponse = {
+          data: specialty,
+          metadata: {}
       }
 
       return JSON.parse(JSON.stringify(response));
