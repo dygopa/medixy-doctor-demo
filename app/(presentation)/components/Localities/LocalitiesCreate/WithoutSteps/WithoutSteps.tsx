@@ -166,12 +166,10 @@ export default function WithoutSteps({
     if (userId) getUserBaseServices(userId)(dispatch);
   }, [userId]);
 
-  console.log(locality)
+  console.log(locality);
 
   const onClickButtonPrincipal: Function = () => {
-    router.push(
-      ScheduleRoutesEnum.Configuration + `?locality=${locality.id}`
-    );
+    router.push(ScheduleRoutesEnum.Configuration + `?locality=${locality.id}`);
   };
 
   const onClickButtonSecondary: Function = () => {
@@ -273,7 +271,9 @@ export default function WithoutSteps({
       <SuccessfulComponent
         tittle="Agregado con exito"
         show={createUserLocalitySuccess}
-        description={"Tu consultorio se ha creado exitosamente. Ahora puedes configurar su agenda."}
+        description={
+          "Tu consultorio se ha creado exitosamente. Ahora puedes configurar su agenda."
+        }
         textButtonPrincipal={"Ir a configurar la agenda"}
         onClickButtonPrincipal={onClickButtonPrincipal}
         textButtonSecondary={"Ir a la lista de consultorios"}
@@ -470,6 +470,17 @@ export default function WithoutSteps({
                         countryLocation: 0,
                       })
                     }
+                    onChange={(e: string) => {
+                      if (e.length === 0) {
+                        setFormData({
+                          ...formData,
+                          federalEntity: 0,
+                          municipality: 0,
+                          municipalityCatalogId: 0,
+                          countryLocation: 0,
+                        });
+                      }
+                    }}
                     className="form-control lg:w-full"
                   />
                 </div>
@@ -506,6 +517,16 @@ export default function WithoutSteps({
                         countryLocation: 0,
                       })
                     }
+                    onChange={(e: string) => {
+                      if (e.length === 0) {
+                        setFormData({
+                          ...formData,
+                          municipality: 0,
+                          municipalityCatalogId: 0,
+                          countryLocation: 0,
+                        });
+                      }
+                    }}
                     disabled={formData.federalEntity === 0}
                     className="form-control lg:w-full"
                     federalEntityId={formData.federalEntity}
@@ -541,6 +562,11 @@ export default function WithoutSteps({
                     onClick={(item: ICountryLocation) =>
                       setFormData({ ...formData, countryLocation: item.id })
                     }
+                    onChange={(e: string) => {
+                      if (e.length === 0) {
+                        setFormData({ ...formData, countryLocation: 0 });
+                      }
+                    }}
                     disabled={formData.municipality === 0}
                     className="form-control lg:w-full"
                     municipalityId={formData.municipality}
