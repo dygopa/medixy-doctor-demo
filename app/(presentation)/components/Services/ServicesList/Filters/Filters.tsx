@@ -72,7 +72,10 @@ export default function Filters() {
         <div className="flex">
           <div className="mr-3">
             <Link href={ServicesRoutesEnum.ServicesCreate}>
-              <Button variant="primary">Nuevo servicio</Button>
+              <Button variant="primary">
+                <Lucide icon="Plus" className="mr-2" />
+                Nuevo servicio
+              </Button>
             </Link>
           </div>
         </div>

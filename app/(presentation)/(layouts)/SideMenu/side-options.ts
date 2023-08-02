@@ -14,7 +14,7 @@ export const navigationOptions: FormattedMenu[] = [
     {
         active: true,
         subMenu: undefined,
-        title: "Tablero",
+        title: "Mi Tablero",
         pathname: DashboardRoutesEnum.Dashboard,
         icon: "LayoutDashboard",
         ignore: false,
@@ -30,7 +30,7 @@ export const navigationOptions: FormattedMenu[] = [
     {
         active: false,
         subMenu: undefined,
-        title: "Agenda",
+        title: "Mis Agendas",
         pathname: ScheduleRoutesEnum.Schedule,
         icon: "Calendar",
         ignore: false,
@@ -38,7 +38,7 @@ export const navigationOptions: FormattedMenu[] = [
     {
         active: false,
         subMenu: undefined,
-        title: "Mis consultas",
+        title: "Mis Consultas",
         pathname: MedicalRecordRoutesEnum.MedicalRecordList,
         icon: "FolderHeart",
         ignore: false,
@@ -46,7 +46,7 @@ export const navigationOptions: FormattedMenu[] = [
     {
         active: false,
         subMenu: undefined,
-        title: "Mis pacientes",
+        title: "Mis Pacientes",
         pathname: PatientsRoutesEnum.PatientsList,
         icon: "Contact",
         ignore: false,
@@ -59,7 +59,7 @@ export const navigationOptions: FormattedMenu[] = [
         icon: "Book",
         ignore: true,
     },
-    {
+    /*{
         active: false,
         subMenu: undefined,
         title: "Mis consultorios",
@@ -74,7 +74,7 @@ export const navigationOptions: FormattedMenu[] = [
         pathname: ServicesRoutesEnum.Services,
         icon: "Briefcase",
         ignore: false,
-    },
+    },*/
 ]
 
 

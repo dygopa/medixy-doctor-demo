@@ -30,13 +30,19 @@ function DoctorsCase({ account }: { account: IUser }) {
           <div className="md:w-4/5 sm:w-3/5 w-full h-full flex flex-col justify-center items-start gap-2">
             <p className="font-medium text-base text-slate-900">Tablero</p>
             <p className="font-light text-xl text-slate-900">
-              Bienvenido a Prosit,{" "}
-              <b className="font-bold capitalize">
-                {account.names} {account.firstName}
-              </b>
+              Bienvenido a Prosit,<br/>
+              { account.sex === 1 ?
+                <b className="font-bold capitalize">
+                  Dra. {account.names} {account.firstName}
+                </b>
+                :
+                <b className="font-bold capitalize">
+                  Dr. {account.names} {account.firstName}
+                </b>
+              }
             </p>
             <p className="font-light text-sm text-slate-500">
-              Mantén un seguimiento de tus citas médicos y asegúrate de estar
+              Mantén un seguimiento de tus citas médicas y asegúrate de estar
               preparado para cada consulta
             </p>
           </div>
