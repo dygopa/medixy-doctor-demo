@@ -8,6 +8,7 @@ export interface IScheduleState {
   activeLocality: IScheduleUserState;
   activeService: IScheduleUserState;
   activeDay: IScheduleUserState;
+  actualDay: IScheduleUserState;
   statusPopup: IScheduleUserState;
   scheduleUser: IScheduleUserState;
   typePopupActive: IScheduleUserState;
@@ -68,6 +69,12 @@ export const initialState: IScheduleState = {
   },
   activeDay: {
     data: {},
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  actualDay: {
+    data: new Date(),
     loading: false,
     successful: false,
     error: null,
