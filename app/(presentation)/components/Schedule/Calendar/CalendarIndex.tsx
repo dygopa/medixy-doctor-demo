@@ -30,6 +30,7 @@ export default function CalendarIndex() {
     predifinedReservationData,
     getCalendarEvents,
     activeLocality,
+    activeActualDay,
   } = actions;
 
   const {
@@ -63,7 +64,11 @@ export default function CalendarIndex() {
     error: localitiesError,
     data: localities,
   } = state.getLocalities;
-  const { data: activeDayInCalendar, successful: changedActiveDayInCalendar, loading: changingDayInCalendar} = state.activeDay;
+  const {
+    data: activeDayInCalendar,
+    successful: changedActiveDayInCalendar,
+    loading: changingDayInCalendar,
+  } = state.activeDay;
 
   const params = useSearchParams();
 
@@ -185,7 +190,14 @@ export default function CalendarIndex() {
 
   useMemo(() => {
     if (loadedCreationAppointment) {
-      getCalendarEvents(user.userId, locality["id"], moment(activeDayInCalendar).format('YYYY-MM-DD'), moment(activeDayInCalendar, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
+      getCalendarEvents(
+        user.userId,
+        locality["id"],
+        moment(activeDayInCalendar).format("YYYY-MM-DD"),
+        moment(activeDayInCalendar, "YYYY-MM-DD")
+          .add(5, "days")
+          .format("YYYY-MM-DD")
+      )(dispatch);
     }
   }, [loadedCreationAppointment]);
 
@@ -222,15 +234,29 @@ export default function CalendarIndex() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser, services]);
 
-  useMemo(()=>{
-    if(changedActiveDayInCalendar){
-      getCalendarEvents(user.userId, locality["id"], moment(activeDayInCalendar).format('YYYY-MM-DD'), moment(activeDayInCalendar, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
+  useMemo(() => {
+    if (changedActiveDayInCalendar) {
+      getCalendarEvents(
+        user.userId,
+        locality["id"],
+        moment(activeDayInCalendar).format("YYYY-MM-DD"),
+        moment(activeDayInCalendar, "YYYY-MM-DD")
+          .add(5, "days")
+          .format("YYYY-MM-DD")
+      )(dispatch);
     }
-  },[activeDayInCalendar])
+  }, [activeDayInCalendar]);
 
   useMemo(() => {
     if (loadedUser && localitiesSuccessful && localities.length > 0) {
-      getCalendarEvents(user.userId, localities[0].id, moment(activeDayInCalendar).format('YYYY-MM-DD'), moment(activeDayInCalendar, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
+      getCalendarEvents(
+        user.userId,
+        localities[0].id,
+        moment(activeDayInCalendar).format("YYYY-MM-DD"),
+        moment(activeDayInCalendar, "YYYY-MM-DD")
+          .add(5, "days")
+          .format("YYYY-MM-DD")
+      )(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser, localities, localitiesSuccessful]);
@@ -250,7 +276,14 @@ export default function CalendarIndex() {
           type: "SERVICE",
         })(dispatch);
       }
-      getCalendarEvents(user.userId, params.get("locality"), moment(activeDayInCalendar).format('YYYY-MM-DD'), moment(activeDayInCalendar, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
+      getCalendarEvents(
+        user.userId,
+        params.get("locality"),
+        moment(activeDayInCalendar).format("YYYY-MM-DD"),
+        moment(activeDayInCalendar, "YYYY-MM-DD")
+          .add(5, "days")
+          .format("YYYY-MM-DD")
+      )(dispatch);
     }
   }, [params, localities]);
 
@@ -283,6 +316,11 @@ export default function CalendarIndex() {
             initialEvent={""}
             handleClick={(param: EventClickArg) => {
               handleClickOnEvent(param.event._def.extendedProps);
+            }}
+            navLinkDayClick={(date: Date, jsEvent: UIEvent) => {
+              jsEvent.preventDefault();
+
+              activeActualDay(date)(dispatch);
             }}
           />
         </div>
