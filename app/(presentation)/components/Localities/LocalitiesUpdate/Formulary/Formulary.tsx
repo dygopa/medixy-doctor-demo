@@ -604,6 +604,17 @@ export default function Formulary({
                           countryLocation: 0,
                         })
                       }
+                      onChange={(e: string) => {
+                        if (e.length === 0) {
+                          setFormData({
+                            ...formData,
+                            federalEntity: 0,
+                            municipality: 0,
+                            municipalityCatalogId: 0,
+                            countryLocation: 0,
+                          });
+                        }
+                      }}
                       className="form-control lg:w-full"
                       federalEntityId={formData.federalEntity}
                     />
@@ -641,6 +652,16 @@ export default function Formulary({
                           countryLocation: 0,
                         })
                       }
+                      onChange={(e: string) => {
+                        if (e.length === 0) {
+                          setFormData({
+                            ...formData,
+                            municipality: 0,
+                            municipalityCatalogId: 0,
+                            countryLocation: 0,
+                          });
+                        }
+                      }}
                       disabled={formData.federalEntity === 0}
                       className="form-control lg:w-full"
                       municipalityId={formData.municipality}
@@ -678,6 +699,11 @@ export default function Formulary({
                       onClick={(item: ICountryLocation) =>
                         setFormData({ ...formData, countryLocation: item.id })
                       }
+                      onChange={(e: string) => {
+                        if (e.length === 0) {
+                          setFormData({ ...formData, countryLocation: 0 });
+                        }
+                      }}
                       disabled={formData.municipality === 0}
                       className="form-control lg:w-full"
                       municipalityId={formData.municipality}
