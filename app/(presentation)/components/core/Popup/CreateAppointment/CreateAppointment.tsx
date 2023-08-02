@@ -212,12 +212,37 @@ function CreateAppointment({cancelFuntion, customRef}:{
 
   useMemo(()=>{
     if(loadedCreationAppointment){
+      setSelectedService({
+        id: 0,
+        title: "",
+        description: "",
+        type: "SERVICE",
+      })
+      setSelectedPatient({
+        id: 0,
+        title: "",
+        description: "",
+        type: "PATIENT",
+      })
+      setSelectedLocality({
+        id: 0,
+        title: "",
+        description: "",
+        type: "LOCALITY",
+      })
+      setFormData({
+        service: "",
+        curp: "",
+        date: "",
+        hour: "",
+        windowId: 0,
+      })
       if(isNow){
         setTimeout(() => {
           window.location.href = `/medical-record/${appointmentCreated["id"]}/create?type=appointment`;
         }, 1000);
       }else{
-        getAppointments(user.userId, moment().format("YYYY-MM-DD"))(dispatch)
+        getAppointments(user.userId, moment().format("YYYY-MM-DD"),  moment().add(5, "day").format("YYYY-MM-DD"))(dispatch)
         changeStatusPopup(false)(dispatch)
       }
     }

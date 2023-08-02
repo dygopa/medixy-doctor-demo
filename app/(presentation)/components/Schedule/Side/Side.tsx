@@ -103,15 +103,17 @@ const Side = () => {
   const { getAppointments, changeStatusPopup, changeTypePopup, appointmentDetail} = actions;
   const { data, loading, successful, error } = state.getAppointments;
   const { data: activeDay, successful: changedActiveDay} = state.activeDay;
-
-  useMemo(() => {
-    if (loadedUser) getAppointments(user.userId, moment().format("YYYY-MM-DD"))(dispatch)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedUser]);
+  const {
+    successful: localitySuccessful,
+    error: localityError,
+    data: locality,
+  } = state.activeLocality;
 
   useMemo(()=>{
-    if(changedActiveDay) getAppointments(user.userId, moment(activeDay).format("YYYY-MM-DD"))(dispatch)
-  },[activeDay])
+    if(localitySuccessful){
+      getAppointments(user.userId, moment(activeDay["start"]).format("YYYY-MM-DD"), moment(activeDay["end"]).format("YYYY-MM-DD"), locality["id"])(dispatch)
+    }
+  },[activeDay, locality])
 
   return (
     <div className='w-full lg:w-1/3 flex flex-col justify-start items-center gap-3'>

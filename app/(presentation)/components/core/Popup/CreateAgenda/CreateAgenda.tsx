@@ -225,6 +225,27 @@ function CreateAgenda({cancelFuntion, customRef}:{
 
   useMemo(()=>{
     if(successful){
+      setSelectedLocality({
+        id: 0,
+        title: "",
+        description: "",
+        type: "LOCALITY",
+      })
+      setFormData({
+        typeEnd: 1,
+        daysRepeated: daysRepeatedList,
+        type: 2,
+        serviceId: 0,
+        localityId: 0,
+        availableSpots: 0,
+        startDate: moment().format("YYYY-MM-DD"),
+        until: moment().add(1, "month").format("YYYY-MM-DD"),
+        spanTime: 0,
+        fromHour: "",
+        toHour: ""
+      })
+      setDaysRepeatedList([])
+      setListOfHours([])
       getAttentionWindows(formData.localityId, "LOCALITY")(dispatch)
       setTimeout(() => {
         changeStatusPopup(false)(dispatch)

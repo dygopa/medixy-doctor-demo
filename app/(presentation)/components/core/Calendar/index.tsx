@@ -1,8 +1,8 @@
 import FullCalendar from "@fullcalendar/react";
 import interactionPlugin, { DateClickArg } from "@fullcalendar/interaction";
-import dayGridPlugin from "@fullcalendar/daygrid";
+//import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
-import listPlugin from "@fullcalendar/list";
+//import listPlugin from "@fullcalendar/list";
 import esLocale from "@fullcalendar/core/locales/es";
 import {
   EventChangeArg,
@@ -32,7 +32,7 @@ function Calendar({
         handleChangeView(mountArg.view.type)
       }
       navLinks={true}
-      plugins={[interactionPlugin, dayGridPlugin, timeGridPlugin, listPlugin]}
+      plugins={[interactionPlugin, timeGridPlugin]}
       locale={esLocale}
       datesSet={(dateInfo) => {
         handleChangeInWeek(dateInfo);

@@ -185,7 +185,7 @@ export default function CalendarIndex() {
 
   useMemo(() => {
     if (loadedCreationAppointment) {
-      getCalendarEvents(user.userId, locality["id"], moment(activeDayInCalendar).format('YYYY-MM-DD'), moment(activeDayInCalendar, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
+      getCalendarEvents(user.userId, locality["id"], moment(activeDayInCalendar["start"]).format('YYYY-MM-DD'), moment(activeDayInCalendar["end"], "YYYY-MM-DD").format('YYYY-MM-DD'))(dispatch);
     }
   }, [loadedCreationAppointment]);
 
@@ -224,13 +224,13 @@ export default function CalendarIndex() {
 
   useMemo(()=>{
     if(changedActiveDayInCalendar){
-      getCalendarEvents(user.userId, locality["id"], moment(activeDayInCalendar).format('YYYY-MM-DD'), moment(activeDayInCalendar, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
+      getCalendarEvents(user.userId, locality["id"], moment(activeDayInCalendar["start"]).format('YYYY-MM-DD'), moment(activeDayInCalendar["end"], "YYYY-MM-DD").format('YYYY-MM-DD'))(dispatch);
     }
   },[activeDayInCalendar])
 
   useMemo(() => {
     if (loadedUser && localitiesSuccessful && localities.length > 0) {
-      getCalendarEvents(user.userId, localities[0].id, moment(activeDayInCalendar).format('YYYY-MM-DD'), moment(activeDayInCalendar, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
+      getCalendarEvents(user.userId, localities[0].id, moment(activeDayInCalendar["start"]).format('YYYY-MM-DD'), moment(activeDayInCalendar["end"], "YYYY-MM-DD").format('YYYY-MM-DD'))(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser, localities, localitiesSuccessful]);
@@ -250,7 +250,7 @@ export default function CalendarIndex() {
           type: "SERVICE",
         })(dispatch);
       }
-      getCalendarEvents(user.userId, params.get("locality"), moment(activeDayInCalendar).format('YYYY-MM-DD'), moment(activeDayInCalendar, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
+      getCalendarEvents(user.userId, params.get("locality"), moment(activeDayInCalendar["start"]).format('YYYY-MM-DD'), moment(activeDayInCalendar["end"], "YYYY-MM-DD").format('YYYY-MM-DD'))(dispatch);
     }
   }, [params, localities]);
 
@@ -277,7 +277,7 @@ export default function CalendarIndex() {
         <div className="w-full lg:w-2/3 h-[64vh]">
           <Calendar
             handleChangeInWeek={(param: DatesSetArg) => {
-              activeDay(param.start)(dispatch);
+              activeDay({start: param.start, end: param.end})(dispatch);
             }}
             events={appointments}
             initialEvent={""}

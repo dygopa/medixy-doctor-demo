@@ -67,11 +67,11 @@ const changeStatusPopup = (value:boolean) => async (dispatch: Dispatch<any>) => 
     dispatch({ type: "CHANGE_STATUS_POPUP", payload: { data: value } });
 }
 
-const getAppointments = (id:number, date?:string) => async (dispatch: Dispatch<any>) => {
+const getAppointments = (id:number, dateStart?:string, dateEnd?:string, localityId?:number) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "GET_APPOINTMENTS_LOADING" });
       
-      const res: Array<any> = await new ScheduleUseCase().getAppointments(id, date);
+      const res: Array<any> = await new ScheduleUseCase().getAppointments(id, dateStart, dateEnd, localityId);
   
       dispatch({ type: "GET_APPOINTMENTS_SUCCESSFUL", payload: { data: res } });
     } catch (error) {
