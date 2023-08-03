@@ -1,7 +1,8 @@
 import clsx from "clsx";
 import { ICountryLocation } from "domain/core/entities/countryEntity";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
+import { twMerge } from "tailwind-merge";
 import Button from "../../../Button";
 import { FormInput } from "../../../Form";
 import Lucide from "../../../Lucide";
@@ -41,7 +42,8 @@ export default function Locations({
     useContext<IAutocompleteInputLocationsContext>(
       AutocompleteInputLocationsContext
     );
-  const { getCountryLocations, getCountryLocationById, getMunicipalityById } = actions;
+  const { getCountryLocations, getCountryLocationById, getMunicipalityById } =
+    actions;
   const { data: municipality } = state.municipality;
   const {
     data: countryLocations,
@@ -50,6 +52,8 @@ export default function Locations({
     successful,
   } = state.countryLocations;
   const { data: countryLocation } = state.countryLocation;
+
+  const wrapperRef = useRef(null);
 
   const [field, setField] = useState("");
   const [itemsShow, setItemsShow] = useState<ICountryLocation[]>([]);
@@ -98,6 +102,22 @@ export default function Locations({
     return false;
   };
 
+  function useOutsideAlerter(ref: React.MutableRefObject<any>) {
+    useEffect(() => {
+      function handleClickOutside(event: MouseEvent) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setFocus(false);
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  }
+
+  useOutsideAlerter(wrapperRef);
+
   useEffect(() => {
     if (successful && countryLocations.data.length > 0)
       setItemsShow(countryLocations.data);
@@ -108,9 +128,9 @@ export default function Locations({
     setField(defaultValue);
   }, [defaultValue]);
 
-  useEffect (() => {
+  useEffect(() => {
     setField("");
-  }, [federalEntityId, municipalityId])
+  }, [federalEntityId, municipalityId]);
 
   useEffect(() => {
     if (countryLocationId)
@@ -148,57 +168,56 @@ export default function Locations({
         />
       </div>
 
-      { field.length > 0 &&
+      {field.length > 0 && (
         <div className="absolute top-2 right-3">
-          <Button onClick={
-              () => {
-                getCountryLocationsDispatch();
-                setItemsShow([]);
-                onClickItem({
-                  id: 0,
-                  municipalityId: municipality.data?.catalogId ?? 0,
-                  name: "",
-                  federalEntityId: federalEntityId ?? 0,
-                  federalEntity: {} as IFederalEntity,
-                })
-              }
-            }
+          <Button
+            onClick={() => {
+              getCountryLocationsDispatch();
+              setItemsShow([]);
+              onClickItem({
+                id: 0,
+                municipalityId: municipality.data?.catalogId ?? 0,
+                name: "",
+                federalEntityId: federalEntityId ?? 0,
+                federalEntity: {} as IFederalEntity,
+              });
+            }}
             className="p-0 border-none hover:bg-gray-400 radius-lg"
           >
-            
-              <Lucide icon="X" className="" size={20}/>
-            
+            <Lucide icon="X" className="" size={20} />
           </Button>
         </div>
-      }
-
-      {itemsShow.length > 0 && !loading && !error && focus && (
-        <div className="absolute w-full bg-white shadow-md py-2 z-50 max-h-[140px] overflow-y-auto">
-          {itemsShow.map((itemShow: ICountryLocation) => (
-            <button
-              type="button"
-              key={itemShow.id}
-              className="py-2 hover:bg-gray-500 hover:bg-opacity-10 w-full text-left"
-              onClick={() => {
-                onClickItem(itemShow);
-                setFocus(false);
-              }}
-            >
-              <div className="flex justify-between px-2">
-                <div>
-                  <p className="text-slate-900 text-md">{itemShow.name}</p>
-                </div>
-
-                {isAdded(itemShow) && (
-                  <div>
-                    <Lucide icon="Check" color="#22345F" size={20} />
-                  </div>
-                )}
-              </div>
-            </button>
-          ))}
-        </div>
       )}
+
+      <div
+        className={twMerge([
+          "absolute w-full bg-white shadow-md py-2 z-50 max-h-[140px] overflow-y-auto",
+          itemsShow.length > 0 && !loading && !error && focus
+            ? "visible"
+            : "invisible",
+        ])}
+      >
+        {itemsShow.map((itemShow: ICountryLocation) => (
+          <button
+            type="button"
+            key={itemShow.id}
+            className="py-2 hover:bg-gray-500 hover:bg-opacity-10 w-full text-left"
+            onClick={() => onClickItem(itemShow)}
+          >
+            <div className="flex justify-between px-2">
+              <div>
+                <p className="text-slate-900 text-md">{itemShow.name}</p>
+              </div>
+
+              {isAdded(itemShow) && (
+                <div>
+                  <Lucide icon="Check" color="#22345F" size={20} />
+                </div>
+              )}
+            </div>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }

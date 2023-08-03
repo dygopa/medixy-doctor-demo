@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
+import { twMerge } from "tailwind-merge";
 import Button from "../../../Button";
 import { FormInput } from "../../../Form";
 import Lucide from "../../../Lucide";
@@ -41,11 +42,13 @@ export default function States({
     error,
     successful,
   } = state.federalEntities;
-  const { data: federalEntity } = state.federalEntity
+  const { data: federalEntity } = state.federalEntity;
 
   const [field, setField] = useState("");
   const [itemsShow, setItemsShow] = useState<IFederalEntity[]>([]);
   const [focus, setFocus] = useState(false);
+
+  const wrapperRef = useRef(null);
 
   const getFederalEntitiesDispatch = (value?: string | null) =>
     getFederalEntities({
@@ -69,8 +72,8 @@ export default function States({
 
   const onClickItem = (item: IFederalEntity) => {
     onClick(item);
-    setItemsShow([]);
     setField(item.nameEntity);
+    setItemsShow([]);
   };
 
   const isAdded = (item: IFederalEntity): boolean => {
@@ -85,8 +88,25 @@ export default function States({
     return false;
   };
 
+  function useOutsideAlerter(ref: React.MutableRefObject<any>) {
+    useEffect(() => {
+      function handleClickOutside(event: MouseEvent) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setFocus(false);
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  }
+
+  useOutsideAlerter(wrapperRef);
+
   useEffect(() => {
-    if (federalEntityId) getFederalEntityById({ id: federalEntityId })(dispatch);
+    if (federalEntityId)
+      getFederalEntityById({ id: federalEntityId })(dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [federalEntityId]);
 
@@ -104,7 +124,7 @@ export default function States({
   }, [defaultValue]);
 
   return (
-    <div className="w-full relative">
+    <div className="w-full relative" ref={wrapperRef}>
       <div className="w-full">
         <FormInput
           value={field}
@@ -120,64 +140,58 @@ export default function States({
             if (federalEntities.length === 0)
               getFederalEntitiesDispatch(field.length > 0 ? field : null);
           }}
-          onBlur={() => {
-            setTimeout(() => {
-              setFocus(false);
-            }, 100);
-          }}
         />
       </div>
-      { field.length > 0 &&
+      {field.length > 0 && (
         <div className="absolute top-2 right-3">
-          <Button onClick={
-              () => {
-                setField("")
-                getFederalEntitiesDispatch(null);
-                setItemsShow([]);
-                onClickItem({
-                  entityId: 0,
-                  nameEntity: "",
-                  abbrevation: "",
-                })
-              }
-            }
+          <Button
+            onClick={() => {
+              setField("");
+              getFederalEntitiesDispatch(null);
+              setItemsShow([]);
+              onClickItem({
+                entityId: 0,
+                nameEntity: "",
+                abbrevation: "",
+              });
+            }}
             className="p-0 border-none hover:bg-gray-400 radius-lg"
           >
-            
-              <Lucide icon="X" className="" size={20}/>
-            
+            <Lucide icon="X" className="" size={20} />
           </Button>
         </div>
-      }
-      {itemsShow.length > 0 && !loading && !error && focus && (
-        <div className="absolute w-full bg-white shadow-md py-2 z-50 max-h-[140px] overflow-y-auto">
-          {itemsShow.map((itemShow: IFederalEntity) => (
-            <button
-              type="button"
-              key={itemShow.entityId}
-              className="py-2 hover:bg-gray-500 hover:bg-opacity-10 w-full text-left"
-              onClick={() => {
-                onClickItem(itemShow);
-                setFocus(false);
-              }}
-            >
-              <div className="flex justify-between px-2">
-                <div>
-                  <p className="text-slate-900 text-md">
-                    {itemShow.abbrevation} - {itemShow.nameEntity}
-                  </p>
-                </div>
-
-                {isAdded(itemShow) && (
-                  <div>
-                    <Lucide icon="Check" color="#22345F" size={20} />
-                  </div>
-                )}
-              </div>
-            </button>
-          ))}
-        </div>
       )}
+      <div
+        className={twMerge([
+          "absolute w-full bg-white shadow-md py-2 z-50 max-h-[140px] overflow-y-auto",
+          itemsShow.length > 0 && !loading && !error && focus
+            ? "visible"
+            : "invisible",
+        ])}
+      >
+        {itemsShow.map((itemShow: IFederalEntity) => (
+          <button
+            type="button"
+            key={itemShow.entityId}
+            className="py-2 hover:bg-gray-500 hover:bg-opacity-10 w-full text-left"
+            onClick={() => onClickItem(itemShow)}
+          >
+            <div className="flex justify-between px-2">
+              <div>
+                <p className="text-slate-900 text-md">
+                  {itemShow.abbrevation} - {itemShow.nameEntity}
+                </p>
+              </div>
+
+              {isAdded(itemShow) && (
+                <div>
+                  <Lucide icon="Check" color="#22345F" size={20} />
+                </div>
+              )}
+            </div>
+          </button>
+        ))}
+      </div>
     </div>
   );
 }
