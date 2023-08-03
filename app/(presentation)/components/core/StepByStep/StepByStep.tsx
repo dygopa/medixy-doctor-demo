@@ -40,16 +40,6 @@ export default function StepByStep({ user }: { user: IUser }) {
     },
     {
       id: 1,
-      title: "Consultorios",
-      step_enum: "LOCATION_CREATED",
-      completed: false,
-      description:
-        "Crea el consultorio donde atenderás a tus pacientes. Sólo debes ingresar la torre médica y el número de consultorio.",
-      cta: "/localities/create",
-      cta_title: "Crear primer consultorio",
-    },
-    {
-      id: 2,
       title: "Servicios",
       step_enum: "SERVICE_CREATED",
       completed: false,
@@ -57,6 +47,16 @@ export default function StepByStep({ user }: { user: IUser }) {
         "Crea el servicio que prestas para que los pacientes te puedan localizar fácilmente. En este paso ya serás visible en MedHaus.",
       cta: "/services/new-service",
       cta_title: "Crear mi servicio",
+    },
+    {
+      id: 2,
+      title: "Consultorios",
+      step_enum: "LOCATION_CREATED",
+      completed: false,
+      description:
+        "Crea el consultorio donde atenderás a tus pacientes. Sólo debes ingresar la torre médica y el número de consultorio.",
+      cta: "/localities/create",
+      cta_title: "Crear primer consultorio",
     },
   ]);
 
