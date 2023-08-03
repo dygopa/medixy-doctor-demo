@@ -36,13 +36,13 @@ function CreateAgenda({
     changeTypePopup,
     changeStatusPopup,
     getServicesByLocality,
-    getLocalities,
+    getLocalitiesWithServices,
     activeLocality,
     createWindowAttention,
     getAttentionWindows,
   } = actions;
   const { data: localities, successful: loadedLocalities } =
-    state.getLocalities;
+    state.getLocalitiesWithServices;
   const { data: services, successful: loadedServices } =
     state.getServicesByLocality;
   const { loading, successful, error } = state.createWindowAttention;
@@ -302,7 +302,7 @@ function CreateAgenda({
 
   useMemo(() => {
     if (loadedUser) {
-      getLocalities(user.userId)(dispatch);
+      getLocalitiesWithServices(user.userId)(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser]);

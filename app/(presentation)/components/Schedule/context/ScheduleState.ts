@@ -20,6 +20,7 @@ export interface IScheduleState {
   getServices: IScheduleUserState;
   getServicesByLocality: IScheduleUserState;
   getLocalities: IScheduleUserState;
+  getLocalitiesWithServices: IScheduleUserState;
   getPatients: IScheduleUserState;
 }
 
@@ -140,6 +141,12 @@ export const initialState: IScheduleState = {
     error: null,
   },
   getLocalities: {
+    data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  getLocalitiesWithServices: {
     data: [],
     loading: false,
     successful: false,

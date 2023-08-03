@@ -19,6 +19,7 @@ export interface IScheduleActions {
   getServices: Function;
   getServicesByLocality: Function;
   getLocalities: Function;
+  getLocalitiesWithServices: Function;
   getPatients: Function;
   activeActualDay: Function;
 }
@@ -176,6 +177,19 @@ const getLocalities = (id:number) => async (dispatch: Dispatch<any>) => {
     }
 }
 
+const getLocalitiesWithServices = (id:number) => async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch({ type: "GET_LOCALITIES_WITH_SERVICES_LOADING" });
+      
+      const res: any = await new ScheduleUseCase().getLocalitiesWithServices(id);
+  
+      dispatch({ type: "GET_LOCALITIES_WITH_SERVICES_SUCCESSFUL", payload: { data: res } });
+    } catch (error) {
+      console.log("Error calling action", error)
+      dispatch({ type: "GET_LOCALITIES_WITH_SERVICES_ERROR", payload: { error: error } });
+    }
+}
+
 const getPatients = () => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "GET_PATIENTS_LOADING" });
@@ -207,6 +221,7 @@ export const actions: IScheduleActions = {
   getServices,
   getServicesByLocality,
   getLocalities,
+  getLocalitiesWithServices,
   getPatients,
   activeActualDay
 }
