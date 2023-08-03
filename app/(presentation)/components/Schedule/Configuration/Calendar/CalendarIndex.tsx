@@ -271,6 +271,9 @@ export default function CalendarIndex() {
               servicesSuccessful &&
               [...(services as any[])].length > 0 ? (
                 <Calendar
+                  navLinkDayClick={(date: Date, jsEvent: UIEvent) => {
+                    jsEvent.preventDefault();
+                  }}
                   handleChangeInWeek={() => {}}
                   events={windows}
                   initialEvent={""}
