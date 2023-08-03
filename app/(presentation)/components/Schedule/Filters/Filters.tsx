@@ -52,7 +52,7 @@ function Filters() {
     let list_localities = localities.map((elem: ILocality) => ({
       id: elem.id,
       title: elem.name,
-      description: elem.address,
+      description: elem.state ? elem.state.name : "Sin dirección",
     }));
 
     setListOfLocalities(list_localities);
