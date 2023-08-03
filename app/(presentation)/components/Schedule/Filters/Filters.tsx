@@ -49,10 +49,10 @@ function Filters() {
   });
 
   function handleFormatList() {
-    let list_localities = localities.map((elem: ILocality) => ({
+    let list_localities = localities.map((elem: any) => ({
       id: elem.id,
       title: elem.name,
-      description: elem.state ? elem.state.name : "Sin dirección",
+      description: `${elem.municipality ? elem.municipality.name : "Sin dirección"} ${elem.country_location ? `- ${elem.country_location.name}` : ""}`,
     }));
 
     setListOfLocalities(list_localities);
