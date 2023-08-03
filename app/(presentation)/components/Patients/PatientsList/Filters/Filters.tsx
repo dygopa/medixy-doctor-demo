@@ -59,27 +59,6 @@ export default function Filters() {
             </Button>
             </div>*/}
         </div>
-
-        <div className="flex justify-between">
-          <div className="w-full mb-3">
-            <Link href={PatientsRoutesEnum.PatientsCreate}>
-              <Button variant="primary" className="w-full">
-                <Lucide icon="Plus" className="mr-2" />
-                Nuevo paciente
-              </Button>
-            </Link>
-          </div>
-
-          {/* <div className="ml-3">
-            <Button
-              variant={showFilters ? "primary" : "outline-primary"}
-              onClick={() => setShowFilters(!showFilters)}
-              className="px-3 -py-2"
-            >
-              <Lucide icon="MoreHorizontal" className="w-full h-10" />
-            </Button>
-          </div> */}
-        </div>
       </div>
 
       {showFilters && (
