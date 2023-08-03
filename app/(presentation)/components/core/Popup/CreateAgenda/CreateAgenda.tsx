@@ -37,6 +37,7 @@ function CreateAgenda({
     changeStatusPopup,
     getServicesByLocality,
     getLocalities,
+    activeLocality,
     createWindowAttention,
     getAttentionWindows,
   } = actions;
@@ -272,12 +273,7 @@ function CreateAgenda({
 
   useMemo(()=>{
     if(successful){
-      setSelectedLocality({
-        id: 0,
-        title: "",
-        description: "",
-        type: "LOCALITY",
-      })
+      activeLocality(selectedLocality)(dispatch);
       setFormData({
         typeEnd: 1,
         daysRepeated: daysRepeatedList,
