@@ -14,7 +14,7 @@ export default class DashboardUseCase {
     async getPendingAppointments(id:number, date?:string): Promise<Array<any>> {
         try {
             
-            const response = await this._repositorySchedule.getAppointments(id, date, AppointmentEnum.PENDING);
+            const response = await this._repositorySchedule.getAppointments(id, moment().format("YYYY-MM-DD"), moment().add(5, "day").format("YYYY-MM-DD"), undefined, AppointmentEnum.PENDING);
 
             if (response instanceof ScheduleFailure) throw response;
 
@@ -27,7 +27,7 @@ export default class DashboardUseCase {
     async getCompletedAppointments(id:number): Promise<Array<any>> {
         try {
 
-            const list:any[] | ScheduleFailure = await this._repositorySchedule.getAppointments(id, undefined, AppointmentEnum.COMPLETE);
+            const list:any[] | ScheduleFailure = await this._repositorySchedule.getAppointments(id, moment().format("YYYY-MM-DD"), moment().add(5, "day").format("YYYY-MM-DD"), undefined, AppointmentEnum.COMPLETE);
 
             if (list instanceof ScheduleFailure) throw list;
 
@@ -46,7 +46,7 @@ export default class DashboardUseCase {
     async getLatestAppointment(id:number): Promise<any> {
         try {
 
-            const list:any[] | ScheduleFailure = await this._repositorySchedule.getAppointments(id, undefined, AppointmentEnum.PENDING);
+            const list:any[] | ScheduleFailure = await this._repositorySchedule.getAppointments(id, moment().format("YYYY-MM-DD"), moment().add(5, "day").format("YYYY-MM-DD"), undefined, AppointmentEnum.PENDING);
 
             if (list instanceof ScheduleFailure) throw list;
 

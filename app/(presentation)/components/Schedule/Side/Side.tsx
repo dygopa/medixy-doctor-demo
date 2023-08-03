@@ -129,20 +129,27 @@ const Side = () => {
     appointmentDetail,
   } = actions;
   const { data, loading, successful, error } = state.getAppointments;
+  const {
+    successful: localitySuccessful,
+    error: localityError,
+    data: locality,
+  } = state.activeLocality;
   const { data: activeDay, successful: changedActiveDay } = state.activeDay;
   const { data: actualDay } = state.actualDay;
 
-  useMemo(() => {
-    if (loadedUser)
-      getAppointments(user.userId, moment().format("YYYY-MM-DD"))(dispatch);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedUser]);
+  useMemo(()=>{
+    if(localitySuccessful){
+      getAppointments(user.userId, moment(activeDay["start"]).format("YYYY-MM-DD"), moment(activeDay["end"]).format("YYYY-MM-DD"), locality["id"])(dispatch)
+    }
+  },[activeDay, locality]) 
 
   useMemo(() => {
     if (actualDay)
       getAppointments(
         user.userId,
-        moment(actualDay).format("YYYY-MM-DD")
+        moment(actualDay).format("YYYY-MM-DD"), 
+        moment(actualDay).add(1, "day").format("YYYY-MM-DD"), 
+        locality["id"]
       )(dispatch);
   }, [actualDay]);
 

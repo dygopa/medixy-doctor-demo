@@ -40,6 +40,7 @@ function CreateAppointment({
     getLocalities,
     getPatients,
     getAttentionWindowsByService,
+    activeLocality,
     createAppointment,
     getAppointments,
     changeStatusPopup,
@@ -60,7 +61,7 @@ function CreateAppointment({
     error: errorPatients,
   } = state.getPatients;
   const {
-    data: windows,
+    data: attentionWindows,
     loading: loadingWindows,
     successful: loadedWindows,
     error: errorWindows,
@@ -90,6 +91,7 @@ function CreateAppointment({
   const [listOfPatients, setListOfPatients] = useState([]);
   const [listOfLocalities, setListOfLocalities] = useState([]);
   const [listOfServices, setListOfServices] = useState([]);
+  const [windows, setWindows] = useState([]);
 
   const [selectedPatient, setSelectedPatient] = useState({
     id: 0,
@@ -306,18 +308,43 @@ function CreateAppointment({
     }
   }, [predifinedReservationSuccessful, predifinedReservation, loadedLists]);
 
-  useMemo(() => {
-    if (loadedCreationAppointment) {
-      if (isNow) {
+  useMemo(()=>{
+    if(loadedCreationAppointment){
+      setWindows([])
+      setSelectedService({
+        id: 0,
+        title: "",
+        description: "",
+        type: "SERVICE",
+      })
+      activeLocality(selectedLocality)(dispatch);
+      setSelectedPatient({
+        id: 0,
+        title: "",
+        description: "",
+        type: "PATIENT",
+      })
+      setFormData({
+        service: "",
+        curp: "",
+        date: "",
+        hour: "",
+        windowId: 0,
+      })
+      if(isNow){
         setTimeout(() => {
           window.location.href = `/medical-record/${appointmentCreated["id"]}/create?type=appointment`;
         }, 1000);
-      } else {
-        getAppointments(user.userId, moment().format("YYYY-MM-DD"))(dispatch);
-        changeStatusPopup(false)(dispatch);
+      }else{
+        getAppointments(user.userId, moment().format("YYYY-MM-DD"),  moment().add(5, "day").format("YYYY-MM-DD"), selectedLocality.id)(dispatch)
+        changeStatusPopup(false)(dispatch)
       }
     }
   }, [loadedCreationAppointment]);
+
+  useMemo(()=>{
+    if(loadedWindows) setWindows(attentionWindows)
+  },[loadingWindows])
 
   useMemo(() => {
     if (selectedLocality.id !== 0 && user?.userId) {

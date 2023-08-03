@@ -36,12 +36,13 @@ function CreateAgenda({
     changeTypePopup,
     changeStatusPopup,
     getServicesByLocality,
-    getLocalities,
+    getLocalitiesWithServices,
+    activeLocality,
     createWindowAttention,
     getAttentionWindows,
   } = actions;
   const { data: localities, successful: loadedLocalities } =
-    state.getLocalities;
+    state.getLocalitiesWithServices;
   const { data: services, successful: loadedServices } =
     state.getServicesByLocality;
   const { loading, successful, error } = state.createWindowAttention;
@@ -270,9 +271,25 @@ function CreateAgenda({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedServices]);
 
-  useMemo(() => {
-    if (successful) {
-      getAttentionWindows(formData.localityId, "LOCALITY")(dispatch);
+  useMemo(()=>{
+    if(successful){
+      activeLocality(selectedLocality)(dispatch);
+      setFormData({
+        typeEnd: 1,
+        daysRepeated: daysRepeatedList,
+        type: 2,
+        serviceId: 0,
+        localityId: 0,
+        availableSpots: 0,
+        startDate: moment().format("YYYY-MM-DD"),
+        until: moment().add(1, "month").format("YYYY-MM-DD"),
+        spanTime: 0,
+        fromHour: "",
+        toHour: ""
+      })
+      setDaysRepeatedList([])
+      setListOfHours([])
+      getAttentionWindows(formData.localityId, "LOCALITY")(dispatch)
       setTimeout(() => {
         changeStatusPopup(false)(dispatch);
       }, 2000);
@@ -285,7 +302,7 @@ function CreateAgenda({
 
   useMemo(() => {
     if (loadedUser) {
-      getLocalities(user.userId)(dispatch);
+      getLocalitiesWithServices(user.userId)(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser]);

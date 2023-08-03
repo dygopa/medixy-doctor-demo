@@ -7,7 +7,7 @@ import { AppointmentEnum } from '(presentation)/(enum)/appointment/appointmentEn
 
 export default interface IScheduleRepository {
     getCalendarEvents(id:number, localityId:number, sinceDate:any, untilDate:any, serviceId?:number): Promise<any[] | ScheduleFailure>;
-    getAppointments(id:number, date?:string, status?:number): Promise<any[] | ScheduleFailure>;
+    getAppointments(id:number, dateStart?:string, dateEnd?:string, localityId?:number, status?:number): Promise<any[] | ScheduleFailure>;
     getAttentionWindows(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure>;
     createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
     getAttentionWindowsByService(id:number, date?:string): Promise<any[] | ScheduleFailure>;
@@ -18,6 +18,10 @@ export class ScheduleRepository implements IScheduleRepository {
     
     async getCalendarEvents(id:number, localityId:number, sinceDate:any, untilDate:any, serviceId?:number): Promise<any[] | ScheduleFailure> {
         try {
+            if(!untilDate.toString().includes("-")){
+                sinceDate = moment().format("YYYY-MM-DD")
+                untilDate = moment().add(7, "day").format("YYYY-MM-DD")
+            }
 
             let queryOfServices = supabase.from("Servicios").select(`*`).eq("localidadId", localityId);
 
@@ -34,10 +38,8 @@ export class ScheduleRepository implements IScheduleRepository {
 
             let windowAttentionId = resServiciosEnVentanasAtencion.data![0]["ventanaAtencionBaseId"].toString()
 
-            console.log(sinceDate + " - " + untilDate)
-
             let queryVentanasAtencion = supabase.from("VentanasAtencion")
-            .select(`*`).eq("ventanaAtencionBaseId", windowAttentionId)
+            .select(`*`).in("ventanaAtencionBaseId", resServiciosEnVentanasAtencion.data!.map((elem:any)=> elem["ventanaAtencionBaseId"] ))
             .filter('fechaInicio', 'gte', sinceDate).filter('fechaFin', 'lte', untilDate)
             
             let resVentanasAtencion = await queryVentanasAtencion
@@ -74,29 +76,66 @@ export class ScheduleRepository implements IScheduleRepository {
         }
     }
 
-    async getAppointments(id:number, date?:string, status?:number): Promise<any[] | ScheduleFailure> {
+    async getAppointments(id:number, dateStart?:string, dateEnd?:string, localityId?:number, status?:number): Promise<any[] | ScheduleFailure> {
         try {
+            
+            console.log("id", localityId)
+            console.log("date", dateStart)
+
+            let queryOfServices = supabase.from("ServiciosDoctores").select(`*`).eq("doctorId", id);
+
+            if(localityId !== undefined){
+                console.log(localityId)
+                queryOfServices = supabase.from("Servicios").select(`*`).eq("localidadId", localityId);
+            }
+
+            let resServices = await queryOfServices
+            
+            if(resServices.data?.length === 0 || resServices.data === null) return []
+            
+            console.log("resServices.data", resServices.data)
+            
+            let queryServiciosEnVentanasAtencion = supabase.from("ServiciosEnVentanasAtencion")
+            .select(`*, VentanasAtencionBase(*)`).in("servicioId", resServices.data!.map((elem:any)=> elem["servicioId"] ))
+
+            if(localityId !== undefined){
+                queryServiciosEnVentanasAtencion = supabase.from("ServiciosEnVentanasAtencion")
+                .select(`*, VentanasAtencionBase(*)`).in("servicioId", resServices.data!.map((elem:any)=> elem["id"] ))
+            }
+
+            let resServiciosEnVentanasAtencion = await queryServiciosEnVentanasAtencion
+            
+            if(resServiciosEnVentanasAtencion.data?.length === 0) return []
+            console.log("resServiciosEnVentanasAtencion.data", resServiciosEnVentanasAtencion.data)
+
             let query = supabase.from("Citas").select(`
-            *,
-            Servicios (
-                nombre
-            ),
-            Sujetos (
-              nombres,
-              primerApellido,
-              segundoApellido,
-              curp,
-              email,
-              fechaNacimiento,
-              sexo,
-              telefono,
-              ciudad,
-              direccion,
-              avatar
-            )
-          `).eq("doctorId", id).order("fechaReserva", { ascending: true })
+              *,
+              Servicios (
+                  nombre
+              ),
+              Sujetos (
+                nombres,
+                primerApellido,
+                segundoApellido,
+                curp,
+                email,
+                fechaNacimiento,
+                sexo,
+                telefono,
+                ciudad,
+                direccion,
+                avatar
+              )
+            `)
+            .eq("doctorId", id)
+            .in("servicioId", resServiciosEnVentanasAtencion.data!.map((elem:any)=> elem["servicioId"] ))
+            .filter('fechaReserva', 'gte', moment(dateStart, "YYYY-MM-DD").format("YYYY-MM-DD"))
+            .filter('fechaReserva', 'lte', moment(dateEnd, "YYYY-MM-DD").format("YYYY-MM-DD"))
+            .order("fechaReserva", { ascending: true })
             let res = await query
             
+            console.log("res.data.data", res.data)
+
             let list = res.data!.map((elem:any)=>({
                 ...elem["Servicios"],
                 ...elem["Sujetos"],
@@ -110,16 +149,13 @@ export class ScheduleRepository implements IScheduleRepository {
                 servicioId: elem["servicioId"],
             }))
 
-            if(date){
-                list = list.filter(elem => moment(elem["fechaReserva"]).format("YYYY-MM-DD") === date )
-            }
-            
             if(status){
                 list = list.filter(elem => elem["estado"] === status )
             }
 
             return list ?? [];
         } catch (error) {
+            console.log(error)
             const exception = error as any;
             return new ScheduleFailure(scheduleFailuresEnum.serverError);
         }
@@ -152,7 +188,7 @@ export class ScheduleRepository implements IScheduleRepository {
                     Servicios (
                         nombre
                     )
-                `).eq("ventanaAtencionBaseId", windowAttentionId)
+                `).in("ventanaAtencionBaseId", resServiciosEnVentanasAtencion.data!.map((elem:any)=> elem["ventanaAtencionBaseId"] ))
 
                 let resVentanasAtencion = await queryVentanasAtencion
 

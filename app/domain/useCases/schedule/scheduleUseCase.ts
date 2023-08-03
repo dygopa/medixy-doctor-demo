@@ -25,9 +25,9 @@ export default class ScheduleUseCase {
     }
   }
       
-  async getAppointments(id:number, date?:string): Promise<any[]> {
+  async getAppointments(id:number, dateStart?:string, dateEnd?:string, localityId?:number): Promise<any[]> {
     try {
-      const response = await this._repository.getAppointments(id, date);
+      const response = await this._repository.getAppointments(id, dateStart, dateEnd, localityId);
       if (response instanceof ScheduleFailure) throw response;
       return response;
     } catch (error) {
@@ -68,6 +68,16 @@ export default class ScheduleUseCase {
   async getLocalites(id:number): Promise<any[]> {
     try {
       const response = await this._repositoryLocalities.getUserLocalities(id);
+      if (response instanceof LocalityFailure) throw response;
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getLocalitiesWithServices(id:number): Promise<any[]> {
+    try {
+      const response = await this._repositoryLocalities.getUserLocalitiesWithServices(id);
       if (response instanceof LocalityFailure) throw response;
       return response;
     } catch (error) {

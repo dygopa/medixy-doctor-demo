@@ -5,10 +5,12 @@ import nookies from 'nookies';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import { nanoid } from 'nanoid'
 import { getFileFromBase64 } from 'infrastructure/utils/files/filesUtils';
+import { localityFromSupabaseToMap } from 'domain/mappers/localities/localitiesSupabaseMapper';
 
 export default interface ILocalitiesRepository {
   getMedicalCenters(): Promise<Array<ILocality> | LocalityFailure>;
   getUserLocalities(id:number): Promise<Array<ILocality> | LocalityFailure>;
+  getUserLocalitiesWithServices(id:number): Promise<Array<ILocality> | LocalityFailure>;
   createUserLocality(obj:any, services: any[]): Promise<string | LocalityFailure>;
   updateUserLocality(obj:any, id:number, services: any[]): Promise<string | LocalityFailure>;
   addMediaLocality(obj:any, localityId: string): Promise<string | LocalityFailure>;
@@ -98,6 +100,30 @@ export class LocalitiesRepository implements ILocalitiesRepository {
       console.log("GET_USER_LOCALITIES_ENDPOINT", data["data"])
 
       return data["data"] ?? [];
+    } catch (error) {
+      console.log("Error", error)
+      const exception = error as any;
+      return new LocalityFailure(localityFailuresEnum.serverError);
+    }
+  }
+
+  async getUserLocalitiesWithServices(id:number): Promise<Array<any> | LocalityFailure> {
+    try {
+      let queryOfLocalidadesDoctores = supabase.from("LocalidadesDoctores").select(`*`).eq("doctorId", id);
+      let resLocalidadesDoctores = await queryOfLocalidadesDoctores
+
+      if(resLocalidadesDoctores.data?.length === 0) return []
+
+      let queryLocalidades = supabase.from("Localidades")
+      .select(`*, Servicios(*)`).in("id", resLocalidadesDoctores.data!.map((elem:any)=> elem["localidadId"] ))
+      let resLocalidades = await queryLocalidades
+            
+      if(resLocalidades.data?.length === 0) return []
+      //serviceToLocalitiesSupabaseToMap
+      let list = resLocalidades.data?.filter((elem:any) => elem["Servicios"].length > 0) ?? []
+      list = list.map((elem:any) => localityFromSupabaseToMap(elem))
+
+      return list ?? []
     } catch (error) {
       console.log("Error", error)
       const exception = error as any;

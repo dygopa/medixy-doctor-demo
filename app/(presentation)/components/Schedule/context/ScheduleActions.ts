@@ -19,6 +19,7 @@ export interface IScheduleActions {
   getServices: Function;
   getServicesByLocality: Function;
   getLocalities: Function;
+  getLocalitiesWithServices: Function;
   getPatients: Function;
   activeActualDay: Function;
 }
@@ -72,11 +73,11 @@ const changeStatusPopup = (value:boolean) => async (dispatch: Dispatch<any>) => 
     dispatch({ type: "CHANGE_STATUS_POPUP", payload: { data: value } });
 }
 
-const getAppointments = (id:number, date?:string) => async (dispatch: Dispatch<any>) => {
+const getAppointments = (id:number, dateStart?:string, dateEnd?:string, localityId?:number) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "GET_APPOINTMENTS_LOADING" });
       
-      const res: Array<any> = await new ScheduleUseCase().getAppointments(id, date);
+      const res: Array<any> = await new ScheduleUseCase().getAppointments(id, dateStart, dateEnd, localityId);
   
       dispatch({ type: "GET_APPOINTMENTS_SUCCESSFUL", payload: { data: res } });
     } catch (error) {
@@ -176,6 +177,19 @@ const getLocalities = (id:number) => async (dispatch: Dispatch<any>) => {
     }
 }
 
+const getLocalitiesWithServices = (id:number) => async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch({ type: "GET_LOCALITIES_WITH_SERVICES_LOADING" });
+      
+      const res: any = await new ScheduleUseCase().getLocalitiesWithServices(id);
+  
+      dispatch({ type: "GET_LOCALITIES_WITH_SERVICES_SUCCESSFUL", payload: { data: res } });
+    } catch (error) {
+      console.log("Error calling action", error)
+      dispatch({ type: "GET_LOCALITIES_WITH_SERVICES_ERROR", payload: { error: error } });
+    }
+}
+
 const getPatients = () => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "GET_PATIENTS_LOADING" });
@@ -207,6 +221,7 @@ export const actions: IScheduleActions = {
   getServices,
   getServicesByLocality,
   getLocalities,
+  getLocalitiesWithServices,
   getPatients,
   activeActualDay
 }
