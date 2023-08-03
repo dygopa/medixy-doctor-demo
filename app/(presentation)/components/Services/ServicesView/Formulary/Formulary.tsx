@@ -347,21 +347,6 @@ export default function Formulary({ userId }: { userId: string }) {
               </div>
               <div className="lg:flex justify-between items-start relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Consultorio
-                </p>
-                <FormInput
-                  type="text"
-                  disabled={true}
-                  value={formData?.location?.name}
-                  placeholder="Nombre del consultorio..."
-                  className="form-control lg:w-[70%]"
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                />
-              </div>
-              <div className="lg:flex justify-between items-start relative w-full gap-3">
-                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Categoría
                   <span className="text-primary font-bold">*</span>
                 </p>
