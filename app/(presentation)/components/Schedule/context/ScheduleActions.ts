@@ -20,6 +20,7 @@ export interface IScheduleActions {
   getServicesByLocality: Function;
   getLocalities: Function;
   getPatients: Function;
+  activeActualDay: Function;
 }
 
 const getCalendarEvents = (id:number, localityId:number, sinceDate:any, untilDate:any, serviceId:number) => async (dispatch: Dispatch<any>) => {
@@ -57,6 +58,10 @@ const activeService = (value:any) => async (dispatch: Dispatch<any>) => {
 
 const activeDay = (value:any) => async (dispatch: Dispatch<any>) => {
     dispatch({ type: "CHANGE_ACTIVE_DAY", payload: { data: value } });
+}
+
+const activeActualDay = (value:any) => async (dispatch: Dispatch<any>) => {
+  dispatch({ type: "CHANGE_ACTUAL_DAY", payload: { data: value } });
 }
 
 const changeTypePopup = (value:number) => async (dispatch: Dispatch<any>) => {
@@ -202,5 +207,6 @@ export const actions: IScheduleActions = {
   getServices,
   getServicesByLocality,
   getLocalities,
-  getPatients
+  getPatients,
+  activeActualDay
 }

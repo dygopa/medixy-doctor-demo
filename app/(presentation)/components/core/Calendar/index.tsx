@@ -15,11 +15,13 @@ function Calendar({
   initialEvent,
   handleClick,
   handleChangeInWeek,
+  navLinkDayClick,
   events,
 }: {
   initialEvent: string;
   handleClick: Function;
   handleChangeInWeek: Function;
+  navLinkDayClick: Function;
   events?: any[];
 }) {
   const [showWeek, setShowWeek] = useState(false);
@@ -38,6 +40,9 @@ function Calendar({
         handleChangeInWeek(dateInfo);
       }}
       eventClick={(arg: EventClickArg) => handleClick(arg)}
+      navLinkDayClick={(date: Date, jsEvent: UIEvent) =>
+        navLinkDayClick(date, jsEvent)
+      }
       initialDate={new Date()}
       editable={false}
       height="100%"

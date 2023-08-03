@@ -30,6 +30,7 @@ export default function CalendarIndex() {
     predifinedReservationData,
     getCalendarEvents,
     activeLocality,
+    activeActualDay,
   } = actions;
 
   const {
@@ -63,7 +64,11 @@ export default function CalendarIndex() {
     error: localitiesError,
     data: localities,
   } = state.getLocalities;
-  const { data: activeDayInCalendar, successful: changedActiveDayInCalendar, loading: changingDayInCalendar} = state.activeDay;
+  const {
+    data: activeDayInCalendar,
+    successful: changedActiveDayInCalendar,
+    loading: changingDayInCalendar,
+  } = state.activeDay;
 
   const params = useSearchParams();
 
@@ -226,7 +231,7 @@ export default function CalendarIndex() {
     if(changedActiveDayInCalendar){
       getCalendarEvents(user.userId, locality["id"], moment(activeDayInCalendar["start"]).format('YYYY-MM-DD'), moment(activeDayInCalendar["end"], "YYYY-MM-DD").format('YYYY-MM-DD'))(dispatch);
     }
-  },[activeDayInCalendar])
+  }, [activeDayInCalendar]);
 
   useMemo(() => {
     if (loadedUser && localitiesSuccessful && localities.length > 0) {
@@ -283,6 +288,10 @@ export default function CalendarIndex() {
             initialEvent={""}
             handleClick={(param: EventClickArg) => {
               handleClickOnEvent(param.event._def.extendedProps);
+            }}
+            navLinkDayClick={(date: Date, jsEvent: UIEvent) => {
+              jsEvent.preventDefault();
+              activeActualDay(date)(dispatch);
             }}
           />
         </div>
