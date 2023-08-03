@@ -208,8 +208,6 @@ export default function Formulary() {
   const validForm = () => {
     let errorsFieldsCount = 0;
 
-    if (errors.global.length > 0) errorsFieldsCount++;
-
     if (errors.names.length > 0) errorsFieldsCount++;
 
     if (errors.first_lastname.length > 0) errorsFieldsCount++;
