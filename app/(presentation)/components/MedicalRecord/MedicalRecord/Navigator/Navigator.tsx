@@ -56,7 +56,7 @@ export default function Navigator() {
           <div>
             <div className="mb-2">
               <h2 className="font-bold text-2xl truncate">
-                Resumen del expediente
+                Resumen del Expediente
               </h2>
             </div>
 

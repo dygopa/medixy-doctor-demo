@@ -6,7 +6,7 @@ import ScheduleIndex from "(presentation)/components/Schedule/ScheduleIndex";
 
 export default async function SchedulePage() {
   return (
-    <AppLayout title="Agenda" pathname={ScheduleRoutesEnum.Schedule}>
+    <AppLayout title="Mi Agenda" pathname={ScheduleRoutesEnum.Schedule}>
       <ScheduleIndex/>
     </AppLayout>
   );

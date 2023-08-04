@@ -16,6 +16,7 @@ import {
 import { useRouter } from "next/navigation";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 export default function Steps() {
   const { state, actions, dispatch } =
@@ -144,7 +145,7 @@ export default function Steps() {
       <div className="md:grid md:grid-cols-2 py-3 sticky top-[67px] z-[50] bg-slate-100 pt-2">
         <div className="gap-4">
           <div className=" my-3">
-            <h2 className="mr-5 text-2xl font-bold truncate">Nuevo paciente</h2>
+            <h2 className="mr-5 text-2xl font-bold truncate">Nuevo Paciente</h2>
           </div>
           {/*<p className="text-slate-900 text-sm font-light">
             Crear un nuevo paciente te permitira agendar citas y acceder a su
@@ -153,7 +154,7 @@ export default function Steps() {
         </div>
         <div className="flex justify-end items-center">
           <Button
-            className=" w-[100%] md:w-56"
+            className=" w-[100%] md:w-auto"
             variant="primary"
             disabled={
               loading ||
@@ -165,6 +166,7 @@ export default function Steps() {
             }
             onClick={() => onSubmit()}
           >
+            <Lucide icon="Plus" className="mr-2" />
             {loading ? "Creando paciente..." : "Crear paciente"}
           </Button>
         </div>

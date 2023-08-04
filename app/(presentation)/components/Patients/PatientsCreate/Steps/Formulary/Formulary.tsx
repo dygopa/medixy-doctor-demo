@@ -236,7 +236,7 @@ export default function Formulary({
     <div className="w-full bg-white shadow-xl lg:w-[60%] shadow-slate-100 rounded-md h-fit p-7">
       <div className="w-full border-b mb-2">
         <p className="font-medium text-base text-slate-900 pb-2">
-          Nuevo paciente
+          Nuevo Paciente
         </p>
       </div>
       <div className="input-group w-full">

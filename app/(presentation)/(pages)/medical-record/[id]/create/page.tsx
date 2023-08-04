@@ -11,7 +11,7 @@ export default async function MedicalRecordCreatePage({
   return (
     <AppLayout
       showStepsBySteps={false}
-      title="Nueva consulta"
+      title="Nueva Consulta"
       pathname={
         MedicalRecordRoutesEnum.MedicalRecord +
         params.id +

@@ -26,9 +26,9 @@ function DoctorsCase({ account }: { account: IUser }) {
   return (
     <div className="w-full flex flex-col justify-start items-center gap-1">
       <div className="w-full h-auto relative lg:flex justify-between  gap-7">
-        <div className="lg:w-[60%] lg:h-[200px] w-full h-full py-5 lg:flex md:flex sm:flex justify-between bg-white rounded-md px-5 shadow-md">
-          <div className="md:w-4/5 sm:w-3/5 w-full h-full flex flex-col justify-center items-start gap-2">
-            <p className="font-medium text-base text-slate-900">Tablero</p>
+        <div className="lg:w-[60%] lg:h-[200px] w-full h-full lg:flex md:flex sm:flex justify-between bg-white rounded-md px-4 py-2 shadow-md">
+          <div className="md:w-4/5 sm:w-3/5 w-full h-auto flex flex-col items-start gap-2">
+            <p className="font-semibold text-lg text-slate-900">Tablero</p>
             <p className="font-light text-xl text-slate-900">
               Bienvenido a Prosit,<br/>
               { account.sex === 1 ?

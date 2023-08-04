@@ -4,7 +4,7 @@ import ServicesListIndex from "(presentation)/components/Services/ServicesList/S
 
 export default async function ServicesPage() {
   return (
-    <AppLayout title="Servicios" pathname={ServicesRoutesEnum.Services}>
+    <AppLayout title="Mis Servicios" pathname={ServicesRoutesEnum.Services}>
       <ServicesListIndex/>
     </AppLayout>
   );
