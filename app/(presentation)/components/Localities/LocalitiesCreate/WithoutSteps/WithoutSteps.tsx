@@ -50,6 +50,7 @@ import { IService } from "domain/core/entities/serviceEntity";
 import { NumericFormat } from "react-number-format";
 import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
+import Tooltip from "(presentation)/components/core/BaseComponents/Tooltip/Tooltip";
 
 export default function WithoutSteps({
   userId,
@@ -203,10 +204,13 @@ export default function WithoutSteps({
 
     return (
       <div className="w-full border rounded-sm bg-white p-3 grid grid-cols-2 justify-between items-center gap-2">
-        <div className="text-left">
+        <div className="text-left group relative">
           <p className="font-normal text-[14px] text-slate-950 truncate">
             {data["name"]}
           </p>
+          <Tooltip>
+            {data["name"]}
+          </Tooltip>
           {/*  <p className="font-light text-sm text-slate-400">{data.state.name}</p> */}
         </div>
         <div className="flex justify-between items-center gap-2">
