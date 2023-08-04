@@ -93,11 +93,7 @@ export default function MedicalConsultationNext({ user }: { user: IUser }) {
             Nada por aquí aún
           </p>
           <p className="font-light text-sm text-slate-500">
-            No tienes próximas citas aún en la plataforma, te recomendamos crear{" "}
-            <Link href="/services" className="font-semibold text-primary">
-              servicios
-            </Link>{" "}
-            para exponerte a los pacientes
+            No tienes próximas citas aún en la plataforma.
           </p>
         </div>
       </div>
