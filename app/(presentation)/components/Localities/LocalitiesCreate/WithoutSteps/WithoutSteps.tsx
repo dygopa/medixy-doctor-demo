@@ -203,13 +203,15 @@ export default function WithoutSteps({
 
     return (
       <div className="w-full border rounded-sm bg-white p-3 grid grid-cols-2 justify-between items-center gap-2">
-        <div className="flex flex-col justify-start items-start text-left">
-          <p className="font-normal text-base text-slate-950">{data["name"]}</p>
+        <div className="text-left">
+          <p className="font-normal text-[14px] text-slate-950 truncate">
+            {data["name"]}
+          </p>
           {/*  <p className="font-light text-sm text-slate-400">{data.state.name}</p> */}
         </div>
         <div className="flex justify-between items-center gap-2">
           <div className="w-3/4 flex flex-col justify-start items-start gap-1 text-left">
-            <div className="relative lg:w-[70%]">
+            <div className="relative w-full">
               <div className="w-full">
                 <NumericFormat
                   value={
@@ -291,7 +293,6 @@ export default function WithoutSteps({
             createUserLocalityLoading ||
             formData?.name === "" ||
             formData?.postal_code === "" ||
-            formData?.city === "" ||
             formData?.federalEntity === 0 ||
             services.length === 0
           }
@@ -486,23 +487,6 @@ export default function WithoutSteps({
                     className="form-control lg:w-full"
                   />
                 </div>
-                {/* <FormSelect
-                  className="form-control lg:w-[70%]"
-                  defaultValue={formData.federalEntity}
-                  value={formData.federalEntity}
-                  onChange={(e: any) =>
-                    setFormData({
-                      ...formData,
-                      federalEntity: parseInt(e.target.value),
-                    })
-                  }
-                >
-                  {federalEntities.map((elem) => (
-                    <option key={elem.entityId} value={elem.entityId}>
-                      {elem.nameEntity}
-                    </option>
-                  ))}
-                  </FormSelect> */}
               </div>
 
               <div className="lg:flex justify-between items-center relative w-full gap-3">
@@ -534,25 +518,6 @@ export default function WithoutSteps({
                     federalEntityId={formData.federalEntity}
                   />
                 </div>
-                {/*<FormSelect
-                  className="form-control lg:w-[70%]"
-                  disabled={formData.federalEntity === 0}
-                  defaultValue={formData.municipality}
-                  value={formData.municipality}
-                  onChange={(e: any) =>
-                    setFormData({
-                      ...formData,
-                      municipality: parseInt(e.target.value),
-                    })
-                  }
-                >
-                  <option>NO ESPECIFICADO</option>
-                  {municipalities.data?.map((elem: IMunicipality) => (
-                    <option key={elem.id} value={elem.id}>
-                      {elem.name}
-                    </option>
-                  ))}
-                  </FormSelect> */}
               </div>
 
               <div className="lg:flex justify-between items-center relative w-full gap-3">
@@ -575,28 +540,9 @@ export default function WithoutSteps({
                     federalEntityId={formData.federalEntity}
                   />
                 </div>
-                {/*  <FormSelect
-                  className="form-control lg:w-[70%]"
-                  disabled={formData.municipality === 0}
-                  defaultValue={formData.countryLocation}
-                  value={formData.countryLocation}
-                  onChange={(e: any) =>
-                    setFormData({
-                      ...formData,
-                      countryLocation: parseInt(e.target.value),
-                    })
-                  }
-                >
-                  <option>NO ESPECIFICADO</option>
-                  {countryLocations.data?.map((elem: ICountryLocation) => (
-                    <option key={elem.id} value={elem.id}>
-                      {elem.name}
-                    </option>
-                  ))}
-                  </FormSelect> */}
               </div>
 
-              <div className="lg:flex justify-between items-center relative w-full gap-3">
+              {/*<div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Ciudad <span className="text-primary font-bold">*</span>
                 </p>
@@ -610,7 +556,7 @@ export default function WithoutSteps({
                     setFormData({ ...formData, city: e.target.value });
                   }}
                 />
-              </div>
+                </div>*/}
               <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Calle
@@ -626,22 +572,6 @@ export default function WithoutSteps({
                   }}
                 />
               </div>
-              {/*<div className="lg:flex justify-between items-center relative w-full gap-3 mb-4">
-                <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Dirección
-                  <span className="text-primary font-bold">*</span>
-                </p>
-                <FormInput
-                  type={"text"}
-                  placeholder="Escribe la dirección del consultorio..."
-                  min={0}
-                  value={formData.address}
-                  className="form-control lg:w-[70%]"
-                  onChange={(e: any) => {
-                    setFormData({ ...formData, address: e.target.value });
-                  }}
-                />
-                </div>*/}
             </div>
           </div>
         </div>
