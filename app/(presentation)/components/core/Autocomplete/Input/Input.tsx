@@ -1,5 +1,5 @@
 import clsx from "clsx";
-import { ChangeEvent, useContext, useEffect, useState } from "react";
+import { ChangeEvent, useContext, useEffect, useRef, useState } from "react";
 import { FormInput } from "../../BaseComponents/Form";
 import Lucide from "../../BaseComponents/Lucide";
 import Button from "../../BaseComponents/Button";
@@ -45,6 +45,8 @@ export default function Input({
   const [itemsShow, setItemsShow] = useState<IAutocompleteData[]>([]);
   const [focus, setFocus] = useState(false);
 
+  const wrapperRef = useRef(null);
+
   const getDataDispatch = (value?: string | null) =>
     getData({
       type: typeAutocomplete,
@@ -66,6 +68,22 @@ export default function Input({
 
     getDataDispatch();
   };
+  
+  function useOutsideAlerter(ref: React.MutableRefObject<any>) {
+    useEffect(() => {
+      function handleClickOutside(event: MouseEvent) {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setFocus(false);
+        }
+      }
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  }
+
+  useOutsideAlerter(wrapperRef);
 
   const onClickItem = (item: IAutocompleteData) => {
     onClick(item);
@@ -93,10 +111,11 @@ export default function Input({
   }, [defaultValue]);
 
   return (
-    <div className="w-full relative">
+    <div className="w-full relative" ref={wrapperRef}>
       <div className="w-full">
         <FormInput
           value={field}
+          autoComplete="off"
           type="text"
           disabled={disabled}
           placeholder={placeholder}
@@ -108,11 +127,6 @@ export default function Input({
 
             if (listData.length === 0)
               getDataDispatch(field.length > 0 ? field : null);
-          }}
-          onBlur={() => {
-            setTimeout(() => {
-              setFocus(false);
-            }, 100);
           }}
         />
       </div>
