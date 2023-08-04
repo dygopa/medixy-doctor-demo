@@ -272,7 +272,7 @@ export default function Formulary({
 
       <div className="w-full md:flex justify-between items-start sticky top-[67px] z-[50] bg-slate-100 py-2">
         <h2 className="lg:mr-5 lg:mb-0 mb-4 text-2xl font-bold truncate">
-          Nuevo servicio
+          Nuevo Servicio
         </h2>
         <div className="md:w-[40%]  flex justify-end items-center lg:gap-8 gap-2">
           <Button
@@ -286,6 +286,7 @@ export default function Formulary({
             variant="primary"
             className="lg:w-1/2 w-full px-7"
           >
+            <Lucide icon="Plus" className="mr-2" />
             {loadingCreationService ? "Creando..." : "Crear servicio"}
           </Button>
         </div>

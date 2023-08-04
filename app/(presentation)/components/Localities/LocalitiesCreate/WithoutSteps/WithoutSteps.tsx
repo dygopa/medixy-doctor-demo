@@ -49,6 +49,7 @@ import { BsBuilding } from "react-icons/bs";
 import { IService } from "domain/core/entities/serviceEntity";
 import { NumericFormat } from "react-number-format";
 import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 export default function WithoutSteps({
   userId,
@@ -282,7 +283,7 @@ export default function WithoutSteps({
 
       <div className="w-full md:flex justify-between items-center sticky top-[67px] z-[50] border-b bg-slate-100 py-2">
         <div className="lg:mr-5 mb-4 md:mb-0">
-          <h2 className=" text-2xl font-bold truncate">Nuevo consultorio</h2>
+          <h2 className=" text-2xl font-bold truncate">Nuevo Consultorio</h2>
         </div>
         <Button
           className="w-full md:w-fit"
@@ -299,6 +300,7 @@ export default function WithoutSteps({
           }}
           variant="primary"
         >
+          <Lucide icon="Plus" className="mr-2" />
           {createUserLocalityLoading ? "Creando..." : "Crear consultorio"}
         </Button>
       </div>

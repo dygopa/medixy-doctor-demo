@@ -11,7 +11,7 @@ export default async function MedicalRecordPage({
   return (
     <AppLayout
       showStepsBySteps={false}
-      title="Expediente médico"
+      title="Expediente Médico"
       pathname={
         MedicalRecordRoutesEnum.MedicalRecord + params.id + "?type=appointment"
       }

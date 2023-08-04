@@ -5,7 +5,7 @@ import ServiceViewIndex from "(presentation)/components/Services/ServicesView/Se
 
 export default async function ServicesViewPage() {
   return (
-    <AppLayout showStepsBySteps={false} title="Servicio" pathname={ServicesRoutesEnum.ServicesView}>
+    <AppLayout showStepsBySteps={false} title="Mi Servicio" pathname={ServicesRoutesEnum.Services}>
       <ServiceViewIndex/>
     </AppLayout>
   );

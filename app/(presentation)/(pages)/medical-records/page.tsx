@@ -6,7 +6,7 @@ export default async function MedicalRecordsListPage() {
   return (
     <AppLayout
       showStepsBySteps
-      title="Mis consultas"
+      title="Mis Consultas"
       pathname={MedicalRecordRoutesEnum.MedicalRecordList}
     >
       <MedicalRecordsListIndex />

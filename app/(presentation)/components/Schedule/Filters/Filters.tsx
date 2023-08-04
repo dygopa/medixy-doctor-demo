@@ -1,7 +1,7 @@
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
-import React, { Fragment, useContext, useMemo, useState } from "react";
+import React, { Dispatch, Fragment, SetStateAction, useContext, useMemo, useState } from "react";
 import { IScheduleContext, ScheduleContext } from "../context/ScheduleContext";
 import Link from "next/link";
 import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
@@ -20,7 +20,22 @@ import {
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import moment from "moment";
 
-function Filters() {
+interface IFiltersProps {
+  selectedLocality: {
+    id: number,
+    title: string,
+    description: string,
+  };
+  setSelectedLocality: Dispatch<
+    SetStateAction<{
+      id: number,
+      title: string,
+      description: string,
+    }>
+  >;
+}
+
+function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
   const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
 
@@ -41,12 +56,6 @@ function Filters() {
   const { data: activeDay, successful: changedActiveDay} = state.activeDay;
 
   const [listOfLocalities, setListOfLocalities] = useState([]);
-
-  const [selectedLocality, setSelectedLocality] = useState({
-    id: 0,
-    title: "",
-    description: "",
-  });
 
   function handleFormatList() {
     let list_localities = localities.map((elem: any) => ({
@@ -104,52 +113,6 @@ function Filters() {
             selectedItem={locality}
             list={listOfLocalities}
           />
-        </div>
-        <div className="w-full lg:w-fit flex flex-row justify-center flex-wrap lg:flex-nowrap lg:justify-end items-center gap-2 h-full">
-          <Button
-            onClick={() => {
-              predifinedReservationData({})(dispatch);
-              changeStatusPopup(true)(dispatch);
-              changeTypePopup(0)(dispatch);
-            }}
-            variant="primary"
-            type="button"
-            className="w-[85%] lg:w-fit"
-          >
-            <Lucide icon="Plus" className="w-5 h-5 mr-2" />
-            Nueva cita
-          </Button>
-
-          <Menu as="div" className="relative inline-block text-left">
-            <Menu.Button className="cursor-pointer w-10 h-10 flex flex-col justify-center items-center bg-primary/10 hover:bg-primary/20 transition rounded-md">
-              <Lucide icon="MoreVertical" className="h-5" />
-            </Menu.Button>
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-100"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
-            >
-              <Menu.Items className="absolute right-0 z-15 mt-1 w-[200px] origin-top-right rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5">
-                <Menu.Item>
-                  {({ active }) => (
-                    <div>
-                      <Link
-                        className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100"
-                        href={ selectedLocality["id"] === 0 ? `/schedule/configuration` : `/schedule/configuration?locality=${selectedLocality["id"]}`}
-                      >
-                        <Lucide icon="Settings" className="w-5 h-5" />
-                        Configurar agenda
-                      </Link>
-                    </div>
-                  )}
-                </Menu.Item>
-              </Menu.Items>
-            </Transition>
-          </Menu>
         </div>
       </div>
     </div>
