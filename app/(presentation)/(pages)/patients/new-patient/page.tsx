@@ -4,7 +4,7 @@ import PatientsCreateIndex from "(presentation)/components/Patients/PatientsCrea
 
 export default async function RegisterPatientPage() {
   return (
-    <AppLayout showStepsBySteps={false} title="Nuevo paciente" pathname={PatientsRoutesEnum.PatientsCreate}>
+    <AppLayout showStepsBySteps={false} title="Nuevo Paciente" pathname={PatientsRoutesEnum.PatientsCreate}>
       <PatientsCreateIndex/>
     </AppLayout>
   );

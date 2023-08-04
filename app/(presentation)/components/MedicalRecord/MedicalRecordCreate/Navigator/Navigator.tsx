@@ -691,7 +691,7 @@ export default function Navigator({
       <div className="w-full md:flex justify-between items-center sticky top-[67px] z-[69]  bg-slate-100 py-2 md:pb-0">
         <div className="md:w-[50%] lg:mb-0 mb-4">
           <h2 className="lg:mr-5 text-2xl font-bold truncate mb-2">
-            Nueva consulta
+            Nueva Consulta
           </h2>
           <p className="font-normal text-slate-500 text-lg">
             Doctor {user?.names} {user?.firstName}

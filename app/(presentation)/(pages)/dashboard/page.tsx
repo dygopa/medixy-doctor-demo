@@ -4,7 +4,7 @@ import DashboardIndex from "(presentation)/components/Dashboard/DashboardIndex";
 
 export default async function DashboardPage() {
   return (
-    <AppLayout title="Inicio" pathname={DashboardRoutesEnum.Dashboard}>
+    <AppLayout title="Mi tablero" pathname={DashboardRoutesEnum.Dashboard}>
       <DashboardIndex/>
     </AppLayout>
   );

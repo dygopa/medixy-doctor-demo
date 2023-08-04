@@ -6,7 +6,7 @@ import LocalitiesListIndex from "(presentation)/components/Localities/Localities
 
 export default async function LocalitiesPage() {
   return (
-    <AppLayout title="Mis consultorios" pathname={LocalitiesRoutesEnum.Localities}>
+    <AppLayout title="Mis Consultorios" pathname={LocalitiesRoutesEnum.Localities}>
       <LocalitiesListIndex/>
     </AppLayout>
   );

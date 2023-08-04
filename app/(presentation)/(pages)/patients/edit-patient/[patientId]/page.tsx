@@ -10,7 +10,7 @@ export default async function EditPatientPage({
 }) {
   return (
     <AppLayout
-      title="Informacion del paciente"
+      title="Informacion del Paciente"
       pathname={PatientsRoutesEnum.PatientsEdit}
       showStepsBySteps={false}
     >

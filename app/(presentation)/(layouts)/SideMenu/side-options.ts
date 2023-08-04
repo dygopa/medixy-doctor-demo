@@ -30,7 +30,7 @@ export const navigationOptions: FormattedMenu[] = [
     {
         active: false,
         subMenu: undefined,
-        title: "Mis Agendas",
+        title: "Mi Agenda",
         pathname: ScheduleRoutesEnum.Schedule,
         icon: "Calendar",
         ignore: false,

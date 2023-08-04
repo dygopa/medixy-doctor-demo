@@ -388,7 +388,7 @@ export default function Formulary({
 
       <div className="w-full md:flex justify-between items-start sticky top-[67px] z-[50]  bg-slate-100 py-3">
         <h2 className="lg:mr-5 lg:mb-0 mb-4 text-2xl font-bold truncate">
-          Actualizar consultorio
+          Actualizar Consultorio
         </h2>
         <div className="md:w-[40%] lg:w-[20%] w-full flex justify-center items-center">
           <Button

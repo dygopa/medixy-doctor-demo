@@ -6,7 +6,7 @@ import LocalityUpdateIndex from "(presentation)/components/Localities/Localities
 export default async function LocalityCreatePage({params}:{params:{locality_id:string}}) {
   console.log(params);
   return (
-    <AppLayout showStepsBySteps={false} title="Actualizar consultorio" pathname={LocalitiesRoutesEnum.LocalitiesView}>
+    <AppLayout showStepsBySteps={false} title="Actualizar Consultorio" pathname={LocalitiesRoutesEnum.LocalitiesView}>
       <LocalityUpdateIndex localityId={parseInt(params.locality_id.toString())}/>
     </AppLayout>
   );

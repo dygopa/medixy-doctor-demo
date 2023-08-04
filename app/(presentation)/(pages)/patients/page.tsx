@@ -8,7 +8,7 @@ import PatientsListIndex from "(presentation)/components/Patients/PatientsList/P
 
 export default async function LocalitiesPage() {
   return (
-    <AppLayout title="Pacientes" pathname={PatientsRoutesEnum.PatientsList}>
+    <AppLayout title="Mis Pacientes" pathname={PatientsRoutesEnum.PatientsList}>
       <PatientsListIndex/>
     </AppLayout>
   );
