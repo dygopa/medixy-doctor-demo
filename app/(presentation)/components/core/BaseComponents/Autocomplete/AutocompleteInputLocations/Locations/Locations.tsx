@@ -143,10 +143,11 @@ export default function Locations({
   }, [countryLocation]);
 
   return (
-    <div className="w-full relative">
+    <div className="w-full relative" ref={wrapperRef}>
       <div className="w-full">
         <FormInput
           value={field}
+          autoComplete="off"
           type="text"
           disabled={disabled}
           placeholder={placeholder}
@@ -159,11 +160,6 @@ export default function Locations({
             if (field.length === 0) getCountryLocationsDispatch();
 
             setItemsShow([]);
-          }}
-          onBlur={() => {
-            setTimeout(() => {
-              setFocus(false);
-            }, 100);
           }}
         />
       </div>

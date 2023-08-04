@@ -128,6 +128,7 @@ export default function States({
       <div className="w-full">
         <FormInput
           value={field}
+          autoComplete="off"
           type="text"
           disabled={disabled}
           placeholder={placeholder}
