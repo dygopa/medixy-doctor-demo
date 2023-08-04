@@ -131,7 +131,7 @@ export default function Municipalities({
   }, [municipality]);
 
   return (
-    <div className="w-full relative">
+    <div className="w-full relative" ref={wrapperRef}>
       <div className="w-full">
         <FormInput
           value={field}
