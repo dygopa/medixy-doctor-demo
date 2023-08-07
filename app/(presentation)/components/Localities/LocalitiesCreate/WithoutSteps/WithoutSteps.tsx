@@ -51,6 +51,7 @@ import { NumericFormat } from "react-number-format";
 import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import Tooltip from "(presentation)/components/core/BaseComponents/Tooltip/Tooltip";
+import AddressAutocomplete from "(presentation)/components/core/BaseComponents/Autocomplete/AddressAutocomplete/AddressAutocomplete";
 
 export default function WithoutSteps({
   userId,
@@ -105,6 +106,8 @@ export default function WithoutSteps({
       type: "",
     },
   });
+
+  console.log(formData);
 
   const router = useRouter();
 
@@ -208,9 +211,7 @@ export default function WithoutSteps({
           <p className="font-normal text-[14px] text-slate-950 truncate">
             {data["name"]}
           </p>
-          <Tooltip>
-            {data["name"]}
-          </Tooltip>
+          <Tooltip>{data["name"]}</Tooltip>
           {/*  <p className="font-light text-sm text-slate-400">{data.state.name}</p> */}
         </div>
         <div className="flex justify-between items-center gap-2">
@@ -461,7 +462,12 @@ export default function WithoutSteps({
                   }}
                 />
               </div>
-              <div className="lg:flex justify-between items-center relative w-full gap-3">
+
+              <AddressAutocomplete
+                formData={formData}
+                setFormData={setFormData}
+              />
+              {/*  <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Estado
                   <span className="text-primary font-bold">*</span>
@@ -544,7 +550,7 @@ export default function WithoutSteps({
                     federalEntityId={formData.federalEntity}
                   />
                 </div>
-              </div>
+                  </div> */}
 
               {/*<div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">

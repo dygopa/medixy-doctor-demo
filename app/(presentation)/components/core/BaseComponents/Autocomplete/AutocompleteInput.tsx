@@ -14,7 +14,7 @@ export interface IAutocompleteValue {
 interface IAutocompleteInputProps {
   items: IAutocompleteValue[];
   itemsListAdded?: string[];
-  defaultValue?: string | null;
+  defaultValue?: string | null | undefined;
   placeholder?: string;
   disabled?: boolean | undefined;
   className?: string;
@@ -51,9 +51,13 @@ export default function AutocompleteInput({
 
   const onClickItem = (item: IAutocompleteValue) => {
     onClick(item);
-    setField("");
+    setField(item.name);
     setShowDropdown(false);
-    setItemsAdded([...itemsAdded, item.name]);
+
+    if (!onlyItemsAdd) {
+      setItemsAdded([...itemsAdded, item.name]);
+      setField("");
+    }
   };
 
   const onKeyDownEnter = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -119,6 +123,10 @@ export default function AutocompleteInput({
   }, [defaultValue]);
 
   useEffect(() => {
+    if (disabled) setField("");
+  }, [disabled]);
+
+  useEffect(() => {
     if (items.length > 0) setItemsList(items);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
@@ -150,6 +158,7 @@ export default function AutocompleteInput({
         <FormInput
           value={field}
           type="text"
+          autoComplete="off"
           disabled={disabled}
           placeholder={placeholder}
           name="autocompleteField"
