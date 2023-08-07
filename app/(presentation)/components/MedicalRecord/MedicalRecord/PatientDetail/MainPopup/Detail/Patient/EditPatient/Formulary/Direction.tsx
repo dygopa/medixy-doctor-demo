@@ -118,6 +118,10 @@ export default function Contact({
               formData={values}
               setFormData={setValues}
               isColumn
+              federalEntityId={values.federalEntity}
+              municipalityId={values.municipality}
+              municipalityCatalogId={values.municipalityCatalogId}
+              locationId={values.countryLocation}
             />
             <div className="my-3 md:my-0 md:flex md:flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
