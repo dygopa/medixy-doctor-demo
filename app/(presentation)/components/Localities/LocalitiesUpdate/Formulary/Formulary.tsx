@@ -46,6 +46,7 @@ import {
 import { NumericFormat } from "react-number-format";
 import { IService } from "domain/core/entities/serviceEntity";
 import Tooltip from "(presentation)/components/core/BaseComponents/Tooltip/Tooltip";
+import AddressAutocomplete from "(presentation)/components/core/BaseComponents/Autocomplete/AddressAutocomplete/AddressAutocomplete";
 
 export default function Formulary({
   userId,
@@ -320,9 +321,7 @@ export default function Formulary({
           <p className="font-normal text-[14px] text-slate-950 truncate">
             {data["name"]}
           </p>
-          <Tooltip>
-            {data["name"]}
-          </Tooltip>
+          <Tooltip>{data["name"]}</Tooltip>
           {/*  <p className="font-light text-sm text-slate-400">{data.state.name}</p> */}
         </div>
         <div className="flex justify-between items-center gap-2">
@@ -592,7 +591,17 @@ export default function Formulary({
                     }}
                   />
                 </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
+
+                <AddressAutocomplete
+                  formData={formData}
+                  setFormData={setFormData}
+                  federalEntityId={formData.federalEntity}
+                  municipalityId={formData.municipality}
+                  municipalityCatalogId={formData.municipalityCatalogId}
+                  locationId={formData.countryLocation}
+                />
+
+                {/* <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     Estado <span className="text-primary font-bold">*</span>
                   </p>
@@ -680,7 +689,7 @@ export default function Formulary({
                       countryLocationId={formData.countryLocation}
                     />
                   </div>
-                </div>
+                    </div> */}
 
                 {/*<div className="lg:flex justify-between items-center relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">

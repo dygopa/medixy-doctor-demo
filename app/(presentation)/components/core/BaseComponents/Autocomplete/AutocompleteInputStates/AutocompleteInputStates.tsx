@@ -1,43 +1,82 @@
-import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
-import AutocompleteInputStatesProvider from "./context/AutocompleteInputStatesContext";
-import States from "./States/States";
+import { useContext, useEffect } from "react";
+import AutocompleteInput, { IAutocompleteValue } from "../AutocompleteInput";
+import {
+  AutocompleteInputStatesContext,
+  IAutocompleteInputStatesContext,
+} from "./context/AutocompleteInputStatesContext";
 
 interface IAutocompleteInputStatesProps {
-  defaultValue?: string;
-  setDefaultValue?: boolean;
-  itemsAdded?: IFederalEntity[];
-  placeholder?: string;
-  disabled?: boolean | undefined;
+  query?: string | null;
+  onClick: (item: IAutocompleteValue) => void;
   className?: string;
-  onChange?: (item: string) => void;
-  onClick?: (item: IFederalEntity) => void;
   federalEntityId?: number | null;
 }
 
 export default function AutocompleteInputStates({
-  defaultValue = "",
-  setDefaultValue = false,
-  itemsAdded = [],
-  placeholder = "",
-  disabled,
-  className = "",
-  onChange = (item: string) => {},
-  onClick = (item: IFederalEntity) => {},
+  query,
+  onClick,
+  className,
   federalEntityId,
 }: IAutocompleteInputStatesProps) {
+  const { state, actions, dispatch } =
+    useContext<IAutocompleteInputStatesContext>(AutocompleteInputStatesContext);
+  const { getFederalEntities, getFederalEntityById } = actions;
+  const { data: federalEntities, loading } = state.federalEntities;
+  const { data: federalEntity } = state.federalEntity;
+
+  const getAutocompleteValues = (): IAutocompleteValue[] => {
+    const values: IAutocompleteValue[] = [];
+
+    if (federalEntities.length > 0) {
+      federalEntities.forEach((federalEntity) => {
+        const value: IAutocompleteValue = {
+          id: federalEntity.entityId,
+          name: federalEntity.nameEntity,
+        };
+
+        values.push(value);
+      });
+    }
+
+    return values;
+  };
+
+  const getFederalEntitiesDispatch = (value?: string | null) => {
+    getFederalEntities({
+      searchQuery: value ? value.toLowerCase().trim() : null,
+    })(dispatch);
+  };
+
+  useEffect(() => {
+    if (federalEntityId && federalEntityId !== 0)
+      getFederalEntityById({ id: federalEntityId })(dispatch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [federalEntityId]);
+
+  useEffect(() => {
+    getFederalEntitiesDispatch(query);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [query]);
+
   return (
-    <AutocompleteInputStatesProvider>
-      <States
-        disabled={disabled}
-        defaultValue={defaultValue}
-        setDefaultValue={setDefaultValue}
-        itemsAdded={itemsAdded}
-        placeholder={placeholder}
-        className={className}
-        onClick={onClick}
-        onChange={onChange}
-        federalEntityId={federalEntityId}
-      />
-    </AutocompleteInputStatesProvider>
+    <AutocompleteInput
+      items={getAutocompleteValues()}
+      defaultValue={
+        federalEntity && federalEntity.nameEntity
+          ? federalEntity.nameEntity
+          : undefined
+      }
+      onClick={onClick}
+      onClear={() =>
+        onClick({
+          id: 0,
+          name: "",
+        } as IAutocompleteValue)
+      }
+      onChange={(value: string) => getFederalEntitiesDispatch(value)}
+      className={className}
+      activeSearch={false}
+      onlyItemsAdd
+    />
   );
 }

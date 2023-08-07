@@ -1,3 +1,4 @@
+import AddressAutocomplete from "(presentation)/components/core/BaseComponents/Autocomplete/AddressAutocomplete/AddressAutocomplete";
 import AutocompleteInputLocations from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputLocations/AutocompleteInputLocations";
 import AutocompleteInputMunicipalities from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMunicipalities/AutocompleteInputMunicipalities";
 import AutocompleteInputStates from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputStates/AutocompleteInputStates";
@@ -97,10 +98,12 @@ interface IContactProps {
     }>
   >;
 }
-export default function Contact({ values, setValues, errors, setErrors }: IContactProps) {
-  const { state, actions, dispatch } =
-    useContext<IMedicalRecordContext>(MedicalRecordContext);
-
+export default function Contact({
+  values,
+  setValues,
+  errors,
+  setErrors,
+}: IContactProps) {
   return (
     <div className="w-full bg-white  rounded-md h-fit mt-4">
       <div className="w-full rounded-md p-5 flex">
@@ -111,64 +114,15 @@ export default function Contact({ values, setValues, errors, setErrors }: IConta
             </p>
           </div>
           <div className="w-full md:grid md:grid-cols-2 grid-cols-1 justify-start items-center gap-3">
-            <div className="md:flex md:flex-col justify-between items-start relative gap-1">
-              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Estado{" "}<span className="text-primary font-bold">*</span>
-              </p>
-                <AutocompleteInputStates
-                  setDefaultValue
-                  onClick={(item: IFederalEntity) =>
-                    setValues({
-                      ...values,
-                      federalEntity: item.entityId,
-                      municipality: 0,
-                      municipalityCatalogId: 0,
-                      countryLocation: 0,
-                    })
-                  }
-                  className="form-control lg:w-full"
-                  federalEntityId={values.federalEntity}
-                />
-              {errors.federalEntity && (
-                <p className="text-danger mt-1">
-                  Debe seleccionar la entidad federativa
-                </p>
-              )}
-            </div>
-            <div className="md:flex md:flex-col justify-between items-start relative gap-1">
-              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Municipio
-              </p>
-              <AutocompleteInputMunicipalities
-                onClick={(item: IMunicipality) =>
-                  setValues({
-                    ...values,
-                    municipality: item.id,
-                    municipalityCatalogId: item.catalogId,
-                    countryLocation: 0,
-                  })
-                }
-                disabled={values.federalEntity === 0}
-                className="form-control lg:w-full"
-                municipalityId={values.municipality}
-                federalEntityId={values.federalEntity}
-              />
-            </div>
-            <div className="md:flex md:flex-col justify-between items-start relative gap-1">
-              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Colonia
-              </p>
-              <AutocompleteInputLocations
-                onClick={(item: ICountryLocation) =>
-                  setValues({ ...values, countryLocation: item.id })
-                }
-                disabled={values.municipality === 0}
-                className="form-control lg:w-full"
-                municipalityId={values.municipality}
-                federalEntityId={values.federalEntity}
-                countryLocationId={values.countryLocation}
-              />
-            </div>
+            <AddressAutocomplete
+              formData={values}
+              setFormData={setValues}
+              isColumn
+              federalEntityId={values.federalEntity}
+              municipalityId={values.municipality}
+              municipalityCatalogId={values.municipalityCatalogId}
+              locationId={values.countryLocation}
+            />
             <div className="my-3 md:my-0 md:flex md:flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                 Calle
