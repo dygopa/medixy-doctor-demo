@@ -1,39 +1,32 @@
-import { IMedicine } from "domain/core/entities/medicineEntity";
+import { IAutocompleteValue } from "../AutocompleteInput";
 import AutocompleteInputMedicinesProvider from "./context/AutocompleteInputMedicinesContext";
 import Medicines from "./Medicines/Medicines";
 
 interface IAutocompleteInputMedicinesProps {
-  defaultValue?: string;
-  setDefaultValue?: boolean;
-  itemsAdded?: IMedicine[];
-  placeholder?: string;
-  disabled?: boolean | undefined;
-  className?: string;
+  onClick: (item: IAutocompleteValue) => void;
   onChange?: (item: string) => void;
-  onClick?: (item: IMedicine) => void;
+  placeholder?: string | undefined;
+  defaultValue?: string | null;
+  className?: string;
+  disabled?: boolean;
 }
 
 export default function AutocompleteInputMedicines({
-  defaultValue = "",
-  setDefaultValue = false,
-  itemsAdded = [],
-  placeholder = "",
-  disabled,
-  className = "",
-  onChange = (item: string) => {},
-  onClick = (item: IMedicine) => {},
+  onClick,
+  onChange,
+  className,
+  placeholder,
+  defaultValue,
+  disabled = false,
 }: IAutocompleteInputMedicinesProps) {
   return (
     <AutocompleteInputMedicinesProvider>
       <Medicines
-        disabled={disabled}
-        defaultValue={defaultValue}
-        setDefaultValue={setDefaultValue}
-        itemsAdded={itemsAdded}
-        placeholder={placeholder}
-        className={className}
         onClick={onClick}
-        onChange={onChange}
+        className={className}
+        placeholder={placeholder}
+        defaultValue={defaultValue}
+        disabled={disabled}
       />
     </AutocompleteInputMedicinesProvider>
   );

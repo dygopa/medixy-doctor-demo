@@ -1,4 +1,6 @@
-import AutocompleteInput from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInput";
+import AutocompleteInput, {
+  IAutocompleteValue,
+} from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInput";
 import {
   FormCheck,
   FormInput,
@@ -18,6 +20,21 @@ export default function RecordsNonPathological({
   setValues,
 }: IRecordsNonPathologicalProps) {
   const [showFields, setShowFields] = useState(false);
+
+  const getItemsAutocompleteValues = (list: string[]): IAutocompleteValue[] => {
+    const values: IAutocompleteValue[] = [];
+
+    list.forEach((listItem, i) => {
+      const value: IAutocompleteValue = {
+        id: i,
+        name: listItem,
+      };
+
+      values.push(value);
+    });
+
+    return values;
+  };
 
   return (
     <div>
@@ -84,38 +101,30 @@ export default function RecordsNonPathological({
                       !values.bloodTypeNonPathological.isChecked ||
                       values.bloodTypeNonPathological.values.length > 0
                     }
-                    items={["AB+", "AB-", "A+", "A-", "B+", "B-", "O+", "O-"]}
-                    itemsAdded={values.bloodTypeNonPathological.values}
+                    showClearButton={false}
+                    items={getItemsAutocompleteValues([
+                      "AB+",
+                      "AB-",
+                      "A+",
+                      "A-",
+                      "B+",
+                      "B-",
+                      "O+",
+                      "O-",
+                    ])}
+                    itemsListAdded={values.bloodTypeNonPathological.values}
                     placeholder="Grupo Saguíneo (AB+, AB-, A+, A-, B+, B-, O+, O-)"
                     className="h-[50px] w-full"
-                    onClick={(item: string) => {
+                    onClick={(item: IAutocompleteValue) => {
                       if (
                         values.bloodTypeNonPathological.isChecked &&
-                        item.length > 0 &&
-                        values.bloodTypeNonPathological.values.indexOf(item) < 0
+                        values.bloodTypeNonPathological.values.indexOf(
+                          item.name
+                        ) < 0
                       ) {
                         const valuesAllergies =
                           values.bloodTypeNonPathological.values;
-                        valuesAllergies.push(item);
-
-                        setValues({
-                          ...values,
-                          bloodTypeNonPathological: {
-                            isChecked: true,
-                            values: valuesAllergies,
-                          },
-                        });
-                      }
-                    }}
-                    onKeyDown={(item: string) => {
-                      if (
-                        values.bloodTypeNonPathological.isChecked &&
-                        item.length > 0 &&
-                        values.bloodTypeNonPathological.values.indexOf(item) < 0
-                      ) {
-                        const valuesAllergies =
-                          values.bloodTypeNonPathological.values;
-                        valuesAllergies.push(item);
+                        valuesAllergies.push(item.name);
 
                         setValues({
                           ...values,

@@ -18,7 +18,7 @@ export default function Diagnose({ cie10, values, setValues }: IDiagnoseProps) {
     <div className="flex items-center justify-between bg-gray-400 p-3 rounded-md bg-opacity-10">
       <div className="w-full">
         <p className="text-md text-slate-900 font-normal">
-          {cie10.code4} - {cie10.description4}
+          {cie10.description4}
         </p>
       </div>
 

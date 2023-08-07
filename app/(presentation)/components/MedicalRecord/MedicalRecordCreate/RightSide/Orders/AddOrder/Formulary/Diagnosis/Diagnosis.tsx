@@ -18,13 +18,16 @@ export default function Diagnosis({ values, setValues }: IDiagnosisProps) {
           defaultValue={values.medicalProfile.name}
           placeholder="Escribe el examen a realizarse"
           className="w-full"
-          onChange={(item: IMedicalProfile) =>
-            setValues({ ...values, medicalProfile: item })
+          onChange={(item: string) =>
+            setValues({
+              ...values,
+              medicalProfile: {
+                id: null,
+                name: item,
+              } as IMedicalProfile,
+            })
           }
           onClick={(item: IMedicalProfile) =>
-            setValues({ ...values, medicalProfile: item })
-          }
-          onKeyDown={(item: IMedicalProfile) =>
             setValues({ ...values, medicalProfile: item })
           }
         />
