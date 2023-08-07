@@ -1,69 +1,33 @@
-import { useContext, useEffect } from "react";
-import AutocompleteInput, { IAutocompleteValue } from "../AutocompleteInput";
-import {
-  AutocompleteInputMedicinesContext,
-  IAutocompleteInputMedicinesContext,
-} from "./context/AutocompleteInputMedicinesContext";
+import { IAutocompleteValue } from "../AutocompleteInput";
+import AutocompleteInputMedicinesProvider from "./context/AutocompleteInputMedicinesContext";
+import Medicines from "./Medicines/Medicines";
 
 interface IAutocompleteInputMedicinesProps {
   onClick: (item: IAutocompleteValue) => void;
+  onChange?: (item: string) => void;
+  placeholder?: string | undefined;
+  defaultValue?: string | null;
   className?: string;
+  disabled?: boolean;
 }
 
 export default function AutocompleteInputMedicines({
   onClick,
+  onChange,
   className,
+  placeholder,
+  defaultValue,
+  disabled = false,
 }: IAutocompleteInputMedicinesProps) {
-  const { state, actions, dispatch } =
-    useContext<IAutocompleteInputMedicinesContext>(
-      AutocompleteInputMedicinesContext
-    );
-  const { getMedicines } = actions;
-  const { data: medicines, loading } = state.medicines;
-
-  const getAutocompleteValues = (): IAutocompleteValue[] => {
-    const values: IAutocompleteValue[] = [];
-
-    if (medicines.data.length > 0) {
-      medicines.data.forEach((medicine) => {
-        const value: IAutocompleteValue = {
-          id: medicine.id ?? 0,
-          name: medicine.name,
-        };
-
-        values.push(value);
-      });
-    }
-
-    return values;
-  };
-
-  const getMedicinesDispatch = (value: string) => {
-    getMedicines({
-      searchQuery: value.toLowerCase().trim(),
-    })(dispatch);
-  };
-
-  useEffect(() => {
-    getMedicinesDispatch("");
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
   return (
-    <AutocompleteInput
-      disabled={loading}
-      items={getAutocompleteValues()}
-      onClick={onClick}
-      onClear={() =>
-        onClick({
-          id: 0,
-          name: "",
-        } as IAutocompleteValue)
-      }
-      onChange={(value: string) => getMedicinesDispatch(value)}
-      className={className}
-      activeSearch={false}
-      onlyItemsAdd
-    />
+    <AutocompleteInputMedicinesProvider>
+      <Medicines
+        onClick={onClick}
+        className={className}
+        placeholder={placeholder}
+        defaultValue={defaultValue}
+        disabled={disabled}
+      />
+    </AutocompleteInputMedicinesProvider>
   );
 }

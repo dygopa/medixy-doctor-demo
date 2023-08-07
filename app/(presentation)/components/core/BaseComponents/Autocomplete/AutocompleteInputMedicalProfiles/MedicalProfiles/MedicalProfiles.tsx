@@ -1,42 +1,40 @@
 import { useContext, useEffect } from "react";
 import AutocompleteInput, { IAutocompleteValue } from "../../AutocompleteInput";
 import {
-  AutocompleteInputMedicinesContext,
-  IAutocompleteInputMedicinesContext,
-} from "../context/AutocompleteInputMedicinesContext";
+  AutocompleteInputMedicalProfilesContext,
+  IAutocompleteInputMedicalProfilesContext,
+} from "../context/AutocompleteInputMedicalProfilesContext";
 
-interface IMedicinesProps {
+interface IMedicalProfilesProps {
   onClick: (item: IAutocompleteValue) => void;
   onChange?: (item: string) => void;
   placeholder?: string | undefined;
   defaultValue?: string | null;
   className?: string;
-  disabled?: boolean;
 }
 
-export default function Medicines({
+export default function MedicalProfiles({
   onClick,
   onChange,
   placeholder,
   defaultValue,
   className,
-  disabled,
-}: IMedicinesProps) {
+}: IMedicalProfilesProps) {
   const { state, actions, dispatch } =
-    useContext<IAutocompleteInputMedicinesContext>(
-      AutocompleteInputMedicinesContext
+    useContext<IAutocompleteInputMedicalProfilesContext>(
+      AutocompleteInputMedicalProfilesContext
     );
-  const { getMedicines } = actions;
-  const { data: medicines, loading } = state.medicines;
+  const { getMedicalProfiles } = actions;
+  const { data: medicalProfiles, loading } = state.medicalProfiles;
 
   const getAutocompleteValues = (): IAutocompleteValue[] => {
     const values: IAutocompleteValue[] = [];
 
-    if (medicines.data && medicines.data.length > 0) {
-      medicines.data.forEach((medicine) => {
+    if (medicalProfiles.data && medicalProfiles.data.length > 0) {
+      medicalProfiles.data.forEach((medicalProfile) => {
         const value: IAutocompleteValue = {
-          id: medicine.id ?? 0,
-          name: medicine.name,
+          id: medicalProfile.id ?? 0,
+          name: medicalProfile.name,
         };
 
         values.push(value);
@@ -46,21 +44,22 @@ export default function Medicines({
     return values;
   };
 
-  const getMedicinesDispatch = (value: string) => {
-    getMedicines({
+  const getMedicalProfilesDispatch = (value: string) => {
+    getMedicalProfiles({
       searchQuery: value.toLowerCase().trim(),
     })(dispatch);
   };
 
   useEffect(() => {
-    getMedicinesDispatch("");
+    getMedicalProfilesDispatch("");
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (
     <AutocompleteInput
-      disabled={disabled}
       items={getAutocompleteValues()}
+      placeholder={placeholder}
+      defaultValue={defaultValue}
       onClick={onClick}
       onClear={() =>
         onClick({
@@ -68,16 +67,14 @@ export default function Medicines({
           name: "",
         } as IAutocompleteValue)
       }
-      placeholder={placeholder}
-      defaultValue={defaultValue}
       onChange={(value: string) => {
-        getMedicinesDispatch(value);
+        getMedicalProfilesDispatch(value);
 
         if (onChange) onChange(value);
       }}
       className={className}
-      showClearButton={false}
       activeSearch={false}
+      showClearButton={false}
     />
   );
 }
