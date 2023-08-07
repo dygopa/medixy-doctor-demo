@@ -650,7 +650,13 @@ function CreateAppointment({
         </Button>
         <p
           onClick={() => {
-            cancelFuntion();
+            cancelFuntion(); 
+            setSelectedPatient({
+              id: 0,
+              title: "",
+              description: "",
+              type: "PATIENT",
+            })
           }}
           className="cursor-pointer font-normal text-sm text-primary text-center"
         >
