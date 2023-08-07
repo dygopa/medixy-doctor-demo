@@ -14,6 +14,7 @@ export interface IAutocompleteValue {
 interface IAutocompleteInputProps {
   items: IAutocompleteValue[];
   itemsListAdded?: string[];
+  defaultValue?: string | null;
   placeholder?: string;
   disabled?: boolean | undefined;
   className?: string;
@@ -29,6 +30,7 @@ interface IAutocompleteInputProps {
 export default function AutocompleteInput({
   items,
   itemsListAdded = [],
+  defaultValue = "",
   placeholder = "",
   disabled,
   className = "",
@@ -112,9 +114,9 @@ export default function AutocompleteInput({
     if (onChange) onChange(value);
   };
 
-  /* useEffect(() => {
-    setField(defaultValue);
-  }, [defaultValue]); */
+  useEffect(() => {
+    if (defaultValue) setField(defaultValue);
+  }, [defaultValue]);
 
   useEffect(() => {
     if (items.length > 0) setItemsList(items);
