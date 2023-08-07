@@ -60,12 +60,11 @@ export default function AutocompleteInputStates({
 
   return (
     <AutocompleteInput
-      disabled={loading}
       items={getAutocompleteValues()}
       defaultValue={
         federalEntity && federalEntity.nameEntity
           ? federalEntity.nameEntity
-          : null
+          : undefined
       }
       onClick={onClick}
       onClear={() =>

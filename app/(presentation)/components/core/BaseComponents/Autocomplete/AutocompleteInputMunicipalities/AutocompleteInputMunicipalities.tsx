@@ -26,7 +26,7 @@ export default function AutocompleteInputMunicipalities({
     AutocompleteInputMunContext
   );
   const { getMunicipalities, getMunicipalityById } = actions;
-  const { data: municipalities, loading } = state.municipalities;
+  const { data: municipalities } = state.municipalities;
   const { data: municipality } = state.municipality;
 
   const getAutocompleteValues = (): IAutocompleteValue[] => {
@@ -67,7 +67,7 @@ export default function AutocompleteInputMunicipalities({
 
   return (
     <AutocompleteInput
-      disabled={loading || disabled}
+      disabled={disabled}
       items={getAutocompleteValues()}
       defaultValue={
         municipality.data && municipality.data.name

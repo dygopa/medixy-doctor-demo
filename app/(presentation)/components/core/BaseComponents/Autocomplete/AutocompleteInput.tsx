@@ -127,7 +127,9 @@ export default function AutocompleteInput({
   }, [disabled]);
 
   useEffect(() => {
-    if (items.length > 0) setItemsList(items);
+    if (items.length > 0) {
+      setItemsList(items);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
 

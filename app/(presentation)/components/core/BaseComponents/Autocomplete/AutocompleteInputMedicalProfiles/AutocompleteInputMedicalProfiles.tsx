@@ -1,43 +1,69 @@
-import { IMedicalProfile } from "domain/core/entities/medicalProfileEntity";
-import AutocompleteInputMedicalProfilesProvider from "./context/AutocompleteInputMedicalProfilesContext";
-import MedicalProfiles from "./MedicalProfiles/MedicalProfiles";
+import { useContext, useEffect } from "react";
+import AutocompleteInput, { IAutocompleteValue } from "../AutocompleteInput";
+import {
+  AutocompleteInputMedicalProfilesContext,
+  IAutocompleteInputMedicalProfilesContext,
+} from "./context/AutocompleteInputMedicalProfilesContext";
 
 interface IAutocompleteInputMedicalProfilesProps {
-  defaultValue?: string;
-  setDefaultValue?: boolean;
-  itemsAdded?: IMedicalProfile[];
-  placeholder?: string;
-  disabled?: boolean | undefined;
+  onClick: (item: IAutocompleteValue) => void;
   className?: string;
-  onKeyDown?: (item: IMedicalProfile) => void;
-  onClick?: (item: IMedicalProfile) => void;
-  onChange?: (item: IMedicalProfile) => void | null;
 }
 
 export default function AutocompleteInputMedicalProfiles({
-  defaultValue = "",
-  setDefaultValue = false,
-  itemsAdded = [],
-  placeholder = "",
-  disabled,
-  className = "",
-  onClick = (item: IMedicalProfile) => {},
-  onKeyDown = (item: IMedicalProfile) => {},
-  onChange,
+  onClick,
+  className,
 }: IAutocompleteInputMedicalProfilesProps) {
+  const { state, actions, dispatch } =
+    useContext<IAutocompleteInputMedicalProfilesContext>(
+      AutocompleteInputMedicalProfilesContext
+    );
+  const { getMedicalProfiles } = actions;
+  const { data: medicalProfiles, loading } = state.medicalProfiles;
+
+  const getAutocompleteValues = (): IAutocompleteValue[] => {
+    const values: IAutocompleteValue[] = [];
+
+    if (medicalProfiles.data.length > 0) {
+      medicalProfiles.data.forEach((medicalProfile) => {
+        const value: IAutocompleteValue = {
+          id: medicalProfile.id ?? 0,
+          name: medicalProfile.name,
+        };
+
+        values.push(value);
+      });
+    }
+
+    return values;
+  };
+
+  const getMedicalProfilesDispatch = (value: string) => {
+    getMedicalProfiles({
+      searchQuery: value.toLowerCase().trim(),
+    })(dispatch);
+  };
+
+  useEffect(() => {
+    getMedicalProfilesDispatch("");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
-    <AutocompleteInputMedicalProfilesProvider>
-      <MedicalProfiles
-        disabled={disabled}
-        defaultValue={defaultValue}
-        setDefaultValue={setDefaultValue}
-        itemsAdded={itemsAdded}
-        placeholder={placeholder}
-        className={className}
-        onClick={onClick}
-        onKeyDown={onKeyDown}
-        onChange={onChange}
-      />
-    </AutocompleteInputMedicalProfilesProvider>
+    <AutocompleteInput
+      disabled={loading}
+      items={getAutocompleteValues()}
+      onClick={onClick}
+      onClear={() =>
+        onClick({
+          id: 0,
+          name: "",
+        } as IAutocompleteValue)
+      }
+      onChange={(value: string) => getMedicalProfilesDispatch(value)}
+      className={className}
+      activeSearch={false}
+      onlyItemsAdd
+    />
   );
 }

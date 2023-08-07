@@ -114,7 +114,6 @@ function AddressAutocomplete({
                 });
                 setFormData({
                   ...formData,
-
                   municipality: item.id,
                   municipalityCatalogId: item.additionalId ?? 0,
                   countryLocation: 0,

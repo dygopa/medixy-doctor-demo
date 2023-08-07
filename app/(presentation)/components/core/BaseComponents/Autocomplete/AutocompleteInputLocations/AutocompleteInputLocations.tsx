@@ -70,7 +70,7 @@ export default function AutocompleteInputLocations({
 
   return (
     <AutocompleteInput
-      disabled={loading || disabled}
+      disabled={disabled}
       items={getAutocompleteValues()}
       defaultValue={
         countryLocation.data && countryLocation.data.name
