@@ -1,3 +1,4 @@
+import { IAutocompleteValue } from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInput";
 import AutocompleteInputCIE10 from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputCIE10/AutocompleteInputCIE10";
 import { FormTextarea } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
@@ -23,7 +24,10 @@ interface IDiagnosisProps {
   setValues: Dispatch<SetStateAction<valuesTypes>>;
 }
 
-export default function DiagnosisDetail({ values, setValues }: IDiagnosisProps) {
+export default function DiagnosisDetail({
+  values,
+  setValues,
+}: IDiagnosisProps) {
   const [showBody, setShowBody] = useState(false);
   const [value, setValue] = useState("");
   const [diagnoseError, setDiagnoseError] = useState(false);
@@ -51,22 +55,28 @@ export default function DiagnosisDetail({ values, setValues }: IDiagnosisProps) 
 
           <div className="w-full">
             <AutocompleteInputCIE10
-              defaultValue={value}
-              itemsAdded={values.diagnose}
               placeholder="Nombre de la enfermedad - CIE10"
               className={clsx([
                 "h-[50px] w-full",
                 diagnoseError && "border-danger",
               ])}
-              onClick={(item: ICIE10) => {
+              onClick={(item: IAutocompleteValue) => {
                 if (
                   values.diagnose.findIndex(
                     (itemFind) => itemFind.id === item.id
                   ) < 0
                 ) {
+                  const cie10: ICIE10 = {
+                    id: item.id,
+                    code3: "",
+                    description3: "",
+                    code4: "",
+                    description4: item.name,
+                  };
+
                   setValues({
                     ...values,
-                    diagnose: [...values.diagnose, item],
+                    diagnose: [...values.diagnose, cie10],
                   });
                   setDiagnoseError(false);
                   setValue("");
@@ -75,9 +85,7 @@ export default function DiagnosisDetail({ values, setValues }: IDiagnosisProps) 
             />
 
             {diagnoseError && (
-              <p className="text-danger mt-1">
-                Debe agregar los diagnósticos
-              </p>
+              <p className="text-danger mt-1">Debe agregar los diagnósticos</p>
             )}
 
             <div className="max-w-full overflow-x-auto mt-3">

@@ -27,7 +27,6 @@ export default function DiagnoseMobile({
           </div>
 
           <div className="relative flex flex-col justify-center items-start">
-            <p className="font-semibold text-xl text-gray-950">{cie10.code4}</p>
             <p className="font-light text-sm text-slate-500">
               {cie10.description4}
             </p>

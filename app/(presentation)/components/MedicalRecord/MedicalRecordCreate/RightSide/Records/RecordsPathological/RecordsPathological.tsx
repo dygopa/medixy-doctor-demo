@@ -346,7 +346,7 @@ export default function RecordsPathological({
                   placeholder="Omeprazol, Ibuprofeno (ENTER para agregar)"
                   disabled={!values.takeMedication.isChecked}
                   className="h-[50px] w-full"
-                  onClick={(item: IMedicine) => {
+                  onClick={(item: IAutocompleteValue) => {
                     if (
                       values.takeMedication.isChecked &&
                       values.takeMedication.values.indexOf(item.name) < 0

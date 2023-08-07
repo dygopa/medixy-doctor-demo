@@ -4,7 +4,9 @@ import {
   TreatmentViaDosisEnum,
   TreatmentViaDosisTextEnum,
 } from "(presentation)/(enum)/treatment/treatmentEnums";
-import AutocompleteInput from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInput";
+import AutocompleteInput, {
+  IAutocompleteValue,
+} from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInput";
 import AutocompleteInputMedicines from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMedicines/AutocompleteInputMedicines";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
@@ -201,13 +203,12 @@ export default function AddRecipe({
           <div className="w-full">
             <AutocompleteInputMedicines
               defaultValue={values.medicine}
-              setDefaultValue
               placeholder=""
               className="h-[50px] w-full"
               onChange={(item: string) =>
                 setValues({ ...values, medicine: "" })
               }
-              onClick={(item: IMedicine) =>
+              onClick={(item: IAutocompleteValue) =>
                 setValues({ ...values, medicine: item.name })
               }
             />
