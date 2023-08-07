@@ -1,16 +1,12 @@
-import AutocompleteInput from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInput";
+import AutocompleteInput, {
+  IAutocompleteValue,
+} from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInput";
 import AutocompleteInputMedicines from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMedicines/AutocompleteInputMedicines";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
 import { IMedicine } from "domain/core/entities/medicineEntity";
-import {
-  ChangeEvent,
-  Dispatch,
-  KeyboardEvent,
-  SetStateAction,
-  useState,
-} from "react";
+import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
 import { valuesTypes } from "../Records";
 
 interface IRecordsPathologicalProps {
@@ -23,6 +19,21 @@ export default function RecordsPathological({
   setValues,
 }: IRecordsPathologicalProps) {
   const [showFields, setShowFields] = useState(true);
+
+  const getItemsAutocompleteValues = (list: string[]): IAutocompleteValue[] => {
+    const values: IAutocompleteValue[] = [];
+
+    list.forEach((listItem, i) => {
+      const value: IAutocompleteValue = {
+        id: i,
+        name: listItem,
+      };
+
+      values.push(value);
+    });
+
+    return values;
+  };
 
   return (
     <div>
@@ -85,20 +96,25 @@ export default function RecordsPathological({
 
                 <div className="w-full">
                   <AutocompleteInput
+                    showClearButton={false}
                     disabled={!values.allergiesPathological.isChecked}
-                    items={["Maní", "Gluten", "Penicilina"]}
-                    itemsAdded={values.allergiesPathological.values}
+                    items={getItemsAutocompleteValues([
+                      "Maní",
+                      "Gluten",
+                      "Penicilina",
+                    ])}
+                    itemsListAdded={values.allergiesPathological.values}
                     placeholder="Maní, gluten, penicilina (ENTER para agregar)"
                     className="h-[50px] w-full"
-                    onClick={(item: string) => {
+                    onClick={(item: IAutocompleteValue) => {
                       if (
                         values.allergiesPathological.isChecked &&
-                        item.length > 0 &&
-                        values.allergiesPathological.values.indexOf(item) < 0
+                        values.allergiesPathological.values.indexOf(item.name) <
+                          0
                       ) {
                         const valuesAllergies =
                           values.allergiesPathological.values;
-                        valuesAllergies.push(item);
+                        valuesAllergies.push(item.name);
 
                         setValues({
                           ...values,
@@ -109,15 +125,15 @@ export default function RecordsPathological({
                         });
                       }
                     }}
-                    onKeyDown={(item: string) => {
+                    onKeyDown={(item: IAutocompleteValue) => {
                       if (
                         values.allergiesPathological.isChecked &&
-                        item.length > 0 &&
-                        values.allergiesPathological.values.indexOf(item) < 0
+                        values.allergiesPathological.values.indexOf(item.name) <
+                          0
                       ) {
                         const valuesAllergies =
                           values.allergiesPathological.values;
-                        valuesAllergies.push(item);
+                        valuesAllergies.push(item.name);
 
                         setValues({
                           ...values,
@@ -204,24 +220,25 @@ export default function RecordsPathological({
 
                 <div className="w-full">
                   <AutocompleteInput
+                    showClearButton={false}
                     disabled={!values.surgicalInterventions.isChecked}
-                    items={[
+                    items={getItemsAutocompleteValues([
                       "Cesarea",
                       "Apendicectomía",
                       "Laparotomía Exploratoria",
-                    ]}
-                    itemsAdded={values.surgicalInterventions.values}
+                    ])}
+                    itemsListAdded={values.surgicalInterventions.values}
                     placeholder="Tipo, cuando, ejem: Amígdalas 2013 (ENTER para agregar)"
                     className="h-[50px] w-full"
-                    onClick={(item: string) => {
+                    onClick={(item: IAutocompleteValue) => {
                       if (
                         values.surgicalInterventions.isChecked &&
-                        item.length > 0 &&
-                        values.surgicalInterventions.values.indexOf(item) < 0
+                        values.surgicalInterventions.values.indexOf(item.name) <
+                          0
                       ) {
                         const valuesAllergies =
                           values.surgicalInterventions.values;
-                        valuesAllergies.push(item);
+                        valuesAllergies.push(item.name);
 
                         setValues({
                           ...values,
@@ -232,15 +249,15 @@ export default function RecordsPathological({
                         });
                       }
                     }}
-                    onKeyDown={(item: string) => {
+                    onKeyDown={(item: IAutocompleteValue) => {
                       if (
                         values.surgicalInterventions.isChecked &&
-                        item.length > 0 &&
-                        values.surgicalInterventions.values.indexOf(item) < 0
+                        values.surgicalInterventions.values.indexOf(item.name) <
+                          0
                       ) {
                         const valuesAllergies =
                           values.surgicalInterventions.values;
-                        valuesAllergies.push(item);
+                        valuesAllergies.push(item.name);
 
                         setValues({
                           ...values,

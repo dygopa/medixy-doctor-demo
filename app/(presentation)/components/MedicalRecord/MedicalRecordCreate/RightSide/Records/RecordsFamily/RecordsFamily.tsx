@@ -1,4 +1,6 @@
-import AutocompleteInput from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInput";
+import AutocompleteInput, {
+  IAutocompleteValue,
+} from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInput";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
@@ -15,6 +17,37 @@ export default function RecordsFamily({
   setValues,
 }: IRecordsFamilyProps) {
   const [showFields, setShowFields] = useState(false);
+
+  const getItemsAutocompleteValues = (): IAutocompleteValue[] => {
+    const values: IAutocompleteValue[] = [
+      {
+        id: 0,
+        name: "Padre",
+      },
+      {
+        id: 1,
+        name: "Madre",
+      },
+      {
+        id: 2,
+        name: "Hermano",
+      },
+      {
+        id: 3,
+        name: "Hermana",
+      },
+      {
+        id: 4,
+        name: "Abuelo",
+      },
+      {
+        id: 5,
+        name: "Abuela",
+      },
+    ] as IAutocompleteValue[];
+
+    return values;
+  };
 
   return (
     <div>
@@ -77,44 +110,19 @@ export default function RecordsFamily({
 
                 <div className="w-full">
                   <AutocompleteInput
+                    showClearButton={false}
                     disabled={!values.diabetesFamily.isChecked}
-                    items={[
-                      "Padre",
-                      "Madre",
-                      "Hermano",
-                      "Hermana",
-                      "Abuelo",
-                      "Abuela",
-                    ]}
-                    itemsAdded={values.diabetesFamily.values}
+                    items={getItemsAutocompleteValues()}
+                    itemsListAdded={values.diabetesFamily.values}
                     placeholder="Padre, Madre, Hermanos, Abuelos (ENTER para agregar)"
                     className="h-[50px] w-full"
-                    onClick={(item: string) => {
+                    onClick={(item: IAutocompleteValue) => {
                       if (
                         values.diabetesFamily.isChecked &&
-                        item.length > 0 &&
-                        values.diabetesFamily.values.indexOf(item) < 0
+                        values.diabetesFamily.values.indexOf(item.name) < 0
                       ) {
                         const valuesAllergies = values.diabetesFamily.values;
-                        valuesAllergies.push(item);
-
-                        setValues({
-                          ...values,
-                          diabetesFamily: {
-                            isChecked: true,
-                            values: valuesAllergies,
-                          },
-                        });
-                      }
-                    }}
-                    onKeyDown={(item: string) => {
-                      if (
-                        values.diabetesFamily.isChecked &&
-                        item.length > 0 &&
-                        values.diabetesFamily.values.indexOf(item) < 0
-                      ) {
-                        const valuesAllergies = values.diabetesFamily.values;
-                        valuesAllergies.push(item);
+                        valuesAllergies.push(item.name);
 
                         setValues({
                           ...values,
@@ -200,44 +208,19 @@ export default function RecordsFamily({
 
                 <div className="w-full">
                   <AutocompleteInput
+                    showClearButton={false}
                     disabled={!values.cancerFamily.isChecked}
-                    items={[
-                      "Padre",
-                      "Madre",
-                      "Hermano",
-                      "Hermana",
-                      "Abuelo",
-                      "Abuela",
-                    ]}
-                    itemsAdded={values.cancerFamily.values}
+                    items={getItemsAutocompleteValues()}
+                    itemsListAdded={values.cancerFamily.values}
                     placeholder="Padre, Madre, Hermanos, Abuelos (ENTER para agregar)"
                     className="h-[50px] w-full"
-                    onClick={(item: string) => {
+                    onClick={(item: IAutocompleteValue) => {
                       if (
                         values.cancerFamily.isChecked &&
-                        item.length > 0 &&
-                        values.cancerFamily.values.indexOf(item) < 0
+                        values.cancerFamily.values.indexOf(item.name) < 0
                       ) {
                         const valuesAllergies = values.cancerFamily.values;
-                        valuesAllergies.push(item);
-
-                        setValues({
-                          ...values,
-                          cancerFamily: {
-                            isChecked: true,
-                            values: valuesAllergies,
-                          },
-                        });
-                      }
-                    }}
-                    onKeyDown={(item: string) => {
-                      if (
-                        values.cancerFamily.isChecked &&
-                        item.length > 0 &&
-                        values.cancerFamily.values.indexOf(item) < 0
-                      ) {
-                        const valuesAllergies = values.cancerFamily.values;
-                        valuesAllergies.push(item);
+                        valuesAllergies.push(item.name);
 
                         setValues({
                           ...values,
@@ -321,46 +304,20 @@ export default function RecordsFamily({
 
                 <div className="w-full">
                   <AutocompleteInput
+                    showClearButton={false}
                     disabled={!values.hypertensionFamily.isChecked}
-                    items={[
-                      "Padre",
-                      "Madre",
-                      "Hermano",
-                      "Hermana",
-                      "Abuelo",
-                      "Abuela",
-                    ]}
-                    itemsAdded={values.hypertensionFamily.values}
+                    items={getItemsAutocompleteValues()}
+                    itemsListAdded={values.hypertensionFamily.values}
                     placeholder="Padre, Madre, Hermanos, Abuelos (ENTER para agregar)"
                     className="h-[50px] w-full"
-                    onClick={(item: string) => {
+                    onClick={(item: IAutocompleteValue) => {
                       if (
                         values.hypertensionFamily.isChecked &&
-                        item.length > 0 &&
-                        values.hypertensionFamily.values.indexOf(item) < 0
+                        values.hypertensionFamily.values.indexOf(item.name) < 0
                       ) {
                         const valuesAllergies =
                           values.hypertensionFamily.values;
-                        valuesAllergies.push(item);
-
-                        setValues({
-                          ...values,
-                          hypertensionFamily: {
-                            isChecked: true,
-                            values: valuesAllergies,
-                          },
-                        });
-                      }
-                    }}
-                    onKeyDown={(item: string) => {
-                      if (
-                        values.hypertensionFamily.isChecked &&
-                        item.length > 0 &&
-                        values.hypertensionFamily.values.indexOf(item) < 0
-                      ) {
-                        const valuesAllergies =
-                          values.hypertensionFamily.values;
-                        valuesAllergies.push(item);
+                        valuesAllergies.push(item.name);
 
                         setValues({
                           ...values,
@@ -446,44 +403,19 @@ export default function RecordsFamily({
 
                 <div className="w-full">
                   <AutocompleteInput
+                    showClearButton={false}
                     disabled={!values.sidaFamily.isChecked}
-                    items={[
-                      "Padre",
-                      "Madre",
-                      "Hermano",
-                      "Hermana",
-                      "Abuelo",
-                      "Abuela",
-                    ]}
-                    itemsAdded={values.sidaFamily.values}
+                    items={getItemsAutocompleteValues()}
+                    itemsListAdded={values.sidaFamily.values}
                     placeholder="Padre, Madre, Hermanos, Abuelos (ENTER para agregar)"
                     className="h-[50px] w-full"
-                    onClick={(item: string) => {
+                    onClick={(item: IAutocompleteValue) => {
                       if (
                         values.sidaFamily.isChecked &&
-                        item.length > 0 &&
-                        values.sidaFamily.values.indexOf(item) < 0
+                        values.sidaFamily.values.indexOf(item.name) < 0
                       ) {
                         const valuesAllergies = values.sidaFamily.values;
-                        valuesAllergies.push(item);
-
-                        setValues({
-                          ...values,
-                          sidaFamily: {
-                            isChecked: true,
-                            values: valuesAllergies,
-                          },
-                        });
-                      }
-                    }}
-                    onKeyDown={(item: string) => {
-                      if (
-                        values.sidaFamily.isChecked &&
-                        item.length > 0 &&
-                        values.sidaFamily.values.indexOf(item) < 0
-                      ) {
-                        const valuesAllergies = values.sidaFamily.values;
-                        valuesAllergies.push(item);
+                        valuesAllergies.push(item.name);
 
                         setValues({
                           ...values,
@@ -567,44 +499,19 @@ export default function RecordsFamily({
 
                 <div className="w-full">
                   <AutocompleteInput
+                    showClearButton={false}
                     disabled={!values.otherFamily.isChecked}
-                    items={[
-                      "Padre",
-                      "Madre",
-                      "Hermano",
-                      "Hermana",
-                      "Abuelo",
-                      "Abuela",
-                    ]}
-                    itemsAdded={values.otherFamily.values}
+                    items={getItemsAutocompleteValues()}
+                    itemsListAdded={values.otherFamily.values}
                     placeholder="Padre, Madre, Hermanos, Abuelos (ENTER para agregar)"
                     className="h-[50px] w-full"
-                    onClick={(item: string) => {
+                    onClick={(item: IAutocompleteValue) => {
                       if (
                         values.otherFamily.isChecked &&
-                        item.length > 0 &&
-                        values.otherFamily.values.indexOf(item) < 0
+                        values.otherFamily.values.indexOf(item.name) < 0
                       ) {
                         const valuesAllergies = values.otherFamily.values;
-                        valuesAllergies.push(item);
-
-                        setValues({
-                          ...values,
-                          otherFamily: {
-                            isChecked: true,
-                            values: valuesAllergies,
-                          },
-                        });
-                      }
-                    }}
-                    onKeyDown={(item: string) => {
-                      if (
-                        values.otherFamily.isChecked &&
-                        item.length > 0 &&
-                        values.otherFamily.values.indexOf(item) < 0
-                      ) {
-                        const valuesAllergies = values.otherFamily.values;
-                        valuesAllergies.push(item);
+                        valuesAllergies.push(item.name);
 
                         setValues({
                           ...values,
