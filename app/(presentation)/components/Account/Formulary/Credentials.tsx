@@ -15,6 +15,7 @@ import {
   StepByStepContext,
 } from "(presentation)/components/core/StepByStep/context/StepByStepContext";
 import AutocompleteInput from "(presentation)/components/core/Autocomplete";
+import { twMerge } from "tailwind-merge";
 
 export default function Credentials({
   account,
@@ -115,6 +116,21 @@ export default function Credentials({
       institution_name,
     });
 
+    const [canUpdate, setCanUpdate] = useState(false)
+    const [initialValue, setInitialValue] = useState(speciality)
+
+    function checkIfCanUpdate(){
+      setCanUpdate(false)
+      if(speciality.code !== initialValue.code) 
+        setCanUpdate(true)
+      if(speciality.institution_name !== initialValue.institution_name) 
+        setCanUpdate(true)
+    }
+
+    useMemo(()=>{
+      checkIfCanUpdate()
+    },[speciality])
+
     return (
       <div className="w-full border bg-white grid lg:grid-cols-4 grid-cols-1 gap-3 p-4 rounded-md">
         <div className="flex flex-col justify-center items-start pr-5 gap-1">
@@ -170,9 +186,15 @@ export default function Credentials({
           )}
           <FiSave
             onClick={() => {
-              updateSpeciality(speciality as Object);
+              if(canUpdate){
+                updateSpeciality(speciality as Object);
+                setInitialValue(speciality)
+              }
             }}
-            className="text-xl cursor-pointer text-green-500"
+            className={twMerge([
+              "text-xl cursor-pointer text-green-500",
+              !canUpdate && "cursor-not-allowed text-slate-500/50" 
+            ])}
             title="Guardar"
           />
           <FiTrash
