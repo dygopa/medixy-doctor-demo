@@ -590,6 +590,21 @@ function CreateAgenda({
         <p
           onClick={() => {
             cancelFuntion();
+            setFormData({
+              typeEnd: 1,
+              daysRepeated: daysRepeatedList,
+              type: 2,
+              serviceId: 0,
+              localityId: 0,
+              availableSpots: 0,
+              startDate: moment().format("YYYY-MM-DD"),
+              until: moment().add(1, "month").format("YYYY-MM-DD"),
+              spanTime: 0,
+              fromHour: "",
+              toHour: ""
+            })
+            setDaysRepeatedList([])
+            setListOfHours([])
           }}
           className="cursor-pointer font-normal text-sm text-primary text-center"
         >
