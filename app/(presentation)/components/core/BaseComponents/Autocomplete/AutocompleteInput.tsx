@@ -3,6 +3,11 @@ import { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
 import { FormInput } from "../Form";
 import Lucide from "../Lucide";
 
+export interface IAutocompleteValue {
+  id: number;
+  name: string;
+}
+
 interface IAutocompleteInputProps {
   items: string[];
   defaultValue?: string;
