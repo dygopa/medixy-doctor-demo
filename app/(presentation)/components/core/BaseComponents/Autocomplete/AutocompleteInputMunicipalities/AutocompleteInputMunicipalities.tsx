@@ -1,16 +1,17 @@
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import AutocompleteInputMunProvider from "./context/AutocompleteInputMunContext";
 import Municipalities from "./Municipalities/Municipalities";
+import { IAutocompleteValue } from "../AutocompleteInput";
 
 interface IAutocompleteInputMunicipalitiesProps {
   defaultValue?: string;
   setDefaultValue?: boolean;
-  itemsAdded?: IMunicipality[];
+  itemsAdded?: IAutocompleteValue[];
   placeholder?: string;
   disabled?: boolean | undefined;
   className?: string;
   onChange?: (item: string) => void;
-  onClick?: (item: IMunicipality) => void;
+  onClick?: (item: IAutocompleteValue) => void;
   municipalityId?: number | null;
   federalEntityId?: number | null;
 }
@@ -23,7 +24,7 @@ export default function AutocompleteInputMunicipalities({
   disabled,
   className = "",
   onChange = (item: string) => {},
-  onClick = (item: IMunicipality) => {},
+  onClick = (item: IAutocompleteValue) => {},
   municipalityId,
   federalEntityId,
 }: IAutocompleteInputMunicipalitiesProps) {
