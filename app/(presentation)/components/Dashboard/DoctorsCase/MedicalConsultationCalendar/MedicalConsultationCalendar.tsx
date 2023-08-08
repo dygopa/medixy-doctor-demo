@@ -42,11 +42,11 @@ export default function MedicalConsultationCalendar({ user }: { user: IUser }) {
   return (
     <div
       className={clsx([
-        "w-full lg:h-[320px] flex flex-col grid-cols-3 justify-start items-start px-4 py-2 gap-8 bg-white rounded-md shadow-md ",
+        "w-full lg:h-[320px] flex flex-col grid-cols-3 justify-start items-start px-5 py-2 gap-8 bg-white rounded-md shadow-md ",
       ])}
     >
-      <div className="w-full flex flex-col gap-1">
-        <p className="font-semibold text-lg text-slate-900">Resumen</p>
+      <div className="w-full flex flex-col justify-center gap-1">
+        <p className="font-medium text-base text-slate-900">Resumen</p>
         <p className="font-light text-sm text-slate-500">
           Para mejorar tus estadísticas en la plataforma puedes configurar tus
           consultorios y asignarles servicios para de esa manera ser visible en

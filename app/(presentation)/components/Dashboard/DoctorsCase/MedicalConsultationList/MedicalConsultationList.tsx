@@ -97,9 +97,9 @@ export default function MedicalConsultationList({ user }: { user: IUser }) {
 
   if ([...(appointments as any[])].length === 0 && successful)
     return (
-      <div className="w-full lg:h-[320px] bg-white rounded-md shadow-md px-4">
+      <div className="w-full lg:h-[320px] bg-white rounded-md shadow-md px-5">
         <div className="w-full h-[6vh] flex justify-between items-center pb-1">
-          <p className="font-semibold text-lg text-slate-900">
+          <p className="font-medium text-base text-slate-900">
             Citas pendientes
           </p>
         </div>
@@ -128,9 +128,9 @@ export default function MedicalConsultationList({ user }: { user: IUser }) {
     );
 
   return (
-    <div className="w-full lg:h-[320px] flex flex-col justify-between items-center bg-white rounded-md shadow-md p-4">
+    <div className="w-full lg:h-[320px] flex flex-col justify-between items-center bg-white rounded-md shadow-md p-5">
       <div className="w-full border-b flex justify-between items-center pb-1">
-        <p className="font-semibold text-lg text-slate-900">Citas pendientes</p>
+        <p className="font-medium text-base text-slate-900">Citas pendientes</p>
       </div>
       <div className="w-full h-full py-3 flex flex-col justify-start items-start gap-4 rounded-md overflow-y-auto">
         {[...(appointments as Array<any>)].map((data, i) => {
