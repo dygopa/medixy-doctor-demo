@@ -20,6 +20,7 @@ import { EventClickArg } from "@fullcalendar/core";
 import { twMerge } from "tailwind-merge";
 import AttentionWindow from "./AttentionWindowModal/AttentionWindowModal";
 import { useSearchParams } from "next/navigation";
+import { scheduleFailuresEnum } from "domain/core/failures/schedule/scheduleFailure";
 
 export default function CalendarIndex() {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
@@ -44,6 +45,8 @@ export default function CalendarIndex() {
   } = state.getServices;
 
   const params = useSearchParams();
+
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [windows, setWindows] = useState([]);
   const [showWindowModal, setShowWindowModal] = useState(false);
@@ -249,13 +252,29 @@ export default function CalendarIndex() {
   }, [params, services]); */
   }
 
+  const handleErrors = () => {
+    switch (errorWindowCreated?.code) {
+      case scheduleFailuresEnum.localityServicesEmpty:
+        setErrorMessage("Este consultorio no posee servicios para crear ventanas de atención.");
+        break;
+      default:
+        setErrorMessage("El servidor ha demorado mucho tiempo en responder, Vuelve a intentarlo más tarde.");
+        break;
+    }
+  };
+  
+  useMemo(() => {
+    if (errorWindowCreated) handleErrors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errorWindowCreated]);
+
   return (
     <>
       <div className="mt-8 flex justify-between items-start gap-5">
         <AlertComponent
           variant="error"
           show={errorWindowCreated !== null}
-          description={"Ha ocurrido un error creando la ventana de atención"}
+          description={errorMessage}
         />
         <AlertComponent
           variant="success"

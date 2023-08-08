@@ -341,7 +341,12 @@ export class ScheduleRepository implements IScheduleRepository {
             let URL = CREATE_ATTENTION_WINDOW_ENDPOINT(obj["serviceId"]) as RequestInfo
 
             const response = await fetch(URL, requestOptions)
+
             let data = await response.json()
+
+            //if (response.status > 201) throw new ScheduleFailure(response.);
+            if(!data["meta"]["success"]) return new ScheduleFailure(data["meta"]["error"]["type"]);
+
             
             return data["data"] ?? {};
         } catch (error) {
