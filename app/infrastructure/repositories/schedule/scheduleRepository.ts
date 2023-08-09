@@ -9,6 +9,7 @@ export default interface IScheduleRepository {
     getCalendarEvents(id:number, localityId:number, sinceDate:any, untilDate:any, serviceId?:number): Promise<any[] | ScheduleFailure>;
     getAppointments(id:number, dateStart?:string, dateEnd?:string, localityId?:number, status?:number): Promise<any[] | ScheduleFailure>;
     getAttentionWindows(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure>;
+    getBaseAttentionWindowsByLocality(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure>;
     createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
     getAttentionWindowsByService(id:number, date?:string): Promise<any[] | ScheduleFailure>;
     createWindowAttention(obj:any): Promise<any | ScheduleFailure>;
@@ -194,17 +195,41 @@ export class ScheduleRepository implements IScheduleRepository {
 
                 return resVentanasAtencion.data ?? []
             }
-            
-            let query = supabase.from("VentanasAtencion").select(`
+
+            let queryVentanasAtencion = supabase.from("VentanasAtencion")
+            .select(`
                 *,
                 Servicios (
                     nombre
                 )
-            `).eq("servicioId", id);
-                    
-            let res = await query
+            `).eq("ventanaAtencionBaseId", id)
 
-            return res.data ?? [];
+            let resVentanasAtencion = await queryVentanasAtencion
+
+            return resVentanasAtencion.data ?? []
+        } catch (error) {
+            const exception = error as any;
+            return new ScheduleFailure(scheduleFailuresEnum.serverError);
+        }
+    }
+
+    async getBaseAttentionWindowsByLocality(id:number | null): Promise<any[] | ScheduleFailure> {
+        try {
+            let queryOfServices = supabase.from("Servicios").select(`*`).eq("localidadId", id);
+            
+            let resServices = await queryOfServices
+            
+            if(resServices.error) return new ScheduleFailure(scheduleFailuresEnum.serverError);
+            if(resServices.data?.length === 0) return []
+
+            let queryServiciosEnVentanasAtencion = supabase.from("ServiciosEnVentanasAtencion")
+            .select(`*, VentanasAtencionBase(*)`).in("servicioId", resServices.data!.map((elem:any)=> elem["id"] ))
+            
+            let resServiciosEnVentanasAtencion = await queryServiciosEnVentanasAtencion
+            
+            if(resServiciosEnVentanasAtencion.data?.length === 0) return []
+            
+            return resServiciosEnVentanasAtencion.data ?? []
         } catch (error) {
             const exception = error as any;
             return new ScheduleFailure(scheduleFailuresEnum.serverError);
@@ -341,7 +366,12 @@ export class ScheduleRepository implements IScheduleRepository {
             let URL = CREATE_ATTENTION_WINDOW_ENDPOINT(obj["serviceId"]) as RequestInfo
 
             const response = await fetch(URL, requestOptions)
+
             let data = await response.json()
+
+            //if (response.status > 201) throw new ScheduleFailure(response.);
+            if(!data["meta"]["success"]) return new ScheduleFailure(data["meta"]["error"]["type"]);
+
             
             return data["data"] ?? {};
         } catch (error) {

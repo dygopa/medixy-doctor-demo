@@ -14,6 +14,7 @@ export interface IScheduleState {
   typePopupActive: IScheduleUserState;
   getAppointments: IScheduleUserState;
   getAttentionWindows: IScheduleUserState;
+  getBaseAttentionWindowsByLocality: IScheduleUserState;
   createAppointment: IScheduleUserState;
   getAttentionWindowsByService: IScheduleUserState;
   createWindowAttention: IScheduleUserState;
@@ -22,6 +23,7 @@ export interface IScheduleState {
   getLocalities: IScheduleUserState;
   getLocalitiesWithServices: IScheduleUserState;
   getPatients: IScheduleUserState;
+  listOfColors: IScheduleUserState;
 }
 
 interface IScheduleUserState {
@@ -110,6 +112,12 @@ export const initialState: IScheduleState = {
     successful: false,
     error: null,
   },
+  getBaseAttentionWindowsByLocality: {
+    data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
   createAppointment: {
     data: {},
     loading: false,
@@ -153,6 +161,12 @@ export const initialState: IScheduleState = {
     error: null,
   },
   getPatients: {
+    data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  listOfColors: {
     data: [],
     loading: false,
     successful: false,

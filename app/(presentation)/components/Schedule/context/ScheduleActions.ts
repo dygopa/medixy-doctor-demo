@@ -13,6 +13,7 @@ export interface IScheduleActions {
   changeStatusPopup: Function;
   getAppointments: Function;
   getAttentionWindows: Function;
+  getBaseAttentionWindowsByLocality: Function;
   createAppointment: Function;
   getAttentionWindowsByService: Function;
   createWindowAttention: Function;
@@ -22,6 +23,7 @@ export interface IScheduleActions {
   getLocalitiesWithServices: Function;
   getPatients: Function;
   activeActualDay: Function;
+  setListOfColors: Function;
 }
 
 const getCalendarEvents = (id:number, localityId:number, sinceDate:any, untilDate:any, serviceId:number) => async (dispatch: Dispatch<any>) => {
@@ -73,6 +75,10 @@ const changeStatusPopup = (value:boolean) => async (dispatch: Dispatch<any>) => 
     dispatch({ type: "CHANGE_STATUS_POPUP", payload: { data: value } });
 }
 
+const setListOfColors = (list:any[]) => async (dispatch: Dispatch<any>) => {
+    dispatch({ type: "CHANGE_LIST_OF_COLORS", payload: { data: list } });
+}
+
 const getAppointments = (id:number, dateStart?:string, dateEnd?:string, localityId?:number) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "GET_APPOINTMENTS_LOADING" });
@@ -96,6 +102,19 @@ const getAttentionWindows = (id:number, by?:string) => async (dispatch: Dispatch
     } catch (error) {
       console.log("Error calling action", error)
       dispatch({ type: "GET_ATTENTION_WINDOWS_ERROR", payload: { error: error } });
+    }
+}
+
+const getBaseAttentionWindowsByLocality = (id:number) => async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch({ type: "GET_BASE_ATTENTION_WINDOWS_BY_LOCALITY_LOADING" });
+      
+      const res: Array<any> = await new ScheduleUseCase().getBaseAttentionWindowsByLocality(id);
+  
+      dispatch({ type: "GET_BASE_ATTENTION_WINDOWS_BY_LOCALITY_SUCCESSFUL", payload: { data: res } });
+    } catch (error) {
+      console.log("Error calling action", error)
+      dispatch({ type: "GET_BASE_ATTENTION_WINDOWS_BY_LOCALITY_ERROR", payload: { error: error } });
     }
 }
 
@@ -215,6 +234,7 @@ export const actions: IScheduleActions = {
   changeStatusPopup,
   getAppointments,
   getAttentionWindows,
+  getBaseAttentionWindowsByLocality,
   createAppointment,
   getAttentionWindowsByService,
   createWindowAttention,
@@ -223,5 +243,6 @@ export const actions: IScheduleActions = {
   getLocalities,
   getLocalitiesWithServices,
   getPatients,
-  activeActualDay
+  activeActualDay,
+  setListOfColors
 }

@@ -20,6 +20,7 @@ import { EventClickArg } from "@fullcalendar/core";
 import { twMerge } from "tailwind-merge";
 import AttentionWindow from "./AttentionWindowModal/AttentionWindowModal";
 import { useSearchParams } from "next/navigation";
+import { scheduleFailuresEnum } from "domain/core/failures/schedule/scheduleFailure";
 
 export default function CalendarIndex() {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
@@ -27,7 +28,7 @@ export default function CalendarIndex() {
 
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
-  const { getLocalities, getServices, getAttentionWindows, activeLocality } =
+  const { getServices, getAttentionWindows, activeLocality } =
     actions;
   const { data, loading, successful, error } = state.getAttentionWindows;
   const { successful: successfulWindowCreated, error: errorWindowCreated } =
@@ -42,8 +43,11 @@ export default function CalendarIndex() {
     successful: servicesSuccessful,
     loading: servicesLoading,
   } = state.getServices;
+  const {
+    data: listOfColors
+  } = state.listOfColors;
 
-  const params = useSearchParams();
+  const [errorMessage, setErrorMessage] = useState("");
 
   const [windows, setWindows] = useState([]);
   const [showWindowModal, setShowWindowModal] = useState(false);
@@ -73,19 +77,24 @@ export default function CalendarIndex() {
 
     let start = moment(elem["fechaInicio"]).utc();
     let end = moment(elem["fechaFin"]).utc();
+    
+    let color = listOfColors ? 
+      listOfColors.find((value:any)=> value["ventanaAtencionBaseId"] === elem["ventanaAtencionBaseId"])["color"]
+      : "#216AD9"
 
     object = {
       title: "Horario",
       start: start.format("YYYY-MM-DD HH:mm"),
       end: end.format("YYYY-MM-DD HH:mm"),
       textColor: "#FFF",
-      backgroundColor: "#1e2b37",
+      backgroundColor: color,
     };
     return object;
   }
 
   function formatList() {
     let list = [];
+    console.log("data", data);
     list = data.map((elem: any) => formatEvent(elem));
     console.log("list", list);
     setWindows(list);
@@ -155,99 +164,28 @@ export default function CalendarIndex() {
     if (successful) formatList();
   }, [loading, successful]);
 
-  {
-    /* useMemo(() => {
-    if (servicesSuccessful && services.length > 0)
-      if(params.get("service")){
-        let id = params.get("service")?.toString();
-        getAttentionWindows(parseInt(id!))(dispatch);
-      }else{
-        getAttentionWindows(services[0].id)(dispatch);
-      }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [servicesSuccessful, services]); */
-  }
-
-  useMemo(() => {
-    if (localitiesSuccessful && localities.length > 0)
-      if (params.get("locality")) {
-        let id = params.get("locality")?.toString();
-        getAttentionWindows(parseInt(id!), "LOCALITY")(dispatch);
-      } else {
-        getAttentionWindows(localities[0].id, "LOCALITY")(dispatch);
-      }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localitiesSuccessful, localities]);
-
   useMemo(() => {
     if (loadedUser) {
       getServices(user.userId)(dispatch);
-      getLocalities(user.userId)(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser]);
 
+  const handleErrors = () => {
+    switch (errorWindowCreated?.code) {
+      case scheduleFailuresEnum.localityServicesEmpty:
+        setErrorMessage("Este consultorio no posee servicios para crear ventanas de atención.");
+        break;
+      default:
+        setErrorMessage("El servidor ha demorado mucho tiempo en responder, Vuelve a intentarlo más tarde.");
+        break;
+    }
+  };
+  
   useMemo(() => {
-    if (localitiesSuccessful) {
-      if (params.get("locality") && localities.length > 0) {
-        let id = params.get("locality")?.toString();
-        let localityFinded = [...localities].find(
-          (elem: any) => elem["id"] === parseInt(id!)
-        );
-        console.log(localityFinded);
-        getAttentionWindows(localityFinded["id"], "LOCALITY")(dispatch);
-        if (localityFinded) {
-          activeLocality({
-            id: params.get("locality"),
-            title: localityFinded["name"],
-            description: localityFinded["description"],
-            type: "LOCALITY",
-          })(dispatch);
-        }
-      }
-      if (!params.get("locality") && localities.length > 0) {
-        let localityFinded = [...localities][0];
-        getAttentionWindows(localityFinded["id"], "LOCALITY")(dispatch);
-        activeLocality({
-          id: localityFinded["id"],
-          title: localityFinded["name"],
-          description: localityFinded["description"],
-          type: "LOCALITY",
-        })(dispatch);
-      }
-    }
-  }, [params, localities]);
-
-  {
-    /* useMemo(() => {
-    if(servicesSuccessful){
-      if (params.get("service") && services.length > 0) {
-        let id = params.get("service")?.toString();
-        let serviceFinded = [...services].find(
-          (elem: any) => elem["id"] === parseInt(id!)
-        );
-        console.log(serviceFinded);
-        if (serviceFinded) {
-          activeService({
-            id: params.get("service"),
-            title: serviceFinded["name"],
-            description: serviceFinded["description"],
-            type: "SERVICE",
-          })(dispatch);
-        }
-      }
-      if(!params.get("service") && services.length > 0){
-        let serviceFinded = [...services][0]
-        activeService({
-          id: serviceFinded["id"],
-          title: serviceFinded["name"],
-          description: serviceFinded["description"],
-          type: "SERVICE",
-        })(dispatch);
-      }
-    }
-  }, [params, services]); */
-  }
+    if (errorWindowCreated) handleErrors();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [errorWindowCreated]);
 
   return (
     <>
@@ -255,7 +193,7 @@ export default function CalendarIndex() {
         <AlertComponent
           variant="error"
           show={errorWindowCreated !== null}
-          description={"Ha ocurrido un error creando la ventana de atención"}
+          description={errorMessage}
         />
         <AlertComponent
           variant="success"

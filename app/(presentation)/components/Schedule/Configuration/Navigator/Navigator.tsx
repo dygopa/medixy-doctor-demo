@@ -5,30 +5,62 @@ import { useContext, useEffect, useMemo, useState } from "react";
 import { IScheduleContext, ScheduleContext } from "../../context/ScheduleContext";
 import { IPopupContext, PopupContext } from "(presentation)/components/core/BaseComponents/Popup/context/PopupContext";
 import { AuthContext, IAuthContext } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
-import { SpecialSelect } from "(presentation)/components/core/SpecialSearch/SpecialSearch";
-import { useRouter } from "next/navigation";
+import { SpecialSelect, SpecialSelectSchedule } from "(presentation)/components/core/SpecialSearch/SpecialSearch";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ILocality } from "domain/core/entities/localityEntity";
+import moment from "moment";
+import { ColorsEnum } from "(presentation)/(enum)/colors/colorsEnum";
+
+function formatHour(value: number) {
+  let h: string = value.toString();
+  let divided = h.split("");
+
+  let hours =
+    divided.length > 3 ? `${divided[0]}${divided[1]}` : `0${divided[0]}`;
+  let minutes =
+    divided.length > 3
+      ? `${divided[2]}${divided[3]}`
+      : `${divided[1]}${divided[2]}`;
+
+  return { hours, minutes };
+}
 
 export default function Navigator() {
      
   let router = useRouter()
+  const params = useSearchParams();
 
   const { state: auth} = useContext<IAuthContext>(AuthContext);
   const { data: user, successful: loadedUser} = auth.getUserAuthenticated;
 
   const { state, actions, dispatch } = useContext<IScheduleContext>(ScheduleContext);
-  const { activeLocality, getAttentionWindows, changeTypePopup, changeStatusPopup, getLocalities} = actions;
+  const { 
+    activeLocality, 
+    getAttentionWindows, 
+    changeTypePopup, 
+    changeStatusPopup, 
+    getLocalities,
+    getBaseAttentionWindowsByLocality,
+    setListOfColors
+  } = actions;
   const { data: locality } = state.activeLocality;
   const { data } = state.typePopupActive;
   const { data: localities, successful: localitiesSuccessful, loading: localitiesLoading } = state.getLocalities;
+  const { data: baseAttentionWindows, successful: baseAttentionWindowsSuccessful, loading: baseAttentionWindowsLoading } = state.getBaseAttentionWindowsByLocality;
 
   const { actions: actionsPopup, dispatch: dispatchPopup } = useContext<IPopupContext>(PopupContext);
   const { changeChildrenPopup, changeStatusPopup: showPopup } = actionsPopup;
 
   const [listOfLocalities, setListOfLocalities] = useState([]);
+  const [listOfBaseAttentionWindows, setListOfBaseAttentionWindows] = useState([]);
 
   const [selectedLocality, setSelectedLocality] = useState({
     id: 0,
+    title: "",
+    description: "",
+  });
+  const [selectedBaseAttentionWindow, setSelectedBaseAttentionWindow] = useState({
+    id: "",
     title: "",
     description: "",
   });
@@ -43,16 +75,52 @@ export default function Navigator() {
     setListOfLocalities(list_localities);
   }
 
-  useMemo(() => {
-    if (selectedLocality.id > 0) {
-      activeLocality(selectedLocality)(dispatch);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedLocality]);
+  function handleFormatListAttentionWindows() {
+    let list_base_attention_windows = baseAttentionWindows.map((elem: any, i:number) => {
+      
+      let { hours: startHour, minutes: startMinutes } = formatHour(elem["VentanasAtencionBase"]["horaInicio"]);
+      let { hours: endHour, minutes: endMinutes } = formatHour(elem["VentanasAtencionBase"]["horaFin"]);
+      
+      let startDate = moment(elem["VentanasAtencionBase"]["fechaInicio"]).format("DD-MM-YYYY")
+      let endDate = moment(elem["VentanasAtencionBase"]["fechaFin"]).format("DD-MM-YYYY")
+
+      return {
+        id: elem["ventanaAtencionBaseId"],
+        title: `Horario: ${startHour}:${startMinutes} - ${endHour}:${endMinutes}`,
+        description: `${startDate} - ${endDate}`,
+        color: ColorsEnum[i]
+      }
+    });
+
+    list_base_attention_windows.push({
+      id: "ALL",
+      title: "Todos los horarios",
+      description: "Filtrar por todos los horarios disponibles",
+    })
+
+    setListOfColors(list_base_attention_windows.map((elem:any)=>({
+      ventanaAtencionBaseId: elem["id"],
+      color: elem["color"]
+    })))(dispatch)
+    setSelectedBaseAttentionWindow({
+      id: "ALL",
+      title: "Todos los horarios",
+      description: "Filtrar por todos los horarios disponibles",
+    })
+
+    setListOfBaseAttentionWindows(list_base_attention_windows);
+    getAttentionWindows(selectedLocality.id, "LOCALITY")(dispatch);
+  }
   
   useMemo(() => {
     if (selectedLocality.id > 0) {
-      getAttentionWindows(selectedLocality.id, "LOCALITY")(dispatch);
+      setSelectedBaseAttentionWindow({
+        id: "",
+        title: "",
+        description: "",
+      })
+      activeLocality(selectedLocality)(dispatch);
+      getBaseAttentionWindowsByLocality(selectedLocality.id)(dispatch);
       //setTimeout(() => {
       //  router.replace(`/schedule/configuration?service=${selectedLocality.id}`)
       //}, 0);
@@ -60,9 +128,40 @@ export default function Navigator() {
   }, [selectedLocality]);
 
   useMemo(() => {
-    if (localitiesSuccessful) handleFormatList();
+    if (localitiesSuccessful && localities.length > 0) {
+      handleFormatList();
+      let localityFinded = {
+        id: 0,
+        name: "",
+        description: "",
+        type: "LOCALITY",
+      }
+
+      if (params.get("locality")) {
+        let id = params.get("locality")?.toString();
+        localityFinded = [...localities].find((elem: any) => elem["id"] === parseInt(id!));
+        if (localityFinded) localityFinded = localityFinded
+      }else{
+        localityFinded = [...localities][0];
+      }
+      activeLocality({
+        id: localityFinded["id"],
+        title: localityFinded["name"],
+        description: localityFinded["description"],
+        type: "LOCALITY",
+      })(dispatch);
+      setSelectedLocality({
+        id: localityFinded["id"],
+        title: localityFinded["name"],
+        description: localityFinded["description"]
+      })
+    }
+  }, [params, localities]);
+
+  useMemo(() => {
+    if (baseAttentionWindowsSuccessful) handleFormatListAttentionWindows();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [localitiesSuccessful]);
+  }, [baseAttentionWindowsLoading]);
 
   useMemo(() => {
     if (loadedUser){
@@ -82,7 +181,7 @@ export default function Navigator() {
           <Lucide icon="Plus" className="w-5 h-5 mr-2" />Nueva venta de atención
         </Button>
       </div>
-      <div className="w-full flex flex-row justify-center flex-wrap lg:justify-between items-center gap-2 h-full">
+      <div className="w-full flex flex-row justify-center flex-wrap lg:justify-start items-center gap-2 h-full">
         {(localities && ([...(localities as any[])].length > 0)) && <>
           <div className="w-full flex lg:w-[25%] lg:h-full">
             <SpecialSelect
@@ -98,6 +197,24 @@ export default function Navigator() {
             />
           </div>
         </>}
+        {((baseAttentionWindowsSuccessful && ([...(baseAttentionWindows as any[])].length > 0)) && (localities && ([...(localities as any[])].length > 0))) && <div className="w-full flex lg:w-[25%] lg:h-full">
+          <SpecialSelectSchedule
+            emptySelectedValue={{
+              title: "Horario",
+              description: "Selecciona un horario de la lista",
+            }}
+            customClick={(value: any) => {
+              setSelectedBaseAttentionWindow(value)
+              if(value["id"] === "ALL"){
+                getAttentionWindows(selectedLocality["id"], "LOCALITY")(dispatch);
+              }else{
+                getAttentionWindows(value["id"])(dispatch);
+              }
+            }}
+            selectedItem={selectedBaseAttentionWindow}
+            list={listOfBaseAttentionWindows}
+          />
+        </div>}
       </div>
     </div>
   );
