@@ -123,6 +123,16 @@ export const ScheduleReducer = (state: any, action: any) => {
           error: null,
         },
       };
+    case 'CHANGE_LIST_OF_COLORS':
+      return {
+        ...state,
+        listOfColors: {
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
     case 'GET_USER_SCHEDULE_SUCCESSFUL':
       return {
         ...state,
@@ -194,6 +204,39 @@ export const ScheduleReducer = (state: any, action: any) => {
         ...state,
         getAttentionWindows: {
           ...state.getAttentionWindows,
+          data: null,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
+    case 'GET_BASE_ATTENTION_WINDOWS_BY_LOCALITY_LOADING':
+      return {
+        ...state,
+        getBaseAttentionWindowsByLocality: {
+          ...state.getBaseAttentionWindowsByLocality,
+          data: null,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'GET_BASE_ATTENTION_WINDOWS_BY_LOCALITY_SUCCESSFUL':
+      return {
+        ...state,
+        getBaseAttentionWindowsByLocality: {
+          ...state.getBaseAttentionWindowsByLocality,
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'GET_BASE_ATTENTION_WINDOWS_BY_LOCALITY_ERROR':
+      return {
+        ...state,
+        getBaseAttentionWindowsByLocality: {
+          ...state.getBaseAttentionWindowsByLocality,
           data: null,
           loading: false,
           successful: false,
