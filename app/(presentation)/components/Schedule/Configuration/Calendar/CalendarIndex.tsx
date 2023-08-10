@@ -78,9 +78,12 @@ export default function CalendarIndex() {
     let start = moment(elem["fechaInicio"]).utc();
     let end = moment(elem["fechaFin"]).utc();
     
-    let color = listOfColors ? 
-      listOfColors.find((value:any)=> value["ventanaAtencionBaseId"] === elem["ventanaAtencionBaseId"])["color"]
-      : "#216AD9"
+    let color = "#216AD9"
+
+    if(listOfColors){
+      let findedColor = listOfColors.find((value:any)=> value["ventanaAtencionBaseId"] === elem["ventanaAtencionBaseId"])
+      color = findedColor !== undefined ? findedColor["color"] : "#216AD9"
+    }
 
     object = {
       title: "Horario",
