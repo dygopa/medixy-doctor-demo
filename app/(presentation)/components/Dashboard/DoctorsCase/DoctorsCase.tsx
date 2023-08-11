@@ -23,6 +23,8 @@ function DoctorsCase({ account }: { account: IUser }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
 
+  console.log(account)
+
   return (
     <div className="w-full flex flex-col justify-start items-center gap-1">
       <div className="w-full h-auto relative lg:flex justify-between  gap-7">
@@ -33,11 +35,11 @@ function DoctorsCase({ account }: { account: IUser }) {
               Bienvenido a Prosit,<br/>
               { account.sex === 1 ?
                 <b className="font-bold capitalize">
-                  Dra. {account.names} {account.firstName}
+                  Dra. {account.names} {account.firstName} {account.lastName}
                 </b>
                 :
                 <b className="font-bold capitalize">
-                  Dr. {account.names} {account.firstName}
+                  Dr. {account.names} {account.firstName} {account.lastName}
                 </b>
               }
             </p>
