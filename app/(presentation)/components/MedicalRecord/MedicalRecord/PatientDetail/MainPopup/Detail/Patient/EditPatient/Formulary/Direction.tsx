@@ -1,3 +1,4 @@
+import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import AddressAutocomplete from "(presentation)/components/core/BaseComponents/Autocomplete/AddressAutocomplete/AddressAutocomplete";
 import AutocompleteInputLocations from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputLocations/AutocompleteInputLocations";
 import AutocompleteInputMunicipalities from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMunicipalities/AutocompleteInputMunicipalities";
@@ -44,6 +45,7 @@ interface IContactProps {
     direction: string;
     street: string;
     pictureUrl: string;
+    postalCode: string;
   };
   setValues: Dispatch<
     SetStateAction<{
@@ -67,6 +69,7 @@ interface IContactProps {
       direction: string;
       street: string;
       pictureUrl: string;
+      postalCode: string;
     }>
   >;
   errors: {
@@ -81,6 +84,7 @@ interface IContactProps {
     email: string;
     phone: string;
     federalEntity: string;
+    postalCode: string;
   };
   setErrors: Dispatch<
     SetStateAction<{
@@ -95,6 +99,7 @@ interface IContactProps {
       email: string;
       phone: string;
       federalEntity: string;
+      postalCode: string;
     }>
   >;
 }
@@ -104,6 +109,22 @@ export default function Contact({
   errors,
   setErrors,
 }: IContactProps) {
+
+  const handlePostalCode = (value: string) => {
+    setValues({ ...values, postalCode: value });
+    if (value.length > 0 && !VALIDATE_NUMBERS(value)) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          postalCode: "El codigo postal solo lleva numeros",
+        };
+      });
+      return true;
+    }
+    setErrors({ ...errors, postalCode: "" });
+    return false;
+  };
+
   return (
     <div className="w-full bg-white  rounded-md h-fit mt-4">
       <div className="w-full rounded-md p-5 flex">
@@ -125,19 +146,35 @@ export default function Contact({
             />
             <div className="my-3 md:my-0 md:flex md:flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Calle
+                Código postal
               </p>
               <FormInput
                 type={"text"}
-                placeholder="Calle"
+                placeholder="Código postal"
                 min={0}
-                value={values.street}
+                value={values.postalCode}
                 className="form-control w-full"
-                onChange={(e: any) => {
-                  setValues({ ...values, street: e.target.value });
-                }}
+                onChange={(e) => handlePostalCode(e.target.value)}
               />
+              {errors.postalCode.length > 0 && (
+                <span className="text-red-500">{errors.postalCode}</span>
+              )}
             </div>
+          </div>
+          <div className="w-full">
+            <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+              Calle
+            </p>
+            <FormInput
+              type={"text"}
+              placeholder="Calle"
+              min={0}
+              value={values.street}
+              className="form-control w-full"
+              onChange={(e: any) => {
+                setValues({ ...values, street: e.target.value });
+              }}
+            />
           </div>
         </div>
       </div>

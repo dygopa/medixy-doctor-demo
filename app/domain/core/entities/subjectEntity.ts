@@ -22,6 +22,7 @@ export interface ISubject {
     isPatient: boolean;
     birthDate: string | null;
     createdOn: Date;
+    postalCode: string | null;
     updatedOn: Date | null;
     deletedOn: Date | null;
 }
