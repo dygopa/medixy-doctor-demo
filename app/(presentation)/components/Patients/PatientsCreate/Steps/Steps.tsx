@@ -48,6 +48,7 @@ export default function Steps() {
     city: "",
     direction: "",
     street: "",
+    postalCode: "",
   });
 
   const [errors, setErrors] = useState({
@@ -62,6 +63,7 @@ export default function Steps() {
     email: "",
     phone: "",
     federalEntity: "",
+    postalCode: "",
   });
 
   const validForm = () => {
@@ -84,6 +86,8 @@ export default function Steps() {
     if (errors.email.length > 0) errorsFieldsCount++;
 
     if (errors.phone.length > 0) errorsFieldsCount++;
+
+    if (errors.postalCode.length > 0) errorsFieldsCount++;
 
     return errorsFieldsCount;
   };
@@ -117,6 +121,7 @@ export default function Steps() {
       createdOn: new Date(),
       updatedOn: new Date(),
       deletedOn: null,
+      postalCode: values.postalCode,
     };
 
     createSubject(patient)(dispatch);

@@ -60,6 +60,7 @@ interface IBasicDataProps {
     city: string;
     direction: string;
     street: string;
+    postalCode: string;
   };
   setValues: Dispatch<
     SetStateAction<{
@@ -81,6 +82,7 @@ interface IBasicDataProps {
       city: string;
       direction: string;
       street: string;
+      postalCode: string;
     }>
   >;
   errors: {
@@ -95,6 +97,7 @@ interface IBasicDataProps {
     email: string;
     phone: string;
     federalEntity: string;
+    postalCode: string;
   };
   setErrors: Dispatch<
     SetStateAction<{
@@ -109,6 +112,7 @@ interface IBasicDataProps {
       email: string;
       phone: string;
       federalEntity: string;
+      postalCode: string;
     }>
   >;
 }
@@ -179,6 +183,21 @@ export default function Formulary({
       return true;
     }
     setErrors({ ...errors, motherlastname: "" });
+    return false;
+  };
+
+  const handlePostalCode = (value: string) => {
+    setValues({ ...values, postalCode: value });
+    if (value.length > 0 && !VALIDATE_NUMBERS(value)) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          postalCode: "El codigo postal solo lleva numeros",
+        };
+      });
+      return true;
+    }
+    setErrors({ ...errors, postalCode: "" });
     return false;
   };
 
@@ -383,18 +402,31 @@ export default function Formulary({
           locationId={values.countryLocation}
         />
         <div className="input-group md:flex md:flex-col justify-between items-start relative gap-1">
-          <p className="input-label mb-3">Calle</p>
+          <p className="input-label py-2">Código postal</p>
           <FormInput
             type={"text"}
-            placeholder="Calle"
-            min={0}
-            value={values.street}
+            placeholder="Código postal"
+            value={values.postalCode}
             className="form-control w-full"
-            onChange={(e: any) => {
-              setValues({ ...values, street: e.target.value });
-            }}
+            onChange={(e) => handlePostalCode(e.target.value)}
           />
+          {errors.postalCode.length > 0 && (
+            <span className="text-red-500">{errors.postalCode}</span>
+          )}
         </div>
+      </div>
+      <div className="input-group w-full">
+        <p className="input-label py-2">Calle</p>
+        <FormInput
+          type={"text"}
+          placeholder="Calle"
+          min={0}
+          value={values.street}
+          className="form-control w-full"
+          onChange={(e: any) => {
+            setValues({ ...values, street: e.target.value });
+          }}
+        />
       </div>
     </div>
   );
