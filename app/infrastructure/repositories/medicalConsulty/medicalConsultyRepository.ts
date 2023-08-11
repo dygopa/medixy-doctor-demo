@@ -272,6 +272,8 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
       
                   if (diagnose.id >= 0) medicalConsultyMap?.diagnose?.push(diagnose);
                 });
+
+                if (medicalConsultyMap.diagnose && medicalConsultyMap.diagnose.length > 0) medicalConsultyMap.diagnose = medicalConsultyMap.diagnose.sort((a: any, b: any) => b.isPrincipal - a.isPrincipal);
               }
 
               if (data.RegistrosMedicos?.length > 0) {

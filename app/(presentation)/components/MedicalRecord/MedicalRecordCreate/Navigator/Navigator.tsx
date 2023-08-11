@@ -482,6 +482,7 @@ export default function Navigator({
         description: cie10.description4,
         cie10Id: cie10.id,
         medicalConsultyId: 0,
+        isPrincipal: cie10.isPrincipal,
       };
       diagnoses.push(diagnosis);
     });

@@ -1,5 +1,6 @@
 import { IDiagnosis } from "domain/core/entities/diagnosis";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import { AiFillStar } from "react-icons/ai";
 
 interface IDiagnosisProps {
   medicalConsulty: IMedicalConsulty;
@@ -15,10 +16,21 @@ export default function Diagnosis({ medicalConsulty }: IDiagnosisProps) {
       <div className="mb-3">
         {medicalConsulty.diagnose && medicalConsulty.diagnose.length > 0 ? (
           medicalConsulty.diagnose.map((diagnose: IDiagnosis) => (
-            <div key={diagnose.id} className="mb-2">
-              <h1 className="text-slate-900 font-bold text-lg">
-                {diagnose.description}
-              </h1>
+            <div key={diagnose.id} className="mb-2 flex items-center">
+              <div className="mr-2">
+                <h1 className="text-slate-900 font-bold text-lg">
+                  {diagnose.description}
+                </h1>
+              </div>
+
+              {diagnose.isPrincipal && (
+                <div>
+                  <AiFillStar
+                    className="text-2xl cursor-pointer text-yellow-500"
+                    title="Principal"
+                  />
+                </div>
+              )}
             </div>
           ))
         ) : (

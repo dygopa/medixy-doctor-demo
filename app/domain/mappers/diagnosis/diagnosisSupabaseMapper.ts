@@ -6,6 +6,7 @@ export function diagnosisSupabaseToMap(data: any): IDiagnosis {
       description: data?.descripcion ?? "",
       cie10Id: data?.cie10Id ?? 0,
       medicalConsultyId: data?.consultaMedicaId ?? 0,
+      isPrincipal: data?.esPrincipal ?? false
     } as IDiagnosis;
   }
 
@@ -14,6 +15,7 @@ export function fromDiagnosisSupabaseDocumentData (diagnosis: IDiagnosis) {
         descripcion: diagnosis.description,
         cie10Id: diagnosis.cie10Id,
         consultaMedicaId: diagnosis.medicalConsultyId,
+        esPrincipal: diagnosis.isPrincipal,
     } as any;
 
     return documentData;
