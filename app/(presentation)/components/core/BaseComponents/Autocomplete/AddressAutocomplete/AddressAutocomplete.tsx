@@ -16,6 +16,7 @@ function AddressAutocomplete({
   municipalityCatalogId,
   locationId,
   isColumn = false,
+  isCreatePatient = false,
 }: {
   formData: any;
   setFormData: SetStateAction<any>;
@@ -24,6 +25,7 @@ function AddressAutocomplete({
   municipalityCatalogId?: number | null;
   locationId?: number | null;
   isColumn?: boolean;
+  isCreatePatient?: boolean;
 }) {
   const [isLoading, setIsLoading] = useState(true);
   const [addressData, setAddressData] = useState({
@@ -62,7 +64,9 @@ function AddressAutocomplete({
             : "justify-between items-center gap-3",
         ])}
       >
-        <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+        <p className={twMerge([
+          isCreatePatient ? "input-label py-2" : "text-[13px] w-fit text-slate-900 font-medium mb-2",
+        ])}>
           Estado
           <span className="text-primary font-bold">*</span>
         </p>
@@ -99,7 +103,9 @@ function AddressAutocomplete({
             : "justify-between items-center gap-3",
         ])}
       >
-        <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+        <p className={twMerge([
+          isCreatePatient ? "input-label py-2" : "text-[13px] w-fit text-slate-900 font-medium mb-2",
+        ])}>
           Municipio
         </p>
         <div className={twMerge([isColumn ? "w-full" : "lg:w-[70%]"])}>
@@ -135,7 +141,9 @@ function AddressAutocomplete({
             : "justify-between items-center gap-3",
         ])}
       >
-        <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+        <p className={twMerge([
+          isCreatePatient ? "input-label py-2" : "text-[13px] w-fit text-slate-900 font-medium mb-2",
+        ])}>
           Colonia
         </p>
         <div className={twMerge([isColumn ? "w-full" : "lg:w-[70%]"])}>
