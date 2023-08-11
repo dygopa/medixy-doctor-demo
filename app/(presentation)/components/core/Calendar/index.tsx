@@ -30,6 +30,7 @@ function Calendar({
 
   return (
     <FullCalendar
+      scrollTime={"08:00:00"}
       viewDidMount={(mountArg: ViewMountArg) =>
         handleChangeView(mountArg.view.type)
       }
