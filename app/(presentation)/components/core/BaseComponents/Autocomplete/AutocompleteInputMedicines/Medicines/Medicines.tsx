@@ -36,7 +36,9 @@ export default function Medicines({
       medicines.data.forEach((medicine) => {
         const value: IAutocompleteValue = {
           id: medicine.id ?? 0,
-          name: medicine.name,
+          name: `${medicine.name} ${
+            medicine.company ? `- ${medicine.company}` : ""
+          }`,
         };
 
         values.push(value);

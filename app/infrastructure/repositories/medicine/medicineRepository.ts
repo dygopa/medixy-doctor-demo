@@ -23,7 +23,7 @@ export class MedicineRepository implements IMedicineRepository {
     searchQuery?: string | null; 
   }): Promise<IGetMedicinesResponse | MedicineFailure> {
     try {
-      let URL = VIDAL_API_DOMAIN + "/vmps?";
+      let URL = VIDAL_API_DOMAIN + "/packages?";
 
       if (obj.searchQuery) {
         URL = URL + `q=${obj.searchQuery.toLowerCase()}&`;
@@ -60,11 +60,11 @@ export class MedicineRepository implements IMedicineRepository {
       const medicines: IMedicine[] = [];
 
       if (json.feed.entry && json.feed.entry.length > 0) {
-        json.feed.entry.forEach((entry: any) => {
+        await Promise.all((json.feed.entry.map((entry: any) => {
           const medicine: IMedicine = medicineApiToMap(entry);
 
           if (medicine.id > 0) medicines.push(medicine);
-        });
+        })))
       }
 
       const response: IGetMedicinesResponse = {
