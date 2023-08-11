@@ -38,6 +38,7 @@ import AutocompleteInputStates from "(presentation)/components/core/BaseComponen
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import AutocompleteInputMunicipalities from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMunicipalities/AutocompleteInputMunicipalities";
 import AutocompleteInputLocations from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputLocations/AutocompleteInputLocations";
+import AddressAutocomplete from "(presentation)/components/core/BaseComponents/Autocomplete/AddressAutocomplete/AddressAutocomplete";
 
 interface IBasicDataProps {
   values: {
@@ -370,47 +371,30 @@ export default function Formulary({
         />
       </div>
 
-      <div className="md:flex gap-3 w-full">
-     
-          
-        <div className="input-group mt-3 md:mt-0 md:w-[50%]">
-          <p className="input-label py-2">Ciudad</p>
+      <div className="w-full md:grid md:grid-cols-2 grid-cols-1 justify-start items-center gap-3">
+        <AddressAutocomplete
+          formData={values}
+          setFormData={setValues}
+          isColumn
+          isCreatePatient
+          federalEntityId={values.federalEntity}
+          municipalityId={values.municipality}
+          municipalityCatalogId={values.municipalityCatalogId}
+          locationId={values.countryLocation}
+        />
+        <div className="input-group md:flex md:flex-col justify-between items-start relative gap-1">
+          <p className="input-label mb-3">Calle</p>
           <FormInput
             type={"text"}
-            placeholder="Ciudad"
+            placeholder="Calle"
             min={0}
-            value={values.city}
+            value={values.street}
             className="form-control w-full"
             onChange={(e: any) => {
-              setValues({ ...values, city: e.target.value });
+              setValues({ ...values, street: e.target.value });
             }}
           />
         </div>
-      </div>
-      <div className="input-group w-full">
-        <p className="input-label py-2">Calle</p>
-        <FormInput
-          type={"text"}
-          placeholder="Calle"
-          min={0}
-          value={values.street}
-          className="form-control w-full"
-          onChange={(e: any) => {
-            setValues({ ...values, street: e.target.value });
-          }}
-        />
-      </div>
-      <div className="input-group w-full">
-        <p className="input-label py-2">Dirección</p>
-        <FormInput
-          type={"text"}
-          value={values.direction}
-          placeholder="Dirección completa de su residencia"
-          className="form-control w-full"
-          onChange={(e: any) => {
-            setValues({ ...values, direction: e.target.value });
-          }}
-        />
       </div>
     </div>
   );
