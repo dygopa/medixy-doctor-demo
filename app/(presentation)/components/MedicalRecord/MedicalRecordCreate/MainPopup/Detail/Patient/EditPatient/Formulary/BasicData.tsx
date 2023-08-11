@@ -47,6 +47,7 @@ interface IBasicDataProps {
     direction: string;
     street: string;
     pictureUrl: string;
+    postalCode: string;
   };
   setValues: Dispatch<
     SetStateAction<{
@@ -70,6 +71,7 @@ interface IBasicDataProps {
       direction: string;
       street: string;
       pictureUrl: string;
+      postalCode: string;
     }>
   >;
   errors: {
@@ -84,6 +86,7 @@ interface IBasicDataProps {
     email: string;
     phone: string;
     federalEntity: string;
+    postalCode: string;
   };
   setErrors: Dispatch<
     SetStateAction<{
@@ -98,6 +101,7 @@ interface IBasicDataProps {
       email: string;
       phone: string;
       federalEntity: string;
+      postalCode: string;
     }>
   >;
 }

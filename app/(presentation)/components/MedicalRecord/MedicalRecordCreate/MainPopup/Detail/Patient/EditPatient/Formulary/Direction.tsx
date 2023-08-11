@@ -1,3 +1,4 @@
+import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import AddressAutocomplete from "(presentation)/components/core/BaseComponents/Autocomplete/AddressAutocomplete/AddressAutocomplete";
 import AutocompleteInputLocations from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputLocations/AutocompleteInputLocations";
 import AutocompleteInputMunicipalities from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMunicipalities/AutocompleteInputMunicipalities";
@@ -44,6 +45,7 @@ interface IContactProps {
     direction: string;
     street: string;
     pictureUrl: string;
+    postalCode: string;
   };
   setValues: Dispatch<
     SetStateAction<{
@@ -67,6 +69,7 @@ interface IContactProps {
       direction: string;
       street: string;
       pictureUrl: string;
+      postalCode: string;
     }>
   >;
   errors: {
@@ -81,6 +84,7 @@ interface IContactProps {
     email: string;
     phone: string;
     federalEntity: string;
+    postalCode: string;
   };
   setErrors: Dispatch<
     SetStateAction<{
@@ -95,6 +99,7 @@ interface IContactProps {
       email: string;
       phone: string;
       federalEntity: string;
+      postalCode: string;
     }>
   >;
 }
@@ -107,6 +112,21 @@ export default function Contact({
   const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
     MedicalRecordCreateContext
   );
+
+  const handlePostalCode = (value: string) => {
+    setValues({ ...values, postalCode: value });
+    if (value.length > 0 && !VALIDATE_NUMBERS(value)) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          postalCode: "El codigo postal solo lleva numeros",
+        };
+      });
+      return true;
+    }
+    setErrors({ ...errors, postalCode: "" });
+    return false;
+  };
 
   return (
     <div className="w-full bg-white  rounded-md h-fit mt-4">
@@ -129,6 +149,23 @@ export default function Contact({
             />
             <div className="my-3 md:my-0 md:flex md:flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                Código postal
+              </p>
+              <FormInput
+                type={"text"}
+                placeholder="Código postal"
+                min={0}
+                value={values.postalCode}
+                className="form-control w-full"
+                onChange={(e) => handlePostalCode(e.target.value)}
+              />
+              {errors.postalCode.length > 0 && (
+                <span className="text-red-500">{errors.postalCode}</span>
+              )}
+            </div>
+            </div>
+            <div className="w-full">
+              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                 Calle
               </p>
               <FormInput
@@ -141,7 +178,6 @@ export default function Contact({
                   setValues({ ...values, street: e.target.value });
                 }}
               />
-            </div>
           </div>
         </div>
       </div>

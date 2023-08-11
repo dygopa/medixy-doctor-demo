@@ -47,6 +47,7 @@ export default function Formulary() {
     direction: "",
     street: "",
     pictureUrl: "",
+    postalCode: "",
   });
 
   const [errors, setErrors] = useState({
@@ -61,6 +62,7 @@ export default function Formulary() {
     email: "",
     phone: "",
     federalEntity: "",
+    postalCode: "",
   });
 
   const setInitialValues = () => {
@@ -85,6 +87,7 @@ export default function Formulary() {
       street: subject?.street ?? "",
       direction: subject?.address ?? "",
       pictureUrl: subject?.pictureUrl ?? "",
+      postalCode: subject?.postalCode ?? "",
     });
   };
 
@@ -117,6 +120,8 @@ export default function Formulary() {
     if (errors.phone.length > 0) errorsFieldsCount++;
 
     if (errors.federalEntity.length > 0) errorsFieldsCount++;
+
+    if (errors.postalCode.length > 0) errorsFieldsCount++;
 
     return errorsFieldsCount;
   };
@@ -153,6 +158,7 @@ export default function Formulary() {
       createdOn: subject?.createdOn ?? new Date(),
       updatedOn: new Date(),
       deletedOn: null,
+      postalCode: values.postalCode,
     };
 
     editSubject(subjectEdit)(dispatch);

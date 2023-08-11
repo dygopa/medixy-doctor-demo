@@ -186,6 +186,8 @@ export class SubjectRepository implements ISubjectRepository {
 
         if (res.data && res.data.length > 0) subject = subjectSupabaseToMap(res.data[0]);
 
+        console.log(subject);
+
         return subject;
       } catch (error) { 
         const exception = error as any;

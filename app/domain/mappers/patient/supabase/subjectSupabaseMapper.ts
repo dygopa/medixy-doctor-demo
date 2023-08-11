@@ -25,6 +25,7 @@ export function subjectSupabaseToMap(data: any): ISubject {
     isPatient: data?.esPaciente ?? "",
     birthDate: data?.fechaNacimiento ?? new Date(),
     createdOn: data?.fechaRegistro ? new Date(data.fechaRegistro) : new Date(),
+    postalCode: data?.codigoPostal ?? "",
     //updatedOn: data?.fechaActualizacion ? new Date(data.fechaActualizacion) : new Date(),
     //deletedOn: data?.fechaEliminacion ? new Date(data.fechaEliminacion) : new Date(),
   } as ISubject;
@@ -80,6 +81,7 @@ export function fromSubjectSupabaseDocumentData(subject: ISubject): any {
     avatar: subject.pictureUrl === "" ? null: subject.pictureUrl,
     fechaNacimiento: subject.birthDate ? new Date(subject.birthDate) : null,
     fechaRegistro: subject.createdOn,
+    codigoPostal: subject.postalCode === "" ? null : subject.postalCode,
     //fechaActualizacion: subject.updatedOn,
     //fechaEliminado: subject.deletedOn,
   } as any;
