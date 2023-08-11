@@ -67,6 +67,7 @@ export default function AutocompleteInputMunicipalities({
 
   return (
     <AutocompleteInput
+      showCreateItem={false}
       disabled={disabled}
       items={getAutocompleteValues()}
       defaultValue={

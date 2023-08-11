@@ -24,6 +24,7 @@ interface IAutocompleteInputProps {
   onChange?: (item: string) => void | null;
   onlyItemsAdd?: boolean;
   showClearButton?: boolean;
+  showCreateItem?: boolean;
   activeSearch?: boolean;
 }
 
@@ -40,6 +41,7 @@ export default function AutocompleteInput({
   onChange,
   onlyItemsAdd = false,
   showClearButton = true,
+  showCreateItem,
   activeSearch = true,
 }: IAutocompleteInputProps) {
   const [field, setField] = useState("");
@@ -97,12 +99,8 @@ export default function AutocompleteInput({
       return;
     }
 
-    const itemsToShowList: IAutocompleteValue[] = [];
-
-    items.forEach((item: IAutocompleteValue) => {
-      if (item.name.toLowerCase().includes(query.toLowerCase())) {
-        itemsToShowList.push(item);
-      }
+    let itemsToShowList: IAutocompleteValue[] = items.filter((item: IAutocompleteValue)=>{ 
+      item.name.toLowerCase().includes(query.toLowerCase()) 
     });
 
     setItemsList(itemsToShowList);
@@ -191,7 +189,7 @@ export default function AutocompleteInput({
       <div
         className={twMerge([
           "absolute w-full bg-white shadow-md py-2 z-50 max-h-[140px] overflow-y-auto",
-          showDropdown && itemsList.length > 0 ? "visible" : "invisible",
+          showDropdown ? "visible" : "invisible",
         ])}
       >
         {itemsList.map((itemShow: IAutocompleteValue) => (
@@ -214,6 +212,21 @@ export default function AutocompleteInput({
             </div>
           </button>
         ))}
+        {(field.length > 0 && showCreateItem) && <button
+          type="button"
+          className="py-2 hover:bg-gray-500 hover:bg-opacity-10 w-full text-left"
+          onClick={()=>{
+            onClickItem({
+              name: field,
+              id: 0
+            })
+            setShowDropdown(false) 
+          }}
+        >
+          <div className="flex justify-between px-2">
+            <p className="text-slate-900 text-md">Crear: <b>{field}</b></p>
+          </div>
+        </button>}
       </div>
     </div>
   );

@@ -70,6 +70,7 @@ export default function AutocompleteInputLocations({
 
   return (
     <AutocompleteInput
+      showCreateItem={false}
       disabled={disabled}
       items={getAutocompleteValues()}
       defaultValue={

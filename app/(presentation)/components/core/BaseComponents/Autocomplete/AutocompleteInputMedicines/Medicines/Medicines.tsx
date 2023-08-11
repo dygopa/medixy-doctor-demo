@@ -59,6 +59,7 @@ export default function Medicines({
 
   return (
     <AutocompleteInput
+      showCreateItem={true}
       disabled={disabled}
       items={getAutocompleteValues()}
       onClick={onClick}
