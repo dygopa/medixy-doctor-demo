@@ -12,6 +12,7 @@ import {
 import { IService } from "domain/core/entities/serviceEntity";
 import Table from "(presentation)/components/core/BaseComponents/Table";
 import { useRouter } from "next/navigation";
+import { twMerge } from "tailwind-merge";
 
 export default function TableServices({ user }: { user: IUser }) {
   const { state, actions, dispatch } =
@@ -133,9 +134,14 @@ export default function TableServices({ user }: { user: IUser }) {
                   <Table.Td>
                     <p className="border-b-0 whitespace-nowrap text-sm font-medium text-slate-900">
                       <div className="w-full flex justify-start items-center gap-2">
-                        <span className="rounded-full w-[12px] h-[12px] bg-success"></span>
-                        <p className="text-sm font-medium text-slate-900">
-                          Activo
+                        <span className={twMerge([
+                          "rounded-full w-[12px] h-[12px]",
+                          service.status === 1 ? "bg-success" : "bg-warning"
+                        ])}></span>
+                        <p className={twMerge([
+                          "text-sm font-medium text-slate-900"
+                        ])}>
+                          {service.status === 1 ? "Activo" : "Borrador"}
                         </p>
                       </div>
                     </p>

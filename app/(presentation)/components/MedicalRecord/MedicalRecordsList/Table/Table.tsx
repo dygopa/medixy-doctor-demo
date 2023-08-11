@@ -125,7 +125,7 @@ export default function PatientsTable() {
                     </Table.Td>
 
                     <Table.Td
-                      className="first:rounded-l-md last:rounded-r-md w-40 bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5"
+                      className="first:rounded-l-md last:rounded-r-md max-w-[10px] bg-white border-b-0 dark:bg-darkmode-600 shadow-[20px_3px_20px_#0000000b] py-5 text-ellipsis whitespace-nowrap overflow-hidden"
                       onClick={() =>
                         router.push(
                           MedicalRecordRoutesEnum.MedicalRecord +
