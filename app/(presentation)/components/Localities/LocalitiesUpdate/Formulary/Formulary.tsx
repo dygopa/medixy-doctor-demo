@@ -334,6 +334,7 @@ export default function Formulary({
                   placeholder="Precio"
                   decimalScale={2}
                   thousandSeparator="."
+                  defaultValue={isInList && data.base_price}
                   decimalSeparator=","
                   prefix={""}
                   onValueChange={(values, sourceInfo) =>

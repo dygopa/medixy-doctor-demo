@@ -227,6 +227,7 @@ export default function WithoutSteps({
                   disabled={!isInList}
                   placeholder="Precio"
                   decimalScale={2}
+                  defaultValue={isInList && data.base_price}
                   thousandSeparator="."
                   decimalSeparator=","
                   prefix={""}
