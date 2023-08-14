@@ -22,13 +22,13 @@ export default function Navigation() {
       <div>
         <Link
           href={DashboardRoutesEnum.Dashboard}
-          className="sidebar-logo flex justify-center pt-3 pb-3"
+          className="sidebar-logo flex justify-center pt-2 pb-2"
           title="Página de inicio de Prosit"
         >
           <Image
             src="/prosit-blanco1.png"
-            width={110}
-            height={110}
+            width={130}
+            height={130}
             alt="App logo white"
             priority
           />
