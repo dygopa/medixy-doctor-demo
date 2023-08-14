@@ -10,7 +10,7 @@ export default function Head() {
         />
         <meta httpEquiv="Content-Language" content="es" />
         <link rel="manifest" href="/manifest.json" />
-        <link rel="shortcut icon" href="/favicon.png" type="image/x-icon" />
+        <link rel="shortcut icon" href="/favicon-new.png" type="image/x-icon" />
         <link
           rel="apple-touch-icon"
           sizes="180x180"
@@ -20,13 +20,13 @@ export default function Head() {
           rel="icon"
           type="image/png"
           sizes="32x32"
-          href="/favicon-32x32.png"
+          href="/favicon-new-32x32.png"
         />
         <link
           rel="icon"
           type="image/png"
           sizes="16x16"
-          href="/favicon-16x16.png"
+          href="/favicon-new-16x16.png"
         />
         <meta name="theme-color" content="#14D4A5" />
       </>
