@@ -51,6 +51,7 @@ export default function CIE10({
 
   return (
     <AutocompleteInput
+      showCreateItem={false}
       items={getAutocompleteValues()}
       placeholder={placeholder}
       onClick={onClick}

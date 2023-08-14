@@ -3,4 +3,5 @@ export interface IDiagnosis {
     description: string;
     cie10Id: number;
     medicalConsultyId: number;
+    isPrincipal: boolean;
 }

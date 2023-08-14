@@ -4,5 +4,6 @@ export interface ICIE10 {
     description3: string;
     code4: string;
     description4: string;
+    isPrincipal: boolean;
 }
 

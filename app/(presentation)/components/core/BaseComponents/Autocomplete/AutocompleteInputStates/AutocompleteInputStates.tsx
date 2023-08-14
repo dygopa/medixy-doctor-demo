@@ -60,6 +60,7 @@ export default function AutocompleteInputStates({
 
   return (
     <AutocompleteInput
+      showCreateItem={false}
       items={getAutocompleteValues()}
       defaultValue={
         federalEntity && federalEntity.nameEntity

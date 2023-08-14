@@ -1,6 +1,7 @@
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { ICIE10 } from "domain/core/entities/cie10Entity";
 import { Dispatch, SetStateAction } from "react";
+import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 
 type valuesTypes = {
   diagnose: ICIE10[];
@@ -18,6 +19,29 @@ export default function DiagnoseMobile({
   values,
   setValues,
 }: IDiagnoseMobileProps) {
+  const onSetPrincipalDiagnose = (cie10Item: ICIE10) => {
+    const newState = values.diagnose.map((obj) => {
+      if (obj.id === cie10Item.id) {
+        return { ...obj, isPrincipal: true };
+      }
+
+      return { ...obj, isPrincipal: false };
+    });
+
+    setValues({ ...values, diagnose: newState });
+  };
+
+  const onDeleteDiagnose = (cie10Item: ICIE10) => {
+    let newState = values.diagnose.filter(
+      (valueDiagnoseFilter) => valueDiagnoseFilter.id !== cie10Item.id
+    );
+
+    if (cie10Item.isPrincipal && newState.length > 0)
+      newState[0].isPrincipal = true;
+
+    setValues({ ...values, diagnose: newState });
+  };
+
   return (
     <div className="mt-2 overflow-auto intro-x bg-white border rounded-lg p-4 flex flex-col justify-between items-start gap-4">
       <div className="w-full flex justify-between items-center gap-4">
@@ -34,17 +58,31 @@ export default function DiagnoseMobile({
         </div>
       </div>
       <div className="w-full flex">
+        <div className="mr-3">
+          <button
+            type="button"
+            onClick={() => onSetPrincipalDiagnose(cie10)}
+            disabled={cie10.isPrincipal}
+            className="text-center flex justify-center w-full"
+          >
+            {!cie10.isPrincipal ? (
+              <AiOutlineStar
+                className="text-2xl cursor-pointer text-yellow-500"
+                title="Principal"
+              />
+            ) : (
+              <AiFillStar
+                className="text-2xl cursor-pointer text-yellow-500"
+                title="Principal"
+              />
+            )}
+          </button>
+        </div>
+
         <div>
           <button
             type="button"
-            onClick={() => {
-              setValues({
-                ...values,
-                diagnose: values.diagnose.filter(
-                  (valueDiagnoseFilter) => valueDiagnoseFilter.id !== cie10.id
-                ),
-              });
-            }}
+            onClick={() => onDeleteDiagnose(cie10)}
             className="text-center flex justify-center w-full"
           >
             <Lucide icon="Trash2" color="#e11d48" size={25} />

@@ -72,6 +72,7 @@ export default function DiagnosisDetail({
                     description3: "",
                     code4: "",
                     description4: item.name,
+                    isPrincipal: values.diagnose.length === 0 ? true : false,
                   };
 
                   setValues({

@@ -57,6 +57,7 @@ export default function MedicalProfiles({
 
   return (
     <AutocompleteInput
+      showCreateItem={true}
       items={getAutocompleteValues()}
       placeholder={placeholder}
       defaultValue={defaultValue}
