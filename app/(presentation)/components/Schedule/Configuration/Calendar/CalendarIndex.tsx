@@ -28,8 +28,7 @@ export default function CalendarIndex() {
 
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
-  const { getServices, getAttentionWindows, activeLocality } =
-    actions;
+  const { getServices, getAttentionWindows, activeLocality } = actions;
   const { data, loading, successful, error } = state.getAttentionWindows;
   const { successful: successfulWindowCreated, error: errorWindowCreated } =
     state.createWindowAttention;
@@ -43,9 +42,7 @@ export default function CalendarIndex() {
     successful: servicesSuccessful,
     loading: servicesLoading,
   } = state.getServices;
-  const {
-    data: listOfColors
-  } = state.listOfColors;
+  const { data: listOfColors } = state.listOfColors;
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -77,12 +74,15 @@ export default function CalendarIndex() {
 
     let start = moment(elem["fechaInicio"]).utc();
     let end = moment(elem["fechaFin"]).utc();
-    
-    let color = "#216AD9"
 
-    if(listOfColors){
-      let findedColor = listOfColors.find((value:any)=> value["ventanaAtencionBaseId"] === elem["ventanaAtencionBaseId"])
-      color = findedColor !== undefined ? findedColor["color"] : "#216AD9"
+    let color = "#216AD9";
+
+    if (listOfColors) {
+      let findedColor = listOfColors.find(
+        (value: any) =>
+          value["ventanaAtencionBaseId"] === elem["ventanaAtencionBaseId"]
+      );
+      color = findedColor !== undefined ? findedColor["color"] : "#216AD9";
     }
 
     object = {
@@ -177,14 +177,18 @@ export default function CalendarIndex() {
   const handleErrors = () => {
     switch (errorWindowCreated?.code) {
       case scheduleFailuresEnum.localityServicesEmpty:
-        setErrorMessage("Este consultorio no posee servicios para crear ventanas de atención.");
+        setErrorMessage(
+          "Este consultorio no posee servicios para crear ventanas de atención."
+        );
         break;
       default:
-        setErrorMessage("El servidor ha demorado mucho tiempo en responder, Vuelve a intentarlo más tarde.");
+        setErrorMessage(
+          "El servidor ha demorado mucho tiempo en responder, Vuelve a intentarlo más tarde."
+        );
         break;
     }
   };
-  
+
   useMemo(() => {
     if (errorWindowCreated) handleErrors();
     // eslint-disable-next-line react-hooks/exhaustive-deps

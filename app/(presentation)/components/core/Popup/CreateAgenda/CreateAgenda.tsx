@@ -19,6 +19,8 @@ import {
 import SpecialSearch from "(presentation)/components/core/SpecialSearch/SpecialSearch";
 import { IService } from "domain/core/entities/serviceEntity";
 import { ILocality } from "domain/core/entities/localityEntity";
+import AlertComponent from "../../BaseComponents/Alert";
+import Tooltip from "../../BaseComponents/Tooltip/Tooltip";
 
 function CreateAgenda({
   cancelFuntion,
@@ -45,6 +47,7 @@ function CreateAgenda({
     state.getLocalitiesWithServices;
   const { data: services, successful: loadedServices } =
     state.getServicesByLocality;
+  const { data: attentionWindows } = state.getAttentionWindows;
   const { loading, successful, error } = state.createWindowAttention;
   const { data: activeService, successful: changedActiveService } =
     state.activeService;
@@ -60,43 +63,49 @@ function CreateAgenda({
     },
   ];
 
-  let days_in_week = [
-    {
-      title: "L",
-      value: 1,
-    },
-    {
-      title: "M",
-      value: 2,
-    },
-    {
-      title: "X",
-      value: 4,
-    },
-    {
-      title: "J",
-      value: 8,
-    },
-    {
-      title: "V",
-      value: 16,
-    },
-    {
-      title: "S",
-      value: 32,
-    },
-    {
-      title: "D",
-      value: 64,
-    },
-  ];
-
   const [loadedLists, setLoadedLists] = useState<boolean>(false);
 
   const [listOfLocalities, setListOfLocalities] = useState<Array<any>>([]);
   const [listOfServices, setListOfServices] = useState<Array<any>>([]);
   const [daysRepeatedList, setDaysRepeatedList] = useState<Array<any>>([]);
   const [listOfHours, setListOfHours] = useState<Array<any>>([]);
+  const [daysInWeek, setDaysInWeek] = useState([
+    {
+      title: "L",
+      value: 1,
+      isBlock: false,
+    },
+    {
+      title: "M",
+      value: 2,
+      isBlock: false,
+    },
+    {
+      title: "X",
+      value: 4,
+      isBlock: false,
+    },
+    {
+      title: "J",
+      value: 8,
+      isBlock: false,
+    },
+    {
+      title: "V",
+      value: 16,
+      isBlock: false,
+    },
+    {
+      title: "S",
+      value: 32,
+      isBlock: false,
+    },
+    {
+      title: "D",
+      value: 64,
+      isBlock: false,
+    },
+  ]);
 
   let type_of_ends: any[] = [
     {
@@ -140,6 +149,8 @@ function CreateAgenda({
   });
 
   function handleAddInDay(day: any) {
+    if (day.isBlock) return;
+
     let list = [...daysRepeatedList];
     let alreadyExists =
       list.filter((elem) => elem["value"] === day["value"]).length > 0;
@@ -163,17 +174,29 @@ function CreateAgenda({
     return (
       <div
         className={twMerge([
-          "cursor-pointer w-8 h-8 flex flex-col justify-center items-center text-center border font-light text-sm rounded-full",
-          isInList
+          "cursor-pointer w-8 h-8 flex flex-col justify-center items-center text-center border font-light text-sm rounded-full relative group",
+          elem.isBlock
+            ? "bg-gray-300 text-white border-gray-300"
+            : isInList
             ? "bg-green-500 text-white border-green-500"
             : "bg-transparent text-secondary border-secondary",
         ])}
-        onClick={() => {
-          handleAddInDay(elem);
-        }}
+        onClick={
+          !elem.isBlock
+            ? () => {
+                handleAddInDay(elem);
+              }
+            : () => {}
+        }
         key={index}
       >
-        {elem["title"]}
+        <p> {elem["title"]}</p>
+        {elem.isBlock && (
+          <Tooltip>
+            Ya tienes una ventana de atención creada para este día y dentro de
+            las horas que seleccionaste
+          </Tooltip>
+        )}
       </div>
     );
   };
@@ -227,6 +250,129 @@ function CreateAgenda({
     }
   }
 
+  function blockDaysByHours(attentionWindowsList: any) {
+    const daysBlocked: string[] = [];
+
+    if (attentionWindowsList?.length > 0) {
+      const days: any = {
+        0: "D",
+        1: "L",
+        2: "M",
+        3: "X",
+        4: "J",
+        5: "V",
+        6: "S",
+      };
+
+      attentionWindowsList.forEach((attentionWindow: any) => {
+        const day = new Date(attentionWindow.fechaInicio).getDay();
+
+        if (day >= 0) {
+          const dayTitle = days[day];
+
+          if (daysBlocked.indexOf(dayTitle) < 0) {
+            daysBlocked.push(dayTitle);
+          }
+        }
+      });
+    }
+
+    if (daysBlocked.length > 0) {
+      let daysInWeekList: any = daysInWeek;
+
+      daysBlocked.forEach((dayBlocked) => {
+        let items = [...daysInWeekList];
+        let index = items.findIndex((elem) => elem.title === dayBlocked);
+
+        if (index >= 0) {
+          let item = { ...items[index] };
+
+          item.isBlock = true;
+
+          items[index] = item;
+
+          daysInWeekList = items;
+        }
+      });
+
+      setDaysInWeek(daysInWeekList);
+      return;
+    }
+
+    setDaysInWeek([
+      {
+        title: "L",
+        value: 1,
+        isBlock: false,
+      },
+      {
+        title: "M",
+        value: 2,
+        isBlock: false,
+      },
+      {
+        title: "X",
+        value: 4,
+        isBlock: false,
+      },
+      {
+        title: "J",
+        value: 8,
+        isBlock: false,
+      },
+      {
+        title: "V",
+        value: 16,
+        isBlock: false,
+      },
+      {
+        title: "S",
+        value: 32,
+        isBlock: false,
+      },
+      {
+        title: "D",
+        value: 64,
+        isBlock: false,
+      },
+    ]);
+  }
+
+  function onHandleHours(name: string, value: string) {
+    let fromHour =
+      name === "fromHour"
+        ? parseInt(value, 10)
+        : formData.fromHour.length > 0
+        ? parseInt(formData.fromHour)
+        : 0;
+    let toHour =
+      name === "toHour"
+        ? parseInt(value, 10)
+        : formData.toHour.length > 0
+        ? parseInt(formData.toHour)
+        : 0;
+
+    if (name === "fromHour") setFormData({ ...formData, fromHour: value });
+
+    if (name === "toHour") setFormData({ ...formData, toHour: value });
+
+    if (attentionWindows.length > 0) {
+      const attentionWindowsFromHours = attentionWindows.filter(
+        (elem: any) => fromHour >= elem.horaInicio && fromHour < elem.horaFin
+      );
+
+      if (attentionWindowsFromHours.length > 0) {
+        blockDaysByHours(attentionWindowsFromHours);
+        return;
+      }
+
+      const attentionWindowsToHours = attentionWindows.filter(
+        (elem: any) => fromHour < elem.horaInicio && toHour > elem.horaInicio
+      );
+      blockDaysByHours(attentionWindowsToHours);
+    }
+  }
+
   useMemo(() => {
     if (selectedLocality["title"] !== "") {
       let id: number = selectedLocality.id;
@@ -258,6 +404,48 @@ function CreateAgenda({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedLocalities]);
 
+  useEffect(() => {
+    if (formData.fromHour.length === 0)
+      setDaysInWeek([
+        {
+          title: "L",
+          value: 1,
+          isBlock: false,
+        },
+        {
+          title: "M",
+          value: 2,
+          isBlock: false,
+        },
+        {
+          title: "X",
+          value: 4,
+          isBlock: false,
+        },
+        {
+          title: "J",
+          value: 8,
+          isBlock: false,
+        },
+        {
+          title: "V",
+          value: 16,
+          isBlock: false,
+        },
+        {
+          title: "S",
+          value: 32,
+          isBlock: false,
+        },
+        {
+          title: "D",
+          value: 64,
+          isBlock: false,
+        },
+      ]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [successful]);
+
   useMemo(() => {
     if (loadedServices) {
       let list_services = services.map((elem: IService) => ({
@@ -271,8 +459,8 @@ function CreateAgenda({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedServices]);
 
-  useMemo(()=>{
-    if(successful){
+  useMemo(() => {
+    if (successful) {
       activeLocality(selectedLocality)(dispatch);
       setFormData({
         typeEnd: 1,
@@ -285,11 +473,11 @@ function CreateAgenda({
         until: moment().add(1, "month").format("YYYY-MM-DD"),
         spanTime: 0,
         fromHour: "",
-        toHour: ""
-      })
-      setDaysRepeatedList([])
-      setListOfHours([])
-      getAttentionWindows(formData.localityId, "LOCALITY")(dispatch)
+        toHour: "",
+      });
+      setDaysRepeatedList([]);
+      setListOfHours([]);
+      getAttentionWindows(formData.localityId, "LOCALITY")(dispatch);
       setTimeout(() => {
         changeStatusPopup(false)(dispatch);
       }, 2000);
@@ -432,7 +620,10 @@ function CreateAgenda({
                 value={formData.availableSpots}
                 className="form-control"
                 onChange={(e) =>
-                  setFormData({ ...formData, availableSpots: +e.target.value })
+                  setFormData({
+                    ...formData,
+                    availableSpots: +e.target.value,
+                  })
                 }
               />
             </div>
@@ -485,10 +676,11 @@ function CreateAgenda({
             <p className="font-normal text-sm text-slate-600">Desde</p>
             <FormSelect
               value={formData.fromHour}
+              name="fromHour"
               className="form-control"
-              onChange={(e) =>
-                setFormData({ ...formData, fromHour: e.target.value })
-              }
+              onChange={(e) => {
+                onHandleHours(e.target.name, e.target.value);
+              }}
             >
               <option value={0}>-</option>
               {listOfHours.map((elem: any) => (
@@ -500,10 +692,11 @@ function CreateAgenda({
             <p className="font-normal text-sm text-slate-600">Hasta</p>
             <FormSelect
               value={formData.toHour}
+              name="toHour"
               className="form-control"
-              onChange={(e) =>
-                setFormData({ ...formData, toHour: e.target.value })
-              }
+              onChange={(e) => {
+                onHandleHours(e.target.name, e.target.value);
+              }}
             >
               <option value={0}>-</option>
               {listOfHours
@@ -517,8 +710,8 @@ function CreateAgenda({
         <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className="font-normal text-sm text-slate-600">Se repite los</p>
           <div className="w-full flex justify-between items-center gap-3">
-            {days_in_week.map((elem, i) => (
-              <RepitedDayComponent elem={elem} index={i} />
+            {daysInWeek.map((elem, i) => (
+              <RepitedDayComponent key={i} elem={elem} index={i} />
             ))}
           </div>
         </div>
@@ -601,10 +794,10 @@ function CreateAgenda({
               until: moment().add(1, "month").format("YYYY-MM-DD"),
               spanTime: 0,
               fromHour: "",
-              toHour: ""
-            })
-            setDaysRepeatedList([])
-            setListOfHours([])
+              toHour: "",
+            });
+            setDaysRepeatedList([]);
+            setListOfHours([]);
           }}
           className="cursor-pointer font-normal text-sm text-primary text-center"
         >
