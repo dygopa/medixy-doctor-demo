@@ -45,12 +45,11 @@ const getLatestAppointment = (id:number) => async (dispatch: Dispatch<any>) => {
   }
 }
 
-const getSubject = (obj:{ skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; country?: string | undefined, startDate?: Date | undefined; endDate?: Date | undefined; }) => async (dispatch: Dispatch<any>) => {
+const getSubject = (obj:{ userId?: number | string | undefined; skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; country?: string | undefined, startDate?: Date | undefined; endDate?: Date | undefined; }) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "GET_PATIENTS_LOADING" });
 
     const res: IGetSubjectsResponse = await new DashboardUseCase().getSubjects(obj);
-    
 
     dispatch({ type: "GET_PATIENTS_SUCCESSFUL", payload: { data: res.data } });
   } catch (error) {

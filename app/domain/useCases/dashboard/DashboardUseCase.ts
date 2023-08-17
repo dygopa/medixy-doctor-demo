@@ -61,7 +61,7 @@ export default class DashboardUseCase {
         }
     }
 
-    async getSubjects(obj:{ skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; country?: string | undefined, startDate?: Date | undefined; endDate?: Date | undefined; }): Promise<IGetSubjectsResponse> {
+    async getSubjects(obj:{ userId?: number | string | undefined; skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; country?: string | undefined, startDate?: Date | undefined; endDate?: Date | undefined; }): Promise<IGetSubjectsResponse> {
         try {
             const response = await this._repositorySubjects.getSubjects(obj);
 
