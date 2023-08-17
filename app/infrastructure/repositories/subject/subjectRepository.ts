@@ -256,11 +256,11 @@ export class SubjectRepository implements ISubjectRepository {
 
     async findSubject(subject: ISubject): Promise<any | SubjectFailure> {
       try {
-        const findedSubjectByEmail = await supabase.from("Sujetos").select("*").eq("email", subject.email).single()
-        const findedSubjectByCURP = await supabase.from("Sujetos").select("*").eq("curp", subject.curp).single()
+        const findedSubjectByEmail = await supabase.from("Sujetos").select("*").eq("email", subject.email).limit(1)
+        const findedSubjectByCURP = await supabase.from("Sujetos").select("*").eq("curp", subject.curp).limit(1)
 
-        if(!findedSubjectByEmail.error && findedSubjectByEmail.data.length > 0) return findedSubjectByEmail.data["id"]
-        if(!findedSubjectByCURP.error && findedSubjectByCURP.data.length > 0) return findedSubjectByCURP.data["id"]
+        if(!findedSubjectByEmail.error && findedSubjectByEmail.data.length > 0) return findedSubjectByEmail.data[0]["id"]
+        if(!findedSubjectByCURP.error && findedSubjectByCURP.data.length > 0) return findedSubjectByCURP.data[0]["id"]
 
         return "";
       } catch (error) {

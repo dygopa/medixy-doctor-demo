@@ -17,7 +17,7 @@ import { IAuthContext, AuthContext } from "(presentation)/(layouts)/AppLayout/co
 export default function PatientsTable() {
 
   const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
+  const { data: user, successful: successfulUser } = authState.getUserAuthenticated;
 
   const { state, actions, dispatch } =
     useContext<IPatientsListContext>(PatientsListContext);
@@ -31,14 +31,16 @@ export default function PatientsTable() {
   const searchQuery = searchParams.get("search_query");
 
   useEffect(() => {
-    getSubjects({
-      userId: user.userId,
-      page: page && page?.length > 0 ? parseInt(page.toString(), 10) : "1",
-      searchQuery: searchQuery,
-      limit: 10,
-    })(dispatch);
+    if (successfulUser) {
+      getSubjects({
+        userId: user.userId,
+        page: page && page?.length > 0 ? parseInt(page.toString(), 10) : "1",
+        searchQuery: searchQuery,
+        limit: 10,
+      })(dispatch);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, searchQuery]);
+  }, [page, searchQuery, user]);
 
   return (
     <>
