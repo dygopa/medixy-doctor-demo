@@ -19,6 +19,10 @@ import SuccessfulComponent from "(presentation)/components/core/BaseComponents/S
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 export default function Steps() {
+
+  const { state: authState } = useContext<IAuthContext>(AuthContext);
+  const { data: user } = authState.getUserAuthenticated;
+
   const { state, actions, dispatch } =
     useContext<ICreatePatientContext>(CreatePatientContext);
   const { createSubject } = actions;
@@ -124,7 +128,7 @@ export default function Steps() {
       postalCode: values.postalCode,
     };
 
-    createSubject(patient)(dispatch);
+    createSubject(patient, user.userId)(dispatch);
   };
 
   const onClickButtonPrincipal: Function = () => {

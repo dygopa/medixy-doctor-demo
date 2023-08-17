@@ -7,13 +7,14 @@ export interface ISubjectListActions {
     getSubjects: Function;
 }
 
-const getSubjects = (obj: { page?: number | null; limit: number; searchQuery?: string | undefined }) => async (dispatch: Dispatch<any>) => {
+const getSubjects = (obj: { userId?: number | string | undefined; page?: number | null; limit: number; searchQuery?: string | undefined }) => async (dispatch: Dispatch<any>) => {
     try {
         dispatch({ type: "GET_PATIENTS_LOADING" });
 
         const skip: number | null = getSkipPagination({ page: obj.page ?? 1, limit: obj.limit })
         
         const res: IGetSubjectsResponse = await new SubjectsUseCase().getSubjects({
+          userId: obj.userId,
           skip: skip,
           limit: obj.limit,
           searchQuery: obj.searchQuery
