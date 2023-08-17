@@ -47,20 +47,16 @@ export default function Table({ user }: { user: IUser }) {
             </p>
           </div>
         </div>
-        <div className="w-full grid grid-cols-3 gap-1">
+        <div className="w-full grid grid-cols-2 gap-1">
           <div className="flex flex-col justify-start items-start gap-2 text-left">
             <p className="font-light text-gray-500 text-sm">Estado</p>
-            <p className="font-normal text-gray-950 text-base">
+            <p className="font-normal text-gray-950 text-base w-full truncate">
               {data.state.name}
             </p>
           </div>
           <div className="flex flex-col justify-start items-start gap-2 text-left">
-            <p className="font-light text-gray-500 text-sm">Ciudad</p>
-            <p className="font-normal text-gray-950 text-base">{data.city}</p>
-          </div>
-          <div className="flex flex-col justify-start items-start gap-2 text-left">
             <p className="font-light text-gray-500 text-sm">Cod. postal</p>
-            <p className="font-normal text-gray-950 text-base">
+            <p className="font-normal text-gray-950 text-base w-full truncate">
               {data.postal_code}
             </p>
           </div>
