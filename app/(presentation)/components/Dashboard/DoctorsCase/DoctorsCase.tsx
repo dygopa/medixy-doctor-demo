@@ -17,7 +17,9 @@ function DoctorsCase({ account }: { account: IUser }) {
     if (account){
       getLatestAppointment(account.userId)(dispatch)
       getCompletedAppointments(account.userId)(dispatch);
-      getSubject({})(dispatch);
+      getSubject({
+        userId: account.userId
+      })(dispatch);
       getPendingAppointments(account.userId)(dispatch)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -32,10 +32,10 @@ export class SubjectRepository implements ISubjectRepository {
           let query = supabase.from("Sujetos").select("*", { count: "exact" }).eq("esPaciente", true);
 
           if(obj.userId){
-            console.log(obj.userId)
+            
             let queryOfRelations = supabase.from("PermisosSujetos").select(`*`).eq("doctorId", obj.userId);
             let resRelations = await queryOfRelations
-            console.log(resRelations)
+            
             if(resRelations.error) return new SubjectFailure(subjectFailuresEnum.serverError);
             
             query = supabase.from("Sujetos")
