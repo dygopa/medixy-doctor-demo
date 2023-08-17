@@ -15,11 +15,11 @@ export interface ICreateSubjectActions {
     getCountryLocations: (obj: { federalEntityId?: number | null; municipalityId?: number | null }) => (dispatch: Dispatch<any>) => {};
 }
 
-const createSubject = (subject:ISubject) => async (dispatch: Dispatch<any>) => {
+const createSubject = (subject:ISubject, userId:any) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "CREATE_PATIENT_LOADING" });
       
-      const res = await new SubjectsUseCase().createSubject(subject);
+      const res = await new SubjectsUseCase().createSubject(subject, userId);
   
       dispatch({ type: "CREATE_PATIENT_SUCCESSFUL", payload: { data: res } });
     } catch (error) {

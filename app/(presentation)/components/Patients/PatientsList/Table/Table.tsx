@@ -12,8 +12,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import Paginate from "(presentation)/components/core/Paginate/Paginate";
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
+import { IAuthContext, AuthContext } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 
 export default function PatientsTable() {
+
+  const { state: authState } = useContext<IAuthContext>(AuthContext);
+  const { data: user, successful: successfulUser } = authState.getUserAuthenticated;
+
   const { state, actions, dispatch } =
     useContext<IPatientsListContext>(PatientsListContext);
   const { data: patients, loading, successful, error } = state.getSubjects;
@@ -26,13 +31,16 @@ export default function PatientsTable() {
   const searchQuery = searchParams.get("search_query");
 
   useEffect(() => {
-    getSubjects({
-      page: page && page?.length > 0 ? parseInt(page.toString(), 10) : "1",
-      searchQuery: searchQuery,
-      limit: 10,
-    })(dispatch);
+    if (successfulUser) {
+      getSubjects({
+        userId: user.userId,
+        page: page && page?.length > 0 ? parseInt(page.toString(), 10) : "1",
+        searchQuery: searchQuery,
+        limit: 10,
+      })(dispatch);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [page, searchQuery]);
+  }, [page, searchQuery, user]);
 
   return (
     <>

@@ -8,9 +8,10 @@ import { SubjectRepository } from "infrastructure/repositories/subject/subjectRe
 export default class SubjectsUseCase {
   private _repository: SubjectRepository = new SubjectRepository();
 
-  async getSubjects(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined}): Promise<IGetSubjectsResponse> {
+  async getSubjects(obj: { userId?: number | string | undefined; skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined}): Promise<IGetSubjectsResponse> {
     try {
       const response = await this._repository.getSubjects({
+        userId: obj.userId,
         skip: obj.skip,
         sort: obj.sort,
         limit: obj.limit,
@@ -119,12 +120,25 @@ export default class SubjectsUseCase {
     }
   }
 
-  async createSubject(subject: ISubject): Promise<ISubject> {
+  async createSubject(subject: ISubject, userId:any): Promise<ISubject> {
     try {
-      const res = await this._repository.createSubject(subject);
 
+      const findedId = await this._repository.findSubject(subject);
+
+      if(findedId !== ""){
+        console.log(findedId)
+        const resSubjectRelation = await this._repository.createSubjectRelation(findedId, userId);
+
+        if (resSubjectRelation instanceof SubjectFailure) throw resSubjectRelation;
+
+        return resSubjectRelation.data;
+      }
+
+      const res = await this._repository.createSubject(subject);
       if (res instanceof SubjectFailure) throw res;
 
+      const resSubjectRelation = await this._repository.createSubjectRelation(res.data.subjectId, userId);
+      if (resSubjectRelation instanceof SubjectFailure) throw resSubjectRelation;
      
       return res.data;
     } catch (error) {

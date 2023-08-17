@@ -12,12 +12,14 @@ import { nanoid } from 'nanoid';
 import { getFileFromBase64 } from 'infrastructure/utils/files/filesUtils';
 
 export default interface ISubjectRepository {
-  getSubjects(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure>;
+  getSubjects(obj: { userId?: number | string | undefined; skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure>;
   getSubjectsCount(obj: { limit?: number | undefined; searchQuery?: string | undefined; }): Promise<number | SubjectFailure>;
   getSubjectsCompanions(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; patientId?: number | undefined; typeRelation?: number | undefined }): Promise<IGetSubjectRelationsResponse | SubjectFailure>;
   getSubjectById(subjectId: number): Promise<ISubject | SubjectFailure>;
   getSubjectsPoints(obj: { country?: string | undefined }): Promise<IPoints | PointFailure>;
   createSubjects(subjects: ISubject[]): Promise<boolean | SubjectFailure>;
+  findSubject(subject: ISubject): Promise<any | SubjectFailure>;
+  createSubjectRelation(subjectId:any, userId:any): Promise<any | SubjectFailure>;
   editSubject(subject: ISubject): Promise<boolean | SubjectFailure>;
   createRelationSubject(subjectId: number, copmpanionId: number): Promise<boolean | SubjectFailure>;
   exportSubjectsToCSV(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; country?: string | undefined, startDate?: Date | undefined; endDate?: Date | undefined; }): Promise<boolean | SubjectFailure>;
@@ -25,10 +27,21 @@ export default interface ISubjectRepository {
 }
 
 export class SubjectRepository implements ISubjectRepository {
-    async getSubjects(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure> {
+    async getSubjects(obj: { userId?: number | string | undefined; skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetSubjectsResponse | SubjectFailure> {
       try {
           let query = supabase.from("Sujetos").select("*", { count: "exact" }).eq("esPaciente", true);
-    
+
+          if(obj.userId){
+            console.log(obj.userId)
+            let queryOfRelations = supabase.from("PermisosSujetos").select(`*`).eq("doctorId", obj.userId);
+            let resRelations = await queryOfRelations
+            console.log(resRelations)
+            if(resRelations.error) return new SubjectFailure(subjectFailuresEnum.serverError);
+            
+            query = supabase.from("Sujetos")
+            .select(`*`, { count: "exact" }).in("id", resRelations.data!.map((elem:any)=> elem["sujetoId"] ))
+          }
+
           if (obj.sort) {
             query = query.order(obj.sort.field, {
               ascending: obj.sort.ascending
@@ -241,6 +254,21 @@ export class SubjectRepository implements ISubjectRepository {
       }
     }
 
+    async findSubject(subject: ISubject): Promise<any | SubjectFailure> {
+      try {
+        const findedSubjectByEmail = await supabase.from("Sujetos").select("*").eq("email", subject.email).limit(1)
+        const findedSubjectByCURP = await supabase.from("Sujetos").select("*").eq("curp", subject.curp).limit(1)
+
+        if(!findedSubjectByEmail.error && findedSubjectByEmail.data.length > 0) return findedSubjectByEmail.data[0]["id"]
+        if(!findedSubjectByCURP.error && findedSubjectByCURP.data.length > 0) return findedSubjectByCURP.data[0]["id"]
+
+        return "";
+      } catch (error) {
+        const exception = error as any;
+        return new SubjectFailure(subjectFailuresEnum.serverError);
+      }
+    }
+
     async createSubject(subject: ISubject): Promise<ICreateSubjectResponse | SubjectFailure> {
       try {
         const res = await supabase.from("Sujetos").insert(fromSubjectSupabaseDocumentData(subject)).select();
@@ -255,6 +283,22 @@ export class SubjectRepository implements ISubjectRepository {
         }
 
         return JSON.parse(JSON.stringify(response));
+      } catch (error) {
+        const exception = error as any;
+        return new SubjectFailure(subjectFailuresEnum.serverError);
+      }
+    }
+    
+    async createSubjectRelation(subjectId:any, userId:any): Promise<any | SubjectFailure> {
+      try {
+        const res = await supabase.from("PermisosSujetos").insert({
+          sujetoId: subjectId,
+          doctorId: userId
+        }).select();
+
+        if (res.error) return new SubjectFailure(subjectFailuresEnum.serverError);
+
+        return res.status;
       } catch (error) {
         const exception = error as any;
         return new SubjectFailure(subjectFailuresEnum.serverError);

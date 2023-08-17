@@ -11,8 +11,13 @@ import { ISubject } from "domain/core/entities/subjectEntity";
 import Paginate from "(presentation)/components/core/Paginate/Paginate";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
+import { IAuthContext, AuthContext} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 
 export default function TableResponsive() {
+
+  const { state: authState } = useContext<IAuthContext>(AuthContext);
+  const { data: user } = authState.getUserAuthenticated;
+
   const { state, actions, dispatch } =
     useContext<IPatientsListContext>(PatientsListContext);
   const { data: patients, loading, successful, error } = state.getSubjects;
@@ -25,6 +30,7 @@ export default function TableResponsive() {
 
   useEffect(() => {
     getSubjects({
+      userId: user.userId,
       page: page && page?.length > 0 ? parseInt(page.toString(), 10) : "1",
       searchQuery: searchQuery,
       limit: 10,
