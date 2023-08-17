@@ -126,6 +126,7 @@ export default class SubjectsUseCase {
       const findedId = await this._repository.findSubject(subject);
 
       if(findedId !== ""){
+        console.log(findedId)
         const resSubjectRelation = await this._repository.createSubjectRelation(findedId, userId);
 
         if (resSubjectRelation instanceof SubjectFailure) throw resSubjectRelation;

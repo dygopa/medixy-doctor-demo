@@ -32,13 +32,14 @@ export class SubjectRepository implements ISubjectRepository {
           let query = supabase.from("Sujetos").select("*", { count: "exact" }).eq("esPaciente", true);
 
           if(obj.userId){
+            console.log(obj.userId)
             let queryOfRelations = supabase.from("PermisosSujetos").select(`*`).eq("doctorId", obj.userId);
             let resRelations = await queryOfRelations
-
+            console.log(resRelations)
             if(resRelations.error) return new SubjectFailure(subjectFailuresEnum.serverError);
             
             query = supabase.from("Sujetos")
-            .select(`*`).in("id", resRelations.data!.map((elem:any)=> elem["sujetoId"] ))
+            .select(`*`, { count: "exact" }).in("id", resRelations.data!.map((elem:any)=> elem["sujetoId"] ))
           }
 
           if (obj.sort) {
@@ -258,11 +259,8 @@ export class SubjectRepository implements ISubjectRepository {
         const findedSubjectByEmail = await supabase.from("Sujetos").select("*").eq("email", subject.email).single()
         const findedSubjectByCURP = await supabase.from("Sujetos").select("*").eq("curp", subject.curp).single()
 
-        if (findedSubjectByEmail.error) return new SubjectFailure(subjectFailuresEnum.serverError)
-        if (findedSubjectByCURP.error) return new SubjectFailure(subjectFailuresEnum.serverError)
-
-        if(findedSubjectByEmail.data.length > 0) return findedSubjectByEmail.data["id"]
-        if(findedSubjectByCURP.data.length > 0) return findedSubjectByCURP.data["id"]
+        if(!findedSubjectByEmail.error && findedSubjectByEmail.data.length > 0) return findedSubjectByEmail.data["id"]
+        if(!findedSubjectByCURP.error && findedSubjectByCURP.data.length > 0) return findedSubjectByCURP.data["id"]
 
         return "";
       } catch (error) {
