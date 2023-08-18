@@ -106,7 +106,7 @@ export default function CalendarIndex() {
   const EmptyLocalities = () => {
     if (localitiesSuccessful && [...(localities as any[])].length === 0) {
       return (
-        <div className="w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4">
+        <div className="md:w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4">
           <div className="w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center">
             <span className="h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center">
               <Lucide icon="Building" />
@@ -136,7 +136,7 @@ export default function CalendarIndex() {
   const EmptyServices = () => {
     if (servicesSuccessful && [...(services as any[])].length === 0) {
       return (
-        <div className="w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4">
+        <div className="md:w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4">
           <div className="w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center">
             <span className="h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center">
               <Lucide icon="Building" />
