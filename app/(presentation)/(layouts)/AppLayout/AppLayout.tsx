@@ -1,6 +1,6 @@
 "use client";
 
-import StepByStepProvider from "(presentation)/components/core/StepByStep/context/StepByStepContext";
+import StepByStepProvider from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 import SideMenu from "../SideMenu";
 import AuthProvider from "./context/AuthContext";
 import VersionHandler from "./VersionHandler/VersionHandler";
