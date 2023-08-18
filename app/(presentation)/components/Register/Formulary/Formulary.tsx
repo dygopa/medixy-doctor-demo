@@ -245,7 +245,7 @@ export default function Formulary() {
       setWrongEmail(false);
     }
 
-    formData = { ...(formData as Object), ...values };
+    formData = { ...(formData as Object), ...values, first_service: true ,};
     registerUser(formData)(dispatch);
     console.log(formData);
   };
@@ -280,8 +280,6 @@ export default function Formulary() {
     }
   };
 
-  console.log(formData);
-
   const setValuesFormData = () => {
     formData = { ...(formData as Object), ...values };
     updateRegisterData(formData)(dispatch);
@@ -292,9 +290,9 @@ export default function Formulary() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
 
-  useMemo(() => {
+  /*useMemo(() => {
     if (successful) window.location.href = "/dashboard";
-  }, [successful]);
+  }, [successful]);*/
 
   useMemo(() => {
     if (error) handleErrors();
