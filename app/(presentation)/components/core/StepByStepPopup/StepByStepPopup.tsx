@@ -5,6 +5,8 @@ import { useMemo, useState } from "react";
 import Lucide from "../BaseComponents/Lucide";
 import Button from "../BaseComponents/Button";
 import { IUser } from "domain/core/entities/userEntity";
+import Header from "./Header";
+import Footer from "./Footer";
 
 type Variant = "success" | "error" | "warning";
 
@@ -25,17 +27,17 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       <div className="w-[80%] md:w-[75%] h-auto overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
         <div className="w-full px-4">
           <div className="mb-14 w-full flex justify-between items-center">
-              <p className="font-bold text-2xl text-slate-900">
-                Bienvenido a Prosit, {user?.names} {user?.firstName}
-              </p>
               <Lucide icon="X" size={25} onClick={(e) => {setIsVisible(false)}} className="cursor-pointer" />
           </div>
+          <Header />
 
           <div className=" text-center mb-14">
             <p className="font-normal text-[18px] text-slate-900">
               El paso a paso
             </p>
           </div>
+
+          <Footer />
         </div>
       </div>
     </div>
