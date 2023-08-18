@@ -172,12 +172,12 @@ export default function Navigator() {
 
   return (
     <div className="w-full flex flex-col flex-wrap justify-start items-start gap-5">
-      <div className="w-full relative flex flex-row justify-between items-center gap-2">
+      <div className="w-full relative md:flex flex-row justify-between items-center gap-2">
         <div className="w-full md:w-[50%]">
           <h2 className="mr-5 text-2xl font-bold truncate">Configuración de la agenda</h2>
           <p>Mantén un seguimiento de tus citas médicos y asegúrate de estar preparado para cada consulta</p>
         </div>
-        <Button onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(1)(dispatch) }} variant="primary" type="button" className="w-[85%] md:w-auto">
+        <Button onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(1)(dispatch) }} variant="primary" type="button" className="w-full mt-2 md:mt-0 md:w-auto">
           <Lucide icon="Plus" className="w-5 h-5 mr-2" />Nueva venta de atención
         </Button>
       </div>
