@@ -26,7 +26,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
         <div className="w-full px-4">
           <div className="mb-14 w-full flex justify-between items-center">
               <p className="font-bold text-2xl text-slate-900">
-                Bienvenido a Prosit, {user.names} {user.firstName}
+                Bienvenido a Prosit, {user?.names} {user?.firstName}
               </p>
               <Lucide icon="X" size={25} onClick={(e) => {setIsVisible(false)}} className="cursor-pointer" />
           </div>

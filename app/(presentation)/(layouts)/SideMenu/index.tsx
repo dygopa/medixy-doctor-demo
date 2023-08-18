@@ -8,7 +8,7 @@ import Navigation from "./nav";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { AuthContext, IAuthContext } from "../AppLayout/context/AuthContext";
 import { redirect, usePathname } from "next/navigation";
-import StepByStep from "(presentation)/components/core/StepByStep/StepByStep";
+import StepByStepPopup from "(presentation)/components/core/StepByStepPopup/StepByStepPopup";
 import PopupProvider from "(presentation)/components/core/BaseComponents/Popup/context/PopupContext";
 import Popup from "(presentation)/components/core/BaseComponents/Popup/PopupIndex";
 import Splash from "(presentation)/components/core/Splash/Splash";
@@ -93,7 +93,7 @@ function SideMenu({
                 description="Tu sesión se ha expirado, redireccionando..."
               />
             )}
-            {/* <StepByStep user={data} /> */}
+            {showStepsBySteps && data && <StepByStepPopup user={data} />}
           </div>
           {/* END: Content */}
         </div>
