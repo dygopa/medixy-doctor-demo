@@ -290,9 +290,9 @@ export default function Formulary() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [values]);
 
-  /*useMemo(() => {
+  useMemo(() => {
     if (successful) window.location.href = "/dashboard";
-  }, [successful]);*/
+  }, [successful]);
 
   useMemo(() => {
     if (error) handleErrors();
