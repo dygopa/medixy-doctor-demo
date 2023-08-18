@@ -93,7 +93,7 @@ function SideMenu({
                 description="Tu sesión se ha expirado, redireccionando..."
               />
             )}
-            {showStepsBySteps && <StepByStep user={data} />}
+            {/* <StepByStep user={data} /> */}
           </div>
           {/* END: Content */}
         </div>
