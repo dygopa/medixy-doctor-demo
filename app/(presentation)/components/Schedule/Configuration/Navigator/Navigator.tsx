@@ -45,7 +45,17 @@ export default function Navigator() {
   } = actions;
   const { data: locality } = state.activeLocality;
   const { data } = state.typePopupActive;
-  const { data: localities, successful: localitiesSuccessful, loading: localitiesLoading } = state.getLocalities;
+  const { 
+    data: localities, 
+    successful: localitiesSuccessful, 
+    loading: localitiesLoading 
+  } = state.getLocalities;
+  const {
+    data: services,
+    successful: servicesSuccessful,
+    loading: servicesLoading,
+  } = state.getServices;
+  
   const { data: baseAttentionWindows, successful: baseAttentionWindowsSuccessful, loading: baseAttentionWindowsLoading } = state.getBaseAttentionWindowsByLocality;
 
   const { actions: actionsPopup, dispatch: dispatchPopup } = useContext<IPopupContext>(PopupContext);
@@ -177,12 +187,27 @@ export default function Navigator() {
           <h2 className="mr-5 text-2xl font-bold truncate">Configuración de la agenda</h2>
           <p>Mantén un seguimiento de tus citas médicos y asegúrate de estar preparado para cada consulta</p>
         </div>
-        <Button onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(1)(dispatch) }} variant="primary" type="button" className="w-[85%] md:w-auto">
-          <Lucide icon="Plus" className="w-5 h-5 mr-2" />Nueva venta de atención
-        </Button>
+        {
+          (
+            (localities && ([...(localities as any[])].length > 0))
+            &&
+            (services && ([...(services as any[])].length > 0))
+          )
+          &&
+          <Button onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(1)(dispatch) }} variant="primary" type="button" className="w-[85%] md:w-auto">
+            <Lucide icon="Plus" className="w-5 h-5 mr-2" />Nueva venta de atención
+          </Button>
+        }
       </div>
       <div className="w-full flex flex-row justify-center flex-wrap lg:justify-start items-center gap-2 h-full">
-        {(localities && ([...(localities as any[])].length > 0)) && <>
+        {
+          (
+            (localities && ([...(localities as any[])].length > 0)) 
+            && 
+            (services && ([...(services as any[])].length > 0))
+          ) 
+          &&
+        <>
           <div className="w-full flex lg:w-[25%] lg:h-full">
             <SpecialSelect
               emptySelectedValue={{
