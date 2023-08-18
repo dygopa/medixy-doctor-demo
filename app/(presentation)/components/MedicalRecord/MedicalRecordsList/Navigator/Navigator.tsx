@@ -14,7 +14,7 @@ export default function Navigator() {
   } = actions
 
   return (
-    <div className="w-full flex justify-between items-center">
+    <div className="w-full md:flex justify-between items-center">
       <h2 className="mr-5 text-2xl font-bold">Mis Consultas</h2>
       <Button
         onClick={() => {
@@ -24,7 +24,7 @@ export default function Navigator() {
         }}
         variant="primary"
         type="button"
-        className="w-[85%] lg:w-fit"
+        className="w-full mt-2 md:mt-0 md:w-fit"
       >
         <Lucide icon="Plus" className="w-5 h-5 mr-2" />
         Nueva consulta

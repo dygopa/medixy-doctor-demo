@@ -9,9 +9,9 @@ export default function Navigator() {
       <div className="relative w-auto">
         <h2 className="mr-5 text-2xl font-bold">Mis Pacientes</h2>
       </div>
-      <div className="mb-3">
+      <div className="mb-3 mt-2 md:mt-0">
         <Link href={PatientsRoutesEnum.PatientsCreate}>
-          <Button variant="primary" className="w-auto">
+          <Button variant="primary" className="md:w-auto w-full">
             <Lucide icon="Plus" className="mr-2" />
             Nuevo paciente
           </Button>
