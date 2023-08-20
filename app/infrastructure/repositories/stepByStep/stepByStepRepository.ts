@@ -42,7 +42,7 @@ export class StepByStepRepository implements IStepByStepRepository {
             const snapshots = await supabase.from("EventosUsuarios").select().eq("usuarioId", parseInt(id));
 
             if(snapshots.error)throw new AuthFailure(snapshots.statusText)
-            console.log(snapshots.data)
+            
             return snapshots.data;
         } catch (error) {
             console.log(error)
