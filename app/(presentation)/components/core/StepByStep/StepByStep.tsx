@@ -136,7 +136,7 @@ export default function StepByStep({ user }: { user: IUser }) {
   };
 
   function formatListOfSteps(){
-    console.log(data)
+
     let list = data as any[]
     let mappedList = [...list].map(elem => elem["evento"])
     let l = steps.map(elem => ({
@@ -144,13 +144,13 @@ export default function StepByStep({ user }: { user: IUser }) {
         completed: mappedList.includes(elem["step_enum"]),
       })
     )
-      
+
     setSteps(l)
     setCanShowHelp(mappedList.length < 3)
   }
   
   useMemo(()=>{
-    if(successful) {formatListOfSteps()}
+    if(successful) formatListOfSteps()
   },[successful])
 
   useEffect(() => {

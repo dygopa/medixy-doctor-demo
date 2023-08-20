@@ -8,10 +8,13 @@ import moment from "moment";
 import { DashboardContext, IDashboardContext } from "./context/DashboardContext";
 
 function DoctorsCase({ account }: { account: IUser }) {
-  
-  const { actions, dispatch } =
-    useContext<IDashboardContext>(DashboardContext);
-  const { getPendingAppointments, getCompletedAppointments, getSubject, getLatestAppointment} = actions;
+  const { actions, dispatch } =useContext<IDashboardContext>(DashboardContext);
+  const { 
+    getPendingAppointments, 
+    getCompletedAppointments, 
+    getSubject, 
+    getLatestAppointment
+  } = actions;
 
   useMemo(() => {
     if (account){
