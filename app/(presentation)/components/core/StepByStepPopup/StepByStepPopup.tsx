@@ -132,7 +132,6 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     )
 
     setSteps(l)
-    knowIfCanShowPopup()
   }
 
   function knowIfCanShowPopup(){
@@ -142,6 +141,8 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     }
     setIsVisible(true)
   }
+
+  useMemo(()=> knowIfCanShowPopup(),[steps])
 
   useMemo(()=>{
     if(successful) formatListOfSteps();
