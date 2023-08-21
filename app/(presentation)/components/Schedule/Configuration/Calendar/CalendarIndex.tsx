@@ -197,7 +197,7 @@ export default function CalendarIndex() {
 
   useMemo(() => {
     if (successfulWindowCreated) {
-      createUserSteps(user.userId, "SCHEDULE_CREATED")(dispatchStep);
+      createUserSteps(user.accountId, "SCHEDULE_CREATED")(dispatchStep);
       changeOpenPopup(true)(dispatchStep)
     }
   }, [successfulWindowCreated]);
