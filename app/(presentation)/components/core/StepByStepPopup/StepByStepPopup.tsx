@@ -33,6 +33,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
   const { getSteps, changeOpenPopup } = actions;
   const { data, error, successful, loading } = state.getSteps;
   const { data: openPopup } = state.openPopup;
+  const { successful: createdStep, loading: creatingStep } = state.createUserSteps;
   
   const pathname = usePathname()
 
@@ -131,30 +132,24 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     )
 
     setSteps(l)
-
-    if(openPopup){
-      knowIfCanShowPopup()
-    }
+    knowIfCanShowPopup()
   }
 
   function knowIfCanShowPopup(){
-    if(openPopup && steps.every((elem:any)=> elem["completed"] === true )){
+    if(pathname!.includes("/dashboard") && steps.every((elem:any)=> elem["completed"] )){
       setIsVisible(false)
-    }else{
-      if(pathname!.includes("/localities/create") && !steps[0]["completed"]) setIsVisible(true)
-      if(pathname!.includes("/schedule/configuration") && !steps[1]["completed"]) setIsVisible(true)
-      if(pathname!.includes("/services/new-service") && !steps[2]["completed"]) setIsVisible(true)
-      if(pathname!.includes("/dashboard")) setIsVisible(true)
+      return;
     }
+    setIsVisible(true)
   }
 
-  useMemo(() => {
-    if (successful) formatListOfSteps();
-  }, [successful]);
+  useMemo(()=>{
+    if(successful) formatListOfSteps();
+  },[loading])
 
-  useEffect(() => {
-    if (user?.accountId) getSteps(user?.accountId)(dispatch);
-  }, [user, openPopup]);
+  useMemo(()=>{
+    if(openPopup && user?.accountId) getSteps(user?.accountId)(dispatch);
+  },[openPopup, user])
 
   return (
     <div

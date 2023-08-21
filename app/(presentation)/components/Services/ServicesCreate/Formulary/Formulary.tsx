@@ -78,10 +78,12 @@ export default function Formulary({
 
   const { data: categories } = state.getCategories;
 
-  const { actions: actionsStep, dispatch: dispatchStep } =
+  const { actions: actionsStep, state: stateSteps, dispatch: dispatchStep } =
     useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps, changeOpenPopup } = actionsStep;
+  const {error: stepNotCreated, loading: creatingStep} = stateSteps.createUserSteps
 
+  const [successfulPopup, setSuccessfulPopup] = useState(false);
   const [loadedListOfTimes, setLoadedListOfTimes] = useState(false);
   const [loadedAPI, setLoadedAPI] = useState(false);
 
@@ -231,11 +233,16 @@ export default function Formulary({
     setLoadedAPI(true);
   };
 
-  useMemo(() => {
-    if (successFulCreationService) {
-      createUserSteps(accountId, "SERVICE_CREATED")(dispatchStep);
+  useMemo(()=>{
+    if(stepNotCreated){
+      setSuccessfulPopup(true)
+    }else{
       changeOpenPopup(true)(dispatchStep)
     }
+  },[creatingStep])
+
+  useMemo(() => {
+    if (successFulCreationService) createUserSteps(accountId, "SERVICE_CREATED")(dispatchStep);
   }, [successFulCreationService]);
 
   useMemo(() => {
@@ -267,9 +274,9 @@ export default function Formulary({
         show={errorCreationService !== null}
         description="Ha ocurrido un error inesperado en la creación"
       />
-      {/* <SuccessfulComponent
+      <SuccessfulComponent
         tittle="Servicio agregado con exito"
-        show={successFulCreationService}
+        show={successfulPopup}
         description={
           "Tu servicio se ha creado exitosamente. Ahora podrás asociar este servicio a uno de tus consultorios"
         }
@@ -277,7 +284,7 @@ export default function Formulary({
         onClickButtonPrincipal={onClickButtonPrincipal}
         textButtonSecondary={"Ir a mis servicios"}
         onClickButtonSecondary={onClickButtonSecondary}
-      /> */}
+      />
 
       <div className="w-full md:flex justify-between items-start sticky top-[67px] z-[50] bg-slate-100 py-2">
         <h2 className="lg:mr-5 lg:mb-0 mb-4 text-2xl font-bold truncate">

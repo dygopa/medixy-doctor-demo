@@ -87,11 +87,13 @@ export default function WithoutSteps({
     successful: successFulServices,
   } = state.getUserBaseServices;
 
-  const { actions: actionsStep, dispatch: dispatchStep } =
+  const { actions: actionsStep, state: stateSteps, dispatch: dispatchStep } =
     useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps, changeOpenPopup } = actionsStep;
+  const {error: stepNotCreated, loading: creatingStep} = stateSteps.createUserSteps
 
   const [services, setServices] = useState<any>([]);
+  const [successfulPopup, setSuccessfulPopup] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -169,11 +171,16 @@ export default function WithoutSteps({
     setFormData({ ...formData, media: obj });
   }
 
-  useMemo(() => {
-    if (createUserLocalitySuccess) {
-      createUserSteps(accountId, "LOCATION_CREATED")(dispatchStep);
+  useMemo(()=>{
+    if(stepNotCreated){
+      setSuccessfulPopup(true)
+    }else{
       changeOpenPopup(true)(dispatchStep)
     }
+  },[creatingStep])
+
+  useMemo(() => {
+    if (createUserLocalitySuccess) createUserSteps(accountId, "LOCATION_CREATED")(dispatchStep);
   }, [createUserLocalitySuccess]);
 
   useMemo(() => {
@@ -286,9 +293,9 @@ export default function WithoutSteps({
         show={createUserLocalityError !== null}
         description="Ha ocurrido un error inesperado en la creación"
       />
-      {/* <SuccessfulComponent
+      <SuccessfulComponent
         tittle="Agregado con exito"
-        show={createUserLocalitySuccess}
+        show={successfulPopup}
         description={
           "Tu consultorio se ha creado exitosamente. Ahora puedes configurar su agenda."
         }
@@ -296,7 +303,7 @@ export default function WithoutSteps({
         onClickButtonPrincipal={onClickButtonPrincipal}
         textButtonSecondary={"Ir a la lista de consultorios"}
         onClickButtonSecondary={onClickButtonSecondary}
-      /> */}
+      />
 
       <div className="w-full md:flex justify-between items-center sticky top-[67px] z-[50] border-b bg-slate-100 py-2">
         <div className="lg:mr-5 mb-4 md:mb-0">

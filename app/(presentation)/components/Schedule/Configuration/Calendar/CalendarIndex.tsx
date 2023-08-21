@@ -30,9 +30,10 @@ export default function CalendarIndex() {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
   const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
 
-  const { actions: actionsStep, dispatch: dispatchStep } =
-  useContext<IStepByStepContext>(StepByStepContext);
+  const { actions: actionsStep, state: stateSteps, dispatch: dispatchStep } =
+    useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps, changeOpenPopup } = actionsStep;
+  const {error: stepNotCreated, loading: creatingStep} = stateSteps.createUserSteps
 
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
@@ -55,7 +56,10 @@ export default function CalendarIndex() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [windows, setWindows] = useState([]);
+
   const [showWindowModal, setShowWindowModal] = useState(false);
+  const [successfulPopup, setSuccessfulPopup] = useState(false);
+
   const [eventSelected, setEventSelected] = useState<EventClickArg>(
     {} as EventClickArg
   );
@@ -195,11 +199,16 @@ export default function CalendarIndex() {
     }
   };
 
-  useMemo(() => {
-    if (successfulWindowCreated) {
-      createUserSteps(user.accountId, "SCHEDULE_CREATED")(dispatchStep);
+  useMemo(()=>{
+    if(stepNotCreated){
+      setSuccessfulPopup(true)
+    }else{
       changeOpenPopup(true)(dispatchStep)
     }
+  },[creatingStep])
+
+  useMemo(() => {
+    if (successfulWindowCreated) createUserSteps(user.accountId, "SCHEDULE_CREATED")(dispatchStep);
   }, [successfulWindowCreated]);
 
   useMemo(() => {
@@ -217,7 +226,7 @@ export default function CalendarIndex() {
         />
         <AlertComponent
           variant="success"
-          show={successfulWindowCreated === true}
+          show={successfulPopup}
           description="Ventana de atención creada exitosamente"
         />
         {/* BEGIN: Calendar Content */}
