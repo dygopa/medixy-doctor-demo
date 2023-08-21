@@ -97,9 +97,7 @@ export default function CalendarIndex() {
 
   function formatList() {
     let list = [];
-    console.log("data", data);
     list = data.map((elem: any) => formatEvent(elem));
-    console.log("list", list);
     setWindows(list);
   }
 

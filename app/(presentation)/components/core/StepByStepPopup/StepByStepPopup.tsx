@@ -49,11 +49,11 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     {
       id: 1,
       title: "Crea tu agenda",
-      step_enum: "SERVICE_CREATED",
+      step_enum: "SCHEDULE_CREATED",
       completed: false,
       description:
         "Configura los posibles horarios de atención o ventanas de atención para un servicio o varios",
-      cta: "/schedule/",
+      cta: "/schedule/configuration",
     },
     {
       id: 2,
