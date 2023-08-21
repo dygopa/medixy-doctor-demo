@@ -11,7 +11,7 @@ export default function Header({user}:{user:IUser}) {
 
       <div className="text-center mb-6">
         <h3 className="text-[25px] font-bold" style={{ color: "#000066" }}>
-          {user.sex === 1 ? "Dra." : "Dr."} {`${user.names} ${user.firstName} ${user.lastName}`}
+          {user?.sex === 1 ? "Dra." : "Dr."} {`${user?.names} ${user?.firstName} ${user?.lastName}`}
         </h3>
       </div>
 

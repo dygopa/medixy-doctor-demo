@@ -43,7 +43,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       step_enum: "LOCATION_CREATED",
       completed: false,
       description:
-        "Administra los servicios que ofrecerás a todos tus pacientes",
+        "Agrega y edita los consultorios donde ofreceras todos tues servicios",
       cta: "/localities/create",
     },
     {
@@ -53,7 +53,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       completed: false,
       description:
         "Configura los posibles horarios de atención o ventanas de atención para un servicio o varios",
-      cta: "/schedule/",
+      cta: "/schedule/configuration",
     },
     {
       id: 2,
@@ -61,7 +61,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       step_enum: "SERVICE_CREATED",
       completed: false,
       description:
-        "Agrega y edita los consultorios donde ofreceras todos tues servicios",
+        "Administra los servicios que ofrecerás a todos tus pacientes",
       cta: "/services/new-service",
     },
   ]);
@@ -107,7 +107,13 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
           </div>
         </div>
         <div className="text-center mt-3">
-          {props.completed ? <span className="bg-green-500 text-white text-center font-normal text-sm px-4 py-2 rounded-md">Completado</span> : <Button variant="primary">Ir</Button>}
+          {props.completed ? 
+            <span className="bg-green-500 text-white text-center font-normal text-sm px-4 py-2 rounded-md">Completado</span> 
+          : 
+            <Link href={props.cta}>
+              <Button variant="primary" >Ir</Button>
+            </Link>
+          }
         </div>
       </div>
     );
