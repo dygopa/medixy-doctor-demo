@@ -128,12 +128,12 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     setIsVisible(mappedList.length < 3)
   }
 
-  useMemo(()=>{
-    if(successful) formatListOfSteps()
-  },[successful])
+  useMemo(() => {
+    if (successful) formatListOfSteps();
+  }, [successful]);
 
   useEffect(() => {
-    if(user?.accountId) getSteps(user?.accountId)(dispatch);
+    if (user?.accountId) getSteps(user?.accountId)(dispatch);
   }, [user]);
 
   return (

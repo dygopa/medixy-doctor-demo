@@ -52,6 +52,11 @@ import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import Tooltip from "(presentation)/components/core/BaseComponents/Tooltip/Tooltip";
 import AddressAutocomplete from "(presentation)/components/core/BaseComponents/Autocomplete/AddressAutocomplete/AddressAutocomplete";
+import StepByStepPopup from "(presentation)/components/core/StepByStepPopup/StepByStepPopup";
+import {
+  AuthContext,
+  IAuthContext,
+} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 
 export default function WithoutSteps({
   userId,
@@ -60,6 +65,9 @@ export default function WithoutSteps({
   userId: string;
   accountId: string;
 }) {
+  const { state: authState } = useContext<IAuthContext>(AuthContext);
+  const { data } = authState.getUserAuthenticated;
+
   const { state, actions, dispatch } =
     useContext<ILocalitiesContext>(LocalitiesContext);
 
@@ -277,7 +285,8 @@ export default function WithoutSteps({
         show={createUserLocalityError !== null}
         description="Ha ocurrido un error inesperado en la creación"
       />
-      <SuccessfulComponent
+      {createUserLocalitySuccess && <StepByStepPopup user={data} />}
+      {/* <SuccessfulComponent
         tittle="Agregado con exito"
         show={createUserLocalitySuccess}
         description={
@@ -287,7 +296,7 @@ export default function WithoutSteps({
         onClickButtonPrincipal={onClickButtonPrincipal}
         textButtonSecondary={"Ir a la lista de consultorios"}
         onClickButtonSecondary={onClickButtonSecondary}
-      />
+      /> */}
 
       <div className="w-full md:flex justify-between items-center sticky top-[67px] z-[50] border-b bg-slate-100 py-2">
         <div className="lg:mr-5 mb-4 md:mb-0">

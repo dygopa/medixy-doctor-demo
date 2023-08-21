@@ -42,6 +42,11 @@ import { NumericFormat } from "react-number-format";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
 import AutocompleteInput from "(presentation)/components/core/Autocomplete";
+import StepByStepPopup from "(presentation)/components/core/StepByStepPopup/StepByStepPopup";
+import {
+  AuthContext,
+  IAuthContext,
+} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 
 export default function Formulary({
   userId,
@@ -50,6 +55,9 @@ export default function Formulary({
   userId: string;
   accountId: string;
 }) {
+  const { state: authState } = useContext<IAuthContext>(AuthContext);
+  const { data } = authState.getUserAuthenticated;
+
   const { state, actions, dispatch } =
     useContext<IServicesContext>(ServicesContext);
   const { createUserService, getCategories, getUserMedicalCenters } = actions;
@@ -258,7 +266,8 @@ export default function Formulary({
         show={errorCreationService !== null}
         description="Ha ocurrido un error inesperado en la creación"
       />
-      <SuccessfulComponent
+      {createUserService && <StepByStepPopup user={data} />}
+      {/* <SuccessfulComponent
         tittle="Servicio agregado con exito"
         show={successFulCreationService}
         description={
@@ -268,7 +277,7 @@ export default function Formulary({
         onClickButtonPrincipal={onClickButtonPrincipal}
         textButtonSecondary={"Ir a mis servicios"}
         onClickButtonSecondary={onClickButtonSecondary}
-      />
+      /> */}
 
       <div className="w-full md:flex justify-between items-start sticky top-[67px] z-[50] bg-slate-100 py-2">
         <h2 className="lg:mr-5 lg:mb-0 mb-4 text-2xl font-bold truncate">
