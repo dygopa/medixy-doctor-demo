@@ -286,7 +286,6 @@ export default function WithoutSteps({
         show={createUserLocalityError !== null}
         description="Ha ocurrido un error inesperado en la creación"
       />
-      {createUserLocalitySuccess && <StepByStepPopup user={data} />}
       {/* <SuccessfulComponent
         tittle="Agregado con exito"
         show={createUserLocalitySuccess}

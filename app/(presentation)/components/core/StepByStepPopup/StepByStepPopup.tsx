@@ -131,6 +131,10 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     )
 
     setSteps(l)
+
+    if(openPopup){
+      knowIfCanShowPopup()
+    }
   }
 
   function knowIfCanShowPopup(){
@@ -144,21 +148,13 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     }
   }
 
-  useMemo(()=>{
-    if(openPopup){
-      knowIfCanShowPopup()
-    }else{
-      setIsVisible(false)
-    }
-  },[openPopup])
-
   useMemo(() => {
     if (successful) formatListOfSteps();
   }, [successful]);
 
   useEffect(() => {
     if (user?.accountId) getSteps(user?.accountId)(dispatch);
-  }, [user]);
+  }, [user, openPopup]);
 
   return (
     <div
