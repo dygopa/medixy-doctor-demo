@@ -21,10 +21,19 @@ import { twMerge } from "tailwind-merge";
 import AttentionWindow from "./AttentionWindowModal/AttentionWindowModal";
 import { useSearchParams } from "next/navigation";
 import { scheduleFailuresEnum } from "domain/core/failures/schedule/scheduleFailure";
+import { 
+  IStepByStepContext, 
+  StepByStepContext 
+} from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 
 export default function CalendarIndex() {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
   const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
+
+  const { actions: actionsStep, state: stateSteps, dispatch: dispatchStep } =
+    useContext<IStepByStepContext>(StepByStepContext);
+  const { createUserSteps, changeOpenPopup } = actionsStep;
+  const {error: stepNotCreated, loading: creatingStep, successful: createStepSuccessful} = stateSteps.createUserSteps
 
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
@@ -47,7 +56,10 @@ export default function CalendarIndex() {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [windows, setWindows] = useState([]);
+
   const [showWindowModal, setShowWindowModal] = useState(false);
+  const [successfulPopup, setSuccessfulPopup] = useState(false);
+
   const [eventSelected, setEventSelected] = useState<EventClickArg>(
     {} as EventClickArg
   );
@@ -97,9 +109,7 @@ export default function CalendarIndex() {
 
   function formatList() {
     let list = [];
-    console.log("data", data);
     list = data.map((elem: any) => formatEvent(elem));
-    console.log("list", list);
     setWindows(list);
   }
 
@@ -189,6 +199,16 @@ export default function CalendarIndex() {
     }
   };
 
+  useMemo(()=>{
+    if (createStepSuccessful){
+      changeOpenPopup(true)(dispatchStep)
+    }
+  },[stepNotCreated, createStepSuccessful])
+
+  useMemo(() => {
+    if (successfulWindowCreated) createUserSteps(user.accountId, "SCHEDULE_CREATED")(dispatchStep);
+  }, [successfulWindowCreated]);
+
   useMemo(() => {
     if (errorWindowCreated) handleErrors();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -204,7 +224,7 @@ export default function CalendarIndex() {
         />
         <AlertComponent
           variant="success"
-          show={successfulWindowCreated === true}
+          show={successfulPopup}
           description="Ventana de atención creada exitosamente"
         />
         {/* BEGIN: Calendar Content */}

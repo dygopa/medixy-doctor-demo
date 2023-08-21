@@ -29,7 +29,7 @@ import AlertComponent from "(presentation)/components/core/BaseComponents/Alert"
 import {
   IStepByStepContext,
   StepByStepContext,
-} from "(presentation)/components/core/StepByStep/context/StepByStepContext";
+} from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 import { MdOutlineMedicalServices } from "react-icons/md";
 import Image from "next/image";
 import { b64toBlob } from "(presentation)/(helper)/files/filesHelper";
@@ -42,6 +42,11 @@ import { NumericFormat } from "react-number-format";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
 import AutocompleteInput from "(presentation)/components/core/Autocomplete";
+import StepByStepPopup from "(presentation)/components/core/StepByStepPopup/StepByStepPopup";
+import {
+  AuthContext,
+  IAuthContext,
+} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 
 export default function Formulary({
   userId,
@@ -50,6 +55,9 @@ export default function Formulary({
   userId: string;
   accountId: string;
 }) {
+  const { state: authState } = useContext<IAuthContext>(AuthContext);
+  const { data } = authState.getUserAuthenticated;
+
   const { state, actions, dispatch } =
     useContext<IServicesContext>(ServicesContext);
   const { createUserService, getCategories, getUserMedicalCenters } = actions;
@@ -70,10 +78,12 @@ export default function Formulary({
 
   const { data: categories } = state.getCategories;
 
-  const { actions: actionsStep, dispatch: dispatchStep } =
+  const { actions: actionsStep, state: stateSteps, dispatch: dispatchStep } =
     useContext<IStepByStepContext>(StepByStepContext);
-  const { createUserSteps } = actionsStep;
+  const { createUserSteps, changeOpenPopup } = actionsStep;
+  const {error: stepNotCreated, loading: creatingStep, successful: creatingStepSuccessful } = stateSteps.createUserSteps
 
+  const [successfulPopup, setSuccessfulPopup] = useState(false);
   const [loadedListOfTimes, setLoadedListOfTimes] = useState(false);
   const [loadedAPI, setLoadedAPI] = useState(false);
 
@@ -223,10 +233,18 @@ export default function Formulary({
     setLoadedAPI(true);
   };
 
-  useMemo(() => {
-    if (successFulCreationService) {
-      createUserSteps(accountId, "SERVICE_CREATED")(dispatchStep);
+  useMemo(()=>{
+    if(stepNotCreated){
+      setSuccessfulPopup(true)
     }
+    
+    if(creatingStepSuccessful) {
+      changeOpenPopup(true)(dispatchStep)
+    }
+  },[stepNotCreated, creatingStepSuccessful ])
+
+  useMemo(() => {
+    if (successFulCreationService) createUserSteps(accountId, "SERVICE_CREATED")(dispatchStep);
   }, [successFulCreationService]);
 
   useMemo(() => {
@@ -260,7 +278,7 @@ export default function Formulary({
       />
       <SuccessfulComponent
         tittle="Servicio agregado con exito"
-        show={successFulCreationService}
+        show={successfulPopup}
         description={
           "Tu servicio se ha creado exitosamente. Ahora podrás asociar este servicio a uno de tus consultorios"
         }

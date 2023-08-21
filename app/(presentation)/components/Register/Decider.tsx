@@ -11,8 +11,8 @@ export default function Decider() {
     return(
         <>
             {data === 0 && <FormularySpeciality/>}
-            {data === 1 && <FormularyLocality/>}
-            {data === 2 && <Formulary/>}
+            {/*data === 1 && <FormularyLocality/>*/}
+            {data === 1 && <Formulary/>}
         </>
     )
 

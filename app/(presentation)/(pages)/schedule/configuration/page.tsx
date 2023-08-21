@@ -6,7 +6,7 @@ import ConfigurationIndex from "(presentation)/components/Schedule/Configuration
 
 export default async function ConfigurationPage() {
   return (
-    <AppLayout title="Configuración de la agenda" pathname={ScheduleRoutesEnum.Configuration}>
+    <AppLayout showStepsBySteps={false} title="Configuración de la agenda" pathname={ScheduleRoutesEnum.Configuration}>
       <ConfigurationIndex/>
     </AppLayout>
   );

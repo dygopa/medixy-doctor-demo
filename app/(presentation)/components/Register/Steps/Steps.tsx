@@ -13,13 +13,13 @@ export default function Steps() {
       title: "Especialidad",
       value: 0,
     },
-    {
+    /*{
       title: "Consultorio",
       value: 1,
-    },
+    },*/
     {
       title: "Vamos a crear tu cuenta",
-      value: 2,
+      value: 1,
     },
   ];
 
@@ -116,7 +116,7 @@ export default function Steps() {
     <div className="lg:w-[80%] md:w-[70%] lg:px-20 md:px-14 sm:px-20 px-8 w-full h-fit">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h3 className="lg:text-xl md:text-xl">Paso {active + 1} de 3</h3>
+          <h3 className="lg:text-xl md:text-xl">Paso {active + 1} de 2</h3>
         </div>
 
         <div>
@@ -132,14 +132,14 @@ export default function Steps() {
         </div>
       </div>
 
-      <div className="w-full  grid-cols-3 items-center gap-[5px] lg:grid md:grid sm:grid hidden">
+      <div className="w-full  grid-cols-2 items-center gap-[5px] lg:grid md:grid sm:grid hidden">
         {steps_list.map((s, i) => (
           <StepComponent title={s.title} value={s.value} key={i} />
         ))}
       </div>
 
       <div className="lg:hidden md:hidden sm:hidden block">
-        <div className="w-full  grid-cols-3 items-center gap-[2px]  grid">
+        <div className="w-full  grid-cols-2 items-center gap-[2px]  grid">
           {steps_list.map((s, i) => (
             <StepComponentMobile title={s.title} value={s.value} key={i} />
           ))}

@@ -24,7 +24,10 @@ export default function LocalityCreateIndex() {
   return (
     <div className="py-5">
       <LocalitiesProvider>
-        <WithoutSteps userId={loading ? "" : data.userId} accountId={loading ? "" : data.accountId}/>
+        <WithoutSteps
+          userId={loading ? "" : data.userId}
+          accountId={loading ? "" : data.accountId}
+        />
       </LocalitiesProvider>
     </div>
   );

@@ -15,9 +15,8 @@ import { IRegister } from "domain/core/entities/registerEntity";
 export default function FormularySpeciality() {
   const { state, actions, dispatch } =
     useContext<IRegisterContext>(RegisterContext);
-  const { updateRegisterData, getMedicalSpecialities, getUserMedicalSpecialities } = actions;
+  const { updateRegisterData, getMedicalSpecialities } = actions;
   const { data: specialities } = state.medicalSpecialities;
-  const { data, loading: loadingUserMedicalSpeciality, error: errrorUserMedicalSpeciality, successful: successfulUserMedicalSpeciality } = state.getUserMedicalSpecialities;
   let { data: formData } = state.registerData;
 
   const { actions: stepActions, dispatch: stepDispatch } =
@@ -53,14 +52,6 @@ export default function FormularySpeciality() {
 
     setValues(val);
   }
-
-  const handleCURP = (value: string) => {
-    if (value.length <= 2 || value.length === 0) {
-      errors["curp"] = "El CURP debe tener más de 2 caracteres";
-    } else {
-      setErrors({ ...errors, curp: "" });
-    }
-  };
 
   const onSubmit = () => {
     if (values.pwaProfessionId === 0) {

@@ -52,10 +52,6 @@ export default function Credentials({
 
   const { data, loading, error, successful } = state.getUserMedicalSpecialities;
 
-  const { actions: actionsStep, dispatch: dispatchStep } =
-    useContext<IStepByStepContext>(StepByStepContext);
-  const { createUserSteps } = actionsStep;
-
   let profesions = [
     { id: 8, name: "Bioanalista" },
     { id: 7, name: "Enfermero/a" },
@@ -236,8 +232,6 @@ export default function Credentials({
   useMemo(() => {
     if (account.userId) {
       getUserMedicalSpecialities(account.userId)(dispatch);
-      if (successFulRegister)
-        createUserSteps(account.accountId, "PROFILE_COMPLETED")(dispatchStep);
     }
   }, [successFulRegister, successFulDelete, successFulUpdate]);
 
