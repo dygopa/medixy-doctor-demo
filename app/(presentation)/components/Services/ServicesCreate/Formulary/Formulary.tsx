@@ -80,7 +80,7 @@ export default function Formulary({
 
   const { actions: actionsStep, dispatch: dispatchStep } =
     useContext<IStepByStepContext>(StepByStepContext);
-  const { createUserSteps } = actionsStep;
+  const { createUserSteps, changeOpenPopup } = actionsStep;
 
   const [loadedListOfTimes, setLoadedListOfTimes] = useState(false);
   const [loadedAPI, setLoadedAPI] = useState(false);
@@ -234,6 +234,7 @@ export default function Formulary({
   useMemo(() => {
     if (successFulCreationService) {
       createUserSteps(accountId, "SERVICE_CREATED")(dispatchStep);
+      changeOpenPopup(true)(dispatchStep)
     }
   }, [successFulCreationService]);
 

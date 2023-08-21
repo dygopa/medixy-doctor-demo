@@ -66,6 +66,17 @@ export const StepByStepReducer = (state: any, action: any) => {
             error: action.payload.error,
           },
         };
+      case 'CHANGE_OPEN_POPUP':
+        return {
+          ...state,
+          openPopup: {
+            ...state.openPopup,
+            data: action.payload.data,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+        };
       default:
         return state;
     }

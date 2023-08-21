@@ -4,6 +4,7 @@ import { Dispatch } from "react";
 export interface IStepByStepActions {
     getSteps: Function;
     createUserSteps: Function;
+    changeOpenPopup: Function;
 }
 
 const createUserSteps = (id:string, event:string) => async (dispatch: Dispatch<any>) => {
@@ -30,7 +31,12 @@ const getSteps = (id:string) => async (dispatch: Dispatch<any>) => {
   }
 }
 
+const changeOpenPopup = (value:boolean) => async (dispatch: Dispatch<any>) => {
+  dispatch({ type: "CHANGE_OPEN_POPUP", payload: { data: value } });
+}
+
 export const actions: IStepByStepActions = {
   getSteps,
-  createUserSteps
+  createUserSteps,
+  changeOpenPopup
 }

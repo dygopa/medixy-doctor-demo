@@ -30,11 +30,9 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
 
   const { state, actions, dispatch } =
     useContext<IStepByStepContext>(StepByStepContext);
-  const { getSteps } = actions;
+  const { getSteps, changeOpenPopup } = actions;
   const { data, error, successful, loading } = state.getSteps;
-
-  const [activeHelper, setActiveHelper] = useState(false);
-  const [canShowHelp, setCanShowHelp] = useState(false);
+  const { data: openPopup } = state.openPopup;
 
   let [steps, setSteps] = useState([
     {
@@ -67,7 +65,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
   ]);
 
   const Step = ({ props, children }: { props: IStep; children: any }) => {
-    const [open, setOpen] = useState(false);
+    
     return (
       <div className="">
         <div className="flex justify-center text-center mb-4">
@@ -120,7 +118,6 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
   };
   
   function formatListOfSteps(){
-    console.log(data)
     let list = data as any[]
     let mappedList = [...list].map(elem => elem["evento"])
     let l = steps.map(elem => ({
@@ -128,10 +125,8 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
         completed: mappedList.includes(elem["step_enum"]),
       })
     )
-      
+
     setSteps(l)
-    setCanShowHelp(mappedList.length < 3)
-    setIsVisible(mappedList.length < 3)
   }
 
   useMemo(() => {
@@ -146,7 +141,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     <div
       className={twMerge([
         "z-[99] fixed top-0 left-0 w-full h-screen overflow-y-auto bg-gray-900/50 flex flex-col justify-center items-center",
-        isVisible ? "visible" : "hidden",
+        openPopup ? "visible" : "hidden",
       ])}
     >
       <div className="w-[80%] md:w-[75%] h-auto overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
@@ -156,7 +151,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
               icon="X"
               size={25}
               onClick={(e) => {
-                setIsVisible(false);
+                changeOpenPopup(false)(dispatch)
               }}
               className="cursor-pointer"
             />
@@ -175,7 +170,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
             </Step>
           </div>
 
-          <Footer user={user} customClick={()=>{ setIsVisible(false) }} />
+          <Footer user={user} customClick={()=>{ changeOpenPopup(false)(dispatch) }} />
         </div>
       </div>
     </div>

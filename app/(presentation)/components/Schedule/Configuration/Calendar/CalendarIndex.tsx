@@ -32,7 +32,7 @@ export default function CalendarIndex() {
 
   const { actions: actionsStep, dispatch: dispatchStep } =
   useContext<IStepByStepContext>(StepByStepContext);
-  const { createUserSteps } = actionsStep;
+  const { createUserSteps, changeOpenPopup } = actionsStep;
 
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
@@ -198,6 +198,7 @@ export default function CalendarIndex() {
   useMemo(() => {
     if (successfulWindowCreated) {
       createUserSteps(user.userId, "SCHEDULE_CREATED")(dispatchStep);
+      changeOpenPopup(true)(dispatchStep)
     }
   }, [successfulWindowCreated]);
 

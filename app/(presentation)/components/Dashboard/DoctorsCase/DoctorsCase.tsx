@@ -3,15 +3,22 @@ import MedicalConsultationCalendar from "./MedicalConsultationCalendar/MedicalCo
 import MedicalConsultationList from "./MedicalConsultationList/MedicalConsultationList";
 import MedicalConsultationListProvider from "./MedicalConsultationList/context/MedicalConsultationListContext";
 import { IUser } from "domain/core/entities/userEntity";
-import { useContext, useMemo } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import moment from "moment";
 import { DashboardContext, IDashboardContext } from "./context/DashboardContext";
+import { IStepByStepContext, StepByStepContext } from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 
 function DoctorsCase({ account }: { account: IUser }) {
   
+  const { state: statePopup, actions: actionsPopup, dispatch: dispatchPopup } =
+    useContext<IStepByStepContext>(StepByStepContext);
+  const { getSteps, changeOpenPopup } = actionsPopup;
+
   const { actions, dispatch } =
     useContext<IDashboardContext>(DashboardContext);
   const { getPendingAppointments, getCompletedAppointments, getSubject, getLatestAppointment} = actions;
+
+  const [loadedPopup, setLoadedPopup] = useState(false)
 
   useMemo(() => {
     if (account){
@@ -25,7 +32,12 @@ function DoctorsCase({ account }: { account: IUser }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [account]);
 
-  console.log(account)
+  useEffect(()=>{
+    if(!loadedPopup){
+      changeOpenPopup(true)(dispatchPopup)
+      setLoadedPopup(true)
+    }
+  },[loadedPopup])
 
   return (
     <div className="w-full flex flex-col justify-start items-center gap-1">

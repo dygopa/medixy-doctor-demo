@@ -89,7 +89,7 @@ export default function WithoutSteps({
 
   const { actions: actionsStep, dispatch: dispatchStep } =
     useContext<IStepByStepContext>(StepByStepContext);
-  const { createUserSteps } = actionsStep;
+  const { createUserSteps, changeOpenPopup } = actionsStep;
 
   const [services, setServices] = useState<any>([]);
 
@@ -172,6 +172,7 @@ export default function WithoutSteps({
   useMemo(() => {
     if (createUserLocalitySuccess) {
       createUserSteps(accountId, "LOCATION_CREATED")(dispatchStep);
+      changeOpenPopup(true)(dispatchStep)
     }
   }, [createUserLocalitySuccess]);
 
