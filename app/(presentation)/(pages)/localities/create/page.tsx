@@ -4,8 +4,12 @@ import LocalityCreateIndex from "(presentation)/components/Localities/Localities
 
 export default async function LocalityCreatePage() {
   return (
-    <AppLayout showStepsBySteps={false} title="Nuevo Consultorio" pathname={LocalitiesRoutesEnum.LocalitiesCreate}>
-      <LocalityCreateIndex/>
+    <AppLayout
+      showStepsBySteps={true}
+      title="Nuevo Consultorio"
+      pathname={LocalitiesRoutesEnum.LocalitiesCreate}
+    >
+      <LocalityCreateIndex />
     </AppLayout>
   );
 }

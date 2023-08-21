@@ -26,7 +26,7 @@ export class StepByStepRepository implements IStepByStepRepository {
                 usuarioId: parseInt(id)
             });
 
-            if(!snapshots.error) throw new AuthFailure(snapshots.statusText);
+            if(snapshots.error) throw new AuthFailure(snapshots.statusText);
 
             return snapshots.data;
         } catch (error) {
