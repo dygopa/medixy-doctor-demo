@@ -144,12 +144,12 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       setIsVisible(false);
       return;
     }
-
-    setIsVisible(true);
+    if (pathname!.includes("/dashboard") && data?.length === 0) setIsVisible(true);
+    if (data?.length > 0) setIsVisible(true);
   }
 
   useMemo(() => {
-    if (data?.length > 0) knowIfCanShowPopup();
+    knowIfCanShowPopup();
   }, [steps, data]);
 
   useMemo(() => {

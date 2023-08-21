@@ -33,7 +33,7 @@ export default function CalendarIndex() {
   const { actions: actionsStep, state: stateSteps, dispatch: dispatchStep } =
     useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps, changeOpenPopup } = actionsStep;
-  const {error: stepNotCreated, loading: creatingStep} = stateSteps.createUserSteps
+  const {error: stepNotCreated, loading: creatingStep, successful: createStepSuccessful} = stateSteps.createUserSteps
 
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
@@ -200,12 +200,10 @@ export default function CalendarIndex() {
   };
 
   useMemo(()=>{
-    if(stepNotCreated){
-      setSuccessfulPopup(true)
-    }else{
+    if (createStepSuccessful){
       changeOpenPopup(true)(dispatchStep)
     }
-  },[creatingStep])
+  },[stepNotCreated, createStepSuccessful])
 
   useMemo(() => {
     if (successfulWindowCreated) createUserSteps(user.accountId, "SCHEDULE_CREATED")(dispatchStep);
