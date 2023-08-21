@@ -11,7 +11,7 @@ export default function Footer({ user, customClick }:IFooterProps ) {
 
   let userLink =
   process.env.NEXT_PUBLIC_MARKETPLACE_PROJECT_DOMAIN +
-  `/discover/specialists/${user.userId}`;
+  `/discover/specialists/${user?.userId}`;
 
   return (
     <div>
