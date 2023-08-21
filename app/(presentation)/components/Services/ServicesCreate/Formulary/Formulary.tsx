@@ -267,7 +267,6 @@ export default function Formulary({
         show={errorCreationService !== null}
         description="Ha ocurrido un error inesperado en la creación"
       />
-      {successFulCreationService ? <StepByStepPopup user={data} /> : ""}
       {/* <SuccessfulComponent
         tittle="Servicio agregado con exito"
         show={successFulCreationService}

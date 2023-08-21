@@ -137,9 +137,9 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     if(openPopup && steps.every((elem:any)=> elem["completed"] === true )){
       setIsVisible(false)
     }else{
-      if(pathname!.includes("/localities/create") && steps[0]["completed"]) setIsVisible(true)
-      if(pathname!.includes("/schedule/configuration") && steps[1]["completed"]) setIsVisible(true)
-      if(pathname!.includes("/services/new-service") && steps[2]["completed"]) setIsVisible(true)
+      if(pathname!.includes("/localities/create") && !steps[0]["completed"]) setIsVisible(true)
+      if(pathname!.includes("/schedule/configuration") && !steps[1]["completed"]) setIsVisible(true)
+      if(pathname!.includes("/services/new-service") && !steps[2]["completed"]) setIsVisible(true)
       if(pathname!.includes("/dashboard")) setIsVisible(true)
     }
   }
