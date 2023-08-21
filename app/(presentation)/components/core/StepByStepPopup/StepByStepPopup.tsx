@@ -26,7 +26,7 @@ interface IAlertProps {
 }
 
 const StepByStepPopup = ({ user }: IAlertProps) => {
-  const [isVisible, setIsVisible] = useState(true);
+  const [isVisible, setIsVisible] = useState(false);
 
   const { state, actions, dispatch } =
     useContext<IStepByStepContext>(StepByStepContext);
@@ -129,6 +129,22 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     setSteps(l)
   }
 
+  function knowIfCanShowPopup(){
+    if(openPopup && steps.every((elem:any)=> elem["completed"] === true )){
+      setIsVisible(false)
+    }else{
+      setIsVisible(true)
+    }
+  }
+
+  useMemo(()=>{
+    if(openPopup){
+      knowIfCanShowPopup()
+    }else{
+      setIsVisible(false)
+    }
+  },[openPopup])
+
   useMemo(() => {
     if (successful) formatListOfSteps();
   }, [successful]);
@@ -141,7 +157,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     <div
       className={twMerge([
         "z-[99] fixed top-0 left-0 w-full h-screen overflow-y-auto bg-gray-900/50 flex flex-col justify-center items-center",
-        openPopup ? "visible" : "hidden",
+        isVisible ? "visible" : "hidden",
       ])}
     >
       <div className="w-[80%] md:w-[75%] h-auto overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
