@@ -170,7 +170,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
               icon="X"
               size={25}
               onClick={(e) => {
-                changeOpenPopup(false)(dispatch)
+                setIsVisible(false)
               }}
               className="cursor-pointer"
             />
@@ -189,7 +189,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
             </Step>
           </div>
 
-          <Footer user={user} customClick={()=>{ changeOpenPopup(false)(dispatch) }} />
+          <Footer user={user} customClick={()=>{ setIsVisible(false) }} />
         </div>
       </div>
     </div>
