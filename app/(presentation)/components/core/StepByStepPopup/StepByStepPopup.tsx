@@ -12,6 +12,7 @@ import {
   StepByStepContext,
 } from "./context/StepByStepContext";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface IStep {
   id: number;
@@ -26,13 +27,16 @@ interface IAlertProps {
 }
 
 const StepByStepPopup = ({ user }: IAlertProps) => {
-  const [isVisible, setIsVisible] = useState(false);
-
+  
   const { state, actions, dispatch } =
-    useContext<IStepByStepContext>(StepByStepContext);
+  useContext<IStepByStepContext>(StepByStepContext);
   const { getSteps, changeOpenPopup } = actions;
   const { data, error, successful, loading } = state.getSteps;
   const { data: openPopup } = state.openPopup;
+  
+  const pathname = usePathname()
+
+  const [isVisible, setIsVisible] = useState(false);
 
   let [steps, setSteps] = useState([
     {
@@ -133,7 +137,10 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     if(openPopup && steps.every((elem:any)=> elem["completed"] === true )){
       setIsVisible(false)
     }else{
-      setIsVisible(true)
+      if(pathname!.includes("/localities/create") && steps[0]["completed"]) setIsVisible(true)
+      if(pathname!.includes("/schedule/configuration") && steps[1]["completed"]) setIsVisible(true)
+      if(pathname!.includes("/services/new-service") && steps[2]["completed"]) setIsVisible(true)
+      if(pathname!.includes("/dashboard")) setIsVisible(true)
     }
   }
 
