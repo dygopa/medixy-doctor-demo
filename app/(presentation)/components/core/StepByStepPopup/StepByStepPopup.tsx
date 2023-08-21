@@ -1,7 +1,7 @@
 import { twMerge } from "tailwind-merge";
 import { Transition } from "@headlessui/react";
 import { FiArrowDown, FiArrowUp, FiCheck, FiCheckCircle } from "react-icons/fi";
-import { useContext, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import Lucide from "../BaseComponents/Lucide";
 import Button from "../BaseComponents/Button";
 import { IUser } from "domain/core/entities/userEntity";
@@ -109,6 +109,28 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       </div>
     );
   };
+  
+  function formatListOfSteps(){
+    console.log(data)
+    let list = data as any[]
+    let mappedList = [...list].map(elem => elem["evento"])
+    let l = steps.map(elem => ({
+        ...elem,
+        completed: mappedList.includes(elem["step_enum"]),
+      })
+    )
+      
+    setSteps(l)
+    setCanShowHelp(mappedList.length < 3)
+  }
+
+  useMemo(()=>{
+    if(successful) formatListOfSteps()
+  },[successful])
+
+  useEffect(() => {
+    if(user?.accountId) getSteps(user?.accountId)(dispatch);
+  }, [user]);
 
   return (
     <div

@@ -31,7 +31,7 @@ import AlertComponent from "(presentation)/components/core/BaseComponents/Alert"
 import {
   IStepByStepContext,
   StepByStepContext,
-} from "(presentation)/components/core/StepByStep/context/StepByStepContext";
+} from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import { ICountryLocation } from "domain/core/entities/countryEntity";

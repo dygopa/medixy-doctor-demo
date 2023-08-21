@@ -29,7 +29,7 @@ import AlertComponent from "(presentation)/components/core/BaseComponents/Alert"
 import {
   IStepByStepContext,
   StepByStepContext,
-} from "(presentation)/components/core/StepByStep/context/StepByStepContext";
+} from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 import { MdOutlineMedicalServices } from "react-icons/md";
 import Image from "next/image";
 import { b64toBlob } from "(presentation)/(helper)/files/filesHelper";
