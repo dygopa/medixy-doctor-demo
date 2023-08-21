@@ -21,10 +21,18 @@ import { twMerge } from "tailwind-merge";
 import AttentionWindow from "./AttentionWindowModal/AttentionWindowModal";
 import { useSearchParams } from "next/navigation";
 import { scheduleFailuresEnum } from "domain/core/failures/schedule/scheduleFailure";
+import { 
+  IStepByStepContext, 
+  StepByStepContext 
+} from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 
 export default function CalendarIndex() {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
   const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
+
+  const { actions: actionsStep, dispatch: dispatchStep } =
+  useContext<IStepByStepContext>(StepByStepContext);
+  const { createUserSteps } = actionsStep;
 
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
@@ -186,6 +194,12 @@ export default function CalendarIndex() {
         break;
     }
   };
+
+  useMemo(() => {
+    if (successfulWindowCreated) {
+      createUserSteps(user.userId, "SCHEDULE_CREATED")(dispatchStep);
+    }
+  }, [successfulWindowCreated]);
 
   useMemo(() => {
     if (errorWindowCreated) handleErrors();
