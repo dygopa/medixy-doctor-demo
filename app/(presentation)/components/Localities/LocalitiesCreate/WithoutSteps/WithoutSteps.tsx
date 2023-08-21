@@ -87,10 +87,17 @@ export default function WithoutSteps({
     successful: successFulServices,
   } = state.getUserBaseServices;
 
-  const { actions: actionsStep, state: stateSteps, dispatch: dispatchStep } =
-    useContext<IStepByStepContext>(StepByStepContext);
+  const {
+    actions: actionsStep,
+    state: stateSteps,
+    dispatch: dispatchStep,
+  } = useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps, changeOpenPopup } = actionsStep;
-  const {error: stepNotCreated, loading: creatingStep} = stateSteps.createUserSteps
+  const {
+    successful: stepSucessful,
+    error: stepNotCreated,
+    loading: creatingStep,
+  } = stateSteps.createUserSteps;
 
   const [services, setServices] = useState<any>([]);
   const [successfulPopup, setSuccessfulPopup] = useState(false);
@@ -171,16 +178,20 @@ export default function WithoutSteps({
     setFormData({ ...formData, media: obj });
   }
 
-  useMemo(()=>{
-    if(stepNotCreated){
-      setSuccessfulPopup(true)
-    }else{
-      changeOpenPopup(true)(dispatchStep)
+  useMemo(() => {
+    if (stepNotCreated) {
+      setSuccessfulPopup(true);
     }
-  },[creatingStep])
+
+    if (stepSucessful) {
+      console.log("aca");
+      changeOpenPopup(true)(dispatchStep);
+    }
+  }, [stepSucessful, stepNotCreated]);
 
   useMemo(() => {
-    if (createUserLocalitySuccess) createUserSteps(accountId, "LOCATION_CREATED")(dispatchStep);
+    if (createUserLocalitySuccess)
+      createUserSteps(accountId, "LOCATION_CREATED")(dispatchStep);
   }, [createUserLocalitySuccess]);
 
   useMemo(() => {

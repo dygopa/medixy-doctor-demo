@@ -81,7 +81,7 @@ export default function Formulary({
   const { actions: actionsStep, state: stateSteps, dispatch: dispatchStep } =
     useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps, changeOpenPopup } = actionsStep;
-  const {error: stepNotCreated, loading: creatingStep} = stateSteps.createUserSteps
+  const {error: stepNotCreated, loading: creatingStep, successful: creatingStepSuccessful } = stateSteps.createUserSteps
 
   const [successfulPopup, setSuccessfulPopup] = useState(false);
   const [loadedListOfTimes, setLoadedListOfTimes] = useState(false);
@@ -236,10 +236,12 @@ export default function Formulary({
   useMemo(()=>{
     if(stepNotCreated){
       setSuccessfulPopup(true)
-    }else{
+    }
+    
+    if(creatingStepSuccessful) {
       changeOpenPopup(true)(dispatchStep)
     }
-  },[creatingStep])
+  },[stepNotCreated, creatingStepSuccessful ])
 
   useMemo(() => {
     if (successFulCreationService) createUserSteps(accountId, "SERVICE_CREATED")(dispatchStep);

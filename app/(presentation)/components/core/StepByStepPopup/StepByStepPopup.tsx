@@ -27,14 +27,15 @@ interface IAlertProps {
 }
 
 const StepByStepPopup = ({ user }: IAlertProps) => {
-  
   const { state, actions, dispatch } =
-  useContext<IStepByStepContext>(StepByStepContext);
+    useContext<IStepByStepContext>(StepByStepContext);
   const { getSteps, changeOpenPopup } = actions;
   const { data, error, successful, loading } = state.getSteps;
   const { data: openPopup } = state.openPopup;
-  
-  const pathname = usePathname()
+  const { successful: createdStep, loading: creatingStep } =
+    state.createUserSteps;
+
+  const pathname = usePathname();
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -69,16 +70,17 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
   ]);
 
   const Step = ({ props, children }: { props: IStep; children: any }) => {
-    
     return (
       <div className="">
         <div className="flex justify-center text-center mb-4">
           <div>
             <div className=" flex justify-center mb-3">
-              <div className={twMerge([
-                "bg-transparent rounded-full w-[50px] h-[50px]",
-                props.completed ? "bg-green-500" : "bg-primary"
-              ])}>
+              <div
+                className={twMerge([
+                  "bg-transparent rounded-full w-[50px] h-[50px]",
+                  props.completed ? "bg-green-500" : "bg-primary",
+                ])}
+              >
                 <div className="flex justify-center align-middle items-center h-full">
                   <p className="text-white text-xl">{props.id + 1}</p>
                 </div>
@@ -109,46 +111,54 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
           </div>
         </div>
         <div className="text-center mt-3">
-          {props.completed ? 
-            <span className="bg-green-500 text-white text-center font-normal text-sm px-4 py-2 rounded-md">Completado</span> 
-          : 
+          {props.completed ? (
+            <span className="bg-green-500 text-white text-center font-normal text-sm px-4 py-2 rounded-md">
+              Completado
+            </span>
+          ) : (
             <Link href={props.cta}>
-              <Button variant="primary" >Ir</Button>
+              <Button variant="primary">Ir</Button>
             </Link>
-          }
+          )}
         </div>
       </div>
     );
   };
-  
-  function formatListOfSteps(){
-    let list = data as any[]
-    let mappedList = [...list].map(elem => elem["evento"])
-    let l = steps.map(elem => ({
-        ...elem,
-        completed: mappedList.includes(elem["step_enum"]),
-      })
-    )
 
-    setSteps(l)
-    knowIfCanShowPopup(l)
+  function formatListOfSteps() {
+    let list = data as any[];
+    let mappedList = [...list].map((elem) => elem["evento"]);
+    let l = steps.map((elem) => ({
+      ...elem,
+      completed: mappedList.includes(elem["step_enum"]),
+    }));
+
+    setSteps(l);
   }
 
-  function knowIfCanShowPopup(list:any[]){
-    if(pathname!.includes("/dashboard") && list.every((elem:any)=> elem["completed"] )){
-      setIsVisible(false)
+  function knowIfCanShowPopup() {
+    if (
+      pathname!.includes("/dashboard") &&
+      steps.every((elem: any) => elem["completed"])
+    ) {
+      setIsVisible(false);
       return;
     }
-    setIsVisible(true)
+    if (pathname!.includes("/dashboard") && data?.length === 0) setIsVisible(true);
+    if (data?.length > 0) setIsVisible(true);
   }
 
-  useMemo(()=>{
-    if(successful) formatListOfSteps();
-  },[loading])
+  useMemo(() => {
+    knowIfCanShowPopup();
+  }, [steps, data]);
 
-  useMemo(()=>{
-    if(openPopup) getSteps(user?.accountId)(dispatch);
-  },[openPopup])
+  useMemo(() => {
+    if (successful) formatListOfSteps();
+  }, [loading, successful]);
+
+  useMemo(() => {
+    if (openPopup && user?.accountId) getSteps(user?.accountId)(dispatch);
+  }, [openPopup, user]);
 
   return (
     <div
@@ -164,7 +174,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
               icon="X"
               size={25}
               onClick={(e) => {
-                setIsVisible(false)
+                setIsVisible(false);
               }}
               className="cursor-pointer"
             />
@@ -183,7 +193,12 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
             </Step>
           </div>
 
-          <Footer user={user} customClick={()=>{ setIsVisible(false) }} />
+          <Footer
+            user={user}
+            customClick={() => {
+              setIsVisible(false);
+            }}
+          />
         </div>
       </div>
     </div>
