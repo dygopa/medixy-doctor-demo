@@ -33,7 +33,6 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
   const { getSteps, changeOpenPopup } = actions;
   const { data, error, successful, loading } = state.getSteps;
   const { data: openPopup } = state.openPopup;
-  const { successful: createdStep, loading: creatingStep } = state.createUserSteps;
   
   const pathname = usePathname()
 
@@ -132,25 +131,24 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     )
 
     setSteps(l)
+    knowIfCanShowPopup(l)
   }
 
-  function knowIfCanShowPopup(){
-    if(pathname!.includes("/dashboard") && steps.every((elem:any)=> elem["completed"] )){
+  function knowIfCanShowPopup(list:any[]){
+    if(pathname!.includes("/dashboard") && list.every((elem:any)=> elem["completed"] )){
       setIsVisible(false)
       return;
     }
     setIsVisible(true)
   }
 
-  useMemo(()=> knowIfCanShowPopup(),[steps])
-
   useMemo(()=>{
     if(successful) formatListOfSteps();
   },[loading])
 
   useMemo(()=>{
-    if(openPopup && user?.accountId) getSteps(user?.accountId)(dispatch);
-  },[openPopup, user])
+    if(openPopup) getSteps(user?.accountId)(dispatch);
+  },[openPopup])
 
   return (
     <div
