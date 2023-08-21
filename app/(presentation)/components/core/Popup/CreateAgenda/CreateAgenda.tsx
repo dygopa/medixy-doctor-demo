@@ -21,6 +21,7 @@ import { IService } from "domain/core/entities/serviceEntity";
 import { ILocality } from "domain/core/entities/localityEntity";
 import AlertComponent from "../../BaseComponents/Alert";
 import Tooltip from "../../BaseComponents/Tooltip/Tooltip";
+import { IStepByStepContext, StepByStepContext } from "../../StepByStepPopup/context/StepByStepContext";
 
 function CreateAgenda({
   cancelFuntion,
@@ -31,6 +32,10 @@ function CreateAgenda({
 }) {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
   const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
+
+  const { actions: actionsStep, dispatch: dispatchStep } =
+  useContext<IStepByStepContext>(StepByStepContext);
+const { createUserSteps } = actionsStep;
 
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
@@ -494,6 +499,12 @@ function CreateAgenda({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser]);
+
+  useMemo(() => {
+    if (successful) {
+      createUserSteps(user.userId ? parseInt(user.userId, 10) : 0, "SCHEDULE_CREATED")(dispatchStep);
+    }
+  }, [successful]);
 
   /* useMemo(() => {
     if (selectedLocality.id !== 0){

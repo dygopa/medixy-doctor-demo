@@ -109,27 +109,26 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       </div>
     );
   };
-  
-  function formatListOfSteps(){
-    console.log(data)
-    let list = data as any[]
-    let mappedList = [...list].map(elem => elem["evento"])
-    let l = steps.map(elem => ({
-        ...elem,
-        completed: mappedList.includes(elem["step_enum"]),
-      })
-    )
-      
-    setSteps(l)
-    setCanShowHelp(mappedList.length < 3)
+
+  function formatListOfSteps() {
+    console.log(data);
+    let list = data as any[];
+    let mappedList = [...list].map((elem) => elem["evento"]);
+    let l = steps.map((elem) => ({
+      ...elem,
+      completed: mappedList.includes(elem["step_enum"]),
+    }));
+
+    setSteps(l);
+    setCanShowHelp(mappedList.length < 3);
   }
 
-  useMemo(()=>{
-    if(successful) formatListOfSteps()
-  },[successful])
+  useMemo(() => {
+    if (successful) formatListOfSteps();
+  }, [successful]);
 
   useEffect(() => {
-    if(user?.accountId) getSteps(user?.accountId)(dispatch);
+    if (user?.accountId) getSteps(user?.accountId)(dispatch);
   }, [user]);
 
   return (
