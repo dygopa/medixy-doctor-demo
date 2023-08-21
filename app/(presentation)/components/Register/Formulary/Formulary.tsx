@@ -245,7 +245,7 @@ export default function Formulary() {
       setWrongEmail(false);
     }
 
-    formData = { ...(formData as Object), ...values };
+    formData = { ...(formData as Object), ...values, first_service: true ,};
     registerUser(formData)(dispatch);
     console.log(formData);
   };
@@ -279,8 +279,6 @@ export default function Formulary() {
         break;
     }
   };
-
-  console.log(formData);
 
   const setValuesFormData = () => {
     formData = { ...(formData as Object), ...values };

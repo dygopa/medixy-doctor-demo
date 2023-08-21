@@ -31,7 +31,7 @@ import AlertComponent from "(presentation)/components/core/BaseComponents/Alert"
 import {
   IStepByStepContext,
   StepByStepContext,
-} from "(presentation)/components/core/StepByStep/context/StepByStepContext";
+} from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import { ICountryLocation } from "domain/core/entities/countryEntity";
@@ -52,6 +52,11 @@ import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import Tooltip from "(presentation)/components/core/BaseComponents/Tooltip/Tooltip";
 import AddressAutocomplete from "(presentation)/components/core/BaseComponents/Autocomplete/AddressAutocomplete/AddressAutocomplete";
+import StepByStepPopup from "(presentation)/components/core/StepByStepPopup/StepByStepPopup";
+import {
+  AuthContext,
+  IAuthContext,
+} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 
 export default function WithoutSteps({
   userId,
@@ -60,6 +65,9 @@ export default function WithoutSteps({
   userId: string;
   accountId: string;
 }) {
+  const { state: authState } = useContext<IAuthContext>(AuthContext);
+  const { data } = authState.getUserAuthenticated;
+
   const { state, actions, dispatch } =
     useContext<ILocalitiesContext>(LocalitiesContext);
 
@@ -79,11 +87,20 @@ export default function WithoutSteps({
     successful: successFulServices,
   } = state.getUserBaseServices;
 
-  const { actions: actionsStep, dispatch: dispatchStep } =
-    useContext<IStepByStepContext>(StepByStepContext);
-  const { createUserSteps } = actionsStep;
+  const {
+    actions: actionsStep,
+    state: stateSteps,
+    dispatch: dispatchStep,
+  } = useContext<IStepByStepContext>(StepByStepContext);
+  const { createUserSteps, changeOpenPopup } = actionsStep;
+  const {
+    successful: stepSucessful,
+    error: stepNotCreated,
+    loading: creatingStep,
+  } = stateSteps.createUserSteps;
 
   const [services, setServices] = useState<any>([]);
+  const [successfulPopup, setSuccessfulPopup] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -162,9 +179,19 @@ export default function WithoutSteps({
   }
 
   useMemo(() => {
-    if (createUserLocalitySuccess) {
-      createUserSteps(accountId, "LOCATION_CREATED")(dispatchStep);
+    if (stepNotCreated) {
+      setSuccessfulPopup(true);
     }
+
+    if (stepSucessful) {
+      console.log("aca");
+      changeOpenPopup(true)(dispatchStep);
+    }
+  }, [stepSucessful, stepNotCreated]);
+
+  useMemo(() => {
+    if (createUserLocalitySuccess)
+      createUserSteps(accountId, "LOCATION_CREATED")(dispatchStep);
   }, [createUserLocalitySuccess]);
 
   useMemo(() => {
@@ -279,7 +306,7 @@ export default function WithoutSteps({
       />
       <SuccessfulComponent
         tittle="Agregado con exito"
-        show={createUserLocalitySuccess}
+        show={successfulPopup}
         description={
           "Tu consultorio se ha creado exitosamente. Ahora puedes configurar su agenda."
         }
