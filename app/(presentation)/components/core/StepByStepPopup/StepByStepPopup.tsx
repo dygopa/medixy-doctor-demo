@@ -73,7 +73,10 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
         <div className="flex justify-center text-center mb-4">
           <div>
             <div className=" flex justify-center mb-3">
-              <div className="bg-primary rounded-full w-[50px] h-[50px]">
+              <div className={twMerge([
+                "bg-transparent rounded-full w-[50px] h-[50px]",
+                props.completed ? "bg-green-500" : "bg-primary"
+              ])}>
                 <div className="flex justify-center align-middle items-center h-full">
                   <p className="text-white text-xl">{props.id + 1}</p>
                 </div>
@@ -104,7 +107,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
           </div>
         </div>
         <div className="text-center mt-3">
-          <Button variant="primary">Ir</Button>
+          {props.completed ? <span className="bg-green-500 text-white text-center font-normal text-sm px-4 py-2 rounded-md">Completado</span> : <Button variant="primary">Ir</Button>}
         </div>
       </div>
     );
@@ -122,6 +125,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       
     setSteps(l)
     setCanShowHelp(mappedList.length < 3)
+    setIsVisible(mappedList.length < 3)
   }
 
   useMemo(()=>{
@@ -151,9 +155,9 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
               className="cursor-pointer"
             />
           </div>
-          <Header />
+          <Header user={user} />
 
-          <div className="grid gap-24 grid-cols-3 mt-8 mb-12">
+          <div className="grid gap-10 grid-cols-3 mt-8 mb-12">
             <Step props={steps[0]}>
               <Lucide icon="Building" />
             </Step>
@@ -165,7 +169,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
             </Step>
           </div>
 
-          <Footer />
+          <Footer user={user} customClick={()=>{ setIsVisible(false) }} />
         </div>
       </div>
     </div>

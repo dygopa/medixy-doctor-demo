@@ -1,4 +1,6 @@
-export default function Header() {
+import { IUser } from "domain/core/entities/userEntity";
+
+export default function Header({user}:{user:IUser}) {
   return (
     <div>
       <div className="text-center mb-3">
@@ -9,7 +11,7 @@ export default function Header() {
 
       <div className="text-center mb-6">
         <h3 className="text-[25px] font-bold" style={{ color: "#000066" }}>
-          Dr. Luis Enrique Gonzalez
+          {user.sex === 1 ? "Dra." : "Dr."} {`${user.names} ${user.firstName} ${user.lastName}`}
         </h3>
       </div>
 
