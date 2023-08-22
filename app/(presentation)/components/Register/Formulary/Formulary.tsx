@@ -53,7 +53,7 @@ export default function Formulary() {
     first_lastname: formData?.first_lastname ?? "",
     second_lastname: formData?.second_lastname ?? "",
     phone_number: formData?.phone_number ?? "",
-    curp: formData?.curp ?? "",
+    //curp: formData?.curp ?? "",
   });
 
   const [errors, setErrors] = useState({
@@ -64,7 +64,7 @@ export default function Formulary() {
     first_lastname: "",
     second_lastname: "",
     phone_number: "",
-    curp: "",
+    //curp: "",
   });
 
   const [wrongEmail, setWrongEmail] = useState(false);
@@ -195,7 +195,7 @@ export default function Formulary() {
     }
   };
 
-  const handleCURP = (value: string) => {
+  /*const handleCURP = (value: string) => {
     setValues({ ...values, curp: value.trim() });
     if (values.curp.length <= 9) {
       setErrors({ ...errors, curp: "El CURP debe tener más de 10 caracteres" });
@@ -203,7 +203,7 @@ export default function Formulary() {
     } else {
       setErrors({ ...errors, curp: "" });
     }
-  };
+  };*/
 
   const validForm = () => {
     let errorsFieldsCount = 0;
@@ -231,7 +231,7 @@ export default function Formulary() {
     values.names === "" && list.push("names");
     values.first_lastname === "" && list.push("first_lastname");
     values.phone_number === "" && list.push("phone_number");
-    values.curp === "" && list.push("curp");
+    //values.curp === "" && list.push("curp");
 
     setListOfErrors(list);
     if (list.length > 0) {
@@ -245,7 +245,7 @@ export default function Formulary() {
       setWrongEmail(false);
     }
 
-    formData = { ...(formData as Object), ...values, first_service: true ,};
+    formData = { /*...(formData as Object),*/ ...values, first_service: true ,};
     registerUser(formData)(dispatch);
     console.log(formData);
   };
@@ -320,7 +320,7 @@ export default function Formulary() {
           Estas a un paso de completar la creación de tu cuenta
         </p>
       </div>
-      <div className="relative w-full">
+      {/*<div className="relative w-full">
         <FormInput
           type="text"
           className="w-full py-3 pr-10 bg-white"
@@ -343,7 +343,7 @@ export default function Formulary() {
             ¿No sabes cual es tu CURP? Visita este sitio
           </Link>
         </div>
-      </div>
+        </div>*/}
       <div className="relative w-full">
         <FormInput
           type="text"
