@@ -38,8 +38,12 @@ import {
 import { FiCheck } from "react-icons/fi";
 import { NumericFormat } from "react-number-format";
 import AutocompleteInput from "(presentation)/components/core/Autocomplete";
+import {
+  IStepByStepContext,
+  StepByStepContext,
+} from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 
-export default function Formulary({ userId }: { userId: string }) {
+export default function Formulary({ userId, accountId }: { userId: string; accountId: string; }) {
   const pathname = usePathname();
 
   const { state, actions, dispatch } =
@@ -60,8 +64,15 @@ export default function Formulary({ userId }: { userId: string }) {
     successful: successfulDelete,
     error: errorDelete,
   } = state.deleteService;
+  
+  const { actions: actionsStep, state: stateSteps, dispatch: dispatchStep } =
+    useContext<IStepByStepContext>(StepByStepContext);
+  const { createUserSteps, changeOpenPopup } = actionsStep;
+  const {error: stepNotCreated, loading: creatingStep, successful: creatingStepSuccessful } = stateSteps.createUserSteps
 
+  const [successfulPopup, setSuccessfulPopup] = useState(false);
   const [loadedAPI, setLoadedAPI] = useState(false);
+
   const [formData, setFormData] = useState<any>({
     name: "",
     service_category_id: 0,
@@ -113,6 +124,21 @@ export default function Formulary({ userId }: { userId: string }) {
       },
     });
   };
+
+  useMemo(()=>{
+    if(stepNotCreated){
+      setSuccessfulPopup(true)
+    }
+    
+    if(creatingStepSuccessful) {
+      changeOpenPopup(true)(dispatchStep)
+    }
+  },[stepNotCreated, creatingStepSuccessful ])
+
+  useMemo(() => {
+    if (successfulUpdate) createUserSteps(accountId, "SERVICE_UPDATED")(dispatchStep);
+  }, [successfulUpdate]);
+
   useEffect(() => {
     if (successful) {
       setFormDataValues();

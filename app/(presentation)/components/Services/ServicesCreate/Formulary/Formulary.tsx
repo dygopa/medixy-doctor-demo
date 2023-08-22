@@ -26,10 +26,6 @@ import {
   ILocalityService,
 } from "domain/core/entities/localityEntity";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
-import {
-  IStepByStepContext,
-  StepByStepContext,
-} from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 import { MdOutlineMedicalServices } from "react-icons/md";
 import Image from "next/image";
 import { b64toBlob } from "(presentation)/(helper)/files/filesHelper";
@@ -78,12 +74,6 @@ export default function Formulary({
 
   const { data: categories } = state.getCategories;
 
-  const { actions: actionsStep, state: stateSteps, dispatch: dispatchStep } =
-    useContext<IStepByStepContext>(StepByStepContext);
-  const { createUserSteps, changeOpenPopup } = actionsStep;
-  const {error: stepNotCreated, loading: creatingStep, successful: creatingStepSuccessful } = stateSteps.createUserSteps
-
-  const [successfulPopup, setSuccessfulPopup] = useState(false);
   const [loadedListOfTimes, setLoadedListOfTimes] = useState(false);
   const [loadedAPI, setLoadedAPI] = useState(false);
 
@@ -233,20 +223,6 @@ export default function Formulary({
     setLoadedAPI(true);
   };
 
-  useMemo(()=>{
-    if(stepNotCreated){
-      setSuccessfulPopup(true)
-    }
-    
-    if(creatingStepSuccessful) {
-      changeOpenPopup(true)(dispatchStep)
-    }
-  },[stepNotCreated, creatingStepSuccessful ])
-
-  useMemo(() => {
-    if (successFulCreationService) createUserSteps(accountId, "SERVICE_CREATED")(dispatchStep);
-  }, [successFulCreationService]);
-
   useMemo(() => {
     if (userId) getUserMedicalCenters(userId)(dispatch);
   }, [userId]);
@@ -278,7 +254,7 @@ export default function Formulary({
       />
       <SuccessfulComponent
         tittle="Servicio agregado con exito"
-        show={successfulPopup}
+        show={successFulCreationService}
         description={
           "Tu servicio se ha creado exitosamente. Ahora podrás asociar este servicio a uno de tus consultorios"
         }

@@ -46,7 +46,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       step_enum: "LOCATION_CREATED",
       completed: false,
       description:
-        "Agrega y edita los consultorios donde ofreceras todos tues servicios",
+        "Agrega y edita los consultorios donde ofreceras todos tus servicios",
       cta: "/localities/create",
     },
     {
@@ -55,17 +55,17 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       step_enum: "SCHEDULE_CREATED",
       completed: false,
       description:
-        "Configura los posibles horarios de atención o ventanas de atención para un servicio o varios",
+        "Configura los posibles horarios de atención o ventanas de atención en tu consultorio",
       cta: "/schedule/configuration",
     },
     {
       id: 2,
       title: "Administrar tus servicios",
-      step_enum: "SERVICE_CREATED",
+      step_enum: "SERVICE_UPDATED",
       completed: false,
       description:
-        "Administra los servicios que ofrecerás a todos tus pacientes",
-      cta: "/services/new-service",
+        "Actualiza tu servicio para empezar a operar",
+      cta: "/services",
     },
   ]);
 

@@ -16,7 +16,7 @@ export default function ServiceViewIndex() {
   return (
     <div className="py-5">
       <ServicesProvider>
-        <Formulary userId={loading ? "" : data.userId} />
+        <Formulary accountId={loading ? "" : data.accountId} userId={loading ? "" : data.userId} />
       </ServicesProvider>
     </div>
   );
