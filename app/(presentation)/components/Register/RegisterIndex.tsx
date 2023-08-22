@@ -27,7 +27,7 @@ export default function RegisterIndex() {
       </div>
       <div className="w-full px-[7%] h-full flex flex-col items-center justify-start gap-[2.5rem] mx-auto py-[3rem]">
         <StepsProvider>
-          <Steps />
+          {/*<Steps />*/}
           <RegisterProvider>
             <Decider />
           </RegisterProvider>
