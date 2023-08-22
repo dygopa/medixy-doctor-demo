@@ -577,21 +577,6 @@ export default function Formulary({
                     {errors.postal_code}
                   </span>
                 )}
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    CLUES
-                  </p>
-                  <FormInput
-                    type={"text"}
-                    placeholder="Escribe el CLUES del consultorio..."
-                    min={0}
-                    value={formData?.clues}
-                    className="form-control lg:w-[70%]"
-                    onChange={(e: any) => {
-                      setFormData({ ...formData, clues: e.target.value });
-                    }}
-                  />
-                </div>
 
                 <AddressAutocomplete
                   formData={formData}
@@ -720,6 +705,21 @@ export default function Formulary({
                     className="form-control lg:w-[70%]"
                     onChange={(e: any) => {
                       setFormData({ ...formData, street: e.target.value });
+                    }}
+                  />
+                </div>
+                <div className="lg:flex justify-between items-start relative w-full gap-3">
+                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+                    CLUES
+                  </p>
+                  <FormInput
+                    type={"text"}
+                    placeholder="Escribe el CLUES del consultorio..."
+                    min={0}
+                    value={formData?.clues}
+                    className="form-control lg:w-[70%]"
+                    onChange={(e: any) => {
+                      setFormData({ ...formData, clues: e.target.value });
                     }}
                   />
                 </div>
