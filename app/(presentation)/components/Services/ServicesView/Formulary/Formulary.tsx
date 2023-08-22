@@ -219,7 +219,7 @@ export default function Formulary({ userId, accountId }: { userId: string; accou
       />
       <SuccessfulComponent
         tittle="Actualizado con exito"
-        show={successfulUpdate}
+        show={successfulPopup}
         description={"Tu servicio se ha actualizado exitosamente"}
         textButtonPrincipal={"Ir a lista de servicios"}
         onClickButtonPrincipal={onClickButtonPrincipal}
