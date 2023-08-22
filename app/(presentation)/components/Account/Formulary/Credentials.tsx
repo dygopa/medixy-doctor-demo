@@ -10,10 +10,6 @@ import { IUser } from "domain/core/entities/userEntity";
 import { FiPlus, FiSave, FiTrash } from "react-icons/fi";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
-import {
-  IStepByStepContext,
-  StepByStepContext,
-} from "(presentation)/components/core/StepByStep/context/StepByStepContext";
 import AutocompleteInput from "(presentation)/components/core/Autocomplete";
 import { twMerge } from "tailwind-merge";
 

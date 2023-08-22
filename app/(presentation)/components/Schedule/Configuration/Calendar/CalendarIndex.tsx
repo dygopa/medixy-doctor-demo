@@ -203,6 +203,9 @@ export default function CalendarIndex() {
     if (createStepSuccessful){
       changeOpenPopup(true)(dispatchStep)
     }
+    if(stepNotCreated){
+      setSuccessfulPopup(true)
+    }
   },[stepNotCreated, createStepSuccessful])
 
   useMemo(() => {
