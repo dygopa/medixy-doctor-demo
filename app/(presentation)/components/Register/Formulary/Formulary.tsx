@@ -246,7 +246,7 @@ export default function Formulary() {
     }
 
     formData = { /*...(formData as Object),*/ ...values, first_service: true ,};
-    //registerUser(formData)(dispatch);
+    registerUser(formData)(dispatch);
     console.log(formData);
   };
 
