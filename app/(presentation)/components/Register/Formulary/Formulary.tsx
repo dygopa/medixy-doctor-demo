@@ -103,7 +103,7 @@ export default function Formulary() {
       setErrors((previousState) => {
         return {
           ...previousState,
-          names: "El nombre del paciente es obligatorio",
+          names: "El nombre es obligatorio",
         };
       });
       return true;
@@ -112,7 +112,7 @@ export default function Formulary() {
       setErrors((previousState) => {
         return {
           ...previousState,
-          names: "El nombre del paciente solo debe incluir letras",
+          names: "El nombre solo debe incluir letras",
         };
       });
       return true;
@@ -127,7 +127,7 @@ export default function Formulary() {
       setErrors((previousState) => {
         return {
           ...previousState,
-          first_lastname: "El apellido del paciente es obligatorio",
+          first_lastname: "El apellido es obligatorio",
         };
       });
       return true;
@@ -136,7 +136,7 @@ export default function Formulary() {
       setErrors((previousState) => {
         return {
           ...previousState,
-          first_lastname: "El apellido del paciente solo debe incluir letras",
+          first_lastname: "El apellido solo debe incluir letras",
         };
       });
       return true;
@@ -151,7 +151,7 @@ export default function Formulary() {
       setErrors((previousState) => {
         return {
           ...previousState,
-          phone_number: "El teléfono del paciente es obligatorio",
+          phone_number: "El teléfono es obligatorio",
         };
       });
       return true;
@@ -160,7 +160,7 @@ export default function Formulary() {
       setErrors((previousState) => {
         return {
           ...previousState,
-          phone_number: "El teléfono del paciente solo lleva números",
+          phone_number: "El teléfono solo lleva números",
         };
       });
       return true;
