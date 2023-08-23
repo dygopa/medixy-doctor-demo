@@ -10,9 +10,9 @@ export default function Decider() {
 
     return(
         <>
-            {/*data === 0 && <FormularySpeciality/>*/}
+            {data === 0 && <FormularySpeciality/>}
             {/*data === 1 && <FormularyLocality/>*/}
-            {data === 0 && <Formulary/>}
+            {data === 1 && <Formulary/>}
         </>
     )
 
