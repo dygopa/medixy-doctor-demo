@@ -27,6 +27,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
     lastname: "",
     secondLastname: "",
     age: "",
+    shortDescription: "",
   });
 
   const validForm = () => {
@@ -41,6 +42,8 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
     if (errors.secondLastname.length > 0) errorsFieldsCount++;
 
     if (errors.age.length > 0) errorsFieldsCount++;
+
+    if (errors.shortDescription.length > 0) errorsFieldsCount++;
 
     return errorsFieldsCount;
   };
@@ -64,7 +67,8 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
       birth_country: account.country.trim() ?? "",
       sex: account.sex ?? 0,
       person_type: account.personType ?? 0,
-      about_me: account.aboutMe.trim() ?? "",
+      about_me: account.aboutMe ?? "",
+      short_description: account.shortDescription.length > 0 ? account.shortDescription : null,
       website_url: account.websiteUrl.trim() ?? "",
       address: account.address.trim() ?? "",
       pwa_profession_id: account.pwaProfressionId ?? "",
@@ -124,7 +128,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
         />
         <Credentials account={account} setAccount={setAccount} />
         <Contact account={account} setAccount={setAccount} />
-        <AboutMe account={account} setAccount={setAccount} />
+        <AboutMe account={account} setAccount={setAccount} errors={errors} setErrors={setErrors} />
       </div>
     </div>
   );

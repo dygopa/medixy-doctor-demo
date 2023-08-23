@@ -15,6 +15,7 @@ export interface IUser {
   avatar: string;
   address: string;
   aboutMe: string;
+  shortDescription: string;
   country: string;
   pwaProfressionId: number;
   pwaProfression: string;
