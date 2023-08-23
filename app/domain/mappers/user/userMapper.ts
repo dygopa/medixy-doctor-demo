@@ -17,7 +17,7 @@ export function userAPIToMap(data: any): IUser {
     avatar: data?.avatar_url ?? "",
     address: data?.address ?? "",
     aboutMe: data?.about_me ?? "",
-    shortDescription: data?.short_description ?? "",
+    shortDescription: data?.short_description ?? null,
     country: data?.birth_country ?? "",
     personType: data?.person_type ?? 0,
     role: data?.role ?? "",

@@ -34,11 +34,9 @@ export default function AboutMe ({account, setAccount, errors, setErrors}: IForm
           <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
             Descripción de la oferta
           </p>
-          <FormInput
-            type={"text"}
-            placeholder="Escribe tu nombre..."
-            min={0}
-            defaultValue={account?.shortDescription}
+          <FormTextarea
+            placeholder="Escribe una descripción de tu oferta"
+            value={account?.shortDescription}
             className="form-control w-full"
             onChange={(e: any) => handleShortDescription(e.target.value)}
           />
