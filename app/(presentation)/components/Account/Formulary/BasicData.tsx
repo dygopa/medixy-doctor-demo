@@ -26,6 +26,7 @@ interface IFormularyProps {
     lastname: string;
     secondLastname: string;
     age: string;
+    shortDescription: string;
   };
   setErrors: any;
 }
