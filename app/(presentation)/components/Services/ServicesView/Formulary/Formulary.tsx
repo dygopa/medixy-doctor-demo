@@ -139,7 +139,10 @@ export default function Formulary({ userId, accountId }: { userId: string; accou
   },[stepNotCreated, creatingStepSuccessful ])
 
   useEffect(() => {
-    if(!createdStep) createUserSteps(accountId, "SERVICE_UPDATED")(dispatchStep);
+    if(!createdStep){
+      createUserSteps(accountId, "SERVICE_UPDATED")(dispatchStep);
+      setCreatedStep(true)
+    }
   }, [createdStep]);
 
   useEffect(() => {
