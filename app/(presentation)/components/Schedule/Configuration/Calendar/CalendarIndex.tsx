@@ -131,7 +131,7 @@ export default function CalendarIndex() {
               prestas
             </p>
           </div>
-          <Link className="w-full block" href={"/localities/create"}>
+          <Link className="w-full block" href="/localities/create">
             <Button className="w-full" variant="primary">
               Crear consultorio
             </Button>
@@ -235,9 +235,7 @@ export default function CalendarIndex() {
           {user !== null && user.userId ? (
             <>
               {localitiesSuccessful &&
-              [...(localities as any[])].length > 0 &&
-              servicesSuccessful &&
-              [...(services as any[])].length > 0 ? (
+              [...(localities as any[])].length > 0 ? (
                 <Calendar
                   navLinkDayClick={(date: Date, jsEvent: UIEvent) => {
                     jsEvent.preventDefault();
@@ -253,7 +251,6 @@ export default function CalendarIndex() {
               ) : (
                 <div className="w-full h-full flex justify-center items-center flex-wrap gap-5">
                   <EmptyLocalities />
-                  <EmptyServices />
                 </div>
               )}
             </>

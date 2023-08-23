@@ -188,25 +188,16 @@ export default function Navigator() {
           <p>Mantén un seguimiento de tus citas médicos y asegúrate de estar preparado para cada consulta</p>
         </div>
         {
-          (
-            (localities && ([...(localities as any[])].length > 0))
-            &&
-            (services && ([...(services as any[])].length > 0))
-          )
+          (localities && ([...(localities as any[])].length > 0))
           &&
           <Button onClick={()=>{ changeStatusPopup(true)(dispatch); changeTypePopup(1)(dispatch) }} variant="primary" type="button" className="w-full mt-2 md:mt-0 md:w-auto">
-            <Lucide icon="Plus" className="w-5 h-5 mr-2" />Nueva venta de atención
+            <Lucide icon="Plus" className="w-5 h-5 mr-2" />Nueva ventana de atención
           </Button>
         }
       </div>
       <div className="w-full flex flex-row justify-center flex-wrap lg:justify-start items-center gap-2 h-full">
         {
-          (
-            (localities && ([...(localities as any[])].length > 0)) 
-            && 
-            (services && ([...(services as any[])].length > 0))
-          ) 
-          &&
+          (localities && ([...(localities as any[])].length > 0)) &&
         <>
           <div className="w-full flex lg:w-[25%] lg:h-full">
             <SpecialSelect
@@ -222,7 +213,8 @@ export default function Navigator() {
             />
           </div>
         </>}
-        {((baseAttentionWindowsSuccessful && ([...(baseAttentionWindows as any[])].length > 0)) && (localities && ([...(localities as any[])].length > 0))) && <div className="w-full flex lg:w-[25%] lg:h-full">
+        {((baseAttentionWindowsSuccessful && ([...(baseAttentionWindows as any[])].length > 0)) && (localities && ([...(localities as any[])].length > 0))) && 
+        <div className="w-full flex lg:w-[25%] lg:h-full">
           <SpecialSelectSchedule
             emptySelectedValue={{
               title: "Horario",
