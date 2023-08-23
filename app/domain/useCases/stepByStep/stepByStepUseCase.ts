@@ -1,9 +1,13 @@
+import { IService } from 'domain/core/entities/serviceEntity';
 import { IUser } from 'domain/core/entities/userEntity';
 import { AuthFailure } from 'domain/core/failures/auth/authFailure';
+import { ServiceFailure } from 'domain/core/failures/service/serviceFailure';
+import { ServicesRepository } from 'infrastructure/repositories/service/serviceRepository';
 import { StepByStepRepository } from 'infrastructure/repositories/stepByStep/stepByStepRepository';
 
 export default class StepByStepUseCase {
     private _repository: StepByStepRepository = new StepByStepRepository();
+    private _serviceRepository: ServicesRepository = new ServicesRepository()
 
     async createUserSteps(id:string, event: string): Promise<any> {
         try {
@@ -28,5 +32,4 @@ export default class StepByStepUseCase {
             throw error;
         }
     }
-
 }
