@@ -37,12 +37,12 @@ import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import { NumericFormat } from "react-number-format";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
-import AutocompleteInput from "(presentation)/components/core/Autocomplete";
 import StepByStepPopup from "(presentation)/components/core/StepByStepPopup/StepByStepPopup";
 import {
   AuthContext,
   IAuthContext,
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import AutocompleteInputServices from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputServices/AutocompleteInputServices";
 
 export default function Formulary({
   userId,
@@ -381,27 +381,31 @@ export default function Formulary({
                     <span className="text-primary font-bold">*</span>
                   </p>
                   <div className="lg:w-[70%]">
-                    <AutocompleteInput
-                      onClick={(item) =>
-                        setFormData({
-                          ...formData,
-                          service_category_id: item.id,
-                          service_category_name: item.name,
-                          service_category_doctor_id: item.doctorId,
-                        })
-                      }
-                      onChange={(item) =>
-                        setFormData({
-                          ...formData,
-                          service_category_id: 0,
-                          service_category_name: item,
-                          service_category_doctor_id: userId,
-                        })
-                      }
-                      doctorId={userId ? parseInt(userId, 10) : 0}
-                      typeAutocomplete="SERVICES_CATEGORIES"
-                      className="form-control w-full"
-                    />
+                    {userId && (
+                      <AutocompleteInputServices
+                        defaultValue={formData.service_category_name}
+                        onClick={(item) =>
+                          setFormData({
+                            ...formData,
+                            service_category_id: item.id,
+                            service_category_name: item.name,
+                            service_category_doctor_id: userId
+                              ? parseInt(userId, 10)
+                              : 0,
+                          })
+                        }
+                        onChange={(item) =>
+                          setFormData({
+                            ...formData,
+                            service_category_id: 0,
+                            service_category_name: item,
+                            service_category_doctor_id: userId,
+                          })
+                        }
+                        doctorId={userId ? parseInt(userId, 10) : 0}
+                        className="form-control w-full"
+                      />
+                    )}
                   </div>
                   {/* <FormSelect
                     value={formData.service_category_id}

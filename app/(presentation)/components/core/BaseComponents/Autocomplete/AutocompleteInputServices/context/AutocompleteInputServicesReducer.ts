@@ -1,32 +1,32 @@
-export const AutocompleteReducer = (state: any, action: any) => {
+export const AutocompleteInputServicesReducer = (state: any, action: any) => {
     switch (action.type) {  
-      case 'GET_DATA_LOADING' :
+      case 'GET_SERVICES_CATEGORIES_LOADING' :
         return {
           ...state,
-          data: {
-            ...state.data,
+          servicesCategories: {
+            ...state.servicesCategories,
             data: [],
             loading: true,
             successful: false,
             error: null,
           },
         };
-      case 'GET_DATA_SUCCESSFUL' :
+      case 'GET_SERVICES_CATEGORIES_SUCCESSFUL' :
         return {
           ...state,
-          data: {
-            ...state.data,
+          servicesCategories: {
+            ...state.servicesCategories,
             data: action.payload.data,
             loading: false,
             successful: true,
             error: null,
           },
         };
-      case 'GET_DATA_ERROR' :
+      case 'GET_SERVICES_CATEGORIES_ERROR' :
         return {
           ...state,
-          data: {
-            ...state.data,
+          servicesCategories: {
+            ...state.servicesCategories,
             data: [],
             loading: false,
             successful: false,

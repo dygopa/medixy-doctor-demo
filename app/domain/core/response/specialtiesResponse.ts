@@ -8,6 +8,11 @@ export interface IGetSpecialtiesResponse {
     }
 }
 
+export interface IGetSpecialtyResponse {
+    data: ISpecialty;
+    metadata: {}
+}
+
 export interface ICreateSpecialtyResponse {
     data: ISpecialty;
     metadata: {}
