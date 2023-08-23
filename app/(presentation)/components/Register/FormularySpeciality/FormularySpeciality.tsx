@@ -36,7 +36,6 @@ export default function FormularySpeciality() {
 
   const [values, setValues] = useState({
     pwaProfessionId: 0,
-    specialty_id: 0
   });
 
   const [errors, setErrors] = useState({
@@ -61,7 +60,7 @@ export default function FormularySpeciality() {
       setErrors({ ...errors, curp: "" });
       formData = { ...(formData as Object), 
         pwa_profession_id: values.pwaProfessionId,
-        specialty_id: values.specialty_id,
+        //specialty_id: values.specialty_id,
       };
       updateRegisterData(formData)(dispatch);
       changeStep(0)(stepDispatch);
@@ -78,9 +77,6 @@ export default function FormularySpeciality() {
     setInitialsValues();
     loadAPI();
   }, [loadedAPI]);
-
-
-  console.log(values)
 
   return (
     <div className="lg:w-[60%] md:w-[70%] lg:px-20 md:px-14 sm:px-20 px-8 w-full h-fit flex flex-col justify-between items-center gap-6">
@@ -112,7 +108,7 @@ export default function FormularySpeciality() {
           <p className="text-red-500">{errors["curp"]}</p>
         )}
       </div>
-      <div className="relative w-full text-slate-500">
+      {/*<div className="relative w-full text-slate-500">
         <FormSelect
           className="form-control w-full bg-white"
           defaultValue={formData.specialty_id}
@@ -130,12 +126,12 @@ export default function FormularySpeciality() {
               </option>
             ))}
         </FormSelect>
-      </div>
+            </div>*/}
 
       <div className="w-full text-center">
         <Button
           onClick={() => onSubmit()}
-          disabled={values.pwaProfessionId === 0 || values.specialty_id===0}
+          disabled={values.pwaProfessionId === 0}
           variant="primary"
           type="submit"
           className="mt-4 w-full"

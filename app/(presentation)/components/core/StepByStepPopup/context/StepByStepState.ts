@@ -1,9 +1,12 @@
+import { IService } from "domain/core/entities/serviceEntity";
 import { AuthFailure } from "domain/core/failures/auth/authFailure";
+import { ServiceFailure } from "domain/core/failures/service/serviceFailure";
 
 export interface IStepByStepState {
   getSteps: IStepsState;
   createUserSteps: IStepsState;
   openPopup: IPopupState;
+  getService: IGetServiceState;
 }
 
 interface IStepsState {
@@ -18,6 +21,13 @@ interface IPopupState {
   loading: boolean;
   successful: boolean;
   error: AuthFailure | null; 
+}
+
+interface IGetServiceState {
+  data: IService[];
+  loading: boolean;
+  successful: boolean;
+  error: ServiceFailure | null; 
 }
 
 export const initialState: IStepByStepState = {
@@ -35,6 +45,12 @@ export const initialState: IStepByStepState = {
   },
   openPopup: {
     data: false,
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  getService: {
+    data: [],
     loading: false,
     successful: false,
     error: null,

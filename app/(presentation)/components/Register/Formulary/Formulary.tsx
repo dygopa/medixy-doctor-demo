@@ -245,7 +245,7 @@ export default function Formulary() {
       setWrongEmail(false);
     }
 
-    formData = { /*...(formData as Object),*/ ...values, first_service: true ,};
+    formData = { ...(formData as Object), ...values, first_service: true ,};
     registerUser(formData)(dispatch);
     console.log(formData);
   };
