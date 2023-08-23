@@ -37,13 +37,19 @@ import {
 } from "domain/core/entities/localityEntity";
 import { FiCheck } from "react-icons/fi";
 import { NumericFormat } from "react-number-format";
-import AutocompleteInput from "(presentation)/components/core/Autocomplete";
 import {
   IStepByStepContext,
   StepByStepContext,
 } from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
+import AutocompleteInputServices from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputServices/AutocompleteInputServices";
 
-export default function Formulary({ userId, accountId }: { userId: string; accountId: string; }) {
+export default function Formulary({
+  userId,
+  accountId,
+}: {
+  userId: string;
+  accountId: string;
+}) {
   const pathname = usePathname();
 
   const { state, actions, dispatch } =
@@ -64,11 +70,18 @@ export default function Formulary({ userId, accountId }: { userId: string; accou
     successful: successfulDelete,
     error: errorDelete,
   } = state.deleteService;
-  
-  const { actions: actionsStep, state: stateSteps, dispatch: dispatchStep } =
-    useContext<IStepByStepContext>(StepByStepContext);
+
+  const {
+    actions: actionsStep,
+    state: stateSteps,
+    dispatch: dispatchStep,
+  } = useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps, changeOpenPopup } = actionsStep;
-  const {error: stepNotCreated, loading: creatingStep, successful: creatingStepSuccessful } = stateSteps.createUserSteps
+  const {
+    error: stepNotCreated,
+    loading: creatingStep,
+    successful: creatingStepSuccessful,
+  } = stateSteps.createUserSteps;
 
   const [successfulPopup, setSuccessfulPopup] = useState(false);
   const [loadedAPI, setLoadedAPI] = useState(false);
@@ -126,22 +139,22 @@ export default function Formulary({ userId, accountId }: { userId: string; accou
     });
   };
 
-  useMemo(()=>{
-    if(stepNotCreated){
-      setSuccessfulPopup(true)
+  useMemo(() => {
+    if (stepNotCreated) {
+      setSuccessfulPopup(true);
     }
-    
-    if(creatingStepSuccessful) {
+
+    if (creatingStepSuccessful) {
       setTimeout(() => {
-        changeOpenPopup(true)(dispatchStep)
-      }, 3000)
+        changeOpenPopup(true)(dispatchStep);
+      }, 3000);
     }
-  },[stepNotCreated, creatingStepSuccessful ])
+  }, [stepNotCreated, creatingStepSuccessful]);
 
   useEffect(() => {
-    if(!createdStep){
+    if (!createdStep) {
       createUserSteps(accountId, "SERVICE_UPDATED")(dispatchStep);
-      setCreatedStep(true)
+      setCreatedStep(true);
     }
   }, [createdStep]);
 
@@ -383,28 +396,31 @@ export default function Formulary({ userId, accountId }: { userId: string; accou
                   <span className="text-primary font-bold">*</span>
                 </p>
                 <div className="lg:w-[70%]">
-                  <AutocompleteInput
-                    defaultValue={formData.service_category_name}
-                    onClick={(item) =>
-                      setFormData({
-                        ...formData,
-                        service_category_id: item.id,
-                        service_category_name: item.name,
-                        service_category_doctor_id: item.doctorId,
-                      })
-                    }
-                    onChange={(item) =>
-                      setFormData({
-                        ...formData,
-                        service_category_id: 0,
-                        service_category_name: item,
-                        service_category_doctor_id: userId,
-                      })
-                    }
-                    doctorId={userId ? parseInt(userId, 10) : 0}
-                    typeAutocomplete="SERVICES_CATEGORIES"
-                    className="form-control w-full"
-                  />
+                  {userId && (
+                    <AutocompleteInputServices
+                      defaultValue={formData.service_category_name}
+                      onClick={(item) =>
+                        setFormData({
+                          ...formData,
+                          service_category_id: item.id,
+                          service_category_name: item.name,
+                          service_category_doctor_id: userId
+                            ? parseInt(userId, 10)
+                            : 0,
+                        })
+                      }
+                      onChange={(item) =>
+                        setFormData({
+                          ...formData,
+                          service_category_id: 0,
+                          service_category_name: item,
+                          service_category_doctor_id: userId,
+                        })
+                      }
+                      doctorId={userId ? parseInt(userId, 10) : 0}
+                      className="form-control w-full"
+                    />
+                  )}
                 </div>
               </div>
 

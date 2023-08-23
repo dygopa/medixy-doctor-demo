@@ -10,8 +10,8 @@ import { IUser } from "domain/core/entities/userEntity";
 import { FiPlus, FiSave, FiTrash } from "react-icons/fi";
 import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
-import AutocompleteInput from "(presentation)/components/core/Autocomplete";
 import { twMerge } from "tailwind-merge";
+import AutocompleteInputSpecialties from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputSpecialties/AutocompleteInputSpecialties";
 
 export default function Credentials({
   account,
@@ -108,20 +108,19 @@ export default function Credentials({
       institution_name,
     });
 
-    const [canUpdate, setCanUpdate] = useState(false)
-    const [initialValue, setInitialValue] = useState(speciality)
+    const [canUpdate, setCanUpdate] = useState(false);
+    const [initialValue, setInitialValue] = useState(speciality);
 
-    function checkIfCanUpdate(){
-      setCanUpdate(false)
-      if(speciality.code !== initialValue.code) 
-        setCanUpdate(true)
-      if(speciality.institution_name !== initialValue.institution_name) 
-        setCanUpdate(true)
+    function checkIfCanUpdate() {
+      setCanUpdate(false);
+      if (speciality.code !== initialValue.code) setCanUpdate(true);
+      if (speciality.institution_name !== initialValue.institution_name)
+        setCanUpdate(true);
     }
 
-    useMemo(()=>{
-      checkIfCanUpdate()
-    },[speciality])
+    useMemo(() => {
+      checkIfCanUpdate();
+    }, [speciality]);
 
     return (
       <div className="w-full border bg-white grid lg:grid-cols-4 grid-cols-1 gap-3 p-4 rounded-md">
@@ -178,14 +177,14 @@ export default function Credentials({
           )}
           <FiSave
             onClick={() => {
-              if(canUpdate){
+              if (canUpdate) {
                 updateSpeciality(speciality as Object);
-                setInitialValue(speciality)
+                setInitialValue(speciality);
               }
             }}
             className={twMerge([
               "text-xl cursor-pointer text-green-500",
-              !canUpdate && "cursor-not-allowed text-slate-500/50" 
+              !canUpdate && "cursor-not-allowed text-slate-500/50",
             ])}
             title="Guardar"
           />
@@ -311,13 +310,16 @@ export default function Credentials({
           <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-start items-end gap-3">
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="input-label mb-2">Especialidad</p>
-              <AutocompleteInput
+              <AutocompleteInputSpecialties
+                defaultValue={formData.speciality_name}
                 onClick={(item) =>
                   setFormData({
                     ...formData,
                     specialty_id: item.id,
                     specialty_name: item.name,
-                    specialty_doctor_id: item.doctorId,
+                    specialty_doctor_id: account.userId
+                      ? parseInt(account.userId, 10)
+                      : 0,
                   })
                 }
                 onChange={(item) =>
@@ -329,7 +331,6 @@ export default function Credentials({
                   })
                 }
                 doctorId={account.userId ? parseInt(account.userId, 10) : 0}
-                typeAutocomplete="SPECIALTIES"
                 className="form-control w-full"
               />
 

@@ -1,6 +1,6 @@
 import { ISpecialty } from "domain/core/entities/specialtyEntity";
 import { SpecialtyFailure, specialtyFailuresEnum } from "domain/core/failures/specialty/specialtyFailure";
-import { ICreateSpecialtyResponse, IGetSpecialtiesResponse } from "domain/core/response/specialtiesResponse";
+import { ICreateSpecialtyResponse, IGetSpecialtiesResponse, IGetSpecialtyResponse } from "domain/core/response/specialtiesResponse";
 import { fromSpecialtySupabaseDocumentData, specialtySupabaseToMap } from "domain/mappers/specialty/supabase/specialtySupabaseMapper";
 import { supabase } from "infrastructure/config/supabase/supabase-client";
 
@@ -13,6 +13,7 @@ export default interface ISpecialtyRepository {
     generics?: boolean | null
     searchQuery?: string | null;
   }): Promise<IGetSpecialtiesResponse | SpecialtyFailure>;
+  getSpecialtyById(obj: { id: number }): Promise<IGetSpecialtyResponse | SpecialtyFailure>
   createSpecialty(specialty: ISpecialty): Promise<ICreateSpecialtyResponse | SpecialtyFailure>;
 }
 
@@ -42,7 +43,7 @@ export class SpecialtyRepository implements ISpecialtyRepository {
       }
 
       if (obj.doctorId) {
-        
+    
       }
 
       if (typeof obj.generics !== "undefined" && !obj.doctorId) {
@@ -82,6 +83,26 @@ export class SpecialtyRepository implements ISpecialtyRepository {
       }
 
       return JSON.parse(JSON.stringify(response));
+    } catch (error) {
+      const exception = error as any;
+      return new SpecialtyFailure(specialtyFailuresEnum.serverError);
+    }
+  }
+
+  async getSpecialtyById(obj: { id: number }): Promise<IGetSpecialtyResponse | SpecialtyFailure> {
+    try {
+      const res = await supabase.from("Especialidades").select("*", { count: "exact" }).eq("id", obj.id);
+
+      let specialty: ISpecialty = {} as ISpecialty;
+
+      if (res.data && res.data.length > 0) specialty = specialtySupabaseToMap(res.data[0]);
+
+      const response: IGetSpecialtyResponse = {
+        data: specialty,
+        metadata: {}
+      }
+
+      return response;
     } catch (error) {
       const exception = error as any;
       return new SpecialtyFailure(specialtyFailuresEnum.serverError);

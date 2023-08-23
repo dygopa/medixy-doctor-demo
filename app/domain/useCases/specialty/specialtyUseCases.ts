@@ -1,6 +1,6 @@
 import { ISpecialty } from "domain/core/entities/specialtyEntity";
 import { SpecialtyFailure } from "domain/core/failures/specialty/specialtyFailure";
-import { ICreateSpecialtyResponse, IGetSpecialtiesResponse } from "domain/core/response/specialtiesResponse";
+import { ICreateSpecialtyResponse, IGetSpecialtiesResponse, IGetSpecialtyResponse } from "domain/core/response/specialtiesResponse";
 import ISpecialtyRepository, { SpecialtyRepository } from "infrastructure/repositories/specialty/specialtyRepository";
 
 export default class SpecialtyUseCase {
@@ -22,6 +22,22 @@ export default class SpecialtyUseCase {
                 doctorId: obj.doctorId,
                 generics: obj.generics,
                 searchQuery: obj.searchQuery,
+            });
+
+            if (response instanceof SpecialtyFailure) throw response;
+
+            return response;
+        } catch (error) {
+            throw error;
+        }
+    }
+
+    async getSpecialtyById(obj: { 
+        id: number; 
+    }): Promise<IGetSpecialtyResponse> {
+        try {
+            const response = await this._repository.getSpecialtyById({
+                id: obj.id,
             });
 
             if (response instanceof SpecialtyFailure) throw response;
