@@ -72,6 +72,7 @@ export default function Formulary({ userId, accountId }: { userId: string; accou
 
   const [successfulPopup, setSuccessfulPopup] = useState(false);
   const [loadedAPI, setLoadedAPI] = useState(false);
+  const [createdStep, setCreatedStep] = useState(false);
 
   const [formData, setFormData] = useState<any>({
     name: "",
@@ -138,8 +139,8 @@ export default function Formulary({ userId, accountId }: { userId: string; accou
   },[stepNotCreated, creatingStepSuccessful ])
 
   useEffect(() => {
-    createUserSteps(accountId, "SERVICE_UPDATED")(dispatchStep);
-  });
+    if(!createdStep) createUserSteps(accountId, "SERVICE_UPDATED")(dispatchStep);
+  }, [createdStep]);
 
   useEffect(() => {
     if (successful) {
