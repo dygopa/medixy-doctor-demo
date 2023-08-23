@@ -29,11 +29,12 @@ interface IAlertProps {
 const StepByStepPopup = ({ user }: IAlertProps) => {
   const { state, actions, dispatch } =
     useContext<IStepByStepContext>(StepByStepContext);
-  const { getSteps, changeOpenPopup } = actions;
+  const { getSteps, changeOpenPopup, getService } = actions;
   const { data, error, successful, loading } = state.getSteps;
   const { data: openPopup } = state.openPopup;
   const { successful: createdStep, loading: creatingStep } =
     state.createUserSteps;
+  const { data: dataService, error: errorService, successful: successfulService } = state.getService;
 
   const pathname = usePathname();
 
@@ -68,6 +69,10 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       cta: "/services",
     },
   ]);
+
+  const [ formatList, setFormatList ] = useState(false)
+
+  console.log(dataService)
 
   const Step = ({ props, children }: { props: IStep; children: any }) => {
     return (
@@ -134,6 +139,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     }));
 
     setSteps(l);
+    setFormatList(true)
   }
 
   function knowIfCanShowPopup() {
@@ -156,8 +162,29 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     if (successful) formatListOfSteps();
   }, [loading, successful]);
 
+  const setStepService = () => {
+    if(dataService.length === 0) {
+      return
+    }
+    if(dataService.length ===  1){
+      let l = steps.map((elem) => ({
+        ...elem,
+        cta: elem.id === 2 ? `/services/${dataService[0].id}` : elem.cta,
+      }));
+      setSteps(l);
+      console.log("aca")
+    }
+  }
+
   useMemo(() => {
-    if (openPopup && user?.accountId) getSteps(user?.accountId)(dispatch);
+    if(successfulService && formatList) setStepService();
+  }, [successfulService, formatList, dataService]);
+
+  useMemo(() => {
+    if (openPopup && user?.accountId) { 
+      getSteps(user?.accountId)(dispatch);
+      getService(user?.userId)(dispatch);
+    }
   }, [openPopup, user]);
 
   return (

@@ -77,6 +77,39 @@ export const StepByStepReducer = (state: any, action: any) => {
             error: null,
           },
         };
+      case 'GET_SERVICE_SUCCESSFUL':
+        return {
+          ...state,
+          getService: {
+            ...state.getService,
+            data: action.payload.data,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+        };
+      case 'GET_SERVICE_LOADING':
+        return {
+          ...state,
+          getService: {
+            ...state.getService,
+            data: null,
+            loading: true,
+            successful: false,
+            error: null,
+          },
+        };
+      case 'GET_SERVICE_ERROR':
+        return {
+          ...state,
+          getService: {
+            ...state.getService,
+            data: null,
+            loading: false,
+            successful: false,
+            error: action.payload.error,
+          },
+        };
       default:
         return state;
     }

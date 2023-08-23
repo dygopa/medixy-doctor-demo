@@ -1,3 +1,5 @@
+import { IService } from "domain/core/entities/serviceEntity";
+import ServiceUseCase from "domain/useCases/service/serviceUseCase";
 import StepByStepUseCase from "domain/useCases/stepByStep/stepByStepUseCase";
 import { Dispatch } from "react";
 
@@ -5,6 +7,7 @@ export interface IStepByStepActions {
     getSteps: Function;
     createUserSteps: Function;
     changeOpenPopup: Function;
+    getService: Function;
 }
 
 const createUserSteps = (id:string, event:string) => async (dispatch: Dispatch<any>) => {
@@ -31,6 +34,18 @@ const getSteps = (id:string) => async (dispatch: Dispatch<any>) => {
   }
 }
 
+const getService = (id:number) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_SERVICE_LOADING" });
+
+    const res: IService[] = await new ServiceUseCase().getUserBaseServices(id);
+
+    dispatch({ type: "GET_SERVICE_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "GET_SERVICE_ERROR", payload: { error: error } });
+  }
+}
+
 const changeOpenPopup = (value:boolean) => async (dispatch: Dispatch<any>) => {
   dispatch({ type: "CHANGE_OPEN_POPUP", payload: { data: value } });
 }
@@ -38,5 +53,6 @@ const changeOpenPopup = (value:boolean) => async (dispatch: Dispatch<any>) => {
 export const actions: IStepByStepActions = {
   getSteps,
   createUserSteps,
-  changeOpenPopup
+  changeOpenPopup,
+  getService,
 }

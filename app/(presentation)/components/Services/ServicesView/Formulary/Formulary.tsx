@@ -131,13 +131,15 @@ export default function Formulary({ userId, accountId }: { userId: string; accou
     }
     
     if(creatingStepSuccessful) {
-      changeOpenPopup(true)(dispatchStep)
+      setTimeout(() => {
+        changeOpenPopup(true)(dispatchStep)
+      }, 3000)
     }
   },[stepNotCreated, creatingStepSuccessful ])
 
-  useMemo(() => {
-    if (successfulUpdate) createUserSteps(accountId, "SERVICE_UPDATED")(dispatchStep);
-  }, [successfulUpdate]);
+  useEffect(() => {
+    createUserSteps(accountId, "SERVICE_UPDATED")(dispatchStep);
+  });
 
   useEffect(() => {
     if (successful) {
@@ -219,7 +221,7 @@ export default function Formulary({ userId, accountId }: { userId: string; accou
       />
       <SuccessfulComponent
         tittle="Actualizado con exito"
-        show={successfulPopup}
+        show={successfulUpdate}
         description={"Tu servicio se ha actualizado exitosamente"}
         textButtonPrincipal={"Ir a lista de servicios"}
         onClickButtonPrincipal={onClickButtonPrincipal}
