@@ -61,7 +61,10 @@ export default function Formulary() {
       hasError = true;
     }
     if (!VALIDATE_EMAIL(values.email)) {
-      setErrors({ ...errors, email: "El email debe ser correcto" });
+      setErrors({
+        ...errors,
+        email: "El correo debe tener un formato válido",
+      });
       hasError = true;
     } else {
       errors["email"] = "";
@@ -129,7 +132,7 @@ export default function Formulary() {
         setErrors({
           ...errors,
           global:
-            "El servidor ha demorado mucho tiempo en responder, Vuelve a intentarlo más tarde.",
+            "El servidor ha demorado mucho tiempo en responder. Vuelve a intentarlo más tarde.",
         });
         break;
     }
@@ -189,7 +192,9 @@ export default function Formulary() {
             className="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
           />
           {errors.email.length > 0 && (
-            <span className="text-red-500">{errors.email}</span>
+            <div className="mt-1">
+              <span className="text-red-500">{errors.email}</span>
+            </div>
           )}
         </div>
         <div className="mt-2">
@@ -222,7 +227,9 @@ export default function Formulary() {
         <div className="mt-2">
           <span className="text-danger"></span>
           {errors.password.length > 0 && (
-            <span className="text-red-500">{errors.password}</span>
+            <div className="mt-1">
+              <span className="text-red-500">{errors.password}</span>
+            </div>
           )}
         </div>
       </div>
