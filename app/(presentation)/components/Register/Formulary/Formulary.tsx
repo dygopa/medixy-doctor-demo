@@ -160,7 +160,7 @@ export default function Formulary() {
       setErrors((previousState) => {
         return {
           ...previousState,
-          phone_number: "El teléfono solo lleva números",
+          phone_number: "El teléfono solo debe incluir números",
         };
       });
       return true;
@@ -173,7 +173,10 @@ export default function Formulary() {
     setValues({ ...values, email: value.trim() });
     if (values.email.length > 1) {
       if (!VALIDATE_EMAIL(values.email)) {
-        setErrors({ ...errors, email: "El email debe ser correcto" });
+        setErrors({
+          ...errors,
+          email: "El correo debe tener un formato válido",
+        });
         return true;
       }
     }
@@ -245,7 +248,7 @@ export default function Formulary() {
       setWrongEmail(false);
     }
 
-    formData = { ...(formData as Object), ...values, first_service: true ,};
+    formData = { ...(formData as Object), ...values, first_service: true };
     registerUser(formData)(dispatch);
     console.log(formData);
   };
@@ -353,10 +356,14 @@ export default function Formulary() {
           onChange={(e: any) => handlename(e.target.value, e)}
         />
         {errors.names.length > 0 && (
-          <span className="text-red-500 mt-3">{errors.names}</span>
+          <div className="mt-1">
+            <span className="text-red-500 mt-3">{errors.names}</span>
+          </div>
         )}
         {!errors.names && listOfErrors.includes("names") && (
-          <span className="text-red-500 mt-1">Campo requerido</span>
+          <div className="mt-1">
+            <span className="text-red-500 mt-1">Campo requerido</span>
+          </div>
         )}
       </div>
       <div className="relative w-full grid grid-cols-2 justify-between items-center gap-3">
@@ -369,11 +376,15 @@ export default function Formulary() {
             onChange={(e: any) => handlelastname(e.target.value)}
           />
           {errors.first_lastname.length > 0 && (
-            <span className="text-red-500">{errors.first_lastname}</span>
+            <div className="mt-1">
+              <span className="text-red-500">{errors.first_lastname}</span>
+            </div>
           )}
           {!errors.first_lastname &&
             listOfErrors.includes("first_lastname") && (
-              <span className="text-red-500 mt-1">Campo requerido</span>
+              <div className="mt-1">
+                <span className="text-red-500 mt-1">Campo requerido</span>
+              </div>
             )}
         </div>
         <div className="relative w-full">
@@ -404,10 +415,14 @@ export default function Formulary() {
           ])}
         />
         {errors.phone_number.length > 0 && (
-          <span className="text-red-500 mt-2">{errors.phone_number}</span>
+          <div className="mt-1">
+            <span className="text-red-500 mt-2">{errors.phone_number}</span>
+          </div>
         )}
         {!errors.phone_number && listOfErrors.includes("phone_number") && (
-          <span className="text-red-500 mt-1">Campo requerido</span>
+          <div className="mt-1">
+            <span className="text-red-500 mt-1">Campo requerido</span>
+          </div>
         )}
       </div>
       <div className="relative w-full">
@@ -419,10 +434,14 @@ export default function Formulary() {
           onChange={(e: any) => handleEmail(e.target.value)}
         />
         {errors.email.length > 0 && (
-          <span className="text-red-500">{errors.email}</span>
+          <div className="mt-1">
+            <span className="text-red-500">{errors.email}</span>
+          </div>
         )}
         {!errors.email && listOfErrors.includes("email") && (
-          <span className="text-red-500 mt-1">Campo requerido</span>
+          <div className="mt-1">
+            <span className="text-red-500 mt-1">Campo requerido</span>
+          </div>
         )}
       </div>
 
@@ -435,10 +454,14 @@ export default function Formulary() {
           onChange={(e: any) => handlePassword(e.target.value)}
         />
         {errors.password.length > 0 && (
-          <span className="text-red-500">{errors.password}</span>
+          <div className="mt-1">
+            <span className="text-red-500">{errors.password}</span>
+          </div>
         )}
         {!errors.password && listOfErrors.includes("password") && (
-          <span className="text-red-500 mt-1">Campo requerido</span>
+          <div className="mt-1">
+            <span className="text-red-500 mt-1">Campo requerido</span>
+          </div>
         )}
       </div>
       {error && <span className="text-red-500 mt-1">{errors.global}</span>}

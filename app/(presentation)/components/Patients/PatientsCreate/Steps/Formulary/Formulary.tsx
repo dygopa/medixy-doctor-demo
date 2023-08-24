@@ -192,7 +192,7 @@ export default function Formulary({
       setErrors((previousState: any) => {
         return {
           ...previousState,
-          postalCode: "El codigo postal solo lleva numeros",
+          postalCode: "El codigo postal solo debe incluir numeros",
         };
       });
       return true;
@@ -207,7 +207,7 @@ export default function Formulary({
       setErrors((previousState) => {
         return {
           ...previousState,
-          age: "La fecha de nacimiento es obligatorio",
+          age: "La fecha de nacimiento es obligatoria",
         };
       });
       return true;
@@ -231,7 +231,7 @@ export default function Formulary({
       setErrors((previousState) => {
         return {
           ...previousState,
-          phone: "El teléfono del paciente solo lleva números",
+          phone: "El teléfono del paciente solo debe incluir números",
         };
       });
       return true;
@@ -244,7 +244,10 @@ export default function Formulary({
     setValues({ ...values, email: value });
     if (values.email.length > 1) {
       if (!VALIDATE_EMAIL(values.email)) {
-        setErrors({ ...errors, email: "El email debe ser correcto" });
+        setErrors({
+          ...errors,
+          email: "El correo debe tener un formato válido",
+        });
         return true;
       }
     }
@@ -283,7 +286,9 @@ export default function Formulary({
             placeholder="Primer apellido"
           />
           {errors.lastname.length > 0 && (
-            <span className="text-red-500">{errors.lastname}</span>
+            <div className="mt-1">
+              <span className="text-red-500">{errors.lastname}</span>
+            </div>
           )}
         </div>
         <div className="input-group mt-3 md:mt-0 md:w-[50%]">
@@ -294,7 +299,9 @@ export default function Formulary({
             placeholder="Segundo apellido"
           />
           {errors.motherlastname.length > 0 && (
-            <span className="text-red-500">{errors.motherlastname}</span>
+            <div className="mt-1">
+              <span className="text-red-500">{errors.motherlastname}</span>
+            </div>
           )}
         </div>
       </div>
@@ -310,7 +317,9 @@ export default function Formulary({
           className="form-control w-full"
         />
         {errors.age.length > 0 && (
-          <span className="text-red-500">{errors.age}</span>
+          <div className="mt-1">
+            <span className="text-red-500">{errors.age}</span>
+          </div>
         )}
       </div>
 
@@ -365,7 +374,9 @@ export default function Formulary({
             />
           </div>
           {errors.phone.length > 0 && (
-            <span className="text-red-500 mt-2">{errors.phone}</span>
+            <div className="mt-1">
+              <span className="text-red-500">{errors.phone}</span>
+            </div>
           )}
         </div>
         <div className="input-group md:w-[50%]">
@@ -376,7 +387,9 @@ export default function Formulary({
             placeholder="Email"
           />
           {errors.email.length > 0 && (
-            <span className="text-red-500">{errors.email}</span>
+            <div className="mt-1">
+              <span className="text-red-500">{errors.email}</span>
+            </div>
           )}
         </div>
       </div>
@@ -411,7 +424,9 @@ export default function Formulary({
             onChange={(e) => handlePostalCode(e.target.value)}
           />
           {errors.postalCode.length > 0 && (
-            <span className="text-red-500">{errors.postalCode}</span>
+            <div className="mt-1">
+              <span className="text-red-500">{errors.postalCode}</span>
+            </div>
           )}
         </div>
       </div>
