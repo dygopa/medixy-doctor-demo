@@ -49,6 +49,10 @@ export default function CalendarIndex() {
     data: service,
   } = state.activeService;
   const {
+    successful: deleteAppointmentSuccessful,
+    error: deleteAppointmentError,
+  } = state.deleteAppointment;
+  const {
     successful: localitySuccessful,
     error: localityError,
     data: locality,
@@ -278,6 +282,16 @@ export default function CalendarIndex() {
           variant="success"
           show={createAppointmentSuccessful === true}
           description="Cita creada exitosamente"
+        />
+        <AlertComponent
+          variant="success"
+          show={deleteAppointmentSuccessful}
+          description="Cita cancelada exitosamente"
+        />
+        <AlertComponent
+          variant="error"
+          show={deleteAppointmentError !== null}
+          description={"Ha ocurrido un error cancelando la cita"}
         />
         <div className="w-full lg:w-2/3 h-[64vh]">
           <Calendar
