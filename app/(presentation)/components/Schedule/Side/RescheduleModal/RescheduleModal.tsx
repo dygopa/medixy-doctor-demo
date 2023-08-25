@@ -17,7 +17,7 @@ export default function RescheduleModal({
   showRescheduleModal,
   setShowRescheduleModal,
 }: RescheduleModalProps) {
-  const [step, setStep] = useState(0);
+  const [step, setStep] = useState(2);
   const [newAppointment, setNewAppointment] = useState<any>(null);
 
   const getComponentByStep = () => {
@@ -60,7 +60,7 @@ export default function RescheduleModal({
       <div
         className={twMerge([
           "w-full md:w-[60%] xl:w-[45%] lg:w-[60%]  overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8",
-          step === 0 ? "h-auto" : step === 1 ? "h-[550px]" : "h-[450px]",
+          step === 0 ? "h-[900px]" : step === 1 ? "h-[650px]" : "h-[450px]",
         ])}
       >
         <div className="w-full px-4">
