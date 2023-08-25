@@ -6,6 +6,8 @@ export interface IScheduleActions {
   predifinedReservationData: Function;
   typeOfAppointmentCreation: Function;
   appointmentDetail: Function;
+  cancelAppointment: Function;
+  deleteAppointment: Function;
   activeLocality: Function;
   activeService: Function;
   activeDay: Function;
@@ -75,8 +77,27 @@ const changeStatusPopup = (value:boolean) => async (dispatch: Dispatch<any>) => 
     dispatch({ type: "CHANGE_STATUS_POPUP", payload: { data: value } });
 }
 
+const cancelAppointment = (value:boolean) => async (dispatch: Dispatch<any>) => {
+  dispatch({ type: "CHANGE_CANCEL_APPOINTMENT", payload: { data: value } });
+}
+
 const setListOfColors = (list:any[]) => async (dispatch: Dispatch<any>) => {
     dispatch({ type: "CHANGE_LIST_OF_COLORS", payload: { data: list } });
+}
+
+const deleteAppointment = (idAppointment:string) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "DELETE_APPOINTMENT_LOADING" });
+    
+    const res: any = /*await new ScheduleUseCase().deleteAppointment(idAppointment)*/ idAppointment;
+
+    console.log(res)
+
+    dispatch({ type: "DELETE_APPOINTMENT_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "DELETE_APPOINTMENT_ERROR", payload: { error: error } });
+  }
 }
 
 const getAppointments = (id:number, dateStart?:string, dateEnd?:string, localityId?:number) => async (dispatch: Dispatch<any>) => {
@@ -227,6 +248,8 @@ export const actions: IScheduleActions = {
   predifinedReservationData,
   typeOfAppointmentCreation,
   appointmentDetail,
+  cancelAppointment,
+  deleteAppointment,
   activeLocality,
   activeService,
   activeDay,

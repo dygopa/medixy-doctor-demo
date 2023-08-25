@@ -79,9 +79,11 @@ const StatusComponent = ({ data }: { data: any }) => {
 const AppointmentComponent = ({
   onClick,
   data,
+  cancelAppointment,
 }: {
   onClick: MouseEventHandler;
   data: any;
+  cancelAppointment: MouseEventHandler;
 }) => {
   let isPending = data["estado"] === 1;
   let hour = moment(data["fechaReserva"]).utc().format("hh:mm a").toString();
@@ -128,9 +130,7 @@ const AppointmentComponent = ({
                     <button
                       type="button"
                       className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
-                      onClick={() => {
-                        
-                      }}
+                      onClick={cancelAppointment}
                     >
                       <div>
                         <Lucide icon="XSquare" size={20} />
@@ -184,6 +184,7 @@ const Side = () => {
     changeStatusPopup,
     changeTypePopup,
     appointmentDetail,
+    cancelAppointment,
   } = actions;
   const { data, loading, successful, error } = state.getAppointments;
   const {
@@ -238,6 +239,14 @@ const Side = () => {
             <AppointmentComponent
               data={elem}
               onClick={() => {
+                appointmentDetail({ ...elem, appoinmentId: elem["id"] })(
+                  dispatch
+                );
+                changeStatusPopup(true)(dispatch);
+                changeTypePopup(2)(dispatch);
+              }}
+              cancelAppointment={() => {
+                cancelAppointment(true)(dispatch);
                 appointmentDetail({ ...elem, appoinmentId: elem["id"] })(
                   dispatch
                 );

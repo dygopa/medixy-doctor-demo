@@ -10,7 +10,7 @@ import { IScheduleContext, ScheduleContext } from '(presentation)/components/Sch
 function Popup() {
 
   const { state, actions, dispatch } = useContext<IScheduleContext>(ScheduleContext);
-  const { changeStatusPopup } = actions;
+  const { changeStatusPopup, cancelAppointment } = actions;
   const { data: type } = state.typePopupActive;
   const { data: status } = state.statusPopup;
 
@@ -20,7 +20,8 @@ function Popup() {
     useEffect(() => {
       function handleClickOutside(event:MouseEvent) {
         if (ref.current && !ref.current.contains(event.target)) {
-          changeStatusPopup(false)(dispatch)
+          changeStatusPopup(false)(dispatch);
+          if(type === 2) cancelAppointment(false)(dispatch);
         }
       }
       document.addEventListener("mousedown", handleClickOutside);
@@ -39,7 +40,7 @@ function Popup() {
     ])}>
       {type === 0 && <CreateAppointment customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
       {type === 1 && <CreateAgenda customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
-      {type === 2 && <AppointmentDetail customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
+      {type === 2 && <AppointmentDetail customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch); cancelAppointment(false)(dispatch) }} />}
       {type === 3 && <CreateAgendaHelp customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
       {type === 4 && <FiltersComponent customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
     </div>

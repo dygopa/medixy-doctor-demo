@@ -22,8 +22,11 @@ function AppointmentDetail({
   const { state: auth } = useContext<IAuthContext>(AuthContext);
   const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
 
-  const { state } = useContext<IScheduleContext>(ScheduleContext);
+  const { state, actions, dispatch } = useContext<IScheduleContext>(ScheduleContext);
+  const { deleteAppointment } = actions;
   const { data, loading, successful, error } = state.appointmentDetail;
+  const { data: cancelAppointment } = state.cancelAppointment;
+  const { data: deleteData, loading: deleteLoading, successful: successfulDelete, error: errorDelete } = state.deleteAppointment;
 
   const [ageBirth, setAgeBirth] = useState(0);
 
@@ -35,6 +38,8 @@ function AppointmentDetail({
       </div>
     );
   };
+
+  console.log(data)
 
   const StatusComponent = () => {
     let status = data["estado"];
@@ -70,6 +75,10 @@ function AppointmentDetail({
   useMemo(() => {
     if (successful) formatDateBirth();
   }, [successful]);
+
+  useMemo(() => {
+    if (successfulDelete) cancelFuntion();
+  }, [successfulDelete]);
 
   return (
     <div
@@ -127,20 +136,35 @@ function AppointmentDetail({
       </div>
       <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white">
         <div className="w-full">
-          <Link
-            href={{
-              pathname: "/medical-record/" + data["appoinmentId"],
-              query: {
-                type: "appointment",
-              },
-            }}
-          >
-            <Button variant="primary" className="w-full">
-              {data["estado"] === AppointmentEnum.COMPLETE
-                ? "Expediente del paciente"
-                : "Atender paciente"}
-            </Button>
-          </Link>
+          { cancelAppointment ?
+            <>
+              <Button variant="primary" className="w-full"
+                onClick={() => {
+                  deleteAppointment(data.appoinmentId)(dispatch);
+                }}
+              >
+                {deleteLoading 
+                ? "Cancelando cita..."
+                : "Cancelar cita"
+                }
+              </Button>
+            </>
+          :
+            <Link
+              href={{
+                pathname: "/medical-record/" + data["appoinmentId"],
+                query: {
+                  type: "appointment",
+                },
+              }}
+            >
+              <Button variant="primary" className="w-full">
+                {data["estado"] === AppointmentEnum.COMPLETE
+                  ? "Expediente del paciente"
+                  : "Atender paciente"}
+              </Button>
+            </Link>
+          }
         </div>
         <p
           onClick={() => {
