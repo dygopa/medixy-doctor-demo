@@ -115,7 +115,7 @@ const AppointmentComponent = ({
 
                       }}
                     >
-                      <Lucide icon="Pen" size={20} />
+                      <Lucide icon="CalendarClock" size={20} />
                       Reagendar cita
                     </button>
                   </div>
@@ -133,7 +133,7 @@ const AppointmentComponent = ({
                       }}
                     >
                       <div>
-                        <Lucide icon="Trash" size={20} />
+                        <Lucide icon="XSquare" size={20} />
                       </div>
 
                       <div>Cancelar cita</div>
