@@ -89,9 +89,7 @@ const deleteAppointment = (idAppointment:string) => async (dispatch: Dispatch<an
   try {
     dispatch({ type: "DELETE_APPOINTMENT_LOADING" });
     
-    const res: any = /*await new ScheduleUseCase().deleteAppointment(idAppointment)*/ idAppointment;
-
-    console.log(res)
+    const res: any = await new ScheduleUseCase().deleteAppointment(idAppointment);
 
     dispatch({ type: "DELETE_APPOINTMENT_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

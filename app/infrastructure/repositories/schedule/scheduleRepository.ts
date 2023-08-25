@@ -13,6 +13,7 @@ export default interface IScheduleRepository {
     createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
     getAttentionWindowsByService(id:number, date?:string): Promise<any[] | ScheduleFailure>;
     createWindowAttention(obj:any): Promise<any | ScheduleFailure>;
+    deleteAppointment(id:string ): Promise<any | ScheduleFailure>;
 }
 
 export class ScheduleRepository implements IScheduleRepository {
@@ -364,6 +365,43 @@ export class ScheduleRepository implements IScheduleRepository {
             } as RequestInit;
 
             let URL = CREATE_ATTENTION_WINDOW_ENDPOINT(obj["serviceId"]) as RequestInfo
+
+            const response = await fetch(URL, requestOptions)
+
+            let data = await response.json()
+
+            //if (response.status > 201) throw new ScheduleFailure(response.);
+            if(!data["meta"]["success"]) return new ScheduleFailure(data["meta"]["error"]["type"]);
+
+            
+            return data["data"] ?? {};
+        } catch (error) {
+            const exception = error as any;
+            return new ScheduleFailure(scheduleFailuresEnum.serverError);
+        }
+    }
+    
+    async deleteAppointment(id: string): Promise<any | ScheduleFailure> {
+        try {
+            let cookies = nookies.get(undefined, 'access_token');
+
+            var myHeaders = new Headers();
+
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
+
+            var raw = JSON.stringify({
+                cancel_appointment_id:id,
+            });
+
+            var requestOptions = {
+                method: 'PUT',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            } as RequestInit;
+
+            let URL = DELETE_APPOINTMENT_ENDPOINT(id) as RequestInfo
 
             const response = await fetch(URL, requestOptions)
 

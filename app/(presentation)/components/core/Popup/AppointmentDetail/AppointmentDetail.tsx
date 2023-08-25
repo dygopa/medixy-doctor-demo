@@ -39,7 +39,7 @@ function AppointmentDetail({
     );
   };
 
-  console.log(data)
+  console.log(cancelAppointment)
 
   const StatusComponent = () => {
     let status = data["estado"];
