@@ -32,4 +32,4 @@ export const CHECK_OTP_ENDPOINT = (code:string) => process.env.NEXT_PUBLIC_API_U
 
 export const CREATE_ATTENTION_WINDOW_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/attention_window`;
 
-export const RESCHEDULE_APPOINTMENT_ENDPOINT = () => process.env.NEXT_PUBLIC_API_URL + `/appointments`;
+export const RESCHEDULE_APPOINTMENT_ENDPOINT = (id:string) => process.env.NEXT_PUBLIC_API_URL + `/canceled_appointments/${id}`;

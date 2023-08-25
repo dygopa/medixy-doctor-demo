@@ -39,8 +39,6 @@ function AppointmentDetail({
     );
   };
 
-  console.log(cancelAppointment)
-
   const StatusComponent = () => {
     let status = data["estado"];
 
@@ -77,8 +75,8 @@ function AppointmentDetail({
   }, [successful]);
 
   useMemo(() => {
-    if (successfulDelete) cancelFuntion();
-  }, [successfulDelete]);
+    if (successfulDelete || errorDelete) cancelFuntion();
+  }, [successfulDelete, errorDelete]);
 
   return (
     <div

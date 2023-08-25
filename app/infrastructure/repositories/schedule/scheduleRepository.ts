@@ -393,17 +393,16 @@ export class ScheduleRepository implements IScheduleRepository {
 
             var raw = JSON.stringify({
                 new_appointment_id: obj.appointmentId,
-                cancel_appointment_id: obj.appointmentId,
             });
 
             var requestOptions = {
-                method: 'PUT',
+                method: 'POST',
                 headers: myHeaders,
                 body: raw,
                 redirect: 'follow'
             } as RequestInit;
 
-            let URL = RESCHEDULE_APPOINTMENT_ENDPOINT() as RequestInfo
+            let URL = RESCHEDULE_APPOINTMENT_ENDPOINT(obj.appointmentId) as RequestInfo
 
             const response = await fetch(URL, requestOptions)
 
@@ -429,18 +428,13 @@ export class ScheduleRepository implements IScheduleRepository {
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
 
-            var raw = JSON.stringify({
-                cancel_appointment_id:id,
-            });
-
             var requestOptions = {
-                method: 'PUT',
+                method: 'POST',
                 headers: myHeaders,
-                body: raw,
                 redirect: 'follow'
             } as RequestInit;
 
-            let URL = DELETE_APPOINTMENT_ENDPOINT(id) as RequestInfo
+            let URL = RESCHEDULE_APPOINTMENT_ENDPOINT(id) as RequestInfo
 
             const response = await fetch(URL, requestOptions)
 

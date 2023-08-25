@@ -123,7 +123,7 @@ export const ScheduleReducer = (state: any, action: any) => {
         error: null,
       },
     };
-    case 'DELETE_APPOINTMENTS_LOADING':
+    case 'DELETE_APPOINTMENT_LOADING':
       return {
         ...state,
         deleteAppointment: {
@@ -134,7 +134,7 @@ export const ScheduleReducer = (state: any, action: any) => {
           error: null,
         },
       };
-    case 'DELETE_APPOINTMENTS_SUCCESSFUL':
+    case 'DELETE_APPOINTMENT_SUCCESSFUL':
       return {
         ...state,
         deleteAppointment: {
@@ -145,7 +145,7 @@ export const ScheduleReducer = (state: any, action: any) => {
           error: null,
         },
       };
-    case 'DELETE_APPOINTMENTS_ERROR':
+    case 'DELETE_APPOINTMENT_ERROR':
       return {
         ...state,
         deleteAppointment: {
