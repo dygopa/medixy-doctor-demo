@@ -308,43 +308,48 @@ function CreateAppointment({
     }
   }, [predifinedReservationSuccessful, predifinedReservation, loadedLists]);
 
-  useMemo(()=>{
-    if(loadedCreationAppointment){
-      setWindows([])
+  useMemo(() => {
+    if (loadedCreationAppointment) {
+      setWindows([]);
       setSelectedService({
         id: 0,
         title: "",
         description: "",
         type: "SERVICE",
-      })
+      });
       activeLocality(selectedLocality)(dispatch);
       setSelectedPatient({
         id: 0,
         title: "",
         description: "",
         type: "PATIENT",
-      })
+      });
       setFormData({
         service: "",
         curp: "",
         date: "",
         hour: "",
         windowId: 0,
-      })
-      if(isNow){
+      });
+      if (isNow) {
         setTimeout(() => {
           window.location.href = `/medical-record/${appointmentCreated["id"]}/create?type=appointment`;
         }, 1000);
-      }else{
-        getAppointments(user.userId, moment().format("YYYY-MM-DD"),  moment().add(5, "day").format("YYYY-MM-DD"), selectedLocality.id)(dispatch)
-        changeStatusPopup(false)(dispatch)
+      } else {
+        getAppointments(
+          user.userId,
+          moment().format("YYYY-MM-DD"),
+          moment().add(5, "day").format("YYYY-MM-DD"),
+          selectedLocality.id
+        )(dispatch);
+        changeStatusPopup(false)(dispatch);
       }
     }
   }, [loadedCreationAppointment]);
 
-  useMemo(()=>{
-    if(loadedWindows) setWindows(attentionWindows)
-  },[loadingWindows])
+  useMemo(() => {
+    if (loadedWindows) setWindows(attentionWindows);
+  }, [loadingWindows]);
 
   useMemo(() => {
     if (selectedLocality.id !== 0 && user?.userId) {
@@ -574,7 +579,9 @@ function CreateAppointment({
                 {loadingWindows && <Loading />}
                 {loadedWindows &&
                   windows.length > 0 &&
-                  windows.map((elem: any) => <ExampleComponent data={elem} />)}
+                  windows.map((elem: any) => (
+                    <ExampleComponent key={elem.id} data={elem} />
+                  ))}
               </div>
             )}
           </div>
@@ -650,13 +657,13 @@ function CreateAppointment({
         </Button>
         <p
           onClick={() => {
-            cancelFuntion(); 
+            cancelFuntion();
             setSelectedPatient({
               id: 0,
               title: "",
               description: "",
               type: "PATIENT",
-            })
+            });
           }}
           className="cursor-pointer font-normal text-sm text-primary text-center"
         >

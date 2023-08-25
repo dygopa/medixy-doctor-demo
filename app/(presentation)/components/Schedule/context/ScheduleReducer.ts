@@ -583,6 +583,39 @@ export const ScheduleReducer = (state: any, action: any) => {
           error: action.payload.error,
         },
       };
+      case 'RESCHEDULE_APPOINTMENT_LOADING':
+        return {
+          ...state,
+          reschedauleAppointment: {
+            ...state.rescheduleAppointment,
+            data: null,
+            loading: true,
+            successful: false,
+            error: null,
+          },
+        };
+      case 'RESCHEDULE_APPOINTMENT_SUCCESSFUL':
+        return {
+          ...state,
+          rescheduleAppointment: {
+            ...state.rescheduleAppointment,
+            data: action.payload.data,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+        };
+      case 'RESCHEDULE_APPOINTMENT_ERROR':
+        return {
+          ...state,
+          rescheduleAppointment: {
+            ...state.rescheduleAppointment,
+            data: null,
+            loading: false,
+            successful: false,
+            error: action.payload.error,
+          },
+        };
     default:
       return state;
   }

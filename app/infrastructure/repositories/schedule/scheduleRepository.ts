@@ -1,6 +1,6 @@
 import nookies from 'nookies';
 import { ScheduleFailure, scheduleFailuresEnum } from 'domain/core/failures/schedule/scheduleFailure';
-import { CREATE_ATTENTION_WINDOW_ENDPOINT, GET_CATEGORIES_SERVICES_ENDPOINT, REGISTER_USER_ENDPOINT } from 'infrastructure/config/api/dictionary';
+import { CREATE_ATTENTION_WINDOW_ENDPOINT, GET_CATEGORIES_SERVICES_ENDPOINT, REGISTER_USER_ENDPOINT, RESCHEDULE_APPOINTMENT_ENDPOINT } from 'infrastructure/config/api/dictionary';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import moment from 'moment';
 import { AppointmentEnum } from '(presentation)/(enum)/appointment/appointmentEnum';
@@ -324,6 +324,7 @@ export class ScheduleRepository implements IScheduleRepository {
                     horaFin: parseInt(moment(elem["fechaFinReserva"]).utc().format("HH:mm").split(":").join("")),
                     tipo: 2,
                     disponible: elem["sujetoId"] !== null ? false : true
+        
                 }))
             }
 
@@ -365,6 +366,44 @@ export class ScheduleRepository implements IScheduleRepository {
             } as RequestInit;
 
             let URL = CREATE_ATTENTION_WINDOW_ENDPOINT(obj["serviceId"]) as RequestInfo
+
+            const response = await fetch(URL, requestOptions)
+
+            let data = await response.json()
+
+            //if (response.status > 201) throw new ScheduleFailure(response.);
+            if(!data["meta"]["success"]) return new ScheduleFailure(data["meta"]["error"]["type"]);
+
+            
+            return data["data"] ?? {};
+        } catch (error) {
+            const exception = error as any;
+            return new ScheduleFailure(scheduleFailuresEnum.serverError);
+        }
+    }
+
+    async rescheduleAppointment(obj: { appointmentId: any; newAppointmentId: any; isBlockAppointment: boolean }): Promise<any | ScheduleFailure> {
+        try {
+            let cookies = nookies.get(undefined, 'access_token');
+
+            var myHeaders = new Headers();
+
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
+
+            var raw = JSON.stringify({
+                new_appointment_id: obj.appointmentId,
+                cancel_appointment_id: obj.appointmentId,
+            });
+
+            var requestOptions = {
+                method: 'PUT',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            } as RequestInit;
+
+            let URL = RESCHEDULE_APPOINTMENT_ENDPOINT() as RequestInfo
 
             const response = await fetch(URL, requestOptions)
 

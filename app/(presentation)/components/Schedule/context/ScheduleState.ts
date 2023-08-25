@@ -26,6 +26,7 @@ export interface IScheduleState {
   getLocalitiesWithServices: IScheduleUserState;
   getPatients: IScheduleUserState;
   listOfColors: IScheduleUserState;
+  rescheduleAppointment: IScheduleUserState;
 }
 
 interface IScheduleUserState {
@@ -181,6 +182,12 @@ export const initialState: IScheduleState = {
     error: null,
   },
   listOfColors: {
+    data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  rescheduleAppointment: {
     data: [],
     loading: false,
     successful: false,

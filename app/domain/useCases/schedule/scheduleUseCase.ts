@@ -163,4 +163,15 @@ export default class ScheduleUseCase {
     }
   }
 
+  async rescheduleAppointment(obj: { appointmentId: any; newAppointmentId: any; isBlockAppointment: boolean }): Promise<any> {
+    try {
+      const response = await this._repository.rescheduleAppointment({ appointmentId: obj.appointmentId, newAppointmentId: obj.newAppointmentId, isBlockAppointment: obj.isBlockAppointment });
+
+      if (response instanceof ScheduleFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

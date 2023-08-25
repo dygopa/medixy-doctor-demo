@@ -26,6 +26,7 @@ export interface IScheduleActions {
   getPatients: Function;
   activeActualDay: Function;
   setListOfColors: Function;
+  rescheduleAppointment: Function;
 }
 
 const getCalendarEvents = (id:number, localityId:number, sinceDate:any, untilDate:any, serviceId:number) => async (dispatch: Dispatch<any>) => {
@@ -228,6 +229,19 @@ const getLocalitiesWithServices = (id:number) => async (dispatch: Dispatch<any>)
     }
 }
 
+const rescheduleAppointment = (obj: { appointmentId: any; newAppointmentId: any; isBlockAppointment: boolean }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "RESCHEDULE_APPOINTMENT_LOADING" });
+    
+    const res: any = await new ScheduleUseCase().rescheduleAppointment({ appointmentId: obj.appointmentId, newAppointmentId: obj.newAppointmentId, isBlockAppointment: obj.isBlockAppointment });
+
+    dispatch({ type: "RESCHEDULE_APPOINTMENT_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "RESCHEDULE_APPOINTMENT_ERROR", payload: { error: error } });
+  }
+}
+
 const getPatients = () => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "GET_PATIENTS_LOADING" });
@@ -265,5 +279,6 @@ export const actions: IScheduleActions = {
   getLocalitiesWithServices,
   getPatients,
   activeActualDay,
-  setListOfColors
+  setListOfColors,
+  rescheduleAppointment
 }

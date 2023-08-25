@@ -1,5 +1,11 @@
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
-import React, { Fragment, MouseEventHandler, useContext, useMemo } from "react";
+import React, {
+  Fragment,
+  MouseEventHandler,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import { IScheduleContext, ScheduleContext } from "../context/ScheduleContext";
 import moment from "moment";
 import "moment/locale/es";
@@ -13,6 +19,7 @@ import { twMerge } from "tailwind-merge";
 import { FiUser } from "react-icons/fi";
 import { AppointmentEnum } from "(presentation)/(enum)/appointment/appointmentEnum";
 import { Menu, Transition } from "@headlessui/react";
+import RescheduleModal from "./RescheduleModal/RescheduleModal";
 
 const StatusComponent = ({ data }: { data: any }) => {
   let status = data["estado"];
@@ -88,88 +95,101 @@ const AppointmentComponent = ({
   let isPending = data["estado"] === 1;
   let hour = moment(data["fechaReserva"]).utc().format("hh:mm a").toString();
 
+  const [showRescheduleModal, setShowRescheduleModal] = useState(false);
+
   return (
-    <div
-      className="cursor-pointer relative w-full min-h-[11vh] h-fit max-h-[14vh] bg-white flex justify-between items-center p-3 gap-2 box-border rounded-md shadow-sm"
-    >
-      <div className="w-full flex justify-end absolute top-1 right-1">
-        <Menu as="div" className="relative inline-block text-left">
-          <Menu.Button className="rounded-lg hover:bg-gray-100 p-1">
-            <Lucide icon="MoreVertical" className="h-5" />
-          </Menu.Button>
-          <Transition
-            as={Fragment}
-            enter="transition ease-out duration-100"
-            enterFrom="transform opacity-0 scale-95"
-            enterTo="transform opacity-100 scale-100"
-            leave="transition ease-in duration-75"
-            leaveFrom="transform opacity-100 scale-100"
-            leaveTo="transform opacity-0 scale-95"
-          >
-            <Menu.Items className="absolute right-0 z-15 mt-1 w-44 origin-top-right rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5">
-              <Menu.Item>
-                {({ active }) => (
-                  <div>
-                    <button
-                      type="button"
-                      className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
-                      onClick={() => {
-
-                      }}
-                    >
-                      <Lucide icon="CalendarClock" size={20} />
-                      Reagendar cita
-                    </button>
-                  </div>
-                )}
-              </Menu.Item>
-
-              <Menu.Item>
-                {({ active }) => (
-                  <div>
-                    <button
-                      type="button"
-                      className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
-                      onClick={cancelAppointment}
-                    >
+    <>
+      <div className="cursor-pointer relative w-full min-h-[11vh] h-fit max-h-[14vh] bg-white flex justify-between items-center p-3 gap-2 box-border rounded-md shadow-sm">
+        <div className="w-full flex justify-end absolute top-1 right-1">
+          <Menu as="div" className="relative inline-block text-left">
+            <Menu.Button className="rounded-lg hover:bg-gray-100 p-1">
+              <Lucide icon="MoreVertical" className="h-5" />
+            </Menu.Button>
+            <Transition
+              as={Fragment}
+              enter="transition ease-out duration-100"
+              enterFrom="transform opacity-0 scale-95"
+              enterTo="transform opacity-100 scale-100"
+              leave="transition ease-in duration-75"
+              leaveFrom="transform opacity-100 scale-100"
+              leaveTo="transform opacity-0 scale-95"
+            >
+              <Menu.Items className="absolute right-0 z-15 mt-1 w-44 origin-top-right rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5">
+                {data["estado"] === AppointmentEnum.PENDING && (
+                  <Menu.Item>
+                    {({ active }) => (
                       <div>
-                        <Lucide icon="XSquare" size={20} />
+                        <button
+                          type="button"
+                          className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
+                          onClick={() => setShowRescheduleModal(true)}
+                        >
+                          <Lucide icon="CalendarClock" size={20} />
+                          Reagendar cita
+                        </button>
                       </div>
-
-                      <div>Cancelar cita</div>
-                    </button>
-                  </div>
+                    )}
+                  </Menu.Item>
                 )}
-              </Menu.Item>
-            </Menu.Items>
-          </Transition>
-        </Menu>
-      </div>
-      <div onClick={onClick} className="flex justify-between items-center gap-2 w-full" >
-        <div className="w-10 h-full flex flex-col justify-center items-start">
-          <div className="w-10 h-10 rounded-lg bg-primary/20 text-primary flex flex-col justify-center items-center text-lg overflow-hidden">
-            <FiUser />
+
+                <Menu.Item>
+                  {({ active }) => (
+                    <div>
+                      <button
+                        type="button"
+                        className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
+                        onClick={cancelAppointment}
+                      >
+                        <div>
+                          <Lucide icon="XSquare" size={20} />
+                        </div>
+
+                        <div>Cancelar cita</div>
+                      </button>
+                    </div>
+                  )}
+                </Menu.Item>
+              </Menu.Items>
+            </Transition>
+          </Menu>
+        </div>
+        <div
+          onClick={onClick}
+          className="flex justify-between items-center gap-2 w-full"
+        >
+          <div className="w-10 h-full flex flex-col justify-center items-start">
+            <div className="w-10 h-10 rounded-lg bg-primary/20 text-primary flex flex-col justify-center items-center text-lg overflow-hidden">
+              <FiUser />
+            </div>
           </div>
-        </div>
-        <div className="w-[53%] h-full flex flex-col justify-between items-start overflow-hidden">
-          <p className="font-semibold text-sm text-slate-900 w-full whitespace-nowrap text-ellipsis">
-            {data["nombres"]} {data["primerApellido"]}
-          </p>
-          <p className="font-light text-[12px] text-slate-500 w-full whitespace-nowrap text-ellipsis">
-            {data["nombre"]}
-          </p>
-        </div>
-        <div className="w-[30%] h-full flex flex-col justify-between items-end mt-2">
-          <div className="w-full flex justify-end items-center gap-1 overflow-hidden">
-            <p className="font-semibold text-[12px] text-slate-900 whitespace-nowrap text-ellipsis">
-              {hour}
+          <div className="w-[53%] h-full flex flex-col justify-between items-start overflow-hidden">
+            <p className="font-semibold text-sm text-slate-900 w-full whitespace-nowrap text-ellipsis">
+              {data["nombres"]} {data["primerApellido"]}
             </p>
-            {/* <Lucide icon="MoreVertical" className="w-5 h-5 text-slate-500" /> */}
+            <p className="font-light text-[12px] text-slate-500 w-full whitespace-nowrap text-ellipsis">
+              {data["nombre"]}
+            </p>
           </div>
-          <StatusComponent data={data} />
+          <div className="w-[30%] h-full flex flex-col justify-between items-end mt-2">
+            <div className="w-full flex justify-end items-center gap-1 overflow-hidden">
+              <p className="font-semibold text-[12px] text-slate-900 whitespace-nowrap text-ellipsis">
+                {hour}
+              </p>
+              {/* <Lucide icon="MoreVertical" className="w-5 h-5 text-slate-500" /> */}
+            </div>
+            <StatusComponent data={data} />
+          </div>
         </div>
       </div>
-    </div>
+
+      {showRescheduleModal && (
+        <RescheduleModal
+          appointment={data}
+          showRescheduleModal={showRescheduleModal}
+          setShowRescheduleModal={setShowRescheduleModal}
+        />
+      )}
+    </>
   );
 };
 
@@ -195,18 +215,23 @@ const Side = () => {
   const { data: activeDay, successful: changedActiveDay } = state.activeDay;
   const { data: actualDay } = state.actualDay;
 
-  useMemo(()=>{
-    if(localitySuccessful){
-      getAppointments(user.userId, moment(activeDay["start"]).format("YYYY-MM-DD"), moment(activeDay["end"]).format("YYYY-MM-DD"), locality["id"])(dispatch)
+  useMemo(() => {
+    if (localitySuccessful) {
+      getAppointments(
+        user.userId,
+        moment(activeDay["start"]).format("YYYY-MM-DD"),
+        moment(activeDay["end"]).format("YYYY-MM-DD"),
+        locality["id"]
+      )(dispatch);
     }
-  },[activeDay, locality]) 
+  }, [activeDay, locality]);
 
   useMemo(() => {
     if (actualDay)
       getAppointments(
         user.userId,
-        moment(actualDay).format("YYYY-MM-DD"), 
-        moment(actualDay).add(1, "day").format("YYYY-MM-DD"), 
+        moment(actualDay).format("YYYY-MM-DD"),
+        moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
         locality["id"]
       )(dispatch);
   }, [actualDay]);
