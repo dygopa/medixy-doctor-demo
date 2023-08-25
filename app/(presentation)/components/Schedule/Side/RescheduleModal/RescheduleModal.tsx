@@ -17,7 +17,7 @@ export default function RescheduleModal({
   showRescheduleModal,
   setShowRescheduleModal,
 }: RescheduleModalProps) {
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(0);
   const [newAppointment, setNewAppointment] = useState<any>(null);
 
   const getComponentByStep = () => {

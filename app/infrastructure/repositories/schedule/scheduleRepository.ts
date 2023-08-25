@@ -392,7 +392,7 @@ export class ScheduleRepository implements IScheduleRepository {
             myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
 
             var raw = JSON.stringify({
-                new_appointment_id: obj.appointmentId,
+                new_appointment_id: obj.newAppointmentId,
             });
 
             var requestOptions = {
@@ -428,8 +428,13 @@ export class ScheduleRepository implements IScheduleRepository {
             myHeaders.append("Content-Type", "application/json");
             myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
 
+            var raw = JSON.stringify({
+              
+            });
+
             var requestOptions = {
                 method: 'POST',
+                body: raw,
                 headers: myHeaders,
                 redirect: 'follow'
             } as RequestInit;
