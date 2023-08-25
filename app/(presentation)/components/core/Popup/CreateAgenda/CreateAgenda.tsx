@@ -64,10 +64,12 @@ function CreateAgenda({
   ];
 
   const [loadedLists, setLoadedLists] = useState<boolean>(false);
+  const [generatedHours, setGeneratedHours] = useState<boolean>(false);
 
   const [listOfLocalities, setListOfLocalities] = useState<Array<any>>([]);
   const [listOfServices, setListOfServices] = useState<Array<any>>([]);
   const [daysRepeatedList, setDaysRepeatedList] = useState<Array<any>>([]);
+  const [listOfStartHours, setListOfStartHours] = useState<Array<any>>([]);
   const [listOfHours, setListOfHours] = useState<Array<any>>([]);
   const [daysInWeek, setDaysInWeek] = useState([
     {
@@ -200,6 +202,30 @@ function CreateAgenda({
       </div>
     );
   };
+
+  function generateHours() {
+    let list = [];
+
+    let endOfDay = moment().utc().add(1, "day").startOf("day");
+    let start = moment().utc().startOf("day");
+
+    start = start.add(15, "minutes");
+    list.push({
+      value: parseInt(start.format("HH:mm").split(":").join("")),
+      label: start.format("hh:mm a"),
+    });
+
+    do {
+      start = start.add(15, "minutes");
+      list.push({
+        value: parseInt(start.format("HH:mm").split(":").join("")),
+        label: start.format("hh:mm a"),
+      });
+    } while (start.isBefore(endOfDay));
+
+    setListOfStartHours(list);
+    setGeneratedHours(true)
+  }
 
   function formatHoursFromSpan() {
     let list = [];
@@ -488,6 +514,10 @@ function CreateAgenda({
     if (formData.spanTime > 0) formatHoursFromSpan();
   }, [formData.spanTime]);
 
+  useEffect(() => {
+    if (!generatedHours) generateHours();
+  }, [generatedHours]);
+
   useMemo(() => {
     if (loadedUser) {
       getLocalitiesWithServices(user.userId)(dispatch);
@@ -683,7 +713,7 @@ function CreateAgenda({
               }}
             >
               <option value={0}>-</option>
-              {listOfHours.map((elem: any) => (
+              {listOfStartHours.map((elem: any) => (
                 <option value={elem["value"]}>{elem["label"]}</option>
               ))}
             </FormSelect>
