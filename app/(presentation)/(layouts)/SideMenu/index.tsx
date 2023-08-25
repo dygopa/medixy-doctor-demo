@@ -13,6 +13,7 @@ import PopupProvider from "(presentation)/components/core/BaseComponents/Popup/c
 import Popup from "(presentation)/components/core/BaseComponents/Popup/PopupIndex";
 import Splash from "(presentation)/components/core/Splash/Splash";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
+import SessionExpiredComponent from "(presentation)/components/core/BaseComponents/SessionExpired";
 
 interface INavigation {
   title: string;
@@ -60,10 +61,10 @@ function SideMenu({
   }, [successful]);
 
   useMemo(() => {
-    if (error !== null) redirect("/login");
+    if (error !== null) setSessionExpired(true);
   }, [error]);
 
-  if ((loading || !data.userId) && pathname === "/") return <Splash />;
+  if ((loading || !data?.userId) && pathname === "/") return <Splash />;
 
   return (
     <div className="py-5 md:py-0 -mx-3 px-3 sm:-mx-8 sm:px-8 bg-primary dark:bg-transparent">
@@ -86,13 +87,13 @@ function SideMenu({
           >
             <TopBar navigation={navigation} user={data} />
             {children}
-            {sessionExpired && (
-              <AlertComponent
-                variant="warning"
+              <SessionExpiredComponent 
+                tittle="Tu sesión ha expirado"
+                description="Tu sesión ha expirado o no has iniciado sesión."
                 show={sessionExpired}
-                description="Tu sesión se ha expirado, redireccionando..."
+                textButtonPrincipal="Volver a iniciar sesión"
+                onClickButtonPrincipal={() => {window.location.href = "/login"}}
               />
-            )}
             <StepByStepPopup user={data} />
           </div>
           {/* END: Content */}
