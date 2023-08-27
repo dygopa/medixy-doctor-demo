@@ -24,6 +24,7 @@ export interface IScheduleState {
   getLocalitiesWithServices: IScheduleUserState;
   getPatients: IScheduleUserState;
   listOfColors: IScheduleUserState;
+  slotsByAttentionWindow: IScheduleUserState;
 }
 
 interface IScheduleUserState {
@@ -167,6 +168,12 @@ export const initialState: IScheduleState = {
     error: null,
   },
   listOfColors: {
+    data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  slotsByAttentionWindow: {
     data: [],
     loading: false,
     successful: false,

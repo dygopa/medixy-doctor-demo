@@ -24,6 +24,7 @@ export interface IScheduleActions {
   getPatients: Function;
   activeActualDay: Function;
   setListOfColors: Function;
+  getSlotsByAttentionWindow: Function;
 }
 
 const getCalendarEvents = (id:number, localityId:number, sinceDate:any, untilDate:any, serviceId:number) => async (dispatch: Dispatch<any>) => {
@@ -144,6 +145,19 @@ const getAttentionWindowsByService = (id:number, date?:string) => async (dispatc
     }
 }
 
+const getSlotsByAttentionWindow = (id:string) => async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch({ type: "GET_SLOTS_BY_ATTENTION_WINDOW_LOADING" });
+      
+      const res: Array<any> = await new ScheduleUseCase().getSlotsByAttentionWindow(id);
+  
+      dispatch({ type: "GET_SLOTS_BY_ATTENTION_WINDOW_SUCCESSFUL", payload: { data: res } });
+    } catch (error) {
+      console.log("Error calling action", error)
+      dispatch({ type: "GET_SLOTS_BY_ATTENTION_WINDOW_ERROR", payload: { error: error } });
+    }
+}
+
 const createWindowAttention = (obj:any) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "CREATE_WINDOW_ATTENTION_LOADING" });
@@ -244,5 +258,6 @@ export const actions: IScheduleActions = {
   getLocalitiesWithServices,
   getPatients,
   activeActualDay,
-  setListOfColors
+  setListOfColors,
+  getSlotsByAttentionWindow
 }

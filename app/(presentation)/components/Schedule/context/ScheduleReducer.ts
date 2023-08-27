@@ -210,6 +210,39 @@ export const ScheduleReducer = (state: any, action: any) => {
           error: action.payload.error,
         },
       };
+    case 'GET_SLOTS_BY_ATTENTION_WINDOW_LOADING':
+      return {
+        ...state,
+        slotsByAttentionWindow: {
+          ...state.slotsByAttentionWindow,
+          data: null,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'GET_SLOTS_BY_ATTENTION_WINDOW_SUCCESSFUL':
+      return {
+        ...state,
+        slotsByAttentionWindow: {
+          ...state.slotsByAttentionWindow,
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'GET_SLOTS_BY_ATTENTION_WINDOW_ERROR':
+      return {
+        ...state,
+        slotsByAttentionWindow: {
+          ...state.slotsByAttentionWindow,
+          data: null,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
     case 'GET_BASE_ATTENTION_WINDOWS_BY_LOCALITY_LOADING':
       return {
         ...state,

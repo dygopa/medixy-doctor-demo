@@ -13,6 +13,7 @@ export default interface IScheduleRepository {
     createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
     getAttentionWindowsByService(id:number, date?:string): Promise<any[] | ScheduleFailure>;
     createWindowAttention(obj:any): Promise<any | ScheduleFailure>;
+    getSlotsByAttentionWindow(id:any): Promise<any | ScheduleFailure>;
 }
 
 export class ScheduleRepository implements IScheduleRepository {
@@ -329,6 +330,24 @@ export class ScheduleRepository implements IScheduleRepository {
             return list;
         } catch (error) {
             const exception = error as any;
+            return new ScheduleFailure(scheduleFailuresEnum.serverError);
+        }
+    }
+
+    async getSlotsByAttentionWindow(id:string): Promise<any | ScheduleFailure>{
+        try{
+            let queryCitas = supabase.from("Citas")
+            .select(`
+                *,
+                Sujetos (*)
+            `).eq("ventanaAtencionId", id)
+
+            let resCitas = await queryCitas
+            
+            if(resCitas.data?.length === 0) return []
+
+            return resCitas.data ?? []
+        }catch(e){
             return new ScheduleFailure(scheduleFailuresEnum.serverError);
         }
     }
