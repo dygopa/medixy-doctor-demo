@@ -99,11 +99,11 @@ const deleteAppointment = (idAppointment:string) => async (dispatch: Dispatch<an
   }
 }
 
-const getAppointments = (id:number, dateStart?:string, dateEnd?:string, localityId?:number) => async (dispatch: Dispatch<any>) => {
+const getAppointments = (id:number, dateStart?:string, dateEnd?:string, localityId?:number, onlySubjects?: boolean) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "GET_APPOINTMENTS_LOADING" });
       
-      const res: Array<any> = await new ScheduleUseCase().getAppointments(id, dateStart, dateEnd, localityId);
+      const res: Array<any> = await new ScheduleUseCase().getAppointments(id, dateStart, dateEnd, localityId, onlySubjects);
   
       dispatch({ type: "GET_APPOINTMENTS_SUCCESSFUL", payload: { data: res } });
     } catch (error) {

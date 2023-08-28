@@ -222,7 +222,8 @@ const Side = () => {
         user.userId,
         moment(activeDay["start"]).format("YYYY-MM-DD"),
         moment(activeDay["end"]).format("YYYY-MM-DD"),
-        locality["id"]
+        locality["id"],
+        true
       )(dispatch);
     }
   }, [activeDay, locality, deleteAppointmentSuccessful]);
@@ -233,7 +234,8 @@ const Side = () => {
         user.userId,
         moment(actualDay).format("YYYY-MM-DD"),
         moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
-        locality["id"]
+        locality["id"],
+        true
       )(dispatch);
   }, [actualDay]);
 

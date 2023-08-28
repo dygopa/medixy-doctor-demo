@@ -7,7 +7,7 @@ import { AppointmentEnum } from '(presentation)/(enum)/appointment/appointmentEn
 
 export default interface IScheduleRepository {
     getCalendarEvents(id:number, localityId:number, sinceDate:any, untilDate:any, serviceId?:number): Promise<any[] | ScheduleFailure>;
-    getAppointments(id:number, dateStart?:string, dateEnd?:string, localityId?:number, status?:number): Promise<any[] | ScheduleFailure>;
+    getAppointments(id:number, dateStart?:string, dateEnd?:string, localityId?:number, status?:number, onlySubjects?: boolean): Promise<any[] | ScheduleFailure>;
     getAttentionWindows(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure>;
     getBaseAttentionWindowsByLocality(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure>;
     createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
@@ -78,7 +78,7 @@ export class ScheduleRepository implements IScheduleRepository {
         }
     }
 
-    async getAppointments(id:number, dateStart?:string, dateEnd?:string, localityId?:number, status?:number): Promise<any[] | ScheduleFailure> {
+    async getAppointments(id:number, dateStart?:string, dateEnd?:string, localityId?:number, status?:number, onlySubjects?: boolean): Promise<any[] | ScheduleFailure> {
         try {
             
             console.log("id", localityId)
@@ -134,6 +134,11 @@ export class ScheduleRepository implements IScheduleRepository {
             .filter('fechaReserva', 'gte', moment(dateStart, "YYYY-MM-DD").format("YYYY-MM-DD"))
             .filter('fechaReserva', 'lte', moment(dateEnd, "YYYY-MM-DD").format("YYYY-MM-DD"))
             .order("fechaReserva", { ascending: true })
+
+            if (typeof onlySubjects !== "undefined" && onlySubjects) {
+                query = query.not("sujetoId", "is", null)
+            }
+
             let res = await query
             
             console.log("res.data.data", res.data)
