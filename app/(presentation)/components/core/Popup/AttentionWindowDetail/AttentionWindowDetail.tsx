@@ -9,7 +9,7 @@ import {
 } from "(presentation)/components/core/BaseComponents/Form";
 import Link from "next/link";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { FiBriefcase, FiCheck, FiHome, FiLock, FiUser } from "react-icons/fi";
+import { FiBriefcase, FiCheck, FiHome, FiLock, FiUnlock, FiUser } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import SpecialSearch from "(presentation)/components/core/SpecialSearch/SpecialSearch";
 import { IService } from "domain/core/entities/serviceEntity";
@@ -23,6 +23,7 @@ import {
 } from "(presentation)/components/Schedule/context/ScheduleContext";
 import { ILocality } from "domain/core/entities/localityEntity";
 import { useSearchParams } from "next/navigation";
+import SlotComponent from "./Slot/Slot";
 
 function AttentionWindowDetail({
   cancelFuntion,
@@ -48,30 +49,6 @@ function AttentionWindowDetail({
   } = state.slotsByAttentionWindow;
 
   const searchParams = useSearchParams()
-
-  const SlotComponent = ({data}:{data:any}) => {
-    
-    let isFree = !data["Sujetos"]
-
-    return(
-      <div onClick={()=>{}} className="w-full border border-slate-200 bg-white relative flex flex-col p-3 rounded">
-        <div className="w-full flex justify-between items-center">
-          <p className="text-slate-900 text-base font-semibold">{isFree ? "Disponible" : `${data["Sujetos"]["nombre"]}`}</p>
-          <div className={twMerge([
-            "transition w-fit h-fit flex justify-center items-center gap-2 text-sm px-5 py-1 cursor-pointer",
-            "rounded border text-slate-900 bg-white",
-            "hover:bg-slate-200"
-          ])}>
-            <FiLock/>
-            <p>Bloquear</p>
-          </div>
-        </div>
-        <div className="w-full flex justify-between items-start">
-          <p>{moment(data["fechaReserva"]).utc().format("hh:mm a")} - {moment(data["fechaFinReserva"]).utc().format("hh:mm a")}</p>
-        </div>
-      </div>
-    )
-  }
 
   useMemo(() => {
     if (searchParams.get("attentionWindowId")) {

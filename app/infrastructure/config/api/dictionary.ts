@@ -31,3 +31,5 @@ export const UPDATE_USER_OTP_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL
 export const CHECK_OTP_ENDPOINT = (code:string) => process.env.NEXT_PUBLIC_API_URL + `/doctor/opt/${code}`;
 
 export const CREATE_ATTENTION_WINDOW_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/attention_window`;
+export const UNBLOCK_APPOINTMENT_ENDPOINT = (id:string) => process.env.NEXT_PUBLIC_API_URL + `/unlockeded_appointments/${id}`;
+export const BLOCK_APPOINTMENT_ENDPOINT = (id:string) => process.env.NEXT_PUBLIC_API_URL + `/blockeded_appointments/${id}`;

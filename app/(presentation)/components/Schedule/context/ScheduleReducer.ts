@@ -243,6 +243,72 @@ export const ScheduleReducer = (state: any, action: any) => {
           error: action.payload.error,
         },
       };
+    case 'UNLOCK_SLOT_IN_ATTENTION_WINDOW_LOADING':
+      return {
+        ...state,
+        unblockSlotInAttentionWindow: {
+          ...state.unblockSlotInAttentionWindow,
+          data: null,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'UNLOCK_SLOT_IN_ATTENTION_WINDOW_SUCCESSFUL':
+      return {
+        ...state,
+        unblockSlotInAttentionWindow: {
+          ...state.unblockSlotInAttentionWindow,
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'UNLOCK_SLOT_IN_ATTENTION_WINDOW_ERROR':
+      return {
+        ...state,
+        unblockSlotInAttentionWindow: {
+          ...state.unblockSlotInAttentionWindow,
+          data: null,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
+    case 'BLOCK_SLOT_IN_ATTENTION_WINDOW_LOADING':
+      return {
+        ...state,
+        blockSlotInAttentionWindow: {
+          ...state.blockSlotInAttentionWindow,
+          data: null,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'BLOCK_SLOT_IN_ATTENTION_WINDOW_SUCCESSFUL':
+      return {
+        ...state,
+        blockSlotInAttentionWindow: {
+          ...state.blockSlotInAttentionWindow,
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'BLOCK_SLOT_IN_ATTENTION_WINDOW_ERROR':
+      return {
+        ...state,
+        blockSlotInAttentionWindow: {
+          ...state.blockSlotInAttentionWindow,
+          data: null,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
     case 'GET_BASE_ATTENTION_WINDOWS_BY_LOCALITY_LOADING':
       return {
         ...state,

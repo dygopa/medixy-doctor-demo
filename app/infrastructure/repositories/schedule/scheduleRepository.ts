@@ -1,6 +1,6 @@
 import nookies from 'nookies';
 import { ScheduleFailure, scheduleFailuresEnum } from 'domain/core/failures/schedule/scheduleFailure';
-import { CREATE_ATTENTION_WINDOW_ENDPOINT, GET_CATEGORIES_SERVICES_ENDPOINT, REGISTER_USER_ENDPOINT } from 'infrastructure/config/api/dictionary';
+import { BLOCK_APPOINTMENT_ENDPOINT, CREATE_ATTENTION_WINDOW_ENDPOINT, GET_CATEGORIES_SERVICES_ENDPOINT, REGISTER_USER_ENDPOINT, UNBLOCK_APPOINTMENT_ENDPOINT } from 'infrastructure/config/api/dictionary';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import moment from 'moment';
 import { AppointmentEnum } from '(presentation)/(enum)/appointment/appointmentEnum';
@@ -13,6 +13,8 @@ export default interface IScheduleRepository {
     createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
     getAttentionWindowsByService(id:number, date?:string): Promise<any[] | ScheduleFailure>;
     createWindowAttention(obj:any): Promise<any | ScheduleFailure>;
+    unblockSlotInAttentionWindow(id:any): Promise<any | ScheduleFailure>;
+    blockSlotInAttentionWindow(id:any): Promise<any | ScheduleFailure>;
     getSlotsByAttentionWindow(id:any): Promise<any | ScheduleFailure>;
 }
 
@@ -334,13 +336,80 @@ export class ScheduleRepository implements IScheduleRepository {
         }
     }
 
+    async unblockSlotInAttentionWindow(id:string): Promise<any | ScheduleFailure>{
+        try {
+            let cookies = nookies.get(undefined, 'access_token');
+
+            var myHeaders = new Headers();
+
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
+
+            var raw = JSON.stringify({});
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            } as RequestInit;
+
+            let URL = UNBLOCK_APPOINTMENT_ENDPOINT(id) as RequestInfo
+
+            const response = await fetch(URL, requestOptions)
+
+            let data = await response.json()
+
+            if(!data["meta"]["success"]) return new ScheduleFailure(data["meta"]["error"]["type"]);
+
+            return data["data"] ?? {};
+        } catch (error) {
+            const exception = error as any;
+            return new ScheduleFailure(scheduleFailuresEnum.serverError);
+        }
+    }
+
+    async blockSlotInAttentionWindow(id:string): Promise<any | ScheduleFailure>{
+        try {
+            let cookies = nookies.get(undefined, 'access_token');
+
+            var myHeaders = new Headers();
+
+            myHeaders.append("Content-Type", "application/json");
+            myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
+
+            var raw = JSON.stringify({});
+
+            var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+            } as RequestInit;
+
+            let URL = BLOCK_APPOINTMENT_ENDPOINT(id) as RequestInfo
+
+            const response = await fetch(URL, requestOptions)
+
+            let data = await response.json()
+
+            if(!data["meta"]["success"]) return new ScheduleFailure(data["meta"]["error"]["type"]);
+
+            return data["data"] ?? {};
+        } catch (error) {
+            const exception = error as any;
+            return new ScheduleFailure(scheduleFailuresEnum.serverError);
+        }
+    }
+
     async getSlotsByAttentionWindow(id:string): Promise<any | ScheduleFailure>{
         try{
+            
             let queryCitas = supabase.from("Citas")
             .select(`
                 *,
                 Sujetos (*)
-            `).eq("ventanaAtencionId", id)
+            `).order("fechaReserva", { ascending: true }).eq("ventanaAtencionId", id)
 
             let resCitas = await queryCitas
             

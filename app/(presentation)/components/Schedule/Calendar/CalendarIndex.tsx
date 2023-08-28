@@ -79,11 +79,13 @@ export default function CalendarIndex() {
   function formatEvent(elem: any) {
     let object = {};
 
-    //let type = elem["type"]
+    let isBlocked = elem["estado"] === 9
     let type = elem["sujetoId"] ? "APPOINMENT" : "FREE_SLOT";
     let text =
       type === "WINDOW"
-        ? "Ventana de atención"
+        ? "Ventana de atención" : 
+        isBlocked ?
+        "Bloqueado"
         : type === "FREE_SLOT"
         ? "Disponible"
         : `${
@@ -94,33 +96,45 @@ export default function CalendarIndex() {
         ? "#854d0e"
         : type === "FREE_SLOT"
         ? "#065f46"
+        : isBlocked
+        ? "#9f1239"
         : "#9f1239";
     let backgroundColor =
       type === "WINDOW"
         ? "#fde047"
         : type === "FREE_SLOT"
         ? "#6ee7b7"
+        : isBlocked
+        ? "#fda4af"
         : "#fda4af";
 
     object = {
       title: text,
       start: moment(elem["fechaReserva"]).utc().format("YYYY-MM-DD HH:mm"),
       end: moment(elem["fechaFinReserva"]).utc().format("YYYY-MM-DD HH:mm"),
+      isBlocked,
       textColor:
         moment(elem["fechaReserva"]).isBefore(moment().utc(true)) &&
         type === "FREE_SLOT"
-          ? "#242424"
+          ? "#242424" : 
+          isBlocked ? 
+          "#242424"
           : textColor,
       backgroundColor:
         moment(elem["fechaReserva"]).isBefore(moment().utc(true)) &&
         type === "FREE_SLOT"
-          ? "#CCCCCC30"
+          ? "#CCCCCC30" :
+          isBlocked ?
+          "#CCCCCC30"
           : backgroundColor,
       borderColor:
         moment(elem["fechaReserva"]).isBefore(moment().utc(true)) &&
         type === "FREE_SLOT"
-          ? "#CCCCCC30"
-          : textColor,
+          ? "#CCCCCC30" : 
+          isBlocked ?
+          "CCCCCC30" 
+          :
+          textColor,
       type: type,
       dateEvent: moment(elem["fechaReserva"]).toDate(),
       dateEndEvent: moment(elem["fechaFinReserva"]).toDate(),
@@ -146,6 +160,9 @@ export default function CalendarIndex() {
   }
 
   function handleClickOnEvent(data: any) {
+    if(data["isBlocked"]){
+      return;
+    }
     if (
       moment(data["dateEvent"]).isBefore(moment().utc(true)) &&
       data["type"] !== "APPOINMENT"
