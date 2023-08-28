@@ -6,6 +6,8 @@ export interface IScheduleActions {
   predifinedReservationData: Function;
   typeOfAppointmentCreation: Function;
   appointmentDetail: Function;
+  cancelAppointment: Function;
+  deleteAppointment: Function;
   activeLocality: Function;
   activeService: Function;
   activeDay: Function;
@@ -24,6 +26,7 @@ export interface IScheduleActions {
   getPatients: Function;
   activeActualDay: Function;
   setListOfColors: Function;
+  rescheduleAppointment: Function;
 }
 
 const getCalendarEvents = (id:number, localityId:number, sinceDate:any, untilDate:any, serviceId:number) => async (dispatch: Dispatch<any>) => {
@@ -75,8 +78,25 @@ const changeStatusPopup = (value:boolean) => async (dispatch: Dispatch<any>) => 
     dispatch({ type: "CHANGE_STATUS_POPUP", payload: { data: value } });
 }
 
+const cancelAppointment = (value:boolean) => async (dispatch: Dispatch<any>) => {
+  dispatch({ type: "CHANGE_CANCEL_APPOINTMENT", payload: { data: value } });
+}
+
 const setListOfColors = (list:any[]) => async (dispatch: Dispatch<any>) => {
     dispatch({ type: "CHANGE_LIST_OF_COLORS", payload: { data: list } });
+}
+
+const deleteAppointment = (idAppointment:string) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "DELETE_APPOINTMENT_LOADING" });
+    
+    const res: any = await new ScheduleUseCase().deleteAppointment(idAppointment);
+
+    dispatch({ type: "DELETE_APPOINTMENT_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "DELETE_APPOINTMENT_ERROR", payload: { error: error } });
+  }
 }
 
 const getAppointments = (id:number, dateStart?:string, dateEnd?:string, localityId?:number) => async (dispatch: Dispatch<any>) => {
@@ -209,6 +229,19 @@ const getLocalitiesWithServices = (id:number) => async (dispatch: Dispatch<any>)
     }
 }
 
+const rescheduleAppointment = (obj: { appointmentId: any; newAppointmentId: any; isBlockAppointment: boolean }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "RESCHEDULE_APPOINTMENT_LOADING" });
+    
+    const res: any = await new ScheduleUseCase().rescheduleAppointment({ appointmentId: obj.appointmentId, newAppointmentId: obj.newAppointmentId, isBlockAppointment: obj.isBlockAppointment });
+
+    dispatch({ type: "RESCHEDULE_APPOINTMENT_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "RESCHEDULE_APPOINTMENT_ERROR", payload: { error: error } });
+  }
+}
+
 const getPatients = () => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "GET_PATIENTS_LOADING" });
@@ -227,6 +260,8 @@ export const actions: IScheduleActions = {
   predifinedReservationData,
   typeOfAppointmentCreation,
   appointmentDetail,
+  cancelAppointment,
+  deleteAppointment,
   activeLocality,
   activeService,
   activeDay,
@@ -244,5 +279,6 @@ export const actions: IScheduleActions = {
   getLocalitiesWithServices,
   getPatients,
   activeActualDay,
-  setListOfColors
+  setListOfColors,
+  rescheduleAppointment
 }

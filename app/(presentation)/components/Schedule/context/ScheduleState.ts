@@ -5,6 +5,8 @@ export interface IScheduleState {
   predifinedReservationData: IScheduleUserState;
   typeOfAppointmentCreation: IScheduleUserState;
   appointmentDetail: IScheduleUserState;
+  cancelAppointment: IScheduleUserState;
+  deleteAppointment: IScheduleUserState;
   activeLocality: IScheduleUserState;
   activeService: IScheduleUserState;
   activeDay: IScheduleUserState;
@@ -24,6 +26,7 @@ export interface IScheduleState {
   getLocalitiesWithServices: IScheduleUserState;
   getPatients: IScheduleUserState;
   listOfColors: IScheduleUserState;
+  rescheduleAppointment: IScheduleUserState;
 }
 
 interface IScheduleUserState {
@@ -78,6 +81,18 @@ export const initialState: IScheduleState = {
   },
   actualDay: {
     data: new Date(),
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  cancelAppointment: {
+    data: false,
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  deleteAppointment: {
+    data: false,
     loading: false,
     successful: false,
     error: null,
@@ -167,6 +182,12 @@ export const initialState: IScheduleState = {
     error: null,
   },
   listOfColors: {
+    data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  rescheduleAppointment: {
     data: [],
     loading: false,
     successful: false,

@@ -113,6 +113,49 @@ export const ScheduleReducer = (state: any, action: any) => {
           error: null,
         },
       };
+    case 'CHANGE_CANCEL_APPOINTMENT':
+    return {
+      ...state,
+      cancelAppointment: {
+        data: action.payload.data,
+        loading: false,
+        successful: true,
+        error: null,
+      },
+    };
+    case 'DELETE_APPOINTMENT_LOADING':
+      return {
+        ...state,
+        deleteAppointment: {
+          ...state.deleteAppointment,
+          data: null,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'DELETE_APPOINTMENT_SUCCESSFUL':
+      return {
+        ...state,
+        deleteAppointment: {
+          ...state.deleteAppointment,
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'DELETE_APPOINTMENT_ERROR':
+      return {
+        ...state,
+        deleteAppointment: {
+          ...state.deleteAppointment,
+          data: null,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
     case 'CHANGE_TYPE_ACTIVE_POPUP':
       return {
         ...state,
@@ -540,6 +583,39 @@ export const ScheduleReducer = (state: any, action: any) => {
           error: action.payload.error,
         },
       };
+      case 'RESCHEDULE_APPOINTMENT_LOADING':
+        return {
+          ...state,
+          reschedauleAppointment: {
+            ...state.rescheduleAppointment,
+            data: null,
+            loading: true,
+            successful: false,
+            error: null,
+          },
+        };
+      case 'RESCHEDULE_APPOINTMENT_SUCCESSFUL':
+        return {
+          ...state,
+          rescheduleAppointment: {
+            ...state.rescheduleAppointment,
+            data: action.payload.data,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+        };
+      case 'RESCHEDULE_APPOINTMENT_ERROR':
+        return {
+          ...state,
+          rescheduleAppointment: {
+            ...state.rescheduleAppointment,
+            data: null,
+            loading: false,
+            successful: false,
+            error: action.payload.error,
+          },
+        };
     default:
       return state;
   }
