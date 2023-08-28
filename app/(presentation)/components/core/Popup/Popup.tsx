@@ -6,6 +6,7 @@ import AppointmentDetail from './AppointmentDetail/AppointmentDetail';
 import CreateAgendaHelp from './CreateAgendaHelp/CreateAgendaHelp';
 import FiltersComponent from './FiltersComponent/FiltersComponent';
 import { IScheduleContext, ScheduleContext } from '(presentation)/components/Schedule/context/ScheduleContext';
+import AttentionWindowDetail from './AttentionWindowDetail/AttentionWindowDetail';
 
 function Popup() {
 
@@ -43,6 +44,7 @@ function Popup() {
       {type === 2 && <AppointmentDetail customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch); cancelAppointment(false)(dispatch) }} />}
       {type === 3 && <CreateAgendaHelp customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
       {type === 4 && <FiltersComponent customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
+      {type === 5 && <AttentionWindowDetail customRef={wrapperRef} cancelFuntion={()=>{ changeStatusPopup(false)(dispatch) }} />}
     </div>
   )
 }

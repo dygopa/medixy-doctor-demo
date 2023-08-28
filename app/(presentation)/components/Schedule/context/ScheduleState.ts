@@ -27,6 +27,9 @@ export interface IScheduleState {
   getPatients: IScheduleUserState;
   listOfColors: IScheduleUserState;
   rescheduleAppointment: IScheduleUserState;
+  slotsByAttentionWindow: IScheduleUserState;
+  blockSlotInAttentionWindow: IScheduleUserState;
+  unlockSlotInAttentionWindow: IScheduleUserState;
 }
 
 interface IScheduleUserState {
@@ -189,6 +192,24 @@ export const initialState: IScheduleState = {
   },
   rescheduleAppointment: {
     data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  slotsByAttentionWindow: {
+    data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  blockSlotInAttentionWindow: {
+    data: null,
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  unlockSlotInAttentionWindow: {
+    data: null,
     loading: false,
     successful: false,
     error: null,

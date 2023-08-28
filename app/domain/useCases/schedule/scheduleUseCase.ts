@@ -135,6 +135,36 @@ export default class ScheduleUseCase {
     }
   }
 
+  async unblockSlotInAttentionWindow(id:string): Promise<any> {
+    try {
+      const response = await this._repository.unblockSlotInAttentionWindow(id);
+      if (response instanceof ScheduleFailure) throw response;
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async blockSlotInAttentionWindow(id:string): Promise<any> {
+    try {
+      const response = await this._repository.blockSlotInAttentionWindow(id);
+      if (response instanceof ScheduleFailure) throw response;
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getSlotsByAttentionWindow(id:string): Promise<any> {
+    try {
+      const response = await this._repository.getSlotsByAttentionWindow(id);
+      if (response instanceof ScheduleFailure) throw response;
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createWindowAttention(obj:any): Promise<any> {
     try {
 

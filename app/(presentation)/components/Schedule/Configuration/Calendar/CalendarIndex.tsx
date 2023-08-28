@@ -18,13 +18,13 @@ import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { EventClickArg } from "@fullcalendar/core";
 import { twMerge } from "tailwind-merge";
-import AttentionWindow from "./AttentionWindowModal/AttentionWindowModal";
 import { useSearchParams } from "next/navigation";
 import { scheduleFailuresEnum } from "domain/core/failures/schedule/scheduleFailure";
 import { 
   IStepByStepContext, 
   StepByStepContext 
 } from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
+import { useRouter } from "next/navigation";
 
 export default function CalendarIndex() {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
@@ -37,7 +37,13 @@ export default function CalendarIndex() {
 
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
-  const { getServices, getAttentionWindows, activeLocality } = actions;
+  const { 
+    getServices, 
+    getAttentionWindows, 
+    activeLocality,
+    changeTypePopup, 
+    changeStatusPopup
+  } = actions;
   const { data, loading, successful, error } = state.getAttentionWindows;
   const { successful: successfulWindowCreated, error: errorWindowCreated } =
     state.createWindowAttention;
@@ -52,6 +58,8 @@ export default function CalendarIndex() {
     loading: servicesLoading,
   } = state.getServices;
   const { data: listOfColors } = state.listOfColors;
+
+  const router = useRouter()
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -103,6 +111,7 @@ export default function CalendarIndex() {
       end: end.format("YYYY-MM-DD HH:mm"),
       textColor: "#FFF",
       backgroundColor: color,
+      attentionWindowId: elem["id"]
     };
     return object;
   }
@@ -243,9 +252,9 @@ export default function CalendarIndex() {
                   handleChangeInWeek={() => {}}
                   events={windows}
                   initialEvent={""}
-                  handleClick={(e: EventClickArg) => {
-                    setEventSelected(e);
-                    setShowWindowModal(true);
+                  handleClick={(param: EventClickArg) => {
+                    router.replace(`/schedule/configuration?attentionWindowId=${param.event._def.extendedProps["attentionWindowId"]}`)
+                    changeStatusPopup(true)(dispatch); changeTypePopup(5)(dispatch);
                   }}
                 />
               ) : (
@@ -260,22 +269,6 @@ export default function CalendarIndex() {
         </div>
         {/* END: Calendar Content */}
       </div>
-
-      {showWindowModal && (
-        <div
-          className={twMerge([
-            "z-[99] fixed top-0 left-0 w-full h-screen overflow-y-auto bg-gray-900/50 flex flex-col justify-center items-center",
-            showWindowModal ? "visible" : "hidden",
-          ])}
-        >
-          <div className="w-full md:w-[60%] xl:w-[45%] lg:w-[60%] h-[500px] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
-            <AttentionWindow
-              setShowAttentionWindow={setShowWindowModal}
-              eventSelected={eventSelected}
-            />
-          </div>
-        </div>
-      )}
     </>
   );
 }

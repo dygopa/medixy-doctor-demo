@@ -27,6 +27,9 @@ export interface IScheduleActions {
   activeActualDay: Function;
   setListOfColors: Function;
   rescheduleAppointment: Function;
+  getSlotsByAttentionWindow: Function;
+  blockSlotInAttentionWindow: Function;
+  unlockSlotInAttentionWindow: Function;
 }
 
 const getCalendarEvents = (id:number, localityId:number, sinceDate:any, untilDate:any, serviceId:number) => async (dispatch: Dispatch<any>) => {
@@ -164,6 +167,45 @@ const getAttentionWindowsByService = (id:number, date?:string) => async (dispatc
     }
 }
 
+const unlockSlotInAttentionWindow = (id:string) => async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch({ type: "UNLOCK_SLOT_IN_ATTENTION_WINDOW_LOADING" });
+      
+      const res: Array<any> = await new ScheduleUseCase().unblockSlotInAttentionWindow(id);
+  
+      dispatch({ type: "UNLOCK_SLOT_IN_ATTENTION_WINDOW_SUCCESSFUL", payload: { data: res } });
+    } catch (error) {
+      console.log("Error calling action", error)
+      dispatch({ type: "UNLOCK_SLOT_IN_ATTENTION_WINDOW_ERROR", payload: { error: error } });
+    }
+}
+
+const blockSlotInAttentionWindow = (id:string) => async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch({ type: "BLOCK_SLOT_IN_ATTENTION_WINDOW_LOADING" });
+      
+      const res: Array<any> = await new ScheduleUseCase().blockSlotInAttentionWindow(id);
+  
+      dispatch({ type: "BLOCK_SLOT_IN_ATTENTION_WINDOW_SUCCESSFUL", payload: { data: res } });
+    } catch (error) {
+      console.log("Error calling action", error)
+      dispatch({ type: "BLOCK_SLOT_IN_ATTENTION_WINDOW_ERROR", payload: { error: error } });
+    }
+}
+
+const getSlotsByAttentionWindow = (id:string) => async (dispatch: Dispatch<any>) => {
+    try {
+      dispatch({ type: "GET_SLOTS_BY_ATTENTION_WINDOW_LOADING" });
+      
+      const res: Array<any> = await new ScheduleUseCase().getSlotsByAttentionWindow(id);
+  
+      dispatch({ type: "GET_SLOTS_BY_ATTENTION_WINDOW_SUCCESSFUL", payload: { data: res } });
+    } catch (error) {
+      console.log("Error calling action", error)
+      dispatch({ type: "GET_SLOTS_BY_ATTENTION_WINDOW_ERROR", payload: { error: error } });
+    }
+}
+
 const createWindowAttention = (obj:any) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "CREATE_WINDOW_ATTENTION_LOADING" });
@@ -280,5 +322,8 @@ export const actions: IScheduleActions = {
   getPatients,
   activeActualDay,
   setListOfColors,
-  rescheduleAppointment
+  rescheduleAppointment,
+  getSlotsByAttentionWindow,
+  blockSlotInAttentionWindow,
+  unlockSlotInAttentionWindow,
 }
