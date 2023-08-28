@@ -21,7 +21,7 @@ function Popup() {
       function handleClickOutside(event:MouseEvent) {
         if (ref.current && !ref.current.contains(event.target)) {
           changeStatusPopup(false)(dispatch);
-          if(type === 2) cancelAppointment(false)(dispatch);
+          cancelAppointment(false)(dispatch);
         }
       }
       document.addEventListener("mousedown", handleClickOutside);

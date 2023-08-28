@@ -77,7 +77,7 @@ const StatusComponent = ({ data }: { data: any }) => {
 
   return (
     <div className="w-full flex justify-end items-center gap-2">
-      <p className="font-light text-[12px] text-gray-700">{text}</p>
+      <p className="font-light text-[12px] text-gray-700 w-full">{text}</p>
       <span className={twMerge(["w-2 h-2 rounded-full", color])}></span>
     </div>
   );
@@ -214,6 +214,7 @@ const Side = () => {
   } = state.activeLocality;
   const { data: activeDay, successful: changedActiveDay } = state.activeDay;
   const { data: actualDay } = state.actualDay;
+  const { successful: deleteAppointmentSuccessful } = state.deleteAppointment;
 
   useMemo(() => {
     if (localitySuccessful) {
@@ -224,7 +225,7 @@ const Side = () => {
         locality["id"]
       )(dispatch);
     }
-  }, [activeDay, locality]);
+  }, [activeDay, locality, deleteAppointmentSuccessful]);
 
   useMemo(() => {
     if (actualDay)
