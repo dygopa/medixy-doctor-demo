@@ -1,5 +1,15 @@
+import {
+  AuthContext,
+  IAuthContext,
+} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
+import {
+  IScheduleContext,
+  ScheduleContext,
+} from "(presentation)/components/Schedule/context/ScheduleContext";
+import moment from "moment";
+import { useContext } from "react";
 
 interface ISucessfulMessageProps {
   setShowRescheduleModal: Function;
@@ -8,6 +18,31 @@ interface ISucessfulMessageProps {
 export default function SucessfulMessage({
   setShowRescheduleModal,
 }: ISucessfulMessageProps) {
+  const { state: authState } = useContext<IAuthContext>(AuthContext);
+  const { data: user } = authState.getUserAuthenticated;
+
+  const { state, actions, dispatch } =
+    useContext<IScheduleContext>(ScheduleContext);
+  const { getCalendarEvents, getAppointments } = actions;
+  const { data: locality } = state.activeLocality;
+  const { data: activeDay } = state.activeDay;
+
+  const getCalendarEventsDispatch = () => {
+    getCalendarEvents(
+      user.userId,
+      locality.id,
+      moment(activeDay).format("YYYY-MM-DD"),
+      moment(activeDay, "YYYY-MM-DD").add(5, "days").format("YYYY-MM-DD")
+    )(dispatch);
+    getAppointments(
+      user.userId,
+      moment().format("YYYY-MM-DD"),
+      moment().add(5, "day").format("YYYY-MM-DD"),
+      locality.id,
+      true
+    )(dispatch);
+  };
+
   return (
     <div className="w-full px-4">
       <div className="mb-8">
@@ -31,7 +66,10 @@ export default function SucessfulMessage({
           <Button
             variant="primary"
             className="w-[275px]"
-            onClick={() => setShowRescheduleModal(false)}
+            onClick={() => {
+              getCalendarEventsDispatch();
+              setShowRescheduleModal(false);
+            }}
           >
             Regresar
           </Button>
