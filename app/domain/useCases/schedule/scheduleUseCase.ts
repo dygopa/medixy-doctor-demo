@@ -105,9 +105,11 @@ export default class ScheduleUseCase {
     }
   }
 
-  async getSubjects(): Promise<IGetSubjectsResponse> {
+  async getSubjects(obj: { userId?: number | string | undefined }): Promise<IGetSubjectsResponse> {
     try {
-      const response = await this._repositorySubjects.getSubjects({});
+      const response = await this._repositorySubjects.getSubjects({
+        userId: obj.userId
+      });
       if (response instanceof SubjectFailure) throw response;
       return response;
     } catch (error) {

@@ -366,7 +366,9 @@ function CreateAppointment({
   useMemo(() => {
     if (loadedUser) {
       getLocalities(user.userId)(dispatch);
-      getPatients()(dispatch);
+      getPatients({
+        userId: user.userId,
+      })(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser]);
