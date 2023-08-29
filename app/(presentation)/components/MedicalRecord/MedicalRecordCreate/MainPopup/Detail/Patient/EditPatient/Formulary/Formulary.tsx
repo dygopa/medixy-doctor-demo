@@ -207,8 +207,7 @@ export default function Formulary() {
             values.lastname === "" ||
             values.birthDate === "" ||
             values.phone === "" ||
-            validForm() > 0 ||
-            values.federalEntity === 0
+            validForm() > 0 
           }
           onClick={() => onSubmit()}
         >

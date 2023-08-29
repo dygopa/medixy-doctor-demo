@@ -39,6 +39,7 @@ import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import AutocompleteInputMunicipalities from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMunicipalities/AutocompleteInputMunicipalities";
 import AutocompleteInputLocations from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputLocations/AutocompleteInputLocations";
 import AddressAutocomplete from "(presentation)/components/core/BaseComponents/Autocomplete/AddressAutocomplete/AddressAutocomplete";
+import Link from "next/link";
 
 interface IBasicDataProps {
   values: {
@@ -335,7 +336,7 @@ export default function Formulary({
         </FormSelect>
       </div>
 
-      <div className="input-group w-full">
+      {/*<div className="input-group w-full">
         <p className="input-label py-2">Género</p>
         <FormSelect
           value={values?.gender}
@@ -351,7 +352,7 @@ export default function Formulary({
           <option value={6}>Intersexial</option>
           <option value={7}>Otro</option>
         </FormSelect>
-      </div>
+        </div>*/}
 
       <div className="md:flex gap-3 w-full">
         <div className="input-group md:w-[50%]">
@@ -401,9 +402,18 @@ export default function Formulary({
           onChange={(e: any) => setValues({ ...values, curp: e.target.value })}
           placeholder="CURP"
         />
+        <div className="w-full mt-2">
+          <Link
+            target="_blank"
+            href="https://www.gob.mx/curp/"
+            className="text-primary font-light lg:text-base md:text-base text-md"
+          >
+            ¿No sabes cual es tu CURP? Visita este sitio
+          </Link>
+        </div>
       </div>
 
-      <div className="w-full md:grid md:grid-cols-2 grid-cols-1 justify-start items-center gap-3">
+      {/*<div className="w-full md:grid md:grid-cols-2 grid-cols-1 justify-start items-center gap-3">
         <AddressAutocomplete
           formData={values}
           setFormData={setValues}
@@ -442,7 +452,7 @@ export default function Formulary({
             setValues({ ...values, street: e.target.value });
           }}
         />
-      </div>
+        </div>*/}
     </div>
   );
 }
