@@ -79,19 +79,13 @@ function AttentionWindowDetail({
       <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white">
         <Button
           disabled={false}
-          onClick={() => { }}
+          onClick={() => { cancelFuntion() }}
           variant="primary"
           type="button"
           className="w-full"
         >
-          Guardar
+          Regresar
         </Button>
-        <p
-          onClick={() => { }}
-          className="cursor-pointer font-normal text-sm text-primary text-center"
-        >
-          Cancelar
-        </p>
       </div>
     </div>
   );

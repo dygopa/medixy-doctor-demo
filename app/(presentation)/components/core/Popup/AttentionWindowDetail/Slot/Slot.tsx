@@ -31,9 +31,9 @@ const SlotComponent = ({ data }: { data: any }) => {
     return (
       <div className="w-full border border-slate-200 bg-white relative flex flex-col p-3 rounded">
         <div className="w-full flex justify-between items-center">
-          <p className="text-slate-900 text-base font-semibold">{isFree ? "Disponible" : `${data["Sujetos"]["nombre"]}`}</p>
+          <p className="text-slate-900 text-base font-semibold">{isFree ? "Disponible" : `Ocupado`}</p>
           <div
-            onClick={() => { handleClickInSlot() }}
+            onClick={() => { isFree && handleClickInSlot() }}
             className={twMerge([
               "transition w-fit h-fit flex justify-center items-center gap-2 text-sm px-5 py-1 cursor-pointer",
               "rounded border text-slate-900 bg-white",
