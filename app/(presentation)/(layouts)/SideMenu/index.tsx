@@ -61,7 +61,13 @@ function SideMenu({
   }, [successful]);
 
   useMemo(() => {
-    if (error !== null) setSessionExpired(true);
+    if (error){
+      if(pathname === "/"){
+        redirect("/login");
+      }else{
+        setSessionExpired(true);
+      }
+    }
   }, [error]);
 
   if ((loading || !data?.userId) && pathname === "/") return <Splash />;
@@ -87,13 +93,13 @@ function SideMenu({
           >
             <TopBar navigation={navigation} user={data} />
             {children}
-              <SessionExpiredComponent 
-                tittle="Tu sesión ha expirado"
-                description="Tu sesión ha expirado o no has iniciado sesión."
-                show={sessionExpired}
-                textButtonPrincipal="Volver a iniciar sesión"
-                onClickButtonPrincipal={() => {window.location.href = "/login"}}
-              />
+            <SessionExpiredComponent 
+              tittle="Tu sesión ha expirado"
+              description="Tu sesión ha expirado o no has iniciado sesión."
+              show={sessionExpired}
+              textButtonPrincipal="Volver a iniciar sesión"
+              onClickButtonPrincipal={() => {window.location.href = "/login"}}
+            />
             <StepByStepPopup user={data} />
           </div>
           {/* END: Content */}
