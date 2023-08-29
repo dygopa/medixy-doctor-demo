@@ -68,7 +68,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
       sex: account.sex ?? 0,
       person_type: account.personType ?? 0,
       about_me: account.aboutMe ?? "",
-      short_description: account.shortDescription.length > 0 ? account.shortDescription : null,
+      short_description: account.shortDescription.trim() ?? "",
       website_url: account.websiteUrl.trim() ?? "",
       address: account.address.trim() ?? "",
       pwa_profession_id: account.pwaProfressionId ?? "",
