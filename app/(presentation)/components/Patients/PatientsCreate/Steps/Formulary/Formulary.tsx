@@ -270,7 +270,7 @@ export default function Formulary({
           onChange={(e: any) => setValues({ ...values, curp: e.target.value })}
           placeholder="CURP"
         />
-        <div className="w-full py-2">
+        <div className="w-full pb-2 mt-1">
           <Link
             target="_blank"
             href="https://www.gob.mx/curp/"
