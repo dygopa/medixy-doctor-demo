@@ -264,6 +264,23 @@ export default function Formulary({
         </p>
       </div>
       <div className="input-group w-full">
+        <p className="input-label py-2">CURP</p>
+        <FormInput
+          type="text"
+          onChange={(e: any) => setValues({ ...values, curp: e.target.value })}
+          placeholder="CURP"
+        />
+        <div className="w-full py-2">
+          <Link
+            target="_blank"
+            href="https://www.gob.mx/curp/"
+            className="text-primary font-light text-sm"
+          >
+            ¿No sabes cual es tu CURP? Visita este sitio
+          </Link>
+        </div>
+      </div>
+      <div className="input-group w-full">
         <p className="input-label pb-2">
           Nombre <span className="text-primary font-bold">*</span>
         </p>
@@ -392,24 +409,6 @@ export default function Formulary({
               <span className="text-red-500">{errors.email}</span>
             </div>
           )}
-        </div>
-      </div>
-
-      <div className="input-group w-full">
-        <p className="input-label py-2">CURP</p>
-        <FormInput
-          type="text"
-          onChange={(e: any) => setValues({ ...values, curp: e.target.value })}
-          placeholder="CURP"
-        />
-        <div className="w-full mt-2">
-          <Link
-            target="_blank"
-            href="https://www.gob.mx/curp/"
-            className="text-primary font-light lg:text-base md:text-base text-md"
-          >
-            ¿No sabes cual es tu CURP? Visita este sitio
-          </Link>
         </div>
       </div>
 
