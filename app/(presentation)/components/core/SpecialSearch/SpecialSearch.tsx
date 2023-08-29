@@ -9,6 +9,8 @@ import { FiBriefcase, FiCheck, FiHome, FiPlus, FiUser } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import { Variants, motion } from "framer-motion";
 import { FormInput } from "../BaseComponents/Form";
+import Link from "next/link";
+import Button from "../BaseComponents/Button";
 
 interface SpecialSearchProps {
   selectedItem: any;
@@ -80,6 +82,11 @@ const EmptyList = ({ customClickEmpty }: EmptyStateProps) => {
       <p className="font-light text-sm text-slate-500 w-[70%]">
         Tal parece que no hay resultados en tu busqueda, lo sentimos
       </p>
+      <div className="mt-3">
+        <Link href="/patients/new-patient">
+          <Button variant="primary">Crear paciente</Button>
+        </Link>
+      </div>
     </div>
   );
 };
@@ -352,7 +359,9 @@ export function SpecialSelectSchedule({ ...props }: SpecialSelectProps) {
         ])}
       >
         <div className="w-full overflow-hidden flex justify-start items-center gap-1">
-          <span className={`w-8 h-8 relative block rounded-full bg-${props.color}`}></span>
+          <span
+            className={`w-8 h-8 relative block rounded-full bg-${props.color}`}
+          ></span>
           <p className="block whitespace-nowrap font-medium text-gray-950 text-[0.9rem] w-[90%] overflow-hidden text-ellipsis">
             {props.title}
           </p>
@@ -379,20 +388,25 @@ export function SpecialSelectSchedule({ ...props }: SpecialSelectProps) {
         ])}
       >
         <div className="w-full overflow-hidden flex justify-start items-center gap-1">
-          {(activeValue.title && activeValue.id !== "ALL") && <span style={{backgroundColor: activeValue.color}} className={`w-[10px] h-[10px] relative block rounded-full`}></span>}
+          {activeValue.title && activeValue.id !== "ALL" && (
+            <span
+              style={{ backgroundColor: activeValue.color }}
+              className={`w-[10px] h-[10px] relative block rounded-full`}
+            ></span>
+          )}
           <p className="block whitespace-nowrap font-medium text-gray-950 text-[0.9rem] w-[98%] overflow-hidden text-ellipsis">
-            {activeValue.title ? 
-              activeValue.title
-            : props.emptySelectedValue ? 
-              props.emptySelectedValue["title"]
-            : "Nada aún"}
+            {activeValue.title
+              ? activeValue.title
+              : props.emptySelectedValue
+              ? props.emptySelectedValue["title"]
+              : "Nada aún"}
           </p>
         </div>
         <p className="block whitespace-nowrap font-light text-gray-500 text-[0.8rem] w-full overflow-hidden text-ellipsis">
-          {activeValue.description ? 
-              activeValue.description
-            : props.emptySelectedValue ? 
-              props.emptySelectedValue["description"]
+          {activeValue.description
+            ? activeValue.description
+            : props.emptySelectedValue
+            ? props.emptySelectedValue["description"]
             : "Selecciona un valor de la lista"}
         </p>
       </div>
@@ -408,7 +422,7 @@ export function SpecialSelectSchedule({ ...props }: SpecialSelectProps) {
           {props.list.length === 0 ? (
             <EmptyList />
           ) : (
-            props.list.map((elem: SearchValue, i:number) => {
+            props.list.map((elem: SearchValue, i: number) => {
               return (
                 <div
                   key={i}
@@ -422,7 +436,12 @@ export function SpecialSelectSchedule({ ...props }: SpecialSelectProps) {
                   ])}
                 >
                   <div className="w-full overflow-hidden flex justify-start items-center gap-1">
-                    {elem.id !== "ALL" && <span style={{backgroundColor: elem.color}} className={`w-[10px] h-[10px] relative block rounded-full`}></span>}
+                    {elem.id !== "ALL" && (
+                      <span
+                        style={{ backgroundColor: elem.color }}
+                        className={`w-[10px] h-[10px] relative block rounded-full`}
+                      ></span>
+                    )}
                     <p className="block whitespace-nowrap font-medium text-gray-950 text-[0.9rem] w-[98%] overflow-hidden text-ellipsis">
                       {elem.title}
                     </p>

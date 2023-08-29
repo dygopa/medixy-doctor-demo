@@ -1,3 +1,4 @@
+import { IService } from "./serviceEntity";
 import { ISubject } from "./subjectEntity";
 
 export interface IAppointment {
@@ -8,6 +9,7 @@ export interface IAppointment {
     subjectId: number;
     subject: ISubject;
     serviceId: number;
+    service: IService;
     startHour: number;
     endHour: number;
     index: number;
