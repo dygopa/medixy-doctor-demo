@@ -1,9 +1,11 @@
 import { IAppointment } from "domain/core/entities/appointmentEntity";
+import { IService } from "domain/core/entities/serviceEntity";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import { AppointmentFailure, appointmentFailuresEnum } from "domain/core/failures/appointment/appintmentFailure";
 import { IGetAppointmentResponse, IGetAppointmentsResponse, IUpdateAppointmentResponse } from "domain/core/response/appointmentsResponse";
 import { appointmentSupabaseToMap } from "domain/mappers/appointment/supabase/appointmentSupabaseMapper";
 import { subjectSupabaseToMap } from "domain/mappers/patient/supabase/subjectSupabaseMapper";
+import { servicesSupabaseMapper } from "domain/mappers/services/servicesSupabaseMapper";
 import { supabase } from "infrastructure/config/supabase/supabase-client";
 
 export default interface IAppointmentRepository {
@@ -111,7 +113,11 @@ export class AppointmentRepository implements IAppointmentRepository {
         try {
           const res = await supabase.from("Citas").select(`
             *,
-            Sujetos (*)
+            Sujetos (*),
+            Servicios (
+              *,
+              Localidades(*)
+            )
             `).eq("id", appointmentId).limit(1);
   
           let appointment: IAppointment = {} as IAppointment;
@@ -123,6 +129,12 @@ export class AppointmentRepository implements IAppointmentRepository {
                 const subject: ISubject = subjectSupabaseToMap(res.data[0].Sujetos);
 
                 if (subject.subjectId > 0) appointment.subject = subject;
+            }
+
+            if (res.data[0]?.Servicios) {
+              const service: IService = servicesSupabaseMapper(res.data[0].Servicios);
+
+              if (service.id > 0) appointment.service = service;
             }
           }
 

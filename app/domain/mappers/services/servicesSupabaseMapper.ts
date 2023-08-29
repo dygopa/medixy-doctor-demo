@@ -1,5 +1,6 @@
 import { ILocalityService } from "domain/core/entities/localityEntity";
-import { IServiceToLocality } from "domain/core/entities/serviceEntity";
+import { IService, IServiceCategory, IServiceToLocality } from "domain/core/entities/serviceEntity";
+import { localityFromSupabaseToMap } from "../localities/localitiesSupabaseMapper";
 
 export function serviceToLocalitiesSupabaseToMap(data: any): IServiceToLocality {
     return {
@@ -19,4 +20,27 @@ export function fromServiceToLocalitiesSupabaseDocumentData(relation: ILocalityS
     } as any;
 
     return documentData;
+}
+export function servicesSupabaseMapper(data: any): IService {
+    return {
+        id: data?.id ?? 0,
+        name: data?.nombre ?? "",
+        service_category_id: data?.categoriaServicioId ?? "",
+        service_category: data?.CategoriaServicios ? categorySupabaseMapper(data?.CategoriaServicios) : {},
+        image_url: data?.fotoUrl ?? 0,
+        description: data?.descripcion ?? 0,
+        conditions: data?.condiciones ?? 0,
+        status: data?.estado ?? 0,
+        base_price: data?.precioBase ?? 0,
+        location: data?.Localidades ? localityFromSupabaseToMap(data?.Localidades) : {},
+        location_id: data?.localidadId ?? 0,
+    } as IService;
+}
+
+
+export function categorySupabaseMapper(data:any): IServiceCategory {
+    return {
+        id: data?.id ?? 0,
+        name: data?.nombre ?? ""
+    } as IServiceCategory
 }
