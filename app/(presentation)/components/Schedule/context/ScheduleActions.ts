@@ -284,11 +284,13 @@ const rescheduleAppointment = (obj: { appointmentId: any; newAppointmentId: any;
   }
 }
 
-const getPatients = () => async (dispatch: Dispatch<any>) => {
+const getPatients = (obj: { userId?: number | string | undefined }) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "GET_PATIENTS_LOADING" });
       
-      const res: any = await new ScheduleUseCase().getSubjects();
+      const res: any = await new ScheduleUseCase().getSubjects({
+        userId: obj.userId
+      });
   
       dispatch({ type: "GET_PATIENTS_SUCCESSFUL", payload: { data: res } });
     } catch (error) {
