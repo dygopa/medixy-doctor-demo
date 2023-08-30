@@ -229,11 +229,14 @@ function CreateAgenda({
 
   function formatHoursFromSpan() {
     let list = [];
+    
+    let fromMinutes = listOfStartHours.find((elem: any) => elem["value"] === parseInt(formData.fromHour))
+    let minutes = fromMinutes["label"].split(":")[1].split(" ")[0]
 
     let endOfDay = moment().utc().add(1, "day").startOf("day");
     let start = moment().utc().startOf("day");
 
-    start = start.add(formData.spanTime, "minutes");
+    start = start.add((formData.spanTime + parseInt(minutes)), "minutes");
     list.push({
       value: parseInt(start.format("HH:mm").split(":").join("")),
       label: start.format("hh:mm a"),
@@ -511,8 +514,10 @@ function CreateAgenda({
   }, [successful]);
 
   useMemo(() => {
-    if (formData.spanTime > 0) formatHoursFromSpan();
-  }, [formData.spanTime]);
+    if (formData.spanTime > 0 && formData.fromHour !== ""){
+      formatHoursFromSpan();
+    }
+  }, [formData.spanTime, formData.fromHour]);
 
   useEffect(() => {
     if (!generatedHours) generateHours();
@@ -730,10 +735,10 @@ function CreateAgenda({
             >
               <option value={0}>-</option>
               {listOfHours
-                .filter((elem) => elem["value"] > formData.fromHour)
-                .map((elem: any) => (
-                  <option value={elem["value"]}>{elem["label"]}</option>
-                ))}
+              .filter((elem:any)=>elem["value"] > formData.fromHour)
+              .map((elem: any) => (
+                <option value={elem["value"]}>{elem["label"]}</option>
+              ))}
             </FormSelect>
           </div>
         </div>
