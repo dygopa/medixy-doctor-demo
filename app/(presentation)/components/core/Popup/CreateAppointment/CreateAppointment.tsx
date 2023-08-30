@@ -391,6 +391,7 @@ function CreateAppointment({
               list={listOfPatients}
               placeholder={"Buscar..."}
               selectedItem={selectedPatient}
+              createButton
             />
             <div className="w-full flex justify-end items-center">
               <Link

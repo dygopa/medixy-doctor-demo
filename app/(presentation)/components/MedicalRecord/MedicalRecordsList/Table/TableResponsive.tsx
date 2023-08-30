@@ -108,11 +108,21 @@ export default function TableResponsive() {
                 className="w-full flex items-center gap-4 cursor-pointer"
               >
                 <div className="w-12 h-12 bg-primary/40 text-primary flex justify-center items-center rounded-md text-xl">
-                  <Lucide icon="FileText" />
+                  <Lucide icon="FileText" size={25} />
                 </div>
 
                 <div className="relative flex flex-col justify-center items-start">
-                  <p className="font-semibold text-xl text-gray-950">
+                  <p
+                    className="font-semibold text-md text-gray-950"
+                    style={{
+                      display: "block",
+                      textOverflow: "ellipsis",
+                      wordWrap: "break-word",
+                      overflow: "hidden",
+                      maxHeight: "3.6em",
+                      lineHeight: "1.8em",
+                    }}
+                  >
                     {medicalConsulty.diagnose &&
                     medicalConsulty.diagnose?.length > 0
                       ? medicalConsulty.diagnose[0].description
@@ -129,14 +139,14 @@ export default function TableResponsive() {
             <div className="w-full grid grid-cols-2 gap-1">
               <div className="flex flex-col justify-start items-start gap-2 text-left">
                 <p className="font-light text-gray-500 text-sm">Paciente</p>
-                <p className="font-normal text-gray-950 text-base">
+                <p className="font-normal text-gray-950 text-md">
                   {medicalConsulty.subject.name}{" "}
                   {medicalConsulty.subject.lastName}
                 </p>
               </div>
               <div className="flex flex-col justify-start items-center gap-2 text-left">
                 <p className="font-light text-gray-500 text-sm">CURP</p>
-                <p className="font-normal text-gray-950 text-base">
+                <p className="font-normal text-gray-950 text-md">
                   {medicalConsulty.subject.curp &&
                   medicalConsulty.subject.curp.length > 0
                     ? medicalConsulty.subject.curp
