@@ -122,36 +122,6 @@ export default function CalendarIndex() {
     setWindows(list);
   }
 
-  const EmptyLocalities = () => {
-    if (localitiesSuccessful && [...(localities as any[])].length === 0) {
-      return (
-        <div className="md:w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4">
-          <div className="w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center">
-            <span className="h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center">
-              <Lucide icon="Building" />
-            </span>
-          </div>
-          <div className="w-full h-fit flex flex-col justify-center items-center gap-1 text-center px-2">
-            <p className="font-semibold text-slate-900 text-base">
-              No hay consultorios
-            </p>
-            <p className="font-light text-slate-500 text-sm">
-              Crea tu primer consultorio y empieza a crear los servicios que
-              prestas
-            </p>
-          </div>
-          <Link className="w-full block" href="/localities/create">
-            <Button className="w-full" variant="primary">
-              Crear consultorio
-            </Button>
-          </Link>
-        </div>
-      );
-    } else {
-      return <div></div>;
-    }
-  };
-
   const EmptyServices = () => {
     if (servicesSuccessful && [...(services as any[])].length === 0) {
       return (
@@ -259,7 +229,27 @@ export default function CalendarIndex() {
                 />
               ) : (
                 <div className="w-full h-full flex justify-center items-center flex-wrap gap-5">
-                  <EmptyLocalities />
+                  <div className="md:w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4">
+                    <div className="w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center">
+                      <span className="h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center">
+                        <Lucide icon="Building" />
+                      </span>
+                    </div>
+                    <div className="w-full h-fit flex flex-col justify-center items-center gap-1 text-center px-2">
+                      <p className="font-semibold text-slate-900 text-base">
+                        No hay consultorios
+                      </p>
+                      <p className="font-light text-slate-500 text-sm">
+                        Crea tu primer consultorio y empieza a crear los servicios que
+                        prestas
+                      </p>
+                    </div>
+                    <Link className="w-full block" href="/localities/create">
+                      <Button className="w-full" variant="primary">
+                        Crear consultorio
+                      </Button>
+                    </Link>
+                  </div>
                 </div>
               )}
             </>
