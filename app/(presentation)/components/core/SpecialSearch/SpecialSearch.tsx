@@ -18,6 +18,7 @@ interface SpecialSearchProps {
   customClickEmpty: any;
   list: any[];
   placeholder?: string | any;
+  createButton?: boolean;
 }
 
 interface SpecialSelectProps {
@@ -37,6 +38,7 @@ interface ValueOnListProps {
 
 interface EmptyStateProps {
   customClickEmpty: any;
+  createButton: boolean;
 }
 
 interface SearchValue {
@@ -73,7 +75,7 @@ const ValueOnList = ({ customClick, data, isSelected }: ValueOnListProps) => {
   );
 };
 
-const EmptyList = ({ customClickEmpty }: EmptyStateProps) => {
+const EmptyList = ({ customClickEmpty, createButton }: EmptyStateProps) => {
   return (
     <div className="w-full text-center h-full flex flex-col justify-center items-center gap-2 p-4">
       <p className="font-semibold text-lg text-slate-950 w-[50%]">
@@ -82,11 +84,13 @@ const EmptyList = ({ customClickEmpty }: EmptyStateProps) => {
       <p className="font-light text-sm text-slate-500 w-[70%]">
         Tal parece que no hay resultados en tu busqueda, lo sentimos
       </p>
-      <div className="mt-3">
-        <Link href="/patients/new-patient">
-          <Button variant="primary">Crear paciente</Button>
-        </Link>
-      </div>
+      {createButton && (
+        <div className="mt-3">
+          <Link href="/patients/new-patient">
+            <Button variant="primary">Crear paciente</Button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };
@@ -97,6 +101,7 @@ export default function SpecialSearch({
   list,
   placeholder,
   selectedItem,
+  createButton = false,
 }: SpecialSearchProps) {
   const [active, setActive] = useState(false);
   const searchbox: Variants = {
@@ -149,7 +154,10 @@ export default function SpecialSearch({
       >
         <div className="max-h-[30vh] min-h-[10vh] h-fit overflow-y-auto">
           {searchedList.length === 0 ? (
-            <EmptyList customClickEmpty={customClickEmpty} />
+            <EmptyList
+              customClickEmpty={customClickEmpty}
+              createButton={createButton}
+            />
           ) : (
             searchedList.map((elem, i) => (
               <ValueOnList
