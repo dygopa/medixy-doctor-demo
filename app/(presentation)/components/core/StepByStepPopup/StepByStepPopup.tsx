@@ -115,7 +115,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
             </p>
           </div>
         </div>
-        <div className="text-center mt-3">
+        <div className="text-center mt-5">
           {props.completed ? (
             <span className="bg-green-500 text-white text-center font-normal text-sm px-4 py-2 rounded-md">
               Completado
@@ -194,7 +194,11 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
         isVisible ? "visible" : "hidden",
       ])}
     >
-      <div className="w-[80%] md:w-[75%] h-auto overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
+      <div className={twMerge([
+        "w-full h-screen overflow-y-auto flex flex-col justify-between items-start bg-white p-6 gap-8",
+        "md:w-[75%] md:h-auto",
+        "lg:w-[80%] lg:h-auto lg:rounded-md",
+      ])}>
         <div className="w-full px-4">
           <div className="mb-14 w-full flex justify-between items-center">
             <Lucide
@@ -208,7 +212,10 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
           </div>
           <Header user={user} />
 
-          <div className="grid gap-10 grid-cols-3 mt-8 mb-12">
+          <div className={twMerge([
+            "flex flex-col gap-10 mt-8 mb-12",
+            "lg:grid lg:grid-cols-3"
+          ])}>
             <Step props={steps[0]}>
               <Lucide icon="Building" />
             </Step>
