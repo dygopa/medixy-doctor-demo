@@ -40,7 +40,17 @@ export default function RescheduleAppointment({
   } = state.getAttentionWindowsByService;
 
   const [isNow, setIsNow] = useState(false);
-  const [selectedDate, setSelectedDate] = useState("");
+  const [selectedDate, setSelectedDate] = useState(
+    `${new Date().getFullYear()}-${
+      new Date().getMonth() + 1 < 10
+        ? `0${new Date().getMonth() + 1}`
+        : new Date().getMonth() + 1
+    }-${
+      new Date().getDate() < 10
+        ? `0${new Date().getDate()}`
+        : new Date().getDate()
+    }`
+  );
   const [windows, setWindows] = useState([]);
 
   const [formData, setFormData] = useState({
@@ -57,6 +67,14 @@ export default function RescheduleAppointment({
 
   useMemo(() => {
     setWindows([]);
+  }, []);
+
+  useMemo(() => {
+    getAttentionWindowsByService(
+      appointment.servicioId,
+      selectedDate
+    )(dispatch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   let hour = moment(appointment["fechaReserva"])
@@ -155,7 +173,7 @@ export default function RescheduleAppointment({
 
       <div className="w-full flex flex-col justify-center items-start gap-2">
         <p className="font-normal text-sm text-slate-600">Para cuando</p>
-        <div className="w-full grid grid-cols-2 justify-between items-center gap-5">
+        {/* <div className="w-full grid grid-cols-2 justify-between items-center gap-5">
           <div
             className={twMerge([
               "cursor-pointer border py-2 font-light text-sm rounded-md flex justify-center items-center gap-2",
@@ -185,7 +203,7 @@ export default function RescheduleAppointment({
             Ahora mismo
             {isNow && <FiCheck />}
           </div>
-        </div>
+        </div>*/}
         {!isNow && (
           <FormInput
             type={"date"}
