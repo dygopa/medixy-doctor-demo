@@ -100,6 +100,7 @@ const AppointmentComponent = ({
   return (
     <>
       <div className="cursor-pointer relative w-full min-h-[11vh] h-fit max-h-[14vh] bg-white flex justify-between items-center p-3 gap-2 box-border rounded-md shadow-sm">
+      {data["estado"] === AppointmentEnum.PENDING && (
         <div className="w-full flex justify-end absolute top-1 right-1">
           <Menu as="div" className="relative inline-block text-left">
             <Menu.Button className="rounded-lg hover:bg-gray-100 p-1">
@@ -115,7 +116,7 @@ const AppointmentComponent = ({
               leaveTo="transform opacity-0 scale-95"
             >
               <Menu.Items className="absolute right-0 z-15 mt-1 w-44 origin-top-right rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5">
-                {data["estado"] === AppointmentEnum.PENDING && (
+                
                   <Menu.Item>
                     {({ active }) => (
                       <div>
@@ -130,7 +131,6 @@ const AppointmentComponent = ({
                       </div>
                     )}
                   </Menu.Item>
-                )}
 
                 <Menu.Item>
                   {({ active }) => (
@@ -153,6 +153,7 @@ const AppointmentComponent = ({
             </Transition>
           </Menu>
         </div>
+        )}
         <div
           onClick={onClick}
           className="flex justify-between items-center gap-2 w-full"
