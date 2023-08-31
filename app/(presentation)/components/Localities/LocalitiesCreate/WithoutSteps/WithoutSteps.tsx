@@ -451,8 +451,8 @@ export default function WithoutSteps({
                     })
                   }
                 >
-                  <option value={1}>Público</option>
                   <option value={0}>Privado</option>
+                  <option value={1}>Público</option>
                 </FormSelect>
               </div>
 
