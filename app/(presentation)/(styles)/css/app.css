@@ -58,6 +58,34 @@
 @import "./components/_tabulator.css";
 @import "./components/_svg.css";
 
-.fc-timegrid-event-harness{
+.fc-timegrid-event-harness {
    cursor: pointer!important;
 }
+
+.fc-timegrid-divider {
+   display: none !important;
+}
+
+.fc-timegrid-slot-minor {
+   border: transparent !important;
+}
+
+.fc-scroller::-webkit-scrollbar {
+   width: 5px;
+}
+ 
+ /* Track */
+ .fc-scroller::-webkit-scrollbar-track {
+   background: #f1f1f1;
+ }
+ 
+ /* Handle */
+ .fc-scroller::-webkit-scrollbar-thumb {
+   background: #cacaca;
+   border-radius: 5px;
+ }
+ 
+ /* Handle on hover */
+ .fc-scroller::-webkit-scrollbar-thumb:hover {
+   background: rgb(186, 186, 186);
+ }
