@@ -53,6 +53,7 @@ function Calendar({
         center: "title",
         end: showWeek ? "timeGridWeek" : "",
       }}
+      allDayClassNames="hidden"
       buttonText={{
         today: "Hoy",
       }}
