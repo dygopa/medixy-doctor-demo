@@ -18,13 +18,12 @@ import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { EventClickArg } from "@fullcalendar/core";
 import { twMerge } from "tailwind-merge";
-import { useSearchParams } from "next/navigation";
 import { scheduleFailuresEnum } from "domain/core/failures/schedule/scheduleFailure";
 import { 
   IStepByStepContext, 
   StepByStepContext 
 } from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 export default function CalendarIndex() {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
@@ -60,6 +59,7 @@ export default function CalendarIndex() {
   const { data: listOfColors } = state.listOfColors;
 
   const router = useRouter()
+  const searchParams = useSearchParams()
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -179,6 +179,10 @@ export default function CalendarIndex() {
   };
 
   useMemo(()=>{
+    if(searchParams.get("attentionWindowId")) changeStatusPopup(true)(dispatch); changeTypePopup(5)(dispatch);
+  },[searchParams.get("attentionWindowId")])
+
+  useMemo(()=>{
     if (createStepSuccessful){
       changeOpenPopup(true)(dispatchStep)
     }
@@ -224,7 +228,6 @@ export default function CalendarIndex() {
                   initialEvent={""}
                   handleClick={(param: EventClickArg) => {
                     router.replace(`/schedule/configuration?attentionWindowId=${param.event._def.extendedProps["attentionWindowId"]}`)
-                    changeStatusPopup(true)(dispatch); changeTypePopup(5)(dispatch);
                   }}
                 />
               ) : (
