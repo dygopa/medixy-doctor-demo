@@ -3,6 +3,7 @@
 import StepByStepProvider from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 import SideMenu from "../SideMenu";
 import AuthProvider from "./context/AuthContext";
+import ScriptGoogle from "./Script";
 import VersionHandler from "./VersionHandler/VersionHandler";
 
 interface INavigation {
@@ -32,6 +33,7 @@ export default function AppLayout({
           </SideMenu>
         </StepByStepProvider>
       </AuthProvider>
+      <ScriptGoogle />
     </VersionHandler>
   );
 }
