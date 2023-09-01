@@ -47,7 +47,7 @@ export default function Formulary() {
     direction: "",
     street: "",
     pictureUrl: "",
-    postalCode: "",
+    postal_code: "",
   });
 
   const [errors, setErrors] = useState({
@@ -66,7 +66,6 @@ export default function Formulary() {
   });
 
   const setInitialValues = () => {
-
     setValues({
       ...values,
       id: subject?.subjectId ?? 0,
@@ -87,7 +86,7 @@ export default function Formulary() {
       street: subject?.street ?? "",
       direction: subject?.address ?? "",
       pictureUrl: subject?.pictureUrl ?? "",
-      postalCode: subject?.postalCode ?? "",
+      postal_code: subject?.postalCode ?? "",
     });
   };
 
@@ -142,12 +141,9 @@ export default function Formulary() {
       gender: values.gender,
       phoneNumber: values.phone.trim(),
       federativeEntityId: values.federalEntity,
-      municipalityId: values.municipality !== 0
-        ? values.municipality
-        : null,
-      countryLocationId: values.countryLocation !== 0
-       ? values.countryLocation
-       : null,
+      municipalityId: values.municipality !== 0 ? values.municipality : null,
+      countryLocationId:
+        values.countryLocation !== 0 ? values.countryLocation : null,
       street: values.street.trim(),
       country: values.country.trim(),
       state: 0,
@@ -158,7 +154,7 @@ export default function Formulary() {
       createdOn: subject?.createdOn ?? new Date(),
       updatedOn: new Date(),
       deletedOn: null,
-      postalCode: values.postalCode,
+      postalCode: values.postal_code,
     };
 
     editSubject(subjectEdit)(dispatch);
@@ -207,7 +203,7 @@ export default function Formulary() {
             values.lastname === "" ||
             values.birthDate === "" ||
             values.phone === "" ||
-            validForm() > 0 
+            validForm() > 0
           }
           onClick={() => onSubmit()}
         >
@@ -223,9 +219,9 @@ export default function Formulary() {
           setErrors={setErrors}
         />
         {/*<Credentials />*/}
-        <Direction 
-          values={values} 
-          setValues={setValues} 
+        <Direction
+          values={values}
+          setValues={setValues}
           errors={errors}
           setErrors={setErrors}
         />
