@@ -25,9 +25,9 @@ export default class ScheduleUseCase {
     }
   }
       
-  async getAppointments(id:number, dateStart?:string, dateEnd?:string, localityId?:number, onlySubjects?: boolean): Promise<any[]> {
+  async getAppointments(id:number, dateStart?:string, dateEnd?:string, localityId?:number, onlySubjects?: boolean, serviceId?: number): Promise<any[]> {
     try {
-      const response = await this._repository.getAppointments(id, dateStart, dateEnd, localityId, undefined, onlySubjects);
+      const response = await this._repository.getAppointments(id, dateStart, dateEnd, localityId, undefined, onlySubjects, serviceId);
       if (response instanceof ScheduleFailure) throw response;
       return response;
     } catch (error) {

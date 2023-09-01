@@ -206,6 +206,7 @@ const Side = () => {
     changeTypePopup,
     appointmentDetail,
     cancelAppointment,
+    activeService
   } = actions;
   const { data, loading, successful, error } = state.getAppointments;
   const {
@@ -216,6 +217,7 @@ const Side = () => {
   const { data: activeDay, successful: changedActiveDay } = state.activeDay;
   const { data: actualDay } = state.actualDay;
   const { successful: deleteAppointmentSuccessful } = state.deleteAppointment;
+  const { data: service } = state.activeService
 
   useMemo(() => {
     if (localitySuccessful) {
@@ -228,6 +230,27 @@ const Side = () => {
       )(dispatch);
     }
   }, [activeDay, locality, deleteAppointmentSuccessful]);
+
+  useMemo(() => {
+    if(service.id === "ALL") {
+      getAppointments(
+        user.userId,
+        moment(activeDay["start"]).format("YYYY-MM-DD"),
+        moment(activeDay["end"]).format("YYYY-MM-DD"),
+        locality["id"],
+        true
+      )(dispatch);
+    } else {
+      getAppointments(
+        user.userId,
+        moment(activeDay["start"]).format("YYYY-MM-DD"),
+        moment(activeDay["end"]).format("YYYY-MM-DD"),
+        locality["id"],
+        true,
+        parseInt(service.id)
+      )(dispatch);
+    }
+  }, [service]);
 
   useMemo(() => {
     if (actualDay)
