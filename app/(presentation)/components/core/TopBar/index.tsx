@@ -334,11 +334,12 @@ function Main({
           className="w-fit h-full flex justify-end items-center gap-3"
         >
           <div className="w-fit min-w-[8rem] h-full flex flex-col justify-center items-end">
-            { user?.sex === 1 ?
+            { user?.sex === 1 &&
               <p className="font-semibold text-sm text-slate-900">
                 Dra. {user?.names} {user?.firstName}
               </p>
-              :
+            }
+            { user?.sex === 2 || user?.sex === 0 &&
               <p className="font-semibold text-sm text-left text-slate-900">
                 Dr. {user?.names} {user?.firstName}
               </p>
