@@ -456,7 +456,7 @@ export default function WithoutSteps({
                 </FormSelect>
               </div>
 
-              <div className="lg:flex justify-between items-center relative w-full gap-3">
+              {/*              <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Código Postal
                   <span className="text-primary font-bold">*</span>
@@ -474,11 +474,12 @@ export default function WithoutSteps({
                 <span className="text-red-500 w-full text-right -mt-5">
                   {errors.postal_code}
                 </span>
-              )}
+              )} */}
 
               <AddressAutocomplete
                 formData={formData}
                 setFormData={setFormData}
+                showPostalCode
               />
               {/*  <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">

@@ -8,6 +8,8 @@ import Lucide from "../Lucide";
 export interface IAutocompleteValue {
   id: number;
   additionalId?: number | null;
+  secondAdditionalId?: number | null;
+  thirdAdditionalId?: number | null;
   name: string;
 }
 
@@ -99,9 +101,11 @@ export default function AutocompleteInput({
       return;
     }
 
-    let itemsToShowList: IAutocompleteValue[] = items.filter((item: IAutocompleteValue)=>{ 
-      item.name.toLowerCase().includes(query.toLowerCase()) 
-    });
+    let itemsToShowList: IAutocompleteValue[] = items.filter(
+      (item: IAutocompleteValue) => {
+        item.name.toLowerCase().includes(query.toLowerCase());
+      }
+    );
 
     setItemsList(itemsToShowList);
   };
@@ -169,7 +173,7 @@ export default function AutocompleteInput({
         />
       </div>
 
-      {field.length > 0 && showClearButton && (
+      {field.length > 0 && showClearButton && !disabled && (
         <div className="absolute top-2 right-3">
           <Button
             onClick={() => {
@@ -212,21 +216,25 @@ export default function AutocompleteInput({
             </div>
           </button>
         ))}
-        {(field.length > 0 && showCreateItem) && <button
-          type="button"
-          className="py-2 hover:bg-gray-500 hover:bg-opacity-10 w-full text-left"
-          onClick={()=>{
-            onClickItem({
-              name: field,
-              id: 0
-            })
-            setShowDropdown(false) 
-          }}
-        >
-          <div className="flex justify-between px-2">
-            <p className="text-slate-900 text-md">Crear: <b>{field}</b></p>
-          </div>
-        </button>}
+        {field.length > 0 && showCreateItem && (
+          <button
+            type="button"
+            className="py-2 hover:bg-gray-500 hover:bg-opacity-10 w-full text-left"
+            onClick={() => {
+              onClickItem({
+                name: field,
+                id: 0,
+              });
+              setShowDropdown(false);
+            }}
+          >
+            <div className="flex justify-between px-2">
+              <p className="text-slate-900 text-md">
+                Crear: <b>{field}</b>
+              </p>
+            </div>
+          </button>
+        )}
       </div>
     </div>
   );

@@ -558,26 +558,6 @@ export default function Formulary({
                   </FormSelect>
                 </div>
 
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
-                  <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Código Postal
-                    <span className="text-primary font-bold">*</span>
-                  </p>
-                  <FormInput
-                    type={"text"}
-                    placeholder="Escribe el código postal del consultorio..."
-                    min={0}
-                    value={formData.postal_code}
-                    className="form-control lg:w-[70%]"
-                    onChange={(e: any) => handlePostalCode(e.target.value)}
-                  />
-                </div>
-                {errors.postal_code.length > 0 && (
-                  <span className="text-red-500 w-full text-right -mt-5">
-                    {errors.postal_code}
-                  </span>
-                )}
-
                 <AddressAutocomplete
                   formData={formData}
                   setFormData={setFormData}
@@ -585,6 +565,8 @@ export default function Formulary({
                   municipalityId={formData.municipality}
                   municipalityCatalogId={formData.municipalityCatalogId}
                   locationId={formData.countryLocation}
+                  postalCode={formData.postal_code}
+                  showPostalCode
                 />
 
                 {/* <div className="lg:flex justify-between items-start relative w-full gap-3">

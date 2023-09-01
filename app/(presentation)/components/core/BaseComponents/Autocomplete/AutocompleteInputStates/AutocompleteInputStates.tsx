@@ -10,6 +10,7 @@ interface IAutocompleteInputStatesProps {
   onClick: (item: IAutocompleteValue) => void;
   className?: string;
   federalEntityId?: number | null;
+  disabled?: boolean | undefined;
 }
 
 export default function AutocompleteInputStates({
@@ -17,6 +18,7 @@ export default function AutocompleteInputStates({
   onClick,
   className,
   federalEntityId,
+  disabled,
 }: IAutocompleteInputStatesProps) {
   const { state, actions, dispatch } =
     useContext<IAutocompleteInputStatesContext>(AutocompleteInputStatesContext);
@@ -60,6 +62,7 @@ export default function AutocompleteInputStates({
 
   return (
     <AutocompleteInput
+      disabled={disabled}
       showCreateItem={false}
       items={getAutocompleteValues()}
       defaultValue={

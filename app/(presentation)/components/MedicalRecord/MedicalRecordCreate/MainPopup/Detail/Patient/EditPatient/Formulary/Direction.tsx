@@ -45,7 +45,7 @@ interface IContactProps {
     direction: string;
     street: string;
     pictureUrl: string;
-    postalCode: string;
+    postal_code: string;
   };
   setValues: Dispatch<
     SetStateAction<{
@@ -69,7 +69,7 @@ interface IContactProps {
       direction: string;
       street: string;
       pictureUrl: string;
-      postalCode: string;
+      postal_code: string;
     }>
   >;
   errors: {
@@ -113,21 +113,6 @@ export default function Contact({
     MedicalRecordCreateContext
   );
 
-  const handlePostalCode = (value: string) => {
-    setValues({ ...values, postalCode: value });
-    if (value.length > 0 && !VALIDATE_NUMBERS(value)) {
-      setErrors((previousState: any) => {
-        return {
-          ...previousState,
-          postalCode: "El codigo postal solo lleva numeros",
-        };
-      });
-      return true;
-    }
-    setErrors({ ...errors, postalCode: "" });
-    return false;
-  };
-
   return (
     <div className="w-full bg-white  rounded-md h-fit mt-4">
       <div className="w-full rounded-md p-5 flex">
@@ -146,38 +131,23 @@ export default function Contact({
               municipalityId={values.municipality}
               municipalityCatalogId={values.municipalityCatalogId}
               locationId={values.countryLocation}
+              showPostalCode
             />
-            <div className="my-3 md:my-0 md:flex md:flex-col justify-between items-start relative gap-1">
-              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Código postal
-              </p>
-              <FormInput
-                type={"text"}
-                placeholder="Código postal"
-                min={0}
-                value={values.postalCode}
-                className="form-control w-full"
-                onChange={(e) => handlePostalCode(e.target.value)}
-              />
-              {errors.postalCode.length > 0 && (
-                <span className="text-red-500">{errors.postalCode}</span>
-              )}
-            </div>
-            </div>
-            <div className="w-full">
-              <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Calle
-              </p>
-              <FormInput
-                type={"text"}
-                placeholder="Calle"
-                min={0}
-                value={values.street}
-                className="form-control w-full"
-                onChange={(e: any) => {
-                  setValues({ ...values, street: e.target.value });
-                }}
-              />
+          </div>
+          <div className="w-full">
+            <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
+              Calle
+            </p>
+            <FormInput
+              type={"text"}
+              placeholder="Calle"
+              min={0}
+              value={values.street}
+              className="form-control w-full"
+              onChange={(e: any) => {
+                setValues({ ...values, street: e.target.value });
+              }}
+            />
           </div>
         </div>
       </div>

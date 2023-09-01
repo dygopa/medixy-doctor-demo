@@ -74,7 +74,9 @@ export default function AutocompleteInputLocations({
       disabled={disabled}
       items={getAutocompleteValues()}
       defaultValue={
-        countryLocation.data && countryLocation.data.name
+        countryLocationId !== 0 &&
+        countryLocation.data &&
+        countryLocation.data.name
           ? countryLocation.data.name
           : null
       }
