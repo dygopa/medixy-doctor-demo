@@ -49,13 +49,24 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
     getLocalities,
     getAttentionWindows,
     activeLocality,
+    activeService,
+    getServicesByLocality,
   } = actions;
   const { data: locality } = state.activeLocality;
+  const { data: service } = state.activeService;
 
   const { data: localities, successful: loadedLocalities } = state.getLocalities;
+  const { data: services, loading: loadingServices, successful: loadedServices } = state.getServicesByLocality;
   const { data: activeDay, successful: changedActiveDay} = state.activeDay;
 
   const [listOfLocalities, setListOfLocalities] = useState([]);
+  const [listOfServices, setListOfServices] = useState([]);
+
+  const [selectedService, setSelectedService] = useState({
+    id: "",
+    title: "",
+    description: "",
+  });
 
   function handleFormatList() {
     let list_localities = localities.map((elem: any) => ({
@@ -66,14 +77,48 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
 
     setListOfLocalities(list_localities);
   }
+  function handleFormatListServices() {
+    let list_services = services.map((elem: any) => ({
+      id: elem.id,
+      title: elem.name,
+      description: elem.service_category.name,
+    }));
+
+    list_services.push({
+      id: "ALL",
+      title: "Todos los Servicios",
+      description: "Filtrar por todos los servicios disponibles",
+    })
+
+    setSelectedService({
+      id: "ALL",
+      title: "Todos los Servicios",
+      description: "Filtrar por todos los servicios disponibles",
+    })
+
+    setListOfServices(list_services);
+  }
 
   useMemo(() => {
     if (selectedLocality.id > 0) {
       activeLocality(selectedLocality)(dispatch);
+      getServicesByLocality(user.userId, locality.id)(dispatch);
       getCalendarEvents(user.userId, selectedLocality.id, moment(activeDay).format('YYYY-MM-DD'), moment(activeDay, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedLocality]);
+
+  useMemo(() => {
+    if (selectedService.id) { 
+      activeService(selectedService)(dispatch);
+      if (selectedService.id === "ALL") {
+        getCalendarEvents(user.userId, selectedLocality.id, moment(activeDay).format('YYYY-MM-DD'), moment(activeDay, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
+      } else { 
+        getCalendarEvents(user.userId, selectedLocality.id, moment(activeDay).format('YYYY-MM-DD'), moment(activeDay, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'), parseInt(selectedService.id))(dispatch);
+      }
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedService]);
 
   useMemo(() => {
     if (loadedLocalities && localities.length > 0){
@@ -92,6 +137,13 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
   }, [loadedLocalities]);
 
   useMemo(() => {
+    if (loadedServices){
+      handleFormatListServices()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loadedServices, services]);
+
+  useMemo(() => {
     if (loadedUser) {
       getLocalities(user.userId)(dispatch);
     }
@@ -100,7 +152,7 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
 
   return (
     <div className="w-full h-fit mt-4 flex flex-col justify-center items-start gap-4">
-      <div className="w-full lg:h-[5vh] flex flex-col lg:flex-row flex-wrap lg:flex-nowrap justify-between items-center lg:gap-0 gap-3">
+      <div className="w-full lg:h-[5vh] flex flex-col lg:flex-row flex-wrap lg:flex-nowrap items-center lg:gap-0 gap-3">
         <div className="w-full flex lg:w-[25%] lg:h-full">
           <SpecialSelect
             emptySelectedValue={{
@@ -112,6 +164,19 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
             }}
             selectedItem={locality}
             list={listOfLocalities}
+          />
+        </div>
+        <div className="w-full flex lg:w-[25%] lg:h-full md:ml-3">
+          <SpecialSelect
+            emptySelectedValue={{
+              title: "Servicio",
+              description: "Selecciona un servicio de la lista",
+            }}
+            customClick={(value: any) => {
+              setSelectedService(value);
+            }}
+            selectedItem={service}
+            list={listOfServices}
           />
         </div>
       </div>

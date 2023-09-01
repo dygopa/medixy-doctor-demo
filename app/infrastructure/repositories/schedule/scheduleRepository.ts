@@ -70,6 +70,10 @@ export class ScheduleRepository implements IScheduleRepository {
                     nombre
                 )
             `).in("ventanaAtencionId", resVentanasAtencion.data!.map((elem:any)=> elem["id"] ))
+
+            if(serviceId) {
+                queryCitas = queryCitas.eq("servicioId", serviceId)
+            }
             
             let resCitas = await queryCitas
 
@@ -81,7 +85,7 @@ export class ScheduleRepository implements IScheduleRepository {
         }
     }
 
-    async getAppointments(id:number, dateStart?:string, dateEnd?:string, localityId?:number, status?:number, onlySubjects?: boolean): Promise<any[] | ScheduleFailure> {
+    async getAppointments(id:number, dateStart?:string, dateEnd?:string, localityId?:number, status?:number, onlySubjects?: boolean, serviceId?: number, ): Promise<any[] | ScheduleFailure> {
         try {
             
             console.log("id", localityId)
@@ -140,6 +144,10 @@ export class ScheduleRepository implements IScheduleRepository {
 
             if (typeof onlySubjects !== "undefined" && onlySubjects) {
                 query = query.not("sujetoId", "is", null)
+            }
+
+            if (serviceId) {
+                query = query.eq("servicioId", serviceId);
             }
 
             let res = await query
