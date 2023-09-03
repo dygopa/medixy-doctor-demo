@@ -15,6 +15,8 @@ import { SpecialtyFailure } from "domain/core/failures/specialty/specialtyFailur
 import { IGetSubjectRelationsResponse } from "domain/core/response/subjectsResponse";
 import { IGetAppointmentResponse } from "domain/core/response/appointmentsResponse";
 import { AppointmentFailure } from "domain/core/failures/appointment/appintmentFailure";
+import { ICountriesISO } from "domain/core/entities/countryEntity";
+import { CountryFailure } from "domain/core/failures/country/countryFailure";
 
 export interface IMedicalRecordCreateState {
     subject: IGetSubjectState;
@@ -35,6 +37,7 @@ export interface IMedicalRecordCreateState {
     getMedicalRecordPDF: IGetMedicalRecordPDFState;
     createMedicalConsulty: ICreateMedicalConsultyState;
     updateAvatar: ISubjectAvatarState;
+    getCountriesISO: IGetCountriesISOState;
 }
 
 interface IGetSubjectState {
@@ -161,6 +164,13 @@ interface ISubjectAvatarState{
     error: SubjectFailure | null; 
 }
 
+interface IGetCountriesISOState {
+    data: Array<ICountriesISO>;
+    loading: boolean;
+    successful: boolean;
+    error: CountryFailure| null;
+  }
+
 export const initialState: IMedicalRecordCreateState = {
     subject: {
         data: null,
@@ -267,4 +277,10 @@ export const initialState: IMedicalRecordCreateState = {
         successful: false,
         error: null,
     },
+    getCountriesISO: {
+        data: [],
+        loading: false,
+        successful: false,
+        error: null,
+      },
 }

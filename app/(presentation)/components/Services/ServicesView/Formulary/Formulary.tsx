@@ -63,7 +63,7 @@ export default function Formulary({
     successful: successfulUpdate,
     error: errorUpdate,
   } = state.updateService;
-  const { data: categories } = state.getCategories;
+  // const { data: categories } = state.getCategories;
   const {
     data: dataDelete,
     loading: loadingDelete,
@@ -89,9 +89,9 @@ export default function Formulary({
 
   const [formData, setFormData] = useState<any>({
     name: "",
-    service_category_id: 0,
-    service_category_name: "",
-    service_category_doctor_id: null,
+    // service_category_id: 0,
+    // service_category_name: "",
+    // service_category_doctor_id: null,
     description: "",
     conditions: "",
     base_price: 0,
@@ -120,12 +120,12 @@ export default function Formulary({
     setFormData({
       ...formData,
       name: data?.name ?? "",
-      service_category_id: data?.service_category_id
-        ? parseInt(data.service_category_id, 10)
-        : 0,
-      service_category_name: data?.service_category
-        ? data.service_category.name
-        : "",
+      //service_category_id: data?.service_category_id
+      //  ? parseInt(data.service_category_id, 10)
+      //  : 0,
+      //service_category_name: data?.service_category
+      //  ? data.service_category.name
+      //  : "",
       description: data?.description ?? "",
       conditions: data?.conditions ?? "",
       base_price: data?.base_price ?? "",
@@ -173,7 +173,7 @@ export default function Formulary({
   }, [userId, pathname]);
 
   const loadAPI = () => {
-    getCategories()(dispatch);
+    // getCategories()(dispatch);
     setLoadedAPI(true);
   };
 
@@ -185,11 +185,11 @@ export default function Formulary({
     if (successfulDelete) window.location.href = "/services";
   }, [successfulDelete]);
 
-  categories && categories !== null
+  /* categories && categories !== null
     ? categories.sort((x: { name: string }, y: { name: any }) =>
         x.name.localeCompare(y.name)
       )
-    : categories;
+    : categories; */
 
   const toBase64 = (file: File) =>
     new Promise((resolve, reject) => {
@@ -262,9 +262,8 @@ export default function Formulary({
         <div className="md:w-[50%] flex justify-end items-center gap-3">
           <Button
             disabled={
-              loadingUpdate ||
-              formData?.name === "" ||
-              formData?.service_category_name.length === 0
+              loadingUpdate || formData?.name === ""
+              // formData?.service_category_name.length === 0
             }
             onClick={() => {
               updateService({
@@ -296,7 +295,7 @@ export default function Formulary({
             <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
               <div className="w-full border-b mb-2">
                 <p className="font-medium text-base text-slate-900 pb-2">
-                  Definición del servicio
+                  Definición del Servicio
                 </p>
               </div>
               <div className="text-center relative w-full gap-3">
@@ -383,14 +382,14 @@ export default function Formulary({
                 <FormInput
                   type="text"
                   value={formData?.name}
-                  placeholder="Nombre del servicio..."
+                  placeholder="Nombre del Servicio..."
                   className="form-control lg:w-[70%]"
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
                 />
               </div>
-              <div className="lg:flex justify-between items-start relative w-full gap-3">
+              {/* <div className="lg:flex justify-between items-start relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Categoría
                   <span className="text-primary font-bold">*</span>
@@ -422,7 +421,7 @@ export default function Formulary({
                     />
                   )}
                 </div>
-              </div>
+                    </div> */}
 
               <div className="lg:flex justify-between items-start relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
@@ -456,7 +455,7 @@ export default function Formulary({
                 </p>
                 <div className="lg:w-[70%]">
                   <FormTextarea
-                    placeholder="Descripcion el servicio..."
+                    placeholder="Descripcion el Servicio..."
                     value={formData?.description}
                     className="form-control w-full"
                     onChange={(e) =>
@@ -473,7 +472,7 @@ export default function Formulary({
                   Condiciones
                 </p>
                 <FormTextarea
-                  placeholder="Condiciones el servicio..."
+                  placeholder="Condiciones del Servicio..."
                   value={formData?.conditions}
                   className="form-control lg:w-[70%]"
                   onChange={(e) =>

@@ -72,7 +72,9 @@ export default function Formulary({
     successful: successFulMedicalCenters,
   } = state.getUserMedicalCenters;
 
-  const { data: categories } = state.getCategories;
+  {
+    /* const { data: categories } = state.getCategories;*/
+  }
 
   const [loadedListOfTimes, setLoadedListOfTimes] = useState(false);
   const [loadedAPI, setLoadedAPI] = useState(false);
@@ -81,9 +83,9 @@ export default function Formulary({
 
   const [formData, setFormData] = useState<any>({
     name: "",
-    service_category_id: 0,
-    service_category_name: "",
-    service_category_doctor_id: null,
+    // service_category_id: 0,
+    // service_category_name: "",
+    // service_category_doctor_id: null,
     description: "",
     conditions: "",
     base_price: 0,
@@ -146,11 +148,11 @@ export default function Formulary({
     setLocalities(localities);
   } */
 
-  categories && categories !== null
+  /* categories && categories !== null
     ? categories.sort((x: { name: string }, y: { name: any }) =>
         x.name.localeCompare(y.name)
       )
-    : categories;
+    : categories; */
 
   {
     /* const LocalityComponent = ({ data }: { data: ILocality }) => {
@@ -219,7 +221,7 @@ export default function Formulary({
   }
 
   const loadAPI = () => {
-    getCategories()(dispatch);
+    // getCategories()(dispatch);
     setLoadedAPI(true);
   };
 
@@ -273,7 +275,7 @@ export default function Formulary({
             disabled={
               loadingCreationService ||
               // localities.length === 0 ||
-              formData.service_category_name.length === 0 ||
+              // formData.service_category_name.length === 0 ||
               formData.name === ""
             }
             onClick={() => onSubmit()}
@@ -281,7 +283,7 @@ export default function Formulary({
             className="lg:w-1/2 w-full px-7"
           >
             <Lucide icon="Plus" className="mr-2" />
-            {loadingCreationService ? "Creando..." : "Crear servicio"}
+            {loadingCreationService ? "Creando..." : "Crear Servicio"}
           </Button>
         </div>
       </div>
@@ -292,7 +294,7 @@ export default function Formulary({
               <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
                 <div className="w-full border-b mb-2">
                   <p className="font-medium text-base text-slate-900 pb-2">
-                    Definición del servicio
+                    Definición del Servicio
                   </p>
                 </div>
                 <div className="text-center relative w-full gap-3">
@@ -368,14 +370,14 @@ export default function Formulary({
                   <FormInput
                     type="text"
                     value={formData.name}
-                    placeholder="Nombre del servicio..."
+                    placeholder="Nombre del Servicio..."
                     className="form-control lg:w-[70%]"
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
                     }
                   />
                 </div>
-                <div className="lg:flex justify-between items-start relative w-full gap-3">
+                {/* <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     Categoría
                     <span className="text-primary font-bold">*</span>
@@ -406,7 +408,7 @@ export default function Formulary({
                         className="form-control w-full"
                       />
                     )}
-                  </div>
+                      </div> 
                   {/* <FormSelect
                     value={formData.service_category_id}
                     className="form-control lg:w-[70%]"
@@ -424,8 +426,8 @@ export default function Formulary({
                           {elem["name"]}
                         </option>
                       ))}
-                      </FormSelect> */}
-                </div>
+                      </FormSelect> 
+                </div>*/}
                 {/* <div className="flex justify-between items-start relative w-full gap-3">
                                     <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">Etiquetas</p>
                                     <FormInput
@@ -486,7 +488,7 @@ export default function Formulary({
                                             onChange={(e: any) => setFormData({ ...formData, description: e })}
                                         /> */}
                     <FormTextarea
-                      placeholder="Descripcion el servicio..."
+                      placeholder="Descripcion el Servicio..."
                       value={formData.description}
                       className="form-control w-full"
                       onChange={(e) =>
@@ -503,7 +505,7 @@ export default function Formulary({
                     Condiciones
                   </p>
                   <FormTextarea
-                    placeholder="Condiciones el servicio..."
+                    placeholder="Condiciones del Servicio..."
                     value={formData.conditions}
                     className="form-control lg:w-[70%]"
                     onChange={(e) =>

@@ -41,7 +41,7 @@ export default function Contact({ account, setAccount }: IFormularyProps) {
         <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-start items-center gap-3">
           <div className="flex flex-col justify-between items-start relative gap-1">
             <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-              Teléfono de contacto
+              Teléfono de Contacto
             </p>
             <IntlPhoneNumberInput
               preferredCountries={["mx"]}

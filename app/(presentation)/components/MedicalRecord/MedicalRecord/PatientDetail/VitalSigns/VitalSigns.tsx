@@ -30,7 +30,7 @@ export default function VitalSigns({
         <div className="flex items-center justify-between pb-1 border-b mb-2 w-full h-[36px]">
           <div>
             <p className="w-full text-left font-bold text-md text-slate-900">
-              Signos vítales
+              Signos Vítales
             </p>
           </div>
 

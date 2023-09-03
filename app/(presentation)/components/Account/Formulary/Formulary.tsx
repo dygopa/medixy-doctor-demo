@@ -97,7 +97,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
       />
       <div className="md:grid grid-cols-2 gap-5 w-full lg:flex justify-between items-center sticky top-[67px] z-[50] border-b bg-slate-100 pt-2">
         <div className="lg:w-[70%]">
-          <h2 className="lg:mr-5 text-2xl font-bold truncate">Mi cuenta</h2>
+          <h2 className="lg:mr-5 text-2xl font-bold truncate">Mi Cuenta</h2>
           <p className="font-light text-slate-500 text-base my-3">
             Completa la información de tu cuenta para poder desbloquear otras
             funciones dentro de la plataforma

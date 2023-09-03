@@ -29,6 +29,7 @@ import {
 import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
 import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
+import moment from "moment";
 
 export default function Formulary() {
   const { state, actions, dispatch } =
@@ -53,6 +54,7 @@ export default function Formulary() {
     first_lastname: formData?.first_lastname ?? "",
     second_lastname: formData?.second_lastname ?? "",
     phone_number: formData?.phone_number ?? "",
+    birth_date: formData?.birth_date ?? null,
     //curp: formData?.curp ?? "",
   });
 
@@ -74,6 +76,15 @@ export default function Formulary() {
   const [wrongName, setWrongName] = useState(false);
   const [wrongFirstName, setWrongFirstName] = useState(false);
   const [wrongLastName, setWrongLastName] = useState(false);
+  const [inputPassword, setInputPassword] = useState("password");
+
+  const viewPassword = () => {
+    if (inputPassword === "password") {
+      setInputPassword("text");
+      return;
+    }
+    setInputPassword("password");
+  };
 
   const CheckboxComponent = ({
     active,
@@ -196,6 +207,11 @@ export default function Formulary() {
       setErrors({ ...errors, password: "" });
       return false;
     }
+  };
+
+  const handleage = (value: string) => {
+    setValues({ ...values, birth_date: value });
+    return false;
   };
 
   /*const handleCURP = (value: string) => {
@@ -371,7 +387,7 @@ export default function Formulary() {
           <FormInput
             type="text"
             className="w-full py-3 pr-10 bg-white"
-            placeholder="Primer apellido"
+            placeholder="Primer Apellido"
             value={values.first_lastname}
             onChange={(e: any) => handlelastname(e.target.value)}
           />
@@ -391,7 +407,7 @@ export default function Formulary() {
           <FormInput
             type="text"
             className="w-full py-3 pr-10 bg-white"
-            placeholder="Segundo apellido"
+            placeholder="Segundo Apellido"
             value={values.second_lastname}
             onChange={(e: any) =>
               setValues({ ...values, second_lastname: e.target.value })
@@ -425,11 +441,25 @@ export default function Formulary() {
           </div>
         )}
       </div>
+
+      <div className="relative w-full">
+        <FormInput
+          type={"text"}
+          placeholder="Fecha de Nacimiento (No obligatorio)"
+          max={moment().format("YYYY-MM-DD")}
+          defaultValue={values.birth_date}
+          className="w-full py-3 pr-10 bg-white"
+          onFocus={(e) => (e.target.type = "date")}
+          onBlur={(e) => (e.target.type = "text")}
+          onChange={(e: any) => handleage(e.target.value)}
+        />
+      </div>
+
       <div className="relative w-full">
         <FormInput
           type="email"
           className="w-full py-3 pr-10 bg-white"
-          placeholder="Correo electrónico"
+          placeholder="Correo Electrónico"
           value={values.email}
           onChange={(e: any) => handleEmail(e.target.value)}
         />
@@ -447,11 +477,21 @@ export default function Formulary() {
 
       <div className="relative w-full">
         <FormInput
-          type="password"
+          type={inputPassword}
           className="w-full py-3 pr-10 bg-white"
           placeholder="Contraseña"
           value={values.password}
           onChange={(e: any) => handlePassword(e.target.value)}
+        />
+        <Lucide
+          icon={inputPassword === "text" ? "EyeOff" : "Eye"}
+          className={twMerge([
+            "absolute top-4 right-0 w-4 h-4 my-auto mr-3 cursor-pointer transition-all",
+            inputPassword === "text" && "text-black",
+          ])}
+          onClick={(e: any) => {
+            viewPassword();
+          }}
         />
         {errors.password.length > 0 && (
           <div className="mt-1">

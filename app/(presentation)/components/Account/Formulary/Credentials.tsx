@@ -256,7 +256,7 @@ export default function Credentials({
           </div>
           <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-start items-end gap-3 border-b pb-6">
             <div className="flex flex-col justify-between items-start relative gap-1">
-              <p className="input-label mb-2">Profesional de la salud</p>
+              <p className="input-label mb-2">Profesional de la Salud</p>
               <FormSelect
                 value={account?.pwaProfressionId}
                 defaultValue={account?.pwaProfressionId}
@@ -275,13 +275,13 @@ export default function Credentials({
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="input-label mb-2">
-                Cédula profesional{" "}
+                Cédula Profesional{" "}
                 <span className="text-primary font-bold">*</span>
               </p>
               <FormInput
                 defaultValue={account?.professionalLicense}
                 type={"text"}
-                placeholder="Escribe tu cédula profesional..."
+                placeholder="Escribe tu Cédula Profesional..."
                 className="form-control w-full"
                 onChange={(e) =>
                   setAccount({

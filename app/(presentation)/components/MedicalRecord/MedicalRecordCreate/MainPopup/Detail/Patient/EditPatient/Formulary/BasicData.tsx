@@ -136,6 +136,9 @@ export default function BasicData({
     successful: successfulAvatar,
   } = state.updateAvatar;
 
+  const { getCountriesISO } = actions;
+  const { data: countriesISO } = state.getCountriesISO;
+
   let avatarRef = useRef<HTMLInputElement>(null);
 
   const toBase64 = (file: File) =>
@@ -277,6 +280,11 @@ export default function BasicData({
     return false;
   };
 
+  useEffect(() => {
+    getCountriesISO()(dispatch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <>
       <div className="w-full bg-white  rounded-md h-fit">
@@ -356,7 +364,7 @@ export default function BasicData({
                   </p>
                   <FormInput
                     type={"text"}
-                    placeholder="Nombre..."
+                    placeholder="Nombres..."
                     defaultValue={values.name}
                     min={0}
                     className="form-control w-full"
@@ -368,12 +376,12 @@ export default function BasicData({
                 </div>
                 <div className="flex flex-col justify-between items-start relative gap-1">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Apellido paterno{" "}
+                    Primer Apellido{" "}
                     <span className="text-primary font-bold">*</span>
                   </p>
                   <FormInput
                     type={"text"}
-                    placeholder="Apellido paterno..."
+                    placeholder="Primer Apellido..."
                     defaultValue={values.lastname}
                     min={0}
                     className="form-control w-full"
@@ -385,11 +393,11 @@ export default function BasicData({
                 </div>
                 <div className="flex flex-col justify-between items-start relative gap-1">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Apellido materno
+                    Segundo Apellido
                   </p>
                   <FormInput
                     type={"text"}
-                    placeholder="Apellido materno..."
+                    placeholder="Segundo Apellido..."
                     defaultValue={values.motherlastname}
                     min={0}
                     className="form-control w-full"
@@ -417,7 +425,7 @@ export default function BasicData({
                 </div>
                 <div className="flex flex-col justify-between items-start relative gap-1">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Fecha de nacimiento{" "}
+                    Fecha de Nacimiento{" "}
                     <span className="text-primary font-bold">*</span>
                   </p>
                   <FormInput
@@ -475,7 +483,7 @@ export default function BasicData({
                 </div>
                 <div className="flex flex-col justify-between items-start relative gap-1">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    País nacimiento
+                    País Nacimiento
                   </p>
                   <FormSelect
                     className="form-control w-full"
@@ -486,7 +494,12 @@ export default function BasicData({
                     }
                   >
                     <option value="">Tu pais de nacimiento</option>
-                    <option value="MEX">México</option>
+                    {countriesISO.length > 0 &&
+                    countriesISO.map((elem) => (
+                      <option key={elem.iso} value={elem.iso}>
+                        {elem.iso} - {elem.name}
+                      </option>
+                    ))}
                   </FormSelect>
                 </div>
                 <div className="flex flex-col justify-between items-start relative gap-1">

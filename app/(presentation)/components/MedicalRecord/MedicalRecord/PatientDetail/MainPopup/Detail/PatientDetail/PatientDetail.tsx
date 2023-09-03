@@ -131,7 +131,7 @@ export default function PatientDetail({
             </div>
 
             <div>
-              <p className="font-normal text-slate-500 mb-1">Primer apellido</p>
+              <p className="font-normal text-slate-500 mb-1">Primer Apellido</p>
 
               <span className="font-medium text-[16px]">
                 {subject?.lastName}
@@ -140,7 +140,7 @@ export default function PatientDetail({
 
             <div>
               <p className="font-normal text-slate-500 mb-1">
-                Segundo apellido
+                Segundo Apellido
               </p>
 
               <span className="font-medium text-[16px]">
@@ -172,7 +172,7 @@ export default function PatientDetail({
 
             <div>
               <p className="font-normal text-slate-500 mb-1">
-                Correo electrónico
+                Correo Electrónico
               </p>
 
               <span className="font-medium text-[16px]">

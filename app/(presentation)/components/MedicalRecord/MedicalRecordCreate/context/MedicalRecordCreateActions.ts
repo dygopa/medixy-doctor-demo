@@ -21,6 +21,8 @@ import { IUser } from "domain/core/entities/userEntity";
 import { ITreatment } from "domain/core/entities/treatmentEntity";
 import { IMedicalRecord } from "domain/core/entities/medicalRecordEntity";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import { ICountriesISO } from "domain/core/entities/countryEntity";
+import CountriesUseCase from "domain/useCases/country/countryUseCase";
 
 export interface IMedicalRecordCreateActions {
     getSubjectById: (subjectId: number) => (dispatch: Dispatch<any>) => {};
@@ -41,6 +43,7 @@ export interface IMedicalRecordCreateActions {
     getMedicalRecordPDF: (obj: { doctor: IUser; medicalRecord: IMedicalRecord }) => (dispatch: Dispatch<any>) => {};
     createMedicalConsulty: (obj: { medicalConsulty: IMedicalConsulty; appointmentId?: string | null }) => (dispatch: Dispatch<any>) => {};
     updateAvatar: (obj:any, doctorId: string) => (dispatch: Dispatch<any>) => {};
+    getCountriesISO: Function;
 }
 
 const getSubjectById = (subjectId: number) => async (dispatch: Dispatch<any>) => {
@@ -222,7 +225,7 @@ const createCompanion = (patientId:number, companion:ISubject) => async (dispatc
   try {
     dispatch({ type: "CREATE_COMPANION_LOADING" });
     
-    const res: ISubject = await new SubjectsUseCase().createSubject(companion);
+    const res: ISubject = await new SubjectsUseCase().createSubject(companion, patientId);
 
     await new SubjectsUseCase().createSubjectRelations(patientId, res.subjectId);
 
@@ -317,6 +320,19 @@ const updateAvatar = (obj:any, doctorId: string) => async (dispatch: Dispatch<an
   }
 }
 
+const getCountriesISO = () => async (dispatch: Dispatch<any>) => {
+  try {
+      dispatch({ type: "GET_COUNTRIES_LOADING" });
+
+      const res: Array<ICountriesISO> = await new CountriesUseCase().getCountriesISO();
+
+      dispatch({ type: "GET_COUNTRIES_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+      console.log("Error calling action", error)
+      dispatch({ type: "GET_COUNTRIES_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IMedicalRecordCreateActions = {
     getSubjectById,
     getAppointmentById,
@@ -336,4 +352,5 @@ export const actions: IMedicalRecordCreateActions = {
     getMedicalRecordPDF,
     createMedicalConsulty,
     updateAvatar,
+    getCountriesISO,
 }

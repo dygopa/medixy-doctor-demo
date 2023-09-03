@@ -80,7 +80,7 @@ function AddressAutocomplete({
                 : "text-[13px] w-fit text-slate-900 font-medium mb-2",
             ])}
           >
-            Código postal
+            Código Postal
             <span className="text-primary font-bold">*</span>
           </p>
           <div className={twMerge([isColumn ? "w-full" : "lg:w-[70%]"])}>

@@ -293,6 +293,7 @@ export default function CompanionCreate({
       createdOn: companion?.createdOn ?? new Date(),
       updatedOn: new Date(),
       deletedOn: null,
+      postalCode: "",
     };
 
     editSubject(companionEdit)(dispatch);
@@ -330,7 +331,7 @@ export default function CompanionCreate({
 
           <div className="lg:text-left md:text-left text-center">
             <h1 className="text-slate-900 text-2xl font-bold">
-              Modificar contacto
+              Modificar Contacto
             </h1>
           </div>
         </div>
@@ -349,7 +350,7 @@ export default function CompanionCreate({
             variant="primary"
             onClick={(e: any) => onEditCompanion(e)}
           >
-            {loading ? "Cargando" : "Guardar"}
+            {loading ? "Actualizando" : "Actualizar"}
           </Button>
         </div>
       </div>
@@ -357,7 +358,7 @@ export default function CompanionCreate({
       <div className="w-full rounded-md h-fit p-7">
         <div className="w-full border-b mb-2">
           <p className="font-medium text-lg text-slate-900 pb-2">
-            Modificar contacto
+            Modificar Contacto
           </p>
         </div>
         <div className="input-group w-full">
@@ -377,27 +378,27 @@ export default function CompanionCreate({
         <div className="md:flex gap-3 w-full">
           <div className="input-group md:w-[50%]">
             <p className="input-label py-2">
-              Apellido Paterno <span className="text-primary font-bold">*</span>
+              Primer Apellido <span className="text-primary font-bold">*</span>
             </p>
             <FormInput
               type="text"
               value={values.lastname}
               onChange={(e: any) => handlelastname(e.target.value)}
-              placeholder="Primer apellido"
+              placeholder="Primer Apellido"
             />
             {errors.lastname.length > 0 && (
               <span className="text-red-500">{errors.lastname}</span>
             )}
           </div>
           <div className="input-group mt-3 md:mt-0 md:w-[50%]">
-            <p className="input-label py-2">Apellido Materno</p>
+            <p className="input-label py-2">Segundo Apellido</p>
             <FormInput
               type="text"
               value={values.motherlastname}
               onChange={(e: any) =>
                 handleSecondLastname(e.target.value)
               }
-              placeholder="Segundo apellido"
+              placeholder="Segundo Apellido"
             />
             {errors.motherlastname.length > 0 && (
               <span className="text-red-500">{errors.motherlastname}</span>
@@ -407,7 +408,7 @@ export default function CompanionCreate({
 
         <div className="input-group w-full">
           <p className="input-label py-2">
-            Fecha de nacimiento{" "}
+            Fecha de Nacimiento{" "}
             <span className="text-primary font-bold">*</span>
           </p>
           <FormInput

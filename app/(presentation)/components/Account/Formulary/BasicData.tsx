@@ -186,7 +186,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
         <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
           <div className="w-full border-b mb-2">
             <p className="font-medium text-base text-slate-900 pb-2">
-              Datos generales
+              Datos Generales
             </p>
           </div>
           <div className="w-full lg:flex justify-between items-center gap-4">
@@ -258,7 +258,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Escribe tu nombre..."
+                  placeholder="Escribe tu Nombre..."
                   min={0}
                   defaultValue={user?.names}
                   className="form-control w-full"
@@ -270,11 +270,11 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Primer apellido{" "}<span className="text-primary font-bold">*</span>
+                Primer Apellido{" "}<span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Primer apellido"
+                  placeholder="Primer Apellido"
                   min={0}
                   defaultValue={user?.firstName}
                   className="form-control w-full"
@@ -286,11 +286,11 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Segundo apellido
+                Segundo Apellido
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Segundo apellido"
+                  placeholder="Segundo Apellido"
                   min={0}
                   defaultValue={user?.lastName}
                   className="form-control w-full"
@@ -318,11 +318,10 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Fecha de nacimiento
+                  Fecha de Nacimiento
                 </p>
                 <FormInput
                   type={"date"}
-                  placeholder="Escribe el nombre del consultorio..."
                   max={moment().format("YYYY-MM-DD")}
                   defaultValue={user?.birthDate}
                   className="form-control w-full"
@@ -350,7 +349,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  País nacimiento
+                  País Nacimiento
                 </p>
                 <FormSelect
                   value={account?.country}
@@ -359,7 +358,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
                     setAccount({ ...account, country: e.target.value })
                   }
                 >
-                  <option value="">Tu pais de nacimiento</option>
+                  <option value="">Tu Pais de Nacimiento</option>
                   {countriesISO.length > 0 &&
                     countriesISO.map((elem) => (
                       <option key={elem.iso} value={elem.iso}>

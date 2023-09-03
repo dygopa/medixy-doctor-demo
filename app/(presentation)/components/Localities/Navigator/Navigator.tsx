@@ -11,7 +11,7 @@ export default function Navigator() {
       <Link href={"/localities/create"}>
         <Button variant="primary" className="w-full md:w-auto">
           <Lucide icon="Plus" className="mr-2" />
-          Nuevo consultorio
+          Nuevo Consultorio
         </Button>
       </Link>
     </div>

@@ -335,7 +335,7 @@ export default function WithoutSteps({
           variant="primary"
         >
           <Lucide icon="Plus" className="mr-2" />
-          {createUserLocalityLoading ? "Creando..." : "Crear consultorio"}
+          {createUserLocalityLoading ? "Creando..." : "Crear Consultorio"}
         </Button>
       </div>
       <div className="lg:flex justify-center lg:mt-5 mt-8">
@@ -344,7 +344,7 @@ export default function WithoutSteps({
             <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
               <div className="w-full border-b mb-2">
                 <p className="font-medium text-base text-slate-900 pb-2">
-                  Definición del consultorio
+                  Definición del Consultorio
                 </p>
               </div>
               <div className="text-center relative w-full gap-3">
@@ -406,7 +406,7 @@ export default function WithoutSteps({
               </div>
               <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Nombre del consultorio
+                  Nombre del Consultorio
                   <span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
@@ -422,7 +422,7 @@ export default function WithoutSteps({
               </div>
               <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Tipo de consultorio{" "}
+                  Tipo de Consultorio{" "}
                   <span className="text-primary font-bold">*</span>
                 </p>
                 <FormSelect

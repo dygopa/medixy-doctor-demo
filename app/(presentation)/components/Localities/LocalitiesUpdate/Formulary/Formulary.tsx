@@ -432,7 +432,7 @@ export default function Formulary({
               <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
                 <div className="w-full border-b mb-2">
                   <p className="font-medium text-base text-slate-900 pb-2">
-                    Definición del consultorio
+                    Definición del Consultorio
                   </p>
                 </div>
                 <div className="text-center relative w-full gap-3">
@@ -504,7 +504,7 @@ export default function Formulary({
                 </div>
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                    Nombre del consultorio
+                    Nombre del Consultorio
                     <span className="text-primary font-bold">*</span>
                   </p>
                   <FormInput

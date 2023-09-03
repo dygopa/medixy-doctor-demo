@@ -35,7 +35,7 @@ export default function Filters() {
             <FormInput
               type="text"
               className="w-full md:w-56 pr-10 !box"
-              placeholder="Buscar pacientes"
+              placeholder="Buscar Pacientes"
               value={values.query}
               onChange={(e) => setValues({ ...values, query: e.target.value })}
               onKeyDown={(e) => {

@@ -1,3 +1,4 @@
+import { ICountriesISO } from "domain/core/entities/countryEntity";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import { AppointmentFailure } from "domain/core/failures/appointment/appintmentFailure";
@@ -35,6 +36,7 @@ export interface IMedicalRecordState {
     getMedicalConsultyPDF: IGetMedicalConsultyPDFState;
     getMedicalRecordPDF: IGetMedicalRecordPDFState;
     updateAvatar: ISubjectAvatarState;
+    getCountriesISO: IGetCountriesISOState;
 }
 
 interface IGetSubjectState {
@@ -145,6 +147,13 @@ interface ISubjectAvatarState{
     error: SubjectFailure | null; 
 }
 
+interface IGetCountriesISOState {
+    data: Array<ICountriesISO>;
+    loading: boolean;
+    successful: boolean;
+    error: CountryFailure| null;
+  }
+
 export const initialState: IMedicalRecordState = {
     subject: {
         data: null,
@@ -238,4 +247,10 @@ export const initialState: IMedicalRecordState = {
         successful: false,
         error: null,
     },
+    getCountriesISO: {
+        data: [],
+        loading: false,
+        successful: false,
+        error: null,
+      },
 }

@@ -15,6 +15,7 @@ import AlertComponent from "(presentation)/components/core/BaseComponents/Alert"
 import Link from "next/link";
 import { VALIDATE_EMAIL } from "(presentation)/(utils)/errors-validation";
 import { useSearchParams } from "next/navigation";
+import { twMerge } from "tailwind-merge";
 
 export default function Formulary() {
   const { state, actions, dispatch } =
@@ -27,6 +28,7 @@ export default function Formulary() {
   const from = searchParams.get("from");
 
   const [showAlertSuccess, setShowAlertSuccess] = useState(false);
+  const [ inputPassword, setInputPassword ] = useState("password");
 
   const [values, setValues] = useState({
     email: "",
@@ -138,6 +140,14 @@ export default function Formulary() {
     }
   };
 
+  const viewPassword = () => {
+    if(inputPassword === "password") {
+      setInputPassword("text")
+      return
+    }
+    setInputPassword("password")
+  }
+
   useMemo(() => {
     if (successful) window.location.href = "/dashboard";
   }, [successful]);
@@ -177,7 +187,7 @@ export default function Formulary() {
           <FormInput
             type="text"
             className="w-full py-3 pr-10"
-            placeholder="Correo electrónico"
+            placeholder="Correo Electrónico"
             value={values.email}
             onFocus={(e: any) =>
               setValues({ ...values, email: e.target.value })
@@ -204,7 +214,7 @@ export default function Formulary() {
       <div className="mb-5">
         <div className="relative w-full text-slate-500 mr-6">
           <FormInput
-            type="password"
+            type={inputPassword}
             className="w-full py-3 pr-10"
             placeholder="Contraseña"
             value={values.password}
@@ -221,6 +231,16 @@ export default function Formulary() {
           <Lucide
             icon="Lock"
             className="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
+          />
+          <Lucide
+            icon={inputPassword === "text" ? "EyeOff" : "Eye"}
+            className={twMerge([
+              "absolute inset-y-0 right-7 w-4 h-4 my-auto mr-3 cursor-pointer transition-all",
+              inputPassword === "text" && "text-black", 
+            ])}
+            onClick={(e: any) => {
+              viewPassword()
+            }}
           />
         </div>
 
