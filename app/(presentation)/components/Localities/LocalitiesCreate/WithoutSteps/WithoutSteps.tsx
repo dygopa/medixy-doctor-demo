@@ -118,10 +118,10 @@ export default function WithoutSteps({
     isPublic: 1,
     street: "",
     address: "",
-    media: {
-      data: "",
-      type: "",
-    },
+    // media: {
+    //  data: "",
+    //  type: "",
+    // },
   });
 
   console.log(formData);
@@ -155,7 +155,7 @@ export default function WithoutSteps({
 
   const handleClickRef = () => avatarRef.current && avatarRef.current.click();
 
-  const toBase64 = (file: File) =>
+  /* const toBase64 = (file: File) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -176,7 +176,7 @@ export default function WithoutSteps({
     };
 
     setFormData({ ...formData, media: obj });
-  }
+  } */
 
   useMemo(() => {
     if (stepNotCreated) {
@@ -347,7 +347,7 @@ export default function WithoutSteps({
                   Definición del Consultorio
                 </p>
               </div>
-              <div className="text-center relative w-full gap-3">
+              {/* <div className="text-center relative w-full gap-3">
                 {formData?.media?.data?.length > 0 ? (
                   <>
                     <div className="flex text-center w-full justify-center">
@@ -403,7 +403,7 @@ export default function WithoutSteps({
                     </p>
                   </>
                 )}
-              </div>
+                      </div> */}
               <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Nombre del Consultorio
