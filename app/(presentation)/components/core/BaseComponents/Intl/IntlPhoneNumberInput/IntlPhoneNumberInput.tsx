@@ -28,6 +28,7 @@ interface IIntlPhoneNumberInputProps {
     | undefined;
   containerClassName?: string | undefined;
   inputClassName?: string | undefined;
+  placeholder?: string | undefined;
 }
 
 export default function IntlPhoneNumberInput({
@@ -39,6 +40,7 @@ export default function IntlPhoneNumberInput({
   onPhoneNumberBlur,
   containerClassName,
   inputClassName,
+  placeholder
 }: IIntlPhoneNumberInputProps) {
   return (
     <IntlTelInput
@@ -51,6 +53,7 @@ export default function IntlPhoneNumberInput({
       countriesData={getCountriesDialCodeES()}
       containerClassName={containerClassName}
       inputClassName={inputClassName}
+      placeholder={placeholder}
     />
   );
 }
