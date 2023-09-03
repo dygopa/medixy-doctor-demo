@@ -26,6 +26,7 @@ const LocalityServiceStep = ({
   } = actionsSchedule
 
   const { data: locality } = stateSchedule.activeLocality;
+  const { data: service } = stateSchedule.activeService;
 
   const { state, actions, dispatch } =
     useContext<IStepByStepAppointmentContext>(StepByStepAppointmentContext);
@@ -77,6 +78,23 @@ const LocalityServiceStep = ({
         title: elem.name,
         description: elem["service_category"]["name"],
       }));
+
+      if(list_services.length > 0 && !service["id"]){
+        setSelectedService(list_services[0])
+        setAppointment({
+          ...appointment, 
+          serviceId: list_services[0]["id"],
+          service: list_services[0]
+        })
+      }
+      if(list_services.length > 0 && service["id"]){
+        setSelectedService(service)
+        setAppointment({
+          ...appointment, 
+          serviceId: locality["id"],
+          service: service
+        })
+      }
     
       setListOfServices(list_services as []);
     }
@@ -175,8 +193,8 @@ const LocalityServiceStep = ({
       <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white">
         <Button
           disabled={
-            !appointment["locality"] || 
-            !appointment["service"]
+            !selectedLocality || 
+            !selectedService
           }
           onClick={() => { setStep(1)(dispatch) }}
           variant="primary"
