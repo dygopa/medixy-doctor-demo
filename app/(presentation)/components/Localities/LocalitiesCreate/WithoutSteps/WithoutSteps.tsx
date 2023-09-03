@@ -118,10 +118,10 @@ export default function WithoutSteps({
     isPublic: 1,
     street: "",
     address: "",
-    media: {
-      data: "",
-      type: "",
-    },
+    // media: {
+    //  data: "",
+    //  type: "",
+    // },
   });
 
   console.log(formData);
@@ -155,7 +155,7 @@ export default function WithoutSteps({
 
   const handleClickRef = () => avatarRef.current && avatarRef.current.click();
 
-  const toBase64 = (file: File) =>
+  /* const toBase64 = (file: File) =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
@@ -176,7 +176,7 @@ export default function WithoutSteps({
     };
 
     setFormData({ ...formData, media: obj });
-  }
+  } */
 
   useMemo(() => {
     if (stepNotCreated) {
@@ -347,7 +347,7 @@ export default function WithoutSteps({
                   Definición del Consultorio
                 </p>
               </div>
-              <div className="text-center relative w-full gap-3">
+              {/* <div className="text-center relative w-full gap-3">
                 {formData?.media?.data?.length > 0 ? (
                   <>
                     <div className="flex text-center w-full justify-center">
@@ -403,7 +403,7 @@ export default function WithoutSteps({
                     </p>
                   </>
                 )}
-              </div>
+                      </div> */}
               <div className="lg:flex justify-between items-center relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Nombre del Consultorio
@@ -614,7 +614,7 @@ export default function WithoutSteps({
             </div>
           </div>
         </div>
-        <div className="bg-white lg:w-[40%] w-full shadow-xl shadow-slate-100 rounded-md h-fit p-7 lg:ml-4 lg:mt-0 mt-5">
+        <div className="bg-white lg:w-[40%] w-full shadow-xl shadow-slate-100 rounded-md h-fit lg:max-h-[80vh] lg:overflow-y-auto p-7 lg:ml-4 lg:mt-0 mt-5 lg:sticky lg:top-[140px]">
           <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
             <div className="w-full border-b mb-2 flex flex-col justify-between items-start gap-1 pb-3">
               <p className="font-medium text-base text-slate-900">

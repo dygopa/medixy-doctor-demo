@@ -170,13 +170,22 @@ export default function CompanionCreate({
     return false;
   };
 
-  const handlephone = (value: string) => {
+  const handlephone = (value: string, isValid: boolean) => {
     setValues({ ...values, phone: value });
     if (value.length < 2) {
       setErrors((previousState) => {
         return {
           ...previousState,
           phone: "El teléfono del contacto es obligatorio",
+        };
+      });
+      return true;
+    }
+    if (!isValid) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          phone: "El teléfono del contacto no es correcto",
         };
       });
       return true;
@@ -432,7 +441,7 @@ export default function CompanionCreate({
             <IntlPhoneNumberInput
               preferredCountries={["mx", "US"]}
               onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
-                handlephone(fullNumber)
+                handlephone(fullNumber, isValid)
               }
               onPhoneNumberBlur={(e) => console.log(e)}
               containerClassName="intl-tel-input w-full"
@@ -441,6 +450,7 @@ export default function CompanionCreate({
                 "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
                 "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
               ])}
+              placeholder="33 1234 5678"
             />
           </div>
           {errors.phone.length > 0 && (

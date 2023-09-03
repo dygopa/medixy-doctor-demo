@@ -708,7 +708,7 @@ export default function Formulary({
               </div>
             )}
           </div>
-          <div className="bg-white lg:w-[40%] shadow-xl shadow-slate-100 rounded-md h-fit p-7 lg:ml-4 ml-0 mt-5 lg:mt-0">
+          <div className="bg-white lg:w-[40%] w-full shadow-xl shadow-slate-100 rounded-md h-fit lg:max-h-[80vh] lg:overflow-y-auto p-7 lg:ml-4 lg:mt-0 mt-5 lg:sticky lg:top-[140px]">
             <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
               <div className="w-full border-b mb-2 flex flex-col justify-between items-start gap-1 pb-3">
                 <p className="font-medium text-base text-slate-900">

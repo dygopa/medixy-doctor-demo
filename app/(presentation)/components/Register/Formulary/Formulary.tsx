@@ -156,13 +156,22 @@ export default function Formulary() {
     return false;
   };
 
-  const handlephone = (value: string) => {
+  const handlephone = (value: string, isValid: boolean) => {
     setValues({ ...values, phone_number: value.trim() });
     if (value.length < 2) {
       setErrors((previousState) => {
         return {
           ...previousState,
           phone_number: "El teléfono es obligatorio",
+        };
+      });
+      return true;
+    }
+    if (!isValid) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          phone: "El teléfono del paciente no es correcto",
         };
       });
       return true;
@@ -420,7 +429,7 @@ export default function Formulary() {
         <IntlPhoneNumberInput
           preferredCountries={["mx", "US"]}
           onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
-            handlephone(fullNumber)
+            handlephone(fullNumber, isValid)
           }
           onPhoneNumberBlur={(e) => console.log(e)}
           containerClassName="intl-tel-input w-full"
@@ -429,6 +438,7 @@ export default function Formulary() {
             "[&[readonly]]:bg-white [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
             "transition duration-200 ease-in-out w-full bg-white text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80 py-3 pr-10",
           ])}
+          placeholder="33 1234 5678"
         />
         {errors.phone_number.length > 0 && (
           <div className="mt-1">

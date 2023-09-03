@@ -17,13 +17,23 @@ export default function Contact({ account, setAccount }: IFormularyProps) {
     phone: "",
   });
 
-  const handlephone = (value: string) => {
+  const handlephone = (value: string, isValid: boolean) => {
+    console.log(isValid)
     setAccount({ ...account, phone: value });
-    if (!VALIDATE_NUMBERS(value)) {
+    if (!VALIDATE_NUMBERS(value) && value.length > 0) {
       setErrors((previousState) => {
         return {
           ...previousState,
           phone: "El teléfono del paciente solo lleva números",
+        };
+      });
+      return true;
+    }
+    if (!isValid && value.length > 0) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          phone: "El teléfono del paciente no es correcto",
         };
       });
       return true;
@@ -49,14 +59,14 @@ export default function Contact({ account, setAccount }: IFormularyProps) {
               defaultValue={account.phone}
               value={account.phone}
               onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
-                handlephone(fullNumber)
+                handlephone(fullNumber, isValid) 
               }
-              onPhoneNumberBlur={(e) => console.log(e)}
               inputClassName={twMerge([
                 "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900",
                 "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
                 "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
               ])}
+              placeholder="33 1234 5678"
             />
             {errors.phone.length > 0 && (
               <span className="text-red-500">{errors.phone}</span>

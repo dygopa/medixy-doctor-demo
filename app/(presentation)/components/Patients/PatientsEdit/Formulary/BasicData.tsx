@@ -209,13 +209,22 @@ export default function BasicData({
     return false;
   };
 
-  const handlephone = (value: string) => {
+  const handlephone = (value: string, isValid: boolean) => {
     setValues({ ...values, phone: value });
     if (value.length < 2) {
       setErrors((previousState) => {
         return {
           ...previousState,
           phone: "El teléfono del paciente es obligatorio",
+        };
+      });
+      return true;
+    }
+    if (!isValid) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          phone: "El teléfono del paciente no es correcto",
         };
       });
       return true;
@@ -500,14 +509,14 @@ export default function BasicData({
                   value,
                   countryData,
                   fullNumber
-                ) => handlephone(fullNumber)}
-                onPhoneNumberBlur={(e) => console.log(e)}
+                ) => handlephone(fullNumber, isValid) }
                 containerClassName="intl-tel-input w-full"
                 inputClassName={twMerge([
                   "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
                   "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
                   "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
                 ])}
+                placeholder="33 1234 5678"
               />
               {errors.phone.length > 0 && (
                 <span className="text-red-500">{errors.phone}</span>

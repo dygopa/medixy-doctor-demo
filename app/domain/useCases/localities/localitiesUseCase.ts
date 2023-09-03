@@ -47,7 +47,7 @@ export default class LocalitiesUseCase {
 
             if (response instanceof LocalityFailure) throw response;
             
-            if(obj["media"]["data"] !== "") await this._repository.addMediaLocality({...obj["media"], id: obj["id"]}, response.id);
+            // if(obj["media"]["data"] !== "") await this._repository.addMediaLocality({...obj["media"], id: obj["id"]}, response.id);
   
             return response;
         } catch (error) {
