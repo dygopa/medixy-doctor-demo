@@ -54,7 +54,7 @@ export default function Formulary() {
     first_lastname: formData?.first_lastname ?? "",
     second_lastname: formData?.second_lastname ?? "",
     phone_number: formData?.phone_number ?? "",
-    birth_date: formData?.birth_date ?? "",
+    birth_date: formData?.birth_date ?? null,
     //curp: formData?.curp ?? "",
   });
 
@@ -76,15 +76,15 @@ export default function Formulary() {
   const [wrongName, setWrongName] = useState(false);
   const [wrongFirstName, setWrongFirstName] = useState(false);
   const [wrongLastName, setWrongLastName] = useState(false);
-  const [ inputPassword, setInputPassword ] = useState("password");
+  const [inputPassword, setInputPassword] = useState("password");
 
   const viewPassword = () => {
-    if(inputPassword === "password") {
-      setInputPassword("text")
-      return
+    if (inputPassword === "password") {
+      setInputPassword("text");
+      return;
     }
-    setInputPassword("password")
-  }
+    setInputPassword("password");
+  };
 
   const CheckboxComponent = ({
     active,
@@ -487,10 +487,10 @@ export default function Formulary() {
           icon={inputPassword === "text" ? "EyeOff" : "Eye"}
           className={twMerge([
             "absolute top-4 right-0 w-4 h-4 my-auto mr-3 cursor-pointer transition-all",
-            inputPassword === "text" && "text-black", 
+            inputPassword === "text" && "text-black",
           ])}
           onClick={(e: any) => {
-            viewPassword()
+            viewPassword();
           }}
         />
         {errors.password.length > 0 && (
