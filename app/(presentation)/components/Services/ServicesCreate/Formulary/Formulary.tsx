@@ -281,7 +281,7 @@ export default function Formulary({
             className="lg:w-1/2 w-full px-7"
           >
             <Lucide icon="Plus" className="mr-2" />
-            {loadingCreationService ? "Creando..." : "Crear servicio"}
+            {loadingCreationService ? "Creando..." : "Crear Servicio"}
           </Button>
         </div>
       </div>
@@ -292,7 +292,7 @@ export default function Formulary({
               <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
                 <div className="w-full border-b mb-2">
                   <p className="font-medium text-base text-slate-900 pb-2">
-                    Definición del servicio
+                    Definición del Servicio
                   </p>
                 </div>
                 <div className="text-center relative w-full gap-3">
@@ -368,7 +368,7 @@ export default function Formulary({
                   <FormInput
                     type="text"
                     value={formData.name}
-                    placeholder="Nombre del servicio..."
+                    placeholder="Nombre del Servicio..."
                     className="form-control lg:w-[70%]"
                     onChange={(e) =>
                       setFormData({ ...formData, name: e.target.value })
@@ -486,7 +486,7 @@ export default function Formulary({
                                             onChange={(e: any) => setFormData({ ...formData, description: e })}
                                         /> */}
                     <FormTextarea
-                      placeholder="Descripcion el servicio..."
+                      placeholder="Descripcion el Servicio..."
                       value={formData.description}
                       className="form-control w-full"
                       onChange={(e) =>
@@ -503,7 +503,7 @@ export default function Formulary({
                     Condiciones
                   </p>
                   <FormTextarea
-                    placeholder="Condiciones el servicio..."
+                    placeholder="Condiciones del Servicio..."
                     value={formData.conditions}
                     className="form-control lg:w-[70%]"
                     onChange={(e) =>

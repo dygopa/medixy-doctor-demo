@@ -296,12 +296,12 @@ export default function Formulary({
       <div className="md:flex gap-3 w-full">
         <div className="input-group md:w-[50%]">
           <p className="input-label py-2">
-            Primer apellido <span className="text-primary font-bold">*</span>
+            Primer Apellido <span className="text-primary font-bold">*</span>
           </p>
           <FormInput
             type="text"
             onChange={(e: any) => handlelastname(e.target.value)}
-            placeholder="Primer apellido"
+            placeholder="Primer Apellido"
           />
           {errors.lastname.length > 0 && (
             <div className="mt-1">
@@ -310,11 +310,11 @@ export default function Formulary({
           )}
         </div>
         <div className="input-group mt-3 md:mt-0 md:w-[50%]">
-          <p className="input-label py-2">Segundo apellido</p>
+          <p className="input-label py-2">Segundo Apellido</p>
           <FormInput
             type="text"
             onChange={(e: any) => handleSecondLastname(e.target.value)}
-            placeholder="Segundo apellido"
+            placeholder="Segundo Apellido"
           />
           {errors.motherlastname.length > 0 && (
             <div className="mt-1">
@@ -326,7 +326,7 @@ export default function Formulary({
 
       <div className="input-group w-full">
         <p className="input-label py-2">
-          Fecha de nacimiento <span className="text-primary font-bold">*</span>
+          Fecha de Nacimiento <span className="text-primary font-bold">*</span>
         </p>
         <FormInput
           type={"date"}

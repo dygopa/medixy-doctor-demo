@@ -187,7 +187,7 @@ export default function Formulary() {
           <FormInput
             type="text"
             className="w-full py-3 pr-10"
-            placeholder="Correo electrónico"
+            placeholder="Correo Electrónico"
             value={values.email}
             onFocus={(e: any) =>
               setValues({ ...values, email: e.target.value })

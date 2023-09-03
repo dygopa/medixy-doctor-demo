@@ -1,7 +1,7 @@
 export default function Head() {
   return (
     <>
-      <title>Tu cuenta - Prosit</title>
+      <title>Tu Cuenta - Prosit</title>
       <meta charSet="utf-8" />
       <meta httpEquiv="X-UA-Compatible" content="IE=edge" />
       <meta
