@@ -31,7 +31,7 @@ export default function History({
           <div className="flex items-center justify-between py-1 border-b mb-2 w-full h-[45px]">
             <div>
               <p className="w-full text-left font-bold text-md text-slate-900">
-                Historial de consultas
+                Historial de Consultas
               </p>
             </div>
 

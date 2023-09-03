@@ -20,7 +20,7 @@ export default function CompanionList({
       <div className="flex justify-end">
         <Button variant="primary" onClick={() => setShowAddCompanion(true)}>
           <Lucide icon="Plus" className="mr-2" />
-          Nuevo contacto
+          Nuevo Contacto
         </Button>
       </div>
 

@@ -1,4 +1,5 @@
 import { MedicalRecordCategoriesIdEnum, MedicalRecordTypesEnum, MedicalRecordTypesNumberEnum, MedicalRecordTypesOrdersEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
+import { ICountriesISO } from "domain/core/entities/countryEntity";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import { IMedicalRecord } from "domain/core/entities/medicalRecordEntity";
@@ -41,6 +42,7 @@ export interface IMedicalRecordActions {
     getMedicalConsultyPDF: (obj: { doctor: IUser; medicalConsulty: IMedicalConsulty }) => (dispatch: Dispatch<any>) => {};
     getMedicalRecordPDF: (obj: { doctor: IUser; medicalRecord: IMedicalRecord }) => (dispatch: Dispatch<any>) => {};
     updateAvatar: Function;
+    getCountriesISO: Function;
 }
 
 const getSubjectById = (subjectId: number) => async (dispatch: Dispatch<any>) => {
@@ -205,7 +207,7 @@ const createCompanion = (patientId:number, companion:ISubject) => async (dispatc
   try {
     dispatch({ type: "CREATE_COMPANION_LOADING" });
     
-    const res: ISubject = await new SubjectsUseCase().createSubject(companion);
+    const res: ISubject = await new SubjectsUseCase().createSubject(companion, patientId);
 
     await new SubjectsUseCase().createSubjectRelations(patientId, res.subjectId);
 
@@ -300,6 +302,19 @@ const updateAvatar = (obj:any, doctorId: string) => async (dispatch: Dispatch<an
   }
 }
 
+const getCountriesISO = () => async (dispatch: Dispatch<any>) => {
+  try {
+      dispatch({ type: "GET_COUNTRIES_LOADING" });
+
+      const res: Array<ICountriesISO> = await new CountriesUseCase().getCountriesISO();
+
+      dispatch({ type: "GET_COUNTRIES_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+      console.log("Error calling action", error)
+      dispatch({ type: "GET_COUNTRIES_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IMedicalRecordActions = {
     getSubjectById,
     getAppointmentById,
@@ -317,4 +332,5 @@ export const actions: IMedicalRecordActions = {
     getMedicalConsultyPDF,
     getMedicalRecordPDF,
     updateAvatar,
+    getCountriesISO,
 }

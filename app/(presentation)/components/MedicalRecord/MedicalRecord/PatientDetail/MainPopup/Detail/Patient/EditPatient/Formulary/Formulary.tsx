@@ -226,7 +226,7 @@ export default function Formulary() {
           }
           onClick={() => onSubmit()}
         >
-          {loading ? "Actualizando paciente..." : "Actualizar paciente"}
+          {loading ? "Actualizando Paciente..." : "Actualizar Paciente"}
         </Button>
       </div>
 

@@ -163,7 +163,7 @@ export default function AboutPatient() {
 
               <div>
                 <p className="font-normal text-slate-500 mb-1 text-[13px]">
-                  Primer apellido
+                  Primer Apellido
                 </p>
 
                 <p className="font-medium text-[14px] text-ellipsis overflow-hidden whitespace-nowrap">
@@ -173,7 +173,7 @@ export default function AboutPatient() {
 
               <div>
                 <p className="font-normal text-slate-500 mb-1 text-[13px]">
-                  Segundo apellido
+                  Segundo Apellido
                 </p>
 
                 <p className="font-medium text-[14px] text-ellipsis overflow-hidden whitespace-nowrap">
@@ -225,7 +225,7 @@ export default function AboutPatient() {
 
               <div className="col-span-3">
                 <p className="font-normal text-slate-500 mb-1 text-[13px]">
-                  Correo electrónico
+                  Correo Electrónico
                 </p>
 
                 <p className="font-medium text-[14px] text-ellipsis overflow-hidden whitespace-nowrap">

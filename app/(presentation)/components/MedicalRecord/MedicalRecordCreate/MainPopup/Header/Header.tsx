@@ -36,7 +36,7 @@ export default function Header({
   return (
     <div className="flex items-center justify-between bg-primary p-4">
       <div>
-        <h3 className="text-white text-lg font-bold">Información detallada</h3>
+        <h3 className="text-white text-lg font-bold">Información Detallada</h3>
       </div>
 
       <div>
