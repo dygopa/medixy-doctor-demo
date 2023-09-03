@@ -193,8 +193,8 @@ const LocalityServiceStep = ({
       <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white">
         <Button
           disabled={
-            !selectedLocality || 
-            !selectedService
+            selectedLocality.id === 0 || 
+            selectedService.id === 0
           }
           onClick={() => { setStep(1)(dispatch) }}
           variant="primary"
