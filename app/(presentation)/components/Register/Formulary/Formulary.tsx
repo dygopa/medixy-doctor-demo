@@ -29,6 +29,7 @@ import {
 import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
 import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
+import moment from "moment";
 
 export default function Formulary() {
   const { state, actions, dispatch } =
@@ -53,6 +54,7 @@ export default function Formulary() {
     first_lastname: formData?.first_lastname ?? "",
     second_lastname: formData?.second_lastname ?? "",
     phone_number: formData?.phone_number ?? "",
+    birth_date: formData?.birth_date ?? "",
     //curp: formData?.curp ?? "",
   });
 
@@ -196,6 +198,11 @@ export default function Formulary() {
       setErrors({ ...errors, password: "" });
       return false;
     }
+  };
+
+  const handleage = (value: string) => {
+    setValues({ ...values, birth_date: value });
+    return false;
   };
 
   /*const handleCURP = (value: string) => {
@@ -425,6 +432,20 @@ export default function Formulary() {
           </div>
         )}
       </div>
+
+      <div className="relative w-full">
+        <FormInput
+          type={"text"}
+          placeholder="Fecha de nacimiento (No obligatorio)"
+          max={moment().format("YYYY-MM-DD")}
+          defaultValue={values.birth_date}
+          className="w-full py-3 pr-10 bg-white"
+          onFocus={(e) => (e.target.type = "date")}
+          onBlur={(e) => (e.target.type = "text")}
+          onChange={(e: any) => handleage(e.target.value)}
+        />
+      </div>
+
       <div className="relative w-full">
         <FormInput
           type="email"
