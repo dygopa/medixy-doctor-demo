@@ -387,7 +387,7 @@ export default function Formulary() {
           <FormInput
             type="text"
             className="w-full py-3 pr-10 bg-white"
-            placeholder="Primer apellido"
+            placeholder="Primer Apellido"
             value={values.first_lastname}
             onChange={(e: any) => handlelastname(e.target.value)}
           />
@@ -407,7 +407,7 @@ export default function Formulary() {
           <FormInput
             type="text"
             className="w-full py-3 pr-10 bg-white"
-            placeholder="Segundo apellido"
+            placeholder="Segundo Apellido"
             value={values.second_lastname}
             onChange={(e: any) =>
               setValues({ ...values, second_lastname: e.target.value })
@@ -445,7 +445,7 @@ export default function Formulary() {
       <div className="relative w-full">
         <FormInput
           type={"text"}
-          placeholder="Fecha de nacimiento (No obligatorio)"
+          placeholder="Fecha de Nacimiento (No obligatorio)"
           max={moment().format("YYYY-MM-DD")}
           defaultValue={values.birth_date}
           className="w-full py-3 pr-10 bg-white"
@@ -459,7 +459,7 @@ export default function Formulary() {
         <FormInput
           type="email"
           className="w-full py-3 pr-10 bg-white"
-          placeholder="Correo electrónico"
+          placeholder="Correo Electrónico"
           value={values.email}
           onChange={(e: any) => handleEmail(e.target.value)}
         />

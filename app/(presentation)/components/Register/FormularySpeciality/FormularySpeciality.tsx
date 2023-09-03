@@ -97,7 +97,7 @@ export default function FormularySpeciality() {
             setValues({ ...values, pwaProfessionId: +e.target.value })
           }
         >
-          <option value="0">Selecciona tu profesión</option>
+          <option value="0">Selecciona tu Profesión</option>
           {profesions.map((elem, i) => (
             <option key={i} value={elem["id"]}>
               {elem["name"]}
