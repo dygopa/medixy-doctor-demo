@@ -16,7 +16,7 @@ import {
   IScheduleContext,
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
-import SpecialSearch from "(presentation)/components/core/SpecialSearch/SpecialSearch";
+import SpecialSearch, { SpecialSelect } from "(presentation)/components/core/SpecialSearch/SpecialSearch";
 import { IService } from "domain/core/entities/serviceEntity";
 import { ILocality } from "domain/core/entities/localityEntity";
 import AlertComponent from "../../BaseComponents/Alert";
@@ -146,7 +146,7 @@ function CreateAgenda({
     startDate: moment().format("YYYY-MM-DD"),
     until: moment().add(1, "month").format("YYYY-MM-DD"),
     spanTime: 0,
-    fromHour: "",
+    fromHour: "600",
     toHour: "",
   });
 
@@ -572,32 +572,22 @@ function CreateAgenda({
           <p className="font-normal text-sm text-slate-600">
             En que consultorio
           </p>
-          <SpecialSearch
+          <SpecialSelect
+            emptySelectedValue={{
+              title: "Consultorio",
+              description: "Selecciona un consultorio de la lista",
+            }}
+            customClick={setSelectedLocality}
+            selectedItem={selectedLocality}
+            list={listOfLocalities}
+          />
+          {/* <SpecialSearch
             customClick={setSelectedLocality}
             customClickEmpty={() => {}}
             list={listOfLocalities}
             placeholder={"Buscar..."}
             selectedItem={selectedLocality}
-          />
-          {selectedLocality["title"] !== "" && (
-            <div
-              className={twMerge([
-                "transition w-full h-[10vh] flex justify-between items-center gap-3 bg-white",
-              ])}
-            >
-              <div className="w-12 h-12 overflow-hidden rounded-lg bg-primary/20 text-primary text-lg flex flex-col justify-center items-center">
-                <FiHome />
-              </div>
-              <div className="w-[90%] h-full flex flex-col justify-center items-start">
-                <p className="font-semibold text-gray-950 text-[0.9rem]">
-                  Consultorio - {selectedLocality["title"]}
-                </p>
-                <p className="font-light text-gray-600 text-sm">
-                  {selectedLocality["description"]}
-                </p>
-              </div>
-            </div>
-          )}
+          /> */}
         </div>
         {/* <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className='font-normal text-sm text-slate-600'>Para que servicio</p>

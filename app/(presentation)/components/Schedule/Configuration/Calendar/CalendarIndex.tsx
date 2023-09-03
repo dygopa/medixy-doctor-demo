@@ -183,6 +183,12 @@ export default function CalendarIndex() {
   },[searchParams.get("attentionWindowId")])
 
   useMemo(()=>{
+    if(searchParams.get("openPopup") && (localities && ([...(localities as any[])].length > 0))){
+      changeStatusPopup(true)(dispatch); changeTypePopup(1)(dispatch);
+    }
+  },[searchParams.get("openPopup"), localitiesSuccessful])
+
+  useMemo(()=>{
     if (createStepSuccessful){
       changeOpenPopup(true)(dispatchStep)
     }

@@ -8,8 +8,13 @@ import { SubjectRepository } from 'infrastructure/repositories/subject/subjectRe
 import { ScheduleRepository } from 'infrastructure/repositories/schedule/scheduleRepository';
 import { ServicesRepository } from 'infrastructure/repositories/service/serviceRepository';
 import moment from 'moment';
+import SubjectsUseCase from '../subject/subjectUseCase';
+import { ISubject } from 'domain/core/entities/subjectEntity';
 
 export default class ScheduleUseCase {
+
+  private _useCaseSubject = new SubjectsUseCase();
+
   private _repository: ScheduleRepository = new ScheduleRepository();
   private _repositoryLocalities: LocalitiesRepository = new LocalitiesRepository();
   private _repositorySubjects: SubjectRepository = new SubjectRepository();
@@ -119,8 +124,46 @@ export default class ScheduleUseCase {
 
   async createAppointment(obj:any, now?:boolean): Promise<any> {
     try {
+
+      if(!obj["pacienteId"] || obj["pacienteId"] === 0){
+
+        let patient = {
+          subjectId: 0,
+          name: obj["patient"]["name"],
+          lastName: obj["patient"]["firstName"],
+          motherLastName: "",
+          curp: "",
+          email: obj["patient"]["email"],
+          pictureUrl: "",
+          sex: 1,
+          gender: 1,
+          phoneNumber: "",
+          country: "",
+          federativeEntityId: null,
+          municipalityId: null,
+          countryLocationId: null,
+          street: null,
+          state: 0,
+          address: "",
+          city: "",
+          postalCode: null,
+          isPatient: true,
+          birthDate: moment(obj["patient"]["dateBirth"]).format(),
+          updatedOn: null,
+          deletedOn: null,
+          createdOn: moment().toDate(),
+        } as ISubject
+
+        const responsePatient = await this._useCaseSubject.createSubject(patient, obj["doctorId"])
+        if (responsePatient instanceof ScheduleFailure) throw responsePatient;
+        
+        obj["pacienteId"] = responsePatient.subjectId
+
+      }
+      
       const response = await this._repository.createAppointment(obj, now);
       if (response instanceof ScheduleFailure) throw response;
+      
       return response;
     } catch (error) {
       throw error;
