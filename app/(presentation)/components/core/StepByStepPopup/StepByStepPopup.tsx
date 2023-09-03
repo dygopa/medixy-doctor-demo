@@ -57,7 +57,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       completed: false,
       description:
         "Configura los posibles horarios de atención o ventanas de atención en tu consultorio",
-      cta: "/schedule/configuration",
+      cta: "/schedule/configuration?openPopup=true",
     },
     {
       id: 2,
@@ -71,8 +71,6 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
   ]);
 
   const [ formatList, setFormatList ] = useState(false)
-
-  console.log(dataService)
 
   const Step = ({ props, children }: { props: IStep; children: any }) => {
     return (
@@ -172,7 +170,6 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
         cta: elem.id === 2 ? `/services/${dataService[0].id}` : elem.cta,
       }));
       setSteps(l);
-      console.log("aca")
     }
   }
 
