@@ -76,6 +76,15 @@ export default function Formulary() {
   const [wrongName, setWrongName] = useState(false);
   const [wrongFirstName, setWrongFirstName] = useState(false);
   const [wrongLastName, setWrongLastName] = useState(false);
+  const [ inputPassword, setInputPassword ] = useState("password");
+
+  const viewPassword = () => {
+    if(inputPassword === "password") {
+      setInputPassword("text")
+      return
+    }
+    setInputPassword("password")
+  }
 
   const CheckboxComponent = ({
     active,
@@ -468,11 +477,21 @@ export default function Formulary() {
 
       <div className="relative w-full">
         <FormInput
-          type="password"
+          type={inputPassword}
           className="w-full py-3 pr-10 bg-white"
           placeholder="Contraseña"
           value={values.password}
           onChange={(e: any) => handlePassword(e.target.value)}
+        />
+        <Lucide
+          icon={inputPassword === "text" ? "EyeOff" : "Eye"}
+          className={twMerge([
+            "absolute top-4 right-0 w-4 h-4 my-auto mr-3 cursor-pointer transition-all",
+            inputPassword === "text" && "text-black", 
+          ])}
+          onClick={(e: any) => {
+            viewPassword()
+          }}
         />
         {errors.password.length > 0 && (
           <div className="mt-1">
