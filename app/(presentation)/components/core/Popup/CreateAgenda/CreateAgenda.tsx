@@ -501,7 +501,7 @@ function CreateAgenda({
         startDate: moment().format("YYYY-MM-DD"),
         until: moment().add(1, "month").format("YYYY-MM-DD"),
         spanTime: 0,
-        fromHour: "",
+        fromHour: "600",
         toHour: "",
       });
       setDaysRepeatedList([]);

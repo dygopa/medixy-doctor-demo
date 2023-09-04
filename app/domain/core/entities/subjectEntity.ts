@@ -17,7 +17,7 @@ export interface ISubject {
     pictureUrl: string;
     federativeEntityId?: number | null;
     municipalityId?: number | null;
-    countryLocationId?: number | null;
+    countryLocation?: string | null;
     street?: string | null;
     isPatient: boolean;
     birthDate: string | null;

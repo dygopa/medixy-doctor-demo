@@ -8,9 +8,10 @@ import {
 interface IAutocompleteInputLocationsProps {
   query?: string | null;
   onClick: (item: IAutocompleteValue) => void;
+  onChange: (value: string) => void;
   className?: string;
   disabled?: boolean;
-  countryLocationId?: number | null;
+  countryLocation?: string | null;
   federalEntityId?: number | null;
   municipalityCatalogId?: number | null;
 }
@@ -18,9 +19,10 @@ interface IAutocompleteInputLocationsProps {
 export default function AutocompleteInputLocations({
   query,
   onClick,
+  onChange,
   className,
   disabled = false,
-  countryLocationId,
+  countryLocation,
   federalEntityId,
   municipalityCatalogId,
 }: IAutocompleteInputLocationsProps) {
@@ -28,9 +30,8 @@ export default function AutocompleteInputLocations({
     useContext<IAutocompleteInputLocationsContext>(
       AutocompleteInputLocationsContext
     );
-  const { getCountryLocations, getCountryLocationById } = actions;
+  const { getCountryLocations } = actions;
   const { data: countryLocations, loading } = state.countryLocations;
-  const { data: countryLocation } = state.countryLocation;
 
   const getAutocompleteValues = (): IAutocompleteValue[] => {
     const values: IAutocompleteValue[] = [];
@@ -48,12 +49,6 @@ export default function AutocompleteInputLocations({
 
     return values;
   };
-
-  useEffect(() => {
-    if (countryLocationId && countryLocationId !== 0)
-      getCountryLocationById({ id: countryLocationId })(dispatch);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [countryLocationId]);
 
   const getLocationsDispatch = (value?: string | null) => {
     getCountryLocations({
@@ -73,13 +68,7 @@ export default function AutocompleteInputLocations({
       showCreateItem={false}
       disabled={disabled}
       items={getAutocompleteValues()}
-      defaultValue={
-        countryLocationId !== 0 &&
-        countryLocation.data &&
-        countryLocation.data.name
-          ? countryLocation.data.name
-          : null
-      }
+      defaultValue={countryLocation}
       onClick={onClick}
       onClear={() =>
         onClick({
@@ -87,7 +76,10 @@ export default function AutocompleteInputLocations({
           name: "",
         } as IAutocompleteValue)
       }
-      onChange={(value: string) => getLocationsDispatch(value)}
+      onChange={(value: string) => {
+        getLocationsDispatch(value);
+        onChange(value);
+      }}
       className={className}
       activeSearch={false}
       onlyItemsAdd

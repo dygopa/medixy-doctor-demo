@@ -113,7 +113,7 @@ export default function WithoutSteps({
     federalEntity: 0,
     municipality: 0,
     municipalityCatalogId: 0,
-    countryLocation: 0,
+    countryLocation: "",
     isVirtual: 0,
     isPublic: 1,
     street: "",

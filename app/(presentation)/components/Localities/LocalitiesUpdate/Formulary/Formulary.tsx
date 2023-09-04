@@ -98,7 +98,7 @@ export default function Formulary({
     federalEntity: 0,
     municipality: 0,
     municipalityCatalogId: 0,
-    countryLocation: 0,
+    countryLocation: "",
     street: "",
     address: "",
     isPublic: 1,
@@ -150,7 +150,7 @@ export default function Formulary({
       clues: data?.clues ?? "",
       federalEntity: data?.state.id ?? 0,
       municipality: data?.municipalityId ?? 0,
-      countryLocation: data?.countryLocationId ?? 0,
+      countryLocation: data?.countryLocation ?? "",
       street: data?.street ?? "",
       city: data?.city ?? "",
       postal_code: data?.postal_code ? data.postal_code.toString() : "",
@@ -564,7 +564,7 @@ export default function Formulary({
                   federalEntityId={formData.federalEntity}
                   municipalityId={formData.municipality}
                   municipalityCatalogId={formData.municipalityCatalogId}
-                  locationId={formData.countryLocation}
+                  location={formData.countryLocation}
                   postalCode={formData.postal_code}
                   showPostalCode
                 />

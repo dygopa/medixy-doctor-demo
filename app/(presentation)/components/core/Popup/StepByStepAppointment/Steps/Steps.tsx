@@ -68,9 +68,12 @@ const Steps = () => {
     }
   },[predifinedReservation])
 
-  useEffect(()=> {
-    setStep(0)(dispatch)
-    setAppointment({})
+  useMemo(()=> {
+    if(!status){
+      console.log("Is closed")
+      setStep(0)(dispatch)
+      //setAppointment({})
+    }
   },[status])
 
   return (

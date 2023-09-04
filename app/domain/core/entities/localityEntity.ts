@@ -10,7 +10,7 @@ export interface ILocality {
     city: string;
     federativeEntityId?: number | null;
     municipalityId?: number | null;
-    countryLocationId?: number | null;
+    countryLocation?: string | null;
     street?: string | null;
     is_public: boolean;
     is_virtual: boolean;
