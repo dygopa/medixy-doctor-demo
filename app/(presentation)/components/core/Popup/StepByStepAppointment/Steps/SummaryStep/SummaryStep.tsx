@@ -70,8 +70,8 @@ const SummaryStep = ({
   return (
     <div className={"w-full h-fit relative flex flex-col gap-5"}>
       <div className='w-full grid grid-cols-2 justify-between items-start gap-2'>
-        <GroupLabelValue label={"Para el día"} value={appointment["isNow"] ? moment().format("DD-MM-YYYY") : moment(appointment["date"]["fechaInicio"]).format("DD-MM-YYYY")} />
-        <GroupLabelValue label={"A las"} value={appointment["isNow"] ? "Ahora mismo" : moment(appointment["date"]["fechaInicio"]).utc().format("hh:mm a")} />
+        <GroupLabelValue label={"Para el día"} value={appointment["isNow"] ? moment().format("DD-MM-YYYY") : moment(appointment.date?.fechaInicio).format("DD-MM-YYYY")} />
+        <GroupLabelValue label={"A las"} value={appointment["isNow"] ? "Ahora mismo" : moment(appointment.date?.fechaInicio).utc().format("hh:mm a")} />
         <GroupLabelValue label={"Para el paciente"} value={appointment["patient"]["title"] ?? appointment["patient"]["name"]} />
         <GroupLabelValue label={"En"} value={appointment["locality"]["title"]} />
       </div>
@@ -82,7 +82,7 @@ const SummaryStep = ({
             createAppointment(
               {
                 id: appointment["attentionWindowId"],
-                fechaReserva: appointment["isNow"] ? "" : appointment["date"]["fechaInicio"],
+                fechaReserva: appointment["isNow"] ? "" : appointment.date?.fechaInicio,
                 servicioId: appointment["serviceId"],
                 pacienteId: appointment["patientId"],
                 patient: appointment["patient"],
