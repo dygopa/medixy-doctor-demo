@@ -10,6 +10,7 @@ import {
   AuthContext,
   IAuthContext,
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import ManageServicesPopup from "./ManageServicesPopup/ManageServicesPopup";
 
 export default function ServicesListIndex() {
   const { state } = useContext<IAuthContext>(AuthContext);
@@ -25,16 +26,20 @@ export default function ServicesListIndex() {
   if (!user?.userId) return <div />;
 
   return (
-    <div className="py-5">
-      <Navigator />
+    <>
+      <div className="py-5">
+        <Navigator />
 
-      <div className="mt-10">
-        <ServicesProvider>
-          <div className="mt-8">
-            <Table user={user} />
-          </div>
-        </ServicesProvider>
+        <div className="mt-10">
+          <ServicesProvider>
+            <div className="mt-8">
+              <Table user={user} />
+            </div>
+          </ServicesProvider>
+        </div>
       </div>
-    </div>
+
+      <ManageServicesPopup />
+    </>
   );
 }

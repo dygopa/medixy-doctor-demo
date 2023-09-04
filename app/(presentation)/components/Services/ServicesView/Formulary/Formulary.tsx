@@ -151,12 +151,12 @@ export default function Formulary({
     }
   }, [stepNotCreated, creatingStepSuccessful]);
 
-  useEffect(() => {
+  /* useEffect(() => {
     if (!createdStep) {
       createUserSteps(accountId, "SERVICE_UPDATED")(dispatchStep);
       setCreatedStep(true);
     }
-  }, [createdStep]);
+  }, [createdStep]); */
 
   useEffect(() => {
     if (successful) {
