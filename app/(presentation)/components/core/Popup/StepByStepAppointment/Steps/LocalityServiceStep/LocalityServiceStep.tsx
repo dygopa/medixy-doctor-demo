@@ -6,6 +6,7 @@ import { FiBriefcase, FiHome } from "react-icons/fi";
 import { twMerge } from 'tailwind-merge';
 import Button from '(presentation)/components/core/BaseComponents/Button';
 import { IScheduleContext, ScheduleContext } from '(presentation)/components/Schedule/context/ScheduleContext';
+import Loading from '(presentation)/components/core/Loading/Loading';
 
 const LocalityServiceStep = ({
   appointment,
@@ -25,6 +26,7 @@ const LocalityServiceStep = ({
     changeStatusPopup
   } = actionsSchedule
 
+  const { data: status } = stateSchedule.statusPopup;
   const { data: locality } = stateSchedule.activeLocality;
   const { data: service } = stateSchedule.activeService;
 
@@ -53,7 +55,12 @@ const LocalityServiceStep = ({
     description: ""
   })
 
+  const [loadedAppointment, setLoadedAppointment] = useState(false)
   const [loadedDataFromAppointment, setLoadedDataFromAppointment] = useState(false)
+
+  useMemo(()=>{
+    console.log(appointment)
+  },[loadedAppointment])
 
   useEffect(()=>{
     if(!loadedDataFromAppointment){
@@ -193,8 +200,8 @@ const LocalityServiceStep = ({
       <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white">
         <Button
           disabled={
-            selectedLocality.id === 0 || 
-            selectedService.id === 0
+            !appointment["localityId"] || 
+            !appointment["serviceId"]
           }
           onClick={() => { setStep(1)(dispatch) }}
           variant="primary"
