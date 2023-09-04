@@ -42,7 +42,7 @@ export default function Formulary() {
     birthDate: "",
     federalEntity: 0,
     municipality: 0,
-    countryLocation: 0,
+    countryLocation: "",
     municipalityCatalogId: 0,
     city: "",
     direction: "",
@@ -82,7 +82,7 @@ export default function Formulary() {
       country: subject?.country ?? "",
       federalEntity: subject?.federativeEntityId ?? 0,
       municipality: subject?.municipalityId ?? 0,
-      countryLocation: subject?.countryLocationId ?? 0,
+      countryLocation: subject?.countryLocation ?? "",
       city: subject?.city ?? "",
       street: subject?.street ?? "",
       direction: subject?.address ?? "",
@@ -143,8 +143,8 @@ export default function Formulary() {
       phoneNumber: values.phone.trim(),
       federativeEntityId: values.federalEntity,
       municipalityId: values.municipality !== 0 ? values.municipality : null,
-      countryLocationId:
-        values.countryLocation !== 0 ? values.countryLocation : null,
+      countryLocation:
+        values.countryLocation.length > 0 ? values.countryLocation : null,
       street: values.street.trim(),
       country: values.country.trim(),
       state: 0,

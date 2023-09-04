@@ -17,7 +17,7 @@ function AddressAutocomplete({
   federalEntityId,
   municipalityId,
   municipalityCatalogId,
-  locationId,
+  location,
   isColumn = false,
   isCreatePatient = false,
   showPostalCode = false,
@@ -28,7 +28,7 @@ function AddressAutocomplete({
   federalEntityId?: number | null;
   municipalityId?: number | null;
   municipalityCatalogId?: number | null;
-  locationId?: number | null;
+  location?: string | null;
   isColumn?: boolean;
   isCreatePatient?: boolean;
   showPostalCode?: boolean;
@@ -39,7 +39,7 @@ function AddressAutocomplete({
     federalEntityId: 0,
     municipalityId: 0,
     municipalityCatalogId: 0,
-    locationId: 0,
+    location: "",
   });
 
   const setDefaultAddressData = () => {
@@ -49,7 +49,7 @@ function AddressAutocomplete({
       federalEntityId: federalEntityId ?? 0,
       municipalityId: municipalityId ?? 0,
       municipalityCatalogId: municipalityCatalogId ?? 0,
-      locationId: locationId ?? 0,
+      location: location ?? "",
     });
 
     setIsLoading(false);
@@ -58,7 +58,7 @@ function AddressAutocomplete({
   useEffect(() => {
     setDefaultAddressData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [federalEntityId, municipalityId, municipalityCatalogId, locationId]);
+  }, [federalEntityId, municipalityId, municipalityCatalogId, location]);
 
   if (isLoading) return <div />;
 
@@ -93,7 +93,7 @@ function AddressAutocomplete({
                     federalEntityId: item.additionalId ?? 0,
                     municipalityId: item.thirdAdditionalId ?? 0,
                     municipalityCatalogId: item.secondAdditionalId ?? 0,
-                    locationId: 0,
+                    location: "",
                   });
                   setFormData({
                     ...formData,
@@ -101,7 +101,7 @@ function AddressAutocomplete({
                     federalEntity: item.additionalId ?? 0,
                     municipality: item.thirdAdditionalId ?? 0,
                     municipalityCatalogId: item.secondAdditionalId ?? 0,
-                    countryLocation: 0,
+                    countryLocation: "",
                   });
                 }}
                 postalCodeDefault={addressData.postalCode}
@@ -139,14 +139,14 @@ function AddressAutocomplete({
                   federalEntityId: item.id,
                   municipalityId: 0,
                   municipalityCatalogId: 0,
-                  locationId: 0,
+                  location: "",
                 });
                 setFormData({
                   ...formData,
                   federalEntity: item.id,
                   municipality: 0,
                   municipalityCatalogId: 0,
-                  countryLocation: 0,
+                  countryLocation: "",
                 });
               }}
               federalEntityId={addressData.federalEntityId}
@@ -180,13 +180,13 @@ function AddressAutocomplete({
                   ...addressData,
                   municipalityId: item.id,
                   municipalityCatalogId: item.additionalId ?? 0,
-                  locationId: 0,
+                  location: "",
                 });
                 setFormData({
                   ...formData,
                   municipality: item.id,
                   municipalityCatalogId: item.additionalId ?? 0,
-                  countryLocation: 0,
+                  location: "",
                 });
               }}
               disabled={addressData.federalEntityId === 0 || showPostalCode}
@@ -218,15 +218,22 @@ function AddressAutocomplete({
           <AutocompleteInputLocationsProvider>
             <AutocompleteInputLocations
               onClick={(item: IAutocompleteValue) => {
-                setAddressData({ ...addressData, locationId: item.id });
+                setAddressData({ ...addressData, location: item.name });
                 setFormData({
                   ...formData,
-                  countryLocation: item.id,
+                  countryLocation: item.name,
+                });
+              }}
+              onChange={(value: string) => {
+                setAddressData({ ...addressData, location: value });
+                setFormData({
+                  ...formData,
+                  countryLocation: value,
                 });
               }}
               disabled={addressData.municipalityId === 0}
               className="form-control lg:w-full"
-              countryLocationId={addressData.locationId}
+              countryLocation={addressData.location}
               municipalityCatalogId={addressData.municipalityCatalogId}
               federalEntityId={addressData.federalEntityId}
             />

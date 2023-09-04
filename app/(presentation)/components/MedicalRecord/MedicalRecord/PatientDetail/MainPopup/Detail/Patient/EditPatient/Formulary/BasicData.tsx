@@ -50,7 +50,7 @@ interface IBasicDataProps {
     birthDate: string;
     federalEntity: number;
     municipality: number;
-    countryLocation: number;
+    countryLocation: string;
     municipalityCatalogId: number;
     city: string;
     direction: string;
@@ -74,7 +74,7 @@ interface IBasicDataProps {
       birthDate: string;
       federalEntity: number;
       municipality: number;
-      countryLocation: number;
+      countryLocation: string;
       municipalityCatalogId: number;
       city: string;
       direction: string;
@@ -508,11 +508,11 @@ export default function BasicData({
                   >
                     <option value="">Tu pais de Nacimiento</option>
                     {countriesISO.length > 0 &&
-                    countriesISO.map((elem) => (
-                      <option key={elem.iso} value={elem.iso}>
-                        {elem.iso} - {elem.name}
-                      </option>
-                    ))}
+                      countriesISO.map((elem) => (
+                        <option key={elem.iso} value={elem.iso}>
+                          {elem.iso} - {elem.name}
+                        </option>
+                      ))}
                   </FormSelect>
                 </div>
                 <div className="flex flex-col justify-between items-start relative gap-1">

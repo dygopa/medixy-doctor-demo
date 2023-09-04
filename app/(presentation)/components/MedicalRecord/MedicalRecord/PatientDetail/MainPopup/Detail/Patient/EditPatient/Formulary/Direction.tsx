@@ -39,7 +39,7 @@ interface IContactProps {
     birthDate: string;
     federalEntity: number;
     municipality: number;
-    countryLocation: number;
+    countryLocation: string;
     municipalityCatalogId: number;
     city: string;
     direction: string;
@@ -63,7 +63,7 @@ interface IContactProps {
       birthDate: string;
       federalEntity: number;
       municipality: number;
-      countryLocation: number;
+      countryLocation: string;
       municipalityCatalogId: number;
       city: string;
       direction: string;
@@ -126,7 +126,7 @@ export default function Contact({
               federalEntityId={values.federalEntity}
               municipalityId={values.municipality}
               municipalityCatalogId={values.municipalityCatalogId}
-              locationId={values.countryLocation}
+              location={values.countryLocation}
               showPostalCode
             />
           </div>
