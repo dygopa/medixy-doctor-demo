@@ -1,30 +1,48 @@
-import { AuthContext, IAuthContext } from '(presentation)/(layouts)/AppLayout/context/AuthContext';
-import React, { useContext, useState, SetStateAction, Dispatch, useMemo, useEffect } from 'react'
-import { IStepByStepAppointmentContext, StepByStepAppointmentContext } from '../../context/StepByStepAppointmentContext';
-import SpecialSearch, { SpecialSelect } from "(presentation)/components/core/SpecialSearch/SpecialSearch";
+import {
+  AuthContext,
+  IAuthContext,
+} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import React, {
+  useContext,
+  useState,
+  SetStateAction,
+  Dispatch,
+  useMemo,
+  useEffect,
+} from "react";
+import {
+  IStepByStepAppointmentContext,
+  StepByStepAppointmentContext,
+} from "../../context/StepByStepAppointmentContext";
+import SpecialSearch, {
+  SpecialSelect,
+} from "(presentation)/components/core/SpecialSearch/SpecialSearch";
 import { FiBriefcase, FiHome } from "react-icons/fi";
-import { twMerge } from 'tailwind-merge';
-import Button from '(presentation)/components/core/BaseComponents/Button';
-import { IScheduleContext, ScheduleContext } from '(presentation)/components/Schedule/context/ScheduleContext';
-import Loading from '(presentation)/components/core/Loading/Loading';
+import { twMerge } from "tailwind-merge";
+import Button from "(presentation)/components/core/BaseComponents/Button";
+import {
+  IScheduleContext,
+  ScheduleContext,
+} from "(presentation)/components/Schedule/context/ScheduleContext";
+import Loading from "(presentation)/components/core/Loading/Loading";
 
 const LocalityServiceStep = ({
   appointment,
-  setAppointment
-}:{
+  setAppointment,
+}: {
   appointment: any;
-  setAppointment: Dispatch<SetStateAction<{}>>
+  setAppointment: Dispatch<SetStateAction<{}>>;
 }) => {
-
   const { state: auth } = useContext<IAuthContext>(AuthContext);
   const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
 
-  const { state: stateSchedule, actions: actionsSchedule, dispatch: dispatchSchedule } =
-  useContext<IScheduleContext>(ScheduleContext);
-
   const {
-    changeStatusPopup
-  } = actionsSchedule
+    state: stateSchedule,
+    actions: actionsSchedule,
+    dispatch: dispatchSchedule,
+  } = useContext<IScheduleContext>(ScheduleContext);
+
+  const { changeStatusPopup } = actionsSchedule;
 
   const { data: status } = stateSchedule.statusPopup;
   const { data: locality } = stateSchedule.activeLocality;
@@ -32,113 +50,120 @@ const LocalityServiceStep = ({
 
   const { state, actions, dispatch } =
     useContext<IStepByStepAppointmentContext>(StepByStepAppointmentContext);
+  const { setStep, getLocalities, getServices } = actions;
+
   const {
-    setStep,
-    getLocalities,
-    getServices
-  } = actions;
+    data: localities,
+    successful: loadedLocalities,
+    loading: loadingLocalities,
+  } = state.localities;
+  const {
+    data: services,
+    successful: loadedServices,
+    loading: loadingServices,
+  } = state.services;
 
-  const { data: localities, successful: loadedLocalities, loading: loadingLocalities } = state.localities;
-  const { data: services, successful: loadedServices, loading: loadingServices } = state.services;
-
-  const [listOfLocalities, setListOfLocalities] = useState([])
-  const [listOfServices, setListOfServices] = useState([])
+  const [listOfLocalities, setListOfLocalities] = useState([]);
+  const [listOfServices, setListOfServices] = useState([]);
 
   const [selectedLocality, setSelectedLocality] = useState({
     id: 0,
     title: "",
-    description: ""
-  })
+    description: "",
+  });
   const [selectedService, setSelectedService] = useState({
     id: 0,
     title: "",
-    description: ""
-  })
+    description: "",
+  });
 
-  const [loadedAppointment, setLoadedAppointment] = useState(false)
-  const [loadedDataFromAppointment, setLoadedDataFromAppointment] = useState(false)
-
-  useMemo(()=>{
-    console.log(appointment)
-  },[loadedAppointment])
-
-  useEffect(()=>{
-    if(!loadedDataFromAppointment){
-      if(appointment["locality"]){
-        setSelectedLocality(appointment["locality"])
-        getServices({
-          userId: user.userId, 
-          localityId: appointment["localityId"]
-        })(dispatch);
-      }
-      if(appointment["service"]){
-        setSelectedService(appointment["service"])
-      }
-      setLoadedDataFromAppointment(true)
-    }
-  },[loadedDataFromAppointment])
+  const [loadedAppointment, setLoadedAppointment] = useState(false);
+  const [loadedDataFromAppointment, setLoadedDataFromAppointment] =
+    useState(false);
 
   useMemo(() => {
-    if (loadedServices){
+    console.log(appointment);
+  }, [loadedAppointment]);
+
+  useEffect(() => {
+    if (!loadedDataFromAppointment) {
+      if (appointment["locality"]) {
+        setSelectedLocality(appointment["locality"]);
+        getServices({
+          userId: user.userId,
+          localityId: appointment["localityId"],
+        })(dispatch);
+      }
+      if (appointment["service"]) {
+        setSelectedService(appointment["service"]);
+      }
+      setLoadedDataFromAppointment(true);
+    }
+  }, [loadedDataFromAppointment]);
+
+  useMemo(() => {
+    if (loadedServices) {
       let list_services = services!.map((elem: any) => ({
         id: elem.id,
         title: elem.name,
         description: elem["service_category"]["name"],
       }));
 
-      if(list_services.length > 0 && !service["id"]){
-        setSelectedService(list_services[0])
+      if (list_services.length > 0 && !service["id"]) {
+        setSelectedService(list_services[0]);
         setAppointment({
-          ...appointment, 
+          ...appointment,
           serviceId: list_services[0]["id"],
-          service: list_services[0]
-        })
+          service: list_services[0],
+        });
       }
-      if(list_services.length > 0 && service["id"]){
-        setSelectedService(service)
+      if (list_services.length > 0 && service["id"]) {
+        setSelectedService(service);
         setAppointment({
-          ...appointment, 
+          ...appointment,
           serviceId: locality["id"],
-          service: service
-        })
+          service: service,
+        });
       }
-    
+
       setListOfServices(list_services as []);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadingServices]);
 
   useMemo(() => {
-    if (loadedLocalities){
+    if (loadedLocalities) {
       let list_localities = localities!.map((elem: any) => ({
         id: elem.id,
         title: elem.name,
-        description: `${elem.municipality ? elem.municipality.name : "Sin dirección"} ${elem.country_location ? `- ${elem.country_location.name}` : ""}`,
+        description: `${
+          elem.municipality ? elem.municipality.name : "Sin dirección"
+        } ${elem.country_location ? `- ${elem.country_location.name}` : ""}`,
       }));
-      
-      if(list_localities.length > 0 && !locality["id"]){
+
+      if (list_localities.length > 0 && !locality["id"]) {
         getServices({
-          userId: user.userId, 
-          localityId: list_localities[0]["id"]
-        })(dispatch);
-        setSelectedLocality(list_localities[0])
-        setAppointment({
-          ...appointment, 
+          userId: user.userId,
           localityId: list_localities[0]["id"],
-          locality: list_localities[0]
-        })
-      }
-      if(list_localities.length > 0 && locality["id"]){
-        getServices({
-          userId: user.userId, 
-          localityId: locality["id"]
         })(dispatch);
-        setSelectedLocality(locality)
+        setSelectedLocality(list_localities[0]);
         setAppointment({
-          ...appointment, 
+          ...appointment,
+          localityId: list_localities[0]["id"],
+          locality: list_localities[0],
+        });
+      }
+      if (list_localities.length > 0 && locality["id"]) {
+        getServices({
+          userId: user.userId,
           localityId: locality["id"],
-          locality: locality
-        })
+        })(dispatch);
+        setSelectedLocality(locality);
+        setAppointment({
+          ...appointment,
+          localityId: locality["id"],
+          locality: locality,
+        });
       }
 
       setListOfLocalities(list_localities as []);
@@ -153,8 +178,18 @@ const LocalityServiceStep = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser]);
 
+  useMemo(() => {
+    console.log(service);
+    if (service?.id)
+      setSelectedService({
+        id: service.id,
+        title: service.title,
+        description: service.description,
+      });
+  }, [service]);
+
   return (
-    <div className='w-full h-fit flex flex-col gap-5'>
+    <div className="w-full h-fit flex flex-col gap-5">
       <div className="w-full flex flex-col justify-center items-start gap-2">
         <p className="font-normal text-sm text-slate-600">Consultorio</p>
         <SpecialSelect
@@ -164,15 +199,15 @@ const LocalityServiceStep = ({
           }}
           customClick={(value: any) => {
             getServices({
-              userId: user.userId, 
-              localityId: value["id"]
+              userId: user.userId,
+              localityId: value["id"],
             })(dispatch);
             setSelectedLocality(value);
             setAppointment({
-              ...appointment, 
+              ...appointment,
               localityId: value["id"],
-              locality: value
-            })
+              locality: value,
+            });
           }}
           selectedItem={selectedLocality}
           list={listOfLocalities}
@@ -188,10 +223,10 @@ const LocalityServiceStep = ({
           customClick={(value: any) => {
             setSelectedService(value);
             setAppointment({
-              ...appointment, 
+              ...appointment,
               serviceId: value["id"],
-              service: value
-            })
+              service: value,
+            });
           }}
           selectedItem={selectedService}
           list={listOfServices}
@@ -199,11 +234,10 @@ const LocalityServiceStep = ({
       </div>
       <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white">
         <Button
-          disabled={
-            !appointment["localityId"] || 
-            !appointment["serviceId"]
-          }
-          onClick={() => { setStep(1)(dispatch) }}
+          disabled={!appointment["localityId"] || !appointment["serviceId"]}
+          onClick={() => {
+            setStep(1)(dispatch);
+          }}
           variant="primary"
           type="button"
           className="w-full"
@@ -211,14 +245,16 @@ const LocalityServiceStep = ({
           Continuar
         </Button>
         <p
-          onClick={() => { changeStatusPopup(false)(dispatchSchedule); }}
+          onClick={() => {
+            changeStatusPopup(false)(dispatchSchedule);
+          }}
           className="cursor-pointer font-normal text-sm text-primary text-center"
         >
           Cancelar
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default LocalityServiceStep
+export default LocalityServiceStep;

@@ -89,3 +89,7 @@
  .fc-scroller::-webkit-scrollbar-thumb:hover {
    background: rgb(186, 186, 186);
  }
+
+.fc-daygrid-body {
+   display: none;
+}
