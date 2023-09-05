@@ -33,6 +33,39 @@ export const StepByStepReducer = (state: any, action: any) => {
             error: action.payload.error,
           },
         };
+      case 'GET_STEPS_MESSAGES_SUCCESSFUL':
+        return {
+          ...state,
+          getStepsMessages: {
+            ...state.getStepsMessages,
+            data: action.payload.data,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+        };
+      case 'GET_STEPS_MESSAGES_LOADING':
+        return {
+          ...state,
+          getStepsMessages: {
+            ...state.getStepsMessages,
+            data: null,
+            loading: true,
+            successful: false,
+            error: null,
+          },
+        };
+      case 'GET_STEPS_MESSAGES_ERROR':
+        return {
+          ...state,
+          getStepsMessages: {
+            ...state.getStepsMessages,
+            data: null,
+            loading: false,
+            successful: false,
+            error: action.payload.error,
+          },
+        };
       case 'REGISTER_STEP_LOADING':
         return {
           ...state,
@@ -77,7 +110,7 @@ export const StepByStepReducer = (state: any, action: any) => {
             error: null,
           },
         };
-      case 'GET_SERVICE_SUCCESSFUL':
+      /* case 'GET_SERVICE_SUCCESSFUL':
         return {
           ...state,
           getService: {
@@ -109,7 +142,7 @@ export const StepByStepReducer = (state: any, action: any) => {
             successful: false,
             error: action.payload.error,
           },
-        };
+        }; */
       default:
         return state;
     }
