@@ -1,17 +1,24 @@
 import { twMerge } from "tailwind-merge";
-import { Transition } from "@headlessui/react";
-import { FiCheckCircle } from "react-icons/fi";
-import { useMemo, useState } from "react";
+import { Dispatch, SetStateAction } from "react";
 import { IUser } from "domain/core/entities/userEntity";
 import Lucide from "../BaseComponents/Lucide";
 import Button from "../BaseComponents/Button";
+import { useRouter } from "next/navigation";
 
 interface IAlertProps {
   user: IUser;
+  isVisible: boolean;
+  setIsVisible: Dispatch<SetStateAction<boolean>>;
+  redirectUrl?: string | null;
 }
 
-const CompletedStepByStepPopup = ({ user }: IAlertProps) => {
-  const [isVisible, setIsVisible] = useState(true);
+const CompletedStepByStepPopup = ({
+  user,
+  isVisible,
+  setIsVisible,
+  redirectUrl,
+}: IAlertProps) => {
+  const router = useRouter();
 
   return (
     <div
@@ -23,12 +30,24 @@ const CompletedStepByStepPopup = ({ user }: IAlertProps) => {
       <div className="w-[80%] md:w-[60%] lg:w-[60%] h-auto overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
         <div className="w-full px-4">
           <div className="mb-14 w-full flex justify-between items-center">
-              <p className="font-bold text-2xl text-slate-900">
-                ¡Enhorabuena {user?.sex === 1 ? "Dra." : "Dr."} {user?.names} {user?.firstName} {user?.lastName}!
-              </p>
-              <Lucide icon="X" size={25} onClick={(e) => {setIsVisible(false)}} className="cursor-pointer" />
+            <p className="font-bold text-2xl text-slate-900">
+              ¡Enhorabuena {user?.sex === 1 ? "Dra." : "Dr."} {user?.names}{" "}
+              {user?.firstName} {user?.lastName}!
+            </p>
+            <Lucide
+              icon="X"
+              size={25}
+              onClick={(e) => {
+                setIsVisible(false);
+
+                if (redirectUrl && redirectUrl.length > 0) {
+                  router.push(redirectUrl);
+                }
+              }}
+              className="cursor-pointer"
+            />
           </div>
-        
+
           <div className="flex justify-center text-center mb-6">
             <Lucide icon="CheckCircle" color="#00bb2b" size={60} />
           </div>
@@ -39,18 +58,25 @@ const CompletedStepByStepPopup = ({ user }: IAlertProps) => {
             </p>
           </div>
 
-          <div className={twMerge([
+          <div
+            className={twMerge([
               "items-center text-center justify-center mb-4",
               "w-full",
-            ])}  
+            ])}
           >
             <div className="lg:mb-0 mb-4">
               <Button
-                  variant="primary"
-                  className="w-auto"
-                  onClick={() => setIsVisible(false)}
+                variant="primary"
+                className="w-auto"
+                onClick={() => {
+                  setIsVisible(false);
+
+                  if (redirectUrl && redirectUrl.length > 0) {
+                    router.push(redirectUrl);
+                  }
+                }}
               >
-                  Entendido, gracias
+                Entendido, gracias
               </Button>
             </div>
           </div>

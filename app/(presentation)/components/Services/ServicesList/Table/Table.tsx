@@ -17,6 +17,7 @@ import {
   IStepByStepContext,
   StepByStepContext,
 } from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
+import CompletedStepByStepPopup from "(presentation)/components/core/CompletedStepByStep/CompletedStepByStepPopUp";
 
 export default function TableServices({ user }: { user: IUser }) {
   const {
@@ -35,9 +36,11 @@ export default function TableServices({ user }: { user: IUser }) {
   const { getUserServices } = actions;
 
   const [stepIsCompleted, setStepIsCompleted] = useState(false);
+  const [showCompletedStepModal, setShowCompletedModal] = useState(false);
 
-  const onStepCompleted = () =>
-    createUserSteps(user.accountId, "SERVICE_UPDATED")(dispatch);
+  const onStepCompleted = () => {
+    createUserSteps(user.accountId, "SERVICE_UPDATED")(stepByStepDispatch);
+  };
 
   const getStepIsCompleted = () => {
     const serviceEvent = steps.findIndex(
@@ -322,33 +325,41 @@ export default function TableServices({ user }: { user: IUser }) {
   }
 
   return (
-    <div>
-      <div className="lg:block md:block hidden">
-        <TableComponent />
+    <>
+      <div>
+        <div className="lg:block md:block hidden">
+          <TableComponent />
+        </div>
+
+        <div className="lg:hidden md:hidden block">
+          <CardsComponent />
+          {loading && (
+            <div className="w-full flex flex-col justify-center items-center">
+              <p className="font-bold text-slate-900 text-lg">Un momento...</p>
+              <p className="font-light text-slate-500 text-base">
+                Cargando tus servicios.
+              </p>
+            </div>
+          )}
+
+          {successful && [...(data as Array<IService>)].length === 0 && (
+            <div className="w-full flex flex-col justify-center items-center">
+              <p className="font-bold text-slate-900 text-lg">
+                Vaya, no tienes servicios aún
+              </p>
+              <p className="font-light text-slate-500 text-base text-center">
+                Lo sentimos, pero no tienes servicios agregados todavia.
+              </p>
+            </div>
+          )}
+        </div>
       </div>
 
-      <div className="lg:hidden md:hidden block">
-        <CardsComponent />
-        {loading && (
-          <div className="w-full flex flex-col justify-center items-center">
-            <p className="font-bold text-slate-900 text-lg">Un momento...</p>
-            <p className="font-light text-slate-500 text-base">
-              Cargando tus servicios.
-            </p>
-          </div>
-        )}
-
-        {successful && [...(data as Array<IService>)].length === 0 && (
-          <div className="w-full flex flex-col justify-center items-center">
-            <p className="font-bold text-slate-900 text-lg">
-              Vaya, no tienes servicios aún
-            </p>
-            <p className="font-light text-slate-500 text-base text-center">
-              Lo sentimos, pero no tienes servicios agregados todavia.
-            </p>
-          </div>
-        )}
-      </div>
-    </div>
+      <CompletedStepByStepPopup
+        user={user}
+        isVisible={showCompletedStepModal}
+        setIsVisible={setShowCompletedModal}
+      />
+    </>
   );
 }

@@ -3,6 +3,7 @@ import {
   IAuthContext,
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import Button from "(presentation)/components/core/BaseComponents/Button";
+import CompletedStepByStepPopup from "(presentation)/components/core/CompletedStepByStep/CompletedStepByStepPopUp";
 import {
   IStepByStepContext,
   StepByStepContext,
@@ -20,6 +21,7 @@ export default function ManageServicesPopup() {
   const { successful } = state.createUserSteps;
 
   const [stepIsCompleted, setStepIsCompleted] = useState(false);
+  const [showCompletedStepModal, setShowCompletedModal] = useState(false);
 
   const onStepCompleted = () =>
     createUserSteps(user.accountId, "SERVICE_UPDATED")(dispatch);
@@ -37,35 +39,51 @@ export default function ManageServicesPopup() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [steps]);
 
-  if (loading || stepIsCompleted || !user?.accountId || successful)
-    return <div />;
+  useEffect(() => {
+    if (successful && steps?.length === 2) setShowCompletedModal(true);
+  }, [successful, steps]);
+
+  if (loading || !user?.accountId) return <div />;
+
+  if (stepIsCompleted || successful) {
+    return (
+      <CompletedStepByStepPopup
+        user={user}
+        isVisible={showCompletedStepModal}
+        setIsVisible={setShowCompletedModal}
+      />
+    );
+  }
 
   return (
-    <div className="fixed bottom-4 right-4">
-      <div className="w-[450px] h-[200px] bg-white rounded-md shadow-md p-4">
-        <div>
-          <h2 className="text-slate-900 font-bold text-lg">
-            Gestión de servicios
-          </h2>
-        </div>
+    <>
+      <div className="fixed bottom-4 right-4">
+        <div className="w-[450px] h-[200px] bg-white rounded-md shadow-md p-4">
+          <div>
+            <h2 className="text-slate-900 font-bold text-lg">
+              Gestión de servicios
+            </h2>
+          </div>
 
-        <div className="mt-3">
-          <p className="text-gray-400 text-md">
-            Acá podrás gestionar todos tus servicios creando, editando y
-            eliminando los que sean necesarios para tus consultorios digitales.
-          </p>
-        </div>
+          <div className="mt-3">
+            <p className="text-gray-400 text-md">
+              Acá podrás gestionar todos tus servicios creando, editando y
+              eliminando los que sean necesarios para tus consultorios
+              digitales.
+            </p>
+          </div>
 
-        <div className="mt-8">
-          <Button
-            variant="primary"
-            className="w-full"
-            onClick={() => onStepCompleted()}
-          >
-            Entendido
-          </Button>
+          <div className="mt-8">
+            <Button
+              variant="primary"
+              className="w-full"
+              onClick={() => onStepCompleted()}
+            >
+              Entendido
+            </Button>
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }

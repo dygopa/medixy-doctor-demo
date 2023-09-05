@@ -4,6 +4,7 @@ import {
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
+import Lucide from "../BaseComponents/Lucide";
 import {
   IStepByStepContext,
   StepByStepContext,
@@ -60,6 +61,12 @@ export default function StepByStepMessage() {
           </p>
 
           <p className="font-bold ml-3 text-lg">{stepsCompleted}/3</p>
+
+          {stepsCompleted === 3 && (
+            <p className="ml-2">
+              <Lucide icon="CheckCircle" size={25} color="#fff" />
+            </p>
+          )}
         </Link>
       </div>
     </div>
