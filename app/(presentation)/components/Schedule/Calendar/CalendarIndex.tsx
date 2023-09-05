@@ -57,7 +57,7 @@ export default function CalendarIndex() {
     error: localityError,
     data: locality,
   } = state.activeLocality;
-  const { successful: loadedCreationAppointment } = state.createAppointment;
+  const { successful: loadedCreationAppointment } = state.getAppointments;
   const {
     successful: servicesSuccessful,
     error: servicesError,
@@ -211,7 +211,7 @@ export default function CalendarIndex() {
 
   useMemo(() => {
     if (loadedCreationAppointment) {
-      getCalendarEvents(user.userId, locality["id"], moment(activeDayInCalendar["start"]).format('YYYY-MM-DD'), moment(activeDayInCalendar["end"], "YYYY-MM-DD").format('YYYY-MM-DD'))(dispatch);
+      getCalendarEvents(user?.userId, locality["id"], moment(activeDayInCalendar["start"]).format('YYYY-MM-DD'), moment(activeDayInCalendar["end"], "YYYY-MM-DD").format('YYYY-MM-DD'))(dispatch);
     }
   }, [loadedCreationAppointment]);
 
