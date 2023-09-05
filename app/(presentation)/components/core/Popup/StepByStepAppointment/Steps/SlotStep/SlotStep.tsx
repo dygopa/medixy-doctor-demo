@@ -1,30 +1,49 @@
-import { AuthContext, IAuthContext } from '(presentation)/(layouts)/AppLayout/context/AuthContext';
-import React, { useContext, useMemo, useState, Dispatch, SetStateAction, useEffect} from 'react'
-import { IStepByStepAppointmentContext, StepByStepAppointmentContext } from '../../context/StepByStepAppointmentContext';
-import moment from 'moment';
-import { twMerge } from 'tailwind-merge';
-import { FiCheck } from 'react-icons/fi';
-import Loading from '(presentation)/components/core/Loading/Loading';
-import Button from '(presentation)/components/core/BaseComponents/Button';
-import { FormInput } from '(presentation)/components/core/BaseComponents/Form';
+import {
+  AuthContext,
+  IAuthContext,
+} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import React, {
+  useContext,
+  useMemo,
+  useState,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+} from "react";
+import {
+  IStepByStepAppointmentContext,
+  StepByStepAppointmentContext,
+} from "../../context/StepByStepAppointmentContext";
+import moment from "moment";
+import { twMerge } from "tailwind-merge";
+import { FiCheck } from "react-icons/fi";
+import Loading from "(presentation)/components/core/Loading/Loading";
+import Button from "(presentation)/components/core/BaseComponents/Button";
+import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
+import {
+  IScheduleContext,
+  ScheduleContext,
+} from "(presentation)/components/Schedule/context/ScheduleContext";
 
 const SlotStep = ({
   appointment,
-  setAppointment
-}:{
+  setAppointment,
+}: {
   appointment: any;
-  setAppointment: Dispatch<SetStateAction<{}>>
+  setAppointment: Dispatch<SetStateAction<{}>>;
 }) => {
-
   const { state: auth } = useContext<IAuthContext>(AuthContext);
   const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
 
   const { state, actions, dispatch } =
     useContext<IStepByStepAppointmentContext>(StepByStepAppointmentContext);
+  const { setStep, getSlots } = actions;
+
   const {
-    setStep,
-    getSlots
-  } = actions;
+    state: stateSchedule,
+    actions: actionsSchedule,
+    dispatch: dispatchSchedule,
+  } = useContext<IScheduleContext>(ScheduleContext);
 
   const {
     data: attentionWindows,
@@ -33,12 +52,48 @@ const SlotStep = ({
     error: errorWindows,
   } = state.slots;
 
+  const { data: predifinedReservationData } =
+    stateSchedule.predifinedReservationData;
+
   const [isNow, setIsNow] = useState(false);
   const [fromCalendar, setFromCalendar] = useState(false);
 
-  const [selectedDate, setSelectedDate] = useState(moment().format("YYYY-MM-DD"));
+  const [selectedDate, setSelectedDate] = useState(
+    moment().format("YYYY-MM-DD")
+  );
 
   const [windows, setWindows] = useState([]);
+
+  useMemo(() => {
+    if (predifinedReservationData["localityId"] !== undefined) {
+      setFromCalendar(true);
+      setSelectedDate(
+        moment(predifinedReservationData.date).format("YYYY-MM-DD")
+      );
+      setAppointment({
+        ...appointment,
+        attentionWindowId: predifinedReservationData.attentionWindowId,
+        date: {
+          id: predifinedReservationData["attentionWindowId"],
+          fechaInicio: predifinedReservationData["date"],
+          horaInicio: moment(predifinedReservationData["date"])
+            .utc()
+            .format("hh:mm a"),
+          horaFin: moment(predifinedReservationData["dateEnd"])
+            .utc()
+            .format("hh:mm a"),
+          tipo: predifinedReservationData["type"] === "WINDOW" ? 1 : 2,
+        },
+      });
+    } else {
+      setFromCalendar(false);
+      setSelectedDate(moment().format("YYYY-MM-DD"));
+      setAppointment({
+        ...appointment,
+        attentionWindowId: null,
+      });
+    }
+  }, [predifinedReservationData]);
 
   function formatHour(value: number) {
     let h: string = value.toString();
@@ -55,7 +110,6 @@ const SlotStep = ({
   }
 
   const SlotComponent = ({ data }: { data: any }) => {
-
     let isSelected = appointment["attentionWindowId"] === data["id"];
     let date = moment(data["fechaInicio"]).locale("es").format("dddd");
     let normalDate = moment(data["fechaInicio"]).format("DD-MM-YYYY");
@@ -64,15 +118,17 @@ const SlotStep = ({
       data["horaInicio"]
     );
     let { hours: endHour, minutes: endMinutes } = formatHour(data["horaFin"]);
+
     let isActualHour = data["tipo"] === 2;
+
     return (
       <div
-        onClick={() => { 
+        onClick={() => {
           setAppointment({
-            ...appointment, 
+            ...appointment,
             attentionWindowId: data["id"],
-            date: data
-          }) 
+            date: data,
+          });
         }}
         className={twMerge([
           "transition cursor-pointer w-full border rounded-md p-3 flex flex-col justify-between items-start h-fit gap-3 relative",
@@ -91,7 +147,7 @@ const SlotStep = ({
                 : "bg-transparent border-slate-300",
             ])}
           >
-            {isSelected && <FiCheck/>}
+            {isSelected && <FiCheck />}
           </span>
         </div>
         <div className="w-full flex justify-between items-center">
@@ -124,23 +180,24 @@ const SlotStep = ({
     );
   };
 
+  console.log(predifinedReservationData);
+
   useMemo(() => {
     if (loadedWindows) setWindows(attentionWindows as []);
   }, [loadingWindows]);
 
-  useMemo(()=>{
-    if(appointment["serviceId"] !== undefined && selectedDate !== ""){
-      console.log(appointment["serviceId"], selectedDate)
+  useMemo(() => {
+    if (appointment["serviceId"] !== undefined && selectedDate !== "") {
+      console.log(appointment["serviceId"], selectedDate);
       getSlots({
-        serviceId: appointment["serviceId"], 
-        date: selectedDate
-      })(dispatch)
+        serviceId: appointment["serviceId"],
+        date: selectedDate,
+      })(dispatch);
     }
-  },[appointment["serviceId"], selectedDate])
+  }, [appointment["serviceId"], selectedDate]);
 
   return (
     <div className={"w-full h-fit relative flex flex-col gap-2"}>
-
       <div className="w-full flex flex-col justify-center items-start gap-2">
         <p className="font-normal text-sm text-slate-600">Para cuando</p>
         <div className="w-full grid grid-cols-2 justify-between items-center gap-5">
@@ -151,10 +208,14 @@ const SlotStep = ({
                 ? "bg-green-500 text-white border-green-500"
                 : "bg-transparent text-secondary border-secondary",
             ])}
-            onClick={() => {
-              setAppointment({...appointment, isNow: false})
-              setIsNow(false);
-            }}
+            onClick={
+              fromCalendar
+                ? () => {}
+                : () => {
+                    setAppointment({ ...appointment, isNow: false });
+                    setIsNow(false);
+                  }
+            }
           >
             En otro momento
             {!isNow && <FiCheck />}
@@ -162,14 +223,19 @@ const SlotStep = ({
           <div
             className={twMerge([
               "cursor-pointer border py-2 font-light text-sm rounded-md flex justify-center items-center gap-2",
+              fromCalendar && "opacity-30 cursor-not-allowed",
               isNow
                 ? "bg-green-500 text-white border-green-500"
                 : "bg-transparent text-secondary border-secondary",
             ])}
-            onClick={() => {
-              setAppointment({...appointment, isNow: true});
-              setIsNow(true);
-            }}
+            onClick={
+              fromCalendar
+                ? () => {}
+                : () => {
+                    setAppointment({ ...appointment, isNow: true });
+                    setIsNow(true);
+                  }
+            }
           >
             Ahora mismo
             {isNow && <FiCheck />}
@@ -179,11 +245,11 @@ const SlotStep = ({
           <FormInput
             type={"date"}
             min={moment().format("YYYY-MM-DD")}
-            disabled={false}
+            disabled={fromCalendar}
             placeholder={""}
             value={selectedDate}
             className="form-control mt-3"
-            onChange={(e:any) => {
+            onChange={(e: any) => {
               setSelectedDate(e.target.value);
             }}
           />
@@ -194,40 +260,60 @@ const SlotStep = ({
           <p className="font-normal text-sm text-slate-600">
             Ventanas de atención
           </p>
-          <div className="w-full flex flex-col justify-start items-center gap-6">
-            {!loadedWindows && !loadingWindows && (
-              <div className="w-full h-fit flex flex-col justify-center items-center text-center gap-2">
-                <p className="text-base text-slate-900 font-medium">
-                  Nada por aquí
-                </p>
-                <p className="text-sm text-slate-500 font-light">
-                  Seleccina una servicio seguido de una fecha para conocer
-                  la disponibilidad
-                </p>
-              </div>
-            )}
-            {loadedWindows && windows.length === 0 && (
-              <div className="w-full h-fit flex flex-col justify-center items-center text-center gap-2">
-                <p className="text-base text-slate-900 font-medium">
-                  Sin ventanas de atención
-                </p>
-                <p className="text-sm text-slate-500 font-light">
-                  No hay ventanas de atención disponibles para esta fecha y
-                  este servicio
-                </p>
-              </div>
-            )}
-            {loadingWindows && <Loading />}
-            {(loadedWindows && windows.length > 0) && windows.map((elem: any) => 
-              <SlotComponent key={elem.id} data={elem} />
-            )}
-          </div>
+          {!fromCalendar ? (
+            <div className="w-full flex flex-col justify-start items-center gap-6">
+              {!loadedWindows && !loadingWindows && (
+                <div className="w-full h-fit flex flex-col justify-center items-center text-center gap-2">
+                  <p className="text-base text-slate-900 font-medium">
+                    Nada por aquí
+                  </p>
+                  <p className="text-sm text-slate-500 font-light">
+                    Seleccina una servicio seguido de una fecha para conocer la
+                    disponibilidad
+                  </p>
+                </div>
+              )}
+              {loadedWindows && windows.length === 0 && (
+                <div className="w-full h-fit flex flex-col justify-center items-center text-center gap-2">
+                  <p className="text-base text-slate-900 font-medium">
+                    Sin ventanas de atención
+                  </p>
+                  <p className="text-sm text-slate-500 font-light">
+                    No hay ventanas de atención disponibles para esta fecha y
+                    este servicio
+                  </p>
+                </div>
+              )}
+              {loadingWindows && <Loading />}
+              {loadedWindows &&
+                windows.length > 0 &&
+                windows.map((elem: any) => (
+                  <SlotComponent key={elem.id} data={elem} />
+                ))}
+            </div>
+          ) : (
+            <SlotComponent
+              data={{
+                id: predifinedReservationData["attentionWindowId"],
+                fechaInicio: predifinedReservationData["date"],
+                horaInicio: moment(predifinedReservationData["date"])
+                  .utc()
+                  .format("hh:mm a"),
+                horaFin: moment(predifinedReservationData["dateEnd"])
+                  .utc()
+                  .format("hh:mm a"),
+                tipo: predifinedReservationData["type"] === "WINDOW" ? 1 : 2,
+              }}
+            />
+          )}
         </div>
       )}
       <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white">
         <Button
           disabled={false}
-          onClick={() => { setStep(2)(dispatch) }}
+          onClick={() => {
+            setStep(2)(dispatch);
+          }}
           variant="primary"
           type="button"
           className="w-full"
@@ -235,14 +321,16 @@ const SlotStep = ({
           Continuar
         </Button>
         <p
-          onClick={() => { setStep(0)(dispatch) }}
+          onClick={() => {
+            setStep(0)(dispatch);
+          }}
           className="cursor-pointer font-normal text-sm text-primary text-center"
         >
           Regresar
         </p>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default SlotStep
+export default SlotStep;

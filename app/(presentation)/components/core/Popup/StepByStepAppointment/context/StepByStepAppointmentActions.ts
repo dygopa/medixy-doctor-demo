@@ -8,6 +8,7 @@ export interface IStepByStepAppointmentActions {
   getSlots: Function;
   getPatients: Function;
   createAppointment: Function;
+  createAppointmentInitialState: Function;
 }
 
 const setStep = (step: number) => async (dispatch: Dispatch<any>) => 
@@ -80,6 +81,16 @@ const createAppointment = (obj: any, now?: boolean) => async (dispatch: Dispatch
   }
 }
 
+const createAppointmentInitialState = () => async (dispatch: Dispatch<any>) => {
+  try {
+    console.log("aca")
+    dispatch({ type: "CREATE_APPOINTMENT_INITIAL_STATE" });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "CREATE_APPOINTMENT_INITIAL_STATE_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IStepByStepAppointmentActions = {
   setStep,
   getLocalities,
@@ -87,4 +98,5 @@ export const actions: IStepByStepAppointmentActions = {
   getSlots,
   getPatients,
   createAppointment,
+  createAppointmentInitialState,
 }
