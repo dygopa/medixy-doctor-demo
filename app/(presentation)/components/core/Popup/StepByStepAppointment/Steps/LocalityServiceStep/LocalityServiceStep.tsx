@@ -43,14 +43,18 @@ const LocalityServiceStep = ({
   } = useContext<IScheduleContext>(ScheduleContext);
 
   const { changeStatusPopup } = actionsSchedule;
+  const { data: statusPopup } = stateSchedule.statusPopup;
 
   const { data: status } = stateSchedule.statusPopup;
   const { data: locality } = stateSchedule.activeLocality;
   const { data: service } = stateSchedule.activeService;
+  const { data: predifinedReservationData } =
+    stateSchedule.predifinedReservationData;
 
   const { state, actions, dispatch } =
     useContext<IStepByStepAppointmentContext>(StepByStepAppointmentContext);
-  const { setStep, getLocalities, getServices } = actions;
+  const { setStep, getLocalities, getServices, createAppointmentInitialState } =
+    actions;
 
   const {
     data: localities,
@@ -65,6 +69,7 @@ const LocalityServiceStep = ({
 
   const [listOfLocalities, setListOfLocalities] = useState([]);
   const [listOfServices, setListOfServices] = useState([]);
+  const [fromCalendar, setFromCalendar] = useState(false);
 
   const [selectedLocality, setSelectedLocality] = useState({
     id: 0,
@@ -179,14 +184,36 @@ const LocalityServiceStep = ({
   }, [loadedUser]);
 
   useMemo(() => {
-    console.log(service);
-    if (service?.id)
-      setSelectedService({
-        id: service.id,
-        title: service.title,
-        description: service.description,
-      });
-  }, [service]);
+    createAppointmentInitialState()(dispatch);
+    setSelectedLocality({
+      id: locality.id,
+      title: locality.title,
+      description: locality.description,
+    });
+    setSelectedService({
+      id: service.id,
+      title: service.title,
+      description: service.description,
+    });
+    setAppointment({
+      localityId: locality.id,
+      locality: locality,
+      serviceId: service.id,
+      service: service,
+    });
+    getServices({
+      userId: user.userId,
+      localityId: locality["id"],
+    })(dispatch);
+  }, [statusPopup]);
+
+  useMemo(() => {
+    if (predifinedReservationData["localityId"] !== undefined) {
+      setFromCalendar(true);
+    } else {
+      setFromCalendar(false);
+    }
+  }, [predifinedReservationData]);
 
   return (
     <div className="w-full h-fit flex flex-col gap-5">
@@ -203,13 +230,22 @@ const LocalityServiceStep = ({
               localityId: value["id"],
             })(dispatch);
             setSelectedLocality(value);
+            setSelectedService({
+              id: 0,
+              title: "",
+              description: "",
+            });
             setAppointment({
               ...appointment,
               localityId: value["id"],
               locality: value,
+              serviceId: 0,
+              service: null,
             });
+            setListOfServices([]);
           }}
           selectedItem={selectedLocality}
+          disabled={fromCalendar}
           list={listOfLocalities}
         />
       </div>
@@ -234,7 +270,11 @@ const LocalityServiceStep = ({
       </div>
       <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white">
         <Button
-          disabled={!appointment["localityId"] || !appointment["serviceId"]}
+          disabled={
+            !appointment["localityId"] ||
+            !appointment["serviceId"] ||
+            appointment["serviceId"] === "ALL"
+          }
           onClick={() => {
             setStep(1)(dispatch);
           }}

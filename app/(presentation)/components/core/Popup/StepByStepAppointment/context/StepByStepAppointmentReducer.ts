@@ -165,7 +165,7 @@ export const StepByStepAppointmentReducer = (state: any, action: any) => {
                     error: null,
                 },
             };
-        case 'CREATE_APPOINTMENT_ERROR':
+        case 'CREATE_APPOINTMENT_INITIAL_STATE':
             return {
                 ...state,
                 appointmentCreation: {
@@ -173,7 +173,7 @@ export const StepByStepAppointmentReducer = (state: any, action: any) => {
                     data: null,
                     loading: false,
                     successful: false,
-                    error: action.payload.error,
+                    error: null,
                 },
             };
         default:
