@@ -28,6 +28,7 @@ interface SpecialSelectProps {
   emptySelectedValue?: any;
   list: SearchValue[];
   placeholder?: string | any;
+  disabled?: boolean | undefined;
 }
 
 interface ValueOnListProps {
@@ -269,43 +270,45 @@ export function SpecialSelect({ ...props }: SpecialSelectProps) {
             : "Selecciona un valor de la lista"}
         </p>
       </div>
-      <motion.div
-        ref={wrapperRef}
-        variants={searchbox}
-        animate={active ? "active" : "disabled"}
-        className={twMerge([
-          "absolute top-full right-0 w-full block bg-white border rounded-md border-slate-100 shadow-md z-[20]",
-        ])}
-      >
-        <div className="max-h-[30vh] w-full relative overflow-hidden min-h-[10vh] h-fit overflow-y-auto">
-          {props.list.length === 0 ? (
-            <EmptyList />
-          ) : (
-            props.list.map((elem: SearchValue, i) => {
-              return (
-                <div
-                  key={i}
-                  onClick={() => {
-                    setActiveValue(elem);
-                    props.customClick(elem);
-                    setActive(false);
-                  }}
-                  className={twMerge([
-                    "transition relative w-full h-fit cursor-pointer justify-center items-start bg-white hover:bg-slate-200 p-2",
-                  ])}
-                >
-                  <p className="block whitespace-nowrap font-medium text-gray-950 text-[0.9rem] w-full overflow-hidden text-ellipsis">
-                    {elem.title}
-                  </p>
-                  <p className="block whitespace-nowrap font-light text-gray-500 text-[0.8rem] w-full max-w-[90%] overflow-hidden text-ellipsis">
-                    {elem.description}
-                  </p>
-                </div>
-              );
-            })
-          )}
-        </div>
-      </motion.div>
+      {!props.disabled && (
+        <motion.div
+          ref={wrapperRef}
+          variants={searchbox}
+          animate={active ? "active" : "disabled"}
+          className={twMerge([
+            "absolute top-full right-0 w-full block bg-white border rounded-md border-slate-100 shadow-md z-[20]",
+          ])}
+        >
+          <div className="max-h-[30vh] w-full relative overflow-hidden min-h-[10vh] h-fit overflow-y-auto">
+            {props.list.length === 0 ? (
+              <EmptyList />
+            ) : (
+              props.list.map((elem: SearchValue, i) => {
+                return (
+                  <div
+                    key={i}
+                    onClick={() => {
+                      setActiveValue(elem);
+                      props.customClick(elem);
+                      setActive(false);
+                    }}
+                    className={twMerge([
+                      "transition relative w-full h-fit cursor-pointer justify-center items-start bg-white hover:bg-slate-200 p-2",
+                    ])}
+                  >
+                    <p className="block whitespace-nowrap font-medium text-gray-950 text-[0.9rem] w-full overflow-hidden text-ellipsis">
+                      {elem.title}
+                    </p>
+                    <p className="block whitespace-nowrap font-light text-gray-500 text-[0.8rem] w-full max-w-[90%] overflow-hidden text-ellipsis">
+                      {elem.description}
+                    </p>
+                  </div>
+                );
+              })
+            )}
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 }

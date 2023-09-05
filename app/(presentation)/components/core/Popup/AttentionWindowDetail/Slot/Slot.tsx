@@ -21,9 +21,7 @@ const SlotComponent = ({
       deleteAppointment,
       getSlotsByAttentionWindow
     } = actions;
-    
-    const { data: deleteData, loading: deleteLoading, successful: successfulDelete, error: errorDelete } = state.deleteAppointment;
-    
+        
     const [blocked, setBlocked] = useState(data["estado"] === 9)
 
     const searchParams = useSearchParams()
@@ -40,10 +38,6 @@ const SlotComponent = ({
       blockSlotInAttentionWindow(data["id"])(dispatch)
       setBlocked(true)
     }
-
-    useMemo(()=>{
-      if(successfulDelete) getSlotsByAttentionWindow(searchParams.get("attentionWindowId"))(dispatch)
-    },[successfulDelete])
 
     return (
       <div className="w-full border border-slate-200 bg-white relative flex flex-col p-3 rounded">

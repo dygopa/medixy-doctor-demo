@@ -53,6 +53,7 @@ function CreateAgenda({
     state.activeService;
 
   const { data: locality } = state.activeLocality;
+  const { data: statusPopup } = state.statusPopup;
 
   const params = useSearchParams();
 
@@ -265,19 +266,19 @@ function CreateAgenda({
     setLoadedLists(true);
   }
 
-  function getDataFromPredifined() {
-    let findedLocality = listOfLocalities.find(
-      (elem: ILocality) => elem.id === parseInt(params.get("locality")!)
-    );
-    if (findedLocality !== undefined) {
-      setSelectedLocality({
-        id: findedLocality!["id"],
-        title: findedLocality!["title"],
-        description: findedLocality!["address"],
-        type: "LOCALITY",
-      });
-    }
-  }
+  //function getDataFromPredifined() {
+  //  let findedLocality = listOfLocalities.find(
+  //    (elem: ILocality) => elem.id === parseInt(params.get("locality")!)
+  //  );
+  //  if (findedLocality !== undefined) {
+  //    setSelectedLocality({
+  //      id: findedLocality!["id"],
+  //      title: findedLocality!["title"],
+  //      description: findedLocality!["address"],
+  //      type: "LOCALITY",
+  //    });
+  //  }
+  //}
 
   function blockDaysByHours(attentionWindowsList: any) {
     const daysBlocked: string[] = [];
@@ -411,13 +412,14 @@ function CreateAgenda({
   }, [selectedLocality]);
 
   useEffect(() => {
-    if (locality)
+    if (locality){
       setSelectedLocality({
         id: locality.id,
         title: locality.title,
         description: locality.description,
         type: "LOCALITY",
       });
+    }
   }, [locality]);
 
   useMemo(() => {
@@ -513,6 +515,32 @@ function CreateAgenda({
     }
   }, [successful]);
 
+  useMemo(()=>{
+    if(!statusPopup){
+      setSelectedLocality({
+        id: locality.id,
+        title: locality.title,
+        description: locality.description,
+        type: "LOCALITY",
+      })
+      setFormData({
+        typeEnd: 1,
+        daysRepeated: daysRepeatedList,
+        type: 2,
+        serviceId: 0,
+        localityId: locality["id"],
+        availableSpots: 0,
+        startDate: moment().format("YYYY-MM-DD"),
+        until: moment().add(1, "month").format("YYYY-MM-DD"),
+        spanTime: 0,
+        fromHour: "600",
+        toHour: "",
+      });
+      setDaysRepeatedList([]);
+      setListOfHours([]);
+    }
+  },[statusPopup])
+
   useMemo(() => {
     if (formData.spanTime > 0 && formData.fromHour !== ""){
       formatHoursFromSpan();
@@ -537,15 +565,15 @@ function CreateAgenda({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedLocality]); */
 
-  useMemo(() => {
-    if (params.get("locality") !== null && loadedLocalities) {
-      setFormData({
-        ...formData,
-        localityId: parseInt(params.get("locality")!),
-      });
-      getDataFromPredifined();
-    }
-  }, [loadedLocalities, params]);
+  //useMemo(() => {
+  //  if (params.get("locality") !== null && loadedLocalities) {
+  //    setFormData({
+  //      ...formData,
+  //      localityId: parseInt(params.get("locality")!),
+  //    });
+  //    getDataFromPredifined();
+  //  }
+  //}, [loadedLocalities, params]);
 
   return (
     <div
@@ -808,21 +836,6 @@ function CreateAgenda({
         <p
           onClick={() => {
             cancelFuntion();
-            setFormData({
-              typeEnd: 1,
-              daysRepeated: daysRepeatedList,
-              type: 2,
-              serviceId: 0,
-              localityId: 0,
-              availableSpots: 0,
-              startDate: moment().format("YYYY-MM-DD"),
-              until: moment().add(1, "month").format("YYYY-MM-DD"),
-              spanTime: 0,
-              fromHour: "",
-              toHour: "",
-            });
-            setDaysRepeatedList([]);
-            setListOfHours([]);
           }}
           className="cursor-pointer font-normal text-sm text-primary text-center"
         >
