@@ -156,15 +156,22 @@ export default class ScheduleUseCase {
 
         const responsePatient = await this._useCaseSubject.createSubject(patient, obj["doctorId"])
         if (responsePatient instanceof ScheduleFailure) throw responsePatient;
-        
-        obj["pacienteId"] = responsePatient.subjectId
 
+        const response = await this._repository.createAppointment({
+          ...obj,
+          pacienteId: responsePatient.subjectId
+        }, now);
+        if (response instanceof ScheduleFailure) throw response;
+
+        return response;
+      }else{
+
+        const response = await this._repository.createAppointment(obj, now);
+        if (response instanceof ScheduleFailure) throw response;
+
+        return response;
       }
       
-      const response = await this._repository.createAppointment(obj, now);
-      if (response instanceof ScheduleFailure) throw response;
-      
-      return response;
     } catch (error) {
       throw error;
     }
