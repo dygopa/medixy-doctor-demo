@@ -34,6 +34,8 @@ import {
   TwitterIcon,
   WhatsappIcon,
 } from "react-share";
+import NotificationPopup from "../NotificationPopup";
+import NotificationPopupProvider from "../NotificationPopup/context/NotificationPopupContext";
 
 interface INavigation {
   title: string;
@@ -310,7 +312,10 @@ function Main({
           </Link>
         ))}
       </Breadcrumb>
-      <div className="lg:w-fit md:w-fit w-full h-full flex justify-end items-center gap-1 relative">
+      <div className="lg:w-fit md:w-fit w-full h-full flex justify-end items-center gap-2 relative">
+        {/* <NotificationPopupProvider>
+          <NotificationPopup/>
+        </NotificationPopupProvider> */}
         <button
           onClick={() => {
             setActiveShortcuts(!activeShortcuts);

@@ -223,8 +223,8 @@ const Side = () => {
     if (localitySuccessful) {
       getAppointments(
         user.userId,
-        moment(activeDay["start"]).format("YYYY-MM-DD"),
-        moment(activeDay["end"]).format("YYYY-MM-DD"),
+        moment(actualDay).format("YYYY-MM-DD"),
+        moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
         locality["id"],
         true
       )(dispatch);
@@ -235,16 +235,16 @@ const Side = () => {
     if(service.id === "ALL") {
       getAppointments(
         user.userId,
-        moment(activeDay["start"]).format("YYYY-MM-DD"),
-        moment(activeDay["end"]).format("YYYY-MM-DD"),
+        moment(actualDay).format("YYYY-MM-DD"),
+        moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
         locality["id"],
         true
       )(dispatch);
     } else {
       getAppointments(
         user.userId,
-        moment(activeDay["start"]).format("YYYY-MM-DD"),
-        moment(activeDay["end"]).format("YYYY-MM-DD"),
+        moment(actualDay).format("YYYY-MM-DD"),
+        moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
         locality["id"],
         true,
         parseInt(service.id)

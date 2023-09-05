@@ -47,7 +47,7 @@ export default function Table({ user }: { user: IUser }) {
             </p>
           </div>
         </div>
-        <div className="w-full grid grid-cols-2 gap-1">
+        <div className="w-full grid grid-cols-2 gap-3">
           <div className="flex flex-col justify-start items-start gap-2 text-left">
             <p className="font-light text-gray-500 text-sm">Estado</p>
             <p className="font-normal text-gray-950 text-base w-full truncate">

@@ -16,7 +16,9 @@ import {
   IScheduleContext,
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
-import SpecialSearch, { SpecialSelect } from "(presentation)/components/core/SpecialSearch/SpecialSearch";
+import SpecialSearch, {
+  SpecialSelect,
+} from "(presentation)/components/core/SpecialSearch/SpecialSearch";
 import { IService } from "domain/core/entities/serviceEntity";
 import { ILocality } from "domain/core/entities/localityEntity";
 import AlertComponent from "../../BaseComponents/Alert";
@@ -53,6 +55,7 @@ function CreateAgenda({
     state.activeService;
 
   const { data: locality } = state.activeLocality;
+  const { data: statusPopup } = state.statusPopup;
 
   const params = useSearchParams();
 
@@ -224,19 +227,21 @@ function CreateAgenda({
     } while (start.isBefore(endOfDay));
 
     setListOfStartHours(list);
-    setGeneratedHours(true)
+    setGeneratedHours(true);
   }
 
   function formatHoursFromSpan() {
     let list = [];
-    
-    let fromMinutes = listOfStartHours.find((elem: any) => elem["value"] === parseInt(formData.fromHour))
-    let minutes = fromMinutes["label"].split(":")[1].split(" ")[0]
+
+    let fromMinutes = listOfStartHours.find(
+      (elem: any) => elem["value"] === parseInt(formData.fromHour)
+    );
+    let minutes = fromMinutes["label"].split(":")[1].split(" ")[0];
 
     let endOfDay = moment().utc().add(1, "day").startOf("day");
     let start = moment().utc().startOf("day");
 
-    start = start.add((formData.spanTime + parseInt(minutes)), "minutes");
+    start = start.add(formData.spanTime + parseInt(minutes), "minutes");
     list.push({
       value: parseInt(start.format("HH:mm").split(":").join("")),
       label: start.format("hh:mm a"),
@@ -265,19 +270,19 @@ function CreateAgenda({
     setLoadedLists(true);
   }
 
-  function getDataFromPredifined() {
-    let findedLocality = listOfLocalities.find(
-      (elem: ILocality) => elem.id === parseInt(params.get("locality")!)
-    );
-    if (findedLocality !== undefined) {
-      setSelectedLocality({
-        id: findedLocality!["id"],
-        title: findedLocality!["title"],
-        description: findedLocality!["address"],
-        type: "LOCALITY",
-      });
-    }
-  }
+  //function getDataFromPredifined() {
+  //  let findedLocality = listOfLocalities.find(
+  //    (elem: ILocality) => elem.id === parseInt(params.get("locality")!)
+  //  );
+  //  if (findedLocality !== undefined) {
+  //    setSelectedLocality({
+  //      id: findedLocality!["id"],
+  //      title: findedLocality!["title"],
+  //      description: findedLocality!["address"],
+  //      type: "LOCALITY",
+  //    });
+  //  }
+  //}
 
   function blockDaysByHours(attentionWindowsList: any) {
     const daysBlocked: string[] = [];
@@ -411,13 +416,14 @@ function CreateAgenda({
   }, [selectedLocality]);
 
   useEffect(() => {
-    if (locality)
+    if (locality) {
       setSelectedLocality({
         id: locality.id,
         title: locality.title,
         description: locality.description,
         type: "LOCALITY",
       });
+    }
   }, [locality]);
 
   useMemo(() => {
@@ -514,7 +520,33 @@ function CreateAgenda({
   }, [successful]);
 
   useMemo(() => {
-    if (formData.spanTime > 0 && formData.fromHour !== ""){
+    if (!statusPopup) {
+      setSelectedLocality({
+        id: locality.id,
+        title: locality.title,
+        description: locality.description,
+        type: "LOCALITY",
+      });
+      setFormData({
+        typeEnd: 1,
+        daysRepeated: daysRepeatedList,
+        type: 2,
+        serviceId: 0,
+        localityId: locality["id"],
+        availableSpots: 0,
+        startDate: moment().format("YYYY-MM-DD"),
+        until: moment().add(1, "month").format("YYYY-MM-DD"),
+        spanTime: 0,
+        fromHour: "600",
+        toHour: "",
+      });
+      setDaysRepeatedList([]);
+      setListOfHours([]);
+    }
+  }, [statusPopup]);
+
+  useMemo(() => {
+    if (formData.spanTime > 0 && formData.fromHour !== "") {
       formatHoursFromSpan();
     }
   }, [formData.spanTime, formData.fromHour]);
@@ -537,15 +569,15 @@ function CreateAgenda({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedLocality]); */
 
-  useMemo(() => {
-    if (params.get("locality") !== null && loadedLocalities) {
-      setFormData({
-        ...formData,
-        localityId: parseInt(params.get("locality")!),
-      });
-      getDataFromPredifined();
-    }
-  }, [loadedLocalities, params]);
+  //useMemo(() => {
+  //  if (params.get("locality") !== null && loadedLocalities) {
+  //    setFormData({
+  //      ...formData,
+  //      localityId: parseInt(params.get("locality")!),
+  //    });
+  //    getDataFromPredifined();
+  //  }
+  //}, [loadedLocalities, params]);
 
   return (
     <div
@@ -704,6 +736,7 @@ function CreateAgenda({
               name="fromHour"
               className="form-control"
               onChange={(e) => {
+                setDaysRepeatedList([]);
                 onHandleHours(e.target.name, e.target.value);
               }}
             >
@@ -720,15 +753,16 @@ function CreateAgenda({
               name="toHour"
               className="form-control"
               onChange={(e) => {
+                setDaysRepeatedList([]);
                 onHandleHours(e.target.name, e.target.value);
               }}
             >
               <option value={0}>-</option>
               {listOfHours
-              .filter((elem:any)=>elem["value"] > formData.fromHour)
-              .map((elem: any) => (
-                <option value={elem["value"]}>{elem["label"]}</option>
-              ))}
+                .filter((elem: any) => elem["value"] > formData.fromHour)
+                .map((elem: any) => (
+                  <option value={elem["value"]}>{elem["label"]}</option>
+                ))}
             </FormSelect>
           </div>
         </div>
@@ -808,21 +842,6 @@ function CreateAgenda({
         <p
           onClick={() => {
             cancelFuntion();
-            setFormData({
-              typeEnd: 1,
-              daysRepeated: daysRepeatedList,
-              type: 2,
-              serviceId: 0,
-              localityId: 0,
-              availableSpots: 0,
-              startDate: moment().format("YYYY-MM-DD"),
-              until: moment().add(1, "month").format("YYYY-MM-DD"),
-              spanTime: 0,
-              fromHour: "",
-              toHour: "",
-            });
-            setDaysRepeatedList([]);
-            setListOfHours([]);
           }}
           className="cursor-pointer font-normal text-sm text-primary text-center"
         >

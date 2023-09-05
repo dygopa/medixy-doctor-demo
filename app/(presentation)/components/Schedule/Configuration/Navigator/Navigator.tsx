@@ -166,7 +166,7 @@ export default function Navigator() {
         description: localityFinded["description"]
       })
     }
-  }, [params, localities]);
+  }, [params.get("locality"), localities]);
 
   useMemo(() => {
     if (baseAttentionWindowsSuccessful) handleFormatListAttentionWindows();

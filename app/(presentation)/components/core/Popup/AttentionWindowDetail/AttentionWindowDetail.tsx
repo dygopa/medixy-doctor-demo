@@ -22,7 +22,7 @@ import {
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
 import { ILocality } from "domain/core/entities/localityEntity";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import SlotComponent from "./Slot/Slot";
 import Reschedule from "./Reschedule/Reschedule";
 
@@ -48,8 +48,20 @@ function AttentionWindowDetail({
     successful,
     error
   } = state.slotsByAttentionWindow;
+  const { 
+    data: deleteData, 
+    loading: deleteLoading, 
+    successful: successfulDelete, 
+    error: errorDelete 
+  } = state.deleteAppointment;
+  const { 
+    loading: rescheduleLoading, 
+    successful: rescheduleSuccessful,
+  } = state.rescheduleAppointment;
+  const { data: statusPopup } = state.statusPopup;
 
   const searchParams = useSearchParams()
+  const router = useRouter()
 
   const [showRescheduleModal, setShowRescheduleModal] = useState(false);
   const [appointment, setAppointment] = useState({});
@@ -60,6 +72,28 @@ function AttentionWindowDetail({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
+
+  useMemo(() => {
+    if (rescheduleSuccessful) {
+      getSlotsByAttentionWindow(searchParams.get("attentionWindowId"))(dispatch)
+      setShowRescheduleModal(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [rescheduleSuccessful]);
+
+  useMemo(()=>{
+    if(successfulDelete && searchParams.get("attentionWindowId")){
+      getSlotsByAttentionWindow(searchParams.get("attentionWindowId"))(dispatch)
+    }
+  },[successfulDelete])
+
+  useMemo(()=>{
+    if(!statusPopup){
+      router.replace(`/schedule/configuration`)
+      setShowRescheduleModal(false)
+      setAppointment({})
+    }
+  },[statusPopup])
 
   return (
     <div

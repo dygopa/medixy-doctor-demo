@@ -30,7 +30,7 @@ export default function Reschedule({
             className="cursor-pointer text-lg text-slate-900">
             <FiChevronLeft />
           </span>
-          <p className="font-bold text-2xl text-slate-900">Reagendar cita {step}</p>
+          <p className="font-bold text-2xl text-slate-900">Reagendar cita</p>
         </div>
         <p className="font-light text-sm text-slate-500">Selecciona la fecha nueva y hora para la cita actual.</p>
       </div>

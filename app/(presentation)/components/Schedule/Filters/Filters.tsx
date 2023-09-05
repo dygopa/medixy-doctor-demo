@@ -102,7 +102,7 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
   useMemo(() => {
     if (selectedLocality.id > 0) {
       activeLocality(selectedLocality)(dispatch);
-      getServicesByLocality(user.userId, locality.id)(dispatch);
+      getServicesByLocality(user.userId, selectedLocality.id)(dispatch);
       getCalendarEvents(user.userId, selectedLocality.id, moment(activeDay).format('YYYY-MM-DD'), moment(activeDay, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -141,7 +141,7 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
       handleFormatListServices()
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedServices, services]);
+  }, [services]);
 
   useMemo(() => {
     if (loadedUser) {
