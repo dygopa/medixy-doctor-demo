@@ -90,6 +90,8 @@ function AttentionWindowDetail({
   useMemo(()=>{
     if(!statusPopup){
       router.replace(`/schedule/configuration`)
+      setShowRescheduleModal(false)
+      setAppointment({})
     }
   },[statusPopup])
 
