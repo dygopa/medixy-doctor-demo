@@ -180,7 +180,7 @@ export default function CalendarIndex() {
 
   useMemo(()=>{
     if(searchParams.get("attentionWindowId")) changeStatusPopup(true)(dispatch); changeTypePopup(5)(dispatch);
-  },[searchParams.get("attentionWindowId")])
+  },[searchParams])
 
   useMemo(()=>{
     if(searchParams.get("openPopup") && (localities && ([...(localities as any[])].length > 0))){
@@ -233,6 +233,7 @@ export default function CalendarIndex() {
                   events={windows}
                   initialEvent={""}
                   handleClick={(param: EventClickArg) => {
+                    //changeStatusPopup(true)(dispatch); changeTypePopup(5)(dispatch);
                     router.replace(`/schedule/configuration?attentionWindowId=${param.event._def.extendedProps["attentionWindowId"]}`)
                   }}
                 />

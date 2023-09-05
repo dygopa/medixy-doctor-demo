@@ -53,14 +53,6 @@ export default function Summary({
     .toString();
 
   useMemo(() => {
-    if (successful === true){
-      console.log(successful)
-      //setStep(2);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [successful]);
-
-  useMemo(() => {
     if (error) {
       setHasError(true);
 
@@ -121,7 +113,7 @@ export default function Summary({
           type="button"
           className="w-full"
         >
-          Reagendar
+          {loading ? "Reagendando..." : "Reagendar"}
         </Button>
         <p
           onClick={() => {
