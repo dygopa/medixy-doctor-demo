@@ -171,7 +171,7 @@ export default function Formulary() {
       setErrors((previousState: any) => {
         return {
           ...previousState,
-          phone: "El teléfono del paciente no es correcto",
+          phone_number: "El teléfono del paciente no es correcto",
         };
       });
       return true;
