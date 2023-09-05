@@ -67,7 +67,7 @@ const SummaryStep = ({
         getAppointments(
           user.userId,
           moment().format("YYYY-MM-DD"),
-          moment().add(5, "day").format("YYYY-MM-DD"),
+          moment().add(1, "day").format("YYYY-MM-DD"),
           appointment["localityId"]
         )(dispatchSchedule);
       }
