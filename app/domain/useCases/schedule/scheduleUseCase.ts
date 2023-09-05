@@ -156,8 +156,6 @@ export default class ScheduleUseCase {
 
         const responsePatient = await this._useCaseSubject.createSubject(patient, obj["doctorId"])
         if (responsePatient instanceof ScheduleFailure) throw responsePatient;
-        
-        obj["pacienteId"] = responsePatient.subjectId
 
         const response = await this._repository.createAppointment({
           ...obj,
