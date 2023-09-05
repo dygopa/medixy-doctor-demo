@@ -215,6 +215,8 @@ const LocalityServiceStep = ({
     }
   }, [predifinedReservationData]);
 
+  console.log(appointment)
+
   return (
     <div className="w-full h-fit flex flex-col gap-5">
       <div className="w-full flex flex-col justify-center items-start gap-2">
@@ -273,7 +275,7 @@ const LocalityServiceStep = ({
           disabled={
             !appointment["localityId"] ||
             !appointment["serviceId"] ||
-            appointment["serviceId"] === "ALL"
+            appointment["service"]["id"] === "ALL"
           }
           onClick={() => {
             setStep(1)(dispatch);

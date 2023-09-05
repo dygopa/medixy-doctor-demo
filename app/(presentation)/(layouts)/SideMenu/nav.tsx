@@ -18,11 +18,11 @@ export default function Navigation() {
     useState<Array<FormattedMenu | "divider">>(endNavigationOptions);
 
   return (
-    <div className="flex flex-col justify-between h-[95vh]">
+    <div className="flex flex-col justify-between h-[93vh]">
       <div>
         <Link
           href={DashboardRoutesEnum.Dashboard}
-          className="sidebar-logo flex justify-center pt-2 pb-2"
+          className="sidebar-logo flex justify-center"
           title="Página de inicio de Prosit"
         >
           <Image
@@ -33,7 +33,7 @@ export default function Navigation() {
             priority
           />
         </Link>
-        <Divider type="div" className="my-6"></Divider>
+        <Divider type="div" className="my-4"></Divider>
         <ul>
           {/* BEGIN: First Child */}
           {formattedMenu.map((menu, menuKey) =>
