@@ -51,16 +51,22 @@ const LocalityServiceStep = ({
   const { data: predifinedReservationData } =
     stateSchedule.predifinedReservationData;
 
+  const {
+    data: localities,
+    successful: loadedLocalities,
+    loading: loadingLocalities,
+  } = stateSchedule.getLocalities;
+  const {
+    data: servicesFromCalendar,
+    successful: loadedServicesFromCalendar,
+    loading: loadingServicesFromCalendar,
+  } = stateSchedule.getServicesByLocality;
+
   const { state, actions, dispatch } =
     useContext<IStepByStepAppointmentContext>(StepByStepAppointmentContext);
   const { setStep, getLocalities, getServices, createAppointmentInitialState } =
     actions;
 
-  const {
-    data: localities,
-    successful: loadedLocalities,
-    loading: loadingLocalities,
-  } = state.localities;
   const {
     data: services,
     successful: loadedServices,
@@ -86,10 +92,6 @@ const LocalityServiceStep = ({
   const [loadedDataFromAppointment, setLoadedDataFromAppointment] =
     useState(false);
 
-  useMemo(() => {
-    console.log(appointment);
-  }, [loadedAppointment]);
-
   useEffect(() => {
     if (!loadedDataFromAppointment) {
       if (appointment["locality"]) {
@@ -106,35 +108,50 @@ const LocalityServiceStep = ({
     }
   }, [loadedDataFromAppointment]);
 
-  useMemo(() => {
-    if (loadedServices) {
-      let list_services = services!.map((elem: any) => ({
+  function formatServicesList(){
+    let list_services = []
+
+    if(!loadedServices && loadedServicesFromCalendar){
+      list_services = servicesFromCalendar!.map((elem: any) => ({
         id: elem.id,
         title: elem.name,
         description: elem["service_category"]["name"],
       }));
-
-      if (list_services.length > 0 && !service["id"]) {
-        setSelectedService(list_services[0]);
-        setAppointment({
-          ...appointment,
-          serviceId: list_services[0]["id"],
-          service: list_services[0],
-        });
-      }
-      if (list_services.length > 0 && service["id"]) {
-        setSelectedService(service);
-        setAppointment({
-          ...appointment,
-          serviceId: locality["id"],
-          service: service,
-        });
-      }
-
-      setListOfServices(list_services as []);
     }
+
+    if (loadedServices && loadedServicesFromCalendar) {
+      list_services = services!.map((elem: any) => ({
+        id: elem.id,
+        title: elem.name,
+        description: elem["service_category"]["name"],
+      }));
+    }
+
+    if (list_services.length > 0 && !service["id"]) {
+      setSelectedService(list_services[0]);
+      setAppointment({
+        ...appointment,
+        serviceId: list_services[0]["id"],
+        service: list_services[0],
+      });
+    }
+
+    if (list_services.length > 0 && service["id"]) {
+      setSelectedService(service);
+      setAppointment({
+        ...appointment,
+        serviceId: locality["id"],
+        service: service,
+      });
+    }
+
+    setListOfServices(list_services as []);
+  }
+
+  useMemo(() => {
+    formatServicesList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadingServices]);
+  }, [loadingServices, loadingServicesFromCalendar]);
 
   useMemo(() => {
     if (loadedLocalities) {
@@ -147,10 +164,10 @@ const LocalityServiceStep = ({
       }));
 
       if (list_localities.length > 0 && !locality["id"]) {
-        getServices({
-          userId: user.userId,
-          localityId: list_localities[0]["id"],
-        })(dispatch);
+        //getServices({
+        //  userId: user.userId,
+        //  localityId: list_localities[0]["id"],
+        //})(dispatch);
         setSelectedLocality(list_localities[0]);
         setAppointment({
           ...appointment,
@@ -159,10 +176,10 @@ const LocalityServiceStep = ({
         });
       }
       if (list_localities.length > 0 && locality["id"]) {
-        getServices({
-          userId: user.userId,
-          localityId: locality["id"],
-        })(dispatch);
+        //getServices({
+        //  userId: user.userId,
+        //  localityId: locality["id"],
+        //})(dispatch);
         setSelectedLocality(locality);
         setAppointment({
           ...appointment,
@@ -175,13 +192,6 @@ const LocalityServiceStep = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadingLocalities]);
-
-  useMemo(() => {
-    if (loadedUser) {
-      getLocalities(user.userId)(dispatch);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedUser]);
 
   useMemo(() => {
     createAppointmentInitialState()(dispatch);
