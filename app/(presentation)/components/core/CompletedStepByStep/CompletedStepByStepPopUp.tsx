@@ -4,6 +4,7 @@ import { IUser } from "domain/core/entities/userEntity";
 import Lucide from "../BaseComponents/Lucide";
 import Button from "../BaseComponents/Button";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 interface IAlertProps {
   user: IUser;
@@ -29,11 +30,7 @@ const CompletedStepByStepPopup = ({
     >
       <div className="w-[80%] md:w-[60%] lg:w-[60%] h-auto overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
         <div className="w-full px-4">
-          <div className="mb-14 w-full flex justify-between items-center">
-            <p className="font-bold text-2xl text-slate-900">
-              ¡Enhorabuena {user?.sex === 1 ? "Dra." : "Dr."} {user?.names}{" "}
-              {user?.firstName} {user?.lastName}!
-            </p>
+          <div className="w-full flex justify-end items-center">
             <Lucide
               icon="X"
               size={25}
@@ -48,37 +45,37 @@ const CompletedStepByStepPopup = ({
             />
           </div>
 
-          <div className="flex justify-center text-center mb-6">
-            <Lucide icon="CheckCircle" color="#00bb2b" size={60} />
+          <div className="text-center mb-3">
+            <h6 className="text-lg" style={{ color: "#000066" }}>
+              ¡Enhorabuena, {user?.sex === 1 ? "Doctora" : "Doctor"}!
+            </h6>
           </div>
 
-          <div className=" text-center mb-14">
-            <p className="font-normal text-[18px] text-slate-900">
-              Has creado tu consultorio digital con éxito.
+          <div className="text-center mb-6">
+            <h3 className="text-[30px] font-bold" style={{ color: "#000066" }}>
+              Has creado tu Consultorio Digital
+            </h3>
+          </div>
+
+          <div className="text-center my-5">
+            <p className="text-[16px] text-gray-400">
+              Estamos muy contentos de que hayas elegido nuestra plataforma <br/>
+              para ayudarte a brindar la mejor atención médica a tus pacientes.
             </p>
           </div>
 
-          <div
-            className={twMerge([
-              "items-center text-center justify-center mb-4",
-              "w-full",
-            ])}
-          >
-            <div className="lg:mb-0 mb-4">
-              <Button
-                variant="primary"
-                className="w-auto"
-                onClick={() => {
-                  setIsVisible(false);
+          <div className="flex justify-center text-center my-10">
+            <img
+              className="object-cover"
+              src="./images/CompletedOnboarding.png"
+              alt=""
+            />
+          </div>
 
-                  if (redirectUrl && redirectUrl.length > 0) {
-                    router.push(redirectUrl);
-                  }
-                }}
-              >
-                Entendido, gracias
-              </Button>
-            </div>
+          <div className=" text-center mb-14">
+            <Link href={process.env.NEXT_PUBLIC_MARKETPLACE_PROJECT_DOMAIN + `/discover/specialists/${user.userId}`} className="font-normal text-lg text-primary underline">
+              Has creado tu consultorio digital con éxito.
+            </Link>
           </div>
         </div>
       </div>
