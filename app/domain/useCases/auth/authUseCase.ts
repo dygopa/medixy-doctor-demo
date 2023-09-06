@@ -13,8 +13,10 @@ export default class AuthUseCase {
       });
 
       if (response instanceof AuthFailure) throw response;
+            
+      await this._repository.getUserFromAPI({accessToken: ""});
 
-      return response;
+      return "SUCCESS";
     } catch (error) {
       throw error;
     }
@@ -23,9 +25,11 @@ export default class AuthUseCase {
   async getUserAuthenticated(): Promise<IUser> {
     try {
       const response = await this._repository.getUserAuthenticated();
+      const responseFromAPI = await this._repository.getUserFromAPI({accessToken: ""});
 
       if (response instanceof AuthFailure) throw response;
-
+      if (responseFromAPI instanceof AuthFailure) throw responseFromAPI;
+      
       return response;
     } catch (error) {
       throw error;

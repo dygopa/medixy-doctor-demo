@@ -75,6 +75,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
   }
 
   const handleClickRef = () => avatarRef.current && avatarRef.current.click();
+  
   useEffect(() => {
     if (successful) getUserAuthenticated()(dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
