@@ -320,7 +320,7 @@ export class ScheduleRepository implements IScheduleRepository {
 
             if(resVentanasAtencion.data?.length === 0) return []
 
-            let queryCitas = supabase.from("Citas").select(`*`)
+            let queryCitas = supabase.from("Citas").select(`*`).is("sujetoId", null)
             .in("ventanaAtencionId", resVentanasAtencion.data!.map((elem:any)=> elem["id"] ))
 
             let resCitas = await queryCitas
