@@ -11,8 +11,10 @@ export default class AuthUseCase {
       const response = await this._repository.registerUser(obj);
 
       if (response instanceof RegisterFailure) throw response;
-
-      return response;
+            
+      await this._authRepository.getUserFromAPI({accessToken: ""});
+      
+      return "SUCCESS";
     } catch (error) {
       throw error;
     }

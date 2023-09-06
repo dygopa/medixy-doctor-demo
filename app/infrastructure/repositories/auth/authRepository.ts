@@ -13,7 +13,8 @@ export default interface IAuthRepository {
     email: string;
     password: string;
   }): Promise<string | AuthFailure>;
-  getUserAuthenticated(obj: { accessToken: string }): Promise<IUser | AuthFailure>;
+  getUserFromAPI(obj: { accessToken: string }): Promise<IUser | AuthFailure>;
+  getUserAuthenticated(): Promise<IUser | AuthFailure>;
   signOutUser(): Promise<boolean | AuthFailure>;
   changePassword(obj: {
     currentPassword: string;
@@ -70,11 +71,9 @@ export class AuthRepository implements IAuthRepository {
     }
   }
 
-  async getUserAuthenticated(): Promise<IUser | AuthFailure> {
-    try {  
+  async getUserFromAPI(obj: { accessToken: string }): Promise<IUser | AuthFailure> {
+    try {
       let obj = nookies.get(undefined, 'access_token');
-
-      if (obj?.access_token?.length === 0) throw new AuthFailure(authFailuresEnum.userNotFound);
 
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
@@ -94,9 +93,27 @@ export class AuthRepository implements IAuthRepository {
       if(!data["meta"]["success"]) throw new AuthFailure(data["meta"]["error"]["type"]);
 
       let parsedObject = JSON.parse(JSON.stringify(data["data"]))
-      console.log("JSON.parse", userAPIToMap(parsedObject))
+      let userMapped = userAPIToMap(parsedObject)
 
-      return userAPIToMap(parsedObject);
+      window.localStorage.setItem("prosit.provider.session.user", JSON.stringify(userMapped))
+
+      return userMapped;
+    } catch (error) {
+      return new AuthFailure(authFailuresEnum.serverError);
+    }
+  }
+
+  async getUserAuthenticated(): Promise<IUser | AuthFailure> {
+    try {  
+
+      let obj = nookies.get(undefined, 'access_token');
+
+      if (obj?.access_token?.length === 0) throw new AuthFailure(authFailuresEnum.userNotFound);
+      if( !window.localStorage.getItem("prosit.provider.session.user") ) throw new AuthFailure(authFailuresEnum.userNotFound);
+
+      let parsedObject = JSON.parse(window.localStorage.getItem("prosit.provider.session.user")!)
+
+      return parsedObject;
     } catch (error) {
       return new AuthFailure(authFailuresEnum.serverError);
     }
@@ -107,6 +124,7 @@ export class AuthRepository implements IAuthRepository {
       // await supabase.auth.signOut();
 
       nookies.set(undefined, 'access_token', '', { path: '/' });
+      window.localStorage.removeItem("prosit.provider.session.user")
 
       return true;
     } catch (error) {
