@@ -1,16 +1,21 @@
 import { IUser } from "domain/core/entities/userEntity";
 import { UserFailure } from "domain/core/failures/user/userFailure";
 import { IGetUsersResponse } from "domain/core/response/usersResponse";
+import { AuthRepository } from "infrastructure/repositories/auth/authRepository";
 import { UserRepository } from "infrastructure/repositories/user/userRepository";
 
 export default class UserUseCase {
   private _repository: UserRepository = new UserRepository();
+  private _authRepository: AuthRepository = new AuthRepository();
   
   async editUser(user:any): Promise<string> {
     try {
       const response = await this._repository.editUser(user);
 
       if (response instanceof UserFailure) throw response;
+      
+      await this._authRepository.getUserFromAPI({accessToken: ""});
+      await this._authRepository.getUserAuthenticated();
 
       return response;
     } catch (error) {

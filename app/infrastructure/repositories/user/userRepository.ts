@@ -51,6 +51,8 @@ export class UserRepository implements IUserRepository {
 
       const response = await fetch(URL, requestOptions)
       let data = await response.json()
+
+      console.log(data)
       
       if (data?.detail?.meta === undefined) {
         console.log(data?.detail)
