@@ -11,7 +11,7 @@ import {
   IAuthContext,
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import moment from "moment";
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import {
   IScheduleContext,
   ScheduleContext,
@@ -58,6 +58,7 @@ function CreateAgenda({
   const { data: statusPopup } = state.statusPopup;
 
   const params = useSearchParams();
+  const router = useRouter()
 
   let type_agenda = [
     {
@@ -521,6 +522,7 @@ function CreateAgenda({
 
   useMemo(() => {
     if (!statusPopup) {
+      router.replace(`/schedule/configuration`)
       setSelectedLocality({
         id: locality.id,
         title: locality.title,
