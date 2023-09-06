@@ -110,6 +110,9 @@ const SlotStep = ({
   }
 
   const SlotComponent = ({ data }: { data: any }) => {
+
+    let isBefore = moment(data["fechaInicio"]).isBefore(moment().utc(true));
+
     let isSelected = appointment["attentionWindowId"] === data["id"];
     let date = moment(data["fechaInicio"]).locale("es").format("dddd");
     let normalDate = moment(data["fechaInicio"]).format("DD-MM-YYYY");
@@ -120,6 +123,8 @@ const SlotStep = ({
     let { hours: endHour, minutes: endMinutes } = formatHour(data["horaFin"]);
 
     let isActualHour = data["tipo"] === 2;
+
+    if (isBefore) return <div />
 
     return (
       <div
