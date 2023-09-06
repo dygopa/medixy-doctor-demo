@@ -27,6 +27,8 @@ export default function AttentionWindow({
     return { hours, minutes };
   }
 
+  let isBefore = moment(data["fechaInicio"]).isBefore(moment().utc(true));
+
   let isSelected = formData["windowId"] === data["id"];
   let date = moment(data["fechaInicio"]).locale("es").format("dddd");
   let normalDate = moment(data["fechaInicio"]).format("DD-MM-YYYY");
@@ -38,6 +40,7 @@ export default function AttentionWindow({
   let isActualHour = data["tipo"] === 2;
 
   if (!data.disponible) return <div />;
+  if (isBefore) return <div />
 
   return (
     <div
