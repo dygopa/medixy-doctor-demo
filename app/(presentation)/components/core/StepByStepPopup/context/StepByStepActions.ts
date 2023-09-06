@@ -5,9 +5,10 @@ import { Dispatch } from "react";
 
 export interface IStepByStepActions {
     getSteps: Function;
+    getStepsMessage: Function;
     createUserSteps: Function;
     changeOpenPopup: Function;
-    getService: Function;
+    // getService: Function;
 }
 
 const createUserSteps = (id:string, event:string) => async (dispatch: Dispatch<any>) => {
@@ -34,7 +35,19 @@ const getSteps = (id:string) => async (dispatch: Dispatch<any>) => {
   }
 }
 
-const getService = (id:number) => async (dispatch: Dispatch<any>) => {
+const getStepsMessage = (id:string) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_STEPS_MESSAGES_LOADING" });
+
+    const res: string = await new StepByStepUseCase().getSteps(id);
+
+    dispatch({ type: "GET_STEPS_MESSAGES_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "GET_STEPS_MESSAGES_ERROR", payload: { error: error } });
+  }
+}
+
+/* const getService = (id:number) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "GET_SERVICE_LOADING" });
 
@@ -44,7 +57,7 @@ const getService = (id:number) => async (dispatch: Dispatch<any>) => {
   } catch (error) {
     dispatch({ type: "GET_SERVICE_ERROR", payload: { error: error } });
   }
-}
+} */
 
 const changeOpenPopup = (value:boolean) => async (dispatch: Dispatch<any>) => {
   dispatch({ type: "CHANGE_OPEN_POPUP", payload: { data: value } });
@@ -52,7 +65,8 @@ const changeOpenPopup = (value:boolean) => async (dispatch: Dispatch<any>) => {
 
 export const actions: IStepByStepActions = {
   getSteps,
+  getStepsMessage,
   createUserSteps,
   changeOpenPopup,
-  getService,
+  //getService,
 }

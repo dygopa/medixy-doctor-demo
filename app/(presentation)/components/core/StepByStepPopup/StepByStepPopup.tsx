@@ -29,12 +29,12 @@ interface IAlertProps {
 const StepByStepPopup = ({ user }: IAlertProps) => {
   const { state, actions, dispatch } =
     useContext<IStepByStepContext>(StepByStepContext);
-  const { getSteps, changeOpenPopup, getService } = actions;
+  const { getSteps, changeOpenPopup /* getService */ } = actions;
   const { data, error, successful, loading } = state.getSteps;
   const { data: openPopup } = state.openPopup;
   const { successful: createdStep, loading: creatingStep } =
     state.createUserSteps;
-  const { data: dataService, error: errorService, successful: successfulService } = state.getService;
+  // const { data: dataService, error: errorService, successful: successfulService } = state.getService;
 
   const pathname = usePathname();
 
@@ -64,13 +64,12 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       title: "Administrar tus servicios",
       step_enum: "SERVICE_UPDATED",
       completed: false,
-      description:
-        "Actualiza tu servicio para empezar a operar",
+      description: "Actualiza tu servicio para empezar a operar",
       cta: "/services",
     },
   ]);
 
-  const [ formatList, setFormatList ] = useState(false)
+  const [formatList, setFormatList] = useState(false);
 
   const Step = ({ props, children }: { props: IStep; children: any }) => {
     return (
@@ -137,8 +136,10 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     }));
 
     setSteps(l);
-    setFormatList(true)
+    setFormatList(true);
   }
+
+  console.log(isVisible);
 
   function knowIfCanShowPopup() {
     if (
@@ -148,7 +149,8 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       setIsVisible(false);
       return;
     }
-    if (pathname!.includes("/dashboard") && data?.length === 0) setIsVisible(true);
+    if (pathname!.includes("/dashboard") && data?.length === 0)
+      setIsVisible(true);
     if (data?.length > 0) setIsVisible(true);
   }
 
@@ -160,7 +162,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     if (successful) formatListOfSteps();
   }, [loading, successful]);
 
-  const setStepService = () => {
+  /* const setStepService = () => {
     if(dataService.length === 0) {
       return
     }
@@ -171,16 +173,15 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       }));
       setSteps(l);
     }
-  }
-
+  } 
   useMemo(() => {
     if(successfulService && formatList) setStepService();
-  }, [successfulService, formatList, dataService]);
+  }, [successfulService, formatList, dataService]); */
 
   useMemo(() => {
-    if (openPopup && user?.accountId) { 
+    if (openPopup && user?.accountId) {
       getSteps(user?.accountId)(dispatch);
-      getService(user?.userId)(dispatch);
+      // getService(user?.userId)(dispatch);
     }
   }, [openPopup, user]);
 
@@ -191,11 +192,13 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
         isVisible ? "visible" : "hidden",
       ])}
     >
-      <div className={twMerge([
-        "w-full h-screen overflow-y-auto flex flex-col justify-between items-start bg-white p-6 gap-8",
-        "md:w-[75%] md:h-auto",
-        "lg:w-[80%] lg:h-auto lg:rounded-md",
-      ])}>
+      <div
+        className={twMerge([
+          "w-full h-screen overflow-y-auto flex flex-col justify-between items-start bg-white p-6 gap-8",
+          "md:w-[75%] md:h-auto",
+          "lg:w-[80%] lg:h-auto lg:rounded-md",
+        ])}
+      >
         <div className="w-full px-4">
           <div className="mb-14 w-full flex justify-between items-center">
             <Lucide
@@ -209,10 +212,12 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
           </div>
           <Header user={user} />
 
-          <div className={twMerge([
-            "flex flex-col gap-10 mt-8 mb-12",
-            "lg:grid lg:grid-cols-3"
-          ])}>
+          <div
+            className={twMerge([
+              "flex flex-col gap-10 mt-8 mb-12",
+              "lg:grid lg:grid-cols-3",
+            ])}
+          >
             <Step props={steps[0]}>
               <Lucide icon="Building" />
             </Step>

@@ -4,9 +4,10 @@ import { ServiceFailure } from "domain/core/failures/service/serviceFailure";
 
 export interface IStepByStepState {
   getSteps: IStepsState;
+  getStepsMessages: IStepsState;
   createUserSteps: IStepsState;
   openPopup: IPopupState;
-  getService: IGetServiceState;
+  // getService: IGetServiceState;
 }
 
 interface IStepsState {
@@ -23,15 +24,21 @@ interface IPopupState {
   error: AuthFailure | null; 
 }
 
-interface IGetServiceState {
+/* interface IGetServiceState {
   data: IService[];
   loading: boolean;
   successful: boolean;
   error: ServiceFailure | null; 
-}
+} */
 
 export const initialState: IStepByStepState = {
   getSteps: {
+    data: {},
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  getStepsMessages: {
     data: {},
     loading: false,
     successful: false,
@@ -49,10 +56,10 @@ export const initialState: IStepByStepState = {
     successful: false,
     error: null,
   },
-  getService: {
+ /* getService: {
     data: [],
     loading: false,
     successful: false,
     error: null,
-  },
+  }, */
 }
