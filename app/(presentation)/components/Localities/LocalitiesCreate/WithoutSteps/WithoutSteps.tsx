@@ -232,6 +232,12 @@ export default function WithoutSteps({
   }
 
   const ServiceComponent = ({ data }: { data: IService }) => {
+    let ref = useRef<HTMLInputElement | null>(null);
+
+    const getInputRef = (el: HTMLInputElement) => {
+      ref.current = el;
+    };
+
     let isInList = services.find((elem: any) => elem["service_id"] === data.id);
 
     return (
@@ -248,6 +254,7 @@ export default function WithoutSteps({
             <div className="relative w-full">
               <div className="w-full">
                 <NumericFormat
+                  getInputRef={getInputRef}
                   value={
                     isInList?.price && isInList.price > 0
                       ? isInList.price
@@ -256,13 +263,15 @@ export default function WithoutSteps({
                   disabled={!isInList}
                   placeholder="Precio"
                   decimalScale={2}
-                  defaultValue={isInList && data.base_price}
+                  defaultValue={""}
                   thousandSeparator="."
                   decimalSeparator=","
                   prefix={""}
                   onValueChange={(values, sourceInfo) =>
                     managePriceChangeInList(
-                      values.floatValue ? values.floatValue : 0,
+                      values.floatValue && values.floatValue > 0
+                        ? values.floatValue
+                        : 0,
                       data.id
                     )
                   }
@@ -288,6 +297,10 @@ export default function WithoutSteps({
                   isInList?.price ? isInList.price : data.base_price,
                   data.id
                 );
+
+                if (!isInList && ref?.current) {
+                  ref.current?.focus();
+                }
               }}
               className={twMerge([
                 "transition w-8 h-8 cursor-pointer rounded-full text-slate-400 border border-slate-400 flex flex-col justify-center items-center bg-white",
