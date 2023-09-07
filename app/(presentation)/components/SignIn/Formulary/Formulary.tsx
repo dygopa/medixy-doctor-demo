@@ -97,7 +97,7 @@ export default function Formulary() {
       return;
     }
 
-    signInUser({ email: values.email, password: values.password })(dispatch);
+    signInUser({ email: values.email.toLowerCase(), password: values.password })(dispatch);
   };
 
   const handleErrors = () => {
