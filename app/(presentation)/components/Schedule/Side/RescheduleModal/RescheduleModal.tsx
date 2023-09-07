@@ -1,7 +1,15 @@
-import Button from "(presentation)/components/core/BaseComponents/Button";
-import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
-import { Dispatch, SetStateAction, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { twMerge } from "tailwind-merge";
+import {
+  IScheduleContext,
+  ScheduleContext,
+} from "../../context/ScheduleContext";
 import RescheduleAppointment from "./RescheduleAppointment/RescheduleAppointment";
 import SucessfulMessage from "./SucessfulMessage/SucessfulMessage";
 import Summary from "./Summary/Summary";
@@ -17,8 +25,20 @@ export default function RescheduleModal({
   showRescheduleModal,
   setShowRescheduleModal,
 }: RescheduleModalProps) {
+  const { state, actions, dispatch } =
+    useContext<IScheduleContext>(ScheduleContext);
+  const { rescheduleAppointmentInitialState } = actions;
+  const { successful } = state.rescheduleAppointment;
+
+  console.log(successful);
+
   const [step, setStep] = useState(0);
   const [newAppointment, setNewAppointment] = useState<any>(null);
+
+  useEffect(() => {
+    rescheduleAppointmentInitialState()(dispatch);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const getComponentByStep = () => {
     switch (step) {
