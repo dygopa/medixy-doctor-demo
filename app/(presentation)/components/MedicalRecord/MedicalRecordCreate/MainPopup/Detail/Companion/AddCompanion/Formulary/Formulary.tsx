@@ -14,6 +14,7 @@ import {
   MedicalRecordContext,
 } from "(presentation)/components/MedicalRecord/MedicalRecord/context/MedicalRecordContext";
 import { ISubject } from "domain/core/entities/subjectEntity";
+import moment from "moment";
 import React, {
   Dispatch,
   SetStateAction,
@@ -123,6 +124,15 @@ export default function CompanionCreate({
         return {
           ...previousState,
           age: "La fecha de nacimiento es obligatorio",
+        };
+      });
+      return true;
+    }
+    if (moment().isBefore(new Date(value))) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          age: "La fecha no debe ser mayor a la fecha actual",
         };
       });
       return true;

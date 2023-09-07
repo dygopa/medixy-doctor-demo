@@ -240,6 +240,15 @@ export default function BasicData({
       });
       return true;
     }
+    if (moment().isBefore(new Date(value))) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          age: "La fecha no debe ser mayor a la fecha actual",
+        };
+      });
+      return true;
+    }
     setErrors({ ...errors, age: "" });
     return false;
   };
