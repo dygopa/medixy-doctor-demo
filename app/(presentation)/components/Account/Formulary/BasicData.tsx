@@ -27,6 +27,7 @@ interface IFormularyProps {
     secondLastname: string;
     age: string;
     shortDescription: string;
+    curp: string;
   };
   setErrors: any;
 }
@@ -94,6 +95,21 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
       return true;
     }
     setErrors({ ...errors, age: "" });
+    return false;
+  };
+
+  const handleCURP = (value:string) => {
+    setAccount({ ...account, curp: value })
+    if (value.length < 2) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          curp: "El CURP es obligatorio",
+        }
+      })
+      return true;
+    }
+    setErrors({ ...errors, curp: "" });
     return false;
   };
 
@@ -305,7 +321,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  CURP
+                  CURP{" "}<span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"text"}
@@ -313,9 +329,12 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
                   defaultValue={user?.curp}
                   className="form-control w-full"
                   onChange={(e) =>
-                    setAccount({ ...account, curp: e.target.value })
+                    handleCURP(e.target.value)
                   }
                 />
+                {errors.curp.length > 0 && (
+                  <span className="text-red-500">{errors.curp}</span>
+                )}
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
