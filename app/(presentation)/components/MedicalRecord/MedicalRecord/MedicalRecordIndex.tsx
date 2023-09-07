@@ -1,5 +1,6 @@
 "use client";
 
+import ScheduleProvider from "(presentation)/components/Schedule/context/ScheduleContext";
 import { useSearchParams } from "next/navigation";
 import { useContext, useEffect } from "react";
 import {
@@ -29,7 +30,7 @@ export default function MedicalRecordIndex({ id }: IMedicalRecordIndexProps) {
 
   const type = searchParams.get("type");
 
-  const edit = searchParams.get("edit_subject")
+  const edit = searchParams.get("edit_subject");
 
   useEffect(() => {
     let isCleanup = true;
@@ -45,7 +46,7 @@ export default function MedicalRecordIndex({ id }: IMedicalRecordIndexProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [edit]);
 
-  console.log(subject)
+  console.log(subject);
 
   if (loading || appointmentLoading)
     return (
@@ -111,7 +112,9 @@ export default function MedicalRecordIndex({ id }: IMedicalRecordIndexProps) {
 
   return (
     <div className="py-5">
-      <Navigator />
+      <ScheduleProvider>
+        <Navigator />
+      </ScheduleProvider>
 
       <div className="mt-10">
         <div className="mt-4">
