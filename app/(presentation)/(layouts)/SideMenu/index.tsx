@@ -75,8 +75,8 @@ function SideMenu({
 
   return (
     <>
-      <StepByStepMessage />
-      <div className="py-5 md:py-0 -mx-3 px-3 sm:-mx-8 sm:px-8 bg-primary dark:bg-transparent">
+      <div className="pb-5 md:py-0 -mx-3 px-3 sm:-mx-8 sm:px-8 bg-primary dark:bg-transparent">
+        <StepByStepMessage />
         <PopupProvider>
           <MobileMenu />
           <div className="flex mt-[4.7rem] md:mt-0 overflow-hidden ">
