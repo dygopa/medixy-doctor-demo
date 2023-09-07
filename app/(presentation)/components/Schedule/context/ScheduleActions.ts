@@ -30,6 +30,7 @@ export interface IScheduleActions {
   getSlotsByAttentionWindow: Function;
   blockSlotInAttentionWindow: Function;
   unlockSlotInAttentionWindow: Function;
+  rescheduleAppointmentInitialState: Function;
 }
 
 const getCalendarEvents = (id:number, localityId:number, sinceDate:any, untilDate:any, serviceId:number) => async (dispatch: Dispatch<any>) => {
@@ -284,6 +285,10 @@ const rescheduleAppointment = (obj: { appointmentId: any; newAppointmentId: any;
   }
 }
 
+const rescheduleAppointmentInitialState = () => async (dispatch: Dispatch<any>) => {
+  dispatch({ type: "RESCHEDULE_APPOINTMENT_INITIAL_STATE" });
+}
+
 const getPatients = (obj: { userId?: number | string | undefined }) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "GET_PATIENTS_LOADING" });
@@ -328,4 +333,5 @@ export const actions: IScheduleActions = {
   getSlotsByAttentionWindow,
   blockSlotInAttentionWindow,
   unlockSlotInAttentionWindow,
+  rescheduleAppointmentInitialState
 }

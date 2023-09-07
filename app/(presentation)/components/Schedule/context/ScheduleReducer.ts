@@ -685,7 +685,7 @@ export const ScheduleReducer = (state: any, action: any) => {
       case 'RESCHEDULE_APPOINTMENT_LOADING':
         return {
           ...state,
-          reschedauleAppointment: {
+          rescheduleAppointment: {
             ...state.rescheduleAppointment,
             data: null,
             loading: true,
@@ -715,6 +715,17 @@ export const ScheduleReducer = (state: any, action: any) => {
             error: action.payload.error,
           },
         };
+        case 'RESCHEDULE_APPOINTMENT_INITIAL_STATE':
+          return {
+            ...state,
+            rescheduleAppointment: {
+              ...state.rescheduleAppointment,
+              data: null,
+              loading: false,
+              successful: false,
+              error: null,
+            },
+          };
     default:
       return state;
   }
