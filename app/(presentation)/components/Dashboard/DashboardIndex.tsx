@@ -29,7 +29,7 @@ export default function DashboardIndex() {
     <div className="py-8">
       <DashboardProvider>
         <ScheduleProvider>
-          <Popup/>
+          <Popup />
           <DoctorsCase account={account} />
         </ScheduleProvider>
       </DashboardProvider>
