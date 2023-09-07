@@ -108,10 +108,10 @@ const LocalityServiceStep = ({
     }
   }, [loadedDataFromAppointment]);
 
-  function formatServicesList(){
-    let list_services = []
+  function formatServicesList() {
+    let list_services = [];
 
-    if(!loadedServices && loadedServicesFromCalendar){
+    if (!loadedServices && loadedServicesFromCalendar) {
       list_services = servicesFromCalendar!.map((elem: any) => ({
         id: elem.id,
         title: elem.name,
@@ -120,6 +120,14 @@ const LocalityServiceStep = ({
     }
 
     if (loadedServices && loadedServicesFromCalendar) {
+      list_services = services!.map((elem: any) => ({
+        id: elem.id,
+        title: elem.name,
+        description: elem["service_category"]["name"],
+      }));
+    }
+
+    if (loadedServices && !loadedServicesFromCalendar) {
       list_services = services!.map((elem: any) => ({
         id: elem.id,
         title: elem.name,
@@ -151,7 +159,7 @@ const LocalityServiceStep = ({
   useMemo(() => {
     formatServicesList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadingServices, loadingServicesFromCalendar]);
+  }, [loadingServices, loadingServicesFromCalendar, services]);
 
   useMemo(() => {
     if (loadedLocalities) {
@@ -164,10 +172,10 @@ const LocalityServiceStep = ({
       }));
 
       if (list_localities.length > 0 && !locality["id"]) {
-        //getServices({
-        //  userId: user.userId,
-        //  localityId: list_localities[0]["id"],
-        //})(dispatch);
+        getServices({
+          userId: user.userId,
+          localityId: list_localities[0]["id"],
+        })(dispatch);
         setSelectedLocality(list_localities[0]);
         setAppointment({
           ...appointment,
@@ -195,26 +203,38 @@ const LocalityServiceStep = ({
 
   useMemo(() => {
     createAppointmentInitialState()(dispatch);
-    setSelectedLocality({
-      id: locality.id,
-      title: locality.title,
-      description: locality.description,
-    });
-    setSelectedService({
-      id: service.id,
-      title: service.title,
-      description: service.description,
-    });
-    setAppointment({
-      localityId: locality.id,
-      locality: locality,
-      serviceId: service.id,
-      service: service,
-    });
-    getServices({
-      userId: user.userId,
-      localityId: locality["id"],
-    })(dispatch);
+
+    if (locality?.id) {
+      setSelectedLocality({
+        id: locality.id,
+        title: locality.title,
+        description: locality.description,
+      });
+    }
+
+    if (service?.id) {
+      setSelectedService({
+        id: service.id,
+        title: service.title,
+        description: service.description,
+      });
+    }
+
+    if (locality?.id) {
+      setAppointment({
+        localityId: locality.id,
+        locality: locality,
+        serviceId: service.id,
+        service: service,
+      });
+    }
+
+    if (locality?.id) {
+      getServices({
+        userId: user.userId,
+        localityId: locality["id"],
+      })(dispatch);
+    }
   }, [statusPopup]);
 
   useMemo(() => {
@@ -225,7 +245,10 @@ const LocalityServiceStep = ({
     }
   }, [predifinedReservationData]);
 
-  console.log(appointment)
+  useMemo(() => {
+    if (user && localities.length === 0)
+      getLocalities(user.userId)(dispatchSchedule);
+  }, [user]);
 
   return (
     <div className="w-full h-fit flex flex-col gap-5">
