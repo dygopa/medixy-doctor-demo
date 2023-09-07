@@ -33,6 +33,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
     secondLastname: "",
     age: "",
     shortDescription: "",
+    curp: "",
   });
 
   const validForm = () => {
@@ -47,6 +48,8 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
     if (errors.secondLastname.length > 0) errorsFieldsCount++;
 
     if (errors.age.length > 0) errorsFieldsCount++;
+
+    if (errors.curp.length > 0) errorsFieldsCount++;
 
     if (errors.shortDescription.length > 0) errorsFieldsCount++;
 
@@ -121,6 +124,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
             loading ||
             account.names === "" ||
             account.firstName === "" ||
+            account.curp === "" ||
             validForm() > 0
           }
           onClick={() => {
