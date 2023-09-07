@@ -208,18 +208,20 @@ export default function WithoutSteps({
     router.push(LocalitiesRoutesEnum.Localities);
   };
 
-  function manageAddToList(data: IService) {
+  function manageAddToList(serviceId: any, price: any, serviceParentId: any) {
     let list: Array<ILocalityService> = [...services];
-    if (list.some((elem) => elem["service_id"] === data.id)) {
-      list = list.filter((elem) => elem["service_id"] !== data.id);
+    if (list.some((elem) => elem["service_id"] === serviceId)) {
+      list = list.filter((elem) => elem["service_id"] !== serviceId);
     } else {
       list.push({
         id: 0,
-        service_id: data.id,
+        service_id: serviceId,
         location_id: 0,
-        price: 0,
+        price: price,
+        service_parent_id: serviceParentId,
       });
     }
+
     setServices(list);
   }
 
@@ -281,7 +283,11 @@ export default function WithoutSteps({
           <div className="w-1/4 flex flex-col justify-center items-center">
             <span
               onClick={() => {
-                manageAddToList(data);
+                manageAddToList(
+                  data.id,
+                  isInList?.price ? isInList.price : data.base_price,
+                  data.id
+                );
               }}
               className={twMerge([
                 "transition w-8 h-8 cursor-pointer rounded-full text-slate-400 border border-slate-400 flex flex-col justify-center items-center bg-white",

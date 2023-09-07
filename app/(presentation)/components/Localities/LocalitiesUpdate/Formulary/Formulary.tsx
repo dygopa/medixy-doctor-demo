@@ -240,12 +240,11 @@ export default function Formulary({
             service_id: service.id,
             location_id: localityId,
             price: service.base_price,
+            service_parent_id: serviceBaseData.id,
           });
         }
       });
     }
-
-    console.log(services);
 
     setServices(services);
   };
@@ -269,18 +268,22 @@ export default function Formulary({
     router.push(LocalitiesRoutesEnum.Localities);
   };
 
-  function manageAddToList(data: IService) {
+  function manageAddToList(serviceId: any, price: any, serviceParentId: any) {
     let list: Array<ILocalityService> = [...services];
-    if (list.some((elem) => elem["service_id"] === data.id)) {
-      list = list.filter((elem) => elem["service_id"] !== data.id);
+    if (list.some((elem) => elem["service_id"] === serviceId)) {
+      list = list.filter((elem) => elem["service_id"] !== serviceId);
     } else {
       list.push({
         id: 0,
-        service_id: data.id,
-        location_id: 0,
-        price: 0,
+        service_id: serviceId,
+        location_id: localityId,
+        price: price,
+        service_parent_id: serviceParentId,
       });
     }
+
+    console.log(list);
+
     setServices(list);
   }
 
@@ -291,28 +294,43 @@ export default function Formulary({
   }
 
   const ServiceComponent = ({ data }: { data: IService }) => {
-    let id = data.id;
-    let isInList = services.find((elem: any) => elem["service_id"] === data.id);
-    let price = 0;
-    let isAdded = false;
+    let serviceAdded =
+      typeof servicesData !== "string" &&
+      servicesData &&
+      servicesData?.length > 0
+        ? servicesData.find(
+            (elem: any) =>
+              elem["service_parent_id"] === data.id &&
+              elem["location_id"] === localityId
+          )
+        : ({} as any);
 
-    if (
-      !isInList &&
-      servicesData?.length > 0 &&
-      typeof servicesData !== "string"
-    ) {
-      const service = servicesData.find(
-        (serviceData) =>
-          serviceData.service_parent_id === data.id &&
-          serviceData.location_id === localityId
-      );
+    let isInList = serviceAdded?.id
+      ? services.find((elem: any) => elem["service_id"] === serviceAdded["id"])
+        ? true
+        : false
+      : services.find((elem: any) => elem["service_id"] === data.id);
+    let isInListNotAdded = services.find(
+      (elem: any) => elem["service_id"] === data.id
+    );
+    let serviceAddedForm = serviceAdded?.id
+      ? services.find((elem: any) => elem["service_id"] === serviceAdded["id"])
+      : ({} as any);
+    let price = serviceAddedForm?.price
+      ? serviceAddedForm.price
+      : serviceAdded?.base_price
+      ? serviceAdded.base_price
+      : data.base_price;
+    let isAdded = true;
 
-      if (service) {
-        isInList = true;
-        id = service.id;
-        price = service.base_price;
-        isAdded = true;
-      }
+    if (!isInList) {
+      isInList = false;
+      isAdded = false;
+      price = 0;
+    }
+
+    if (isInListNotAdded) {
+      isAdded = false;
     }
 
     return (
@@ -334,13 +352,15 @@ export default function Formulary({
                   placeholder="Precio"
                   decimalScale={2}
                   thousandSeparator="."
-                  defaultValue={isInList && data.base_price}
+                  defaultValue={isInList ? data.base_price : ""}
                   decimalSeparator=","
                   prefix={""}
                   onValueChange={(values, sourceInfo) =>
                     managePriceChangeInList(
                       values.floatValue ? values.floatValue : 0,
-                      id
+                      serviceAddedForm?.service_id
+                        ? serviceAddedForm.service_id
+                        : data.id
                     )
                   }
                   className={twMerge([
@@ -360,7 +380,15 @@ export default function Formulary({
           <div className="w-1/4 flex flex-col justify-center items-center">
             <button
               onClick={() => {
-                manageAddToList(data);
+                manageAddToList(
+                  serviceAddedForm?.service_id
+                    ? serviceAddedForm.service_id
+                    : data.id,
+                  serviceAddedForm?.price
+                    ? serviceAddedForm.price
+                    : data.base_price,
+                  data.id
+                );
               }}
               disabled={isAdded}
               className={twMerge([
