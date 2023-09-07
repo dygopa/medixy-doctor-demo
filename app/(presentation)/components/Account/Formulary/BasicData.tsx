@@ -77,10 +77,10 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
 
   const handleClickRef = () => avatarRef.current && avatarRef.current.click();
   
-  useEffect(() => {
+  /*useEffect(() => {
     if (successful) getUserAuthenticated()(dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [successful]);
+  }, [successful]);*/
 
   const handleage = (value:string) => {
     setAccount({ ...account, birthDate: value })
@@ -222,7 +222,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
                     />
                     <Image
                       className="object-cover rounded-full "
-                      src={user?.avatar}
+                      src={data ? data.toString() : account?.avatar}
                       alt=""
                       fill
                     />
