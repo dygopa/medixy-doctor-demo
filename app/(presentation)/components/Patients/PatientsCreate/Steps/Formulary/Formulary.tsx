@@ -213,6 +213,15 @@ export default function Formulary({
       });
       return true;
     }
+    if (moment().isBefore(new Date(value))) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          age: "La fecha no debe ser mayor a la fecha actual",
+        };
+      });
+      return true;
+    }
     setErrors({ ...errors, age: "" });
     return false;
   };

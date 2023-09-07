@@ -94,6 +94,13 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
       console.log(errors.age)
       return true;
     }
+    if (moment().isBefore(new Date(value))) {
+      setErrors({
+        ...errors,
+        age: "La fecha no debe ser mayor a la fecha actual",
+      });
+      return true;
+    }
     setErrors({ ...errors, age: "" });
     return false;
   };

@@ -160,6 +160,15 @@ export default function CompanionCreate({
       });
       return true;
     }
+    if (moment().isBefore(new Date(value))) {
+      setErrors((previousState: any) => {
+        return {
+          ...previousState,
+          age: "La fecha no debe ser mayor a la fecha actual",
+        };
+      });
+      return true;
+    }
     if (value.length < 2) {
       setErrors((previousState: any) => {
         return {
