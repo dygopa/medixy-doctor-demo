@@ -138,9 +138,7 @@ function Main({
             <span className={twMerge(["text-xl", "text-slate-900"])}>
               <FiMail />
             </span>
-            <p className="text-xs text-slate-500 text-center">
-              Email
-            </p>
+            <p className="text-xs text-slate-500 text-center">Email</p>
           </div>
         </EmailShareButton>
         <WhatsappShareButton url={userLink}>
@@ -151,9 +149,7 @@ function Main({
             ])}
           >
             <WhatsappIcon color="#FFF" size={30} borderRadius={20} />
-            <p className="text-xs text-slate-500 text-center">
-              Whatsapp
-            </p>
+            <p className="text-xs text-slate-500 text-center">Whatsapp</p>
           </div>
         </WhatsappShareButton>
         <FacebookShareButton url={userLink}>
@@ -164,9 +160,7 @@ function Main({
             ])}
           >
             <FacebookIcon color="#FFF" size={30} borderRadius={20} />
-            <p className="text-xs text-slate-500 text-center">
-              Facebook
-            </p>
+            <p className="text-xs text-slate-500 text-center">Facebook</p>
           </div>
         </FacebookShareButton>
         <TwitterShareButton url={userLink}>
@@ -177,9 +171,7 @@ function Main({
             ])}
           >
             <TwitterIcon color="#FFF" size={30} borderRadius={20} />
-            <p className="text-xs text-slate-500 text-center">
-              Twitter
-            </p>
+            <p className="text-xs text-slate-500 text-center">Twitter</p>
           </div>
         </TwitterShareButton>
         <TelegramShareButton url={userLink}>
@@ -190,9 +182,7 @@ function Main({
             ])}
           >
             <TelegramIcon color="#FFF" size={30} borderRadius={20} />
-            <p className="text-xs text-slate-500 text-center">
-              Telegram
-            </p>
+            <p className="text-xs text-slate-500 text-center">Telegram</p>
           </div>
         </TelegramShareButton>
         <LineShareButton url={userLink}>
@@ -203,9 +193,7 @@ function Main({
             ])}
           >
             <LineIcon color="#FFF" size={30} borderRadius={20} />
-            <p className="text-xs text-slate-500 text-center">
-              Line
-            </p>
+            <p className="text-xs text-slate-500 text-center">Line</p>
           </div>
         </LineShareButton>
         <LinkedinShareButton url={userLink}>
@@ -216,9 +204,7 @@ function Main({
             ])}
           >
             <LinkedinIcon color="#FFF" size={30} borderRadius={20} />
-            <p className="text-xs text-slate-500 text-center">
-              Linkedin
-            </p>
+            <p className="text-xs text-slate-500 text-center">Linkedin</p>
           </div>
         </LinkedinShareButton>
         <RedditShareButton url={userLink}>
@@ -229,12 +215,9 @@ function Main({
             ])}
           >
             <RedditIcon color="#FFF" size={30} borderRadius={20} />
-            <p className="text-xs text-slate-500 text-center">
-              Reddit
-            </p>
+            <p className="text-xs text-slate-500 text-center">Reddit</p>
           </div>
         </RedditShareButton>
-        
       </div>
     );
   };
@@ -316,36 +299,41 @@ function Main({
         {/* <NotificationPopupProvider>
           <NotificationPopup/>
         </NotificationPopupProvider> */}
-        <button
-          onClick={() => {
-            setActiveShortcuts(!activeShortcuts);
-          }}
-          className="cursor-pointer transition flex flex-col justify-center items-center rounded-lg lg:px-4 lg:py-2 p-3 text-lg overflow-hidden text-slate-700 bg-slate-100 hover:bg-slate-300 mr-6"
-          style={{ backgroundColor: "#FFC127" }}
-        >
-          <div className="flex items-center">
-            <div className="mr-2 lg:block hidden">
-              <p className="text-sm">Compartir link</p>
+        {user?.userId && (
+          <button
+            onClick={() => {
+              setActiveShortcuts(!activeShortcuts);
+            }}
+            className="cursor-pointer transition flex flex-col justify-center items-center rounded-lg lg:px-4 lg:py-2 p-3 text-lg overflow-hidden text-slate-700 bg-slate-100 hover:bg-slate-300 mr-6"
+            style={{ backgroundColor: "#FFC127" }}
+          >
+            <div className="flex items-center">
+              <div className="mr-2 lg:block hidden">
+                <p className="text-sm">Compartir link</p>
+              </div>
+              <FiSend />
             </div>
-            <FiSend />
-          </div>
-        </button>
+          </button>
+        )}
         {activeShortcuts && <PopupShortcuts customRef={wrapperRef} />}
         <Link
           href="/account"
           className="w-fit h-full flex justify-end items-center gap-3"
         >
           <div className="w-fit min-w-[8rem] text-left h-full flex flex-col justify-center items-end">
-            { user?.sex === 1 &&
+            {user?.sex === 1 && (
               <p className="font-semibold text-sm text-slate-900">
-                Dra. {user?.names} <br className="md:hidden"/> {user?.firstName}
+                Dra. {user?.names} <br className="md:hidden" />{" "}
+                {user?.firstName}
               </p>
-            }
-            { user?.sex === 2 || user?.sex === 0 &&
-              <p className="font-semibold text-sm text-slate-900">
-                Dr. {user?.names} <br className="md:hidden"/> {user?.firstName}
-              </p>
-            }
+            )}
+            {user?.sex === 2 ||
+              (user?.sex === 0 && (
+                <p className="font-semibold text-sm text-slate-900">
+                  Dr. {user?.names} <br className="md:hidden" />{" "}
+                  {user?.firstName}
+                </p>
+              ))}
             <p className="font-light text-sm text-slate-500">Médico</p>
           </div>
           <div className="w-[3rem] h-[3rem] flex flex-col justify-center items-center rounded-xl overflow-hidden p-0 bg-slate-300">
