@@ -36,7 +36,7 @@ const SummaryStep = ({
     dispatch: dispatchSchedule,
   } = useContext<IScheduleContext>(ScheduleContext);
 
-  const { getAppointments, changeStatusPopup } = actionsSchedule;
+  const { getAppointments, changeStatusPopup, getCalendarEvents } = actionsSchedule;
 
   const { state, actions, dispatch } =
     useContext<IStepByStepAppointmentContext>(StepByStepAppointmentContext);
@@ -45,6 +45,8 @@ const SummaryStep = ({
   const { data, loading, successful, error } = state.appointmentCreation;
 
   const { data: activeLocality } = scheduleState.activeLocality;
+  const { data: actualDay } = scheduleState.actualDay;
+  const { data: activeDay } = scheduleState.activeDay;
 
   const GroupLabelValue = ({ label, value }: { label: any; value: any }) => {
     return (
@@ -64,10 +66,16 @@ const SummaryStep = ({
           window.location.href = `/medical-record/${data["id"]}/create?type=appointment`;
         }, 1000);
       } else {
+        getCalendarEvents(
+          user.userId, 
+          activeLocality["id"],
+          moment(activeDay["start"]).format('YYYY-MM-DD'), 
+          moment(activeDay["end"], "YYYY-MM-DD").format('YYYY-MM-DD')
+        )(dispatchSchedule);
         getAppointments(
           user.userId,
-          moment().format("YYYY-MM-DD"),
-          moment().add(1, "day").format("YYYY-MM-DD"),
+          moment(actualDay).format('YYYY-MM-DD'), 
+          moment(actualDay).add(1, "day").format('YYYY-MM-DD'),
           appointment["localityId"]
         )(dispatchSchedule);
       }
