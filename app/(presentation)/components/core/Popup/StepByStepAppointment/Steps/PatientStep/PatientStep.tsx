@@ -21,6 +21,10 @@ import { FiUser, FiX } from "react-icons/fi";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import moment from "moment";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
+import {
+  IScheduleContext,
+  ScheduleContext,
+} from "(presentation)/components/Schedule/context/ScheduleContext";
 
 const PatientStep = ({
   appointment,
@@ -31,6 +35,10 @@ const PatientStep = ({
 }) => {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
   const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
+
+  const { state: stateSchedule } =
+    useContext<IScheduleContext>(ScheduleContext);
+  const { data: activePatient } = stateSchedule.activePatient;
 
   const { state, actions, dispatch } =
     useContext<IStepByStepAppointmentContext>(StepByStepAppointmentContext);
@@ -81,6 +89,23 @@ const PatientStep = ({
   }, [loadedDataFromAppointment]);
 
   useMemo(() => {
+    if (activePatient?.subjectId) {
+      setPatient({
+        ...patient,
+        name: activePatient["name"],
+        firstName: activePatient["lastName"],
+        dateBirth: "",
+        email: "",
+      });
+      setSelectedPatient({
+        id: activePatient["subjectId"],
+        title: activePatient["name"],
+        description: "",
+      });
+    }
+  }, [activePatient]);
+
+  useMemo(() => {
     if (loadedPatients) {
       let list_patients = patients.data.map((elem: ISubject) => ({
         id: elem.subjectId,
@@ -107,32 +132,37 @@ const PatientStep = ({
   return (
     <div className={"w-full h-fit relative flex flex-col gap-4"}>
       <div className="w-full flex flex-col justify-center items-start gap-2">
-        <p className="font-normal text-sm text-slate-600">
-          Busca el nombre del paciente
-        </p>
-        <SpecialSearch
-          customClick={(value: any) => {
-            setPatientNotFound(false);
-            setSelectedPatient(value);
-            setPatient({
-              name: value.title,
-              firstName: "",
-              dateBirth: "",
-              email: "",
-            });
-            setAppointment({
-              ...appointment,
-              patientId: value["id"],
-              patient: value,
-            });
-          }}
-          customClickEmpty={() => {
-            console.log("Empty");
-          }}
-          list={listOfPatients}
-          placeholder={"Buscar..."}
-          selectedItem={selectedPatient}
-        />
+        {!activePatient?.subjectId && (
+          <>
+            <p className="font-normal text-sm text-slate-600">
+              Busca el nombre del paciente
+            </p>
+
+            <SpecialSearch
+              customClick={(value: any) => {
+                setPatientNotFound(false);
+                setSelectedPatient(value);
+                setPatient({
+                  name: value.title,
+                  firstName: "",
+                  dateBirth: "",
+                  email: "",
+                });
+                setAppointment({
+                  ...appointment,
+                  patientId: value["id"],
+                  patient: value,
+                });
+              }}
+              customClickEmpty={() => {
+                console.log("Empty");
+              }}
+              list={listOfPatients}
+              placeholder={"Buscar..."}
+              selectedItem={selectedPatient}
+            />
+          </>
+        )}
         {selectedPatient["title"] !== "" && (
           <div
             className={twMerge([
@@ -150,23 +180,25 @@ const PatientStep = ({
                 {selectedPatient["description"]}
               </p>
             </div>
-            <div
-              onClick={() => {
-                setAppointment({
-                  ...appointment,
-                  patientId: 0,
-                  patient: null,
-                });
-                setSelectedPatient({
-                  id: 0,
-                  title: "",
-                  description: "",
-                });
-              }}
-              className="cursor-pointer w-8 h-8 overflow-hidden rounded-lg bg-red-500/20 text-red-500 text-lg flex flex-col justify-center items-center"
-            >
-              <FiX />
-            </div>
+            {!activePatient?.subjectId && (
+              <div
+                onClick={() => {
+                  setAppointment({
+                    ...appointment,
+                    patientId: 0,
+                    patient: null,
+                  });
+                  setSelectedPatient({
+                    id: 0,
+                    title: "",
+                    description: "",
+                  });
+                }}
+                className="cursor-pointer w-8 h-8 overflow-hidden rounded-lg bg-red-500/20 text-red-500 text-lg flex flex-col justify-center items-center"
+              >
+                <FiX />
+              </div>
+            )}
           </div>
         )}
 

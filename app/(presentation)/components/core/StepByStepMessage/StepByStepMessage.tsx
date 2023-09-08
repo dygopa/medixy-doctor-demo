@@ -46,10 +46,8 @@ export default function StepByStepMessage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createUserStepsSucessful]);
 
-  if (!user?.userId || loading || error || steps?.length === 3) return <div />;
-
-  return (
-    <div className="w-full h-[50px] bg-primary">
+  if (steps?.length < 3 && !error ) return (
+    <div className="w-full h-[70px] mb-3 md:mb-0 md:h-[50px] bg-primary">
       <div className="w-full h-full text-center ">
         <Link
           href={getNextLinkSteps()}
@@ -71,4 +69,6 @@ export default function StepByStepMessage() {
       </div>
     </div>
   );
+
+  return <div />
 }

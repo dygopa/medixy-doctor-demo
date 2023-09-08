@@ -66,6 +66,7 @@ export default function Formulary() {
     first_lastname: "",
     second_lastname: "",
     phone_number: "",
+    birthdate: "",
     //curp: "",
   });
 
@@ -220,6 +221,14 @@ export default function Formulary() {
 
   const handleage = (value: string) => {
     setValues({ ...values, birth_date: value });
+    if (moment().isBefore(new Date(value))) {
+      setErrors({
+        ...errors,
+        birthdate: "La fecha no debe ser mayor a la fecha actual",
+      });
+      return true;
+    }
+    setErrors({ ...errors, birthdate: "" });
     return false;
   };
 
@@ -247,6 +256,8 @@ export default function Formulary() {
     if (errors.email.length > 0) errorsFieldsCount++;
 
     if (errors.password.length > 0) errorsFieldsCount++;
+
+    if (errors.birthdate.length > 0) errorsFieldsCount++;
 
     return errorsFieldsCount;
   };
@@ -463,6 +474,11 @@ export default function Formulary() {
           onBlur={(e) => (e.target.type = "text")}
           onChange={(e: any) => handleage(e.target.value)}
         />
+        {errors.birthdate.length > 0 && (
+          <div className="mt-1">
+            <span className="text-red-500 mt-2">{errors.birthdate}</span>
+          </div>
+        )}
       </div>
 
       <div className="relative w-full">

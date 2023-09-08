@@ -24,6 +24,7 @@ export interface ILocalityService {
     service_id: number;
     location_id: number;
     price: number;
+    service_parent_id?: number | null
 }
 
 interface IState {

@@ -208,18 +208,20 @@ export default function WithoutSteps({
     router.push(LocalitiesRoutesEnum.Localities);
   };
 
-  function manageAddToList(data: IService) {
+  function manageAddToList(serviceId: any, price: any, serviceParentId: any) {
     let list: Array<ILocalityService> = [...services];
-    if (list.some((elem) => elem["service_id"] === data.id)) {
-      list = list.filter((elem) => elem["service_id"] !== data.id);
+    if (list.some((elem) => elem["service_id"] === serviceId)) {
+      list = list.filter((elem) => elem["service_id"] !== serviceId);
     } else {
       list.push({
         id: 0,
-        service_id: data.id,
+        service_id: serviceId,
         location_id: 0,
-        price: 0,
+        price: price,
+        service_parent_id: serviceParentId,
       });
     }
+
     setServices(list);
   }
 
@@ -230,6 +232,12 @@ export default function WithoutSteps({
   }
 
   const ServiceComponent = ({ data }: { data: IService }) => {
+    let ref = useRef<HTMLInputElement | null>(null);
+
+    const getInputRef = (el: HTMLInputElement) => {
+      ref.current = el;
+    };
+
     let isInList = services.find((elem: any) => elem["service_id"] === data.id);
 
     return (
@@ -246,6 +254,7 @@ export default function WithoutSteps({
             <div className="relative w-full">
               <div className="w-full">
                 <NumericFormat
+                  getInputRef={getInputRef}
                   value={
                     isInList?.price && isInList.price > 0
                       ? isInList.price
@@ -254,13 +263,15 @@ export default function WithoutSteps({
                   disabled={!isInList}
                   placeholder="Precio"
                   decimalScale={2}
-                  defaultValue={isInList && data.base_price}
+                  defaultValue={""}
                   thousandSeparator="."
                   decimalSeparator=","
                   prefix={""}
                   onValueChange={(values, sourceInfo) =>
                     managePriceChangeInList(
-                      values.floatValue ? values.floatValue : 0,
+                      values.floatValue && values.floatValue > 0
+                        ? values.floatValue
+                        : 0,
                       data.id
                     )
                   }
@@ -281,7 +292,15 @@ export default function WithoutSteps({
           <div className="w-1/4 flex flex-col justify-center items-center">
             <span
               onClick={() => {
-                manageAddToList(data);
+                manageAddToList(
+                  data.id,
+                  isInList?.price ? isInList.price : data.base_price,
+                  data.id
+                );
+
+                if (!isInList && ref?.current) {
+                  ref.current?.focus();
+                }
               }}
               className={twMerge([
                 "transition w-8 h-8 cursor-pointer rounded-full text-slate-400 border border-slate-400 flex flex-col justify-center items-center bg-white",

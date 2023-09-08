@@ -11,6 +11,7 @@ export interface IScheduleActions {
   activeLocality: Function;
   activeService: Function;
   activeDay: Function;
+  activePatient: Function;
   changeTypePopup: Function;
   changeStatusPopup: Function;
   getAppointments: Function;
@@ -64,6 +65,10 @@ const activeLocality = (value:any) => async (dispatch: Dispatch<any>) => {
 
 const activeService = (value:any) => async (dispatch: Dispatch<any>) => {
     dispatch({ type: "CHANGE_ACTIVE_SERVICE", payload: { data: value } });
+}
+
+const activePatient = (value:any) => async (dispatch: Dispatch<any>) => {
+  dispatch({ type: "CHANGE_ACTIVE_PATIENT", payload: { data: value } });
 }
 
 const activeDay = (value:any) => async (dispatch: Dispatch<any>) => {
@@ -323,6 +328,7 @@ export const actions: IScheduleActions = {
   getAttentionWindowsByService,
   createWindowAttention,
   getServices,
+  activePatient,
   getServicesByLocality,
   getLocalities,
   getLocalitiesWithServices,
