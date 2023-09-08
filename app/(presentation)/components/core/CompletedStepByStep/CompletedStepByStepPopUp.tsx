@@ -46,13 +46,13 @@ const CompletedStepByStepPopup = ({
           </div>
 
           <div className="text-center mb-3">
-            <h6 className="text-lg" style={{ color: "#000066" }}>
+            <h6 className="text-lg leading-normal" style={{ color: "#000066" }}>
               ¡Enhorabuena, {user?.sex === 1 ? "Doctora" : "Doctor"}!
             </h6>
           </div>
 
           <div className="text-center mb-6">
-            <h3 className="text-[30px] font-bold" style={{ color: "#000066" }}>
+            <h3 className="text-[30px] font-bold leading-normal" style={{ color: "#000066" }}>
               Has creado tu Consultorio Digital
             </h3>
           </div>
