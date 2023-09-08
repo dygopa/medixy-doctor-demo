@@ -39,6 +39,8 @@ const SlotStep = ({
     useContext<IStepByStepAppointmentContext>(StepByStepAppointmentContext);
   const { setStep, getSlots } = actions;
 
+  console.log(appointment);
+
   const {
     state: stateSchedule,
     actions: actionsSchedule,
@@ -110,7 +112,6 @@ const SlotStep = ({
   }
 
   const SlotComponent = ({ data }: { data: any }) => {
-
     let isBefore = moment(data["fechaInicio"]).isBefore(moment().utc(true));
 
     let isSelected = appointment["attentionWindowId"] === data["id"];
@@ -124,7 +125,7 @@ const SlotStep = ({
 
     let isActualHour = data["tipo"] === 2;
 
-    if (isBefore) return <div />
+    if (isBefore) return <div />;
 
     return (
       <div
@@ -315,7 +316,7 @@ const SlotStep = ({
       )}
       <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white">
         <Button
-          disabled={false}
+          disabled={!isNow ? !appointment?.attentionWindowId : false}
           onClick={() => {
             setStep(2)(dispatch);
           }}
