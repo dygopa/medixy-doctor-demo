@@ -19,6 +19,7 @@ import {
   IAuthContext,
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import moment from "moment";
+import { useSearchParams } from "next/navigation";
 
 interface IFiltersProps {
   selectedLocality: {
@@ -58,6 +59,8 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
   const { data: localities, successful: loadedLocalities } = state.getLocalities;
   const { data: services, loading: loadingServices, successful: loadedServices } = state.getServicesByLocality;
   const { data: activeDay, successful: changedActiveDay} = state.activeDay;
+  
+  const params = useSearchParams();
 
   const [listOfLocalities, setListOfLocalities] = useState([]);
   const [listOfServices, setListOfServices] = useState([]);
@@ -100,34 +103,30 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
   }
 
   useMemo(() => {
-    if (selectedLocality.id > 0) {
-      activeLocality(selectedLocality)(dispatch);
-      getServicesByLocality(user.userId, selectedLocality.id)(dispatch);
-      getCalendarEvents(user.userId, selectedLocality.id, moment(activeDay).format('YYYY-MM-DD'), moment(activeDay, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedLocality]);
-
-  useMemo(() => {
-    if (selectedService.id) { 
-      activeService(selectedService)(dispatch);
-      if (selectedService.id === "ALL") {
-        getCalendarEvents(user.userId, selectedLocality.id, moment(activeDay).format('YYYY-MM-DD'), moment(activeDay, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
-      } else { 
-        getCalendarEvents(user.userId, selectedLocality.id, moment(activeDay).format('YYYY-MM-DD'), moment(activeDay, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'), parseInt(selectedService.id))(dispatch);
-      }
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedService]);
-
-  useMemo(() => {
     if (loadedLocalities && localities.length > 0){
-      getCalendarEvents(user.userId, localities[0].id, moment(activeDay).format('YYYY-MM-DD'), moment(activeDay, "YYYY-MM-DD").add(5, 'days').format('YYYY-MM-DD'))(dispatch);
-      setSelectedLocality({
-        id: localities[0].id,
-        title: localities[0].name,
-        description: localities[0].address,
-      })
+
+      if(params.get("locality")){
+        let id = params.get("locality")?.toString();
+        let localityFinded = [...localities].find(
+          (elem: any) => elem["id"] === parseInt(id!)
+        );
+        if (localityFinded) {
+          setSelectedLocality({
+            id: localityFinded["id"],
+            title: localityFinded["name"],
+            description: localityFinded["address"],
+          })
+        }
+        getServicesByLocality(user.userId, params.get("locality"))(dispatch);
+      }else{
+        setSelectedLocality({
+          id: localities[0]["id"],
+          title: localities[0]["name"],
+          description: localities[0]["address"],
+        })
+        getServicesByLocality(user.userId, localities[0].id)(dispatch);
+      }
+
     }
   }, [loadedLocalities, localities]);
 
@@ -160,7 +159,21 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
               description: "Selecciona un consultorio de la lista",
             }}
             customClick={(value: any) => {
+              setListOfServices([])
+              setSelectedService({
+                id: "",
+                title: "",
+                description: "",
+              })
               setSelectedLocality(value);
+              activeLocality(value)(dispatch);
+              getServicesByLocality(user.userId, value["id"])(dispatch);
+              getCalendarEvents(
+                user.userId, 
+                value["id"], 
+                moment(activeDay["start"]).format('YYYY-MM-DD'), 
+                moment(activeDay["end"], "YYYY-MM-DD").format('YYYY-MM-DD')
+              )(dispatch);
             }}
             selectedItem={locality}
             list={listOfLocalities}
@@ -174,8 +187,25 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
             }}
             customClick={(value: any) => {
               setSelectedService(value);
+              activeService(value)(dispatch);
+              if (value["id"] === "ALL") {
+                getCalendarEvents(
+                  user.userId, 
+                  selectedLocality.id,
+                  moment(activeDay["start"]).format('YYYY-MM-DD'), 
+                  moment(activeDay["end"], "YYYY-MM-DD").format('YYYY-MM-DD')
+                )(dispatch);
+              } else { 
+                getCalendarEvents(
+                  user.userId, 
+                  selectedLocality.id,
+                  moment(activeDay["start"]).format('YYYY-MM-DD'), 
+                  moment(activeDay["end"], "YYYY-MM-DD").format('YYYY-MM-DD'),
+                  parseInt(value["id"])
+                )(dispatch);
+              }
             }}
-            selectedItem={service}
+            selectedItem={selectedService}
             list={listOfServices}
           />
         </div>

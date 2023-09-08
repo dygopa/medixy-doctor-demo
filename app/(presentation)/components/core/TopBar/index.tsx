@@ -250,10 +250,10 @@ function Main({
       <div
         ref={customRef}
         className={twMerge([
-          "border rounded-lg overflow-y-scroll bg-white fixed flex flex-col justify-start items-start p-3 shadow-md right-[5%] w-[20rem]",
+          "border rounded-lg overflow-y-scroll bg-white absolute flex flex-col justify-start items-start p-3 shadow-md lg:right-[5%] left-[4%] w-[20rem]",
           "lg:h-[35vh] lg:top-[4rem]",
           "md:h-[35vh] md:top-[4rem]",
-          "h-[40vh] top-[9rem]",
+          "h-[40vh] top-[4rem]",
         ])}
       >
         <div className="w-full border-b pb-2 text-left flex justify-start items-center gap-2">
@@ -312,7 +312,7 @@ function Main({
           </Link>
         ))}
       </Breadcrumb>
-      <div className="lg:w-fit md:w-fit w-full h-full flex justify-end items-center gap-2 relative">
+      <div className="lg:w-fit md:w-fit w-full h-full flex lg:justify-end justify-between items-center gap-2 relative">
         {/* <NotificationPopupProvider>
           <NotificationPopup/>
         </NotificationPopupProvider> */}
@@ -320,17 +320,14 @@ function Main({
           onClick={() => {
             setActiveShortcuts(!activeShortcuts);
           }}
-          className="cursor-pointer transition flex flex-col justify-center items-center rounded-lg px-4 py-2 text-lg overflow-hidden text-slate-700 bg-slate-100 hover:bg-slate-300 mr-6"
+          className="cursor-pointer transition flex flex-col justify-center items-center rounded-lg lg:px-4 lg:py-2 p-3 text-lg overflow-hidden text-slate-700 bg-slate-100 hover:bg-slate-300 mr-6"
           style={{ backgroundColor: "#FFC127" }}
         >
           <div className="flex items-center">
-            <div className="mr-2">
+            <div className="mr-2 lg:block hidden">
               <p className="text-sm">Compartir link</p>
             </div>
-
-            <div>
-              <FiSend />
-            </div>
+            <FiSend />
           </div>
         </button>
         {activeShortcuts && <PopupShortcuts customRef={wrapperRef} />}

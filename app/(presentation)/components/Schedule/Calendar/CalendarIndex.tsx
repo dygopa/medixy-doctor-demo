@@ -57,7 +57,6 @@ export default function CalendarIndex() {
     error: localityError,
     data: locality,
   } = state.activeLocality;
-  const { successful: loadedCreationAppointment } = state.getAppointments;
   const {
     successful: servicesSuccessful,
     error: servicesError,
@@ -209,17 +208,6 @@ export default function CalendarIndex() {
     }
   }
 
-  useMemo(() => {
-    if (loadedCreationAppointment) {
-      getCalendarEvents(user?.userId, locality["id"], moment(activeDayInCalendar["start"]).format('YYYY-MM-DD'), moment(activeDayInCalendar["end"], "YYYY-MM-DD").format('YYYY-MM-DD'))(dispatch);
-    }
-  }, [loadedCreationAppointment]);
-
-  useMemo(() => {
-    if (calendarEventsSuccessful) formatList();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [calendarEventsLoading]);
-
   /* useMemo(() => {
     if (loadedUser && servicesSuccessful) {
       if (services.length === 1) {
@@ -234,9 +222,24 @@ export default function CalendarIndex() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser, services]); */
 
-  useMemo(() => {
-    if (loadedUser && localitiesSuccessful) {
-      if (localities.length === 1) {
+  const [checkedLocality, setCheckedLocality] = useState(false)
+
+  useMemo(()=>{
+    if(!checkedLocality && localitiesSuccessful && localities.length > 0){
+      if(params.get("locality")){
+        let id = params.get("locality")?.toString();
+        let localityFinded = [...localities].find(
+          (elem: any) => elem["id"] === parseInt(id!)
+        );
+        if (localityFinded) {
+          activeLocality({
+            id: params.get("locality"),
+            title: localityFinded["name"],
+            description: localityFinded["description"],
+            type: "LOCALITY",
+          })(dispatch); 
+        }
+      }else{
         activeLocality({
           id: localities[0]["id"],
           title: localities[0]["name"],
@@ -244,41 +247,25 @@ export default function CalendarIndex() {
           type: "LOCALITY",
         })(dispatch);
       }
+      setCheckedLocality(true)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedUser, services]);
-
-  useMemo(()=>{
-    if(changedActiveDayInCalendar){
-      getCalendarEvents(user.userId, locality["id"], moment(activeDayInCalendar["start"]).format('YYYY-MM-DD'), moment(activeDayInCalendar["end"], "YYYY-MM-DD").format('YYYY-MM-DD'))(dispatch);
-    }
-  }, [activeDayInCalendar]);
+  },[localitiesSuccessful])
 
   useMemo(() => {
-    if (loadedUser && localitiesSuccessful && localities.length > 0) {
-      getCalendarEvents(user.userId, localities[0].id, moment(activeDayInCalendar["start"]).format('YYYY-MM-DD'), moment(activeDayInCalendar["end"], "YYYY-MM-DD").format('YYYY-MM-DD'))(dispatch);
-    }
+    if (calendarEventsSuccessful) formatList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedUser, localities, localitiesSuccessful]);
+  }, [calendarEventsLoading]);
 
   useMemo(() => {
-    if (params.get("locality") && localities > 0) {
-      let id = params.get("locality")?.toString();
-      let localityFinded = [...localities].find(
-        (elem: any) => elem["id"] === parseInt(id!)
-      );
-      console.log(localityFinded);
-      if (localityFinded) {
-        activeLocality({
-          id: params.get("locality"),
-          title: localityFinded["name"],
-          description: localityFinded["description"],
-          type: "SERVICE",
-        })(dispatch);
-      }
-      getCalendarEvents(user.userId, params.get("locality"), moment(activeDayInCalendar["start"]).format('YYYY-MM-DD'), moment(activeDayInCalendar["end"], "YYYY-MM-DD").format('YYYY-MM-DD'))(dispatch);
+    if (changedActiveDayInCalendar && checkedLocality) {
+      getCalendarEvents(
+        user.userId, 
+        locality["id"] ?? params.get("locality") ?? localities[0]["id"],
+        moment(activeDayInCalendar["start"]).format('YYYY-MM-DD'), 
+        moment(activeDayInCalendar["end"], "YYYY-MM-DD").format('YYYY-MM-DD')
+      )(dispatch);
     }
-  }, [params, localities]);
+  }, [activeDayInCalendar, checkedLocality]);
 
   useMemo(() => {
     if (loadedUser) {
@@ -313,6 +300,7 @@ export default function CalendarIndex() {
         <div className="w-full lg:w-2/3 h-[64vh]">
           <Calendar
             handleChangeInWeek={(param: DatesSetArg) => {
+              console.log(param)
               activeDay({start: param.start, end: param.end})(dispatch);
             }}
             events={appointments}
