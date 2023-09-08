@@ -2,7 +2,11 @@ import { MedicalRecordStatusEnum } from "(presentation)/(enum)/medicalRecord/med
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
-import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
+import Popup from "(presentation)/components/core/Popup/Popup";
+import {
+  IScheduleContext,
+  ScheduleContext,
+} from "(presentation)/components/Schedule/context/ScheduleContext";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 import {
@@ -17,6 +21,15 @@ export default function Navigator() {
   const { data: subject } = state.subject;
   const { data: appointment } = state.appointment;
   const { loading, error, successful } = state.editAppointmentStatus;
+
+  const { actions: actionsSchedule, dispatch: dispatchSchedule } =
+    useContext<IScheduleContext>(ScheduleContext);
+  const {
+    changeStatusPopup,
+    changeTypePopup,
+    predifinedReservationData,
+    activePatient,
+  } = actionsSchedule;
 
   const router = useRouter();
 
@@ -68,24 +81,40 @@ export default function Navigator() {
           </div>
 
           {appointment.data?.id &&
-            appointment.data?.status !== MedicalRecordStatusEnum.COMPLETE && (
-              <div className="lg:mt-0 mt-4">
-                <Button
-                  variant="primary"
-                  disabled={loading || successful}
-                  onClick={() =>
-                    editAppointmentStatus({
-                      appointmentId: appointment.data.id,
-                      status: MedicalRecordStatusEnum.PROCESSING,
-                    })(dispatch)
-                  }
-                >
-                  Atender paciente
-                </Button>
-              </div>
-            )}
+          appointment.data?.status !== MedicalRecordStatusEnum.COMPLETE ? (
+            <div className="lg:mt-0 mt-4">
+              <Button
+                variant="primary"
+                disabled={loading || successful}
+                onClick={() =>
+                  editAppointmentStatus({
+                    appointmentId: appointment.data.id,
+                    status: MedicalRecordStatusEnum.PROCESSING,
+                  })(dispatch)
+                }
+              >
+                Atender paciente
+              </Button>
+            </div>
+          ) : (
+            <div className="lg:mt-0 mt-4">
+              <Button
+                variant="primary"
+                onClick={() => {
+                  activePatient(subject)(dispatchSchedule);
+                  predifinedReservationData({})(dispatchSchedule);
+                  changeStatusPopup(true)(dispatchSchedule);
+                  changeTypePopup(0)(dispatchSchedule);
+                }}
+              >
+                Agendar cita
+              </Button>
+            </div>
+          )}
         </div>
       </div>
+
+      <Popup />
     </>
   );
 }

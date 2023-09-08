@@ -73,6 +73,16 @@ export const ScheduleReducer = (state: any, action: any) => {
           error: null,
         },
       };
+      case 'CHANGE_ACTIVE_PATIENT':
+        return {
+          ...state,
+          activePatient: {
+            data: action.payload.data,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+        };
     case 'CHANGE_ACTIVE_SERVICE':
       return {
         ...state,

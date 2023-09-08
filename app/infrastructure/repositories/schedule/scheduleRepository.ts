@@ -23,6 +23,15 @@ export class ScheduleRepository implements IScheduleRepository {
     
     async getCalendarEvents(id:number, localityId:number, sinceDate:any, untilDate:any, serviceId?:number): Promise<any[] | ScheduleFailure> {
         try {
+
+            console.log("getCalendarEvents", {
+                id,
+                localityId,
+                sinceDate,
+                untilDate,
+                serviceId
+            })
+
             if(!untilDate.toString().includes("-")){
                 sinceDate = moment().format("YYYY-MM-DD")
                 untilDate = moment().add(7, "day").format("YYYY-MM-DD")
@@ -88,21 +97,15 @@ export class ScheduleRepository implements IScheduleRepository {
     async getAppointments(id:number, dateStart?:string, dateEnd?:string, localityId?:number, status?:number, onlySubjects?: boolean, serviceId?: number, ): Promise<any[] | ScheduleFailure> {
         try {
             
-            console.log("id", localityId)
-            console.log("date", dateStart)
-
             let queryOfServices = supabase.from("ServiciosDoctores").select(`*`).eq("doctorId", id);
 
             if(localityId !== undefined){
-                console.log(localityId)
                 queryOfServices = supabase.from("Servicios").select(`*`).eq("localidadId", localityId);
             }
 
             let resServices = await queryOfServices
             
             if(resServices.data?.length === 0 || resServices.data === null) return []
-            
-            console.log("resServices.data", resServices.data)
             
             let queryServiciosEnVentanasAtencion = supabase.from("ServiciosEnVentanasAtencion")
             .select(`*, VentanasAtencionBase(*)`).in("servicioId", resServices.data!.map((elem:any)=> elem["servicioId"] ))
@@ -115,7 +118,6 @@ export class ScheduleRepository implements IScheduleRepository {
             let resServiciosEnVentanasAtencion = await queryServiciosEnVentanasAtencion
             
             if(resServiciosEnVentanasAtencion.data?.length === 0) return []
-            console.log("resServiciosEnVentanasAtencion.data", resServiciosEnVentanasAtencion.data)
 
             let query = supabase.from("Citas").select(`
               *,
@@ -151,8 +153,6 @@ export class ScheduleRepository implements IScheduleRepository {
             }
 
             let res = await query
-            
-            console.log("res.data.data", res.data)
 
             let list = res.data!.map((elem:any)=>({
                 ...elem["Servicios"],

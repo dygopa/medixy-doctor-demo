@@ -724,7 +724,7 @@ function CreateAgenda({
             <FormInput
               type={"date"}
               value={formData.startDate}
-              min={Date.now()}
+              min={moment().format("YYYY-MM-DD")}
               className="form-control"
               onChange={(e) =>
                 setFormData({ ...formData, startDate: e.target.value })
@@ -768,6 +768,11 @@ function CreateAgenda({
             </FormSelect>
           </div>
         </div>
+        {moment(formData.startDate).isBefore(moment()) && 
+          <div className="w-full py-1 text-left ">
+            <p className="text-red-600 text-sm font-medium">La fecha de arranque no puede ser menor a la fecha de hoy</p>
+          </div>
+        }
         <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className="font-normal text-sm text-slate-600">Se repite los</p>
           <div className="w-full flex justify-between items-center gap-3">
@@ -823,6 +828,7 @@ function CreateAgenda({
         <Button
           disabled={
             loading ||
+            moment(formData.startDate).isBefore(moment()) ||
             daysRepeatedList.length === 0 ||
             formData.localityId === 0 ||
             formData.startDate === "" ||

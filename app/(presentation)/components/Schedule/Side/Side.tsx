@@ -217,30 +217,47 @@ const Side = () => {
   const { data: activeDay, successful: changedActiveDay } = state.activeDay;
   const { data: actualDay } = state.actualDay;
   const { successful: deleteAppointmentSuccessful } = state.deleteAppointment;
-  const { data: service } = state.activeService
+  const { data: service, successful: serviceSuccessful } = state.activeService
 
-  useMemo(() => {
-    if (localitySuccessful) {
+  useMemo(()=>{
+    if(deleteAppointmentSuccessful){
+      
+      if(service.id === "ALL" && !service) {
+        getAppointments(
+          user.userId,
+          moment(actualDay).format("YYYY-MM-DD"),
+          moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
+          locality["id"],
+          true
+        )(dispatch);
+        return;
+      }
+
       getAppointments(
         user.userId,
         moment(actualDay).format("YYYY-MM-DD"),
         moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
         locality["id"],
-        true
+        true,
+        parseInt(service.id)
       )(dispatch);
+
     }
-  }, [activeDay, locality, deleteAppointmentSuccessful]);
+  },[deleteAppointmentSuccessful])
 
   useMemo(() => {
-    if(service.id === "ALL") {
-      getAppointments(
-        user.userId,
-        moment(actualDay).format("YYYY-MM-DD"),
-        moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
-        locality["id"],
-        true
-      )(dispatch);
-    } else {
+    if (actualDay && localitySuccessful){
+      if(service.id === "ALL" && !service) {
+        getAppointments(
+          user.userId,
+          moment(actualDay).format("YYYY-MM-DD"),
+          moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
+          locality["id"],
+          true
+        )(dispatch);
+        return;
+      }
+
       getAppointments(
         user.userId,
         moment(actualDay).format("YYYY-MM-DD"),
@@ -250,18 +267,7 @@ const Side = () => {
         parseInt(service.id)
       )(dispatch);
     }
-  }, [service]);
-
-  useMemo(() => {
-    if (actualDay)
-      getAppointments(
-        user.userId,
-        moment(actualDay).format("YYYY-MM-DD"),
-        moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
-        locality["id"],
-        true
-      )(dispatch);
-  }, [actualDay]);
+  }, [actualDay, localitySuccessful, service]);
 
   return (
     <div className="w-full lg:w-1/3 flex flex-col justify-start items-center gap-3">

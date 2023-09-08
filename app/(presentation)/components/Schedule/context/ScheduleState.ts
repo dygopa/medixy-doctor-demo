@@ -8,6 +8,7 @@ export interface IScheduleState {
   cancelAppointment: IScheduleUserState;
   deleteAppointment: IScheduleUserState;
   activeLocality: IScheduleUserState;
+  activePatient: IScheduleUserState;
   activeService: IScheduleUserState;
   activeDay: IScheduleUserState;
   actualDay: IScheduleUserState;
@@ -65,6 +66,12 @@ export const initialState: IScheduleState = {
     error: null,
   },
   activeLocality: {
+    data: {},
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  activePatient: {
     data: {},
     loading: false,
     successful: false,
