@@ -26,18 +26,19 @@ export default function SucessfulMessage({
   const { getCalendarEvents, getAppointments } = actions;
   const { data: locality } = state.activeLocality;
   const { data: activeDay } = state.activeDay;
+  const { data: actualDay } = state.actualDay;
 
   const getCalendarEventsDispatch = () => {
     getCalendarEvents(
       user.userId,
       locality.id,
-      moment(activeDay).format("YYYY-MM-DD"),
-      moment(activeDay, "YYYY-MM-DD").add(5, "days").format("YYYY-MM-DD")
+      moment(activeDay["start"]).format('YYYY-MM-DD'), 
+      moment(activeDay["end"], "YYYY-MM-DD").format('YYYY-MM-DD')
     )(dispatch);
     getAppointments(
       user.userId,
-      moment().format("YYYY-MM-DD"),
-      moment().add(1, "day").format("YYYY-MM-DD"),
+      moment(actualDay).format('YYYY-MM-DD'), 
+      moment(actualDay).add(1, "day").format('YYYY-MM-DD'),
       locality.id,
       true
     )(dispatch);

@@ -206,7 +206,8 @@ const Side = () => {
     changeTypePopup,
     appointmentDetail,
     cancelAppointment,
-    activeService
+    activeService,
+    getCalendarEvents
   } = actions;
   const { data, loading, successful, error } = state.getAppointments;
   const {
@@ -233,6 +234,13 @@ const Side = () => {
         return;
       }
 
+      getCalendarEvents(
+        user.userId, 
+        locality["id"],
+        moment(activeDay["start"]).format('YYYY-MM-DD'), 
+        moment(activeDay["end"], "YYYY-MM-DD").format('YYYY-MM-DD')
+      )(dispatch);
+
       getAppointments(
         user.userId,
         moment(actualDay).format("YYYY-MM-DD"),
@@ -250,8 +258,8 @@ const Side = () => {
       if(service.id === "ALL" && !service) {
         getAppointments(
           user.userId,
-          moment(actualDay).format("YYYY-MM-DD"),
-          moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
+          moment(actualDay).format('YYYY-MM-DD'), 
+          moment(actualDay).add(1, "day").format('YYYY-MM-DD'),
           locality["id"],
           true
         )(dispatch);
@@ -260,8 +268,8 @@ const Side = () => {
 
       getAppointments(
         user.userId,
-        moment(actualDay).format("YYYY-MM-DD"),
-        moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
+        moment(actualDay).format('YYYY-MM-DD'), 
+        moment(actualDay).add(1, "day").format('YYYY-MM-DD'),
         locality["id"],
         true,
         parseInt(service.id)
@@ -289,7 +297,7 @@ const Side = () => {
           </p>
         )}
       </div>
-      <div className="w-full flex flex-col justify-start items-center gap-3">
+      <div className="w-full flex flex-col justify-start items-center gap-3 h-[57vh] overflow-y-auto">
         {loading && <Loading />}
         {successful &&
           data.length > 0 &&
