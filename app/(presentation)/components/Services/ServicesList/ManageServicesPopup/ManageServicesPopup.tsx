@@ -58,7 +58,7 @@ export default function ManageServicesPopup() {
   return (
     <>
       <div className="fixed bottom-4 right-4">
-        <div className="w-[450px] h-[200px] bg-white rounded-md shadow-md p-4">
+        <div className="lg:w-[450px] md:w-[450px] sm:w-[450px] w-[325px] h-[200px] bg-white rounded-md shadow-md p-4">
           <div>
             <h2 className="text-slate-900 font-bold text-lg">
               Gestión de servicios
@@ -73,7 +73,7 @@ export default function ManageServicesPopup() {
             </p>
           </div>
 
-          <div className="mt-8">
+          <div className="mt-4">
             <Button
               variant="primary"
               className="w-full"
