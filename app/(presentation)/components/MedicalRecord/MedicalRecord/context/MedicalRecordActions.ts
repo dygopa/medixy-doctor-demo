@@ -207,7 +207,7 @@ const createCompanion = (patientId:number, companion:ISubject) => async (dispatc
   try {
     dispatch({ type: "CREATE_COMPANION_LOADING" });
     
-    const res: ISubject = await new SubjectsUseCase().createSubject(companion, patientId);
+    const res: ISubject = await new SubjectsUseCase().createSubjectCompanion(companion, patientId);
 
     await new SubjectsUseCase().createSubjectRelations(patientId, res.subjectId);
 

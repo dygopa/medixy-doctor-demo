@@ -146,6 +146,29 @@ export default class SubjectsUseCase {
     }
   }
 
+  async createSubjectCompanion(subject: ISubject, userId:any): Promise<ISubject> {
+    try {
+
+      const findedId = await this._repository.findSubject(subject);
+
+      if(findedId !== ""){
+        console.log(findedId)
+        const resSubjectRelation = await this._repository.getSubjectById(findedId);
+
+        if (resSubjectRelation instanceof SubjectFailure) throw resSubjectRelation;
+
+        return resSubjectRelation;
+      }
+
+      const res = await this._repository.createSubject(subject);
+      if (res instanceof SubjectFailure) throw res;
+     
+      return res.data;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async createSubjectRelations(subjectPrimayId: number, subjectSecundaryId: number): Promise<boolean> {
     try {
       const response = await this._repository.createRelationSubject(subjectPrimayId, subjectSecundaryId);
