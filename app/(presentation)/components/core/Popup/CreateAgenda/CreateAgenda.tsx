@@ -768,7 +768,7 @@ function CreateAgenda({
             </FormSelect>
           </div>
         </div>
-        {moment(formData.startDate).isBefore(moment()) && 
+        {moment(formData.startDate).subtract(-1, "day").isBefore(moment()) && 
           <div className="w-full py-1 text-left ">
             <p className="text-red-600 text-sm font-medium">La fecha de arranque no puede ser menor a la fecha de hoy</p>
           </div>
@@ -828,7 +828,7 @@ function CreateAgenda({
         <Button
           disabled={
             loading ||
-            moment(formData.startDate).isBefore(moment()) ||
+            moment(formData.startDate).subtract(-1, "day").isBefore(moment()) ||
             daysRepeatedList.length === 0 ||
             formData.localityId === 0 ||
             formData.startDate === "" ||
