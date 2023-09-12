@@ -65,6 +65,7 @@
     "react-share": "^4.4.1",
     "react-transition-group": "^4.4.5",
     "simplebar": "^5.3.9",
+    "socket.io-client": "^4.7.2",
     "tabulator-tables": "^5.4.3",
     "tiny-slider": "^2.9.4",
     "tippy.js": "^6.3.7",

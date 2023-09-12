@@ -3,6 +3,7 @@ import React, {
   Fragment,
   MouseEventHandler,
   useContext,
+  useEffect,
   useMemo,
   useState,
 } from "react";
@@ -20,6 +21,7 @@ import { FiUser } from "react-icons/fi";
 import { AppointmentEnum } from "(presentation)/(enum)/appointment/appointmentEnum";
 import { Menu, Transition } from "@headlessui/react";
 import RescheduleModal from "./RescheduleModal/RescheduleModal";
+import { socket } from '../../../../socket';
 
 const StatusComponent = ({ data }: { data: any }) => {
   let status = data["estado"];
@@ -220,6 +222,26 @@ const Side = () => {
   const { successful: deleteAppointmentSuccessful } = state.deleteAppointment;
   const { data: service, successful: serviceSuccessful } = state.activeService
 
+  //const [isConnected, setIsConnected] = useState(socket.connected);
+  //const [fooEvents, setFooEvents] = useState([]);
+
+  //useEffect(() => {
+
+  //  const onConnect = () => setIsConnected(true)
+  //  const onDisconnect = () => setIsConnected(false)
+  //  const onGetAppointments = (value:any) => console.log(value)
+
+  //  socket.on('connect', onConnect);
+  //  socket.on('disconnect', onDisconnect);
+  //  socket.on('get_appointments', onGetAppointments);
+
+  //  return () => {
+  //    socket.off('connect', onConnect);
+  //    socket.off('disconnect', onDisconnect);
+  //    socket.off('get_appointments', onGetAppointments);
+  //  };
+  //}, []);
+  
   useMemo(()=>{
     if(deleteAppointmentSuccessful){
       
