@@ -9,7 +9,10 @@ import { IUserContext, UserContext } from "../context/UserContext";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { StickyNavbar } from "(presentation)/components/core/StickyNavbar/StickyNavbar";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
-import { AuthContext, IAuthContext } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import {
+  AuthContext,
+  IAuthContext,
+} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 
 interface IFormularyProps {
   account: IUser;
@@ -17,8 +20,11 @@ interface IFormularyProps {
 }
 
 export default function Formulary({ account, setAccount }: IFormularyProps) {
-  
-  const { state: stateAuth, actions: actionsAuth, dispatch: dispatchAuth } = useContext<IAuthContext>(AuthContext);
+  const {
+    state: stateAuth,
+    actions: actionsAuth,
+    dispatch: dispatchAuth,
+  } = useContext<IAuthContext>(AuthContext);
   const { getUserAuthenticated } = actionsAuth;
 
   const { state, actions, dispatch } = useContext<IUserContext>(UserContext);
@@ -76,7 +82,9 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
       sex: account.sex ?? 0,
       person_type: account.personType ?? 0,
       about_me: account.aboutMe ?? "",
-      short_description: account.shortDescription ? account.shortDescription.trim() : "",
+      short_description: account.shortDescription
+        ? account.shortDescription.trim()
+        : "",
       website_url: account.websiteUrl.trim() ?? "",
       address: account.address.trim() ?? "",
       pwa_profession_id: account.pwaProfressionId ?? "",
@@ -85,14 +93,14 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
         account.professionalLicenseInstitution.trim() ?? "",
     };
 
-    console.log(obj)
+    console.log(obj);
 
     updateUserData(obj)(dispatch);
   };
 
-  useMemo(()=>{
-    if(successful) getUserAuthenticated()(dispatchAuth)
-  },[successful])
+  useMemo(() => {
+    if (successful) getUserAuthenticated()(dispatchAuth);
+  }, [successful]);
 
   useMemo(() => {
     if (account.userId) setAccount({ ...account, userId: account.userId });
@@ -144,7 +152,12 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
         />
         <Credentials account={account} setAccount={setAccount} />
         <Contact account={account} setAccount={setAccount} />
-        <AboutMe account={account} setAccount={setAccount} errors={errors} setErrors={setErrors} />
+        <AboutMe
+          account={account}
+          setAccount={setAccount}
+          errors={errors}
+          setErrors={setErrors}
+        />
       </div>
     </div>
   );
