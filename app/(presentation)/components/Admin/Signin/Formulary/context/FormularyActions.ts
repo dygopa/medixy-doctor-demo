@@ -1,4 +1,4 @@
-import AuthUseCase from "domain/useCases/auth/authUseCase";
+import AuthUseCase from "domain/useCases/admin/auth/authUseCase";
 import { Dispatch } from "react";
 
 export interface IFormularyActions {

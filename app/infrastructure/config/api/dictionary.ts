@@ -6,6 +6,9 @@ export const UPDATE_AVATAR_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API
 export const GET_OTP_CODE = () => process.env.NEXT_PUBLIC_API_URL + `/doctor/otp`;
 export const SEND_OTP_CODE = () => process.env.NEXT_PUBLIC_API_URL + `/doctor/otp/verify`;
 
+export const ADMIN_GET_USER_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL + '/admin/auth';
+export const ADMIN_AUTH_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL + '/admin/auth';
+
 export const GET_MEDICAL_SPECIALITIES_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL + '/medical_specialty';
 export const GET_USER_MEDICAL_SPECIALITIES_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}/medical_specialty`;
 export const CREATE_MEDICAL_SPECIALITY_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}/medical_specialty`;

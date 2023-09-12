@@ -19,7 +19,7 @@ export default function AuthHandler({
     if (data.userId) redirect("/admin/dashboard");
   };
 
-  /*useEffect(() => {
+  useEffect(() => {
     loadUser();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -27,7 +27,7 @@ export default function AuthHandler({
   useEffect(() => {
     if (successful) onHandleAuth();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [successful]);*/
+  }, [successful]);
 
   if (loading || data?.userId) return <div />;
 
