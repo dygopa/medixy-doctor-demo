@@ -230,6 +230,7 @@ export class TreatmentRepository implements ITreatmentRepository {
         doc.text(`Tel: ${obj.doctor.phone}`, 90, y);
       }
 
+      doc.save(`Tratamientos ${obj.treatment.subject?.lastName} ${obj.treatment.subject?.name} - ${new Date().getDate()}-${new Date().getMonth()}-${new Date().getFullYear()}`)
       doc.output('dataurlnewwindow');
 
       const response: IGetTreatmentPDFResponse = {
