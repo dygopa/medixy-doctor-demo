@@ -324,7 +324,6 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       if (obj.medicalRecord.medicalRecordValues.length >= 1) doc.text(`${obj.medicalRecord.medicalRecordValues[1].value}`, 10, 102);
 
-      
       doc.setLineWidth(0.1); 
       doc.line(10, 110, 200, 110);
 
@@ -348,8 +347,9 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       doc.text(`${obj.doctor.address}​`, 50, 165);
       doc.text(`Tel: ${obj.doctor.phone}​​`, 75, 170);
 
+      doc.save(`Diagnósticos ${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName} - ${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getFullYear()}`)
       doc.output('dataurlnewwindow');
-
+     
       const response: IGetMedicalRecordPDFResponse = {
           data: obj.medicalRecord,
           metadata: {}
@@ -495,6 +495,7 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       doc.text(`${obj.doctor.address}​`, 50, 165);
       doc.text(`Tel: ${obj.doctor.phone}​​`, 75, 170);
 
+      doc.save(`Orden con especialista ${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName} - ${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getFullYear()}`)
       doc.output('dataurlnewwindow');
 
       const response: IGetMedicalRecordPDFResponse = {
@@ -650,6 +651,7 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       doc.text(`${obj.doctor.address}​`, 50, 195);
       doc.text(`Tel: ${obj.doctor.phone}​​`, 75, 200);
 
+      doc.save(`Justificativo médico ${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName} - ${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getFullYear()}`)
       doc.output('dataurlnewwindow');
 
       const response: IGetMedicalRecordPDFResponse = {
@@ -805,6 +807,7 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       doc.text(`${obj.doctor.address}​`, 50, 195);
       doc.text(`Tel: ${obj.doctor.phone}​​`, 75, 200);
 
+      doc.save(`Certificado médico ${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName} - ${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getFullYear()}`)
       doc.output('dataurlnewwindow');
 
       const response: IGetMedicalRecordPDFResponse = {
@@ -946,6 +949,7 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       doc.text(`${obj.doctor.address}​`, 50, 185);
       doc.text(`Tel: ${obj.doctor.phone}​​`, 75, 190);
 
+      doc.save(`Orden de hospitalización ${obj.medicalRecord.subject.name} ${obj.medicalRecord.subject.lastName} - ${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalRecord.medicalConsulty.consultationDate).getFullYear()}`)
       doc.output('dataurlnewwindow');
 
       const response: IGetMedicalRecordPDFResponse = {
