@@ -21,7 +21,7 @@ import { FiUser } from "react-icons/fi";
 import { AppointmentEnum } from "(presentation)/(enum)/appointment/appointmentEnum";
 import { Menu, Transition } from "@headlessui/react";
 import RescheduleModal from "./RescheduleModal/RescheduleModal";
-import { socket } from '../../../../socket';
+//import { socket } from '../../../../socket';
 
 const StatusComponent = ({ data }: { data: any }) => {
   let status = data["estado"];
