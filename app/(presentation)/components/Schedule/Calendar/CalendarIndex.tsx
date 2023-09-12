@@ -13,6 +13,7 @@ import { DatesSetArg, EventClickArg } from "@fullcalendar/core";
 import { useSearchParams } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 import AppointmentEndModal from "./AppointmentEndModal/AppointmentEndModal";
+import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 
 export default function CalendarIndex() {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
@@ -287,10 +288,12 @@ export default function CalendarIndex() {
           show={createAppointmentSuccessful === true}
           description="Cita creada exitosamente"
         />
-        <AlertComponent
-          variant="success"
+        <SuccessfulComponent 
+          tittle="Cita cancelada con exito"
           show={deleteAppointmentSuccessful}
-          description="Cita cancelada exitosamente"
+          description={
+            "La cita selecciodana ha sido cancelada con éxito."
+          }
         />
         <AlertComponent
           variant="error"
