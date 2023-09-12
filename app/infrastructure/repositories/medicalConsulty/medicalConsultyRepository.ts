@@ -703,6 +703,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
       doc.text(`${obj.doctor.address}`, 50, y + 20);
       doc.text(`Tel: ${obj.doctor.phone}​​`, 75, y + 25);
 
+      doc.save(`Consulta medica ${obj.medicalConsulty.subject.name} ${obj.medicalConsulty.subject.lastName} - ${new Date(obj.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalConsulty.consultationDate).getFullYear()}`)
       doc.output('dataurlnewwindow');
 
       const response: IGetMedicalConsultyPDFResponse = {
