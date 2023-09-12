@@ -32,7 +32,12 @@ interface IFormularyProps {
   setErrors: any;
 }
 
-export default function BasicData({ account, setAccount, errors, setErrors, }: IFormularyProps) {
+export default function BasicData({
+  account,
+  setAccount,
+  errors,
+  setErrors,
+}: IFormularyProps) {
   const {
     state: authState,
     actions: authActions,
@@ -76,22 +81,22 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
   }
 
   const handleClickRef = () => avatarRef.current && avatarRef.current.click();
-  
+
   /*useEffect(() => {
     if (successful) getUserAuthenticated()(dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [successful]);*/
 
-  const handleage = (value:string) => {
-    setAccount({ ...account, birthDate: value })
+  const handleage = (value: string) => {
+    setAccount({ ...account, birthDate: value });
     if (value.length < 2) {
       setErrors((previousState: any) => {
         return {
           ...previousState,
           age: "La fecha de nacimiento es obligatorio",
-        }
-      })
-      console.log(errors.age)
+        };
+      });
+      console.log(errors.age);
       return true;
     }
     if (moment().isBefore(new Date(value))) {
@@ -105,15 +110,15 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
     return false;
   };
 
-  const handleCURP = (value:string) => {
-    setAccount({ ...account, curp: value })
+  const handleCURP = (value: string) => {
+    setAccount({ ...account, curp: value });
     if (value.length < 2) {
       setErrors((previousState: any) => {
         return {
           ...previousState,
           curp: "El CURP es obligatorio",
-        }
-      })
+        };
+      });
       return true;
     }
     setErrors({ ...errors, curp: "" });
@@ -154,7 +159,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
         };
       });
       return true;
-    };
+    }
     if (!VALIDATE_NAMES(value)) {
       setErrors((previousState: any) => {
         return {
@@ -163,13 +168,13 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
         };
       });
       return true;
-    };
+    }
     setErrors({ ...errors, lastname: "" });
     return false;
   };
 
   const handleSecondLastname = (value: string) => {
-    setAccount({ ...account, lastName: value })
+    setAccount({ ...account, lastName: value });
     if (value.length > 0 && !VALIDATE_NAMES(value)) {
       setErrors((previousState: any) => {
         return {
@@ -178,13 +183,16 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
         };
       });
       return true;
-    };
+    }
     setErrors({ ...errors, secondLastname: "" });
     return false;
   };
 
   useEffect(() => {
-    if (successful) getUserAuthenticated()(authDispatch);
+    if (successful) {
+      setAccount({ ...account, avatar: data });
+      //getUserAuthenticated()(authDispatch);
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [successful]);
 
@@ -215,7 +223,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
           </div>
           <div className="w-full lg:flex justify-between items-center gap-4">
             <div className="lg:w-[30%] flex flex-col justify-center items-center text-center gap-3">
-              {user?.avatar?.length > 0 ? (
+              {account?.avatar?.length > 0 ? (
                 <>
                   <div className="w-[150px] h-[150px] relative flex justify-center hover:border hover:border-primary rounded-full">
                     <input
@@ -229,7 +237,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
                     />
                     <Image
                       className="object-cover rounded-full "
-                      src={data ? data.toString() : account?.avatar}
+                      src={account?.avatar}
                       alt=""
                       fill
                     />
@@ -278,7 +286,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
             <div className="lg:w-[70%] grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 justify-start items-start gap-3 lg:mt-0 mt-6">
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  Nombre(s){" "}<span className="text-primary font-bold">*</span>
+                  Nombre(s) <span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"text"}
@@ -294,7 +302,8 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Primer Apellido{" "}<span className="text-primary font-bold">*</span>
+                  Primer Apellido{" "}
+                  <span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"text"}
@@ -310,7 +319,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Segundo Apellido
+                  Segundo Apellido
                 </p>
                 <FormInput
                   type={"text"}
@@ -318,9 +327,7 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
                   min={0}
                   defaultValue={user?.lastName}
                   className="form-control w-full"
-                  onChange={(e) =>
-                    handleSecondLastname(e.target.value)
-                  }
+                  onChange={(e) => handleSecondLastname(e.target.value)}
                 />
                 {errors.secondLastname.length > 0 && (
                   <span className="text-red-500">{errors.secondLastname}</span>
@@ -328,16 +335,14 @@ export default function BasicData({ account, setAccount, errors, setErrors, }: I
               </div>
               <div className="flex flex-col justify-between items-start relative gap-1">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                  CURP{" "}<span className="text-primary font-bold">*</span>
+                  CURP <span className="text-primary font-bold">*</span>
                 </p>
                 <FormInput
                   type={"text"}
                   placeholder="Escribe tu CURP..."
                   defaultValue={user?.curp}
                   className="form-control w-full"
-                  onChange={(e) =>
-                    handleCURP(e.target.value)
-                  }
+                  onChange={(e) => handleCURP(e.target.value)}
                 />
                 {errors.curp.length > 0 && (
                   <span className="text-red-500">{errors.curp}</span>
