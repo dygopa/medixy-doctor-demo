@@ -67,6 +67,7 @@ export default function CalendarIndex() {
 
   const [showWindowModal, setShowWindowModal] = useState(false);
   const [successfulPopup, setSuccessfulPopup] = useState(false);
+  const [hasLocalities, setHasLocalities] = useState(false);
 
   const [eventSelected, setEventSelected] = useState<EventClickArg>(
     {} as EventClickArg
@@ -152,6 +153,10 @@ export default function CalendarIndex() {
     }
   };
 
+  useMemo(()=>{
+    if(localitiesSuccessful && [...(localities as any[])].length > 0) setHasLocalities(true)
+  },[localitiesLoading])
+
   useMemo(() => {
     if (successful) formatList();
   }, [loading, successful]);
@@ -220,28 +225,12 @@ export default function CalendarIndex() {
           description="Ventana de atención creada exitosamente"
         />
         {/* BEGIN: Calendar Content */}
-        <div className="w-full h-[64vh]">
-          {user !== null && user.userId ? (
-            <>
-              { (localitiesLoading && !localitiesSuccessful) ? 
-                <Loading />
-              : 
-                (localitiesSuccessful && 
-                  (
-                    [...(localities as any[])].length > 0 ? 
-                      <Calendar
-                        navLinkDayClick={(date: Date, jsEvent: UIEvent) => {
-                          jsEvent.preventDefault();
-                        }}
-                        handleChangeInWeek={() => {}}
-                        events={windows}
-                        initialEvent={""}
-                        handleClick={(param: EventClickArg) => {
-                          //changeStatusPopup(true)(dispatch); changeTypePopup(5)(dispatch);
-                          router.replace(`/schedule/configuration?attentionWindowId=${param.event._def.extendedProps["attentionWindowId"]}`)
-                        }}
-                      />
-                    :
+        {user !== null && user.userId 
+          ?
+            <div className="w-full h-[64vh]">
+              {(!localitiesLoading && localitiesSuccessful) &&
+                <>{
+                  (localities && [...(localities as any[])].length === 0) ?
                     <div className="w-full h-full flex justify-center items-center flex-wrap gap-5">
                       <div className="md:w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4">
                         <div className="w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center">
@@ -265,14 +254,33 @@ export default function CalendarIndex() {
                         </Link>
                       </div>
                     </div>
-                  )
-                )
+                  : 
+                    <div></div>
+                }</>
               }
-            </>
-          ) : (
+              {(localitiesLoading && !localitiesSuccessful && !hasLocalities) && 
+                <Loading />
+              }
+              {(!localitiesLoading && localitiesSuccessful && hasLocalities) && 
+                <Calendar
+                  navLinkDayClick={(date: Date, jsEvent: UIEvent) => {
+                    jsEvent.preventDefault();
+                  }}
+                  handleChangeInWeek={() => {}}
+                  events={windows}
+                  initialEvent={""}
+                  handleClick={(param: EventClickArg) => {
+                    //changeStatusPopup(true)(dispatch); changeTypePopup(5)(dispatch);
+                    router.replace(`/schedule/configuration?attentionWindowId=${param.event._def.extendedProps["attentionWindowId"]}`)
+                  }}
+                />
+              }
+            </div>
+          :
+          <div className="w-full h-[64vh]">
             <Loading />
-          )}
-        </div>
+          </div>
+        }
         {/* END: Calendar Content */}
       </div>
     </>
