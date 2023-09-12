@@ -1,4 +1,5 @@
-import { AuthFailures } from 'domain/core/failures/auth/authFailures';
+import { AuthFailure } from "domain/core/failures/auth/authFailure";
+
 
 export interface ISignOutState {
   signOutUserState: ISignOutUserState;
@@ -7,7 +8,7 @@ export interface ISignOutState {
 interface ISignOutUserState {
   loading: boolean;
   successful: boolean;
-  error: AuthFailures | null;
+  error: AuthFailure | null;
 }
 
 export const initialState = {
