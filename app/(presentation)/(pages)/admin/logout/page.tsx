@@ -1,14 +1,11 @@
-import AdminAppLayout from "(presentation)/(layouts)/AdminAppLayout/AdminAppLayout";
-import { AdminAccountRoutesEnum } from "(presentation)/(routes)/admin/accountRoutes";
+
 import LogoutIndex from "(presentation)/components/Admin/Logout/LogoutIndex";
+import Providers from "./providers";
 
 export default async function AdminLogoutPage() {
   return (
-    <AdminAppLayout
-      title="Prosit"
-      pathname={AdminAccountRoutesEnum.SignIn}
-    >
+    <Providers>
       <LogoutIndex />
-    </AdminAppLayout>
+    </Providers>
   );
 }
