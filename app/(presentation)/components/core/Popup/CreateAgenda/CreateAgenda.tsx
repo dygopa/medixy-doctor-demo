@@ -497,6 +497,12 @@ function CreateAgenda({
 
   useMemo(() => {
     if (successful) {
+
+      setDaysInWeek(daysInWeek.map((elem:any)=>({
+        ...elem,
+        isBlock: false
+      })))
+
       activeLocality(selectedLocality)(dispatch);
       setFormData({
         typeEnd: 1,
@@ -523,6 +529,10 @@ function CreateAgenda({
   useMemo(() => {
     if (!statusPopup) {
       router.replace(`/schedule/configuration`)
+      setDaysInWeek(daysInWeek.map((elem:any)=>({
+        ...elem,
+        isBlock: false
+      })))
       setSelectedLocality({
         id: locality.id,
         title: locality.title,
