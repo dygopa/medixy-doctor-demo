@@ -1,7 +1,7 @@
 "use client";
 
 import clsx from "clsx";
-import MobileMenu from "(presentation)/components/core/MobileMenu";
+import MobileMenu from "(presentation)/components/core/MobileMenuAdmin";
 import TopBar from "(presentation)/components/core/TopBarAdmin";
 import Navigation from "./nav";
 import { useContext, useEffect, useMemo, useState } from "react";
