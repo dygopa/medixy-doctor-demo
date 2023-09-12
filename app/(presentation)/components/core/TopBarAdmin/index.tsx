@@ -3,13 +3,14 @@ import Breadcrumb from "../BaseComponents/Breadcrumb";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FiUser } from "react-icons/fi";
+import { IAdmin } from "domain/core/entities/adminEntity";
 
 interface INavigation {
   title: string;
   pathname: string;
 }
 
-function TopbarAdmin({ navigation }: { navigation: INavigation[] }) {
+function TopbarAdmin({ navigation, user }: { navigation: INavigation[], user: IAdmin }) {
   const pathname = usePathname();
 
   return (
@@ -31,7 +32,7 @@ function TopbarAdmin({ navigation }: { navigation: INavigation[] }) {
       </Breadcrumb>
       <div className="lg:w-fit w-full h-full flex justify-end items-center gap-3">
         <div className="w-fit min-w-[9rem] h-full flex flex-col justify-center items-end">
-          <p className="font-semibold text-sm text-slate-900">Prosit</p>
+          <p className="font-semibold text-sm text-slate-900">{user?.names}</p>
           <p className="font-light text-sm text-slate-500">Administrador</p>
         </div>
         <div className="w-[3rem] h-[3rem] flex flex-col justify-center items-center rounded-xl overflow-hidden p-0 bg-slate-300">

@@ -1,6 +1,5 @@
 import { IAdmin } from "domain/core/entities/adminEntity";
 import AuthUseCase from "domain/useCases/admin/auth/authUseCase";
-import { redirect } from "next/navigation";
 import { Dispatch } from "react";
 
 export interface IAuthActions {

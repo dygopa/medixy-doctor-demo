@@ -1,4 +1,5 @@
-import { DashboardRoutesEnum } from "(presentation)/(routes)/dashboardRoutes";
+
+import { AdminDashboardRoutesEnum } from "(presentation)/(routes)/admin/dashboardRoutes";
 import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
@@ -21,7 +22,7 @@ export default function Navigation() {
     <div className="flex flex-col justify-between h-[95vh]">
       <div>
         <Link
-          href={DashboardRoutesEnum.Dashboard}
+          href={AdminDashboardRoutesEnum.Dashboard}
           className="sidebar-logo flex justify-center pt-3 pb-3"
           title="Página de inicio de Prosit"
         >
