@@ -66,9 +66,9 @@ export const getFirebaseToken = async () => {
   }
 };
 
-//export const onMessageListener = () => new Promise((resolve) => { 
-//  firebase.messaging().onMessage(messaging, (payload: unknown) => { 
-//    console.log(payload)
-//    resolve(payload); 
-//  });
-//});
+export const onMessageListener = () => new Promise((resolve) => { 
+  firebase.messaging().onMessage((payload:any) => { 
+    console.log(payload)
+    resolve(payload); 
+  }, (e:Error) => console.log(e));
+});

@@ -39,7 +39,7 @@ import NotificationPopupProvider from "../NotificationPopup/context/Notification
 import { 
   getFirebaseToken, 
   messaging,
-  //onMessageListener 
+  onMessageListener
 } from "infrastructure/config/firebase/FirebaseConfig";
 
 interface INavigation {
@@ -286,15 +286,15 @@ function Main({
   };
 
   useEffect(() => {
-    //const unsubscribe = onMessageListener().then((payload:any) => {
-    //  console.log({
-    //    title: payload?.notification?.title,
-    //    body: payload?.notification?.body,
-    //  })
-    //});
-    //return () => {
-    //  unsubscribe.catch((err:any) => console.log('failed: ', err));
-    //};
+    const unsubscribe = onMessageListener().then((payload:any) => {
+      console.log({
+        title: payload?.notification?.title,
+        body: payload?.notification?.body,
+      })
+    });
+    return () => {
+      unsubscribe.catch((err:any) => console.log('failed: ', err));
+    };
   }, []);
 
   const handleGetFirebaseToken = () => {
