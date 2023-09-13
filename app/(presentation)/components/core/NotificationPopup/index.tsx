@@ -16,7 +16,7 @@ const NotificationPopup = ({user}:{user:IUser}) => {
     const [activeDot, setActiveDot] = useState(false)
 
     useMemo(()=>{
-        if(user.accountId){
+        if(user && user.accountId){
             getNotifications({
                 userId: user.accountId
             })(dispatch);
