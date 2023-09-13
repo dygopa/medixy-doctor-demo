@@ -38,3 +38,6 @@ export const CREATE_ATTENTION_WINDOW_ENDPOINT = (id:number) => process.env.NEXT_
 export const RESCHEDULE_APPOINTMENT_ENDPOINT = (id:string) => process.env.NEXT_PUBLIC_API_URL + `/canceled_appointments/${id}`;
 export const UNBLOCK_APPOINTMENT_ENDPOINT = (id:string) => process.env.NEXT_PUBLIC_API_URL + `/unlockeded_appointments/${id}`;
 export const BLOCK_APPOINTMENT_ENDPOINT = (id:string) => process.env.NEXT_PUBLIC_API_URL + `/blockeded_appointments/${id}`;
+
+//Notifications
+export const TEST_NOTIFICATION = process.env.NEXT_PUBLIC_API_URL + `/appointments`;

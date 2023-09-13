@@ -2,7 +2,7 @@ import { IUser } from 'domain/core/entities/userEntity';
 import { createClient, SignInWithPasswordCredentials, User } from '@supabase/supabase-js';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import nookies from 'nookies';
-import { getTokenMessaging } from 'infrastructure/config/firebase/firebase-client';
+import { getTokenMessaging } from 'infrastructure/config/firebase/FirebaseConfig';
 import { AuthFailure, authFailuresEnum } from 'domain/core/failures/auth/authFailure';
 import { AUTH_ENDPOINT, CHECK_OTP_ENDPOINT, GET_USER_ENDPOINT, UPDATE_USER_OTP_ENDPOINT } from 'infrastructure/config/api/dictionary';
 import { redirect } from "next/navigation";

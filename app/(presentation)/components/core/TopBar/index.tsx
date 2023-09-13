@@ -36,6 +36,11 @@ import {
 } from "react-share";
 import NotificationPopup from "../NotificationPopup";
 import NotificationPopupProvider from "../NotificationPopup/context/NotificationPopupContext";
+import { 
+  getFirebaseToken, 
+  messaging,
+  //onMessageListener 
+} from "infrastructure/config/firebase/FirebaseConfig";
 
 interface INavigation {
   title: string;
@@ -50,6 +55,8 @@ function Main({
   user: IUser;
 }) {
   const pathname = usePathname();
+
+  const [notificationPayload, setNotificationPayload] = useState<any[]>([]);
 
   const [activeShortcuts, setActiveShortcuts] = useState(false);
 
@@ -278,6 +285,34 @@ function Main({
     );
   };
 
+  useEffect(() => {
+    //const unsubscribe = onMessageListener().then((payload:any) => {
+    //  console.log({
+    //    title: payload?.notification?.title,
+    //    body: payload?.notification?.body,
+    //  })
+    //});
+    //return () => {
+    //  unsubscribe.catch((err:any) => console.log('failed: ', err));
+    //};
+  }, []);
+
+  const handleGetFirebaseToken = () => {
+    getFirebaseToken().then((firebaseToken: string | undefined) => {
+      if (firebaseToken) {
+        //TODO:
+        //Actualizar data del usuario con el token
+        console.log(firebaseToken);
+      }
+    });
+  };
+
+  useEffect(() => {
+    if (window.Notification?.permission === "granted") {
+      handleGetFirebaseToken();
+    }
+  }, []);
+
   return (
     <div className="h-[67px] z-[70] flex items-center border-b border-slate-200 sticky bg-slate-100 top-0 left-0 w-full">
       <Breadcrumb className="hidden mr-auto sm:flex">
@@ -296,9 +331,21 @@ function Main({
         ))}
       </Breadcrumb>
       <div className="lg:w-fit md:w-fit w-full h-full flex lg:justify-end justify-between items-center gap-2 relative">
-        {/* <NotificationPopupProvider>
-          <NotificationPopup/>
-        </NotificationPopupProvider> */}
+        {Notification.permission !== "granted" ? 
+          <div className="w-fit flex justify-center items-center gap-2">
+            <p className="text-slate-900 text-base font-light">Se necesitan permisos para manejar las notificaciones</p>
+            <span
+              className="cursor-pointer bg-primary text-white rounded px-4 py-2 font-normal text-sm"
+              onClick={handleGetFirebaseToken}
+            >
+              Activar notificaciones
+            </span>
+          </div>
+        : 
+          <NotificationPopupProvider>
+            <NotificationPopup/>
+          </NotificationPopupProvider>
+        }
         {user?.userId && (
           <button
             onClick={() => {
