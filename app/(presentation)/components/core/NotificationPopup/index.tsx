@@ -21,7 +21,7 @@ const NotificationPopup = ({user}:{user:IUser}) => {
                 userId: user.accountId
             })(dispatch);
         }
-    },[user.accountId])
+    },[user])
 
     useEffect(() => {
         const unsubscribe = onMessageListener().then((payload) => {
