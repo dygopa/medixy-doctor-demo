@@ -1,11 +1,14 @@
-import React, { useEffect, useRef } from 'react'
+import React, { useContext, useEffect, useRef } from 'react'
 import { FiBell, FiX } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
 import Notification from './Notification/Notification';
+import { INotificationPopupContext, NotificationPopupContext } from '../context/NotificationPopupContext';
+import Loading from '../../Loading/Loading';
 
 const Popup = ({ active, customActive }:{ active: boolean; customActive: Function; }) => {
 
-    let list:any[] = [{}, {}, {}]
+    const { state } = useContext<INotificationPopupContext>(NotificationPopupContext);
+    const { data, successful, error, loading } = state.notifications
 
     const wrapperRef = useRef(null);
 
@@ -45,9 +48,10 @@ const Popup = ({ active, customActive }:{ active: boolean; customActive: Functio
 
         return(
             <div className='w-full h-fit relative flex flex-col justify-start items-center'>
-                {fromToday.length > 0 && <NotificationsGroup type='Hoy' list={fromToday} />}
+                <NotificationsGroup type='Hoy' list={list} />
+                {/* {fromToday.length > 0 && <NotificationsGroup type='Hoy' list={fromToday} />}
                 {fromYesterday.length > 0 && <NotificationsGroup type='Ayer' list={fromYesterday} />}
-                {fromPastDays.length > 0 && <NotificationsGroup type='Más antiguas' list={fromPastDays} />}
+                {fromPastDays.length > 0 && <NotificationsGroup type='Más antiguas' list={fromPastDays} />} */}
             </div>
         )
     }
@@ -60,8 +64,8 @@ const Popup = ({ active, customActive }:{ active: boolean; customActive: Functio
             <div className="w-full h-fit pb-2 border-b bg-white flex items-center justify-start">
                 <p className='text-slate-900 font-normal text-base'>Notificaciones</p>
             </div>
-            {list.length > 0 ? 
-                <NotificationGroups list={list} />
+            {(successful && data.length > 0) ? 
+                <NotificationGroups list={data} />
             : 
                 <div className='w-full h-fit flex flex-col justify-center items-center py-3 text-center'>
                     <p className='font-normal text-slate-900 text-base'>Nada por aqui aún</p>

@@ -5,6 +5,7 @@ import { Dispatch } from "react";
 
 export interface IAuthActions {
   getUserAuthenticated: Function;
+  updateUserFCMToken: Function;
 }
 
 const getUserAuthenticated = () => async (dispatch: Dispatch<any>) => {
@@ -20,6 +21,20 @@ const getUserAuthenticated = () => async (dispatch: Dispatch<any>) => {
   }
 }
 
+const updateUserFCMToken = (obj:{ token: string | number; userId: string | number; }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "UPDATE_USER_FCM_TOKEN_LOADING" });
+
+    const res: string = await new AuthUseCase().updateUserFCMToken(obj);
+
+    dispatch({ type: "UPDATE_USER_FCM_TOKEN_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "UPDATE_USER_FCM_TOKEN_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IAuthActions = {
-  getUserAuthenticated
+  getUserAuthenticated,
+  updateUserFCMToken
 }

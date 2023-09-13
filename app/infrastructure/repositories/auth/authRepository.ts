@@ -2,7 +2,6 @@ import { IUser } from 'domain/core/entities/userEntity';
 import { createClient, SignInWithPasswordCredentials, User } from '@supabase/supabase-js';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import nookies from 'nookies';
-import { getTokenMessaging } from 'infrastructure/config/firebase/FirebaseConfig';
 import { AuthFailure, authFailuresEnum } from 'domain/core/failures/auth/authFailure';
 import { AUTH_ENDPOINT, CHECK_OTP_ENDPOINT, GET_USER_ENDPOINT, UPDATE_USER_OTP_ENDPOINT } from 'infrastructure/config/api/dictionary';
 import { redirect } from "next/navigation";
@@ -14,6 +13,7 @@ export default interface IAuthRepository {
     password: string;
   }): Promise<string | AuthFailure>;
   getUserFromAPI(obj: { accessToken: string }): Promise<IUser | AuthFailure>;
+  updateUserFCMToken(obj: { token: string | number; userId: string | number }): Promise<string | AuthFailure>;
   getUserAuthenticated(): Promise<IUser | AuthFailure>;
   signOutUser(): Promise<boolean | AuthFailure>;
   changePassword(obj: {
@@ -127,6 +127,20 @@ export class AuthRepository implements IAuthRepository {
       window.localStorage.removeItem("prosit.provider.session.user")
 
       return true;
+    } catch (error) {
+      const exception = error as any;
+      return new AuthFailure(authFailuresEnum.serverError);
+    }
+  }
+
+  async updateUserFCMToken(obj: { token: string | number; userId: string | number }): Promise<string | AuthFailure> {
+    try {
+
+      await supabase.from("Usuarios").update({
+        mensajeriaWebToken: obj.token
+      }).eq("id", obj.userId)
+
+      return "SUCCESS";
     } catch (error) {
       const exception = error as any;
       return new AuthFailure(authFailuresEnum.serverError);

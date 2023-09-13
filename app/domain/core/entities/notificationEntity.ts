@@ -1,20 +1,19 @@
 export interface INotification {
-    notificationId: string;
-    action: string;
-    message: string;
-    source: string;
-    sourceId: string;
-    whom: string;
-    status: string;
-    trigger: string;
-    triggerValue: number;
-    triggerMeasure: string;
+    id: string | number;
+    title: string;
+    body: string;
+    topic: string;
+    read: boolean;
+    data?: any | null;
+    date: string;
+    notification_type_id: number;
+    notification_type: ITypeNotification;
+    user_id: string | number;
+}
+
+interface ITypeNotification {
+    id: number;
     type: string;
-    fromWhere: string;
-    endPoints: string[];
-    isDelete: boolean;
-    createdOn: any | null;
-    updatedOn: any | null;
 }
 
 export interface INotificationLang {

@@ -1,3 +1,4 @@
+import { INotification } from "domain/core/entities/notificationEntity";
 import { NotificationFailure } from "domain/core/failures/notification/notification";
 
 export interface INotificationPopupState {
@@ -5,7 +6,7 @@ export interface INotificationPopupState {
 }
   
 interface IGetNotificationsState {
-    data: any[];
+    data: INotification[];
     loading: boolean;
     successful: boolean;
     error: NotificationFailure | null; 

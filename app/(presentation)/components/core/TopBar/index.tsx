@@ -13,7 +13,7 @@ import {
 } from "react-icons/fi";
 import { IUser } from "domain/core/entities/userEntity";
 import Image from "next/image";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { twMerge } from "tailwind-merge";
 import {
@@ -36,11 +36,9 @@ import {
 } from "react-share";
 import NotificationPopup from "../NotificationPopup";
 import NotificationPopupProvider from "../NotificationPopup/context/NotificationPopupContext";
-import { 
-  getFirebaseToken, 
-  messaging,
-  onMessageListener
-} from "infrastructure/config/firebase/FirebaseConfig";
+import { getUserToken, onMessageListener } from "infrastructure/config/firebase/FirebaseConfig";
+import { AuthContext, IAuthContext } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+
 
 interface INavigation {
   title: string;
@@ -54,6 +52,10 @@ function Main({
   navigation: INavigation[];
   user: IUser;
 }) {
+
+  const { actions, dispatch } = useContext<IAuthContext>(AuthContext);
+  const { updateUserFCMToken } = actions
+
   const pathname = usePathname();
 
   const [notificationPayload, setNotificationPayload] = useState<any[]>([]);
@@ -286,30 +288,15 @@ function Main({
   };
 
   useEffect(() => {
-    const unsubscribe = onMessageListener().then((payload:any) => {
-      console.log({
-        title: payload?.notification?.title,
-        body: payload?.notification?.body,
-      })
-    });
-    return () => {
-      unsubscribe.catch((err:any) => console.log('failed: ', err));
-    };
-  }, []);
-
-  const handleGetFirebaseToken = () => {
-    getFirebaseToken().then((firebaseToken: string | undefined) => {
-      if (firebaseToken) {
-        //TODO:
-        //Actualizar data del usuario con el token
-        console.log(firebaseToken);
-      }
-    });
-  };
-
-  useEffect(() => {
     if (window.Notification?.permission === "granted") {
-      handleGetFirebaseToken();
+      getUserToken().then((value:string | undefined)=>{
+        if(value){
+          updateUserFCMToken({
+            token: value,
+            userId: user.accountId
+          })(dispatch)
+        }
+      });
     }
   }, []);
 
@@ -336,14 +323,14 @@ function Main({
             <p className="text-slate-900 text-base font-light">Se necesitan permisos para manejar las notificaciones</p>
             <span
               className="cursor-pointer bg-primary text-white rounded px-4 py-2 font-normal text-sm"
-              onClick={handleGetFirebaseToken}
+              onClick={getUserToken}
             >
               Activar notificaciones
             </span>
           </div>
         : 
           <NotificationPopupProvider>
-            <NotificationPopup/>
+            <NotificationPopup user={user}/>
           </NotificationPopupProvider>
         }
         {user?.userId && (

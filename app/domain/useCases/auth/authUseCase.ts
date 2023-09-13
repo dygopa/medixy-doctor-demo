@@ -72,6 +72,18 @@ export default class AuthUseCase {
     }
   }
 
+  async updateUserFCMToken(obj: { token: string | number; userId: string | number; }): Promise<string> {
+    try {
+      const response = await this._repository.updateUserFCMToken(obj);
+
+      if (response instanceof AuthFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async updateUserOTP(obj: { email: string; password: string; }): Promise<boolean> {
     try {
       const response = await this._repository.updateUserOTP({ email: obj.email, password: obj.password });

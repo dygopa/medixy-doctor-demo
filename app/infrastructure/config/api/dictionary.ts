@@ -41,3 +41,4 @@ export const BLOCK_APPOINTMENT_ENDPOINT = (id:string) => process.env.NEXT_PUBLIC
 
 //Notifications
 export const TEST_NOTIFICATION = process.env.NEXT_PUBLIC_API_URL + `/appointments`;
+export const GET_NOTIFICATIONS = (userId: number | string | undefined) => process.env.NEXT_PUBLIC_API_URL + `/notifications/${userId}`;
