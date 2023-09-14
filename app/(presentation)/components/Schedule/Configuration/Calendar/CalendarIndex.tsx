@@ -24,6 +24,7 @@ import {
   StepByStepContext 
 } from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 import { useRouter, useSearchParams } from "next/navigation";
+import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 
 export default function CalendarIndex() {
   const { state: auth } = useContext<IAuthContext>(AuthContext);
@@ -46,6 +47,12 @@ export default function CalendarIndex() {
   const { data, loading, successful, error } = state.getAttentionWindows;
   const { successful: successfulWindowCreated, error: errorWindowCreated } =
     state.createWindowAttention;
+  const {  
+    successful: rescheduleSuccessful,
+  } = state.rescheduleAppointment;
+  const { 
+    successful: successfulDelete, 
+  } = state.deleteAppointment;
   const {
     data: localities,
     successful: localitiesSuccessful,
@@ -219,10 +226,26 @@ export default function CalendarIndex() {
           show={errorWindowCreated !== null}
           description={errorMessage}
         />
-        <AlertComponent
-          variant="success"
+        <SuccessfulComponent
+          tittle="Ventana de atención creada con exito"
           show={successfulPopup}
-          description="Ventana de atención creada exitosamente"
+          description={
+            "La ventana de atención ha sido generada con éxito."
+          }
+        />
+        <SuccessfulComponent
+          tittle="Cita reagendada con exito"
+          show={rescheduleSuccessful}
+          description={
+            "La cita seleccionada ha sido reagendada con éxito."
+          }
+        />
+        <SuccessfulComponent
+          tittle="Cita cancelada con exito"
+          show={successfulDelete}
+          description={
+            "La cita seleccionada ha sido cancelada con éxito."
+          }
         />
         {/* BEGIN: Calendar Content */}
         {user !== null && user.userId 
