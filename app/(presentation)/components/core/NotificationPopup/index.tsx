@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { FiBell } from 'react-icons/fi'
 import { twMerge } from 'tailwind-merge'

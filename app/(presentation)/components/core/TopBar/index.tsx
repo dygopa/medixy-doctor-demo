@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import _ from "lodash";
 import Breadcrumb from "../BaseComponents/Breadcrumb";
 import Link from "next/link";
@@ -58,9 +59,8 @@ function Main({
 
   const pathname = usePathname();
 
-  const [notificationPayload, setNotificationPayload] = useState<any[]>([]);
-
   const [activeShortcuts, setActiveShortcuts] = useState(false);
+  const [hasPermission, setHasPermission] = useState(Notification.permission === "granted");
 
   const wrapperRef = useRef(null);
 
@@ -288,17 +288,21 @@ function Main({
   };
 
   useEffect(() => {
-    if (window.Notification?.permission === "granted") {
-      getUserToken().then((value:string | undefined)=>{
-        if(value){
-          updateUserFCMToken({
-            token: value,
-            userId: user.accountId
-          })(dispatch)
-        }
-      });
+    if(user && user.accountId){
+      if (hasPermission) {
+        getUserToken().then((value:string | undefined)=>{
+          if(value){
+            updateUserFCMToken({
+              token: value,
+              userId: user.accountId
+            })(dispatch)
+          }
+        });
+      }
     }
-  }, []);
+  }, [user]);
+
+  useMemo(()=> setHasPermission(Notification.permission === "granted") ,[Notification.permission])
 
   return (
     <div className="h-[67px] z-[70] flex items-center border-b border-slate-200 sticky bg-slate-100 top-0 left-0 w-full">
@@ -318,16 +322,13 @@ function Main({
         ))}
       </Breadcrumb>
       <div className="lg:w-fit md:w-fit w-full h-full flex lg:justify-end justify-between items-center gap-2 relative">
-        {Notification.permission !== "granted" ? 
-          <div className="w-fit flex justify-center items-center gap-2">
-            <p className="text-slate-900 text-base font-light">Se necesitan permisos para manejar las notificaciones</p>
-            <span
-              className="cursor-pointer bg-primary text-white rounded px-4 py-2 font-normal text-sm"
-              onClick={getUserToken}
-            >
-              Activar notificaciones
-            </span>
-          </div>
+        {!hasPermission ? 
+          <span
+            className="cursor-pointer bg-primary text-white rounded-md px-4 py-2 font-normal text-sm"
+            onClick={getUserToken}
+          >
+            Mejora tu experiencia activando las notificaciones
+          </span>
         : 
           <NotificationPopupProvider>
             <NotificationPopup user={user}/>

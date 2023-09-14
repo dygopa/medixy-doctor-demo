@@ -1,7 +1,8 @@
+import { INotification } from 'domain/core/entities/notificationEntity';
 import { FiBell, FiX } from 'react-icons/fi';
 import { twMerge } from 'tailwind-merge';
 
-const Notification = () => {
+const Notification = ({notification}:{notification: INotification}) => {
     return(
         <div className='w-full relative flex justify-between items-center h-fit py-2 gap-3 cursor-pointer'>
             <div className='w-1/6 relative flex flex-col justify-start items-center'>
@@ -14,10 +15,10 @@ const Notification = () => {
             </div>
             <div className="w-5/6 relative flex flex-col justify-center items-start">
                 <div className="w-full flex justify-between items-center">
-                    <p className='text-slate-900 font-normal text-sm'>Cita agenda</p>
-                    <p className='text-slate-500 font-normal text-xs'>10:40 am</p>
+                    <p className='text-slate-900 font-normal text-sm'>{notification.title}</p>
+                    <p className='text-slate-500 font-normal text-xs'>{notification.date}</p>
                 </div>
-                <p className='w-full text-ellipsis overflow-hidden whitespace-nowrap text-slate-500 font-light text-[0.8rem]'><b>Andres Morales</b> ha reservado una cita con exito.</p>
+                <p className='w-full text-ellipsis overflow-hidden whitespace-nowrap text-slate-500 font-light text-[0.8rem]'>{notification.body}</p>
             </div>
         </div>
     )
