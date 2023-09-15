@@ -105,24 +105,27 @@ export default function WithoutSteps({
   const [formData, setFormData] = useState({
     name: "",
     code: "",
-    postal_code: "",
-    city: "",
-    clues: "",
     latitude: 0,
     longitude: 0,
-    federalEntity: 0,
-    municipality: 0,
-    municipalityCatalogId: 0,
-    countryLocation: "",
     isVirtual: 0,
     isPublic: 1,
-    street: "",
-    address: "",
     // media: {
     //  data: "",
     //  type: "",
     // },
   });
+
+  const [address, setAddress] = useState({
+    postal_code: "",
+    city: "",
+    clues: "",
+    federalEntity: 0,
+    municipality: 0,
+    municipalityCatalogId: 0,
+    countryLocation: "",
+    street: "",
+    address: "",
+  })
 
   console.log(formData);
 
@@ -133,7 +136,7 @@ export default function WithoutSteps({
   });
 
   const handlePostalCode = (value: string) => {
-    setFormData({ ...formData, postal_code: value });
+    setAddress({ ...address, postal_code: value });
     if (value.length > 0) {
       if (!VALIDATE_NUMBERS(value)) {
         setErrors((previousState) => {
@@ -184,7 +187,6 @@ export default function WithoutSteps({
     }
 
     if (stepSucessful) {
-      console.log("aca");
       changeOpenPopup(true)(dispatchStep);
     }
   }, [stepSucessful, stepNotCreated]);
@@ -197,8 +199,6 @@ export default function WithoutSteps({
   useMemo(() => {
     if (userId) getUserBaseServices(userId)(dispatch);
   }, [userId]);
-
-  console.log(locality);
 
   const onClickButtonPrincipal: Function = () => {
     router.push(ScheduleRoutesEnum.Configuration + `?locality=${locality.id}`);
@@ -344,12 +344,12 @@ export default function WithoutSteps({
           disabled={
             createUserLocalityLoading ||
             formData?.name === "" ||
-            formData?.postal_code === "" ||
-            formData?.federalEntity === 0 ||
+            address?.postal_code === "" ||
+            address?.federalEntity === 0 ||
             services.length === 0
           }
           onClick={() => {
-            createUserLocality({ ...formData, id: userId }, services)(dispatch);
+            createUserLocality({ ...formData, address: address, id: userId }, services)(dispatch);
           }}
           variant="primary"
         >
@@ -496,8 +496,8 @@ export default function WithoutSteps({
               )} */}
 
               <AddressAutocomplete
-                formData={formData}
-                setFormData={setFormData}
+                formData={address}
+                setFormData={setAddress}
                 showPostalCode
               />
               {/*  <div className="lg:flex justify-between items-center relative w-full gap-3">
@@ -608,10 +608,10 @@ export default function WithoutSteps({
                   type={"text"}
                   placeholder="Escribe la calle..."
                   min={0}
-                  defaultValue={formData.street}
+                  defaultValue={address.street}
                   className="form-control lg:w-[70%]"
                   onChange={(e: any) => {
-                    setFormData({ ...formData, street: e.target.value });
+                    setAddress({ ...address, street: e.target.value });
                   }}
                 />
               </div>
@@ -623,10 +623,10 @@ export default function WithoutSteps({
                   type={"text"}
                   placeholder="Escribe el CLUES del consultorio..."
                   min={0}
-                  value={formData.clues}
+                  value={address.clues}
                   className="form-control lg:w-[70%]"
                   onChange={(e: any) => {
-                    setFormData({ ...formData, clues: e.target.value });
+                    setAddress({ ...address, clues: e.target.value });
                   }}
                 />
               </div>

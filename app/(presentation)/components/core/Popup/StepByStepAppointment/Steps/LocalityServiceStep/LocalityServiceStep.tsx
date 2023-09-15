@@ -167,8 +167,8 @@ const LocalityServiceStep = ({
         id: elem.id,
         title: elem.name,
         description: `${
-          elem.municipality ? elem.municipality.name : "Sin dirección"
-        } ${elem.country_location ? `- ${elem.country_location.name}` : ""}`,
+          elem.address.municipality ? elem.address.municipality.name : "Sin dirección"
+        } ${elem.address.country_location ? `- ${elem.address.country_location.name}` : ""}`,
       }));
 
       if (list_localities.length > 0 && !locality["id"]) {

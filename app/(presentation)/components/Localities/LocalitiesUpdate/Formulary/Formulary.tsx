@@ -90,10 +90,19 @@ export default function Formulary({
   let [formData, setFormData] = useState({
     name: "",
     code: "",
-    city: "",
-    postal_code: "",
     latitude: 0,
     longitude: 0,
+    isVirtual: 0,
+    isPublic: 1,
+    media: {
+      data: "",
+      type: "",
+    },
+  });
+
+  const [address, setAddress] = useState({
+    postal_code: "",
+    city: "",
     clues: "",
     federalEntity: 0,
     municipality: 0,
@@ -101,20 +110,14 @@ export default function Formulary({
     countryLocation: "",
     street: "",
     address: "",
-    isPublic: 1,
-    isVirtual: 0,
-    media: {
-      data: "",
-      type: "",
-    },
-  });
+  })
 
   let [errors, setErrors] = useState({
     postal_code: "",
   });
 
   const handlePostalCode = (value: string) => {
-    setFormData({ ...formData, postal_code: value });
+    setAddress({ ...address, postal_code: value });
     if (value.length > 0) {
       if (!VALIDATE_NUMBERS(value)) {
         setErrors((previousState) => {
@@ -147,14 +150,6 @@ export default function Formulary({
       ...formData,
       name: data?.name ?? "",
       code: data?.code ?? "",
-      clues: data?.clues ?? "",
-      federalEntity: data?.state.id ?? 0,
-      municipality: data?.municipalityId ?? 0,
-      countryLocation: data?.countryLocation ?? "",
-      street: data?.street ?? "",
-      city: data?.city ?? "",
-      postal_code: data?.postal_code ? data.postal_code.toString() : "",
-      address: data?.address ?? "",
       latitude: data?.latitude ?? "",
       longitude: data?.longitude ?? "",
       isPublic: data?.is_public ? 1 : 0,
@@ -164,6 +159,17 @@ export default function Formulary({
         type: data?.type,
       },
     });
+    setAddress({
+      ...address,
+      clues: data?.address.clues ?? "",
+      federalEntity: data?.address?.state?.id ?? 0,
+      municipality: data?.address.municipalityId ?? 0,
+      countryLocation: data?.address.countryLocation ?? "",
+      street: data?.address.street ?? "",
+      city: data?.address.city ?? "",
+      postal_code: data?.address.postal_code ? data.address.postal_code.toString() : "",
+      address: data?.address.address ?? "",
+    })
   };
 
   useEffect(() => {
@@ -428,13 +434,13 @@ export default function Formulary({
           <Button
             disabled={
               loadingUpdate ||
-              formData?.postal_code === "" ||
+              address?.postal_code === "" ||
               formData?.name === "" ||
-              formData?.federalEntity === 0 ||
+              address?.federalEntity === 0 ||
               services.length === 0
             }
             onClick={() => {
-              updateUserLocality(formData, data.id, services)(dispatch);
+              updateUserLocality({...formData, address}, data.id, services)(dispatch);
               //console.log(formData)
             }}
             variant="primary"
@@ -587,13 +593,13 @@ export default function Formulary({
                 </div>
 
                 <AddressAutocomplete
-                  formData={formData}
-                  setFormData={setFormData}
-                  federalEntityId={formData.federalEntity}
-                  municipalityId={formData.municipality}
-                  municipalityCatalogId={formData.municipalityCatalogId}
-                  location={formData.countryLocation}
-                  postalCode={formData.postal_code}
+                  formData={address}
+                  setFormData={setAddress}
+                  federalEntityId={address.federalEntity}
+                  municipalityId={address.municipality}
+                  municipalityCatalogId={address.municipalityCatalogId}
+                  location={address.countryLocation}
+                  postalCode={address.postal_code}
                   showPostalCode
                 />
 
@@ -711,10 +717,10 @@ export default function Formulary({
                     type={"text"}
                     placeholder="Escribe la calle..."
                     min={0}
-                    defaultValue={formData.street}
+                    defaultValue={address.street}
                     className="form-control lg:w-[70%]"
                     onChange={(e: any) => {
-                      setFormData({ ...formData, street: e.target.value });
+                      setAddress({ ...address, street: e.target.value });
                     }}
                   />
                 </div>
@@ -726,10 +732,10 @@ export default function Formulary({
                     type={"text"}
                     placeholder="Escribe el CLUES del consultorio..."
                     min={0}
-                    value={formData?.clues}
+                    value={address?.clues}
                     className="form-control lg:w-[70%]"
                     onChange={(e: any) => {
-                      setFormData({ ...formData, clues: e.target.value });
+                      setAddress({ ...address, clues: e.target.value });
                     }}
                   />
                 </div>

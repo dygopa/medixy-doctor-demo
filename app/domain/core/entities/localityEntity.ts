@@ -3,15 +3,7 @@ export interface ILocality {
     name: string;
     code: string;
     type: string;
-    clues: string;
-    address: string;
-    postal_code: number;
-    state: IState;
-    city: string;
-    federativeEntityId?: number | null;
-    municipalityId?: number | null;
-    countryLocation?: string | null;
-    street?: string | null;
+    address: IAddressMexico;
     is_public: boolean;
     is_virtual: boolean;
     image_url: string;
@@ -25,6 +17,18 @@ export interface ILocalityService {
     location_id: number;
     price: number;
     service_parent_id?: number | null
+}
+
+export interface IAddressMexico {
+    clues: string;
+    address: string;
+    postal_code: number;
+    state: IState;
+    city: string;
+    federativeEntityId?: number | null;
+    municipalityId?: number | null;
+    countryLocation?: string | null;
+    street?: string | null;
 }
 
 interface IState {

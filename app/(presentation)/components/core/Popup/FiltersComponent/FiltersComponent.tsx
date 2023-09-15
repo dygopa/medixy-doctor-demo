@@ -74,7 +74,7 @@ export default function FiltersComponent({cancelFuntion, customRef}:{
     let list = localities.map((elem:ILocality) => ({
       id: elem.id,
       title: elem.name,
-      description: elem.address,
+      description: elem.address.address,
       type: "LOCALITY",
     }))
 

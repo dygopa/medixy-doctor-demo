@@ -79,7 +79,7 @@ export default function Navigator() {
     let list_localities = localities.map((elem: any) => ({
       id: elem.id,
       title: elem.name,
-      description: `${elem.municipality ? elem.municipality.name : "Sin dirección"} ${elem.country_location ? `- ${elem.country_location.name}` : ""}`,
+      description: `${elem.address.municipality ? elem.address.municipality.name : "Sin dirección"} ${elem.address.country_location ? `- ${elem.address.country_location.name}` : ""}`,
     }));
 
     setListOfLocalities(list_localities);

@@ -51,13 +51,13 @@ export default function Table({ user }: { user: IUser }) {
           <div className="flex flex-col justify-start items-start gap-2 text-left">
             <p className="font-light text-gray-500 text-sm">Estado</p>
             <p className="font-normal text-gray-950 text-base w-full truncate">
-              {data.state.name}
+              {data.address.state.name}
             </p>
           </div>
           <div className="flex flex-col justify-start items-start gap-2 text-left">
             <p className="font-light text-gray-500 text-sm">Cod. postal</p>
             <p className="font-normal text-gray-950 text-base w-full truncate">
-              {data.postal_code}
+              {data.address.postal_code}
             </p>
           </div>
         </div>

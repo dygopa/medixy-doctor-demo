@@ -92,7 +92,7 @@ export class LocalitiesRepository implements ILocalitiesRepository {
         redirect: 'follow'
       } as RequestInit;
 
-      let URL = GET_USER_LOCALITIES_ENDPOINT(id) as RequestInfo
+      let URL = GET_USER_LOCALITIES_ENDPOINT(id, "MEX") as RequestInfo
 
       const response = await fetch(URL, requestOptions)
       let data = await response.json()
@@ -134,7 +134,7 @@ export class LocalitiesRepository implements ILocalitiesRepository {
   async createUserLocality(obj:any, services: any[]): Promise<ILocality | LocalityFailure> {
     try {
       let cookies = nookies.get(undefined, 'access_token');
-
+      console.log(obj)
       var myHeaders = new Headers();
 
       myHeaders.append("Content-Type", "application/json");
@@ -143,20 +143,23 @@ export class LocalitiesRepository implements ILocalitiesRepository {
       var raw = JSON.stringify({
         name: obj["name"] ?? "",
         code: obj["code"] ?? "",
-        clues: obj["clues"] ?? "",
         type: "CONSULTING_ROOM",
-        address: obj["address"] ?? "",
-        postal_code: obj["postal_code"] ?? "",
-        state_id: obj["federalEntity"] ?? 0,
-        city: obj["city"] ?? "",
+        address: {
+          postal_code: obj["address"]["postal_code"] ?? "",
+          state_id: obj["address"]["federalEntity"] ?? 0,
+          city: obj["address"]["city"] ?? "",
+          address: obj["address"]["address"] ?? "",
+          municipality: obj["address"]["municipality"] > 0 ? obj["address"]["municipality"] : null,
+          country_location: obj["address"]["countryLocation"].length > 0 ? obj["address"]["countryLocation"] : null,
+          street: obj["address"]["street"] ?? null,
+          clues: obj["clues"] ?? "",
+        },
         latitude: obj["latitude"].length > 0 ? obj["latitude"] : null,
         longitude: obj["longitude"].length > 0 ? obj["longitude"] : null,
-        municipality: obj["municipality"] > 0 ? obj["municipality"] : null,
-        country_location: obj["countryLocation"].length > 0 ? obj["countryLocation"] : null,
-        street: obj["street"] ?? null,
         is_public: obj["isPublic"] === 1 ? true : false,
         is_virtual: obj["isVirtual"] === 1 ? true : false,
         services: services,
+        country: "MEX",
       });
 
       var requestOptions = {
@@ -197,19 +200,22 @@ export class LocalitiesRepository implements ILocalitiesRepository {
       var raw = JSON.stringify({
           name: obj["name"] ?? "",
           code: obj["code"] ?? "",
-          clues: obj["clues"] ?? "",
-          address: obj["address"] ?? "",
-          postal_code: obj["postal_code"] ?? "",
-          state: obj["federalEntity"] ?? "",
-          municipality: obj["municipality"] === 0 ? null : obj["municipality"],
-          countryLocation: obj["countryLocation"].length === 0 ? null : obj["countryLocation"],
-          street: obj["street"] ?? null,
-          city: obj["city"] ?? "",
+          address: {
+            postal_code: obj["address"]["postal_code"] ?? "",
+            state_id: obj["address"]["federalEntity"] ?? 0,
+            city: obj["address"]["city"] ?? "",
+            address: obj["address"]["address"] ?? "",
+            municipality: obj["address"]["municipality"] > 0 ? obj["address"]["municipality"] : null,
+            country_location: obj["address"]["countryLocation"].length > 0 ? obj["address"]["countryLocation"] : null,
+            street: obj["address"]["street"] ?? null,
+            clues: obj["clues"] ?? "",
+          },
           latitude: obj["latitude"].length > 0 ? obj["latitude"] : null,
           longitude: obj["longitude"].length > 0 ? obj["longitude"] : null,
           is_public: obj["isPublic"] === 1 ? true : false,
           is_virtual: obj["isVirtual"] === 1 ? true : false,
           services: services,
+          country: "MEX",
       });
 
       console.log(raw)
