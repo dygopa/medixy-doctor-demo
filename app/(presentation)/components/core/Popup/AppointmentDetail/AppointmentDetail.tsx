@@ -39,26 +39,64 @@ function AppointmentDetail({
     );
   };
 
-  const StatusComponent = () => {
+  const StatusComponent = ({ data }: { data: any }) => {
     let status = data["estado"];
-
-    let color =
-      status === AppointmentEnum.PENDING ||
-      status === AppointmentEnum.NOT_AVAILABLE ||
-      status === AppointmentEnum.APPROVED
-        ? "bg-yellow-500"
-        : "bg-green-500";
-    let text =
-      status === AppointmentEnum.PENDING ||
-      status === AppointmentEnum.NOT_AVAILABLE ||
-      status === AppointmentEnum.APPROVED
-        ? "Por atender"
-        : "Completada";
-
+  
+    let text = "";
+    let color = "";
+  
+    if (status === AppointmentEnum.NOT_AVAILABLE) {
+      text = "No disponible";
+      color = "bg-yellow-500";
+    }
+  
+    if (
+      status === AppointmentEnum.APPROVED &&
+      moment(data["fechaReserva"]).isBefore(moment().utc(true))
+    ) {
+      text = "No asistió";
+      color = "bg-slate-200";
+    }
+    if (
+      status === AppointmentEnum.PENDING &&
+      moment(data["fechaReserva"]).isBefore(moment().utc(true))
+    ) {
+      text = "No asistió";
+      color = "bg-slate-200";
+    }
+  
+    if (
+      status === AppointmentEnum.APPROVED &&
+      moment(data["fechaReserva"]).isAfter(moment().utc(true))
+    ) {
+      text = "Aprovada";
+      color = "bg-yellow-500";
+    }
+    if (
+      status === AppointmentEnum.PENDING &&
+      moment(data["fechaReserva"]).isAfter(moment().utc(true))
+    ) {
+      text = "Por atender";
+      color = "bg-yellow-500";
+    }
+  
+    if (status === AppointmentEnum.CANCELED) {
+      text = "Cancelada";
+      color = "bg-red-500";
+    }
+    if (status === AppointmentEnum.COMPLETE) {
+      text = "Completada";
+      color = "bg-green-500";
+    }
+    if (status === AppointmentEnum.PROCESSING) {
+      text = "En curso";
+      color = "bg-green-500";
+    }
+  
     return (
-      <div className="w-full flex justify-start items-center gap-2">
-        <p className="font-light text-sm text-gray-700">{text}</p>
-        <span className={twMerge(["w-3 h-3 rounded-full", color])}></span>
+      <div className="w-full flex justify-end items-center gap-2">
+        <p className="font-light text-[12px] text-gray-700 w-full">{text}</p>
+        <span className={twMerge(["w-2 h-2 rounded-full", color])}></span>
       </div>
     );
   };
@@ -100,7 +138,7 @@ function AppointmentDetail({
           <p className="font-light text-sm text-slate-500">
             CURP: {data["curp"] ?? "-"}
           </p>
-          <StatusComponent />
+          <StatusComponent data={data} />
         </div>
       </div>
       <div className="w-full flex flex-col justify-start items-center gap-5">

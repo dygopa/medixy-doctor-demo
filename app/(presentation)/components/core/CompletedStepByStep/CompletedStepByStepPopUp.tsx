@@ -73,7 +73,7 @@ const CompletedStepByStepPopup = ({
           </div>
 
           <div className=" text-center mb-14">
-            <Link href={process.env.NEXT_PUBLIC_MARKETPLACE_PROJECT_DOMAIN + `/discover/specialists/${user.userId}`} className="font-normal text-lg text-primary underline">
+            <Link target="_blank" href={process.env.NEXT_PUBLIC_MARKETPLACE_PROJECT_DOMAIN + `/discover/specialists/${user.userId}`} className="font-normal text-lg text-primary underline">
               Has creado tu consultorio digital con éxito.
             </Link>
           </div>

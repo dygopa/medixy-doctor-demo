@@ -19,7 +19,7 @@ export const getUserToken = async() => await getToken(messaging, { vapidKey: pro
 
 export const onMessageListener = () =>
 new Promise((resolve) => {
-  onMessage(messaging, (payload) => {
+  onMessage(messaging, (payload:any) => {
     resolve(payload);
   });
 });
