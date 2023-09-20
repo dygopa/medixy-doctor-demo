@@ -60,7 +60,7 @@ function Main({
   const pathname = usePathname();
 
   const [activeShortcuts, setActiveShortcuts] = useState(false);
-  const [hasPermission, setHasPermission] = useState(Notification.permission === "granted");
+  const [hasPermission, setHasPermission] = useState(false);
 
   const wrapperRef = useRef(null);
 
@@ -288,7 +288,7 @@ function Main({
   };
 
   useEffect(() => {
-    if(user && user.accountId){
+    if(user && user.accountId && Notification){
       if (hasPermission) {
         getUserToken().then((value:string | undefined)=>{
           if(value){
@@ -300,7 +300,7 @@ function Main({
         });
       }
     }
-  }, [user]);
+  }, [user, Notification]);
 
   useMemo(()=> setHasPermission(Notification.permission === "granted") ,[Notification.permission])
 
