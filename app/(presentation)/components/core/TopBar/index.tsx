@@ -38,10 +38,6 @@ import {
 import NotificationPopup from "../NotificationPopup";
 import NotificationPopupProvider from "../NotificationPopup/context/NotificationPopupContext";
 import {
-  // getUserToken,
-  onMessageListener,
-} from "infrastructure/config/firebase/FirebaseConfig";
-import {
   AuthContext,
   IAuthContext,
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
@@ -64,7 +60,10 @@ function Main({
   const pathname = usePathname();
 
   const [activeShortcuts, setActiveShortcuts] = useState(false);
-  const [hasPermission, setHasPermission] = useState(Notification.permission === "granted");
+  const [hasPermission, setHasPermission] = useState(
+    //Notification.permission === "granted"
+    false
+  );
 
   const wrapperRef = useRef(null);
 
