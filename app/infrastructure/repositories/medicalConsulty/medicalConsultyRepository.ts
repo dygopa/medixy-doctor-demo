@@ -410,7 +410,8 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
       const doc = new jsPDF();
 
       doc.setProperties({
-        title: `Resumen de la consulta - ${getFullDate(new Date())} ${get12HoursFormat(new Date())}.pdf`
+        title: `Resumen de la consulta - ${getFullDate(new Date())} ${get12HoursFormat(new Date())}.pdf`,
+        subject: `Consulta medica ${obj.medicalConsulty.subject.name} ${obj.medicalConsulty.subject.lastName} - ${new Date(obj.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalConsulty.consultationDate).getFullYear()}`
       });
 
       var img = new Image();
@@ -702,9 +703,8 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
 
       doc.text(`${obj.doctor.address}`, 50, y + 20);
       doc.text(`Tel: ${obj.doctor.phone}​​`, 75, y + 25);
-
-      doc.save(`Consulta medica ${obj.medicalConsulty.subject.name} ${obj.medicalConsulty.subject.lastName} - ${new Date(obj.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalConsulty.consultationDate).getFullYear()}`)
-      doc.output('dataurlnewwindow');
+    
+      window.open(doc.output("bloburl"), "_blank");
 
       const response: IGetMedicalConsultyPDFResponse = {
           data: obj.medicalConsulty,
