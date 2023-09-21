@@ -12,14 +12,19 @@ export const firebaseConfig = {
   appId: process.env.NEXT_PUBLIC_FB_APP_ID ?? "",
 };
 
-const app = initializeApp(firebaseConfig);
-// export let messaging: any = getMessaging(app);
+export let messaging: any = null;
 
-// export const getUserToken = async() => await getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_FB_VAPID_KEY })
+if (typeof window !== "undefined") {
+  const app = initializeApp(firebaseConfig);
+  messaging = getMessaging(app);
+}
+
+export const getUserToken = async () =>
+  await getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_FB_VAPID_KEY });
 
 export const onMessageListener = () =>
   new Promise((resolve) => {
-    /* onMessage(messaging, (payload: any) => {
+    onMessage(messaging, (payload: any) => {
       resolve(payload);
-    }); */
+    });
   });
