@@ -19,7 +19,7 @@ const app = initializeApp(firebaseConfig);
 
 export const onMessageListener = () =>
   new Promise((resolve) => {
-    onMessage(messaging, (payload: any) => {
+    /* onMessage(messaging, (payload: any) => {
       resolve(payload);
-    });
+    }); */
   });
