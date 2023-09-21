@@ -16,9 +16,6 @@ import Splash from "(presentation)/components/core/Splash/Splash";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import SessionExpiredComponent from "(presentation)/components/core/BaseComponents/SessionExpired";
 import StepByStepMessage from "(presentation)/components/core/StepByStepMessage/StepByStepMessage";
-import { onMessageListener } from "infrastructure/config/firebase/FirebaseConfig";
-import { INotification } from "domain/core/entities/notificationEntity";
-import NotificationToast from "(presentation)/components/core/NotificationToast/NotificationToast";
 
 interface INavigation {
   title: string;
@@ -42,11 +39,6 @@ function SideMenu({
   
   const [sessionExpired, setSessionExpired] = useState(false);
 
-  const [notification, setNotification] = useState({
-    show: false,
-    data: {} as INotification
-  });
-
   const loadUser = () => {
     getUserAuthenticated()(dispatch);
   };
@@ -60,22 +52,6 @@ function SideMenu({
       redirect("/login");
     }
   };
-
-  const cancelNotificationFunction = () => setNotification({...notification, show: false})
-
-  useEffect(() => {
-    const unsubscribe = onMessageListener().then((payload) => {
-      console.log(payload)
-      setNotification({
-        show: true,
-        data: payload as INotification
-      })
-    });
-
-    return () => {
-      unsubscribe.catch((err) => console.log('failed: ', err));
-    };
-}, []);
 
   useEffect(() => {
     loadUser();
@@ -122,7 +98,6 @@ function SideMenu({
             >
               <TopBar navigation={navigation} user={data} />
               {children}
-              {notification.show && <NotificationToast notification={notification.data} cancelFunction={cancelNotificationFunction}/>}
               <SessionExpiredComponent
                 tittle="Tu sesión ha expirado"
                 description="Tu sesión ha expirado o no has iniciado sesión."
