@@ -296,12 +296,13 @@ function Main({
       if (hasPermission) {
         getUserToken().then((value: string | undefined) => {
           if (value) {
+            console.log(value)
             updateUserFCMToken({
               token: value,
               userId: user.accountId,
             })(dispatch);
           }
-        });
+        }).catch((e:any) => console.log(e));
       }
     }
   }, [user]);
