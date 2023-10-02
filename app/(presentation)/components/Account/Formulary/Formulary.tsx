@@ -132,7 +132,6 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
             loading ||
             account.names === "" ||
             account.firstName === "" ||
-            account.curp === "" ||
             validForm() > 0
           }
           onClick={() => {
