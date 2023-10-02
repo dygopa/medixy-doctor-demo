@@ -1,4 +1,5 @@
 import { IRelationSubject, ISubject } from "domain/core/entities/subjectEntity";
+import moment from "moment";
 
 export function subjectSupabaseToMap(data: any): ISubject {
   return {
@@ -13,47 +14,59 @@ export function subjectSupabaseToMap(data: any): ISubject {
     phoneNumber: data?.telefono ?? "",
     country: data?.paisNacimiento ?? "",
     state: data?.estado ?? "",
-    age: data?.fechaNacimiento ? getPatientAge(new Date(data.fechaNacimiento)) : null,
-    ageType: data?.fechaNacimiento ? getPatientAgeType(new Date(data.fechaNacimiento)) : null,
+    age: data?.fechaNacimiento ? getSubjectAge(new Date(data.fechaNacimiento)) : null,
+    ageType: data?.fechaNacimiento ? getSubjectAgeType(new Date(data.fechaNacimiento)) : null,
     address: data?.direccion ?? "",
     federativeEntityId: data?.entidadFederativaId ?? null,
     municipalityId: data?.municipioId ?? null,
     countryLocation: data?.localidadPais ?? null,
     street: data?.calle ?? null,
     city: data?.ciudad ?? "",
+    type: "",
     pictureUrl: data?.avatar ?? "",
     isPatient: data?.esPaciente ?? "",
     birthDate: data?.fechaNacimiento ?? new Date(),
     createdOn: data?.fechaRegistro ? new Date(data.fechaRegistro) : new Date(),
     postalCode: data?.codigoPostal ?? "",
-    //updatedOn: data?.fechaActualizacion ? new Date(data.fechaActualizacion) : new Date(),
-    //deletedOn: data?.fechaEliminacion ? new Date(data.fechaEliminacion) : new Date(),
+    updatedOn: data?.fechaActualizacion ? new Date(data.fechaActualizacion) : new Date(),
+  deletedOn: data?.fechaEliminacion ? new Date(data.fechaEliminacion) : new Date(),
   } as ISubject;
 }
 
-function getPatientAgeMonths(birthDate: Date): number {
-    var today = new Date();
-    var age = today.getFullYear() - birthDate.getFullYear();
-    var m = today.getMonth() - birthDate.getMonth();
-    age = age * 12 + m;
+function getSubjectAge(birthDate: Date): number {
+  let years = moment().utc().diff(moment(birthDate, "YYYY-MM-DD"), "years");
+  let months = moment().utc().diff(moment(birthDate, "YYYY-MM-DD"), "months");
+  let days = moment().utc().diff(moment(birthDate, "YYYY-MM-DD"), "days");
 
-    return age;
+
+
+  if(years > 0){
+   return years
+  }
+  if(months > 0){
+    return months
+  }
+  if(days > 0){
+    return days
+  }
+
+  return 0
 }
 
-function getPatientAge(birthDate: Date): number {
-  var diff_ms = Date.now() - birthDate.getTime();
-  var age_dt = new Date(diff_ms); 
+function getSubjectAgeType(birthDate: Date): string {
+  let years = moment().utc().diff(moment(birthDate, "YYYY-MM-DD"), "years");
+  let months = moment().utc().diff(moment(birthDate, "YYYY-MM-DD"), "months");
+  let days = moment().utc().diff(moment(birthDate, "YYYY-MM-DD"), "days");
 
-  if (Math.abs(age_dt.getUTCFullYear() - 1970) <= 0) return getPatientAgeMonths(birthDate);
-
-  return Math.abs(age_dt.getUTCFullYear() - 1970);
-}
-
-function getPatientAgeType(birthDate: Date): string {
-  var diff_ms = Date.now() - birthDate.getTime();
-  var age_dt = new Date(diff_ms); 
-
-  if (Math.abs(age_dt.getUTCFullYear() - 1970) <= 0) return "months"
+  if(years > 0){
+    return "years"
+   }
+   if(months > 0){
+     return "months"
+   }
+   if(days > 0){
+     return "days"
+   }
 
   return "years"
 }

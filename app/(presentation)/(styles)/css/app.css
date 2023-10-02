@@ -93,3 +93,33 @@
 .fc-daygrid-body {
    display: none;
 }
+
+.scroll::-webkit-scrollbar {
+   width: 7px;
+}
+ 
+ /* Track */
+ .scroll::-webkit-scrollbar-track {
+   background: #f1f1f1;
+ }
+ 
+ /* Handle */
+ .scroll::-webkit-scrollbar-thumb {
+   background: #cacaca;
+   border-radius: 5px;
+ }
+
+ .scroll-horizontal::-webkit-scrollbar {
+   height: 7px;
+}
+ 
+ /* Track */
+ .scroll-horizontal::-webkit-scrollbar-track {
+   background: #f1f1f1;
+ }
+ 
+ /* Handle */
+ .scroll-horizontal::-webkit-scrollbar-thumb {
+   background: #cacaca;
+   border-radius: 5px;
+ }

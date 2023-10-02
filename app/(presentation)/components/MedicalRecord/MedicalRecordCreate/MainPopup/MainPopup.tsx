@@ -28,7 +28,7 @@ function MainPopup({
       ])}
     >
       <div className="bg-white xl:w-[900px] lg:w-[1000px] md:w-[700px] w-full h-full block relative box-border overflow-y-auto">
-        <div>
+        <div className="w-full justify-between items-center sticky top-[0px] z-[50] border-b bg-slate-100">
           <Header
             subjectId={subjectId}
             appointmentId={appointmentId}

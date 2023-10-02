@@ -97,10 +97,18 @@ export default function Patient({
                   {subject?.age
                     ? subject.age > 1
                       ? `${subject.age} ${
-                          subject?.ageType === "years" ? "años" : "meses"
+                          subject?.ageType === "years"
+                            ? "años"
+                            : subject.ageType === "days"
+                            ? "días"
+                            : "meses"
                         }`
                       : `${subject.age} ${
-                          subject?.ageType === "years" ? "año" : "mes"
+                          subject?.ageType === "years"
+                            ? "año"
+                            : subject.ageType === "days"
+                            ? "día"
+                            : "mes"
                         }`
                     : "No especificado"}
                 </p>
