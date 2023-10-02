@@ -1,5 +1,7 @@
 export interface ISubject {
     subjectId: number;
+    subjectParentId?: number | null;
+    userId?: number | null;
     name: string;
     lastName: string;
     motherLastName: string;
@@ -15,14 +17,15 @@ export interface ISubject {
     address: string;
     city: string;
     pictureUrl: string;
+    postalCode: string | null;
     federativeEntityId?: number | null;
     municipalityId?: number | null;
     countryLocation?: string | null;
     street?: string | null;
     isPatient: boolean;
+    type: string;
     birthDate: string | null;
     createdOn: Date;
-    postalCode: string | null;
     updatedOn: Date | null;
     deletedOn: Date | null;
 }

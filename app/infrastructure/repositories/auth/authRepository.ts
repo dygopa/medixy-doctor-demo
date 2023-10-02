@@ -75,6 +75,8 @@ export class AuthRepository implements IAuthRepository {
     try {
       let obj = nookies.get(undefined, 'access_token');
 
+      if (!obj["access_token"] || obj["access_token"].length === 0) return new AuthFailure(authFailuresEnum.userNotFound);
+
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
       myHeaders.append("Authorization", `Bearer ${obj["access_token"]}`);
@@ -90,15 +92,18 @@ export class AuthRepository implements IAuthRepository {
       const response = await fetch(URL, requestOptions)
       let data = await response.json()
 
+
       if(!data["meta"]["success"]) throw new AuthFailure(data["meta"]["error"]["type"]);
 
       let parsedObject = JSON.parse(JSON.stringify(data["data"]))
-      let userMapped = userAPIToMap(parsedObject)
+      let userMapped = userAPIToMap(parsedObject, data["meta"]["authentication"]["type"])
+
 
       window.localStorage.setItem("prosit.provider.session.user", JSON.stringify(userMapped))
 
       return userMapped;
     } catch (error) {
+      console.log(error)
       return new AuthFailure(authFailuresEnum.serverError);
     }
   }
@@ -107,9 +112,6 @@ export class AuthRepository implements IAuthRepository {
     try {  
 
       let obj = nookies.get(undefined, 'access_token');
-
-      if (obj?.access_token?.length === 0) throw new AuthFailure(authFailuresEnum.userNotFound);
-      if( !window.localStorage.getItem("prosit.provider.session.user") ) throw new AuthFailure(authFailuresEnum.userNotFound);
 
       let parsedObject = JSON.parse(window.localStorage.getItem("prosit.provider.session.user")!)
 

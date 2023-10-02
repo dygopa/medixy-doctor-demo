@@ -12,7 +12,11 @@ const getUserAuthenticated = () => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "GET_USER_AUTHENTICATED_LOADING" });
 
-    const res: IUser = await new AuthUseCase().getUserAuthenticated();
+    const resLocal: IUser = await new AuthUseCase().getUserAuthenticated();
+
+    if (resLocal && resLocal.userId) dispatch({ type: "GET_USER_AUTHENTICATED_SUCCESSFUL", payload: { data: resLocal } });
+
+    const res: IUser = await new AuthUseCase().getUserAuthenticatedAPI();
 
     dispatch({ type: "GET_USER_AUTHENTICATED_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

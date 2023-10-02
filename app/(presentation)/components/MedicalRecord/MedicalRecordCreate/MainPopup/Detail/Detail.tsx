@@ -47,7 +47,7 @@ export default function Detail({
           setPopupSectionActive(index);
         }}
         className={clsx([
-          "w-[150px] p-2 rounded-full hover:bg-primary hover:text-white cursor-pointer",
+          "w-[200px] p-2 rounded-full hover:bg-primary hover:text-white cursor-pointer",
           popupSectionActive === index
             ? "text-white bg-primary"
             : "bg-dark bg-opacity-10",
@@ -112,14 +112,10 @@ export default function Detail({
           <PatientDetail subjectId={subjectId} />
         </div>
 
-        <div className="w-full flex justify-start items-center overflow-x-auto overflow-y-hidden py-4">
+        <div className="w-full flex justify-start items-center overflow-x-auto overflow-y-hidden py-4 scroll-horizontal">
           {listTabs.map((tab, i) => (
             <React.Fragment key={i}>
-              <div className="lg:block hidden">
-                <TabComponent title={tab} index={i} key={i} />
-              </div>
-
-              <div className="lg:hidden block mr-3">
+              <div className="mr-3">
                 <TabComponentMobile title={tab} index={i} key={i} />
               </div>
             </React.Fragment>

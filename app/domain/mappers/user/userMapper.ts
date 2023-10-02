@@ -1,6 +1,6 @@
 import { IUser } from "domain/core/entities/userEntity";
 
-export function userAPIToMap(data: any): IUser {
+export function userAPIToMap(data: any, type?: number): IUser {
   return {
     userId: data?.id ?? "",
     accountId: data?.user_id ?? "",
@@ -22,10 +22,12 @@ export function userAPIToMap(data: any): IUser {
     personType: data?.person_type ?? 0,
     role: data?.role ?? "",
     createdOn: data?.creation_date ?? null,
+    professionPQA: data?.pwa_profession ?? {name: "Sin profesión", id: 0},
     pwaProfressionId: data?.pwa_profession_id ?? 0,
     pwaProfression: "",
     professionalLicense: data?.professional_license ?? "",
     professionalLicenseInstitution: data?.professional_license_institution ?? "",
+    typeUser: type ?? 1,
   } as IUser;
 }
 
