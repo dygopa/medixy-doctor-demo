@@ -125,8 +125,6 @@ const SlotStep = ({
 
     let isActualHour = data["tipo"] === 2;
 
-    if (isBefore) return <div />;
-
     return (
       <div
         onClick={() => {
@@ -139,6 +137,7 @@ const SlotStep = ({
         className={twMerge([
           "transition cursor-pointer w-full border rounded-md p-3 flex flex-col justify-between items-start h-fit gap-3 relative",
           isSelected ? "border-green-500" : "border-slate-300",
+          isBefore && "hidden",
         ])}
       >
         <div className="w-full flex justify-between items-center">
