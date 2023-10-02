@@ -112,15 +112,6 @@ export default function BasicData({
 
   const handleCURP = (value: string) => {
     setAccount({ ...account, curp: value });
-    if (value.length < 2) {
-      setErrors((previousState: any) => {
-        return {
-          ...previousState,
-          curp: "El CURP es obligatorio",
-        };
-      });
-      return true;
-    }
     setErrors({ ...errors, curp: "" });
     return false;
   };
