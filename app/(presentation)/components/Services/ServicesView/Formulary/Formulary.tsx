@@ -335,11 +335,6 @@ export default function Formulary({
                     <p className="text-[13px] text-slate-500 font-medium pt-2">
                       Recomendado (.png, .jpg, .jpeg)
                     </p>
-                    {loadingUpdate && (
-                      <p className="text-[13px] text-slate-800 font-bold pt-2">
-                        Guardando su foto...
-                      </p>
-                    )}
                   </>
                 ) : (
                   <>
@@ -366,11 +361,6 @@ export default function Formulary({
                     <p className="text-[13px] text-slate-500 font-medium pt-2">
                       Recomendado (.png, .jpg, .jpeg)
                     </p>
-                    {loadingUpdate && (
-                      <p className="text-[13px] text-slate-800 font-bold pt-2">
-                        Guardando su foto de perfil...
-                      </p>
-                    )}
                   </>
                 )}
               </div>
