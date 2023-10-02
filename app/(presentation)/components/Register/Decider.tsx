@@ -3,6 +3,7 @@ import { IStepsContext, StepsContext } from "./Steps/context/StepsContext";
 import Formulary from "./Formulary/Formulary";
 import FormularySpeciality from "./FormularySpeciality/FormularySpeciality";
 import FormularyLocality from "./FormularyLocality/FormularyLocality";
+import FinishRegister from "./FinishRegister/FinishRegister";
 
 export default function Decider() {
     const { state } = useContext<IStepsContext>(StepsContext);
@@ -10,9 +11,10 @@ export default function Decider() {
 
     return(
         <>
-            {data === 0 && <FormularySpeciality/>}
+            {/*data === 0 && <FormularySpeciality/>*/}
             {/*data === 1 && <FormularyLocality/>*/}
-            {data === 1 && <Formulary/>}
+            {data === 0 && <Formulary/>}
+            {data === 1 && <FinishRegister />}
         </>
     )
 
