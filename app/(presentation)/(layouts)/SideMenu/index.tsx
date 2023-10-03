@@ -36,7 +36,7 @@ function SideMenu({
   const { data, loading, error, successful } = state.getUserAuthenticated;
 
   const pathname = usePathname();
-  
+
   const [sessionExpired, setSessionExpired] = useState(false);
 
   const loadUser = () => {
