@@ -75,8 +75,6 @@ export default function FinishRegister() {
     if(successfulRegister) window.location.href = "/dashboard"
   },[successfulRegister])
 
-  if(!data.userId) return <div />
-
   return (
     <div className="lg:w-[80%] md:w-[90%] lg:px-20 md:px-14 sm:px-20 px-8 w-full h-fit flex flex-col justify-between items-center gap-6">
       <AlertComponent
