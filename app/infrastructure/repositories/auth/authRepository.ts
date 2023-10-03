@@ -90,6 +90,11 @@ export class AuthRepository implements IAuthRepository {
       let URL = GET_USER_ENDPOINT as RequestInfo
 
       const response = await fetch(URL, requestOptions)
+
+      if (response.status === 401) {
+        window.localStorage.removeItem("prosit.provider.session.user")
+      }
+
       let data = await response.json()
 
 
