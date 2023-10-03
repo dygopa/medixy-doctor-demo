@@ -15,11 +15,7 @@ export default function Decider() {
             {/*data === 0 && <FormularySpeciality/>*/}
             {/*data === 1 && <FormularyLocality/>*/}
             {data === 0 && <Formulary/>}
-            {data === 1 && 
-                <AuthProvider>
-                    <FinishRegister />
-                </AuthProvider>
-            }
+            {data === 1 && <FinishRegister />}
         </>
     )
 

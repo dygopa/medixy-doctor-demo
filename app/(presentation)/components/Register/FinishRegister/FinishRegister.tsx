@@ -1,4 +1,4 @@
-import { AuthContext, IAuthContext } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import { AuthContext, IAuthContext } from "(presentation)/(layouts)/AuthLayout/context/AuthContext";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
@@ -8,8 +8,7 @@ import { twMerge } from "tailwind-merge";
 import { IRegisterContext, RegisterContext } from "../context/RegisterContext";
 
 export default function FinishRegister() {
-  const { state, actions, dispatch } = useContext<IAuthContext>(AuthContext);
-  const { getUserAuthenticated } = actions;
+  const { state, dispatch } = useContext<IAuthContext>(AuthContext);
   const { data, loading, error, successful } = state.getUserAuthenticated;
 
   const { state: stateRegister, actions: actionsRegister, dispatch: dispatchRegister } =
@@ -60,12 +59,12 @@ export default function FinishRegister() {
     }
   };
 
-  useEffect(() => {
+  /*useEffect(() => {
     if(load) {
       getUserAuthenticated()(dispatch)
     }
     setLoad(false)
-  })
+  })*/
 
   /*useMemo(() => {
     if(!data.userId) window.location.href = "/login"
