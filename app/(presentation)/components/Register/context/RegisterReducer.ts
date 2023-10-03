@@ -44,6 +44,39 @@ export const RegisterReducer = (state: any, action: any) => {
           error: action.payload.error,
         },
       };
+    case 'UPDATE_PASSWORD_SUCCESSFUL':
+      return {
+        ...state,
+        updatePassword: {
+          ...state.updatePassword,
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'UPDATE_PASSWORD_LOADING':
+      return {
+        ...state,
+        updatePassword: {
+          ...state.updatePassword,
+          data: null,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'UPDATE_PASSWORD_ERROR':
+      return {
+        ...state,
+        updatePassword: {
+          ...state.updatePassword,
+          data: null,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
     case 'GET_MEDICAL_SPECIALITIES_LOADING':
       return {
         ...state,

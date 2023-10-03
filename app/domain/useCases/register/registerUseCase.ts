@@ -19,6 +19,17 @@ export default class AuthUseCase {
       throw error;
     }
   }
+  async updatePassword(obj:any): Promise<any> {
+    try {
+      const response = await this._repository.registerUser(obj);
+
+      if (response instanceof RegisterFailure) throw response;
+      
+      return "SUCCESS";
+    } catch (error) {
+      throw error;
+    }
+  }
 
   async signOut(): Promise<any> {
     try {

@@ -1,6 +1,7 @@
 export const GET_USER_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL + '/doctor/auth';
 export const AUTH_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL + '/doctor/auth';
 export const REGISTER_USER_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL + '/doctors';
+export const UPDATE_PASSWORD_ENDPOINT : string = process.env.NEXT_PUBLIC_API_URL + '/doctor/auth/password';
 export const UPDATE_USER_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}`;
 export const UPDATE_AVATAR_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}/avatar`;
 export const GET_OTP_CODE = () => process.env.NEXT_PUBLIC_API_URL + `/doctor/otp`;

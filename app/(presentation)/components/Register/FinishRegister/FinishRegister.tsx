@@ -1,12 +1,24 @@
+import { AuthContext, IAuthContext } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
-import { useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import { IRegisterContext, RegisterContext } from "../context/RegisterContext";
 
 export default function FinishRegister() {
+  const { state, actions, dispatch } = useContext<IAuthContext>(AuthContext);
+  const { getUserAuthenticated } = actions;
+  const { data, loading, error, successful } = state.getUserAuthenticated;
+
+  const { state: stateRegister, actions: actionsRegister, dispatch: dispatchRegister } =
+    useContext<IRegisterContext>(RegisterContext);
+  const { updatePassword } = actionsRegister;
+  const { data: dataRegister, loading: loadingRegister, error: errorRegister, successful: successfulRegister } = stateRegister.registerUser;
 
   const [inputPassword, setInputPassword] = useState("password");
+  const [load, setLoad] = useState(false);
 
   const [values, setValues] = useState({
     password: "",
@@ -17,6 +29,14 @@ export default function FinishRegister() {
     password: "",
     global: "",
   })
+
+  const setValuesInitial = () => {
+    setValues({...values, email: data.email})
+  }
+
+  useMemo(() => {
+    if(successful) setValuesInitial()
+  }, [successful])
 
   const viewPassword = () => {
     if (inputPassword === "password") {
@@ -40,8 +60,30 @@ export default function FinishRegister() {
     }
   };
 
+  useEffect(() => {
+    if(load) {
+      getUserAuthenticated()(dispatch)
+    }
+    setLoad(false)
+  })
+
+  useMemo(() => {
+    if(error) window.location.href = "/login"
+  },[error])
+
+  useMemo(() => {
+    if(successfulRegister) window.location.href = "/dashboard"
+  },[successfulRegister])
+
+  if(!data.userId) return <div />
+
   return (
     <div className="lg:w-[80%] md:w-[90%] lg:px-20 md:px-14 sm:px-20 px-8 w-full h-fit flex flex-col justify-between items-center gap-6">
+      <AlertComponent
+        variant="success"
+        show={successfulRegister === true}
+        description="Contraseña guardado con éxito. Redireccionando a tu cuenta..."
+      />
       <p className="text-primary font-normal lg:text-base md:text-base text-md">
         ¡Felicidades, ya te registraste en Prosit!
       </p>
@@ -56,6 +98,7 @@ export default function FinishRegister() {
           type="email"
           className="w-full py-3 pr-10 bg-white"
           placeholder="Correo Electrónico"
+          value={values.email}
           disabled
           //value={values.email}
         />
@@ -80,13 +123,19 @@ export default function FinishRegister() {
               viewPassword();
             }}
           />
+          {errors.password.length > 0 && (
+            <div className="mt-1">
+              <span className="text-red-500">{errors.password}</span>
+            </div>
+          )}
         </div>
         <Button
           variant="primary"
           type="submit"
           className="mt-4 mb-8 w-full"
+          onClick={() => updatePassword({password: values.password})(dispatchRegister)}
         >
-          Iniciar Sesión
+          {loadingRegister ? "Guardando la contraseña..." : "Iniciar Sesión"}
         </Button>
       </div>
     </div>

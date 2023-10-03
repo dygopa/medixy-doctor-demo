@@ -4,6 +4,7 @@ import Formulary from "./Formulary/Formulary";
 import FormularySpeciality from "./FormularySpeciality/FormularySpeciality";
 import FormularyLocality from "./FormularyLocality/FormularyLocality";
 import FinishRegister from "./FinishRegister/FinishRegister";
+import AuthProvider from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 
 export default function Decider() {
     const { state } = useContext<IStepsContext>(StepsContext);
@@ -14,7 +15,11 @@ export default function Decider() {
             {/*data === 0 && <FormularySpeciality/>*/}
             {/*data === 1 && <FormularyLocality/>*/}
             {data === 0 && <Formulary/>}
-            {data === 1 && <FinishRegister />}
+            {data === 1 && 
+                <AuthProvider>
+                    <FinishRegister />
+                </AuthProvider>
+            }
         </>
     )
 

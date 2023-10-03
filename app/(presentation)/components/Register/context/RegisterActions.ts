@@ -8,6 +8,7 @@ import { Dispatch } from "react";
 
 export interface IRegisterActions {
   registerUser: Function;
+  updatePassword: Function;
   searchCURP: Function;
   updateRegisterData: Function;
   getMedicalSpecialities: Function;
@@ -25,6 +26,18 @@ const registerUser = (obj:any) => async (dispatch: Dispatch<any>) => {
     dispatch({ type: "REGISTER_USER_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
     dispatch({ type: "REGISTER_USER_ERROR", payload: { error: error } });
+  }
+}
+
+const updatePassword = (obj:any) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "UPDATE_PASSWORD_LOADING" });
+
+    const res:string = await new RegisterUseCase().registerUser(obj);
+
+    dispatch({ type: "UPDATE_PASSWORD_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "UPDATE_PASSWORD_ERROR", payload: { error: error } });
   }
 }
 
@@ -95,6 +108,7 @@ const getMunicipalities = (obj: { federalEntityId?: number | null }) => async (d
 
 export const actions: IRegisterActions = {
   registerUser,
+  updatePassword,
   searchCURP,
   updateRegisterData,
   getMedicalSpecialities,

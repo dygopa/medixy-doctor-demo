@@ -54,6 +54,7 @@ export default function Formulary() {
     second_lastname: formData?.second_lastname ?? "",
     phone_number: formData?.phone_number ?? "",
     pwaProfessionId: 0,
+    password: null,
     //curp: formData?.curp ?? "",
   });
 
@@ -334,7 +335,7 @@ export default function Formulary() {
   }, [values]);
 
   useMemo(() => {
-    if (successful) window.location.href = "/dashboard";
+    if (successful) changeStep(1)(stepDispatch);
   }, [successful]);
 
   useMemo(() => {
@@ -352,7 +353,7 @@ export default function Formulary() {
       <AlertComponent
         variant="success"
         show={successful === true}
-        description="Cuenta creada exitosamente, redireccionando a tu cuenta..."
+        description="Cuenta creada exitosamente."
       />
 
       <div className="w-full flex flex-col justify-between items-center gap-3 text-center z-30">
