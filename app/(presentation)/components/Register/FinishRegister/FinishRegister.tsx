@@ -67,9 +67,9 @@ export default function FinishRegister() {
     setLoad(false)
   })
 
-  useMemo(() => {
+  /*useMemo(() => {
     if(!data.userId) window.location.href = "/login"
-  },[data])
+  },[data])*/
 
   useMemo(() => {
     if(successfulRegister) window.location.href = "/dashboard"
@@ -77,6 +77,11 @@ export default function FinishRegister() {
 
   return (
     <div className="lg:w-[80%] md:w-[90%] lg:px-20 md:px-14 sm:px-20 px-8 w-full h-fit flex flex-col justify-between items-center gap-6">
+      <AlertComponent
+        variant="error"
+        show={errorRegister !== null}
+        description={"Ha ocurrido un error al actualizar la contraseña"}
+      />
       <AlertComponent
         variant="success"
         show={successfulRegister === true}
