@@ -335,7 +335,7 @@ export default function Formulary() {
   }, [values]);
 
   useMemo(() => {
-    if (successful) changeStep(1)(stepDispatch);
+    if (successful) changeStep(0)(stepDispatch);
   }, [successful]);
 
   useMemo(() => {
