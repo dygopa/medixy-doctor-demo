@@ -16,7 +16,7 @@ export default function AuthHandler({
   };
 
   const onHandleAuth = () => {
-    if (data.userId) redirect("/dashboard");
+    //if (data.userId) redirect("/dashboard");
   };
 
   useEffect(() => {

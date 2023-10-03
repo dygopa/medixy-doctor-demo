@@ -5,7 +5,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
+import { FormInput, FormSelect } from "(presentation)/components/core/BaseComponents/Form";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { RegisterContext, IRegisterContext } from "../context/RegisterContext";
@@ -49,37 +49,46 @@ export default function Formulary() {
 
   let [values, setValues] = useState({
     email: formData?.email ?? "",
-    password: formData?.password ?? "",
     names: formData?.names ?? "",
     first_lastname: formData?.first_lastname ?? "",
     second_lastname: formData?.second_lastname ?? "",
     phone_number: formData?.phone_number ?? "",
-    birth_date: formData?.birth_date ?? null,
+    pwaProfessionId: 0,
+    password: null,
     //curp: formData?.curp ?? "",
   });
 
   const [errors, setErrors] = useState({
     global: "",
     email: "",
-    password: "",
     names: "",
     first_lastname: "",
     second_lastname: "",
     phone_number: "",
-    birthdate: "",
     //curp: "",
   });
 
+  let profesions = [
+    { id: 8, name: "Bioanalista" },
+    { id: 7, name: "Enfermero/a" },
+    { id: 4, name: "Farmaceuta" },
+    { id: 3, name: "Fisioterapeuta" },
+    { id: 1, name: "Médico" },
+    { id: 6, name: "Nutriólogo" },
+    { id: 2, name: "Odontólogo" },
+    { id: 5, name: "Técnico radiólogo" },
+  ];
+
   const [wrongEmail, setWrongEmail] = useState(false);
-  const [termsContidions, setTermsContidions] = useState(false);
-  const [activePolicy, setActivePolicy] = useState(false);
+  const [termsContidions, setTermsContidions] = useState(true);
+  const [activePolicy, setActivePolicy] = useState(true);
 
   const [wrongName, setWrongName] = useState(false);
   const [wrongFirstName, setWrongFirstName] = useState(false);
   const [wrongLastName, setWrongLastName] = useState(false);
   const [inputPassword, setInputPassword] = useState("password");
 
-  const viewPassword = () => {
+  /*const viewPassword = () => {
     if (inputPassword === "password") {
       setInputPassword("text");
       return;
@@ -107,7 +116,7 @@ export default function Formulary() {
         {active && <FiCheck />}
       </div>
     );
-  };
+  };*/
 
   const handlename = (value: string, e: any) => {
     setValues({ ...values, names: value });
@@ -205,7 +214,7 @@ export default function Formulary() {
     return false;
   };
 
-  const handlePassword = (value: string) => {
+  /*const handlePassword = (value: string) => {
     setValues({ ...values, password: value });
     if (value.length <= 5) {
       setErrors({
@@ -255,10 +264,6 @@ export default function Formulary() {
 
     if (errors.email.length > 0) errorsFieldsCount++;
 
-    if (errors.password.length > 0) errorsFieldsCount++;
-
-    if (errors.birthdate.length > 0) errorsFieldsCount++;
-
     return errorsFieldsCount;
   };
 
@@ -266,7 +271,7 @@ export default function Formulary() {
     let list: string[] = [];
 
     values.email === "" && list.push("email");
-    values.password === "" && list.push("password");
+    //values.password === "" && list.push("password");
     values.names === "" && list.push("names");
     values.first_lastname === "" && list.push("first_lastname");
     values.phone_number === "" && list.push("phone_number");
@@ -330,7 +335,7 @@ export default function Formulary() {
   }, [values]);
 
   useMemo(() => {
-    if (successful) window.location.href = "/dashboard";
+    if (successful) changeStep(0)(stepDispatch);
   }, [successful]);
 
   useMemo(() => {
@@ -348,7 +353,7 @@ export default function Formulary() {
       <AlertComponent
         variant="success"
         show={successful === true}
-        description="Cuenta creada exitosamente, redireccionando a tu cuenta..."
+        description="Cuenta creada exitosamente."
       />
 
       <div className="w-full flex flex-col justify-between items-center gap-3 text-center z-30">
@@ -383,6 +388,29 @@ export default function Formulary() {
           </Link>
         </div>
         </div>*/}
+      <div className="font-normal text-secondary lg:text-lg md:text-lg text-md">
+        ¿Qué profesional de la salud eres?
+      </div>
+      <div className="relative w-full text-slate-500">
+        <FormSelect
+          className="form-control w-full bg-white"
+          defaultValue={values.pwaProfessionId}
+          value={values.pwaProfessionId}
+          onChange={(e) =>
+            setValues({ ...values, pwaProfessionId: +e.target.value })
+          }
+        >
+          <option value="0">Selecciona tu Profesión</option>
+          {profesions.map((elem, i) => (
+            <option key={i} value={elem["id"]}>
+              {elem["name"]}
+            </option>
+          ))}
+        </FormSelect>
+      </div>
+      <div className="font-normal text-secondary lg:text-lg md:text-lg text-md">
+        Indícanos tus datos personales
+      </div>
       <div className="relative w-full">
         <FormInput
           type="text"
@@ -463,7 +491,7 @@ export default function Formulary() {
         )}
       </div>
 
-      <div className="relative w-full">
+      {/*<div className="relative w-full">
         <FormInput
           type={"text"}
           placeholder="Fecha de Nacimiento (No obligatorio)"
@@ -479,7 +507,7 @@ export default function Formulary() {
             <span className="text-red-500 mt-2">{errors.birthdate}</span>
           </div>
         )}
-      </div>
+        </div>*/}
 
       <div className="relative w-full">
         <FormInput
@@ -501,7 +529,7 @@ export default function Formulary() {
         )}
       </div>
 
-      <div className="relative w-full">
+      {/*<div className="relative w-full">
         <FormInput
           type={inputPassword}
           className="w-full py-3 pr-10 bg-white"
@@ -531,7 +559,7 @@ export default function Formulary() {
         )}
       </div>
       {error && <span className="text-red-500 mt-1">{errors.global}</span>}
-      <div className="w-full relative flex flex-col justify-between gap-3 items-start">
+      {/*<div className="w-full relative flex flex-col justify-between gap-3 items-start">
         <div className="w-full flex justify-start items-center gap-3">
           <CheckboxComponent
             active={termsContidions}
@@ -570,11 +598,15 @@ export default function Formulary() {
             de la plataforma
           </p>
         </div>
-      </div>
+          </div>*/}
       <Button
         onClick={() => !loading && onSubmit()}
         disabled={
-          loading || !termsContidions || !activePolicy || validForm() > 0
+          loading || 
+          !termsContidions || 
+          !activePolicy || 
+          validForm() > 0 ||
+          values.pwaProfessionId === 0
         }
         variant="primary"
         type="submit"
