@@ -13,6 +13,7 @@ export interface IRegisterState {
   getUserMedicalSpecialities: IRegisterUserState;
   getFederalEntities: IEditSubjectEditSubjectState;
   municipalities: IGetMunicipalitiesState;
+  updatePassword: IRegisterUserState;
 }
 
 interface IRegisterUserState {
@@ -38,6 +39,12 @@ interface IGetMunicipalitiesState {
 
 export const initialState: IRegisterState = {
   registerUser: {
+    data: null,
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  updatePassword: {
     data: null,
     loading: false,
     successful: false,

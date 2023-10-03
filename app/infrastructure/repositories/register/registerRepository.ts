@@ -3,11 +3,12 @@ import { SignUpWithPasswordCredentials } from '@supabase/supabase-js';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import nookies from 'nookies';
 import { RegisterFailure, registerFailuresEnum } from 'domain/core/failures/register/registerFailure';
-import { REGISTER_USER_ENDPOINT } from 'infrastructure/config/api/dictionary';
+import { REGISTER_USER_ENDPOINT, UPDATE_PASSWORD_ENDPOINT } from 'infrastructure/config/api/dictionary';
 import { IRegister } from 'domain/core/entities/registerEntity';
 
 export default interface IRegisterRepository {
   registerUser(obj: any): Promise<string | RegisterFailure>;
+  updatePassword(obj: any): Promise<string | RegisterFailure>;
 }
 
 export class RegisterRepository implements IRegisterRepository {
@@ -56,6 +57,37 @@ export class RegisterRepository implements IRegisterRepository {
       let access_token = data["meta"]["authentication"]["access_token"] ?? ""
 
       nookies.set(undefined, 'access_token', access_token, { path: '/' });
+      return "SUCCESS";
+    } catch (error) {
+      console.log(error)
+      const exception = error as RegisterFailure;
+      return new RegisterFailure(exception.code);
+    }
+  }
+  async updatePassword(obj: any): Promise<string | RegisterFailure> {
+    try {
+      let token = nookies.get(undefined, 'access_token');
+
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${token["access_token"]}`);
+
+      var raw = JSON.stringify(obj);
+
+      var requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      } as RequestInit;
+
+      let URL = UPDATE_PASSWORD_ENDPOINT as RequestInfo
+
+      const response = await fetch(URL, requestOptions)
+      let data = await response.json()
+
+      if(response.status >= 400) return new RegisterFailure(registerFailuresEnum.serverError)
+
       return "SUCCESS";
     } catch (error) {
       console.log(error)
