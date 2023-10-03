@@ -14,7 +14,7 @@ export default function FinishRegister() {
   const { state: stateRegister, actions: actionsRegister, dispatch: dispatchRegister } =
     useContext<IRegisterContext>(RegisterContext);
   const { updatePassword } = actionsRegister;
-  const { data: dataRegister, loading: loadingRegister, error: errorRegister, successful: successfulRegister } = stateRegister.registerUser;
+  const { data: dataRegister, loading: loadingRegister, error: errorRegister, successful: successfulRegister } = stateRegister.updatePassword;
 
   const [inputPassword, setInputPassword] = useState("password");
   const [load, setLoad] = useState(false);
