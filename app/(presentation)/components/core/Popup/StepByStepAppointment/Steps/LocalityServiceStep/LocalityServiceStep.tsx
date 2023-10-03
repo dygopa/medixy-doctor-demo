@@ -162,13 +162,19 @@ const LocalityServiceStep = ({
   }, [loadingServices, loadingServicesFromCalendar, services]);
 
   useMemo(() => {
-    if (loadedLocalities) {
+    if (loadedLocalities && user && user.userId) {
       let list_localities = localities!.map((elem: any) => ({
         id: elem.id,
         title: elem.name,
         description: `${
-          elem.address.municipality ? elem.address.municipality.name : "Sin dirección"
-        } ${elem.address.country_location ? `- ${elem.address.country_location.name}` : ""}`,
+          elem.address.municipality
+            ? elem.address.municipality.name
+            : "Sin dirección"
+        } ${
+          elem.address.country_location
+            ? `- ${elem.address.country_location.name}`
+            : ""
+        }`,
       }));
 
       if (list_localities.length > 0 && !locality["id"]) {
