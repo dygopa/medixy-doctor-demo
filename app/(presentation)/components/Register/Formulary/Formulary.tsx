@@ -605,7 +605,8 @@ export default function Formulary() {
           loading || 
           !termsContidions || 
           !activePolicy || 
-          validForm() > 0
+          validForm() > 0 ||
+          values.pwaProfessionId === 0
         }
         variant="primary"
         type="submit"
