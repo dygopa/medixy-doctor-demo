@@ -11,7 +11,7 @@ interface IStepsUserState {
 
 export const initialState: IStepsState = {
     step: {
-        data: 1,
+        data: 0,
         loading: false,
         successful: false,
         error: null,

@@ -21,7 +21,7 @@ export default class AuthUseCase {
   }
   async updatePassword(obj:any): Promise<any> {
     try {
-      const response = await this._repository.registerUser(obj);
+      const response = await this._repository.updatePassword(obj);
 
       if (response instanceof RegisterFailure) throw response;
       

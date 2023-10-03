@@ -33,7 +33,7 @@ const updatePassword = (obj:any) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "UPDATE_PASSWORD_LOADING" });
 
-    const res:string = await new RegisterUseCase().registerUser(obj);
+    const res:string = await new RegisterUseCase().updatePassword(obj);
 
     dispatch({ type: "UPDATE_PASSWORD_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

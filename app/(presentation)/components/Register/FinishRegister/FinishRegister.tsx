@@ -68,8 +68,8 @@ export default function FinishRegister() {
   })
 
   useMemo(() => {
-    if(error) window.location.href = "/login"
-  },[error])
+    if(!data.userId) window.location.href = "/login"
+  },[data])
 
   useMemo(() => {
     if(successfulRegister) window.location.href = "/dashboard"
