@@ -2,6 +2,7 @@ import {
   AuthContext,
   IAuthContext,
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import clsx from "clsx";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 import Lucide from "../BaseComponents/Lucide";
@@ -21,6 +22,7 @@ export default function StepByStepMessage() {
   const { successful: createUserStepsSucessful } = state.createUserSteps;
 
   const [stepsCompleted, setStepsCompleted] = useState(0);
+  const [renderComponent, setRenderComponent] = useState(false);
 
   const getNextLinkSteps = () => {
     if (stepsCompleted === 0) return "/localities/create";
@@ -46,29 +48,55 @@ export default function StepByStepMessage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [createUserStepsSucessful]);
 
-  if (steps?.length < 3 && !error ) return (
-    <div className="w-full h-[70px] mb-3 md:mb-0 md:h-[50px] bg-primary">
-      <div className="w-full h-full text-center ">
-        <Link
-          href={getNextLinkSteps()}
-          className="w-full h-full flex justify-center items-center text-white hover:text-gray-300"
-        >
-          <p className="text-md font-medium">
-            Todavía te faltan pasos a completar para finalizar tus primeros
-            pasos en la plataforma{" "}
-          </p>
+  useEffect(() => {
+    if (steps?.length < 3) {
+      setTimeout(() => {
+        setRenderComponent(true);
+      }, 1000);
+    }
+  }, [steps]);
 
-          <p className="font-bold ml-3 text-lg">{stepsCompleted}/3</p>
+  if (!error)
+    return (
+      <div
+        className={clsx([
+          "opacity-0 transition duration-300",
+          renderComponent && "lg:h-[50px] md:h-[50px] h-[80px] opacity-100",
+        ])}
+      >
+        <div className="fixed top-0 z-[99] w-full">
+          <div
+            className={clsx([
+              "opacity-0 w-full transition duration-300 bg-primary",
+              renderComponent &&
+                "lg:h-[50px] md:h-[50px] h-[80px] mb-3 md:mb-0 lg:py-0 py-2 opacity-100",
+            ])}
+          >
+            <div className="w-full h-full lg:text-center md:text-center">
+              <Link
+                href={steps?.length > 0 ? getNextLinkSteps() : ""}
+                className="w-full h-full lg:flex md:flex lg:justify-center md:justify-center items-center text-white hover:text-gray-300"
+              >
+                <p className="text-md font-medium">
+                  Todavía te faltan pasos a completar para finalizar tus
+                  primeros pasos en la plataforma{" "}
+                </p>
 
-          {stepsCompleted === 3 && (
-            <p className="ml-2">
-              <Lucide icon="CheckCircle" size={25} color="#fff" />
-            </p>
-          )}
-        </Link>
+                <p className="font-bold lg:ml-3 md:ml-3 sm:ml-0 lg:mt-0 mt-1 text-lg sm:text-center">
+                  {stepsCompleted}/3
+                </p>
+
+                {stepsCompleted === 3 && (
+                  <p className="ml-2">
+                    <Lucide icon="CheckCircle" size={25} color="#fff" />
+                  </p>
+                )}
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  );
+    );
 
-  return <div />
+  return <div />;
 }
