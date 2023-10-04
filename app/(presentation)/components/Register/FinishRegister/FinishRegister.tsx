@@ -135,7 +135,7 @@ export default function FinishRegister() {
           variant="primary"
           type="submit"
           className="mt-4 mb-8 w-full"
-          disabled={values.password === "" || values.email === "" || errors.password.length > 0}
+          disabled={values.password === "" || errors.password.length > 0}
           onClick={() => updatePassword({password: values.password})(dispatchRegister)}
         >
           {loadingRegister ? "Guardando la contraseña..." : "Iniciar Sesión"}
