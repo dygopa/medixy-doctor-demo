@@ -17,20 +17,12 @@ export default function StepByStepMessage() {
 
   const { state, actions, dispatch } =
     useContext<IStepByStepContext>(StepByStepContext);
-  const { getStepsMessage } = actions;
+  const { getStepsMessage, changeOpenPopup } = actions;
   const { data: steps, loading, error, successful } = state.getStepsMessages;
   const { successful: createUserStepsSucessful } = state.createUserSteps;
 
   const [stepsCompleted, setStepsCompleted] = useState(0);
   const [renderComponent, setRenderComponent] = useState(false);
-
-  const getNextLinkSteps = () => {
-    if (stepsCompleted === 0) return "/localities/create";
-
-    if (stepsCompleted === 1) return "/schedule/configuration?openPopup=true";
-
-    return "/services";
-  };
 
   useEffect(() => {
     if (user?.accountId) getStepsMessage(user.accountId)(dispatch);
@@ -73,8 +65,12 @@ export default function StepByStepMessage() {
             ])}
           >
             <div className="w-full h-full lg:text-center md:text-center">
-              <Link
-                href={steps?.length > 0 ? getNextLinkSteps() : ""}
+              <button
+                onClick={
+                  steps?.length < 3
+                    ? () => changeOpenPopup(true)(dispatch)
+                    : () => {}
+                }
                 className="w-full h-full lg:flex md:flex lg:justify-center md:justify-center items-center text-white hover:text-gray-300"
               >
                 <p className="text-md font-medium">
@@ -91,7 +87,7 @@ export default function StepByStepMessage() {
                     <Lucide icon="CheckCircle" size={25} color="#fff" />
                   </p>
                 )}
-              </Link>
+              </button>
             </div>
           </div>
         </div>

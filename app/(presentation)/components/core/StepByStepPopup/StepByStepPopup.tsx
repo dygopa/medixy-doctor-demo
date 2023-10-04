@@ -12,7 +12,7 @@ import {
   StepByStepContext,
 } from "./context/StepByStepContext";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 interface IStep {
   id: number;
@@ -37,6 +37,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
   // const { data: dataService, error: errorService, successful: successfulService } = state.getService;
 
   const pathname = usePathname();
+  const router = useRouter();
 
   const [isVisible, setIsVisible] = useState(false);
 
@@ -118,9 +119,15 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
               Completado
             </span>
           ) : (
-            <Link href={props.cta}>
-              <Button variant="primary">Ir</Button>
-            </Link>
+            <Button
+              variant="primary"
+              onClick={() => {
+                changeOpenPopup(false)(dispatch);
+                router.push(props.cta);
+              }}
+            >
+              Ir
+            </Button>
           )}
         </div>
       </div>
@@ -149,9 +156,16 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       setIsVisible(false);
       return;
     }
-    if (pathname!.includes("/dashboard") && data?.length === 0)
+    if (pathname!.includes("/dashboard") && data?.length === 0) {
       setIsVisible(true);
-    if (data?.length > 0) setIsVisible(true);
+      return;
+    }
+
+    if (data?.length > 0) {
+      setIsVisible(true);
+    }
+
+    if (openPopup) setIsVisible(true);
   }
 
   useMemo(() => {
@@ -206,6 +220,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
               size={25}
               onClick={(e) => {
                 setIsVisible(false);
+                changeOpenPopup(false)(dispatch);
               }}
               className="cursor-pointer"
             />
@@ -233,6 +248,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
             user={user}
             customClick={() => {
               setIsVisible(false);
+              changeOpenPopup(false)(dispatch);
             }}
           />
         </div>
