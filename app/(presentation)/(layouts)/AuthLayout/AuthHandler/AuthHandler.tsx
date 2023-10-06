@@ -29,9 +29,9 @@ export default function AuthHandler({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [successful]);
 
-  if (loading || data?.userId) return <div />;
+  /*if (loading || data?.userId) return <div />;
 
-  if (loading && !data?.userId) return <div />;
+  if (loading && !data?.userId) return <div />;*/
 
   return <div>{children}</div>;
 }

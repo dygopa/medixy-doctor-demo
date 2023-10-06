@@ -34,8 +34,8 @@ export default function FinishRegister() {
   }
 
   useMemo(() => {
-    if(successful) setValuesInitial()
-  }, [successful])
+    setValuesInitial()
+  }, [data])
 
   const viewPassword = () => {
     if (inputPassword === "password") {
