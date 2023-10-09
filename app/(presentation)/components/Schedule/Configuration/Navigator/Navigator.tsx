@@ -182,7 +182,7 @@ export default function Navigator() {
 
   return (
     <div className="w-full flex flex-col flex-wrap justify-start items-start gap-5">
-      <div className="w-full relative md:flex flex-row justify-between items-center gap-2">
+      <div className="w-full md:flex flex-row justify-between items-center gap-2 sticky top-[67px] z-[50]  bg-slate-100 py-3">
         <div className="w-full md:w-[50%]">
           <h2 className="mr-5 text-2xl font-bold truncate">Configuración de la agenda</h2>
           <p>Mantén un seguimiento de tus citas médicos y asegúrate de estar preparado para cada consulta</p>
