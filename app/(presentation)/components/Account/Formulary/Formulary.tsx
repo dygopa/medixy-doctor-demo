@@ -13,6 +13,8 @@ import {
   AuthContext,
   IAuthContext,
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import Steps from "./Steps/Steps";
+import Security from "./Security/Security";
 
 interface IFormularyProps {
   account: IUser;
@@ -28,9 +30,49 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
   const { getUserAuthenticated } = actionsAuth;
 
   const { state, actions, dispatch } = useContext<IUserContext>(UserContext);
-  const { updateUserData } = actions;
+  const { updateUserData, updatePassword } = actions;
 
   const { loading, successful, error } = state.updateUserData;
+  const { loading: loadingSecurity, successful: successfulSecurity, error: errorSecurity } = state.changePasswords;
+
+  const [steps, setSteps] = useState(0);
+
+  const [errorsSecurity, setErrorsSecurity] = useState({
+    global: "",
+    password: "",
+  });
+
+  const [formData, setFormData] = useState({
+    password: "",
+  });
+
+  const getComponentByTabActive = () => {
+    switch (steps) {
+      case 0:
+        return (
+          <div className="w-full relative flex flex-col gap-4 mt-8">
+            <BasicData
+              account={account}
+              setAccount={setAccount}
+              errors={errors}
+              setErrors={setErrors}
+            />
+            <Credentials account={account} setAccount={setAccount} />
+            <Contact account={account} setAccount={setAccount} />
+            <AboutMe
+              account={account}
+              setAccount={setAccount}
+              errors={errors}
+              setErrors={setErrors}
+            />
+          </div>
+        );
+      case 1:
+        return <Security account={account} formData={formData} setFormData={setFormData} errors={errorsSecurity} setErrors={setErrorsSecurity} />;
+      default:
+        return <div />;
+    }
+  };
 
   const [errors, setErrors] = useState({
     global: "",
@@ -58,6 +100,18 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
     if (errors.curp.length > 0) errorsFieldsCount++;
 
     if (errors.shortDescription.length > 0) errorsFieldsCount++;
+
+    return errorsFieldsCount;
+  };
+
+  
+
+  const validFormSecurity = () => {
+    let errorsFieldsCount = 0;
+
+    if (errorsSecurity.global.length > 0) errorsFieldsCount++;
+
+    if (errorsSecurity.password.length > 0) errorsFieldsCount++;
 
     return errorsFieldsCount;
   };
@@ -126,37 +180,42 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
             funciones dentro de la plataforma
           </p>
         </div>
-        <Button
-          variant="primary"
-          disabled={
-            loading ||
-            account.names === "" ||
-            account.firstName === "" ||
-            validForm() > 0
-          }
-          onClick={() => {
-            updateAccount();
-          }}
-          className="px-16 mb-2 md:mb-0"
-        >
-          Actualizar
-        </Button>
+        { steps === 0 ?
+          <Button
+            variant="primary"
+            disabled={
+              loading ||
+              account.names === "" ||
+              account.firstName === "" ||
+              validForm() > 0
+            }
+            onClick={() => {
+              updateAccount();
+            }}
+            className="px-16 mb-2 md:mb-0"
+          >
+            Actualizar
+          </Button>
+        :
+          <Button
+            variant="primary"
+            disabled={
+              loadingSecurity || formData.password === "" || validFormSecurity() > 0
+            }
+            onClick={() => {
+              updatePassword(formData.password)(dispatch);
+            }}
+            className="px-16 mt-3 md:mt-0 w-full md:w-fit"
+          >
+            Actualizar contraseña
+          </Button>
+        }
       </div>
-      <div className="w-full relative flex flex-col gap-4 mt-8">
-        <BasicData
-          account={account}
-          setAccount={setAccount}
-          errors={errors}
-          setErrors={setErrors}
-        />
-        <Credentials account={account} setAccount={setAccount} />
-        <Contact account={account} setAccount={setAccount} />
-        <AboutMe
-          account={account}
-          setAccount={setAccount}
-          errors={errors}
-          setErrors={setErrors}
-        />
+      <div>
+        <Steps steps={steps} setSteps={setSteps} user={account} />
+      </div>
+      <div>
+        {getComponentByTabActive()}
       </div>
     </div>
   );

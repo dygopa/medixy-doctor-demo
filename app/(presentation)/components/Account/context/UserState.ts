@@ -13,6 +13,7 @@ export interface IUserState {
   deleteMedicalSpeciality: IUserUserState;
   updateAvatar: IUserUserState;
   getCountriesISO: IGetCountriesISOState;
+  changePasswords: IUserUserState;
 }
 
 interface IGetCountriesISOState {
@@ -81,6 +82,12 @@ export const initialState: IUserState = {
   },
   getCountriesISO: {
     data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  changePasswords: {
+    data: "",
     loading: false,
     successful: false,
     error: null,

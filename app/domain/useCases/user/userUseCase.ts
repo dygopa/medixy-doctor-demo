@@ -138,4 +138,16 @@ export default class UserUseCase {
       throw error;
     }
   }
+
+  async changePassword(newPassword: string): Promise<string> {
+    try {
+      const response = await this._repository.changePassword(newPassword);
+
+      if (response instanceof UserFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }

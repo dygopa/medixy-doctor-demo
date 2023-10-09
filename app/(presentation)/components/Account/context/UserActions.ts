@@ -17,6 +17,7 @@ export interface IUserActions {
   getUserMedicalSpecialities: Function;
   updateAvatar: Function;
   getCountriesISO: Function;
+  updatePassword: (newPassword: string) => (dispatch: Dispatch<any>) => {};
 }
 
 const updateUserData = (obj:any) => async (dispatch: Dispatch<any>) => {
@@ -134,6 +135,18 @@ const getCountriesISO = () => async (dispatch: Dispatch<any>) => {
   }
 }
 
+const updatePassword = (newPassword:string) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "UPDATE_PASSWORD_LOADING" });
+
+    const res: string = await new UserUseCase().changePassword(newPassword);
+
+    dispatch({ type: "UPDATE_PASSWORD_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "UPDATE_PASSWORD_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IUserActions = {
   updateUserData,
   getMedicalSpecialities,
@@ -143,4 +156,5 @@ export const actions: IUserActions = {
   deleteMedicalSpeciality,
   updateAvatar,
   getCountriesISO,
+  updatePassword,
 }

@@ -10,6 +10,7 @@ import {
   GET_USER_MEDICAL_SPECIALITIES_ENDPOINT, 
   UPDATE_AVATAR_ENDPOINT, 
   UPDATE_MEDICAL_SPECIALITY_ENDPOINT, 
+  UPDATE_PASSWORD_ENDPOINT, 
   UPDATE_USER_ENDPOINT 
 } from "infrastructure/config/api/dictionary";
 import { supabase } from "infrastructure/config/supabase/supabase-client";
@@ -25,6 +26,7 @@ export default interface IUserRepository {
   getDoctors(obj: { skip?: number | string | undefined; sort?: any; limit?: number | undefined; searchQuery?: string | undefined; }): Promise<IGetUsersResponse | UserFailure>;
   getDoctorById(doctorId: number): Promise<IUser | UserFailure>;
   getDoctorsCount(obj: { limit?: number | undefined; searchQuery?: string | undefined; }): Promise<number | UserFailure>;
+  changePassword(newPassword: string): Promise<string | UserFailure>;
 }
 
 export class UserRepository implements IUserRepository {
@@ -365,6 +367,40 @@ export class UserRepository implements IUserRepository {
         const res = await query;
 
         return res.count ?? 0;
+    } catch (error) { 
+      const exception = error as any;
+      return new UserFailure(userFailuresEnum.serverError);
+    }
+  }
+
+  async changePassword(newPassword: string): Promise<string | UserFailure> {
+    try {
+      let cookies = nookies.get(undefined, 'access_token');
+
+      var myHeaders = new Headers();
+
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
+
+      var raw = JSON.stringify({
+        password: newPassword,
+      });
+
+      var requestOptions = {
+        method: 'PUT',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      } as RequestInit;
+
+      let URL = UPDATE_PASSWORD_ENDPOINT
+
+      const response = await fetch(URL, requestOptions)
+      let data = await response.json()
+
+      console.log("UPDATE_PASSWORD_ENDPOINT", data)
+
+      return "SUCCESSFUL";
     } catch (error) { 
       const exception = error as any;
       return new UserFailure(userFailuresEnum.serverError);

@@ -264,6 +264,39 @@ export const UserReducer = (state: any, action: any) => {
           error: action.payload.error,
         },
       };
+    case 'UPDATE_PASSWORD_LOADING':
+      return {
+        ...state,
+        changePasswords: {
+          ...state.changePasswords,
+          data: null,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'UPDATE_PASSWORD_SUCCESSFUL':
+      return {
+        ...state,
+        changePasswords: {
+          ...state.changePasswords,
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'UPDATE_PASSWORD_ERROR':
+      return {
+        ...state,
+        changePasswords: {
+          ...state.changePasswords,
+          data: null,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
 
     default:
       return state;
