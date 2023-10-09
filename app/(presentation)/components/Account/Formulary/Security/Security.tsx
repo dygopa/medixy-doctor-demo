@@ -1,9 +1,11 @@
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 import { IUser } from "domain/core/entities/userEntity";
 import { useContext, useState } from "react";
+import { twMerge } from "tailwind-merge";
 import { IUserContext, UserContext } from "../../context/UserContext";
 
 interface IFormularyProps {
@@ -23,6 +25,16 @@ export default function Security({ account, formData, setFormData, errors, setEr
   const { state } = useContext<IUserContext>(UserContext);
 
   const { loading, successful, error } = state.changePasswords;
+
+  const [inputPassword, setInputPassword] = useState("password");
+
+  const viewPassword = () => {
+    if (inputPassword === "password") {
+      setInputPassword("text");
+      return;
+    }
+    setInputPassword("password");
+  };
 
   const handlePassword = (value: string) => {
     setFormData({ ...formData, password: value });
@@ -64,11 +76,21 @@ export default function Security({ account, formData, setFormData, errors, setEr
                 Nueva Constraseña
               </p>
               <FormInput
-                type={"text"}
+                type={inputPassword}
                 placeholder="Escribe tu nueva Constraseña"
                 min={0}
                 className="form-control w-full"
                 onChange={(e: any) => handlePassword(e.target.value)}
+              />
+              <Lucide
+                icon={inputPassword === "text" ? "EyeOff" : "Eye"}
+                className={twMerge([
+                  "absolute top-11 right-0 w-4 h-4 my-auto mr-3 cursor-pointer transition-all",
+                  inputPassword === "text" && "text-black",
+                ])}
+                onClick={(e: any) => {
+                  viewPassword();
+                }}
               />
               {errors.password.length > 0 && (
                 <span className="text-red-500">{errors.password}</span>

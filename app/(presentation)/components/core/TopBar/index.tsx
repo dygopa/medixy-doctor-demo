@@ -367,19 +367,17 @@ function Main({
           className="w-fit h-full flex justify-end items-center gap-3"
         >
           <div className="w-fit min-w-[8rem] text-left h-full flex flex-col justify-center items-end">
-            {user?.sex === 1 && (
+            {user?.sex === 1 ?
               <p className="font-semibold text-sm text-slate-900">
                 Dra. {user?.names} <br className="md:hidden" />{" "}
                 {user?.firstName}
               </p>
-            )}
-            {user?.sex === 2 ||
-              (user?.sex === 0 && (
-                <p className="font-semibold text-sm text-slate-900">
-                  Dr. {user?.names} <br className="md:hidden" />{" "}
-                  {user?.firstName}
-                </p>
-              ))}
+            :
+              <p className="font-semibold text-sm text-slate-900">
+                Dr. {user?.names} <br className="md:hidden" />{" "}
+                {user?.firstName}
+              </p>
+            }
             <p className="font-light text-sm text-slate-500">Médico</p>
           </div>
           <div className="w-[3rem] h-[3rem] flex flex-col justify-center items-center rounded-xl overflow-hidden p-0 bg-slate-300">
