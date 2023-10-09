@@ -276,7 +276,8 @@ export default function Formulary({
               loadingCreationService ||
               // localities.length === 0 ||
               // formData.service_category_name.length === 0 ||
-              formData.name === ""
+              formData.name === "" ||
+              formData.base_price === 0
             }
             onClick={() => onSubmit()}
             variant="primary"
@@ -444,6 +445,7 @@ export default function Formulary({
                 <div className="lg:flex justify-between items-start relative w-full gap-3">
                   <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                     Precio
+                    <span className="text-primary font-bold">*</span>
                   </p>
                   <div className="relative lg:w-[70%]">
                     <div className="w-full">

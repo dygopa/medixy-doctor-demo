@@ -262,7 +262,9 @@ export default function Formulary({
         <div className="md:w-[50%] flex justify-end items-center gap-3">
           <Button
             disabled={
-              loadingUpdate || formData?.name === ""
+              loadingUpdate ||
+              formData?.name === "" ||
+              formData?.base_price === 0
               // formData?.service_category_name.length === 0
             }
             onClick={() => {
@@ -416,6 +418,7 @@ export default function Formulary({
               <div className="lg:flex justify-between items-start relative w-full gap-3">
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Precio
+                  <span className="text-primary font-bold">*</span>
                 </p>
                 <NumericFormat
                   value={

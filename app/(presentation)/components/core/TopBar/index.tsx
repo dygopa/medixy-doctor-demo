@@ -45,7 +45,7 @@ import {
   AuthContext,
   IAuthContext,
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
-import nookies from 'nookies';
+import nookies from "nookies";
 
 interface INavigation {
   title: string;
@@ -87,7 +87,7 @@ function Main({
 
   const ShareLinkComponent = () => {
     const [copied, setCopied] = useState(false);
-    let token = nookies.get(undefined, 'access_token');
+    let token = nookies.get(undefined, "access_token");
     let userLink =
       process.env.NEXT_PUBLIC_MARKETPLACE_PROJECT_DOMAIN +
       `/discover/specialists/${user.userId}`;
@@ -296,15 +296,17 @@ function Main({
   useEffect(() => {
     if (user && user.accountId) {
       if (hasPermission) {
-        getUserToken().then((value: string | undefined) => {
-          if (value) {
-            console.log(value)
-            updateUserFCMToken({
-              token: value,
-              userId: user.accountId,
-            })(dispatch);
-          }
-        }).catch((e:any) => console.log(e));
+        getUserToken()
+          .then((value: string | undefined) => {
+            if (value) {
+              console.log(value);
+              updateUserFCMToken({
+                token: value,
+                userId: user.accountId,
+              })(dispatch);
+            }
+          })
+          .catch((e: any) => console.log(e));
       }
     }
   }, [user]);
