@@ -75,6 +75,7 @@ export default function CalendarIndex() {
   const [showWindowModal, setShowWindowModal] = useState(false);
   const [successfulPopup, setSuccessfulPopup] = useState(false);
   const [hasLocalities, setHasLocalities] = useState(false);
+  console.log(hasLocalities)
 
   const [eventSelected, setEventSelected] = useState<EventClickArg>(
     {} as EventClickArg
@@ -162,7 +163,7 @@ export default function CalendarIndex() {
 
   useMemo(()=>{
     if(localitiesSuccessful && [...(localities as any[])].length > 0) setHasLocalities(true)
-  },[localitiesLoading])
+  },[localitiesLoading, localities])
 
   useMemo(() => {
     if (successful) formatList();

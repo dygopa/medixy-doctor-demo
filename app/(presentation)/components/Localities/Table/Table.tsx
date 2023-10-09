@@ -18,7 +18,6 @@ export default function Table({ user }: { user: IUser }) {
     useContext<ILocalitiesContext>(LocalitiesContext);
   const { data, loading, successful, error } = state.getUserLocalities;
   const { getUserLocalities } = actions;
-  console.log(data)
 
   const LocalityComponent = ({ data }: { data: ILocality }) => {
     return (
