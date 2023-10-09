@@ -30,8 +30,18 @@ import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
 import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
 import moment from "moment";
+import { AuthContext, IAuthContext } from "(presentation)/(layouts)/AuthLayout/context/AuthContext";
+import { redirect } from "next/navigation";
 
 export default function Formulary() {
+  const { state: stateAuth } = useContext<IAuthContext>(AuthContext);
+  const { data: user } = stateAuth.getUserAuthenticated;
+
+  useMemo(() => {
+    if(user?.userId) redirect("/dashboard");
+  }, [user])
+
+
   const { state, actions, dispatch } =
     useContext<IRegisterContext>(RegisterContext);
   const { registerUser, updateRegisterData } = actions;
