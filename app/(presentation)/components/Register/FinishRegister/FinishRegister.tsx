@@ -8,8 +8,9 @@ import { twMerge } from "tailwind-merge";
 import { IRegisterContext, RegisterContext } from "../context/RegisterContext";
 
 export default function FinishRegister() {
-  const { state, dispatch } = useContext<IAuthContext>(AuthContext);
+  const { state, actions, dispatch } = useContext<IAuthContext>(AuthContext);
   const { data, loading, error, successful } = state.getUserAuthenticated;
+  const { getUserAuthenticated } = actions;
 
   const { state: stateRegister, actions: actionsRegister, dispatch: dispatchRegister } =
     useContext<IRegisterContext>(RegisterContext);
@@ -30,12 +31,19 @@ export default function FinishRegister() {
   })
 
   const setValuesInitial = () => {
-    setValues({...values, email: data.email})
+    setValues({...values, email: data?.email})
   }
-
+console.log(data)
   useMemo(() => {
-    setValuesInitial()
-  }, [data])
+    if(data && successful) setValuesInitial()
+  }, [data, successful])
+
+  useEffect(() => {
+    if(!load) {
+      getUserAuthenticated()(dispatch)
+      setLoad(true)
+    }
+  })
 
   const viewPassword = () => {
     if (inputPassword === "password") {
