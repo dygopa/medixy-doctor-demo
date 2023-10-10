@@ -17,17 +17,12 @@ import Steps from "./Steps/Steps";
 import Security from "./Security/Security";
 
 interface IFormularyProps {
+  user: IUser;
   account: IUser;
   setAccount: any;
 }
 
-export default function Formulary({ account, setAccount }: IFormularyProps) {
-  const {
-    state: stateAuth,
-    actions: actionsAuth,
-    dispatch: dispatchAuth,
-  } = useContext<IAuthContext>(AuthContext);
-  const { getUserAuthenticated } = actionsAuth;
+export default function Formulary({ user, account, setAccount }: IFormularyProps) {
 
   const { state, actions, dispatch } = useContext<IUserContext>(UserContext);
   const { updateUserData, updatePassword } = actions;
@@ -52,6 +47,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
         return (
           <div className="w-full relative flex flex-col gap-4 mt-8">
             <BasicData
+              user={user}
               account={account}
               setAccount={setAccount}
               errors={errors}
@@ -151,10 +147,6 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
 
     updateUserData(obj)(dispatch);
   };
-
-  useMemo(() => {
-    if (successful) getUserAuthenticated()(dispatchAuth);
-  }, [successful]);
 
   useMemo(() => {
     if (account.userId) setAccount({ ...account, userId: account.userId });

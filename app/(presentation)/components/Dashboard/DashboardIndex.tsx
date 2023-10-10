@@ -11,17 +11,14 @@ import DashboardProvider from "./DoctorsCase/context/DashboardContext";
 import ScheduleProvider from "../Schedule/context/ScheduleContext";
 import Popup from "../core/Popup/Popup";
 
-export default function DashboardIndex() {
-  const { state } = useContext<IAuthContext>(AuthContext);
-
-  const { data, successful } = state.getUserAuthenticated;
+export default function DashboardIndex({user} : {user: IUser}) {
 
   const [account, setAccount] = useState<IUser>({} as IUser);
 
   useMemo(() => {
-    if (successful) setAccount(data);
+    if (user) setAccount(user);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [successful]);
+  }, [user]);
 
   if (!account.userId) return <div />;
 
