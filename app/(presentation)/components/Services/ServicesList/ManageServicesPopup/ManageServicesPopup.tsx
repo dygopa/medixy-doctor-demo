@@ -1,19 +1,19 @@
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import CompletedStepByStepPopup from "(presentation)/components/core/CompletedStepByStep/CompletedStepByStepPopUp";
 import {
   IStepByStepContext,
   StepByStepContext,
 } from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
+import { IUser } from "domain/core/entities/userEntity";
 import { useContext, useEffect, useState } from "react";
 
-export default function ManageServicesPopup() {
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
+interface IManageServicesPopupProps {
+  user: IUser;
+}
 
+export default function ManageServicesPopup({
+  user,
+}: IManageServicesPopupProps) {
   const { state, dispatch, actions } =
     useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps } = actions;

@@ -34,10 +34,9 @@ export default class AuthUseCase {
     }
   }
 
-
-  async getUserAuthenticatedAPI(): Promise<IUser> {
+  async getUserAuthenticatedWithToken(obj: { accessToken: string }): Promise<IUser> {
     try {
-      const response = await this._repository.getUserFromAPI({ accessToken: " "});
+      const response = await this._repository.getUserAuthenticatedWithToken({ accessToken: obj.accessToken });
 
       if (response instanceof AuthFailure) throw response;
 

@@ -115,12 +115,68 @@ export class AuthRepository implements IAuthRepository {
 
   async getUserAuthenticated(): Promise<IUser | AuthFailure> {
     try {  
-
       let obj = nookies.get(undefined, 'access_token');
 
-      let parsedObject = JSON.parse(window.localStorage.getItem("prosit.provider.session.user")!)
+      if (!obj.access_token || obj?.access_token?.length === 0) return new AuthFailure(authFailuresEnum.userNotFound);
 
-      return parsedObject;
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${obj["access_token"]}`);
+
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+      } as RequestInit;
+
+      let URL = GET_USER_ENDPOINT as RequestInfo
+
+      const response = await fetch(URL, requestOptions)
+      let data = await response.json()
+
+      if(!data["meta"]["success"]) return new AuthFailure(data["meta"]["error"]["type"]);
+
+      let parsedObject = JSON.parse(JSON.stringify(data["data"]))
+      let userMapped = userAPIToMap(parsedObject, data["meta"]["authentication"]["type"])
+
+      console.log("JSON.parse", userMapped)
+
+      return JSON.parse(JSON.stringify(userMapped));
+    } catch (error) {
+      return new AuthFailure(authFailuresEnum.serverError);
+    }
+  }
+
+  async getUserAuthenticatedWithToken(obj: { accessToken: string }): Promise<IUser | AuthFailure> {
+    try {  
+      if (obj.accessToken.length === 0) return new AuthFailure(authFailuresEnum.notAuthenticated);
+
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${obj.accessToken}`);
+
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+      } as RequestInit;
+
+      let URL = GET_USER_ENDPOINT as RequestInfo
+
+      const response = await fetch(URL, requestOptions)
+      let data = await response.json()
+
+      if (response.status === 401) return new AuthFailure(authFailuresEnum.tokenExpired); 
+
+      if(!data["meta"]["success"]) return new AuthFailure(data["meta"]["error"]["type"]);
+
+      
+      let parsedObject = JSON.parse(JSON.stringify(data["data"]))
+      let userMapped = userAPIToMap(parsedObject, data["meta"]["authentication"]["type"])
+      
+      console.log("JSON.parse", userMapped)
+
+      return JSON.parse(JSON.stringify(userMapped));
     } catch (error) {
       return new AuthFailure(authFailuresEnum.serverError);
     }
