@@ -1,14 +1,7 @@
 import { PatientsRoutesEnum } from "(presentation)/(routes)/patientsRoutes";
 import Button from "(presentation)/components/core/BaseComponents/Button";
-import clsx from "clsx";
-import Link from "next/link";
-import { useContext, useEffect, useState } from "react";
-import { FiCheck } from "react-icons/fi";
+import { useContext, useState } from "react";
 import Formulary from "./Formulary/Formulary";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import {
   ICreatePatientContext,
   CreatePatientContext,
@@ -17,12 +10,13 @@ import { useRouter } from "next/navigation";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
+import { IUser } from "domain/core/entities/userEntity";
 
-export default function Steps() {
+interface IStepsProps {
+  user: IUser;
+}
 
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
-
+export default function Steps({ user }: IStepsProps) {
   const { state, actions, dispatch } =
     useContext<ICreatePatientContext>(CreatePatientContext);
   const { createSubject } = actions;

@@ -1,4 +1,5 @@
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import { IUser } from "domain/core/entities/userEntity";
 import { Dispatch, SetStateAction } from "react";
 import Diagnosis from "./Diagnosis/Diagnosis";
 import Orders from "./Orders/Orders";
@@ -10,12 +11,14 @@ import Title from "./Title/Title";
 import VitalSigns from "./VitalSigns/VitalSigns";
 
 interface IDetailProps {
+  user: IUser;
   medicalConsulty: IMedicalConsulty;
   setMedicalConsulty: Dispatch<SetStateAction<IMedicalConsulty | null>>;
   appointmentId: string | null;
 }
 
 export default function Detail({
+  user,
   medicalConsulty,
   setMedicalConsulty,
   appointmentId,
@@ -24,6 +27,7 @@ export default function Detail({
     <div>
       <div className="mb-4 border-b">
         <Title
+          user={user}
           medicalConsulty={medicalConsulty}
           setMedicalConsulty={setMedicalConsulty}
           appointmentId={appointmentId}
@@ -51,7 +55,7 @@ export default function Detail({
       </div>
 
       <div className="mb-4">
-        <Recipes medicalConsulty={medicalConsulty} />
+        <Recipes user={user} medicalConsulty={medicalConsulty} />
       </div>
 
       <div>

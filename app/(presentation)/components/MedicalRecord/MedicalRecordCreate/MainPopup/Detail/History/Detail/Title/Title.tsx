@@ -1,7 +1,3 @@
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { Menu, Transition } from "@headlessui/react";
@@ -21,21 +17,21 @@ import {
 } from "react";
 import { twMerge } from "tailwind-merge";
 import QrCodeModal from "./QrCodeModal/QrCodeModal";
+import { IUser } from "domain/core/entities/userEntity";
 
 interface ITitleProps {
+  user: IUser;
   medicalConsulty: IMedicalConsulty;
   setMedicalConsulty: Dispatch<SetStateAction<IMedicalConsulty | null>>;
   appointmentId: string | null;
 }
 
 export default function Title({
+  user,
   medicalConsulty,
   setMedicalConsulty,
   appointmentId,
 }: ITitleProps) {
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
-
   const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
     MedicalRecordCreateContext
   );

@@ -1,47 +1,24 @@
+import { useContext, useMemo, useState } from "react";
 import {
-  SetStateAction,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
-import { FormInput, FormSelect } from "(presentation)/components/core/BaseComponents/Form";
+  FormInput,
+  FormSelect,
+} from "(presentation)/components/core/BaseComponents/Form";
 import Button from "(presentation)/components/core/BaseComponents/Button";
-import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { RegisterContext, IRegisterContext } from "../context/RegisterContext";
-import { DashboardRoutesEnum } from "(presentation)/(routes)/dashboardRoutes";
-import {
-  RegisterFailure,
-  registerFailuresEnum,
-} from "domain/core/failures/register/registerFailure";
+import { registerFailuresEnum } from "domain/core/failures/register/registerFailure";
 import { IStepsContext, StepsContext } from "../Steps/context/StepsContext";
-import { IRegister } from "domain/core/entities/registerEntity";
-import Link from "next/link";
 import { twMerge } from "tailwind-merge";
-import { FiCheck } from "react-icons/fi";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import {
   VALIDATE_EMAIL,
   VALIDATE_NAMES,
   VALIDATE_NUMBERS,
-  VALIDATE_STRING,
 } from "(presentation)/(utils)/errors-validation";
-import IntlTelInput from "react-intl-tel-input";
+
 import "react-intl-tel-input/dist/main.css";
 import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
-import moment from "moment";
-import { AuthContext, IAuthContext } from "(presentation)/(layouts)/AuthLayout/context/AuthContext";
-import { redirect } from "next/navigation";
 
 export default function Formulary() {
-  const { state: stateAuth } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = stateAuth.getUserAuthenticated;
-
-  useMemo(() => {
-    if(user?.userId) redirect("/dashboard");
-  }, [user])
-
-
   const { state, actions, dispatch } =
     useContext<IRegisterContext>(RegisterContext);
   const { registerUser, updateRegisterData } = actions;
@@ -345,7 +322,7 @@ export default function Formulary() {
   }, [values]);
 
   useMemo(() => {
-    if (successful) changeStep(0)(stepDispatch);
+    if (successful) window.location.reload();
   }, [successful]);
 
   useMemo(() => {
@@ -612,9 +589,9 @@ export default function Formulary() {
       <Button
         onClick={() => !loading && onSubmit()}
         disabled={
-          loading || 
-          !termsContidions || 
-          !activePolicy || 
+          loading ||
+          !termsContidions ||
+          !activePolicy ||
           validForm() > 0 ||
           values.pwaProfessionId === 0
         }

@@ -1,3 +1,4 @@
+import { IUser } from "domain/core/entities/userEntity";
 import { useSearchParams } from "next/navigation";
 import { useContext, useEffect } from "react";
 import {
@@ -13,7 +14,11 @@ import Records from "./Records/Records";
 import Title from "./Title/Title";
 import VitalSigns from "./VitalSigns/VitalSigns";
 
-export default function Detail() {
+interface IDetailProps {
+  user: IUser;
+}
+
+export default function Detail({ user }: IDetailProps) {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordCreateSummaryContext>(
       MedicalRecordCreateSummaryContext
@@ -85,7 +90,7 @@ export default function Detail() {
   return (
     <div>
       <div className="mb-4 border-b">
-        <Title medicalConsulty={medicalConsulty} />
+        <Title user={user} medicalConsulty={medicalConsulty} />
       </div>
 
       <div className="mb-4">
@@ -109,7 +114,7 @@ export default function Detail() {
       </div>
 
       <div className="mb-4">
-        <Recipes medicalConsulty={medicalConsulty} />
+        <Recipes user={user} medicalConsulty={medicalConsulty} />
       </div>
 
       <div>

@@ -14,11 +14,13 @@ import { useSearchParams } from "next/navigation";
 import { twMerge } from "tailwind-merge";
 import AppointmentEndModal from "./AppointmentEndModal/AppointmentEndModal";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
+import { IUser } from "domain/core/entities/userEntity";
 
-export default function CalendarIndex() {
-  const { state: auth } = useContext<IAuthContext>(AuthContext);
-  const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
+interface ICalendarIndexProps {
+  user: IUser;
+}
 
+export default function CalendarIndex({ user }: ICalendarIndexProps) {
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
   const {
@@ -83,13 +85,13 @@ export default function CalendarIndex() {
   function formatEvent(elem: any) {
     let object = {};
 
-    let isBlocked = elem["estado"] === 9
+    let isBlocked = elem["estado"] === 9;
     let type = elem["sujetoId"] ? "APPOINMENT" : "FREE_SLOT";
     let text =
       type === "WINDOW"
-        ? "Ventana de atención" : 
-        isBlocked ?
-        "Bloqueado"
+        ? "Ventana de atención"
+        : isBlocked
+        ? "Bloqueado"
         : type === "FREE_SLOT"
         ? "Disponible"
         : `${
@@ -120,25 +122,24 @@ export default function CalendarIndex() {
       textColor:
         moment(elem["fechaReserva"]).isBefore(moment().utc(true)) &&
         type === "FREE_SLOT"
-          ? "#242424" : 
-          isBlocked ? 
-          "#242424"
+          ? "#242424"
+          : isBlocked
+          ? "#242424"
           : textColor,
       backgroundColor:
         moment(elem["fechaReserva"]).isBefore(moment().utc(true)) &&
         type === "FREE_SLOT"
-          ? "#CCCCCC30" :
-          isBlocked ?
-          "#CCCCCC30"
+          ? "#CCCCCC30"
+          : isBlocked
+          ? "#CCCCCC30"
           : backgroundColor,
       borderColor:
         moment(elem["fechaReserva"]).isBefore(moment().utc(true)) &&
         type === "FREE_SLOT"
-          ? "#CCCCCC30" : 
-          isBlocked ?
-          "CCCCCC30" 
-          :
-          textColor,
+          ? "#CCCCCC30"
+          : isBlocked
+          ? "CCCCCC30"
+          : textColor,
       type: type,
       dateEvent: moment(elem["fechaReserva"]).toDate(),
       dateEndEvent: moment(elem["fechaFinReserva"]).toDate(),
@@ -164,7 +165,7 @@ export default function CalendarIndex() {
   }
 
   function handleClickOnEvent(data: any) {
-    if(data["isBlocked"]){
+    if (data["isBlocked"]) {
       return;
     }
     if (
@@ -223,11 +224,11 @@ export default function CalendarIndex() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [loadedUser, services]); */
 
-  const [checkedLocality, setCheckedLocality] = useState(false)
+  const [checkedLocality, setCheckedLocality] = useState(false);
 
-  useMemo(()=>{
-    if(!checkedLocality && localitiesSuccessful && localities.length > 0){
-      if(params.get("locality")){
+  useMemo(() => {
+    if (!checkedLocality && localitiesSuccessful && localities.length > 0) {
+      if (params.get("locality")) {
         let id = params.get("locality")?.toString();
         let localityFinded = [...localities].find(
           (elem: any) => elem["id"] === parseInt(id!)
@@ -238,9 +239,9 @@ export default function CalendarIndex() {
             title: localityFinded["name"],
             description: localityFinded["description"],
             type: "LOCALITY",
-          })(dispatch); 
+          })(dispatch);
         }
-      }else{
+      } else {
         activeLocality({
           id: localities[0]["id"],
           title: localities[0]["name"],
@@ -248,9 +249,9 @@ export default function CalendarIndex() {
           type: "LOCALITY",
         })(dispatch);
       }
-      setCheckedLocality(true)
+      setCheckedLocality(true);
     }
-  },[localitiesSuccessful])
+  }, [localitiesSuccessful]);
 
   useMemo(() => {
     if (calendarEventsSuccessful) formatList();
@@ -260,20 +261,20 @@ export default function CalendarIndex() {
   useMemo(() => {
     if (changedActiveDayInCalendar && checkedLocality) {
       getCalendarEvents(
-        user.userId, 
+        user.userId,
         locality["id"] ?? params.get("locality") ?? localities[0]["id"],
-        moment(activeDayInCalendar["start"]).format('YYYY-MM-DD'), 
-        moment(activeDayInCalendar["end"], "YYYY-MM-DD").format('YYYY-MM-DD')
+        moment(activeDayInCalendar["start"]).format("YYYY-MM-DD"),
+        moment(activeDayInCalendar["end"], "YYYY-MM-DD").format("YYYY-MM-DD")
       )(dispatch);
     }
   }, [activeDayInCalendar, checkedLocality]);
 
   useMemo(() => {
-    if (loadedUser) {
+    if (user) {
       getLocalities(user.userId)(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedUser]);
+  }, [user]);
 
   return (
     <>
@@ -288,12 +289,10 @@ export default function CalendarIndex() {
           show={createAppointmentSuccessful === true}
           description="Cita creada exitosamente"
         />
-        <SuccessfulComponent 
+        <SuccessfulComponent
           tittle="Cita cancelada con exito"
           show={deleteAppointmentSuccessful}
-          description={
-            "La cita selecciodana ha sido cancelada con éxito."
-          }
+          description={"La cita selecciodana ha sido cancelada con éxito."}
         />
         <AlertComponent
           variant="error"
@@ -303,8 +302,8 @@ export default function CalendarIndex() {
         <div className="w-full lg:w-2/3 h-[64vh]">
           <Calendar
             handleChangeInWeek={(param: DatesSetArg) => {
-              console.log(param)
-              activeDay({start: param.start, end: param.end})(dispatch);
+              console.log(param);
+              activeDay({ start: param.start, end: param.end })(dispatch);
             }}
             events={appointments}
             initialEvent={""}
@@ -317,7 +316,7 @@ export default function CalendarIndex() {
             }}
           />
         </div>
-        <Side />
+        <Side user={user} />
       </div>
 
       {showAppointmentEndModal && (

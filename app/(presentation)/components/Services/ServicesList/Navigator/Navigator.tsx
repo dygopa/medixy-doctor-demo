@@ -1,7 +1,3 @@
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import { ServicesRoutesEnum } from "(presentation)/(routes)/servicesRoutes";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
@@ -9,13 +5,15 @@ import {
   IStepByStepContext,
   StepByStepContext,
 } from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
+import { IUser } from "domain/core/entities/userEntity";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
 
-export default function Navigator() {
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
+interface INavigatorProps {
+  user: IUser;
+}
 
+export default function Navigator({ user }: INavigatorProps) {
   const { state, dispatch, actions } =
     useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps } = actions;

@@ -1,4 +1,5 @@
 import { medicalConsultyInitialValues } from "(presentation)/(helper)/medicalRecords/medicalRecordsValues";
+import { IUser } from "domain/core/entities/userEntity";
 import { useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import { twMerge } from "tailwind-merge";
@@ -15,10 +16,11 @@ import RecoveryStorageModal from "./RecoveryStorageModal/RecoveryStorageModal";
 import VitalSigns from "./VitalSigns/VitalSigns";
 
 interface IRightSideProps {
+  user: IUser;
   width: number;
 }
 
-export default function RightSide({ width }: IRightSideProps) {
+export default function RightSide({ user, width }: IRightSideProps) {
   const { state } = useContext<IMedicalRecordCreateContext>(
     MedicalRecordCreateContext
   );

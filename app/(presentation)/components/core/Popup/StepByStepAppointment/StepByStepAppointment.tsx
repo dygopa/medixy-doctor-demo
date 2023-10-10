@@ -2,11 +2,14 @@ import React from "react";
 import StepByStepAppointmentProvider from "./context/StepByStepAppointmentContext";
 import Steps from "./Steps/Steps";
 import { twMerge } from "tailwind-merge";
+import { IUser } from "domain/core/entities/userEntity";
 
 const StepByStepAppointment = ({
+  user,
   cancelFuntion,
   customRef,
 }: {
+  user: IUser;
   cancelFuntion: Function;
   customRef: React.LegacyRef<HTMLDivElement>;
 }) => {
@@ -20,7 +23,7 @@ const StepByStepAppointment = ({
           "lg:w-[45%] lg:min-h-[50vh] lg:h-fit lg:max-h-[90vh] lg:rounded-md",
         ])}
       >
-        <Steps />
+        <Steps user={user} />
       </div>
     </StepByStepAppointmentProvider>
   );

@@ -5,34 +5,31 @@ import Filters from "./Filters/Filters";
 import Popup from "../core/Popup/Popup";
 import Navigator from "./Navigator/Navigator";
 import CalendarIndex from "./Calendar/CalendarIndex";
-import { useContext, useState } from "react";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import { useState } from "react";
+import { IUser } from "domain/core/entities/userEntity";
 
-export default function ScheduleIndex() {
-  const { state } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = state.getUserAuthenticated;
+interface IScheduleIndexProps {
+  user: IUser;
+}
 
+export default function ScheduleIndex({ user }: IScheduleIndexProps) {
   const [selectedLocality, setSelectedLocality] = useState({
     id: 0,
     title: "",
     description: "",
   });
 
-  if (!user?.userId) return <div />;
-
   return (
     <div className="container pt-8">
       <ScheduleProvider>
         <Navigator selectedLocality={selectedLocality} />
-        <Popup />
+        <Popup user={user} />
         <Filters
+          user={user}
           selectedLocality={selectedLocality}
           setSelectedLocality={setSelectedLocality}
         />
-        <CalendarIndex />
+        <CalendarIndex user={user} />
       </ScheduleProvider>
     </div>
   );

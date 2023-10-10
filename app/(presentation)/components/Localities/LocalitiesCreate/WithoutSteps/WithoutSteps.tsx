@@ -1,62 +1,31 @@
-import { ClassicEditor } from "(presentation)/components/core/BaseComponents/Ckeditor";
 import {
   FormInput,
   FormSelect,
-  FormTextarea,
-  FormSwitch,
 } from "(presentation)/components/core/BaseComponents/Form";
-import SearchLocality from "(presentation)/components/core/SpecialSearch/SpecialSearch";
-import {
-  useState,
-  useEffect,
-  SetStateAction,
-  useContext,
-  ChangeEvent,
-  useMemo,
-  useRef,
-} from "react";
-import { FiCheck, FiCheckCircle, FiX } from "react-icons/fi";
-import { BiBuilding, BiBuildingHouse } from "react-icons/bi";
+import { useState, useContext, useMemo, useRef } from "react";
+import { FiCheck } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
   ILocalitiesContext,
   LocalitiesContext,
 } from "../../context/LocalitiesContext";
-import {
-  ILocality,
-  ILocalityService,
-} from "domain/core/entities/localityEntity";
+import { ILocalityService } from "domain/core/entities/localityEntity";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import {
   IStepByStepContext,
   StepByStepContext,
 } from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
-import { IMunicipality } from "domain/core/entities/municipalityEntity";
-import { ICountryLocation } from "domain/core/entities/countryEntity";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
-import { PatientsRoutesEnum } from "(presentation)/(routes)/patientsRoutes";
 import { useRouter } from "next/navigation";
 import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
-import AutocompleteInputStates from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputStates/AutocompleteInputStates";
-import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
-import AutocompleteInputMunicipalities from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputMunicipalities/AutocompleteInputMunicipalities";
-import AutocompleteInputLocations from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputLocations/AutocompleteInputLocations";
-import Image from "next/image";
-import { b64toBlob } from "(presentation)/(helper)/files/filesHelper";
-import { BsBuilding } from "react-icons/bs";
 import { IService } from "domain/core/entities/serviceEntity";
 import { NumericFormat } from "react-number-format";
 import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import Tooltip from "(presentation)/components/core/BaseComponents/Tooltip/Tooltip";
 import AddressAutocomplete from "(presentation)/components/core/BaseComponents/Autocomplete/AddressAutocomplete/AddressAutocomplete";
-import StepByStepPopup from "(presentation)/components/core/StepByStepPopup/StepByStepPopup";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 
 export default function WithoutSteps({
   userId,
@@ -65,9 +34,6 @@ export default function WithoutSteps({
   userId: string;
   accountId: string;
 }) {
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data } = authState.getUserAuthenticated;
-
   const { state, actions, dispatch } =
     useContext<ILocalitiesContext>(LocalitiesContext);
 
@@ -125,7 +91,7 @@ export default function WithoutSteps({
     countryLocation: "",
     street: "",
     address: "",
-  })
+  });
 
   console.log(formData);
 
@@ -349,7 +315,10 @@ export default function WithoutSteps({
             services.length === 0
           }
           onClick={() => {
-            createUserLocality({ ...formData, address: address, id: userId }, services)(dispatch);
+            createUserLocality(
+              { ...formData, address: address, id: userId },
+              services
+            )(dispatch);
           }}
           variant="primary"
         >

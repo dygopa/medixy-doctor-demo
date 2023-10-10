@@ -1,3 +1,4 @@
+import { IUser } from "domain/core/entities/userEntity";
 import EditPatient from "./EditPatient/EditPatient";
 
 interface IPatientProps {

@@ -17,25 +17,21 @@ import {
   MedicalRecordContext,
 } from "(presentation)/components/MedicalRecord/MedicalRecord/context/MedicalRecordContext";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import { IUser } from "domain/core/entities/userEntity";
 
 interface ITitleProps {
+  user: IUser;
   medicalConsulty: IMedicalConsulty;
   setMedicalConsulty: Dispatch<SetStateAction<IMedicalConsulty | null>>;
   appointmentId: string | null;
 }
 
 export default function Title({
+  user,
   medicalConsulty,
   setMedicalConsulty,
   appointmentId,
 }: ITitleProps) {
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
-
   const { state, actions, dispatch } =
     useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { getMedicalConsultyPDF } = actions;

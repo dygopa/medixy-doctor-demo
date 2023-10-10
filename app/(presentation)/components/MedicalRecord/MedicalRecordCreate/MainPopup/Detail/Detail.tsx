@@ -9,8 +9,10 @@ import Companion from "./Companion/Companion";
 import Patient from "./Patient/Patient";
 import clsx from "clsx";
 import Orders from "./Orders/Orders";
+import { IUser } from "domain/core/entities/userEntity";
 
 interface IDetailProps {
+  user: IUser;
   subjectId: number;
   appointmentId: string | null;
   popupSectionActive: number;
@@ -18,6 +20,7 @@ interface IDetailProps {
 }
 
 export default function Detail({
+  user,
   subjectId,
   appointmentId,
   popupSectionActive,
@@ -84,7 +87,13 @@ export default function Detail({
       case 1:
         return <Companion subjectId={subjectId} />;
       case 2:
-        return <History subjectId={subjectId} appointmentId={appointmentId} />;
+        return (
+          <History
+            user={user}
+            subjectId={subjectId}
+            appointmentId={appointmentId}
+          />
+        );
       case 3:
         return <Allergies subjectId={subjectId} />;
       case 4:

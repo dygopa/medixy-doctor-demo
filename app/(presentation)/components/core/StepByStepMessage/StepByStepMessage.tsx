@@ -1,9 +1,5 @@
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import clsx from "clsx";
-import Link from "next/link";
+import { IUser } from "domain/core/entities/userEntity";
 import { useContext, useEffect, useState } from "react";
 import Lucide from "../BaseComponents/Lucide";
 import {
@@ -11,10 +7,11 @@ import {
   StepByStepContext,
 } from "../StepByStepPopup/context/StepByStepContext";
 
-export default function StepByStepMessage() {
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
+interface IStepByStepMessageProps {
+  user: IUser;
+}
 
+export default function StepByStepMessage({ user }: IStepByStepMessageProps) {
   const { state, actions, dispatch } =
     useContext<IStepByStepContext>(StepByStepContext);
   const { getStepsMessage, changeOpenPopup } = actions;

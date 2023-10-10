@@ -23,17 +23,17 @@ import { IService } from "domain/core/entities/serviceEntity";
 import { ILocality } from "domain/core/entities/localityEntity";
 import AlertComponent from "../../BaseComponents/Alert";
 import Tooltip from "../../BaseComponents/Tooltip/Tooltip";
+import { IUser } from "domain/core/entities/userEntity";
 
 function CreateAgenda({
+  user,
   cancelFuntion,
   customRef,
 }: {
+  user: IUser;
   cancelFuntion: Function;
   customRef: React.LegacyRef<HTMLDivElement>;
 }) {
-  const { state: auth } = useContext<IAuthContext>(AuthContext);
-  const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
-
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
   const {
@@ -58,7 +58,7 @@ function CreateAgenda({
   const { data: statusPopup } = state.statusPopup;
 
   const params = useSearchParams();
-  const router = useRouter()
+  const router = useRouter();
 
   let type_agenda = [
     {
@@ -497,11 +497,12 @@ function CreateAgenda({
 
   useMemo(() => {
     if (successful) {
-
-      setDaysInWeek(daysInWeek.map((elem:any)=>({
-        ...elem,
-        isBlock: false
-      })))
+      setDaysInWeek(
+        daysInWeek.map((elem: any) => ({
+          ...elem,
+          isBlock: false,
+        }))
+      );
 
       activeLocality(selectedLocality)(dispatch);
       setFormData({
@@ -528,11 +529,13 @@ function CreateAgenda({
 
   useMemo(() => {
     if (!statusPopup) {
-      router.replace(`/schedule/configuration`)
-      setDaysInWeek(daysInWeek.map((elem:any)=>({
-        ...elem,
-        isBlock: false
-      })))
+      router.replace(`/schedule/configuration`);
+      setDaysInWeek(
+        daysInWeek.map((elem: any) => ({
+          ...elem,
+          isBlock: false,
+        }))
+      );
       setSelectedLocality({
         id: locality.id,
         title: locality.title,
@@ -568,11 +571,11 @@ function CreateAgenda({
   }, [generatedHours]);
 
   useMemo(() => {
-    if (loadedUser) {
+    if (user) {
       getLocalitiesWithServices(user.userId)(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedUser]);
+  }, [user]);
 
   /* useMemo(() => {
     if (selectedLocality.id !== 0){
@@ -778,11 +781,13 @@ function CreateAgenda({
             </FormSelect>
           </div>
         </div>
-        {moment(formData.startDate).subtract(-1, "day").isBefore(moment()) && 
+        {moment(formData.startDate).subtract(-1, "day").isBefore(moment()) && (
           <div className="w-full py-1 text-left ">
-            <p className="text-red-600 text-sm font-medium">La fecha de arranque no puede ser menor a la fecha de hoy</p>
+            <p className="text-red-600 text-sm font-medium">
+              La fecha de arranque no puede ser menor a la fecha de hoy
+            </p>
           </div>
-        }
+        )}
         <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className="font-normal text-sm text-slate-600">Se repite los</p>
           <div className="w-full flex justify-between items-center gap-3">

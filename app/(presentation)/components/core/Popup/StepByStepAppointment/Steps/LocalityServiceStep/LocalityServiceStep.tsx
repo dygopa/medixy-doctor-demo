@@ -1,7 +1,3 @@
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import React, {
   useContext,
   useState,
@@ -14,28 +10,23 @@ import {
   IStepByStepAppointmentContext,
   StepByStepAppointmentContext,
 } from "../../context/StepByStepAppointmentContext";
-import SpecialSearch, {
-  SpecialSelect,
-} from "(presentation)/components/core/SpecialSearch/SpecialSearch";
-import { FiBriefcase, FiHome } from "react-icons/fi";
-import { twMerge } from "tailwind-merge";
+import { SpecialSelect } from "(presentation)/components/core/SpecialSearch/SpecialSearch";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
   IScheduleContext,
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
-import Loading from "(presentation)/components/core/Loading/Loading";
+import { IUser } from "domain/core/entities/userEntity";
 
 const LocalityServiceStep = ({
+  user,
   appointment,
   setAppointment,
 }: {
+  user: IUser;
   appointment: any;
   setAppointment: Dispatch<SetStateAction<{}>>;
 }) => {
-  const { state: auth } = useContext<IAuthContext>(AuthContext);
-  const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
-
   const {
     state: stateSchedule,
     actions: actionsSchedule,

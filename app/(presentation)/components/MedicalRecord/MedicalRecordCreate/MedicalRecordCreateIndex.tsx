@@ -3,6 +3,7 @@
 import { MedicalRecordStatusEnum } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
 import clsx from "clsx";
+import { IUser } from "domain/core/entities/userEntity";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import MedicalRecordCreateProvider, {
@@ -15,10 +16,12 @@ import Navigator from "./Navigator/Navigator";
 import RightSide from "./RightSide/RightSide";
 
 interface IMedicalRecordCreateIndexProps {
+  user: IUser;
   id: string;
 }
 
 export default function MedicalRecordCreateIndex({
+  user,
   id,
 }: IMedicalRecordCreateIndexProps) {
   const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
@@ -178,6 +181,7 @@ export default function MedicalRecordCreateIndex({
     <>
       <div className="py-5">
         <Navigator
+          user={user}
           setIsOpen={setIsOpen}
           setPopupSectionActive={setPopupSectionActive}
         />
@@ -190,7 +194,7 @@ export default function MedicalRecordCreateIndex({
           <div
             className={clsx([getRightSideColSpan(), "lg:pl-5 md:pl-5 pl-0"])}
           >
-            <RightSide width={screenSize.width} />
+            <RightSide user={user} width={screenSize.width} />
           </div>
         </div>
       </div>
@@ -198,6 +202,7 @@ export default function MedicalRecordCreateIndex({
       {isOpen && (
         <MedicalRecordCreateProvider>
           <MainPopup
+            user={user}
             subjectId={subject?.subjectId ?? 0}
             appointmentId={appointment.data?.id}
             isOpen={isOpen}
