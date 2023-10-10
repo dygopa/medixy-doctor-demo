@@ -13,6 +13,9 @@ import {
 } from "./context/StepByStepContext";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
+import { ServicesRoutesEnum } from "(presentation)/(routes)/servicesRoutes";
+import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
+import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
 
 interface IStep {
   id: number;
@@ -44,12 +47,12 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
   let [steps, setSteps] = useState([
     {
       id: 0,
-      title: "Vamos a crear tu primer consultorio",
+      title: "Vamos a crear tu primera localidad",
       step_enum: "LOCATION_CREATED",
       completed: false,
       description:
-        "Agrega y edita los consultorios donde ofreceras todos tus servicios",
-      cta: "/localities/create",
+        "Agrega y edita las localidades donde ofreceras todos tus servicios",
+      cta: LocalitiesRoutesEnum.LocalitiesCreate,
     },
     {
       id: 1,
@@ -57,16 +60,16 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       step_enum: "SCHEDULE_CREATED",
       completed: false,
       description:
-        "Configura los posibles horarios de atención o ventanas de atención en tu consultorio",
-      cta: "/schedule/configuration?openPopup=true",
+        "Configura los posibles horarios de atención o ventanas de atención en tu localidad",
+      cta: ScheduleRoutesEnum.Configuration + "?openPopup=true",
     },
     {
       id: 2,
       title: "Administrar tus servicios",
       step_enum: "SERVICE_UPDATED",
       completed: false,
-      description: "Actualiza tu servicio para empezar a operar",
-      cta: "/services",
+      description: "Revisa tus servicios y comienza a gestionarlos",
+      cta: ServicesRoutesEnum.Services,
     },
   ]);
 
@@ -146,8 +149,6 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
     setFormatList(true);
   }
 
-  console.log(isVisible);
-
   function knowIfCanShowPopup() {
     if (
       pathname!.includes("/dashboard") &&
@@ -165,7 +166,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       setIsVisible(true);
     }
 
-    if (openPopup) setIsVisible(true);
+    if (openPopup && !pathname!.includes("/dashboard")) setIsVisible(true);
   }
 
   useMemo(() => {

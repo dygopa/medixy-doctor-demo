@@ -59,9 +59,6 @@ function Main({
   navigation: INavigation[];
   user: IUser;
 }) {
-  const { actions, dispatch } = useContext<IAuthContext>(AuthContext);
-  const { updateUserFCMToken } = actions;
-
   const pathname = usePathname();
 
   const [activeShortcuts, setActiveShortcuts] = useState(false);
@@ -293,30 +290,8 @@ function Main({
     );
   };
 
-  useEffect(() => {
-    if (user && user.accountId) {
-      if (hasPermission) {
-        getUserToken()
-          .then((value: string | undefined) => {
-            if (value) {
-              console.log(value);
-              updateUserFCMToken({
-                token: value,
-                userId: user.accountId,
-              })(dispatch);
-            }
-          })
-          .catch((e: any) => console.log(e));
-      }
-    }
-  }, [user]);
-
-  useEffect(() => {
-    setHasPermission(Notification.permission === "granted");
-  }, []);
-
   return (
-    <div className="h-[67px] z-[70] flex items-center border-b border-slate-200 sticky bg-slate-100 top-0 left-0 w-full">
+    <div className="h-[67px] z-[70] flex items-center justify-between border-b border-slate-200 sticky bg-slate-100 top-0 left-0 w-full">
       <Breadcrumb className="hidden mr-auto sm:flex">
         {navigation.map((nav) => (
           <Link key={nav.title} href={nav.pathname}>
@@ -332,52 +307,46 @@ function Main({
           </Link>
         ))}
       </Breadcrumb>
-      <div className="lg:w-fit md:w-fit w-full h-full flex lg:justify-end justify-between items-center gap-2 relative">
-        {!hasPermission ? (
-          <span
-            className="cursor-pointer bg-primary text-white rounded-md px-4 py-2 font-normal text-sm"
-            onClick={getUserToken}
-          >
-            Mejora tu experiencia activando las notificaciones
-          </span>
-        ) : (
-          <NotificationPopupProvider>
-            <NotificationPopup user={user} />
-          </NotificationPopupProvider>
-        )}
-        {user?.userId && (
-          <button
-            onClick={() => {
-              setActiveShortcuts(!activeShortcuts);
-            }}
-            className="cursor-pointer transition flex flex-col justify-center items-center rounded-lg lg:px-4 lg:py-2 p-3 text-lg overflow-hidden text-slate-700 bg-slate-100 hover:bg-slate-300 mr-6"
-            style={{ backgroundColor: "#FFC127" }}
-          >
-            <div className="flex items-center">
-              <div className="mr-2 lg:block hidden">
-                <p className="text-sm">Compartir link</p>
+      <div className="lg:w-fit md:w-fit w-full h-full flex justify-end items-center gap-2 relative">
+        <div className="flex items-center">
+          <div className="mr-3">
+            <NotificationPopupProvider>
+              <NotificationPopup user={user} />
+            </NotificationPopupProvider>
+          </div>
+          {user?.userId && (
+            <button
+              onClick={() => {
+                setActiveShortcuts(!activeShortcuts);
+              }}
+              className="cursor-pointer transition flex flex-col justify-center items-center rounded-lg lg:px-4 lg:py-2 p-3 text-lg overflow-hidden text-slate-700 bg-slate-100 hover:bg-slate-300 mr-6"
+              style={{ backgroundColor: "#FFC127" }}
+            >
+              <div className="flex items-center">
+                <div className="mr-2 lg:block hidden">
+                  <p className="text-sm">Compartir link</p>
+                </div>
+                <FiSend />
               </div>
-              <FiSend />
-            </div>
-          </button>
-        )}
-        {activeShortcuts && <PopupShortcuts customRef={wrapperRef} />}
+            </button>
+          )}
+          {activeShortcuts && <PopupShortcuts customRef={wrapperRef} />}
+        </div>
         <Link
           href="/account"
           className="w-fit h-full flex justify-end items-center gap-3"
         >
-          <div className="w-fit min-w-[8rem] text-left h-full flex flex-col justify-center items-end">
-            {user?.sex === 1 ?
+          <div className=" text-left h-full flex flex-col justify-center items-end">
+            {user?.sex === 1 ? (
               <p className="font-semibold text-sm text-slate-900">
                 Dra. {user?.names} <br className="md:hidden" />{" "}
                 {user?.firstName}
               </p>
-            :
+            ) : (
               <p className="font-semibold text-sm text-slate-900">
-                Dr. {user?.names} <br className="md:hidden" />{" "}
-                {user?.firstName}
+                Dr. {user?.names} <br className="md:hidden" /> {user?.firstName}
               </p>
-            }
+            )}
             <p className="font-light text-sm text-slate-500">Médico</p>
           </div>
           <div className="w-[3rem] h-[3rem] flex flex-col justify-center items-center rounded-xl overflow-hidden p-0 bg-slate-300">
