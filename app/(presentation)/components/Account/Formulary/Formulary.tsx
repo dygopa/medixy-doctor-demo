@@ -13,19 +13,15 @@ import Security from "./Security/Security";
 
 interface IFormularyProps {
   user: IUser;
-  user: IUser;
   account: IUser;
   setAccount: any;
 }
 
-export default function Formulary({ account, setAccount }: IFormularyProps) {
-  const {
-    state: stateAuth,
-    actions: actionsAuth,
-    dispatch: dispatchAuth,
-  } = useContext<IAuthContext>(AuthContext);
-  const { getUserAuthenticated } = actionsAuth;
-
+export default function Formulary({
+  user,
+  account,
+  setAccount,
+}: IFormularyProps) {
   const { state, actions, dispatch } = useContext<IUserContext>(UserContext);
   const { updateUserData, updatePassword } = actions;
 
@@ -161,7 +157,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
   };
 
   useMemo(() => {
-    if (successful) getUserAuthenticated()(dispatchAuth);
+    if (successful) window.location.reload();
   }, [successful]);
 
   useMemo(() => {
