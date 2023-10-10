@@ -5,10 +5,6 @@ import React, { useState, useEffect, useContext, useMemo } from "react";
 import Navigator from "./Navigator/Navigator";
 import Formulary from "./Formulary/Formulary";
 import UserProvider from "./context/UserContext";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 
 interface IAccountIndexProps {
   user: IUser;

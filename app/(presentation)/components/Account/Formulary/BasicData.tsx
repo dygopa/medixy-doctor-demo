@@ -19,6 +19,7 @@ import { VALIDATE_NAMES } from "(presentation)/(utils)/errors-validation";
 
 interface IFormularyProps {
   user: IUser;
+  user: IUser;
   account: IUser;
   setAccount: any;
   errors: {
