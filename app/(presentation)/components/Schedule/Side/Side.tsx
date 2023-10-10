@@ -21,6 +21,7 @@ import { FiUser } from "react-icons/fi";
 import { AppointmentEnum } from "(presentation)/(enum)/appointment/appointmentEnum";
 import { Menu, Transition } from "@headlessui/react";
 import RescheduleModal from "./RescheduleModal/RescheduleModal";
+import { IUser } from "domain/core/entities/userEntity";
 //import { socket } from '../../../../socket';
 
 const StatusComponent = ({ data }: { data: any }) => {
@@ -86,10 +87,12 @@ const StatusComponent = ({ data }: { data: any }) => {
 };
 
 const AppointmentComponent = ({
+  user,
   onClick,
   data,
   cancelAppointment,
 }: {
+  user: IUser;
   onClick: MouseEventHandler;
   data: any;
   cancelAppointment: MouseEventHandler;
@@ -102,23 +105,22 @@ const AppointmentComponent = ({
   return (
     <>
       <div className="cursor-pointer relative w-full min-h-[11vh] h-fit max-h-[14vh] bg-white flex justify-between items-center p-3 gap-2 box-border rounded-md shadow-sm">
-      {data["estado"] === AppointmentEnum.PENDING && (
-        <div className="w-full flex justify-end absolute top-1 right-1">
-          <Menu as="div" className="relative inline-block text-left">
-            <Menu.Button className="rounded-lg hover:bg-gray-100 p-1">
-              <Lucide icon="MoreVertical" className="h-5" />
-            </Menu.Button>
-            <Transition
-              as={Fragment}
-              enter="transition ease-out duration-100"
-              enterFrom="transform opacity-0 scale-95"
-              enterTo="transform opacity-100 scale-100"
-              leave="transition ease-in duration-75"
-              leaveFrom="transform opacity-100 scale-100"
-              leaveTo="transform opacity-0 scale-95"
-            >
-              <Menu.Items className="absolute right-0 z-15 mt-1 w-44 origin-top-right rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5">
-                
+        {data["estado"] === AppointmentEnum.PENDING && (
+          <div className="w-full flex justify-end absolute top-1 right-1">
+            <Menu as="div" className="relative inline-block text-left">
+              <Menu.Button className="rounded-lg hover:bg-gray-100 p-1">
+                <Lucide icon="MoreVertical" className="h-5" />
+              </Menu.Button>
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-100"
+                enterFrom="transform opacity-0 scale-95"
+                enterTo="transform opacity-100 scale-100"
+                leave="transition ease-in duration-75"
+                leaveFrom="transform opacity-100 scale-100"
+                leaveTo="transform opacity-0 scale-95"
+              >
+                <Menu.Items className="absolute right-0 z-15 mt-1 w-44 origin-top-right rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5">
                   <Menu.Item>
                     {({ active }) => (
                       <div>
@@ -134,27 +136,27 @@ const AppointmentComponent = ({
                     )}
                   </Menu.Item>
 
-                <Menu.Item>
-                  {({ active }) => (
-                    <div>
-                      <button
-                        type="button"
-                        className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
-                        onClick={cancelAppointment}
-                      >
-                        <div>
-                          <Lucide icon="XSquare" size={20} />
-                        </div>
+                  <Menu.Item>
+                    {({ active }) => (
+                      <div>
+                        <button
+                          type="button"
+                          className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
+                          onClick={cancelAppointment}
+                        >
+                          <div>
+                            <Lucide icon="XSquare" size={20} />
+                          </div>
 
-                        <div>Cancelar cita</div>
-                      </button>
-                    </div>
-                  )}
-                </Menu.Item>
-              </Menu.Items>
-            </Transition>
-          </Menu>
-        </div>
+                          <div>Cancelar cita</div>
+                        </button>
+                      </div>
+                    )}
+                  </Menu.Item>
+                </Menu.Items>
+              </Transition>
+            </Menu>
+          </div>
         )}
         <div
           onClick={onClick}
@@ -187,6 +189,7 @@ const AppointmentComponent = ({
 
       {showRescheduleModal && (
         <RescheduleModal
+          user={user}
           appointment={data}
           showRescheduleModal={showRescheduleModal}
           setShowRescheduleModal={setShowRescheduleModal}
@@ -196,10 +199,11 @@ const AppointmentComponent = ({
   );
 };
 
-const Side = () => {
-  const { state: auth } = useContext<IAuthContext>(AuthContext);
-  const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
+interface ISideProps {
+  user: IUser;
+}
 
+const Side = ({ user }: ISideProps) => {
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
   const {
@@ -209,7 +213,7 @@ const Side = () => {
     appointmentDetail,
     cancelAppointment,
     activeService,
-    getCalendarEvents
+    getCalendarEvents,
   } = actions;
   const { data, loading, successful, error } = state.getAppointments;
   const {
@@ -220,7 +224,7 @@ const Side = () => {
   const { data: activeDay, successful: changedActiveDay } = state.activeDay;
   const { data: actualDay } = state.actualDay;
   const { successful: deleteAppointmentSuccessful } = state.deleteAppointment;
-  const { data: service, successful: serviceSuccessful } = state.activeService
+  const { data: service, successful: serviceSuccessful } = state.activeService;
 
   //const [isConnected, setIsConnected] = useState(socket.connected);
   //const [fooEvents, setFooEvents] = useState([]);
@@ -241,11 +245,10 @@ const Side = () => {
   //    socket.off('get_appointments', onGetAppointments);
   //  };
   //}, []);
-  
-  useMemo(()=>{
-    if(deleteAppointmentSuccessful){
-      
-      if(service.id === "ALL" && !service) {
+
+  useMemo(() => {
+    if (deleteAppointmentSuccessful && user) {
+      if (service.id === "ALL" && !service) {
         getAppointments(
           user.userId,
           moment(actualDay).format("YYYY-MM-DD"),
@@ -257,10 +260,10 @@ const Side = () => {
       }
 
       getCalendarEvents(
-        user.userId, 
+        user.userId,
         locality["id"],
-        moment(activeDay["start"]).format('YYYY-MM-DD'), 
-        moment(activeDay["end"], "YYYY-MM-DD").format('YYYY-MM-DD')
+        moment(activeDay["start"]).format("YYYY-MM-DD"),
+        moment(activeDay["end"], "YYYY-MM-DD").format("YYYY-MM-DD")
       )(dispatch);
 
       getAppointments(
@@ -271,17 +274,16 @@ const Side = () => {
         true,
         parseInt(service.id)
       )(dispatch);
-
     }
-  },[deleteAppointmentSuccessful])
+  }, [deleteAppointmentSuccessful]);
 
   useMemo(() => {
-    if (actualDay && localitySuccessful){
-      if(service.id === "ALL" && !service) {
+    if (actualDay && localitySuccessful && user) {
+      if (service.id === "ALL" && !service) {
         getAppointments(
           user.userId,
-          moment(actualDay).format('YYYY-MM-DD'), 
-          moment(actualDay).add(1, "day").format('YYYY-MM-DD'),
+          moment(actualDay).format("YYYY-MM-DD"),
+          moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
           locality["id"],
           true
         )(dispatch);
@@ -290,14 +292,14 @@ const Side = () => {
 
       getAppointments(
         user.userId,
-        moment(actualDay).format('YYYY-MM-DD'), 
-        moment(actualDay).add(1, "day").format('YYYY-MM-DD'),
+        moment(actualDay).format("YYYY-MM-DD"),
+        moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
         locality["id"],
         true,
         parseInt(service.id)
       )(dispatch);
     }
-  }, [actualDay, localitySuccessful, service]);
+  }, [actualDay, localitySuccessful, service, user]);
 
   return (
     <div className="w-full lg:w-1/3 flex flex-col justify-start items-center gap-3">
@@ -325,6 +327,7 @@ const Side = () => {
           data.length > 0 &&
           data.map((elem: any) => (
             <AppointmentComponent
+              user={user}
               data={elem}
               onClick={() => {
                 appointmentDetail({ ...elem, appoinmentId: elem["id"] })(

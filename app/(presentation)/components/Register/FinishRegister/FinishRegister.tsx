@@ -1,21 +1,29 @@
-import { AuthContext, IAuthContext } from "(presentation)/(layouts)/AuthLayout/context/AuthContext";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
+import { IUser } from "domain/core/entities/userEntity";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { IRegisterContext, RegisterContext } from "../context/RegisterContext";
 
-export default function FinishRegister() {
-  const { state, actions, dispatch } = useContext<IAuthContext>(AuthContext);
-  const { data, loading, error, successful } = state.getUserAuthenticated;
-  const { getUserAuthenticated } = actions;
+interface IFinishRegisterProps {
+  user: IUser;
+}
 
-  const { state: stateRegister, actions: actionsRegister, dispatch: dispatchRegister } =
-    useContext<IRegisterContext>(RegisterContext);
+export default function FinishRegister({ user }: IFinishRegisterProps) {
+  const {
+    state: stateRegister,
+    actions: actionsRegister,
+    dispatch: dispatchRegister,
+  } = useContext<IRegisterContext>(RegisterContext);
   const { updatePassword } = actionsRegister;
-  const { data: dataRegister, loading: loadingRegister, error: errorRegister, successful: successfulRegister } = stateRegister.updatePassword;
+  const {
+    data: dataRegister,
+    loading: loadingRegister,
+    error: errorRegister,
+    successful: successfulRegister,
+  } = stateRegister.updatePassword;
 
   const [inputPassword, setInputPassword] = useState("password");
   const [load, setLoad] = useState(false);
@@ -28,22 +36,15 @@ export default function FinishRegister() {
   const [errors, setErrors] = useState({
     password: "",
     global: "",
-  })
+  });
 
   const setValuesInitial = () => {
-    setValues({...values, email: data?.email})
-  }
-console.log(data)
-  useMemo(() => {
-    if(data && successful) setValuesInitial()
-  }, [data, successful])
+    setValues({ ...values, email: user.email });
+  };
 
   useEffect(() => {
-    if(!load) {
-      getUserAuthenticated()(dispatch)
-      setLoad(true)
-    }
-  })
+    setValuesInitial();
+  }, [user]);
 
   const viewPassword = () => {
     if (inputPassword === "password") {
@@ -79,8 +80,8 @@ console.log(data)
   },[data])*/
 
   useMemo(() => {
-    if(successfulRegister) window.location.href = "/dashboard"
-  },[successfulRegister])
+    if (successfulRegister) window.location.href = "/dashboard";
+  }, [successfulRegister]);
 
   return (
     <div className="lg:w-[80%] md:w-[90%] lg:px-20 md:px-14 sm:px-20 px-8 w-full h-fit flex flex-col justify-between items-center gap-6">
@@ -98,7 +99,8 @@ console.log(data)
         ¡Felicidades, ya te registraste en Prosit!
       </p>
       <p className="text-gray-950 font-semibold text-center lg:text-3xl md:text-3xl text-2xl">
-        Inicia sesión para completar tu perfil y recibe un regalo por un valor de $2,500.00 pesos
+        Inicia sesión para completar tu perfil y recibe un regalo por un valor
+        de $2,500.00 pesos
       </p>
       <div className="w-full md:w-[70%] flex flex-col justify-between gap-3">
         <div className="text-primary font-normal lg:text-base md:text-base text-md">
@@ -144,11 +146,13 @@ console.log(data)
           type="submit"
           className="mt-4 mb-8 w-full"
           disabled={values.password === "" || errors.password.length > 0}
-          onClick={() => updatePassword({password: values.password})(dispatchRegister)}
+          onClick={() =>
+            updatePassword({ password: values.password })(dispatchRegister)
+          }
         >
           {loadingRegister ? "Guardando la contraseña..." : "Iniciar Sesión"}
         </Button>
       </div>
     </div>
-  )
+  );
 }

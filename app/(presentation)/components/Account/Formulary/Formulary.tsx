@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useMemo } from "react";
+import React, { useState, useContext, useMemo } from "react";
 import BasicData from "./BasicData";
 import Credentials from "./Credentials";
 import Contact from "./Contact";
@@ -7,33 +7,30 @@ import { IUser } from "domain/core/entities/userEntity";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import { IUserContext, UserContext } from "../context/UserContext";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
-import { StickyNavbar } from "(presentation)/components/core/StickyNavbar/StickyNavbar";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import Steps from "./Steps/Steps";
 import Security from "./Security/Security";
 
 interface IFormularyProps {
+  user: IUser;
   account: IUser;
   setAccount: any;
 }
 
-export default function Formulary({ account, setAccount }: IFormularyProps) {
-  const {
-    state: stateAuth,
-    actions: actionsAuth,
-    dispatch: dispatchAuth,
-  } = useContext<IAuthContext>(AuthContext);
-  const { getUserAuthenticated } = actionsAuth;
-
+export default function Formulary({
+  user,
+  account,
+  setAccount,
+}: IFormularyProps) {
   const { state, actions, dispatch } = useContext<IUserContext>(UserContext);
   const { updateUserData, updatePassword } = actions;
 
   const { loading, successful, error } = state.updateUserData;
-  const { loading: loadingSecurity, successful: successfulSecurity, error: errorSecurity } = state.changePasswords;
+  const {
+    loading: loadingSecurity,
+    successful: successfulSecurity,
+    error: errorSecurity,
+  } = state.changePasswords;
 
   const [steps, setSteps] = useState(0);
 
@@ -52,6 +49,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
         return (
           <div className="w-full relative flex flex-col gap-4 mt-8">
             <BasicData
+              user={user}
               account={account}
               setAccount={setAccount}
               errors={errors}
@@ -68,7 +66,15 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
           </div>
         );
       case 1:
-        return <Security account={account} formData={formData} setFormData={setFormData} errors={errorsSecurity} setErrors={setErrorsSecurity} />;
+        return (
+          <Security
+            account={account}
+            formData={formData}
+            setFormData={setFormData}
+            errors={errorsSecurity}
+            setErrors={setErrorsSecurity}
+          />
+        );
       default:
         return <div />;
     }
@@ -103,8 +109,6 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
 
     return errorsFieldsCount;
   };
-
-  
 
   const validFormSecurity = () => {
     let errorsFieldsCount = 0;
@@ -153,7 +157,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
   };
 
   useMemo(() => {
-    if (successful) getUserAuthenticated()(dispatchAuth);
+    if (successful) window.location.reload();
   }, [successful]);
 
   useMemo(() => {
@@ -180,7 +184,7 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
             funciones dentro de la plataforma
           </p>
         </div>
-        { steps === 0 ?
+        {steps === 0 ? (
           <Button
             variant="primary"
             disabled={
@@ -196,11 +200,13 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
           >
             Actualizar
           </Button>
-        :
+        ) : (
           <Button
             variant="primary"
             disabled={
-              loadingSecurity || formData.password === "" || validFormSecurity() > 0
+              loadingSecurity ||
+              formData.password === "" ||
+              validFormSecurity() > 0
             }
             onClick={() => {
               updatePassword(formData.password)(dispatch);
@@ -209,14 +215,12 @@ export default function Formulary({ account, setAccount }: IFormularyProps) {
           >
             Actualizar contraseña
           </Button>
-        }
+        )}
       </div>
       <div>
         <Steps steps={steps} setSteps={setSteps} user={account} />
       </div>
-      <div>
-        {getComponentByTabActive()}
-      </div>
+      <div>{getComponentByTabActive()}</div>
     </div>
   );
 }

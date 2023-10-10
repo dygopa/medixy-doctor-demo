@@ -1,10 +1,8 @@
 "use client";
 
-import StepByStepProvider from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
+import { IUser } from "domain/core/entities/userEntity";
 import SideMenu from "../SideMenu";
-import AuthProvider from "./context/AuthContext";
 import ScriptGoogle from "./Script";
-import VersionHandler from "./VersionHandler/VersionHandler";
 
 interface INavigation {
   title: string;
@@ -16,24 +14,26 @@ export default function AppLayout({
   title,
   pathname,
   showStepsBySteps = true,
+  user,
 }: {
   children: React.ReactNode;
   title: string;
   pathname: string;
   showStepsBySteps?: boolean;
+  user: IUser;
 }) {
   const navigation: INavigation[] = [{ title, pathname }];
 
   return (
-    <VersionHandler>
-      <AuthProvider>
-        <StepByStepProvider>
-          <SideMenu navigation={navigation} showStepsBySteps={showStepsBySteps}>
-            {children}
-          </SideMenu>
-        </StepByStepProvider>
-      </AuthProvider>
+    <>
+      <SideMenu
+        user={user}
+        navigation={navigation}
+        showStepsBySteps={showStepsBySteps}
+      >
+        {children}
+      </SideMenu>
       <ScriptGoogle />
-    </VersionHandler>
+    </>
   );
 }

@@ -19,24 +19,25 @@ import {
   IScheduleContext,
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
+import { IUser } from "domain/core/entities/userEntity";
 
 const SummaryStep = ({
+  user,
   appointment,
   setAppointment,
 }: {
+  user: IUser;
   appointment: any;
   setAppointment: Dispatch<SetStateAction<{}>>;
 }) => {
-  const { state: auth } = useContext<IAuthContext>(AuthContext);
-  const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
-
   const {
     actions: actionsSchedule,
     state: scheduleState,
     dispatch: dispatchSchedule,
   } = useContext<IScheduleContext>(ScheduleContext);
 
-  const { getAppointments, changeStatusPopup, getCalendarEvents } = actionsSchedule;
+  const { getAppointments, changeStatusPopup, getCalendarEvents } =
+    actionsSchedule;
 
   const { state, actions, dispatch } =
     useContext<IStepByStepAppointmentContext>(StepByStepAppointmentContext);
@@ -67,15 +68,15 @@ const SummaryStep = ({
         }, 1000);
       } else {
         getCalendarEvents(
-          user.userId, 
+          user.userId,
           activeLocality["id"],
-          moment(activeDay["start"]).format('YYYY-MM-DD'), 
-          moment(activeDay["end"], "YYYY-MM-DD").format('YYYY-MM-DD')
+          moment(activeDay["start"]).format("YYYY-MM-DD"),
+          moment(activeDay["end"], "YYYY-MM-DD").format("YYYY-MM-DD")
         )(dispatchSchedule);
         getAppointments(
           user.userId,
-          moment(actualDay).format('YYYY-MM-DD'), 
-          moment(actualDay).add(1, "day").format('YYYY-MM-DD'),
+          moment(actualDay).format("YYYY-MM-DD"),
+          moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
           appointment["localityId"]
         )(dispatchSchedule);
       }

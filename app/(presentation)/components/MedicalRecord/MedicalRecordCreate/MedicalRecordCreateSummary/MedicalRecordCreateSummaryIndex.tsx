@@ -1,5 +1,6 @@
 "use client";
 
+import { IUser } from "domain/core/entities/userEntity";
 import { useSearchParams } from "next/navigation";
 import { useContext, useEffect } from "react";
 import {
@@ -10,10 +11,12 @@ import Detail from "./Detail/Detail";
 import Navigator from "./Navigator/Navigator";
 
 interface IMedicalRecordCreateSummaryIndexProps {
+  user: IUser;
   id: string;
 }
 
 export default function MedicalRecordCreateSummaryIndex({
+  user,
   id,
 }: IMedicalRecordCreateSummaryIndexProps) {
   const { state, actions, dispatch } =
@@ -115,7 +118,7 @@ export default function MedicalRecordCreateSummaryIndex({
 
       <div className="mt-10 grid grid-cols-12 gap-4">
         <div className="col-span-12">
-          <Detail />
+          <Detail user={user} />
         </div>
       </div>
     </div>

@@ -5,20 +5,13 @@ import Navigator from "./Navigator/Navigator";
 import Table from "./Table/Table";
 import TableResponsive from "./Table/TableResponsive";
 import PatientsListProvider from "./context/PatientsListContext";
-import { useContext } from "react";
-import { AuthContext, IAuthContext } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import { IUser } from "domain/core/entities/userEntity";
 
-export default function PatientsListIndex() {
-  
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user, successful: successfulUser } = authState.getUserAuthenticated;
+interface IPatientsListIndexProps {
+  user: IUser;
+}
 
-  if (!successfulUser) {
-    return(
-    <div></div>
-    )
-  }
-
+export default function PatientsListIndex({ user }: IPatientsListIndexProps) {
   return (
     <PatientsListProvider>
       <div className="py-5">
@@ -31,11 +24,11 @@ export default function PatientsListIndex() {
 
           <div className="">
             <div className="md:block hidden">
-              <Table />
+              <Table user={user} />
             </div>
 
             <div className="lg:hidden md:hidden block">
-              <TableResponsive />
+              <TableResponsive user={user} />
             </div>
           </div>
         </div>

@@ -1,22 +1,11 @@
 "use client";
 
-import { AuthContext, IAuthContext } from "(presentation)/(layouts)/AuthLayout/context/AuthContext";
 import Image from "next/image";
-import { redirect } from "next/navigation";
-import { useContext, useMemo } from "react";
 import FormularyProvider from "./Formulary/context/FormularyContext";
 import Formulary from "./Formulary/Formulary";
 import Side from "./Side/Side";
 
 export default function SignInIndex() {
-
-  const { state: stateAuth } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = stateAuth.getUserAuthenticated;
-
-  useMemo(() => {
-    if(user?.userId) redirect("/dashboard");
-  }, [user])
-
   return (
     <div className="flex h-screen bg-white w-full absolute top-0 left-0">
       <div className="w-1/2 relative lg:block hidden">

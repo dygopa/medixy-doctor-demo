@@ -1,3 +1,4 @@
+import { IUser } from "domain/core/entities/userEntity";
 import { IGetAppointmentResponse } from "domain/core/response/appointmentsResponse";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -12,11 +13,13 @@ import Treatments from "./Treatments/Treatments";
 import VitalSigns from "./VitalSigns/VitalSigns";
 
 interface IPatientDetailsProps {
+  user: IUser;
   subjectId: number;
   appointment: IGetAppointmentResponse;
 }
 
 export default function PatientDetails({
+  user,
   subjectId,
   appointment,
 }: IPatientDetailsProps) {
@@ -98,6 +101,7 @@ export default function PatientDetails({
       {isOpen && (
         <MedicalRecordProvider>
           <MainPopup
+            user={user}
             subjectId={subjectId}
             appointment={appointment.data}
             isOpen={isOpen}

@@ -1,6 +1,7 @@
 "use client";
 
 import ScheduleProvider from "(presentation)/components/Schedule/context/ScheduleContext";
+import { IUser } from "domain/core/entities/userEntity";
 import { useSearchParams } from "next/navigation";
 import { useContext, useEffect } from "react";
 import {
@@ -11,10 +12,14 @@ import Navigator from "./Navigator/Navigator";
 import PatientDetails from "./PatientDetail/PatientDetail";
 
 interface IMedicalRecordIndexProps {
+  user: IUser;
   id: string;
 }
 
-export default function MedicalRecordIndex({ id }: IMedicalRecordIndexProps) {
+export default function MedicalRecordIndex({
+  user,
+  id,
+}: IMedicalRecordIndexProps) {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { getSubjectById, getAppointmentById } = actions;
@@ -113,12 +118,13 @@ export default function MedicalRecordIndex({ id }: IMedicalRecordIndexProps) {
   return (
     <div className="py-5">
       <ScheduleProvider>
-        <Navigator />
+        <Navigator user={user} />
       </ScheduleProvider>
 
       <div className="mt-10">
         <div className="mt-4">
           <PatientDetails
+            user={user}
             subjectId={subject?.subjectId ?? 0}
             appointment={appointment}
           />

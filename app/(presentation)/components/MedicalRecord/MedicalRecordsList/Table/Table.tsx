@@ -8,16 +8,14 @@ import {
   IMedicalRecordsListContext,
   MedicalRecordsListContext,
 } from "../context/MedicalRecordsListContext";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import { IUser } from "domain/core/entities/userEntity";
 
-export default function PatientsTable() {
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
+interface IPatientsTableProps {
+  user: IUser;
+}
 
+export default function PatientsTable({ user }: IPatientsTableProps) {
   const { state, actions, dispatch } = useContext<IMedicalRecordsListContext>(
     MedicalRecordsListContext
   );

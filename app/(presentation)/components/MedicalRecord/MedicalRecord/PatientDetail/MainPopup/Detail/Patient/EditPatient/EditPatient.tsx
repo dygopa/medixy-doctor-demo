@@ -2,7 +2,7 @@ import {
   IMedicalRecordContext,
   MedicalRecordContext,
 } from "(presentation)/components/MedicalRecord/MedicalRecord/context/MedicalRecordContext";
-import { Dispatch, SetStateAction, useContext, useEffect } from "react";
+import { useContext, useEffect } from "react";
 import Formulary from "./Formulary/Formulary";
 
 interface IEditSubjectProps {

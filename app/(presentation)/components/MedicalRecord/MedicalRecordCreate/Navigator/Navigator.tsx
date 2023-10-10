@@ -28,6 +28,7 @@ import {
   ITreatment,
   ITreatmentMedicine,
 } from "domain/core/entities/treatmentEntity";
+import { IUser } from "domain/core/entities/userEntity";
 import { useRouter } from "next/navigation";
 import {
   Dispatch,
@@ -55,17 +56,16 @@ import {
 } from "./Validators/Validators";
 
 interface INavigatorProps {
+  user: IUser;
   setIsOpen: Dispatch<SetStateAction<boolean>>;
   setPopupSectionActive: Dispatch<SetStateAction<number>>;
 }
 
 export default function Navigator({
+  user,
   setIsOpen,
   setPopupSectionActive,
 }: INavigatorProps) {
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
-
   const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
     MedicalRecordCreateContext
   );

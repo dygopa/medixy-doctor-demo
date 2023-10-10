@@ -10,8 +10,10 @@ import Patient from "./Patient/Patient";
 import clsx from "clsx";
 import { IAppointment } from "domain/core/entities/appointmentEntity";
 import Orders from "./Orders/Orders";
+import { IUser } from "domain/core/entities/userEntity";
 
 interface IDetailProps {
+  user: IUser;
   subjectId: number;
   appointment: IAppointment | null;
   popupSectionActive: number;
@@ -19,6 +21,7 @@ interface IDetailProps {
 }
 
 export default function Detail({
+  user,
   subjectId,
   appointment,
   popupSectionActive,
@@ -87,6 +90,7 @@ export default function Detail({
       case 2:
         return (
           <History
+            user={user}
             subjectId={subjectId}
             appointmentId={appointment?.id ?? null}
           />

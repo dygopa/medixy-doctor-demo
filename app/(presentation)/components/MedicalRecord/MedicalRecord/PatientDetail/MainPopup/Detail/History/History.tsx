@@ -1,4 +1,5 @@
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import { IUser } from "domain/core/entities/userEntity";
 import { useSearchParams } from "next/navigation";
 import { useContext, useEffect, useState } from "react";
 import {
@@ -9,11 +10,16 @@ import Detail from "./Detail/Detail";
 import HistoryTable from "./Table/Table";
 
 interface IHistoryProps {
+  user: IUser;
   subjectId: number;
   appointmentId: string | null;
 }
 
-export default function History({ subjectId, appointmentId }: IHistoryProps) {
+export default function History({
+  user,
+  subjectId,
+  appointmentId,
+}: IHistoryProps) {
   const { state } = useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { data: medicalConsulties, successful } = state.medicalConsulties;
 
@@ -49,6 +55,7 @@ export default function History({ subjectId, appointmentId }: IHistoryProps) {
     <div className="overflow-x-hidden">
       {medicalConsulty ? (
         <Detail
+          user={user}
           medicalConsulty={medicalConsulty}
           setMedicalConsulty={setMedicalConsulty}
           appointmentId={appointmentId}

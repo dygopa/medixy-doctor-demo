@@ -10,23 +10,32 @@ import moment from "moment";
 import { FiUser } from "react-icons/fi";
 import Link from "next/link";
 import { AppointmentEnum } from "(presentation)/(enum)/appointment/appointmentEnum";
-import { IScheduleContext, ScheduleContext } from "(presentation)/components/Schedule/context/ScheduleContext";
+import {
+  IScheduleContext,
+  ScheduleContext,
+} from "(presentation)/components/Schedule/context/ScheduleContext";
+import { IUser } from "domain/core/entities/userEntity";
 
 function AppointmentDetail({
+  user,
   cancelFuntion,
   customRef,
 }: {
+  user: IUser;
   cancelFuntion: Function;
   customRef: React.LegacyRef<HTMLDivElement>;
 }) {
-  const { state: auth } = useContext<IAuthContext>(AuthContext);
-  const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
-
-  const { state, actions, dispatch } = useContext<IScheduleContext>(ScheduleContext);
+  const { state, actions, dispatch } =
+    useContext<IScheduleContext>(ScheduleContext);
   const { deleteAppointment } = actions;
   const { data, loading, successful, error } = state.appointmentDetail;
   const { data: cancelAppointment } = state.cancelAppointment;
-  const { data: deleteData, loading: deleteLoading, successful: successfulDelete, error: errorDelete } = state.deleteAppointment;
+  const {
+    data: deleteData,
+    loading: deleteLoading,
+    successful: successfulDelete,
+    error: errorDelete,
+  } = state.deleteAppointment;
 
   const [ageBirth, setAgeBirth] = useState(0);
 
@@ -41,15 +50,15 @@ function AppointmentDetail({
 
   const StatusComponent = ({ data }: { data: any }) => {
     let status = data["estado"];
-  
+
     let text = "";
     let color = "";
-  
+
     if (status === AppointmentEnum.NOT_AVAILABLE) {
       text = "No disponible";
       color = "bg-yellow-500";
     }
-  
+
     if (
       status === AppointmentEnum.APPROVED &&
       moment(data["fechaReserva"]).isBefore(moment().utc(true))
@@ -64,7 +73,7 @@ function AppointmentDetail({
       text = "No asistió";
       color = "bg-slate-200";
     }
-  
+
     if (
       status === AppointmentEnum.APPROVED &&
       moment(data["fechaReserva"]).isAfter(moment().utc(true))
@@ -79,7 +88,7 @@ function AppointmentDetail({
       text = "Por atender";
       color = "bg-yellow-500";
     }
-  
+
     if (status === AppointmentEnum.CANCELED) {
       text = "Cancelada";
       color = "bg-red-500";
@@ -92,7 +101,7 @@ function AppointmentDetail({
       text = "En curso";
       color = "bg-green-500";
     }
-  
+
     return (
       <div className="w-full flex justify-end items-center gap-2">
         <p className="font-light text-[12px] text-gray-700 w-full">{text}</p>
@@ -172,20 +181,19 @@ function AppointmentDetail({
       </div>
       <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white">
         <div className="w-full">
-          { cancelAppointment ?
+          {cancelAppointment ? (
             <>
-              <Button variant="primary" className="w-full"
+              <Button
+                variant="primary"
+                className="w-full"
                 onClick={() => {
                   deleteAppointment(data.appoinmentId)(dispatch);
                 }}
               >
-                {deleteLoading 
-                ? "Cancelando cita..."
-                : "Cancelar cita"
-                }
+                {deleteLoading ? "Cancelando cita..." : "Cancelar cita"}
               </Button>
             </>
-          :
+          ) : (
             <Link
               href={{
                 pathname: "/medical-record/" + data["appoinmentId"],
@@ -200,7 +208,7 @@ function AppointmentDetail({
                   : "Atender paciente"}
               </Button>
             </Link>
-          }
+          )}
         </div>
         <p
           onClick={() => {

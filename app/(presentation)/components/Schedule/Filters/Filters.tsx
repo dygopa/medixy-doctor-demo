@@ -1,45 +1,37 @@
-import Button from "(presentation)/components/core/BaseComponents/Button";
-import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
-import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
-import React, { Dispatch, Fragment, SetStateAction, useContext, useMemo, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 import { IScheduleContext, ScheduleContext } from "../context/ScheduleContext";
-import Link from "next/link";
-import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
-import {
-  IPopupContext,
-  PopupContext,
-} from "(presentation)/components/core/BaseComponents/Popup/context/PopupContext";
-import { Menu, Transition } from "@headlessui/react";
-import { FiBriefcase, FiHome } from "react-icons/fi";
-import { IService } from "domain/core/entities/serviceEntity";
-import { ILocality } from "domain/core/entities/localityEntity";
 import { SpecialSelect } from "(presentation)/components/core/SpecialSearch/SpecialSearch";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import moment from "moment";
 import { useSearchParams } from "next/navigation";
+import { IUser } from "domain/core/entities/userEntity";
 
 interface IFiltersProps {
+  user: IUser;
   selectedLocality: {
-    id: number,
-    title: string,
-    description: string,
+    id: number;
+    title: string;
+    description: string;
   };
   setSelectedLocality: Dispatch<
     SetStateAction<{
-      id: number,
-      title: string,
-      description: string,
+      id: number;
+      title: string;
+      description: string;
     }>
   >;
 }
 
-function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
-  const { state: auth } = useContext<IAuthContext>(AuthContext);
-  const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
-
+function Filters({
+  user,
+  selectedLocality,
+  setSelectedLocality,
+}: IFiltersProps) {
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
   const {
@@ -56,10 +48,15 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
   const { data: locality } = state.activeLocality;
   const { data: service } = state.activeService;
 
-  const { data: localities, successful: loadedLocalities } = state.getLocalities;
-  const { data: services, loading: loadingServices, successful: loadedServices } = state.getServicesByLocality;
-  const { data: activeDay, successful: changedActiveDay} = state.activeDay;
-  
+  const { data: localities, successful: loadedLocalities } =
+    state.getLocalities;
+  const {
+    data: services,
+    loading: loadingServices,
+    successful: loadedServices,
+  } = state.getServicesByLocality;
+  const { data: activeDay, successful: changedActiveDay } = state.activeDay;
+
   const params = useSearchParams();
 
   const [listOfLocalities, setListOfLocalities] = useState([]);
@@ -75,7 +72,15 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
     let list_localities = localities.map((elem: any) => ({
       id: elem.id,
       title: elem.name,
-      description: `${elem.address.municipality ? elem.address.municipality.name : "Sin dirección"} ${elem.address.country_location ? `- ${elem.address.country_location.name}` : ""}`,
+      description: `${
+        elem.address.municipality
+          ? elem.address.municipality.name
+          : "Sin dirección"
+      } ${
+        elem.address.country_location
+          ? `- ${elem.address.country_location.name}`
+          : ""
+      }`,
     }));
 
     setListOfLocalities(list_localities);
@@ -91,21 +96,20 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
       id: "ALL",
       title: "Todos los Servicios",
       description: "Filtrar por todos los servicios disponibles",
-    })
+    });
 
     setSelectedService({
       id: "ALL",
       title: "Todos los Servicios",
       description: "Filtrar por todos los servicios disponibles",
-    })
+    });
 
     setListOfServices(list_services);
   }
 
   useMemo(() => {
-    if (loadedLocalities && localities.length > 0){
-
-      if(params.get("locality")){
+    if (loadedLocalities && localities.length > 0) {
+      if (params.get("locality")) {
         let id = params.get("locality")?.toString();
         let localityFinded = [...localities].find(
           (elem: any) => elem["id"] === parseInt(id!)
@@ -115,18 +119,17 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
             id: localityFinded["id"],
             title: localityFinded["name"],
             description: localityFinded["address"],
-          })
+          });
         }
         getServicesByLocality(user.userId, params.get("locality"))(dispatch);
-      }else{
+      } else {
         setSelectedLocality({
           id: localities[0]["id"],
           title: localities[0]["name"],
           description: localities[0]["address"],
-        })
+        });
         getServicesByLocality(user.userId, localities[0].id)(dispatch);
       }
-
     }
   }, [loadedLocalities, localities]);
 
@@ -136,18 +139,18 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
   }, [loadedLocalities]);
 
   useMemo(() => {
-    if (loadedServices){
-      handleFormatListServices()
+    if (loadedServices) {
+      handleFormatListServices();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [services]);
 
   useMemo(() => {
-    if (loadedUser) {
+    if (user) {
       getLocalities(user.userId)(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedUser]);
+  }, [user]);
 
   return (
     <div className="w-full h-fit mt-4 flex flex-col justify-center items-start gap-4">
@@ -159,20 +162,20 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
               description: "Selecciona un consultorio de la lista",
             }}
             customClick={(value: any) => {
-              setListOfServices([])
+              setListOfServices([]);
               setSelectedService({
                 id: "",
                 title: "",
                 description: "",
-              })
+              });
               setSelectedLocality(value);
               activeLocality(value)(dispatch);
               getServicesByLocality(user.userId, value["id"])(dispatch);
               getCalendarEvents(
-                user.userId, 
-                value["id"], 
-                moment(activeDay["start"]).format('YYYY-MM-DD'), 
-                moment(activeDay["end"], "YYYY-MM-DD").format('YYYY-MM-DD')
+                user.userId,
+                value["id"],
+                moment(activeDay["start"]).format("YYYY-MM-DD"),
+                moment(activeDay["end"], "YYYY-MM-DD").format("YYYY-MM-DD")
               )(dispatch);
             }}
             selectedItem={locality}
@@ -190,17 +193,17 @@ function Filters({selectedLocality, setSelectedLocality}: IFiltersProps) {
               activeService(value)(dispatch);
               if (value["id"] === "ALL") {
                 getCalendarEvents(
-                  user.userId, 
+                  user.userId,
                   selectedLocality.id,
-                  moment(activeDay["start"]).format('YYYY-MM-DD'), 
-                  moment(activeDay["end"], "YYYY-MM-DD").format('YYYY-MM-DD')
+                  moment(activeDay["start"]).format("YYYY-MM-DD"),
+                  moment(activeDay["end"], "YYYY-MM-DD").format("YYYY-MM-DD")
                 )(dispatch);
-              } else { 
+              } else {
                 getCalendarEvents(
-                  user.userId, 
+                  user.userId,
                   selectedLocality.id,
-                  moment(activeDay["start"]).format('YYYY-MM-DD'), 
-                  moment(activeDay["end"], "YYYY-MM-DD").format('YYYY-MM-DD'),
+                  moment(activeDay["start"]).format("YYYY-MM-DD"),
+                  moment(activeDay["end"], "YYYY-MM-DD").format("YYYY-MM-DD"),
                   parseInt(value["id"])
                 )(dispatch);
               }

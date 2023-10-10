@@ -4,9 +4,7 @@ import {
   FormInput,
   FormSelect,
   FormTextarea,
-  FormSwitch,
 } from "(presentation)/components/core/BaseComponents/Form";
-import { IService } from "domain/core/entities/serviceEntity";
 import {
   useState,
   useEffect,
@@ -15,16 +13,11 @@ import {
   ChangeEvent,
   useRef,
 } from "react";
-import { FiCheck } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import {
   IServicesContext,
   ServicesContext,
 } from "../../context/ServicesContext";
-import {
-  ILocality,
-  ILocalityService,
-} from "domain/core/entities/localityEntity";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { MdOutlineMedicalServices } from "react-icons/md";
 import Image from "next/image";
@@ -32,17 +25,9 @@ import { b64toBlob } from "(presentation)/(helper)/files/filesHelper";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 import { useRouter } from "next/navigation";
 import { ServicesRoutesEnum } from "(presentation)/(routes)/servicesRoutes";
-import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
-import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import { NumericFormat } from "react-number-format";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
-import StepByStepPopup from "(presentation)/components/core/StepByStepPopup/StepByStepPopup";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
-import AutocompleteInputServices from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputServices/AutocompleteInputServices";
 
 export default function Formulary({
   userId,
@@ -51,9 +36,6 @@ export default function Formulary({
   userId: string;
   accountId: string;
 }) {
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data } = authState.getUserAuthenticated;
-
   const { state, actions, dispatch } =
     useContext<IServicesContext>(ServicesContext);
   const { createUserService, getCategories, getUserMedicalCenters } = actions;

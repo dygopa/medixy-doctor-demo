@@ -3,8 +3,10 @@ import Detail from "./Detail/Detail";
 import Header from "./Header/Header";
 import clsx from "clsx";
 import { IAppointment } from "domain/core/entities/appointmentEntity";
+import { IUser } from "domain/core/entities/userEntity";
 
 interface IMainPopupProps {
+  user: IUser;
   subjectId: number;
   appointment: IAppointment | null;
   isOpen: boolean;
@@ -14,6 +16,7 @@ interface IMainPopupProps {
 }
 
 function MainPopup({
+  user,
   subjectId,
   appointment,
   isOpen,
@@ -39,6 +42,7 @@ function MainPopup({
 
         <div className="p-4 h-full">
           <Detail
+            user={user}
             subjectId={subjectId}
             appointment={appointment}
             popupSectionActive={popupSectionActive}

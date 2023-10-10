@@ -1,8 +1,5 @@
-import { PatientsRoutesEnum } from "(presentation)/(routes)/patientsRoutes";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
-import Link from "next/link";
-import { Fragment, useContext, useEffect } from "react";
-import { Menu, Transition } from "@headlessui/react";
+import { useContext, useEffect } from "react";
 import {
   IPatientsListContext,
   PatientsListContext,
@@ -11,13 +8,13 @@ import { ISubject } from "domain/core/entities/subjectEntity";
 import Paginate from "(presentation)/components/core/Paginate/Paginate";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
-import { IAuthContext, AuthContext} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import { IUser } from "domain/core/entities/userEntity";
 
-export default function TableResponsive() {
+interface ITableResponsiveProps {
+  user: IUser;
+}
 
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
-
+export default function TableResponsive({ user }: ITableResponsiveProps) {
   const { state, actions, dispatch } =
     useContext<IPatientsListContext>(PatientsListContext);
   const { data: patients, loading, successful, error } = state.getSubjects;

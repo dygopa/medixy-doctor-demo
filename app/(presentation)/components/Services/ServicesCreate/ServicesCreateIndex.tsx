@@ -1,31 +1,20 @@
 "use client";
 
-import Navigator from "./Navigator/Navigator";
 import Formulary from "./Formulary/Formulary";
-import {
-  SetStateAction,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
 import ServicesProvider from "../context/ServicesContext";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
+import { IUser } from "domain/core/entities/userEntity";
 
-export default function ServicesCreateIndex() {
-  const { state } = useContext<IAuthContext>(AuthContext);
-  const { data, loading } = state.getUserAuthenticated;
+interface IServicesCreateIndexProps {
+  user: IUser;
+}
 
+export default function ServicesCreateIndex({
+  user,
+}: IServicesCreateIndexProps) {
   return (
     <div className="py-5">
       <ServicesProvider>
-        <Formulary
-          userId={loading ? "" : data?.userId}
-          accountId={loading ? "" : data?.accountId}
-        />
+        <Formulary userId={user.userId} accountId={user.accountId} />
       </ServicesProvider>
     </div>
   );

@@ -1,26 +1,22 @@
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import {
   IScheduleContext,
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
+import { IUser } from "domain/core/entities/userEntity";
 import moment from "moment";
 import { useContext } from "react";
 
 interface ISucessfulMessageProps {
+  user: IUser;
   setShowRescheduleModal: Function;
 }
 
 export default function SucessfulMessage({
+  user,
   setShowRescheduleModal,
 }: ISucessfulMessageProps) {
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
-
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
   const { getCalendarEvents, getAppointments } = actions;
@@ -32,13 +28,13 @@ export default function SucessfulMessage({
     getCalendarEvents(
       user.userId,
       locality.id,
-      moment(activeDay["start"]).format('YYYY-MM-DD'), 
-      moment(activeDay["end"], "YYYY-MM-DD").format('YYYY-MM-DD')
+      moment(activeDay["start"]).format("YYYY-MM-DD"),
+      moment(activeDay["end"], "YYYY-MM-DD").format("YYYY-MM-DD")
     )(dispatch);
     getAppointments(
       user.userId,
-      moment(actualDay).format('YYYY-MM-DD'), 
-      moment(actualDay).add(1, "day").format('YYYY-MM-DD'),
+      moment(actualDay).format("YYYY-MM-DD"),
+      moment(actualDay).add(1, "day").format("YYYY-MM-DD"),
       locality.id,
       true
     )(dispatch);
