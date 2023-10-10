@@ -97,7 +97,7 @@ export default function Navigation() {
           {/* END: First Child */}
         </ul>
       </div>
-      <div className="w-full">
+      <div className="w-full mb-5">
         <ul>
           {endFormattedMenu.map((menu, menuKey) =>
             menu == "divider" ? (
