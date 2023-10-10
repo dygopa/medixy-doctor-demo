@@ -252,9 +252,9 @@ const LocalityServiceStep = ({
   }, [predifinedReservationData]);
 
   useMemo(() => {
-    if (user && localities.length === 0)
+    if (user && localities && localities.length === 0)
       getLocalities(user.userId)(dispatchSchedule);
-  }, [user]);
+  }, [user, localities]);
 
   return (
     <div className="w-full h-fit flex flex-col gap-5">
