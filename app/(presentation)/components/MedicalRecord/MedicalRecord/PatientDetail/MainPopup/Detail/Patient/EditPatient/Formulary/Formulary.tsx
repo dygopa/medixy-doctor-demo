@@ -1,22 +1,14 @@
-import React, {
-  useState,
-  useEffect,
-  useContext,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import React, { useState, useEffect, useContext } from "react";
 import BasicData from "./BasicData";
 import Direction from "./Direction";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
-import { ISubject } from "domain/core/entities/subjectEntity";
 import {
   IMedicalRecordContext,
   MedicalRecordContext,
 } from "(presentation)/components/MedicalRecord/MedicalRecord/context/MedicalRecordContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
-import { getBase64ImageFromUrl } from "(presentation)/(helper)/files/filesHelper";
 
 export default function Formulary() {
   const { state, actions, dispatch } =

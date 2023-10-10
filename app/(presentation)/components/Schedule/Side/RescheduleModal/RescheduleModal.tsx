@@ -1,3 +1,4 @@
+import { IUser } from "domain/core/entities/userEntity";
 import {
   Dispatch,
   SetStateAction,
@@ -15,12 +16,14 @@ import SucessfulMessage from "./SucessfulMessage/SucessfulMessage";
 import Summary from "./Summary/Summary";
 
 interface RescheduleModalProps {
+  user: IUser;
   appointment: any;
   showRescheduleModal: boolean;
   setShowRescheduleModal: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function RescheduleModal({
+  user,
   appointment,
   showRescheduleModal,
   setShowRescheduleModal,
@@ -29,8 +32,6 @@ export default function RescheduleModal({
     useContext<IScheduleContext>(ScheduleContext);
   const { rescheduleAppointmentInitialState } = actions;
   const { successful } = state.rescheduleAppointment;
-
-  console.log(successful);
 
   const [step, setStep] = useState(0);
   const [newAppointment, setNewAppointment] = useState<any>(null);
@@ -62,7 +63,10 @@ export default function RescheduleModal({
         );
       case 2:
         return (
-          <SucessfulMessage setShowRescheduleModal={setShowRescheduleModal} />
+          <SucessfulMessage
+            user={user}
+            setShowRescheduleModal={setShowRescheduleModal}
+          />
         );
 
       default:

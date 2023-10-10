@@ -17,21 +17,14 @@ import {
 } from "react";
 import { FiUser } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
-import IntlTelInput from "react-intl-tel-input";
 import "react-intl-tel-input/dist/main.css";
-import { getCountriesDialCodeES } from "(presentation)/(helper)/intl/intlHelper";
 import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
 import moment from "moment";
 import {
   IMedicalRecordContext,
   MedicalRecordContext,
 } from "(presentation)/components/MedicalRecord/MedicalRecord/context/MedicalRecordContext";
-import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Image from "next/image";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import { useRouter } from "next/navigation";
 
 interface IBasicDataProps {
@@ -131,13 +124,6 @@ export default function BasicData({
     successful: successfulAvatar,
   } = state.updateAvatar;
 
-  const {
-    state: authState,
-    actions: authActions,
-    dispatch: authDispatch,
-  } = useContext<IAuthContext>(AuthContext);
-  const { getUserAuthenticated } = authActions;
-  const { data: user } = authState.getUserAuthenticated;
   const { getCountriesISO } = actions;
   const { data: countriesISO } = state.getCountriesISO;
 

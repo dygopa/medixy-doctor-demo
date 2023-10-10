@@ -5,32 +5,21 @@ import Navigator from "./Navigator/Navigator";
 import Table from "./Table/Table";
 import TableResponsive from "./Table/TableResponsive";
 import MedicalRecordsListProvider from "./context/MedicalRecordsListContext";
-import { useContext, useMemo, useState } from "react";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import { IUser } from "domain/core/entities/userEntity";
 import ScheduleProvider from "(presentation)/components/Schedule/context/ScheduleContext";
 import Popup from "(presentation)/components/core/Popup/Popup";
 
-export default function MedicalRecordsListIndex() {
-  const { state } = useContext<IAuthContext>(AuthContext);
-  const { data, successful } = state.getUserAuthenticated;
+interface IMedicalRecordsListIndexProps {
+  user: IUser;
+}
 
-  const [user, setUser] = useState<IUser>({} as IUser);
-
-  useMemo(() => {
-    if (successful) setUser(data);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [successful]);
-
-  if (!user?.userId) return <div />;
-
+export default function MedicalRecordsListIndex({
+  user,
+}: IMedicalRecordsListIndexProps) {
   return (
     <ScheduleProvider>
       <MedicalRecordsListProvider>
-        <Popup/>
+        <Popup user={user} />
         <div className="py-5">
           <Navigator />
 
@@ -41,11 +30,11 @@ export default function MedicalRecordsListIndex() {
 
             <div className="">
               <div className="md:block hidden">
-                <Table />
+                <Table user={user} />
               </div>
 
               <div className="lg:hidden md:hidden block">
-                <TableResponsive />
+                <TableResponsive user={user} />
               </div>
             </div>
           </div>

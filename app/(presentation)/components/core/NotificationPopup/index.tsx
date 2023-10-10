@@ -5,10 +5,6 @@ import React, { useContext, useEffect, useMemo, useState } from "react";
 import { FiBell } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import Popup from "./Popup/Popup";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import { IUser } from "domain/core/entities/userEntity";
 import {
   INotificationPopupContext,
@@ -24,14 +20,10 @@ import Tooltip from "../BaseComponents/Tooltip/Tooltip";
 import { usePathname } from "next/navigation";
 
 const NotificationPopup = ({ user }: { user: IUser }) => {
-  const { actions: authActions, dispatch: authDispatch } =
-    useContext<IAuthContext>(AuthContext);
-  const { updateUserFCMToken } = authActions;
-
   const { actions, dispatch } = useContext<INotificationPopupContext>(
     NotificationPopupContext
   );
-  const { getNotifications } = actions;
+  const { getNotifications, updateUserFCMToken } = actions;
 
   const [activeNotificationDropdown, setActiveNotificationDropdown] =
     useState(false);
@@ -40,7 +32,6 @@ const NotificationPopup = ({ user }: { user: IUser }) => {
   const [showTooltip, setShowTooltip] = useState(false);
 
   const pathname = usePathname();
-
 
   useEffect(() => {
     if (user && user.accountId) {
@@ -52,7 +43,7 @@ const NotificationPopup = ({ user }: { user: IUser }) => {
               updateUserFCMToken({
                 token: value,
                 userId: user.accountId,
-              })(authDispatch);
+              })(dispatch);
             }
           })
           .catch((e: any) => console.log(e));

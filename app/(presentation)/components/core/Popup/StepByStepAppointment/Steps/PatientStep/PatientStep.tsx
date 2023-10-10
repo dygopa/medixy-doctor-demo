@@ -1,7 +1,3 @@
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import React, {
   useContext,
   useState,
@@ -25,17 +21,17 @@ import {
   IScheduleContext,
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
+import { IUser } from "domain/core/entities/userEntity";
 
 const PatientStep = ({
+  user,
   appointment,
   setAppointment,
 }: {
+  user: IUser;
   appointment: any;
   setAppointment: Dispatch<SetStateAction<{}>>;
 }) => {
-  const { state: auth } = useContext<IAuthContext>(AuthContext);
-  const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
-
   const { state: stateSchedule } =
     useContext<IScheduleContext>(ScheduleContext);
   const { data: activePatient } = stateSchedule.activePatient;
@@ -121,13 +117,13 @@ const PatientStep = ({
   }, [loadedPatients]);
 
   useMemo(() => {
-    if (loadedUser) {
+    if (user) {
       getPatients({
         userId: user.userId,
       })(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedUser]);
+  }, [user]);
 
   return (
     <div className={"w-full h-fit relative flex flex-col gap-4"}>

@@ -7,6 +7,7 @@ import {
   IScheduleContext,
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
+import { IUser } from "domain/core/entities/userEntity";
 import { useRouter } from "next/navigation";
 import { useContext, useEffect } from "react";
 import {
@@ -14,7 +15,11 @@ import {
   MedicalRecordContext,
 } from "../context/MedicalRecordContext";
 
-export default function Navigator() {
+interface INavigatorProps {
+  user: IUser;
+}
+
+export default function Navigator({ user }: INavigatorProps) {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordContext>(MedicalRecordContext);
   const { editAppointmentStatus } = actions;
@@ -114,7 +119,7 @@ export default function Navigator() {
         </div>
       </div>
 
-      <Popup />
+      <Popup user={user} />
     </>
   );
 }

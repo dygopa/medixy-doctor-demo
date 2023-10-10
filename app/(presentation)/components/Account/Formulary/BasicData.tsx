@@ -18,6 +18,7 @@ import AlertComponent from "(presentation)/components/core/BaseComponents/Alert"
 import { VALIDATE_NAMES } from "(presentation)/(utils)/errors-validation";
 
 interface IFormularyProps {
+  user: IUser;
   account: IUser;
   setAccount: any;
   errors: {
@@ -33,19 +34,12 @@ interface IFormularyProps {
 }
 
 export default function BasicData({
+  user,
   account,
   setAccount,
   errors,
   setErrors,
 }: IFormularyProps) {
-  const {
-    state: authState,
-    actions: authActions,
-    dispatch: authDispatch,
-  } = useContext<IAuthContext>(AuthContext);
-  const { getUserAuthenticated } = authActions;
-  const { data: user } = authState.getUserAuthenticated;
-
   const { state, actions, dispatch } = useContext<IUserContext>(UserContext);
   const { updateAvatar } = actions;
 

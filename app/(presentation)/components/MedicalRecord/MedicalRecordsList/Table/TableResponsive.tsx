@@ -5,19 +5,19 @@ import Paginate from "(presentation)/components/core/Paginate/Paginate";
 import { useSearchParams } from "next/navigation";
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
 import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
-import {
   IMedicalRecordsListContext,
   MedicalRecordsListContext,
 } from "../context/MedicalRecordsListContext";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import { IUser } from "domain/core/entities/userEntity";
 
-export default function TableResponsive() {
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
+interface IPatientsTableResponsiveProps {
+  user: IUser;
+}
 
+export default function TableResponsive({
+  user,
+}: IPatientsTableResponsiveProps) {
   const { state, actions, dispatch } = useContext<IMedicalRecordsListContext>(
     MedicalRecordsListContext
   );

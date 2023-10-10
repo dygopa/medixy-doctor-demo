@@ -17,17 +17,17 @@ import {
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import WithoutSteps from "./WithoutSteps/WithoutSteps";
 
-export default function LocalityCreateIndex() {
-  const { state } = useContext<IAuthContext>(AuthContext);
-  const { data, loading } = state.getUserAuthenticated;
+interface ILocalityCreateIndexProps {
+  user: IUser;
+}
 
+export default function LocalityCreateIndex({
+  user,
+}: ILocalityCreateIndexProps) {
   return (
     <div className="py-5">
       <LocalitiesProvider>
-        <WithoutSteps
-          userId={loading ? "" : data?.userId}
-          accountId={loading ? "" : data?.accountId}
-        />
+        <WithoutSteps userId={user.userId} accountId={user.accountId} />
       </LocalitiesProvider>
     </div>
   );

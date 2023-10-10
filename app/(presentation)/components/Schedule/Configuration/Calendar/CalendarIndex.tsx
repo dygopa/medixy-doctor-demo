@@ -19,40 +19,45 @@ import AlertComponent from "(presentation)/components/core/BaseComponents/Alert"
 import { EventClickArg } from "@fullcalendar/core";
 import { twMerge } from "tailwind-merge";
 import { scheduleFailuresEnum } from "domain/core/failures/schedule/scheduleFailure";
-import { 
-  IStepByStepContext, 
-  StepByStepContext 
+import {
+  IStepByStepContext,
+  StepByStepContext,
 } from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 import { useRouter, useSearchParams } from "next/navigation";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
+import { IUser } from "domain/core/entities/userEntity";
 
-export default function CalendarIndex() {
-  const { state: auth } = useContext<IAuthContext>(AuthContext);
-  const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
+interface ICalendarIndexProps {
+  user: IUser;
+}
 
-  const { actions: actionsStep, state: stateSteps, dispatch: dispatchStep } =
-    useContext<IStepByStepContext>(StepByStepContext);
+export default function CalendarIndex({ user }: ICalendarIndexProps) {
+  const {
+    actions: actionsStep,
+    state: stateSteps,
+    dispatch: dispatchStep,
+  } = useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps, changeOpenPopup } = actionsStep;
-  const {error: stepNotCreated, loading: creatingStep, successful: createStepSuccessful} = stateSteps.createUserSteps
+  const {
+    error: stepNotCreated,
+    loading: creatingStep,
+    successful: createStepSuccessful,
+  } = stateSteps.createUserSteps;
 
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
-  const { 
-    getServices, 
-    getAttentionWindows, 
+  const {
+    getServices,
+    getAttentionWindows,
     activeLocality,
-    changeTypePopup, 
-    changeStatusPopup
+    changeTypePopup,
+    changeStatusPopup,
   } = actions;
   const { data, loading, successful, error } = state.getAttentionWindows;
   const { successful: successfulWindowCreated, error: errorWindowCreated } =
     state.createWindowAttention;
-  const {  
-    successful: rescheduleSuccessful,
-  } = state.rescheduleAppointment;
-  const { 
-    successful: successfulDelete, 
-  } = state.deleteAppointment;
+  const { successful: rescheduleSuccessful } = state.rescheduleAppointment;
+  const { successful: successfulDelete } = state.deleteAppointment;
   const {
     data: localities,
     successful: localitiesSuccessful,
@@ -65,8 +70,8 @@ export default function CalendarIndex() {
   } = state.getServices;
   const { data: listOfColors } = state.listOfColors;
 
-  const router = useRouter()
-  const searchParams = useSearchParams()
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -75,7 +80,7 @@ export default function CalendarIndex() {
   const [showWindowModal, setShowWindowModal] = useState(false);
   const [successfulPopup, setSuccessfulPopup] = useState(false);
   const [hasLocalities, setHasLocalities] = useState(false);
-  console.log(hasLocalities)
+  console.log(hasLocalities);
 
   const [eventSelected, setEventSelected] = useState<EventClickArg>(
     {} as EventClickArg
@@ -120,7 +125,7 @@ export default function CalendarIndex() {
       end: end.format("YYYY-MM-DD HH:mm"),
       textColor: "#FFF",
       backgroundColor: color,
-      attentionWindowId: elem["id"]
+      attentionWindowId: elem["id"],
     };
     return object;
   }
@@ -161,20 +166,21 @@ export default function CalendarIndex() {
     }
   };
 
-  useMemo(()=>{
-    if(localitiesSuccessful && [...(localities as any[])].length > 0) setHasLocalities(true)
-  },[localitiesLoading, localities])
+  useMemo(() => {
+    if (localitiesSuccessful && [...(localities as any[])].length > 0)
+      setHasLocalities(true);
+  }, [localitiesLoading, localities]);
 
   useMemo(() => {
     if (successful) formatList();
   }, [loading, successful]);
 
   useMemo(() => {
-    if (loadedUser) {
+    if (user) {
       getServices(user.userId)(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedUser]);
+  }, [user]);
 
   const handleErrors = () => {
     switch (errorWindowCreated?.code) {
@@ -191,27 +197,35 @@ export default function CalendarIndex() {
     }
   };
 
-  useMemo(()=>{
-    if(searchParams.get("attentionWindowId")) changeStatusPopup(true)(dispatch); changeTypePopup(5)(dispatch);
-  },[searchParams])
-
-  useMemo(()=>{
-    if(searchParams.get("openPopup") && (localities && ([...(localities as any[])].length > 0))){
-      changeStatusPopup(true)(dispatch); changeTypePopup(1)(dispatch);
-    }
-  },[searchParams.get("openPopup"), localitiesSuccessful])
-
-  useMemo(()=>{
-    if (createStepSuccessful){
-      changeOpenPopup(true)(dispatchStep)
-    }
-    if(stepNotCreated){
-      setSuccessfulPopup(true)
-    }
-  },[stepNotCreated, createStepSuccessful])
+  useMemo(() => {
+    if (searchParams.get("attentionWindowId"))
+      changeStatusPopup(true)(dispatch);
+    changeTypePopup(5)(dispatch);
+  }, [searchParams]);
 
   useMemo(() => {
-    if (successfulWindowCreated) createUserSteps(user.accountId, "SCHEDULE_CREATED")(dispatchStep);
+    if (
+      searchParams.get("openPopup") &&
+      localities &&
+      [...(localities as any[])].length > 0
+    ) {
+      changeStatusPopup(true)(dispatch);
+      changeTypePopup(1)(dispatch);
+    }
+  }, [searchParams.get("openPopup"), localitiesSuccessful]);
+
+  useMemo(() => {
+    if (createStepSuccessful) {
+      changeOpenPopup(true)(dispatchStep);
+    }
+    if (stepNotCreated) {
+      setSuccessfulPopup(true);
+    }
+  }, [stepNotCreated, createStepSuccessful]);
+
+  useMemo(() => {
+    if (successfulWindowCreated)
+      createUserSteps(user.accountId, "SCHEDULE_CREATED")(dispatchStep);
   }, [successfulWindowCreated]);
 
   useMemo(() => {
@@ -230,81 +244,77 @@ export default function CalendarIndex() {
         <SuccessfulComponent
           tittle="Ventana de atención creada con exito"
           show={successfulPopup}
-          description={
-            "La ventana de atención ha sido generada con éxito."
-          }
+          description={"La ventana de atención ha sido generada con éxito."}
         />
         <SuccessfulComponent
           tittle="Cita reagendada con exito"
           show={rescheduleSuccessful}
-          description={
-            "La cita seleccionada ha sido reagendada con éxito."
-          }
+          description={"La cita seleccionada ha sido reagendada con éxito."}
         />
         <SuccessfulComponent
           tittle="Cita cancelada con exito"
           show={successfulDelete}
-          description={
-            "La cita seleccionada ha sido cancelada con éxito."
-          }
+          description={"La cita seleccionada ha sido cancelada con éxito."}
         />
         {/* BEGIN: Calendar Content */}
-        {user !== null && user.userId 
-          ?
-            <div className="w-full h-[64vh]">
-              {(!localitiesLoading && localitiesSuccessful) &&
-                <>{
-                  (localities && [...(localities as any[])].length === 0) ?
-                    <div className="w-full h-full flex justify-center items-center flex-wrap gap-5">
-                      <div className="md:w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4">
-                        <div className="w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center">
-                          <span className="h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center">
-                            <Lucide icon="Building" />
-                          </span>
-                        </div>
-                        <div className="w-full h-fit flex flex-col justify-center items-center gap-1 text-center px-2">
-                          <p className="font-semibold text-slate-900 text-base">
-                            No hay consultorios
-                          </p>
-                          <p className="font-light text-slate-500 text-sm">
-                            Crea tu primer consultorio y empieza a crear los servicios que
-                            prestas
-                          </p>
-                        </div>
-                        <Link className="w-full block" href="/localities/create">
-                          <Button className="w-full" variant="primary">
-                            Crear consultorio
-                          </Button>
-                        </Link>
+        {user !== null && user.userId ? (
+          <div className="w-full h-[64vh]">
+            {!localitiesLoading && localitiesSuccessful && (
+              <>
+                {localities && [...(localities as any[])].length === 0 ? (
+                  <div className="w-full h-full flex justify-center items-center flex-wrap gap-5">
+                    <div className="md:w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4">
+                      <div className="w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center">
+                        <span className="h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center">
+                          <Lucide icon="Building" />
+                        </span>
                       </div>
+                      <div className="w-full h-fit flex flex-col justify-center items-center gap-1 text-center px-2">
+                        <p className="font-semibold text-slate-900 text-base">
+                          No hay consultorios
+                        </p>
+                        <p className="font-light text-slate-500 text-sm">
+                          Crea tu primer consultorio y empieza a crear los
+                          servicios que prestas
+                        </p>
+                      </div>
+                      <Link className="w-full block" href="/localities/create">
+                        <Button className="w-full" variant="primary">
+                          Crear consultorio
+                        </Button>
+                      </Link>
                     </div>
-                  : 
-                    <div></div>
-                }</>
-              }
-              {(localitiesLoading && !localitiesSuccessful && !hasLocalities) && 
-                <Loading />
-              }
-              {(!localitiesLoading && localitiesSuccessful && hasLocalities) && 
-                <Calendar
-                  navLinkDayClick={(date: Date, jsEvent: UIEvent) => {
-                    jsEvent.preventDefault();
-                  }}
-                  handleChangeInWeek={() => {}}
-                  events={windows}
-                  initialEvent={""}
-                  handleClick={(param: EventClickArg) => {
-                    //changeStatusPopup(true)(dispatch); changeTypePopup(5)(dispatch);
-                    router.replace(`/schedule/configuration?attentionWindowId=${param.event._def.extendedProps["attentionWindowId"]}`)
-                  }}
-                />
-              }
-            </div>
-          :
+                  </div>
+                ) : (
+                  <div></div>
+                )}
+              </>
+            )}
+            {localitiesLoading && !localitiesSuccessful && !hasLocalities && (
+              <Loading />
+            )}
+            {!localitiesLoading && localitiesSuccessful && hasLocalities && (
+              <Calendar
+                navLinkDayClick={(date: Date, jsEvent: UIEvent) => {
+                  jsEvent.preventDefault();
+                }}
+                handleChangeInWeek={() => {}}
+                events={windows}
+                initialEvent={""}
+                handleClick={(param: EventClickArg) => {
+                  //changeStatusPopup(true)(dispatch); changeTypePopup(5)(dispatch);
+                  router.replace(
+                    `/schedule/configuration?attentionWindowId=${param.event._def.extendedProps["attentionWindowId"]}`
+                  );
+                }}
+              />
+            )}
+          </div>
+        ) : (
           <div className="w-full h-[64vh]">
             <Loading />
           </div>
-        }
+        )}
         {/* END: Calendar Content */}
       </div>
     </>

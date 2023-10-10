@@ -24,17 +24,17 @@ import {
   IScheduleContext,
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
+import { IUser } from "domain/core/entities/userEntity";
 
 const SlotStep = ({
+  user,
   appointment,
   setAppointment,
 }: {
+  user: IUser;
   appointment: any;
   setAppointment: Dispatch<SetStateAction<{}>>;
 }) => {
-  const { state: auth } = useContext<IAuthContext>(AuthContext);
-  const { data: user, successful: loadedUser } = auth.getUserAuthenticated;
-
   const { state, actions, dispatch } =
     useContext<IStepByStepAppointmentContext>(StepByStepAppointmentContext);
   const { setStep, getSlots } = actions;
