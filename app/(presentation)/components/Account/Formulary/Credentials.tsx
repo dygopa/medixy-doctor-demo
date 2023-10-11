@@ -311,7 +311,7 @@ export default function Credentials({
               />
             </div>
           </div>
-          {user.professionalLicense.length > 0 &&
+          {user?.professionalLicense?.length > 0 &&
             user?.pwaProfressionId > 0 && (
               <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-start items-end gap-3">
                 <div className="flex flex-col justify-between items-start relative gap-1">
