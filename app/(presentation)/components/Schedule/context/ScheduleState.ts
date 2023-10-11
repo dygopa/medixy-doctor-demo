@@ -31,6 +31,7 @@ export interface IScheduleState {
   slotsByAttentionWindow: IScheduleUserState;
   blockSlotInAttentionWindow: IScheduleUserState;
   unlockSlotInAttentionWindow: IScheduleUserState;
+  activeAttentionWindowId: IScheduleUserState;
 }
 
 interface IScheduleUserState {
@@ -67,6 +68,12 @@ export const initialState: IScheduleState = {
   },
   activeLocality: {
     data: {},
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  activeAttentionWindowId: {
+    data: "",
     loading: false,
     successful: false,
     error: null,

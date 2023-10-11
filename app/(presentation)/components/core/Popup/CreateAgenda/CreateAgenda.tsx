@@ -740,7 +740,11 @@ function CreateAgenda({
               min={moment().format("YYYY-MM-DD")}
               className="form-control"
               onChange={(e) =>
-                setFormData({ ...formData, startDate: e.target.value })
+                setFormData({
+                  ...formData,
+                  startDate: e.target.value,
+                  until: moment().add(1, "month").format("YYYY-MM-DD"),
+                })
               }
             />
           </div>
@@ -824,7 +828,14 @@ function CreateAgenda({
                     <FormInput
                       type={"date"}
                       className="form-control"
+                      defaultValue={
+                        formData["typeEnd"] === 2 ? formData.until : ""
+                      }
+                      min={moment(formData.startDate)
+                        .add(1, "days")
+                        .format("YYYY-MM-DD")}
                       onChange={(e) => {
+                        console.log(e.target.value);
                         setFormData({ ...formData, until: e.target.value });
                       }}
                     />

@@ -59,7 +59,7 @@ export default function Detail({
       </div>
 
       <div>
-        <Orders medicalConsulty={medicalConsulty} />
+        <Orders user={user} medicalConsulty={medicalConsulty} />
       </div>
     </div>
   );

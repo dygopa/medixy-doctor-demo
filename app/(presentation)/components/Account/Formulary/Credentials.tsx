@@ -14,9 +14,11 @@ import { twMerge } from "tailwind-merge";
 import AutocompleteInputSpecialties from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputSpecialties/AutocompleteInputSpecialties";
 
 export default function Credentials({
+  user,
   account,
   setAccount,
 }: {
+  user: IUser;
   account: IUser;
   setAccount: any;
 }) {
@@ -256,7 +258,7 @@ export default function Credentials({
           </div>
           <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-start items-end gap-3 border-b pb-6">
             <div className="flex flex-col justify-between items-start relative gap-1">
-              <p className="input-label mb-2">Profesional de la Salud</p>
+              <p className="input-label mb-2">Profesional de la salud</p>
               <FormSelect
                 value={account?.pwaProfressionId}
                 defaultValue={account?.pwaProfressionId}
@@ -265,7 +267,9 @@ export default function Credentials({
                   setAccount({ ...account, pwaProfressionId: +e.target.value })
                 }
               >
-                <option value="">-</option>
+                <option value="0" disabled>
+                  -
+                </option>
                 {profesions.map((elem, i) => (
                   <option key={i} value={elem["id"]}>
                     {elem["name"]}
@@ -307,34 +311,36 @@ export default function Credentials({
               />
             </div>
           </div>
-          <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-start items-end gap-3">
-            <div className="flex flex-col justify-between items-start relative gap-1">
-              <p className="input-label mb-2">Especialidad</p>
-              <AutocompleteInputSpecialties
-                defaultValue={formData.speciality_name}
-                onClick={(item) =>
-                  setFormData({
-                    ...formData,
-                    specialty_id: item.id,
-                    specialty_name: item.name,
-                    specialty_doctor_id: account.userId
-                      ? parseInt(account.userId, 10)
-                      : 0,
-                  })
-                }
-                onChange={(item) =>
-                  setFormData({
-                    ...formData,
-                    specialty_id: 0,
-                    specialty_name: item,
-                    specialty_doctor_id: account.userId,
-                  })
-                }
-                doctorId={account.userId ? parseInt(account.userId, 10) : 0}
-                className="form-control w-full"
-              />
+          {user.professionalLicense.length > 0 &&
+            user?.pwaProfressionId > 0 && (
+              <div className="w-full grid lg:grid-cols-4 md:grid-cols-2 grid-cols-1 justify-start items-end gap-3">
+                <div className="flex flex-col justify-between items-start relative gap-1">
+                  <p className="input-label mb-2">Especialidad</p>
+                  <AutocompleteInputSpecialties
+                    defaultValue={formData.speciality_name}
+                    onClick={(item) =>
+                      setFormData({
+                        ...formData,
+                        specialty_id: item.id,
+                        specialty_name: item.name,
+                        specialty_doctor_id: account.userId
+                          ? parseInt(account.userId, 10)
+                          : 0,
+                      })
+                    }
+                    onChange={(item) =>
+                      setFormData({
+                        ...formData,
+                        specialty_id: 0,
+                        specialty_name: item,
+                        specialty_doctor_id: account.userId,
+                      })
+                    }
+                    doctorId={account.userId ? parseInt(account.userId, 10) : 0}
+                    className="form-control w-full"
+                  />
 
-              {/* <FormSelect
+                  {/* <FormSelect
                 value={formData["specialty_id"]}
                 disabled={
                   account?.professionalLicense?.length === 0 ||
@@ -353,60 +359,64 @@ export default function Credentials({
                     </option>
                   ))}
                   </FormSelect> */}
-            </div>
-            <div className="flex flex-col justify-between items-start relative gap-1">
-              <p className="input-label mb-2">Cédula de la especialidad</p>
-              <FormInput
-                type={"text"}
-                placeholder="Escribe la cédula de la especialidad..."
-                min={0}
-                value={formData["code"]}
-                disabled={
-                  account?.professionalLicense?.length === 0 ||
-                  !account.pwaProfressionId
-                }
-                className="form-control w-full"
-                onChange={(e) =>
-                  setFormData({ ...formData, code: e.target.value })
-                }
-              />
-            </div>
-            <div className="flex flex-col justify-between items-start relative gap-1">
-              <p className="input-label mb-2">Institución</p>
-              <FormInput
-                type={"text"}
-                placeholder="Escribe el nombre de la institución..."
-                min={0}
-                value={formData["institution_name"]}
-                disabled={
-                  account?.professionalLicense?.length === 0 ||
-                  !account.pwaProfressionId
-                }
-                className="form-control w-full"
-                onChange={(e) =>
-                  setFormData({ ...formData, institution_name: e.target.value })
-                }
-              />
-            </div>
-            <div className="flex flex-col justify-between items-end relative">
-              <Button
-                disabled={
-                  loadingRegister ||
-                  account.userId === undefined ||
-                  formData.specialty_name.length === 0 ||
-                  account.professionalLicense.length === 0 ||
-                  formData.code.length === 0 ||
-                  formData.institution_name.length === 0
-                }
-                onClick={createSpeciality}
-                className="w-full flex justify-center items-center gap-2 text-white font-base"
-                variant="success"
-              >
-                <FiPlus />
-                <p>Agregar</p>
-              </Button>
-            </div>
-          </div>
+                </div>
+                <div className="flex flex-col justify-between items-start relative gap-1">
+                  <p className="input-label mb-2">Cédula de la especialidad</p>
+                  <FormInput
+                    type={"text"}
+                    placeholder="Escribe la cédula de la especialidad..."
+                    min={0}
+                    value={formData["code"]}
+                    disabled={
+                      account?.professionalLicense?.length === 0 ||
+                      !account.pwaProfressionId
+                    }
+                    className="form-control w-full"
+                    onChange={(e) =>
+                      setFormData({ ...formData, code: e.target.value })
+                    }
+                  />
+                </div>
+                <div className="flex flex-col justify-between items-start relative gap-1">
+                  <p className="input-label mb-2">Institución</p>
+                  <FormInput
+                    type={"text"}
+                    placeholder="Escribe el nombre de la institución..."
+                    min={0}
+                    value={formData["institution_name"]}
+                    disabled={
+                      account?.professionalLicense?.length === 0 ||
+                      !account.pwaProfressionId
+                    }
+                    className="form-control w-full"
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        institution_name: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+                <div className="flex flex-col justify-between items-end relative">
+                  <Button
+                    disabled={
+                      loadingRegister ||
+                      account.userId === undefined ||
+                      formData.specialty_name.length === 0 ||
+                      account.professionalLicense.length === 0 ||
+                      formData.code.length === 0 ||
+                      formData.institution_name.length === 0
+                    }
+                    onClick={createSpeciality}
+                    className="w-full flex justify-center items-center gap-2  font-base"
+                    variant="outline-primary"
+                  >
+                    <FiPlus />
+                    <p>Agregar</p>
+                  </Button>
+                </div>
+              </div>
+            )}
 
           {loadingRegister ? (
             <div className="w-full flex justify-center items-center">

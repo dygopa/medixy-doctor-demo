@@ -7,15 +7,17 @@ import {
   IMedicalRecord,
   IMedicalRecordValue,
 } from "domain/core/entities/medicalRecordEntity";
+import { IUser } from "domain/core/entities/userEntity";
 import { useEffect, useState } from "react";
 import MedicalRecordCreateSummaryProvider from "../../context/MedicalRecordCreateSummaryContext";
 import DownloadPDF from "./DownloadPDF/DownloadPDF";
 
 interface IOrdersProps {
+  user: IUser;
   medicalConsulty: IMedicalConsulty;
 }
 
-export default function Orders({ medicalConsulty }: IOrdersProps) {
+export default function Orders({ user, medicalConsulty }: IOrdersProps) {
   const [medicalRecords, setMedicalRecords] = useState<IMedicalRecord[]>([]);
 
   const setMedicalRecordsOrders = () => {
@@ -76,7 +78,7 @@ export default function Orders({ medicalConsulty }: IOrdersProps) {
               )}
 
               <MedicalRecordCreateSummaryProvider>
-                <DownloadPDF medicalRecord={medicalRecord} />
+                <DownloadPDF user={user} medicalRecord={medicalRecord} />
               </MedicalRecordCreateSummaryProvider>
             </div>
           )

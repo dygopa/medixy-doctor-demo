@@ -1,8 +1,4 @@
 import { TreatmentDosisTypeEnum } from "(presentation)/(enum)/treatment/treatmentEnums";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
@@ -11,6 +7,7 @@ import {
   ITreatment,
   ITreatmentMedicine,
 } from "domain/core/entities/treatmentEntity";
+import { IUser } from "domain/core/entities/userEntity";
 import { useContext } from "react";
 import {
   IMedicalRecordSummaryContext,
@@ -18,13 +15,11 @@ import {
 } from "../../context/MedicalRecordSummaryContext";
 
 interface IRecipesProps {
+  user: IUser;
   medicalConsulty: IMedicalConsulty;
 }
 
-export default function Recipes({ medicalConsulty }: IRecipesProps) {
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
-
+export default function Recipes({ user, medicalConsulty }: IRecipesProps) {
   const { state, actions, dispatch } = useContext<IMedicalRecordSummaryContext>(
     MedicalRecordSummaryContext
   );

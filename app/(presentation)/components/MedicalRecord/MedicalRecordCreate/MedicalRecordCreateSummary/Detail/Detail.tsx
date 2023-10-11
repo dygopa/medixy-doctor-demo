@@ -118,7 +118,7 @@ export default function Detail({ user }: IDetailProps) {
       </div>
 
       <div>
-        <Orders medicalConsulty={medicalConsulty} />
+        <Orders user={user} medicalConsulty={medicalConsulty} />
       </div>
     </div>
   );
