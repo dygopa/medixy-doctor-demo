@@ -46,7 +46,7 @@ function Popup({ user }: IPopupProps) {
   return (
     <div
       className={twMerge([
-        "z-[80] fixed top-0 left-0 w-full h-screen overflow-y-auto bg-gray-900/50 flex flex-col justify-center items-center",
+        "z-[100] fixed top-0 left-0 w-full h-screen overflow-y-auto bg-gray-900/50 flex flex-col justify-center items-center",
         status ? "visible" : "hidden",
       ])}
     >

@@ -157,7 +157,8 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       setIsVisible(false);
       return;
     }
-    if (pathname!.includes("/dashboard") && data?.length === 0) {
+
+    if (pathname!.includes("/dashboard") && data?.length < 3) {
       setIsVisible(true);
       return;
     }
@@ -170,8 +171,8 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
   }
 
   useMemo(() => {
-    knowIfCanShowPopup();
-  }, [steps, data]);
+    if (formatList) knowIfCanShowPopup();
+  }, [steps, data, formatList]);
 
   useMemo(() => {
     if (successful) formatListOfSteps();

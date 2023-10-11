@@ -62,7 +62,6 @@ function Main({
   const pathname = usePathname();
 
   const [activeShortcuts, setActiveShortcuts] = useState(false);
-  const [hasPermission, setHasPermission] = useState(false);
 
   const wrapperRef = useRef(null);
 

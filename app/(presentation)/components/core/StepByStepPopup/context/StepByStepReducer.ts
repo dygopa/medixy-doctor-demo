@@ -16,7 +16,7 @@ export const StepByStepReducer = (state: any, action: any) => {
           ...state,
           getSteps: {
             ...state.getSteps,
-            data: null,
+            data: [],
             loading: true,
             successful: false,
             error: null,
@@ -27,7 +27,7 @@ export const StepByStepReducer = (state: any, action: any) => {
           ...state,
           getSteps: {
             ...state.getSteps,
-            data: null,
+            data: [],
             loading: false,
             successful: false,
             error: action.payload.error,
@@ -49,7 +49,7 @@ export const StepByStepReducer = (state: any, action: any) => {
           ...state,
           getStepsMessages: {
             ...state.getStepsMessages,
-            data: null,
+            data: [],
             loading: true,
             successful: false,
             error: null,
@@ -60,7 +60,7 @@ export const StepByStepReducer = (state: any, action: any) => {
           ...state,
           getStepsMessages: {
             ...state.getStepsMessages,
-            data: null,
+            data: [],
             loading: false,
             successful: false,
             error: action.payload.error,

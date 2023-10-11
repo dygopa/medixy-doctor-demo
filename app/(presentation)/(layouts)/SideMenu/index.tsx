@@ -8,9 +8,9 @@ import { IUser } from "domain/core/entities/userEntity";
 import Navigation from "./nav";
 import StepByStepPopup from "(presentation)/components/core/StepByStepPopup/StepByStepPopup";
 import PopupProvider from "(presentation)/components/core/BaseComponents/Popup/context/PopupContext";
-import StepByStepMessage from "(presentation)/components/core/StepByStepMessage/StepByStepMessage";
 import VersionHandler from "../AppLayout/VersionHandler/VersionHandler";
 import StepByStepProvider from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
+import SmartBar from "(presentation)/components/core/SmartBar/SmartBar";
 
 interface INavigation {
   title: string;
@@ -32,7 +32,7 @@ function SideMenu({
     <VersionHandler>
       <StepByStepProvider>
         <div className="pb-5 pt-5 lg:pt-0 md:pt-0 xl:pt-0 md:py-0 -mx-3 px-3 sm:-mx-8 sm:px-8 bg-primary dark:bg-transparent min-h-[100vh]">
-          <StepByStepMessage user={user} />
+          <SmartBar user={user} />
           <PopupProvider>
             <MobileMenu />
             <div className="flex xl:mt-0 lg:mt-0 mt-0 md:mt-0 overflow-hidden">
