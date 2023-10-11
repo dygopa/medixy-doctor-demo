@@ -168,7 +168,8 @@ export default function Formulary() {
       setErrors((previousState: any) => {
         return {
           ...previousState,
-          phone_number: "El teléfono del paciente no es correcto",
+          phone_number:
+            "El teléfono no tiene un formato correcto (33 1234 5678)",
         };
       });
       return true;
@@ -387,7 +388,9 @@ export default function Formulary() {
             setValues({ ...values, pwaProfessionId: +e.target.value })
           }
         >
-          <option value="0">Selecciona tu Profesión</option>
+          <option value="0" disabled>
+            Selecciona tu profesión
+          </option>
           {profesions.map((elem, i) => (
             <option key={i} value={elem["id"]}>
               {elem["name"]}
@@ -417,7 +420,7 @@ export default function Formulary() {
           </div>
         )}
       </div>
-      <div className="relative w-full grid grid-cols-2 justify-between items-center gap-3">
+      <div className="relative w-full grid grid-cols-2 justify-between gap-3">
         <div className="relative w-full">
           <FormInput
             type="text"
@@ -500,7 +503,7 @@ export default function Formulary() {
         <FormInput
           type="email"
           className="w-full py-3 pr-10 bg-white"
-          placeholder="Correo Electrónico"
+          placeholder="Correo electrónico"
           value={values.email}
           onChange={(e: any) => handleEmail(e.target.value)}
         />

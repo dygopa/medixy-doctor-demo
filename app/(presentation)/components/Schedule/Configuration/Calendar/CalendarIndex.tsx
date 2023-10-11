@@ -52,6 +52,7 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
     activeLocality,
     changeTypePopup,
     changeStatusPopup,
+    activeAttentionWindowId,
   } = actions;
   const { data, loading, successful, error } = state.getAttentionWindows;
   const { successful: successfulWindowCreated, error: errorWindowCreated } =
@@ -197,11 +198,11 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
     }
   };
 
-  useMemo(() => {
+  /* useMemo(() => {
     if (searchParams.get("attentionWindowId"))
       changeStatusPopup(true)(dispatch);
     changeTypePopup(5)(dispatch);
-  }, [searchParams]);
+  }, [searchParams]); */
 
   useMemo(() => {
     if (
@@ -302,10 +303,11 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
                 events={windows}
                 initialEvent={""}
                 handleClick={(param: EventClickArg) => {
-                  //changeStatusPopup(true)(dispatch); changeTypePopup(5)(dispatch);
-                  router.replace(
-                    `/schedule/configuration?attentionWindowId=${param.event._def.extendedProps["attentionWindowId"]}`
-                  );
+                  activeAttentionWindowId(
+                    param.event._def.extendedProps["attentionWindowId"]
+                  )(dispatch);
+                  changeStatusPopup(true)(dispatch);
+                  changeTypePopup(5)(dispatch);
                 }}
               />
             )}

@@ -1,5 +1,6 @@
 "use client";
 
+import { IUser } from "domain/core/entities/userEntity";
 import { useContext, useEffect } from "react";
 import {
   IMedicalRecordSummaryContext,
@@ -9,10 +10,12 @@ import Detail from "./Detail/Detail";
 import Navigator from "./Navigator/Navigator";
 
 interface IMedicalRecordSummaryIndexProps {
+  user: IUser;
   id: number;
 }
 
 export default function MedicalRecordSummaryIndex({
+  user,
   id,
 }: IMedicalRecordSummaryIndexProps) {
   const { state, actions, dispatch } = useContext<IMedicalRecordSummaryContext>(
@@ -81,7 +84,7 @@ export default function MedicalRecordSummaryIndex({
 
       <div className="mt-10 grid grid-cols-12 gap-4">
         <div className="col-span-12">
-          <Detail />
+          <Detail user={user} />
         </div>
       </div>
     </div>

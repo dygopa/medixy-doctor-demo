@@ -1,7 +1,3 @@
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { Menu, Transition } from "@headlessui/react";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
@@ -13,15 +9,14 @@ import {
   IMedicalRecordSummaryContext,
   MedicalRecordSummaryContext,
 } from "../../context/MedicalRecordSummaryContext";
+import { IUser } from "domain/core/entities/userEntity";
 
 interface ITitleProps {
+  user: IUser;
   medicalConsulty: IMedicalConsulty;
 }
 
-export default function Title({ medicalConsulty }: ITitleProps) {
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
-
+export default function Title({ user, medicalConsulty }: ITitleProps) {
   const { state, actions, dispatch } = useContext<IMedicalRecordSummaryContext>(
     MedicalRecordSummaryContext
   );

@@ -32,6 +32,7 @@ export interface IScheduleActions {
   blockSlotInAttentionWindow: Function;
   unlockSlotInAttentionWindow: Function;
   rescheduleAppointmentInitialState: Function;
+  activeAttentionWindowId: Function;
 }
 
 const getCalendarEvents = (id:number, localityId:number, sinceDate:any, untilDate:any, serviceId:number) => async (dispatch: Dispatch<any>) => {
@@ -61,6 +62,10 @@ const appointmentDetail = (value:any) => async (dispatch: Dispatch<any>) => {
 
 const activeLocality = (value:any) => async (dispatch: Dispatch<any>) => {
     dispatch({ type: "CHANGE_ACTIVE_LOCALITY", payload: { data: value } });
+}
+
+const activeAttentionWindowId = (value:any) => async (dispatch: Dispatch<any>) => {
+  dispatch({ type: "CHANGE_ACTIVE_ATTENTION_WINDOW_ID", payload: { data: value } });
 }
 
 const activeService = (value:any) => async (dispatch: Dispatch<any>) => {
@@ -339,5 +344,6 @@ export const actions: IScheduleActions = {
   getSlotsByAttentionWindow,
   blockSlotInAttentionWindow,
   unlockSlotInAttentionWindow,
-  rescheduleAppointmentInitialState
+  rescheduleAppointmentInitialState,
+  activeAttentionWindowId
 }

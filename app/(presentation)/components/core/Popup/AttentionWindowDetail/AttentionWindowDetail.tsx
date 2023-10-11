@@ -56,6 +56,7 @@ function AttentionWindowDetail({
   const { loading: rescheduleLoading, successful: rescheduleSuccessful } =
     state.rescheduleAppointment;
   const { data: statusPopup } = state.statusPopup;
+  const { data: attentionWindowId } = state.activeAttentionWindowId;
 
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -64,29 +65,23 @@ function AttentionWindowDetail({
   const [appointment, setAppointment] = useState({});
 
   useMemo(() => {
-    if (searchParams.get("attentionWindowId")) {
-      getSlotsByAttentionWindow(searchParams.get("attentionWindowId"))(
-        dispatch
-      );
+    if (attentionWindowId) {
+      getSlotsByAttentionWindow(attentionWindowId)(dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   useMemo(() => {
     if (rescheduleSuccessful) {
-      getSlotsByAttentionWindow(searchParams.get("attentionWindowId"))(
-        dispatch
-      );
+      getSlotsByAttentionWindow(attentionWindowId)(dispatch);
       setShowRescheduleModal(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [rescheduleSuccessful]);
 
   useMemo(() => {
-    if (successfulDelete && searchParams.get("attentionWindowId")) {
-      getSlotsByAttentionWindow(searchParams.get("attentionWindowId"))(
-        dispatch
-      );
+    if (successfulDelete && attentionWindowId) {
+      getSlotsByAttentionWindow(attentionWindowId)(dispatch);
     }
   }, [successfulDelete]);
 
@@ -106,43 +101,45 @@ function AttentionWindowDetail({
   return (
     <div
       //ref={customRef}
-      className="w-full md:w-[60%] lg:w-[40%] h-screen  md:min-h-[60vh] md:max-h-[90vh] lg:min-h-[60vh] lg:max-h-[90vh] overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 pb-0 gap-8"
+      className="w-full md:w-[60%] lg:w-[40%] h-screen  md:min-h-[60vh] md:max-h-[90vh] lg:min-h-[60vh] lg:max-h-[90vh] overflow-y-auto flex flex-col items-start justify-between bg-white lg:rounded-md p-6 pb-0 gap-8"
     >
       {!showRescheduleModal ? (
         <>
-          <div className="w-full flex flex-col justify-start items-start">
-            <p className="font-bold text-2xl text-slate-900">
-              Ventana de atención
-            </p>
-            <p className="font-light text-sm text-slate-500">
-              Si necesitas bloquear un cupo especifico en esta ventana de
-              atención puedes hacerlo aquí.
-            </p>
-          </div>
-
-          {loading && (
-            <div className="w-full flex flex-col justify-center items-center gap-2">
-              <Loading />
-              <p className="text-center font-normal text-base text-slate-500">
-                Cargando los slots de atención de este horario...
+          <div className="w-full">
+            <div className="w-full flex flex-col justify-start items-start mb-8">
+              <p className="font-bold text-2xl text-slate-900">
+                Ventana de atención
+              </p>
+              <p className="font-light text-sm text-slate-500">
+                Si necesitas bloquear un cupo especifico en esta ventana de
+                atención puedes hacerlo aquí.
               </p>
             </div>
-          )}
 
-          {!loading && [...(data as any[])].length > 0 && (
-            <div className="w-full flex flex-col justify-start items-center gap-2">
-              {[...(data as any[])].map((elem: any, i: number) => (
-                <SlotComponent
-                  rescheduleClick={() => {
-                    setAppointment(elem);
-                    setShowRescheduleModal(true);
-                  }}
-                  key={i}
-                  data={elem}
-                />
-              ))}
-            </div>
-          )}
+            {loading && (
+              <div className="w-full flex flex-col justify-center items-center gap-2">
+                <Loading />
+                <p className="text-center font-normal text-base text-slate-500">
+                  Cargando los slots de atención de este horario...
+                </p>
+              </div>
+            )}
+
+            {!loading && [...(data as any[])].length > 0 && (
+              <div className="w-full flex flex-col justify-start items-center gap-2">
+                {[...(data as any[])].map((elem: any, i: number) => (
+                  <SlotComponent
+                    rescheduleClick={() => {
+                      setAppointment(elem);
+                      setShowRescheduleModal(true);
+                    }}
+                    key={i}
+                    data={elem}
+                  />
+                ))}
+              </div>
+            )}
+          </div>
 
           <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white">
             <Button

@@ -55,7 +55,11 @@ export default function Formulary({
               errors={errors}
               setErrors={setErrors}
             />
-            <Credentials account={account} setAccount={setAccount} />
+            <Credentials
+              user={user}
+              account={account}
+              setAccount={setAccount}
+            />
             <Contact account={account} setAccount={setAccount} />
             <AboutMe
               account={account}
@@ -137,7 +141,10 @@ export default function Formulary({
         : "",
       website_url: account.websiteUrl.trim() ?? "",
       address: account.address.trim() ?? "",
-      pwa_profession_id: account.pwaProfressionId ?? "",
+      pwa_profession_id:
+        account.pwaProfressionId && account.pwaProfressionId > 0
+          ? account.pwaProfressionId
+          : null,
       professional_license: account.professionalLicense.trim() ?? "",
       professional_license_institution:
         account.professionalLicenseInstitution.trim() ?? "",
@@ -183,6 +190,8 @@ export default function Formulary({
               loading ||
               account.names === "" ||
               account.firstName === "" ||
+              account.curp === "" ||
+              account.professionalLicense === "" ||
               validForm() > 0
             }
             onClick={() => {

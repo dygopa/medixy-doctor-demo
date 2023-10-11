@@ -40,7 +40,7 @@ export default function IntlPhoneNumberInput({
   onPhoneNumberBlur,
   containerClassName,
   inputClassName,
-  placeholder
+  placeholder,
 }: IIntlPhoneNumberInputProps) {
   return (
     <IntlTelInput

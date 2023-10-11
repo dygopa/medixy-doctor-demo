@@ -1,11 +1,8 @@
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { IMedicalRecord } from "domain/core/entities/medicalRecordEntity";
+import { IUser } from "domain/core/entities/userEntity";
 import { useContext } from "react";
 import {
   IMedicalRecordCreateSummaryContext,
@@ -13,13 +10,14 @@ import {
 } from "../../../context/MedicalRecordCreateSummaryContext";
 
 interface IDownloadPDFProps {
+  user: IUser;
   medicalRecord: IMedicalRecord;
 }
 
-export default function DownloadPDF({ medicalRecord }: IDownloadPDFProps) {
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
-
+export default function DownloadPDF({
+  user,
+  medicalRecord,
+}: IDownloadPDFProps) {
   const { state, actions, dispatch } =
     useContext<IMedicalRecordCreateSummaryContext>(
       MedicalRecordCreateSummaryContext
