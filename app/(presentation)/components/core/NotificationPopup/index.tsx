@@ -16,8 +16,6 @@ import {
 } from "infrastructure/config/firebase/FirebaseConfig";
 import { INotification } from "domain/core/entities/notificationEntity";
 import NotificationToast from "../NotificationToast/NotificationToast";
-import Tooltip from "../BaseComponents/Tooltip/Tooltip";
-import { usePathname } from "next/navigation";
 
 const NotificationPopup = ({ user }: { user: IUser }) => {
   const { actions, dispatch } = useContext<INotificationPopupContext>(
@@ -29,9 +27,10 @@ const NotificationPopup = ({ user }: { user: IUser }) => {
     useState(false);
   const [activeDot, setActiveDot] = useState(false);
   const [hasPermission, setHasPermission] = useState(false);
-  const [showTooltip, setShowTooltip] = useState(false);
 
-  const pathname = usePathname();
+  useEffect(() => {
+    setHasPermission(Notification.permission === "granted");
+  }, []);
 
   useEffect(() => {
     if (user && user.accountId) {
@@ -50,11 +49,6 @@ const NotificationPopup = ({ user }: { user: IUser }) => {
       }
     }
   }, [user]);
-
-  useEffect(() => {
-    setHasPermission(Notification.permission === "granted");
-    setShowTooltip(Notification.permission !== "granted");
-  }, []);
 
   const [notification, setNotification] = useState({
     show: false,
@@ -105,7 +99,6 @@ const NotificationPopup = ({ user }: { user: IUser }) => {
           onClick={() => {
             setActiveNotificationDropdown(!activeNotificationDropdown);
             setActiveDot(false);
-            setShowTooltip(false);
           }}
           className={twMerge([
             "transition relative w-fit h-fit cursor-pointer text-[1.2rem] text-slate-500 bg-white border rounded p-2",
@@ -119,14 +112,7 @@ const NotificationPopup = ({ user }: { user: IUser }) => {
           )}
           <FiBell />
         </div>
-        {showTooltip && pathname === "/dashboard" && (
-          <Tooltip
-            positionStatic
-            className="lg:w-[300px] md:w-[300px] w-[200px] lg:h-[65px] md:h-[65px] h-[80px] top-14 right-0"
-          >
-            ¡Mejora tu experiencia activando las notificaciones!
-          </Tooltip>
-        )}
+
         <Popup
           customActive={setActiveNotificationDropdown}
           active={activeNotificationDropdown}

@@ -33,13 +33,13 @@ interface IPopupState {
 
 export const initialState: IStepByStepState = {
   getSteps: {
-    data: {},
+    data: [],
     loading: false,
     successful: false,
     error: null,
   },
   getStepsMessages: {
-    data: {},
+    data: [],
     loading: false,
     successful: false,
     error: null,

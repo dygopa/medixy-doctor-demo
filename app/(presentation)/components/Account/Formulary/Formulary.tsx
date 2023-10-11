@@ -66,15 +66,7 @@ export default function Formulary({
           </div>
         );
       case 1:
-        return (
-          <Security
-            account={account}
-            formData={formData}
-            setFormData={setFormData}
-            errors={errorsSecurity}
-            setErrors={setErrorsSecurity}
-          />
-        );
+        return <Security account={account} />;
       default:
         return <div />;
     }
@@ -184,7 +176,7 @@ export default function Formulary({
             funciones dentro de la plataforma
           </p>
         </div>
-        {steps === 0 ? (
+        {steps === 0 && (
           <Button
             variant="primary"
             disabled={
@@ -199,21 +191,6 @@ export default function Formulary({
             className="px-16 mb-2 md:mb-0"
           >
             Actualizar
-          </Button>
-        ) : (
-          <Button
-            variant="primary"
-            disabled={
-              loadingSecurity ||
-              formData.password === "" ||
-              validFormSecurity() > 0
-            }
-            onClick={() => {
-              updatePassword(formData.password)(dispatch);
-            }}
-            className="px-16 mt-3 md:mt-0 w-full md:w-fit"
-          >
-            Actualizar contraseña
           </Button>
         )}
       </div>

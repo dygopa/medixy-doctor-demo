@@ -2,15 +2,16 @@
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { FiBell, FiX } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
-import Notification from "./Notification/Notification";
+import NotificationMessageView from "./Notification/Notification";
 import {
   INotificationPopupContext,
   NotificationPopupContext,
 } from "../context/NotificationPopupContext";
 import Loading from "../../Loading/Loading";
 import { INotification } from "domain/core/entities/notificationEntity";
-import { getUserToken } from "infrastructure/config/firebase/FirebaseConfig";
 import Button from "../../BaseComponents/Button";
+import NotificationGrantedMessage from "../NotificationGrantedMessage/NotificationGrantedMessage";
+import NotificationDeniedMessage from "../NotificationDeniedModal/NotificationDeniedModal";
 
 const Popup = ({
   active,
@@ -29,6 +30,24 @@ const Popup = ({
   const wrapperRef = useRef(null);
 
   const [notifications, setNotifications] = useState([] as INotification[]);
+
+  const [showNotificationGrantedModal, setShowNotificationGrantedModal] =
+    useState(false);
+  const [showNotificationDeniedModal, setShowNotificationDeniedModal] =
+    useState(false);
+
+  const onHandleNotificationPermissions = () => {
+    if (!("Notification" in window)) return;
+
+    Notification.requestPermission().then((permission) => {
+      if (permission === "granted") {
+        setShowNotificationGrantedModal(true);
+        return;
+      }
+
+      setShowNotificationDeniedModal(true);
+    });
+  };
 
   function useOutsideAlerter(ref: React.MutableRefObject<any>) {
     useEffect(() => {
@@ -60,7 +79,7 @@ const Popup = ({
         </div>
         <div className="w-full flex flex-col justify-start items-start gap-1">
           {list.map((data: INotification, i: number) => (
-            <Notification notification={data} key={i} />
+            <NotificationMessageView notification={data} key={i} />
           ))}
         </div>
       </div>
@@ -97,43 +116,58 @@ const Popup = ({
   }, [loading]);
 
   return (
-    <div
-      ref={wrapperRef}
-      className={twMerge([
-        "absolute top-[4rem] w-[22rem] shadow-lg bg-white min-h-[30vh] h-fit max-h-[70vh] overflow-y-auto border rounded flex flex-col justify-start items-center p-4 gap-2",
-        active ? "visible" : "hidden",
-      ])}
-    >
-      <div className="w-full h-fit pb-2 border-b bg-white flex items-center justify-start">
-        <p className="text-slate-900 font-normal text-base">Notificaciones</p>
-      </div>
-      {hasPermission ? (
-        successful && notifications.length > 0 ? (
-          <NotificationGroups list={notifications} />
-        ) : (
-          <div className="w-full h-fit flex flex-col justify-center items-center py-3 text-center">
-            <p className="font-normal text-slate-900 text-base">
-              Nada por aqui aún
-            </p>
-            <p className="font-light text-slate-500 text-sm">
-              No tienes notificaciones todavia.
-            </p>
-          </div>
-        )
-      ) : (
-        <div className="text-center mt-4 pb-3">
-          <div className="mb-3">
-            <p>Mejora tu experiencia activando las notificaciones</p>
-          </div>
-
-          <div>
-            <Button type="button" variant="primary" onClick={getUserToken}>
-              Activar notificaciones
-            </Button>
-          </div>
+    <>
+      <div
+        ref={wrapperRef}
+        className={twMerge([
+          "absolute top-[4rem] w-[22rem] shadow-lg bg-white min-h-[30vh] h-fit max-h-[70vh] overflow-y-auto border rounded flex flex-col justify-start items-center p-4 gap-2",
+          active ? "visible" : "hidden",
+        ])}
+      >
+        <div className="w-full h-fit pb-2 border-b bg-white flex items-center justify-start">
+          <p className="text-slate-900 font-normal text-base">Notificaciones</p>
         </div>
-      )}
-    </div>
+        {hasPermission ? (
+          successful && notifications.length > 0 ? (
+            <NotificationGroups list={notifications} />
+          ) : (
+            <div className="w-full h-fit flex flex-col justify-center items-center py-3 text-center">
+              <p className="font-normal text-slate-900 text-base">
+                Nada por aqui aún
+              </p>
+              <p className="font-light text-slate-500 text-sm">
+                No tienes notificaciones todavia.
+              </p>
+            </div>
+          )
+        ) : (
+          <div className="text-center mt-4 pb-3">
+            <div className="mb-3">
+              <p>Mejora tu experiencia activando las notificaciones</p>
+            </div>
+
+            <div>
+              <Button
+                onClick={onHandleNotificationPermissions}
+                type="button"
+                variant="primary"
+              >
+                Activar notificaciones
+              </Button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <NotificationGrantedMessage
+        showNotificationGrantedModal={showNotificationGrantedModal}
+      />
+
+      <NotificationDeniedMessage
+        showNotificationDeniedModal={showNotificationDeniedModal}
+        setShowNotificationDeniedModal={setShowNotificationDeniedModal}
+      />
+    </>
   );
 };
 

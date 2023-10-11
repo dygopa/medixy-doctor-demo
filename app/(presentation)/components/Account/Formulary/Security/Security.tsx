@@ -10,21 +10,24 @@ import { IUserContext, UserContext } from "../../context/UserContext";
 
 interface IFormularyProps {
   account: IUser;
-  formData: {
-    password: string;
-  };
-  setFormData: any;
-  errors: {
-    global: string,
-    password: string,
-  };
-  setErrors: any;
 }
 
-export default function Security({ account, formData, setFormData, errors, setErrors }: IFormularyProps) {
-  const { state } = useContext<IUserContext>(UserContext);
+export default function Security({ account }: IFormularyProps) {
+  const { state, actions, dispatch } = useContext<IUserContext>(UserContext);
+  const { updatePassword } = actions;
 
   const { loading, successful, error } = state.changePasswords;
+
+  const [errors, setErrors] = useState({
+    global: "",
+    password: "",
+    repeatPassword: "",
+  });
+
+  const [formData, setFormData] = useState({
+    password: "",
+    repeatPassword: "",
+  });
 
   const [inputPassword, setInputPassword] = useState("password");
 
@@ -34,6 +37,18 @@ export default function Security({ account, formData, setFormData, errors, setEr
       return;
     }
     setInputPassword("password");
+  };
+
+  const validForm = () => {
+    let errorsFieldsCount = 0;
+
+    if (errors.global.length > 0) errorsFieldsCount++;
+
+    if (errors.password.length > 0) errorsFieldsCount++;
+
+    if (errors.repeatPassword.length > 0) errorsFieldsCount++;
+
+    return errorsFieldsCount;
   };
 
   const handlePassword = (value: string) => {
@@ -50,8 +65,22 @@ export default function Security({ account, formData, setFormData, errors, setEr
     }
   };
 
-  return(
-    <div className="my-9">
+  const handlePasswordRepeat = (value: string) => {
+    setFormData({ ...formData, repeatPassword: value });
+    if (value !== formData.password) {
+      setErrors({
+        ...errors,
+        repeatPassword: "La nueva contraseña no coincide",
+      });
+      return true;
+    } else {
+      setErrors({ ...errors, repeatPassword: "" });
+      return false;
+    }
+  };
+
+  return (
+    <div>
       <AlertComponent
         variant="error"
         show={error !== null}
@@ -60,8 +89,25 @@ export default function Security({ account, formData, setFormData, errors, setEr
       <SuccessfulComponent
         tittle="Actualizado con exito"
         show={successful}
-        description={"Cuenta actualizada exitosamente"}
+        description={"Contraseña actualizada exitosamente"}
       />
+      <div className="lg:flex justify-end items-center md:absolute top-[20px] right-5 z-[50]">
+        <Button
+          variant="primary"
+          disabled={
+            loading ||
+            formData.password === "" ||
+            formData.repeatPassword === "" ||
+            validForm() > 0
+          }
+          onClick={() => {
+            updatePassword(formData.password)(dispatch);
+          }}
+          className="px-16 mt-3 md:mt-0 w-full md:w-fit"
+        >
+          Actualizar contraseña
+        </Button>
+      </div>
 
       <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7 pb-12">
         <div className="w-full gap-4">
@@ -73,7 +119,7 @@ export default function Security({ account, formData, setFormData, errors, setEr
           <div className="w-full grid md:grid-cols-2 grid-cols-1 justify-start items-start gap-3 lg:mt-0 mt-6">
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Nueva Constraseña
+                Nueva Contraseña
               </p>
               <FormInput
                 type={inputPassword}
@@ -98,21 +144,32 @@ export default function Security({ account, formData, setFormData, errors, setEr
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1">
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
-                Email
+                Repite la nueva contraseña
               </p>
               <FormInput
-                type={"text"}
-                placeholder="Correo electronico"
+                type={inputPassword}
+                placeholder="Escribe tu nueva Constraseña"
                 min={0}
                 className="form-control w-full"
-                value={account.email}
-                defaultValue={account.email}
-                disabled
+                onChange={(e: any) => handlePasswordRepeat(e.target.value)}
               />
+              <Lucide
+                icon={inputPassword === "text" ? "EyeOff" : "Eye"}
+                className={twMerge([
+                  "absolute top-11 right-0 w-4 h-4 my-auto mr-3 cursor-pointer transition-all",
+                  inputPassword === "text" && "text-black",
+                ])}
+                onClick={(e: any) => {
+                  viewPassword();
+                }}
+              />
+              {errors.repeatPassword.length > 0 && (
+                <span className="text-red-500">{errors.repeatPassword}</span>
+              )}
             </div>
           </div>
         </div>
       </div>
     </div>
-  )
+  );
 }
