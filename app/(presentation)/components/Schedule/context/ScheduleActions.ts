@@ -22,6 +22,7 @@ export interface IScheduleActions {
   createWindowAttention: Function;
   getServices: Function;
   getServicesByLocality: Function;
+  getServicesByAttentionWindow: Function;
   getLocalities: Function;
   getLocalitiesWithServices: Function;
   getPatients: Function;
@@ -256,6 +257,19 @@ const getServicesByLocality = (id:number, localityId: number) => async (dispatch
     }
 }
 
+const getServicesByAttentionWindow = (attentionWindowId: string) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_SERVICES_BY_ATTENTION_WINDOW_LOADING" });
+    
+    const res: any = await new ScheduleUseCase().getServicesByAttentionWindow(attentionWindowId);
+
+    dispatch({ type: "GET_SERVICES_BY_ATTENTION_WINDOW_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "GET_SERVICES_BY_ATTENTION_WINDOW_ERROR", payload: { error: error } });
+  }
+}
+
 const getLocalities = (id:number) => async (dispatch: Dispatch<any>) => {
     try {
       dispatch({ type: "GET_LOCALITIES_LOADING" });
@@ -335,6 +349,7 @@ export const actions: IScheduleActions = {
   getServices,
   activePatient,
   getServicesByLocality,
+  getServicesByAttentionWindow,
   getLocalities,
   getLocalitiesWithServices,
   getPatients,

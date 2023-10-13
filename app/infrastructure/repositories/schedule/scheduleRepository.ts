@@ -77,6 +77,9 @@ export class ScheduleRepository implements IScheduleRepository {
                 ),
                 Servicios (
                     nombre
+                ),
+                VentanasAtencion (
+                    *
                 )
             `).in("ventanaAtencionId", resVentanasAtencion.data!.map((elem:any)=> elem["id"] ))
 
