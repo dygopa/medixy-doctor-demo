@@ -330,6 +330,7 @@ const Side = ({ user }: ISideProps) => {
               user={user}
               data={elem}
               onClick={() => {
+                console.log(elem);
                 appointmentDetail({ ...elem, appoinmentId: elem["id"] })(
                   dispatch
                 );

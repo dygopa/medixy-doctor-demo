@@ -1,4 +1,5 @@
 import { monthsEnum } from "(presentation)/(enum)/dates/datesEnum";
+import moment from "moment";
 
 export const getFullDate = (date: Date) => {
     return `${date.getDate()} de ${monthsEnum[date.getMonth()].toLowerCase()} del ${date.getFullYear()}`;
@@ -15,3 +16,42 @@ export const get12HoursFormat = (date: Date): string => {
 
     return strTime;
 }
+
+
+export function getSubjectAge(birthDate: Date): number {
+    let years = moment().utc().diff(moment(birthDate, "YYYY-MM-DD"), "years");
+    let months = moment().utc().diff(moment(birthDate, "YYYY-MM-DD"), "months");
+    let days = moment().utc().diff(moment(birthDate, "YYYY-MM-DD"), "days");
+  
+  
+  
+    if(years > 0){
+     return years
+    }
+    if(months > 0){
+      return months
+    }
+    if(days > 0){
+      return days
+    }
+  
+    return 0
+  }
+  
+  export function getSubjectAgeType(birthDate: Date): string {
+    let years = moment().utc().diff(moment(birthDate, "YYYY-MM-DD"), "years");
+    let months = moment().utc().diff(moment(birthDate, "YYYY-MM-DD"), "months");
+    let days = moment().utc().diff(moment(birthDate, "YYYY-MM-DD"), "days");
+  
+    if(years > 0){
+      return "years"
+     }
+     if(months > 0){
+       return "months"
+     }
+     if(days > 0){
+       return "days"
+     }
+  
+    return "years"
+  }
