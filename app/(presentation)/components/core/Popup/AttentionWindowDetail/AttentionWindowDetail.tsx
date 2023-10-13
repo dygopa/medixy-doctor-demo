@@ -89,8 +89,6 @@ function AttentionWindowDetail({
     if (!statusPopup) {
       if (searchParams.get("openPopup")) {
         router.replace(`/schedule/configuration?openPopup=true`);
-      } else {
-        router.replace(`/schedule/configuration`);
       }
 
       setShowRescheduleModal(false);
