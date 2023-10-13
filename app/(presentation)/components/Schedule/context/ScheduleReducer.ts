@@ -735,7 +735,7 @@ export const ScheduleReducer = (state: any, action: any) => {
             error: action.payload.error,
           },
         };
-        case 'RESCHEDULE_APPOINTMENT_INITIAL_STATE':
+      case 'RESCHEDULE_APPOINTMENT_INITIAL_STATE':
           return {
             ...state,
             rescheduleAppointment: {
@@ -746,6 +746,39 @@ export const ScheduleReducer = (state: any, action: any) => {
               error: null,
             },
           };
+    case 'GET_SERVICES_BY_ATTENTION_WINDOW_LOADING':
+      return {
+        ...state,
+        getServicesByAttentionWindow: {
+          ...state.getServicesByAttentionWindow,
+          data: null,
+          loading: true,
+          successful: false,
+          error: null,
+        },
+      };
+    case 'GET_SERVICES_BY_ATTENTION_WINDOW_SUCCESSFUL':
+      return {
+        ...state,
+        getServicesByAttentionWindow: {
+          ...state.getServicesByAttentionWindow,
+          data: action.payload.data,
+          loading: false,
+          successful: true,
+          error: null,
+        },
+      };
+    case 'GET_SERVICES_BY_ATTENTION_WINDOW_ERROR':
+      return {
+        ...state,
+        getServicesByAttentionWindow: {
+          ...state.getServicesByAttentionWindow,
+          data: null,
+          loading: false,
+          successful: false,
+          error: action.payload.error,
+        },
+      };
     default:
       return state;
   }

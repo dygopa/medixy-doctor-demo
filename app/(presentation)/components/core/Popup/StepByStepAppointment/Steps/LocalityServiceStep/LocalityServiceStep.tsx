@@ -33,7 +33,7 @@ const LocalityServiceStep = ({
     dispatch: dispatchSchedule,
   } = useContext<IScheduleContext>(ScheduleContext);
 
-  const { changeStatusPopup } = actionsSchedule;
+  const { changeStatusPopup, getServicesByAttentionWindow } = actionsSchedule;
   const { data: statusPopup } = stateSchedule.statusPopup;
 
   const { data: status } = stateSchedule.statusPopup;
@@ -52,6 +52,11 @@ const LocalityServiceStep = ({
     successful: loadedServicesFromCalendar,
     loading: loadingServicesFromCalendar,
   } = stateSchedule.getServicesByLocality;
+  const {
+    data: servicesByAttentionWindow,
+    successful: loadedServicesByAttentionWindow,
+    loading: loadingServicesByAttentionWindow,
+  } = stateSchedule.getServicesByAttentionWindow;
 
   const { state, actions, dispatch } =
     useContext<IStepByStepAppointmentContext>(StepByStepAppointmentContext);
@@ -87,10 +92,20 @@ const LocalityServiceStep = ({
     if (!loadedDataFromAppointment) {
       if (appointment["locality"]) {
         setSelectedLocality(appointment["locality"]);
-        getServices({
-          userId: user.userId,
-          localityId: appointment["localityId"],
-        })(dispatch);
+
+        if (
+          predifinedReservationData["attentionWindowBaseId"] &&
+          predifinedReservationData["attentionWindowBaseId"].length > 0
+        ) {
+          getServicesByAttentionWindow(
+            predifinedReservationData["attentionWindowBaseId"]
+          )(dispatchSchedule);
+        } else {
+          getServices({
+            userId: user.userId,
+            localityId: appointment["localityId"],
+          })(dispatch);
+        }
       }
       if (appointment["service"]) {
         setSelectedService(appointment["service"]);
@@ -101,6 +116,17 @@ const LocalityServiceStep = ({
 
   function formatServicesList() {
     let list_services = [];
+
+    if (
+      loadedServicesByAttentionWindow &&
+      servicesByAttentionWindow.length > 0
+    ) {
+      list_services = servicesByAttentionWindow!.map((elem: any) => ({
+        id: elem.id,
+        title: elem.name,
+        description: elem["service_category"]["name"],
+      }));
+    }
 
     if (!loadedServices && loadedServicesFromCalendar) {
       list_services = servicesFromCalendar!.map((elem: any) => ({
@@ -139,7 +165,7 @@ const LocalityServiceStep = ({
       setSelectedService(service);
       setAppointment({
         ...appointment,
-        serviceId: locality["id"],
+        serviceId: service["id"],
         service: service,
       });
     }
@@ -169,10 +195,20 @@ const LocalityServiceStep = ({
       }));
 
       if (list_localities.length > 0 && !locality["id"]) {
-        getServices({
-          userId: user.userId,
-          localityId: list_localities[0]["id"],
-        })(dispatch);
+        if (
+          predifinedReservationData["attentionWindowBaseId"] &&
+          predifinedReservationData["attentionWindowBaseId"].length > 0
+        ) {
+          getServicesByAttentionWindow(
+            predifinedReservationData["attentionWindowBaseId"]
+          )(dispatchSchedule);
+        } else {
+          getServices({
+            userId: user.userId,
+            localityId: list_localities[0]["id"],
+          })(dispatch);
+        }
+
         setSelectedLocality(list_localities[0]);
         setAppointment({
           ...appointment,
@@ -227,10 +263,20 @@ const LocalityServiceStep = ({
     }
 
     if (locality?.id) {
-      getServices({
-        userId: user.userId,
-        localityId: locality["id"],
-      })(dispatch);
+      console.log(predifinedReservationData);
+      if (
+        predifinedReservationData["attentionWindowBaseId"] &&
+        predifinedReservationData["attentionWindowBaseId"].length > 0
+      ) {
+        getServicesByAttentionWindow(
+          predifinedReservationData["attentionWindowBaseId"]
+        )(dispatchSchedule);
+      } else {
+        getServices({
+          userId: user.userId,
+          localityId: locality["id"],
+        })(dispatch);
+      }
     }
   }, [statusPopup]);
 
@@ -246,6 +292,8 @@ const LocalityServiceStep = ({
     if (user && localities && localities.length === 0)
       getLocalities(user.userId)(dispatchSchedule);
   }, [user, localities]);
+
+  if (loadingServicesByAttentionWindow) return <div />;
 
   return (
     <div className="w-full h-fit flex flex-col gap-5">
