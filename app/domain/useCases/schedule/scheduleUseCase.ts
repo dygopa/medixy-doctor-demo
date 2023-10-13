@@ -90,6 +90,16 @@ export default class ScheduleUseCase {
     }
   }
 
+  async getServicesByAttentionWindow(attentionWindowId: string): Promise<any[]> {
+    try {
+      const response = await this._repositoryServices.getServicesByAttentionWindow(attentionWindowId);
+      if (response instanceof ServiceFailure) throw response;
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getLocalites(id:number): Promise<any[]> {
     try {
       const response = await this._repositoryLocalities.getUserLocalities(id);

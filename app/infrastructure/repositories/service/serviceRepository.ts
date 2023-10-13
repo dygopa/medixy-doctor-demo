@@ -14,7 +14,7 @@ import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import { nanoid } from 'nanoid';
 import { getFileFromBase64 } from 'infrastructure/utils/files/filesUtils';
 import { ILocalityService } from 'domain/core/entities/localityEntity';
-import { fromServiceToLocalitiesSupabaseDocumentData, serviceToLocalitiesSupabaseToMap } from 'domain/mappers/services/servicesSupabaseMapper';
+import { fromServiceToLocalitiesSupabaseDocumentData, servicesSupabaseMapper, serviceToLocalitiesSupabaseToMap } from 'domain/mappers/services/servicesSupabaseMapper';
 import { ICreateServiceCategoryResponse } from 'domain/core/response/servicesResponse';
 
 export default interface IServiceRepository {
@@ -27,6 +27,7 @@ export default interface IServiceRepository {
   getLocalitiesToService(serviceId: number): Promise<Array<IServiceToLocality> | ServiceFailure>
   getUserBaseServices(id:number): Promise<Array<any> | ServiceFailure>
   getServicesByLocality(id:number, localityId:number): Promise<Array<any> | ServiceFailure>
+  getServicesByAttentionWindow(attentionWindowId: string): Promise<Array<any> | ServiceFailure>
   getCategoriesDoctor(doctorId: number, searchQuery?: string | null): Promise<Array<any> | ServiceFailure>;
   createServiceCategory(serviceCategory: IServiceCategory): Promise<ICreateServiceCategoryResponse | ServiceFailure>
 }
@@ -384,6 +385,32 @@ export class ServicesRepository implements IServiceRepository {
       console.log("GET_SERVICES_BY_LOCALITIES_ENDPOINT", listOfServices)
 
       return listOfServices ?? [];
+    } catch (error) { 
+      const exception = error as any;
+      return new ServiceFailure(serviceFailuresEnum.serverError);
+    }
+  }
+
+  async getServicesByAttentionWindow(attentionWindowId: string): Promise<Array<IService> | ServiceFailure> {
+    try {
+      const res = await supabase.from("ServiciosEnVentanasAtencion").select(`
+      *, 
+      Servicios(
+          *
+      )
+  `).eq("ventanaAtencionBaseId", attentionWindowId);
+
+      const services: IService[] = [];
+
+      if (res.data && res.data.length > 0) {
+        await Promise.all(res.data.map(async (data: any) => {
+            const serviceMap: IService = servicesSupabaseMapper(data.Servicios);
+
+            services.push(serviceMap);
+        }));
+      }
+
+      return services;
     } catch (error) { 
       const exception = error as any;
       return new ServiceFailure(serviceFailuresEnum.serverError);

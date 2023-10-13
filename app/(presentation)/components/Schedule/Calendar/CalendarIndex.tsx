@@ -145,6 +145,9 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
       dateEndEvent: moment(elem["fechaFinReserva"]).toDate(),
       description: "-",
       attentionWindowId: elem["id"],
+      attentionWindowBaseId: elem["VentanasAtencion"]
+        ? elem["VentanasAtencion"]["ventanaAtencionBaseId"]
+        : null,
       serviceId: elem["servicioId"],
       localityId: locality["id"],
       sujetos: {
@@ -191,6 +194,7 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
     if (data["type"] === "FREE_SLOT") {
       predifinedReservationData({
         attentionWindowId: data["attentionWindowId"],
+        attentionWindowBaseId: data["attentionWindowBaseId"],
         date: data["dateEvent"],
         dateEnd: data["dateEndEvent"],
         type: "FREE_SLOT",
