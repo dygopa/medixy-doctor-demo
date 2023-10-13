@@ -15,6 +15,10 @@ import {
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
 import { IUser } from "domain/core/entities/userEntity";
+import {
+  getSubjectAge,
+  getSubjectAgeType,
+} from "(presentation)/(helper)/dates/datesHelper";
 
 function AppointmentDetail({
   user,
@@ -36,8 +40,6 @@ function AppointmentDetail({
     successful: successfulDelete,
     error: errorDelete,
   } = state.deleteAppointment;
-
-  const [ageBirth, setAgeBirth] = useState(0);
 
   const DataSpan = ({ label, value }: { label: String; value: String }) => {
     return (
@@ -103,23 +105,12 @@ function AppointmentDetail({
     }
 
     return (
-      <div className="w-full flex justify-end items-center gap-2">
-        <p className="font-light text-[12px] text-gray-700 w-full">{text}</p>
+      <div className="w-full flex items-center gap-2">
+        <p className="font-light text-[12px] text-gray-700">{text}</p>
         <span className={twMerge(["w-2 h-2 rounded-full", color])}></span>
       </div>
     );
   };
-
-  function formatDateBirth() {
-    var years = moment()
-      .utc()
-      .diff(moment(data["fechaNacimiento"], "YYYY-MM-DD"), "years");
-    setAgeBirth(years);
-  }
-
-  useMemo(() => {
-    if (successful) formatDateBirth();
-  }, [successful]);
 
   useMemo(() => {
     if (successfulDelete || errorDelete) cancelFuntion();
@@ -142,7 +133,12 @@ function AppointmentDetail({
             {data["nombres"]} {data["primerApellido"]} {data["segundoApellido"]}
           </p>
           <p className="font-light text-sm text-slate-500">
-            Edad: {ageBirth} años
+            Edad: {getSubjectAge(data["fechaNacimiento"])}{" "}
+            {getSubjectAgeType(data["fechaNacimiento"]) === "years"
+              ? "años"
+              : getSubjectAgeType(data["fechaNacimiento"]) === "days"
+              ? "días"
+              : "meses"}
           </p>
           <p className="font-light text-sm text-slate-500">
             CURP: {data["curp"] ?? "-"}
@@ -152,8 +148,11 @@ function AppointmentDetail({
       </div>
       <div className="w-full flex flex-col justify-start items-center gap-5">
         <div className="w-full grid grid-cols-2 justify-between items-center gap-3">
-          <DataSpan label={"Tipo de consulta"} value={data["nombre"]} />
-          <DataSpan label={"Consultorio"} value={"-"} />
+          <DataSpan label={"Servicio"} value={data["nombre"]} />
+          <DataSpan
+            label={"Consultorio"}
+            value={data["Localidades"] ? data["Localidades"]["nombre"] : "-"}
+          />
         </div>
         <div className="w-full grid grid-cols-2 justify-between items-center gap-3">
           <DataSpan label={"Tipo de cita"} value={"Primera vez"} />

@@ -144,6 +144,11 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
       dateEvent: moment(elem["fechaReserva"]).toDate(),
       dateEndEvent: moment(elem["fechaFinReserva"]).toDate(),
       description: "-",
+      nombre: elem["Servicios"] ? elem["Servicios"]["nombre"] : null,
+      Localidades:
+        elem["Servicios"] && elem["Servicios"]["Localidades"]
+          ? elem["Servicios"]["Localidades"]
+          : null,
       attentionWindowId: elem["id"],
       attentionWindowBaseId: elem["VentanasAtencion"]
         ? elem["VentanasAtencion"]["ventanaAtencionBaseId"]
@@ -156,6 +161,7 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
         sujetoId: elem["sujetoId"],
         appoinmentId: elem["id"],
       },
+      estado: elem["estado"],
     };
     return object;
   }
@@ -205,9 +211,13 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
       changeTypePopup(0)(dispatch);
     }
     if (data["type"] === "APPOINMENT") {
+      console.log(data);
       appointmentDetail({
         ...data["sujetos"],
         fechaReserva: data["dateEvent"],
+        nombre: data["nombre"],
+        Localidades: data["Localidades"],
+        estado: data["estado"],
       })(dispatch);
       changeStatusPopup(true)(dispatch);
       changeTypePopup(2)(dispatch);
