@@ -1,4 +1,8 @@
-import { getFullDate } from "(presentation)/(helper)/dates/datesHelper";
+import {
+  getFullDate,
+  getSubjectAge,
+  getSubjectAgeType,
+} from "(presentation)/(helper)/dates/datesHelper";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
@@ -29,18 +33,8 @@ export default function Summary({
 
   const [isBlockAppointment, setIsBlockAppointment] = useState(false);
   const [hasError, setHasError] = useState(false);
-  const [ageBirth, setAgeBirth] = useState(0);
 
-  function formatDateBirth() {
-    var years = moment()
-      .utc()
-      .diff(moment(patient["fechaNacimiento"], "YYYY-MM-DD"), "years");
-    setAgeBirth(years);
-  }
-
-  useMemo(() => {
-    if (patient) formatDateBirth();
-  }, [patient]);
+  console.log(patient);
 
   let hour = moment(appointment["fechaReserva"])
     .utc()
@@ -88,7 +82,12 @@ export default function Summary({
               {patient["segundoApellido"]}
             </p>
             <p className="font-light text-sm text-slate-500">
-              Edad: {ageBirth} años
+              Edad: {getSubjectAge(patient["fechaNacimiento"])}{" "}
+              {getSubjectAgeType(patient["fechaNacimiento"]) === "years"
+                ? "años"
+                : getSubjectAgeType(patient["fechaNacimiento"]) === "days"
+                ? "días"
+                : "meses"}
             </p>
             <p className="font-light text-sm text-slate-500">
               CURP: {patient["curp"] ?? "-"}

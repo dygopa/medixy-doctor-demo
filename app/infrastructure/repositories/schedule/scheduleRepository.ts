@@ -76,7 +76,8 @@ export class ScheduleRepository implements IScheduleRepository {
                     avatar
                 ),
                 Servicios (
-                    nombre
+                    nombre,
+                    Localidades (*)
                 ),
                 VentanasAtencion (
                     *
@@ -125,7 +126,8 @@ export class ScheduleRepository implements IScheduleRepository {
             let query = supabase.from("Citas").select(`
               *,
               Servicios (
-                  nombre
+                  nombre,
+                  Localidades (*)
               ),
               Sujetos (
                 nombres,
