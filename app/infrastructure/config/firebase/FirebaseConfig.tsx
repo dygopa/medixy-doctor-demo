@@ -19,8 +19,13 @@ if (typeof window !== "undefined") {
   messaging = getMessaging(app);
 }
 
-export const getUserToken = async () =>
-  await getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_FB_VAPID_KEY });
+export const getUserToken = async () => {
+  try {
+    await getToken(messaging, { vapidKey: process.env.NEXT_PUBLIC_FB_VAPID_KEY });
+  } catch (error) {
+    console.log(error)
+  }
+}
 
 export const onMessageListener = () =>
   new Promise((resolve) => {
