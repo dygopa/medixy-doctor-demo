@@ -25,6 +25,7 @@ export interface IScheduleActions {
   getServicesByAttentionWindow: Function;
   getLocalities: Function;
   getLocalitiesWithServices: Function;
+  getAttentionWindowsByLocation: Function;
   getPatients: Function;
   activeActualDay: Function;
   setListOfColors: Function;
@@ -138,6 +139,21 @@ const getAttentionWindows = (id:number, by?:string) => async (dispatch: Dispatch
       console.log("Error calling action", error)
       dispatch({ type: "GET_ATTENTION_WINDOWS_ERROR", payload: { error: error } });
     }
+}
+
+const getAttentionWindowsByLocation = (id:number) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_ATTENTION_WINDOWS_BY_LOCALITY_LOADING" });
+    
+    const res: Array<any> = await new ScheduleUseCase().getAttentionWindows(id, "LOCALITY");
+
+    console.log(res)
+
+    dispatch({ type: "GET_ATTENTION_WINDOWS_BY_LOCALITY_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "GET_ATTENTION_WINDOWS_BY_LOCALITY_ERROR", payload: { error: error } });
+  }
 }
 
 const getBaseAttentionWindowsByLocality = (id:number) => async (dispatch: Dispatch<any>) => {
@@ -342,6 +358,7 @@ export const actions: IScheduleActions = {
   changeStatusPopup,
   getAppointments,
   getAttentionWindows,
+  getAttentionWindowsByLocation,
   getBaseAttentionWindowsByLocality,
   createAppointment,
   getAttentionWindowsByService,

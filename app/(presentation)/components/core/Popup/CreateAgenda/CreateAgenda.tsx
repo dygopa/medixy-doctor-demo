@@ -6,10 +6,6 @@ import {
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { FiBriefcase, FiCheck, FiHelpCircle, FiHome } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import moment from "moment";
 import { useSearchParams, useRouter } from "next/navigation";
 import {
@@ -44,12 +40,13 @@ function CreateAgenda({
     activeLocality,
     createWindowAttention,
     getAttentionWindows,
+    getAttentionWindowsByLocation,
   } = actions;
   const { data: localities, successful: loadedLocalities } =
     state.getLocalitiesWithServices;
   const { data: services, successful: loadedServices } =
     state.getServicesByLocality;
-  const { data: attentionWindows } = state.getAttentionWindows;
+  const { data: attentionWindows } = state.getAttentionWindowsByLocality;
   const { loading, successful, error } = state.createWindowAttention;
   const { data: activeService, successful: changedActiveService } =
     state.activeService;
@@ -373,7 +370,7 @@ function CreateAgenda({
     ]);
   }
 
-  function onHandleHours(name: string, value: string) {
+  function onHandleHours(name: string, value: string, startDate: Date) {
     let fromHour =
       name === "fromHour"
         ? parseInt(value, 10)
@@ -392,13 +389,19 @@ function CreateAgenda({
     if (name === "toHour") setFormData({ ...formData, toHour: value });
 
     if (attentionWindows.length > 0) {
-      const attentionWindowsFromHours = attentionWindows.filter(
+      let attentionWindowsFromHours = attentionWindows.filter(
         (elem: any) => fromHour >= elem.horaInicio && fromHour < elem.horaFin
       );
 
       if (attentionWindowsFromHours.length > 0) {
-        blockDaysByHours(attentionWindowsFromHours);
-        return;
+        attentionWindowsFromHours = attentionWindows.filter((elem: any) =>
+          moment(elem.fechaInicio).isAfter(startDate)
+        );
+
+        if (attentionWindowsFromHours.length > 0) {
+          blockDaysByHours(attentionWindowsFromHours);
+          return;
+        }
       }
 
       const attentionWindowsToHours = attentionWindows.filter(
@@ -411,8 +414,59 @@ function CreateAgenda({
   useMemo(() => {
     if (selectedLocality["title"] !== "") {
       let id: number = selectedLocality.id;
-      setFormData({ ...formData, localityId: id });
+      setFormData({
+        ...formData,
+        localityId: id,
+        typeEnd: 1,
+        daysRepeated: daysRepeatedList,
+        type: 2,
+        serviceId: 0,
+        availableSpots: 0,
+        startDate: moment().format("YYYY-MM-DD"),
+        until: moment().add(1, "month").format("YYYY-MM-DD"),
+        spanTime: 0,
+        fromHour: "600",
+        toHour: "",
+      });
+      setDaysInWeek([
+        {
+          title: "L",
+          value: 1,
+          isBlock: false,
+        },
+        {
+          title: "M",
+          value: 2,
+          isBlock: false,
+        },
+        {
+          title: "X",
+          value: 4,
+          isBlock: false,
+        },
+        {
+          title: "J",
+          value: 8,
+          isBlock: false,
+        },
+        {
+          title: "V",
+          value: 16,
+          isBlock: false,
+        },
+        {
+          title: "S",
+          value: 32,
+          isBlock: false,
+        },
+        {
+          title: "D",
+          value: 64,
+          isBlock: false,
+        },
+      ]);
       console.log(selectedLocality["id"]);
+      getAttentionWindowsByLocation(id)(dispatch);
     }
   }, [selectedLocality]);
 
@@ -736,16 +790,22 @@ function CreateAgenda({
             <p className="font-normal text-sm text-slate-600">Apartir de</p>
             <FormInput
               type={"date"}
+              name="fromDate"
               value={formData.startDate}
               min={moment().format("YYYY-MM-DD")}
               className="form-control"
-              onChange={(e) =>
+              onChange={(e) => {
                 setFormData({
                   ...formData,
                   startDate: e.target.value,
                   until: moment().add(1, "month").format("YYYY-MM-DD"),
-                })
-              }
+                });
+                onHandleHours(
+                  e.target.name,
+                  e.target.value,
+                  moment(e.target.value, "YYYY-MM-DD").toDate()
+                );
+              }}
             />
           </div>
           <div className="w-1/5 flex flex-col justify-center items-start gap-2">
@@ -756,7 +816,11 @@ function CreateAgenda({
               className="form-control"
               onChange={(e) => {
                 setDaysRepeatedList([]);
-                onHandleHours(e.target.name, e.target.value);
+                onHandleHours(
+                  e.target.name,
+                  e.target.value,
+                  moment(formData.startDate, "YYYY-MM-DD").toDate()
+                );
               }}
             >
               <option value={0}>-</option>
@@ -773,7 +837,11 @@ function CreateAgenda({
               className="form-control"
               onChange={(e) => {
                 setDaysRepeatedList([]);
-                onHandleHours(e.target.name, e.target.value);
+                onHandleHours(
+                  e.target.name,
+                  e.target.value,
+                  moment(formData.startDate, "YYYY-MM-DD").toDate()
+                );
               }}
             >
               <option value={0}>-</option>

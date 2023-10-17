@@ -17,6 +17,7 @@ export interface IScheduleState {
   typePopupActive: IScheduleUserState;
   getAppointments: IScheduleUserState;
   getAttentionWindows: IScheduleUserState;
+  getAttentionWindowsByLocality: IScheduleUserState;
   getBaseAttentionWindowsByLocality: IScheduleUserState;
   createAppointment: IScheduleUserState;
   getAttentionWindowsByService: IScheduleUserState;
@@ -140,6 +141,12 @@ export const initialState: IScheduleState = {
     error: null,
   },
   getAttentionWindows: {
+    data: [],
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  getAttentionWindowsByLocality: {
     data: [],
     loading: false,
     successful: false,
