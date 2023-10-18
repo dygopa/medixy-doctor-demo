@@ -2,7 +2,7 @@
 import _ from "lodash";
 import Breadcrumb from "../BaseComponents/Breadcrumb";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   FiChevronLeft,
   FiClipboard,
@@ -37,15 +37,11 @@ import {
 } from "react-share";
 import NotificationPopup from "../NotificationPopup";
 import NotificationPopupProvider from "../NotificationPopup/context/NotificationPopupContext";
-import {
-  getUserToken,
-  onMessageListener,
-} from "infrastructure/config/firebase/FirebaseConfig";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import nookies from "nookies";
+import {
+  IStepByStepContext,
+  StepByStepContext,
+} from "../StepByStepPopup/context/StepByStepContext";
 
 interface INavigation {
   title: string;
@@ -59,7 +55,12 @@ function Main({
   navigation: INavigation[];
   user: IUser;
 }) {
+  const { actions, dispatch } =
+    useContext<IStepByStepContext>(StepByStepContext);
+  const { changeOpenPopup, changeOpenPopupText } = actions;
+
   const pathname = usePathname();
+  const router = useRouter();
 
   const [activeShortcuts, setActiveShortcuts] = useState(false);
 
@@ -125,7 +126,7 @@ function Main({
           </div>
         </CopyToClipboard>
         <Link
-          href={`${userLink}?token=${token["access_token"]}`}
+          href={`${userLink}`}
           target="_blank"
           className={twMerge([
             "cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1",
@@ -316,7 +317,14 @@ function Main({
           {user?.userId && (
             <button
               onClick={() => {
-                setActiveShortcuts(!activeShortcuts);
+                if (user.completedProfile) {
+                  setActiveShortcuts(!activeShortcuts);
+                } else {
+                  changeOpenPopup(true)(dispatch);
+                  changeOpenPopupText(
+                    "Para compartir el link de tu perfil en el directorio, es necesario que completes el primer paso."
+                  )(dispatch);
+                }
               }}
               className="cursor-pointer transition flex flex-col justify-center items-center rounded-lg lg:px-4 lg:py-2 p-3 text-lg overflow-hidden text-slate-700 bg-slate-100 hover:bg-slate-300 mr-6"
               style={{ backgroundColor: "#FFC127" }}
@@ -331,8 +339,14 @@ function Main({
           )}
           {activeShortcuts && <PopupShortcuts customRef={wrapperRef} />}
         </div>
-        <Link
-          href="/account"
+        <button
+          onClick={() => {
+            if (user.completedProfile) {
+              router.push("/account");
+            } else {
+              changeOpenPopup(true)(dispatch);
+            }
+          }}
           className="w-fit h-full flex justify-end items-center gap-3"
         >
           <div className=" text-left h-full flex flex-col justify-center items-end">
@@ -361,7 +375,7 @@ function Main({
               <FiUser />
             )}
           </div>
-        </Link>
+        </button>
       </div>
     </div>
   );

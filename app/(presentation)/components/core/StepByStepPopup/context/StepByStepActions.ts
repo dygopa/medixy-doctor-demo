@@ -8,6 +8,7 @@ export interface IStepByStepActions {
     getStepsMessage: Function;
     createUserSteps: Function;
     changeOpenPopup: Function;
+    changeOpenPopupText: Function;
     // getService: Function;
 }
 
@@ -60,7 +61,12 @@ const getStepsMessage = (id:string) => async (dispatch: Dispatch<any>) => {
 } */
 
 const changeOpenPopup = (value:boolean) => async (dispatch: Dispatch<any>) => {
+  dispatch({ type: "CHANGE_OPEN_POPUP_TEXT", payload: { data: null } });
   dispatch({ type: "CHANGE_OPEN_POPUP", payload: { data: value } });
+}
+
+const changeOpenPopupText = (value:string) => async (dispatch: Dispatch<any>) => {
+  dispatch({ type: "CHANGE_OPEN_POPUP_TEXT", payload: { data: value } });
 }
 
 export const actions: IStepByStepActions = {
@@ -68,5 +74,6 @@ export const actions: IStepByStepActions = {
   getStepsMessage,
   createUserSteps,
   changeOpenPopup,
+  changeOpenPopupText,
   //getService,
 }

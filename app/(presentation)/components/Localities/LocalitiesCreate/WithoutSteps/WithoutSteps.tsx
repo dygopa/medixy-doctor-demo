@@ -2,7 +2,7 @@ import {
   FormInput,
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
-import { useState, useContext, useMemo, useRef } from "react";
+import { useState, useContext, useMemo, useRef, useEffect } from "react";
 import { FiCheck } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import Button from "(presentation)/components/core/BaseComponents/Button";
@@ -26,6 +26,7 @@ import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import Tooltip from "(presentation)/components/core/BaseComponents/Tooltip/Tooltip";
 import AddressAutocomplete from "(presentation)/components/core/BaseComponents/Autocomplete/AddressAutocomplete/AddressAutocomplete";
+import StepPopup from "./StepPopup/StepPopup";
 
 export default function WithoutSteps({
   userId,
@@ -59,6 +60,7 @@ export default function WithoutSteps({
     dispatch: dispatchStep,
   } = useContext<IStepByStepContext>(StepByStepContext);
   const { createUserSteps, changeOpenPopup } = actionsStep;
+  const { data: steps, successful } = stateSteps.getStepsMessages;
   const {
     successful: stepSucessful,
     error: stepNotCreated,
@@ -67,6 +69,7 @@ export default function WithoutSteps({
 
   const [services, setServices] = useState<any>([]);
   const [successfulPopup, setSuccessfulPopup] = useState(false);
+  const [showStepPopup, setShowStepPopup] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -93,7 +96,13 @@ export default function WithoutSteps({
     address: "",
   });
 
-  console.log(formData);
+  useEffect(() => {
+    if (steps && steps.length === 0 && successful) {
+      setTimeout(() => {
+        setShowStepPopup(true);
+      }, 2000);
+    }
+  }, [steps, successful]);
 
   const router = useRouter();
 
@@ -630,6 +639,8 @@ export default function WithoutSteps({
           </div>
         </div>
       </div>
+
+      <StepPopup isVisible={showStepPopup} userId={userId} />
     </>
   );
 }

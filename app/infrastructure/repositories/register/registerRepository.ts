@@ -7,12 +7,12 @@ import { REGISTER_USER_ENDPOINT, UPDATE_PASSWORD_ENDPOINT } from 'infrastructure
 import { IRegister } from 'domain/core/entities/registerEntity';
 
 export default interface IRegisterRepository {
-  registerUser(obj: any): Promise<string | RegisterFailure>;
+  registerUser(obj: any, setToken: boolean): Promise<string | RegisterFailure>;
   updatePassword(obj: any): Promise<string | RegisterFailure>;
 }
 
 export class RegisterRepository implements IRegisterRepository {
-  async registerUser(obj:IRegister): Promise<string | RegisterFailure> {
+  async registerUser(obj:IRegister, setToken: boolean): Promise<string | RegisterFailure> {
     try {
       const credentials:IRegister = obj
 
@@ -44,7 +44,9 @@ export class RegisterRepository implements IRegisterRepository {
         if (type === "LOCATION_CREATED_ERROR" || type === "SERVICE_CREATED_ERROR") {
           const access_token = data?.detail?.meta?.authentication?.access_token ?? "";
 
-          nookies.set(undefined, 'access_token', access_token, { path: '/' });
+          if (setToken) {
+            nookies.set(undefined, 'access_token', access_token, { path: '/' });
+          }
 
           return "SUCCESS";
         }
@@ -56,8 +58,11 @@ export class RegisterRepository implements IRegisterRepository {
 
       let access_token = data["meta"]["authentication"]["access_token"] ?? ""
 
-      nookies.set(undefined, 'access_token', access_token, { path: '/' });
-      return "SUCCESS";
+      if (setToken) {
+        nookies.set(undefined, 'access_token', access_token, { path: '/' });
+      }
+
+      return access_token;
     } catch (error) {
       console.log(error)
       const exception = error as RegisterFailure;

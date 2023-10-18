@@ -1,11 +1,13 @@
-import { IRegister } from './../../../../domain/core/entities/registerEntity';
 import { RegisterFailure } from "domain/core/failures/register/registerFailure";
 import { IFederalEntity } from 'domain/core/entities/federalEntitiesEntity';
 import { FederalEntityFailure } from 'domain/core/failures/federalEntity/federalEntityFailure';
 import { IGetMunicipalitiesResponse } from 'domain/core/response/municipalityResponse';
 import { MunicipalityFailure } from 'domain/core/failures/municipality/municipalityFailure';
+import { IUser } from "domain/core/entities/userEntity";
+import { AuthFailure } from "domain/core/failures/auth/authFailure";
 
 export interface IRegisterState {
+  getUserAuthenticated: IAuthAuthState;
   registerUser: IRegisterUserState;
   searchCURP: IRegisterUserState;
   registerData: IRegisterUserState;
@@ -37,9 +39,22 @@ interface IGetMunicipalitiesState {
   error: MunicipalityFailure | null; 
 }
 
+interface IAuthAuthState {
+  data: IUser;
+  loading: boolean;
+  successful: boolean;
+  error: AuthFailure | null; 
+}
+
 export const initialState: IRegisterState = {
   registerUser: {
     data: null,
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  getUserAuthenticated: {
+    data: {} as IUser,
     loading: false,
     successful: false,
     error: null,

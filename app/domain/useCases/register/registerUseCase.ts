@@ -6,15 +6,15 @@ export default class AuthUseCase {
   private _authRepository: AuthRepository = new AuthRepository();
   private _repository: RegisterRepository = new RegisterRepository();
 
-  async registerUser(obj:any): Promise<any> {
+  async registerUser(obj:any, setToken: boolean): Promise<any> {
     try {
-      const response = await this._repository.registerUser(obj);
+      const response = await this._repository.registerUser(obj, setToken);
 
       if (response instanceof RegisterFailure) throw response;
             
       await this._authRepository.getUserFromAPI({accessToken: ""});
       
-      return "SUCCESS";
+      return response;
     } catch (error) {
       throw error;
     }

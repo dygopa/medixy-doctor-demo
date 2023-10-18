@@ -289,9 +289,8 @@ const LocalityServiceStep = ({
   }, [predifinedReservationData]);
 
   useMemo(() => {
-    if (user && localities && localities.length === 0)
-      getLocalities(user.userId)(dispatchSchedule);
-  }, [user, localities]);
+    getLocalities(user.userId)(dispatchSchedule);
+  }, []);
 
   if (loadingServicesByAttentionWindow) return <div />;
 
