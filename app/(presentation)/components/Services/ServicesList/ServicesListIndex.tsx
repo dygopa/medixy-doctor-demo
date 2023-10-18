@@ -14,7 +14,7 @@ export default function ServicesListIndex({ user }: IServicesListIndexProps) {
   return (
     <>
       <div className="py-5">
-        <Navigator user={user} />
+        <Navigator />
 
         <div className="mt-10">
           <ServicesProvider>
@@ -24,8 +24,6 @@ export default function ServicesListIndex({ user }: IServicesListIndexProps) {
           </ServicesProvider>
         </div>
       </div>
-
-      <ManageServicesPopup user={user} />
     </>
   );
 }

@@ -29,14 +29,14 @@ const NotificationPopup = ({ user }: { user: IUser }) => {
   const [hasPermission, setHasPermission] = useState(false);
 
   useEffect(() => {
-    setHasPermission(Notification.permission === "granted");
+    if(("Notification" in window)) setHasPermission(Notification.permission === "granted");
   }, []);
 
   useEffect(() => {
     if (user && user.accountId) {
       if (hasPermission) {
         getUserToken()
-          .then((value: string | undefined) => {
+          .then((value: any) => {
             if (value) {
               console.log(value);
               updateUserFCMToken({
@@ -69,7 +69,8 @@ const NotificationPopup = ({ user }: { user: IUser }) => {
   useEffect(() => {
     if (!user) return;
 
-    const unsubscribe = onMessageListener().then((payload) => {
+    if (("Notification" in window)) {
+      const unsubscribe = onMessageListener().then((payload) => {
       console.log(payload);
       setActiveDot(true);
       setNotification({
@@ -84,6 +85,7 @@ const NotificationPopup = ({ user }: { user: IUser }) => {
     return () => {
       unsubscribe.catch((err) => console.log("failed: ", err));
     };
+    }
   }, [user]);
 
   return (

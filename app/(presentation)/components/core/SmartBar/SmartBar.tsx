@@ -27,7 +27,7 @@ export default function SmartBar({ user }: ISmartBarProps) {
       return;
     }
 
-    setComponentTypeShow("NOTIFICATIONS_PERMISSIONS");
+    if(("Notification" in window)) setComponentTypeShow("NOTIFICATIONS_PERMISSIONS");
   };
 
   const getComponentByType = () => {

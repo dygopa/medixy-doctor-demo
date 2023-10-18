@@ -388,7 +388,7 @@ function CreateAgenda({
 
     if (name === "toHour") setFormData({ ...formData, toHour: value });
 
-    if (attentionWindows.length > 0) {
+    if (attentionWindows && attentionWindows.length > 0) {
       let attentionWindowsFromHours = attentionWindows.filter(
         (elem: any) => fromHour >= elem.horaInicio && fromHour < elem.horaFin
       );

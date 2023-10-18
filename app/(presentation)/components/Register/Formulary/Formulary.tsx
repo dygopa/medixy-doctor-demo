@@ -17,6 +17,7 @@ import {
 
 import "react-intl-tel-input/dist/main.css";
 import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
+import ConfirmPopup from "./ConfirmPopup/ConfirmPopup";
 
 export default function Formulary() {
   const { state, actions, dispatch } =
@@ -33,6 +34,7 @@ export default function Formulary() {
   const { changeStep } = stepActions;
 
   let [listOfErrors, setListOfErrors] = useState<Array<String>>([]);
+  const [showConfirmPopup, setShowConfirmPopup] = useState(false);
 
   let [values, setValues] = useState({
     email: formData?.email ?? "",
@@ -255,6 +257,11 @@ export default function Formulary() {
     return errorsFieldsCount;
   };
 
+  const onRegisterUser = () => {
+    formData = { ...(formData as Object), ...values, first_service: true };
+    registerUser(formData)(dispatch);
+  };
+
   const onSubmit = () => {
     let list: string[] = [];
 
@@ -277,9 +284,7 @@ export default function Formulary() {
       setWrongEmail(false);
     }
 
-    formData = { ...(formData as Object), ...values, first_service: true };
-    registerUser(formData)(dispatch);
-    console.log(formData);
+    setShowConfirmPopup(true);
   };
 
   const handleErrors = () => {
@@ -332,27 +337,28 @@ export default function Formulary() {
   }, [error]);
 
   return (
-    <div className="lg:w-[60%] md:w-[70%] lg:px-20 md:px-14 sm:px-20 px-8 w-full h-fit flex flex-col justify-between items-center gap-6">
-      <AlertComponent
-        variant="error"
-        show={error !== null}
-        description={errors.global}
-      />
-      <AlertComponent
-        variant="success"
-        show={successful === true}
-        description="Cuenta creada exitosamente."
-      />
+    <>
+      <div className="lg:w-[60%] md:w-[70%] lg:px-20 md:px-14 sm:px-20 px-8 w-full h-fit flex flex-col justify-between items-center gap-6">
+        <AlertComponent
+          variant="error"
+          show={error !== null}
+          description={errors.global}
+        />
+        <AlertComponent
+          variant="success"
+          show={successful === true}
+          description="Cuenta creada exitosamente."
+        />
 
-      <div className="w-full flex flex-col justify-between items-center gap-3 text-center z-30">
-        <p className="text-gray-950 font-semibold lg:text-3xl md:text-3xl text-2xl">
-          Vamos a crear tu cuenta
-        </p>
-        <p className="text-gray-500 font-light lg:text-base md:text-base text-md">
-          Estas a un paso de completar la creación de tu cuenta
-        </p>
-      </div>
-      {/*<div className="relative w-full">
+        <div className="w-full flex flex-col justify-between items-center gap-3 text-center z-30">
+          <p className="text-gray-950 font-semibold lg:text-3xl md:text-3xl text-2xl">
+            Vamos a crear tu cuenta
+          </p>
+          <p className="text-gray-500 font-light lg:text-base md:text-base text-md">
+            Estas a un paso de completar la creación de tu cuenta
+          </p>
+        </div>
+        {/*<div className="relative w-full">
         <FormInput
           type="text"
           className="w-full py-3 pr-10 bg-white"
@@ -376,112 +382,112 @@ export default function Formulary() {
           </Link>
         </div>
         </div>*/}
-      <div className="font-normal text-secondary lg:text-lg md:text-lg text-md">
-        ¿Qué profesional de la salud eres?
-      </div>
-      <div className="relative w-full text-slate-500">
-        <FormSelect
-          className="form-control w-full bg-white"
-          defaultValue={values.pwaProfessionId}
-          value={values.pwaProfessionId}
-          onChange={(e) =>
-            setValues({ ...values, pwaProfessionId: +e.target.value })
-          }
-        >
-          <option value="0" disabled>
-            Selecciona tu profesión
-          </option>
-          {profesions.map((elem, i) => (
-            <option key={i} value={elem["id"]}>
-              {elem["name"]}
+        <div className="font-normal text-secondary lg:text-lg md:text-lg text-md">
+          ¿Qué profesional de la salud eres?
+        </div>
+        <div className="relative w-full text-slate-500">
+          <FormSelect
+            className="form-control w-full bg-white"
+            defaultValue={values.pwaProfessionId}
+            value={values.pwaProfessionId}
+            onChange={(e) =>
+              setValues({ ...values, pwaProfessionId: +e.target.value })
+            }
+          >
+            <option value="0" disabled>
+              Selecciona tu profesión
             </option>
-          ))}
-        </FormSelect>
-      </div>
-      <div className="font-normal text-secondary lg:text-lg md:text-lg text-md">
-        Indícanos tus datos personales
-      </div>
-      <div className="relative w-full">
-        <FormInput
-          type="text"
-          className="w-full py-3 pr-10 bg-white"
-          placeholder="Nombre(s)"
-          value={values.names}
-          onChange={(e: any) => handlename(e.target.value, e)}
-        />
-        {errors.names.length > 0 && (
-          <div className="mt-1">
-            <span className="text-red-500 mt-3">{errors.names}</span>
-          </div>
-        )}
-        {!errors.names && listOfErrors.includes("names") && (
-          <div className="mt-1">
-            <span className="text-red-500 mt-1">Campo requerido</span>
-          </div>
-        )}
-      </div>
-      <div className="relative w-full grid grid-cols-2 justify-between gap-3">
+            {profesions.map((elem, i) => (
+              <option key={i} value={elem["id"]}>
+                {elem["name"]}
+              </option>
+            ))}
+          </FormSelect>
+        </div>
+        <div className="font-normal text-secondary lg:text-lg md:text-lg text-md">
+          Indícanos tus datos personales
+        </div>
         <div className="relative w-full">
           <FormInput
             type="text"
             className="w-full py-3 pr-10 bg-white"
-            placeholder="Primer Apellido"
-            value={values.first_lastname}
-            onChange={(e: any) => handlelastname(e.target.value)}
+            placeholder="Nombre(s)"
+            value={values.names}
+            onChange={(e: any) => handlename(e.target.value, e)}
           />
-          {errors.first_lastname.length > 0 && (
+          {errors.names.length > 0 && (
             <div className="mt-1">
-              <span className="text-red-500">{errors.first_lastname}</span>
+              <span className="text-red-500 mt-3">{errors.names}</span>
             </div>
           )}
-          {!errors.first_lastname &&
-            listOfErrors.includes("first_lastname") && (
+          {!errors.names && listOfErrors.includes("names") && (
+            <div className="mt-1">
+              <span className="text-red-500 mt-1">Campo requerido</span>
+            </div>
+          )}
+        </div>
+        <div className="relative w-full grid grid-cols-2 justify-between gap-3">
+          <div className="relative w-full">
+            <FormInput
+              type="text"
+              className="w-full py-3 pr-10 bg-white"
+              placeholder="Primer Apellido"
+              value={values.first_lastname}
+              onChange={(e: any) => handlelastname(e.target.value)}
+            />
+            {errors.first_lastname.length > 0 && (
               <div className="mt-1">
-                <span className="text-red-500 mt-1">Campo requerido</span>
+                <span className="text-red-500">{errors.first_lastname}</span>
               </div>
             )}
+            {!errors.first_lastname &&
+              listOfErrors.includes("first_lastname") && (
+                <div className="mt-1">
+                  <span className="text-red-500 mt-1">Campo requerido</span>
+                </div>
+              )}
+          </div>
+          <div className="relative w-full">
+            <FormInput
+              type="text"
+              className="w-full py-3 pr-10 bg-white"
+              placeholder="Segundo Apellido"
+              value={values.second_lastname}
+              onChange={(e: any) =>
+                setValues({ ...values, second_lastname: e.target.value })
+              }
+            />
+          </div>
         </div>
+
         <div className="relative w-full">
-          <FormInput
-            type="text"
-            className="w-full py-3 pr-10 bg-white"
-            placeholder="Segundo Apellido"
-            value={values.second_lastname}
-            onChange={(e: any) =>
-              setValues({ ...values, second_lastname: e.target.value })
+          <IntlPhoneNumberInput
+            preferredCountries={["mx", "US"]}
+            onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
+              handlephone(fullNumber, isValid)
             }
+            onPhoneNumberBlur={(e) => console.log(e)}
+            containerClassName="intl-tel-input w-full"
+            inputClassName={twMerge([
+              "disabled:bg-white disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
+              "[&[readonly]]:bg-white [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
+              "transition duration-200 ease-in-out w-full bg-white text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80 py-3 pr-10",
+            ])}
+            placeholder="33 1234 5678"
           />
+          {errors.phone_number.length > 0 && (
+            <div className="mt-1">
+              <span className="text-red-500 mt-2">{errors.phone_number}</span>
+            </div>
+          )}
+          {!errors.phone_number && listOfErrors.includes("phone_number") && (
+            <div className="mt-1">
+              <span className="text-red-500 mt-1">Campo requerido</span>
+            </div>
+          )}
         </div>
-      </div>
 
-      <div className="relative w-full">
-        <IntlPhoneNumberInput
-          preferredCountries={["mx", "US"]}
-          onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
-            handlephone(fullNumber, isValid)
-          }
-          onPhoneNumberBlur={(e) => console.log(e)}
-          containerClassName="intl-tel-input w-full"
-          inputClassName={twMerge([
-            "disabled:bg-white disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
-            "[&[readonly]]:bg-white [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
-            "transition duration-200 ease-in-out w-full bg-white text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80 py-3 pr-10",
-          ])}
-          placeholder="33 1234 5678"
-        />
-        {errors.phone_number.length > 0 && (
-          <div className="mt-1">
-            <span className="text-red-500 mt-2">{errors.phone_number}</span>
-          </div>
-        )}
-        {!errors.phone_number && listOfErrors.includes("phone_number") && (
-          <div className="mt-1">
-            <span className="text-red-500 mt-1">Campo requerido</span>
-          </div>
-        )}
-      </div>
-
-      {/*<div className="relative w-full">
+        {/*<div className="relative w-full">
         <FormInput
           type={"text"}
           placeholder="Fecha de Nacimiento (No obligatorio)"
@@ -499,27 +505,27 @@ export default function Formulary() {
         )}
         </div>*/}
 
-      <div className="relative w-full">
-        <FormInput
-          type="email"
-          className="w-full py-3 pr-10 bg-white"
-          placeholder="Correo electrónico"
-          value={values.email}
-          onChange={(e: any) => handleEmail(e.target.value)}
-        />
-        {errors.email.length > 0 && (
-          <div className="mt-1">
-            <span className="text-red-500">{errors.email}</span>
-          </div>
-        )}
-        {!errors.email && listOfErrors.includes("email") && (
-          <div className="mt-1">
-            <span className="text-red-500 mt-1">Campo requerido</span>
-          </div>
-        )}
-      </div>
+        <div className="relative w-full">
+          <FormInput
+            type="email"
+            className="w-full py-3 pr-10 bg-white"
+            placeholder="Correo electrónico"
+            value={values.email}
+            onChange={(e: any) => handleEmail(e.target.value)}
+          />
+          {errors.email.length > 0 && (
+            <div className="mt-1">
+              <span className="text-red-500">{errors.email}</span>
+            </div>
+          )}
+          {!errors.email && listOfErrors.includes("email") && (
+            <div className="mt-1">
+              <span className="text-red-500 mt-1">Campo requerido</span>
+            </div>
+          )}
+        </div>
 
-      {/*<div className="relative w-full">
+        {/*<div className="relative w-full">
         <FormInput
           type={inputPassword}
           className="w-full py-3 pr-10 bg-white"
@@ -589,21 +595,29 @@ export default function Formulary() {
           </p>
         </div>
           </div>*/}
-      <Button
-        onClick={() => !loading && onSubmit()}
-        disabled={
-          loading ||
-          !termsContidions ||
-          !activePolicy ||
-          validForm() > 0 ||
-          values.pwaProfessionId === 0
-        }
-        variant="primary"
-        type="submit"
-        className="mt-4 mb-8 w-full"
-      >
-        {loading ? "Cargando" : "Continuar"}
-      </Button>
-    </div>
+        <Button
+          onClick={() => !loading && onSubmit()}
+          disabled={
+            loading ||
+            !termsContidions ||
+            !activePolicy ||
+            validForm() > 0 ||
+            values.pwaProfessionId === 0
+          }
+          variant="primary"
+          type="submit"
+          className="mt-4 mb-8 w-full"
+        >
+          {loading ? "Cargando" : "Continuar"}
+        </Button>
+      </div>
+
+      <ConfirmPopup
+        isVisible={showConfirmPopup}
+        setIsVisible={setShowConfirmPopup}
+        email={formData.email}
+        onRegisterUser={onRegisterUser}
+      />
+    </>
   );
 }

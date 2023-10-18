@@ -4,6 +4,8 @@ import { IUser } from "domain/core/entities/userEntity";
 import { AuthFailure } from "domain/core/failures/auth/authFailure";
 import AuthUseCase from "domain/useCases/auth/authUseCase";
 import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
+import Providers from "./providers";
 
 async function getUserAuthenticated(): Promise<IUser | AuthFailure> {
   try {
@@ -24,9 +26,15 @@ async function getUserAuthenticated(): Promise<IUser | AuthFailure> {
 export default async function RegisterPage() {
   const user = await getUserAuthenticated();
 
-  return (
-    <AuthLayout>
-      <RegisterIndex user={user instanceof AuthFailure ? null : user} />
-    </AuthLayout>
-  );
+  if (!user || user instanceof AuthFailure) {
+    return (
+      <AuthLayout>
+        <Providers>
+          <RegisterIndex />
+        </Providers>
+      </AuthLayout>
+    );
+  }
+
+  return redirect("/dashboard");
 }

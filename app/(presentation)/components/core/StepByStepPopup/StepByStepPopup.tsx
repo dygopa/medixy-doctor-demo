@@ -1,7 +1,5 @@
 import { twMerge } from "tailwind-merge";
-import { Transition } from "@headlessui/react";
-import { FiArrowDown, FiArrowUp, FiCheck, FiCheckCircle } from "react-icons/fi";
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useMemo, useState } from "react";
 import Lucide from "../BaseComponents/Lucide";
 import Button from "../BaseComponents/Button";
 import { IUser } from "domain/core/entities/userEntity";
@@ -11,9 +9,7 @@ import {
   IStepByStepContext,
   StepByStepContext,
 } from "./context/StepByStepContext";
-import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { ServicesRoutesEnum } from "(presentation)/(routes)/servicesRoutes";
 import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
 import { ScheduleRoutesEnum } from "(presentation)/(routes)/scheduleRoutes";
 
@@ -35,6 +31,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
   const { getSteps, changeOpenPopup /* getService */ } = actions;
   const { data, error, successful, loading } = state.getSteps;
   const { data: openPopup } = state.openPopup;
+  const { data: openPopupText } = state.openPopupText;
   const { successful: createdStep, loading: creatingStep } =
     state.createUserSteps;
   // const { data: dataService, error: errorService, successful: successfulService } = state.getService;
@@ -47,6 +44,15 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
   let [steps, setSteps] = useState([
     {
       id: 0,
+      title: "Vamos a completar tu perfil",
+      step_enum: "PROFILE_COMPLETED",
+      completed: false,
+      description:
+        "Modifica tus datos primordiales para ser visualizados en tu directorio",
+      cta: `/discover/specialist/${user.userId}`,
+    },
+    {
+      id: 1,
       title: "Vamos a crear tu primera localidad",
       step_enum: "LOCATION_CREATED",
       completed: false,
@@ -55,21 +61,13 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
       cta: LocalitiesRoutesEnum.LocalitiesCreate,
     },
     {
-      id: 1,
+      id: 2,
       title: "Crea tu agenda",
       step_enum: "SCHEDULE_CREATED",
       completed: false,
       description:
         "Configura los posibles horarios de atención o ventanas de atención en tu localidad",
       cta: ScheduleRoutesEnum.Configuration + "?openPopup=true",
-    },
-    {
-      id: 2,
-      title: "Administrar tus servicios",
-      step_enum: "SERVICE_UPDATED",
-      completed: false,
-      description: "Revisa tus servicios y comienza a gestionarlos",
-      cta: ServicesRoutesEnum.Services,
     },
   ]);
 
@@ -126,6 +124,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
               variant="primary"
               onClick={() => {
                 changeOpenPopup(false)(dispatch);
+
                 router.push(props.cta);
               }}
             >
@@ -227,7 +226,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
               className="cursor-pointer"
             />
           </div>
-          <Header user={user} />
+          <Header user={user} text={openPopupText ?? ""} />
 
           <div
             className={twMerge([
@@ -236,13 +235,13 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
             ])}
           >
             <Step props={steps[0]}>
-              <Lucide icon="Building" />
+              <Lucide icon="Pencil" />
             </Step>
             <Step props={steps[1]}>
-              <Lucide icon="Briefcase" />
+              <Lucide icon="Building" />
             </Step>
             <Step props={steps[2]}>
-              <Lucide icon="Briefcase" />
+              <Lucide icon="CalendarCheck" />
             </Step>
           </div>
 

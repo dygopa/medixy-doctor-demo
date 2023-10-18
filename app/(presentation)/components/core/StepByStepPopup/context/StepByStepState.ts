@@ -7,6 +7,7 @@ export interface IStepByStepState {
   getStepsMessages: IStepsState;
   createUserSteps: IStepsState;
   openPopup: IPopupState;
+  openPopupText: IPopupTextState;
   // getService: IGetServiceState;
 }
 
@@ -19,6 +20,13 @@ interface IStepsState {
 
 interface IPopupState {
   data: boolean;
+  loading: boolean;
+  successful: boolean;
+  error: AuthFailure | null; 
+}
+
+interface IPopupTextState {
+  data: string | null;
   loading: boolean;
   successful: boolean;
   error: AuthFailure | null; 
@@ -52,6 +60,12 @@ export const initialState: IStepByStepState = {
   },
   openPopup: {
     data: false,
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  openPopupText: {
+    data: null,
     loading: false,
     successful: false,
     error: null,

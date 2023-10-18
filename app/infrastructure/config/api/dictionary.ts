@@ -40,6 +40,8 @@ export const RESCHEDULE_APPOINTMENT_ENDPOINT = (id:string) => process.env.NEXT_P
 export const UNBLOCK_APPOINTMENT_ENDPOINT = (id:string) => process.env.NEXT_PUBLIC_API_URL + `/unlockeded_appointments/${id}`;
 export const BLOCK_APPOINTMENT_ENDPOINT = (id:string) => process.env.NEXT_PUBLIC_API_URL + `/blockeded_appointments/${id}`;
 
+export const UPDATE_SPECIALIST_ENDPOINT = (id:number) => process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}`;
+
 //Notifications
 export const TEST_NOTIFICATION = process.env.NEXT_PUBLIC_API_URL + `/appointments`;
 export const GET_NOTIFICATIONS = (userId: number | string | undefined) => process.env.NEXT_PUBLIC_API_URL + `/notifications/${userId}`;

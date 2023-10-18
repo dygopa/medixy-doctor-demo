@@ -26,6 +26,7 @@ export function userAPIToMap(data: any, type?: number): IUser {
     pwaProfressionId: data?.pwa_profession_id ?? 0,
     pwaProfression: "",
     professionalLicense: data?.professional_license ?? "",
+    completedProfile: data?.completed_profile ?? false,
     professionalLicenseInstitution: data?.professional_license_institution ?? "",
     typeUser: type ?? 1,
   } as IUser;

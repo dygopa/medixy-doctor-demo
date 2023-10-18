@@ -3,6 +3,7 @@ import Button from "(presentation)/components/core/BaseComponents/Button";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { IUser } from "domain/core/entities/userEntity";
+import { useRouter } from "next/navigation";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { twMerge } from "tailwind-merge";
 import { IRegisterContext, RegisterContext } from "../context/RegisterContext";
@@ -144,13 +145,30 @@ export default function FinishRegister({ user }: IFinishRegisterProps) {
         <Button
           variant="primary"
           type="submit"
-          className="mt-4 mb-8 w-full"
-          disabled={values.password === "" || errors.password.length > 0}
+          className="mt-4 mb-4 w-full"
+          disabled={
+            values.password === "" ||
+            errors.password.length > 0 ||
+            loadingRegister
+          }
           onClick={() =>
             updatePassword({ password: values.password })(dispatchRegister)
           }
         >
           {loadingRegister ? "Guardando la contraseña..." : "Iniciar Sesión"}
+        </Button>
+
+        <Button
+          variant="outline-primary"
+          type="button"
+          className="mb-8 w-full"
+          disabled={loadingRegister}
+          onClick={() => {
+            localStorage.removeItem("prosit.access_token");
+            window.location.reload();
+          }}
+        >
+          Volver
         </Button>
       </div>
     </div>

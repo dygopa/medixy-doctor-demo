@@ -26,6 +26,7 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 import { IUser } from "domain/core/entities/userEntity";
+import CompletedStepByStepPopup from "(presentation)/components/core/CompletedStepByStep/CompletedStepByStepPopUp";
 
 interface ICalendarIndexProps {
   user: IUser;
@@ -77,6 +78,7 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
   const [errorMessage, setErrorMessage] = useState("");
 
   const [windows, setWindows] = useState([]);
+  const [showCompletedStepModal, setShowCompletedModal] = useState(false);
 
   const [showWindowModal, setShowWindowModal] = useState(false);
   const [successfulPopup, setSuccessfulPopup] = useState(false);
@@ -216,17 +218,16 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
   }, [searchParams.get("openPopup"), localitiesSuccessful]);
 
   useMemo(() => {
-    if (createStepSuccessful) {
-      changeOpenPopup(true)(dispatchStep);
-    }
     if (stepNotCreated) {
       setSuccessfulPopup(true);
     }
   }, [stepNotCreated, createStepSuccessful]);
 
   useMemo(() => {
-    if (successfulWindowCreated)
+    if (successfulWindowCreated) {
+      setShowCompletedModal(true);
       createUserSteps(user.accountId, "SCHEDULE_CREATED")(dispatchStep);
+    }
   }, [successfulWindowCreated]);
 
   useMemo(() => {
@@ -319,6 +320,12 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
         )}
         {/* END: Calendar Content */}
       </div>
+
+      <CompletedStepByStepPopup
+        user={user}
+        isVisible={showCompletedStepModal}
+        setIsVisible={setShowCompletedModal}
+      />
     </>
   );
 }
