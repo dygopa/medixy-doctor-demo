@@ -1,10 +1,8 @@
 import { createClient, SignInWithPasswordCredentials, User } from '@supabase/supabase-js';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import nookies from 'nookies';
-import { getTokenMessaging } from 'infrastructure/config/firebase/FirebaseConfig';
 import { AuthFailure, authFailuresEnum } from 'domain/core/failures/auth/authFailure';
 import { ADMIN_AUTH_ENDPOINT, ADMIN_GET_USER_ENDPOINT, CHECK_OTP_ENDPOINT, UPDATE_USER_OTP_ENDPOINT } from 'infrastructure/config/api/dictionary';
-import { redirect } from "next/navigation";
 import { userAPIToMap } from 'domain/mappers/user/userMapper';
 import { IAdmin } from 'domain/core/entities/adminEntity';
 import { adminAPIToMap } from 'domain/mappers/admin/adminMapper';
@@ -14,7 +12,7 @@ export default interface IAuthRepository {
     email: string;
     password: string;
   }): Promise<string | AuthFailure>;
-  getUserFromAPI(obj: { accessToken: string }): Promise<IAdmin | AuthFailure>;
+  getUserAuthenticatedWithToken(obj: { accessToken: string }): Promise<IAdmin | AuthFailure>
   getUserAuthenticated(): Promise<IAdmin | AuthFailure>;
   signOutUser(): Promise<boolean | AuthFailure>;
   changePassword(obj: {
@@ -60,7 +58,7 @@ export class AuthRepository implements IAuthRepository {
 
       let access_token = data["data"]["access_token"] ?? ""
       
-      nookies.set(undefined, 'access_token', access_token, { path: '/' });
+      nookies.set(undefined, 'admin.access_token', access_token, { path: '/' });
 
       return "SUCCESS";
     } catch (error) {
@@ -72,13 +70,15 @@ export class AuthRepository implements IAuthRepository {
     }
   }
 
-  async getUserFromAPI(obj: { accessToken: string }): Promise<IAdmin | AuthFailure> {
-    try {
-      let obj = nookies.get(undefined, 'access_token');
+  async getUserAuthenticated(): Promise<IAdmin | AuthFailure> {
+    try {  
+      let obj = nookies.get(undefined, 'admin.access_token');
+
+      if (!obj.access_token || obj?.access_token?.length === 0) return new AuthFailure(authFailuresEnum.userNotFound);
 
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("Authorization", `Bearer ${obj["access_token"]}`);
+      myHeaders.append("Authorization", `Bearer ${obj["admin.access_token"]}`);
 
       var requestOptions = {
         method: 'GET',
@@ -91,30 +91,48 @@ export class AuthRepository implements IAuthRepository {
       const response = await fetch(URL, requestOptions)
       let data = await response.json()
 
-      if(!data["meta"]["success"]) throw new AuthFailure(data["meta"]["error"]["type"]);
+      if(!data["meta"]["success"]) return new AuthFailure(data["meta"]["error"]["type"]);
 
       let parsedObject = JSON.parse(JSON.stringify(data["data"]))
-      let userMapped = adminAPIToMap(parsedObject)
+      let userMapped = userAPIToMap(parsedObject, data["meta"]["authentication"]["type"])
 
-      window.localStorage.setItem("prosit.provider.session.user", JSON.stringify(userMapped))
+      console.log("JSON.parse", userMapped)
 
-      return userMapped;
+      return JSON.parse(JSON.stringify(userMapped));
     } catch (error) {
       return new AuthFailure(authFailuresEnum.serverError);
     }
   }
 
-  async getUserAuthenticated(): Promise<IAdmin | AuthFailure> {
+  async getUserAuthenticatedWithToken(obj: { accessToken: string }): Promise<IAdmin | AuthFailure> {
     try {  
+      if (obj.accessToken.length === 0) return new AuthFailure(authFailuresEnum.notAuthenticated);
 
-      let obj = nookies.get(undefined, 'access_token');
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${obj.accessToken}`);
 
-      if (obj?.access_token?.length === 0) throw new AuthFailure(authFailuresEnum.userNotFound);
-      if( !window.localStorage.getItem("prosit.provider.session.user") ) throw new AuthFailure(authFailuresEnum.userNotFound);
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+      } as RequestInit;
 
-      let parsedObject = JSON.parse(window.localStorage.getItem("prosit.provider.session.user")!)
+      let URL = ADMIN_GET_USER_ENDPOINT as RequestInfo
 
-      return parsedObject;
+      const response = await fetch(URL, requestOptions)
+      let data = await response.json()
+
+      if (response.status === 401) return new AuthFailure(authFailuresEnum.tokenExpired); 
+
+      if(!data["meta"]["success"]) return new AuthFailure(data["meta"]["error"]["type"]);
+      
+      let parsedObject = JSON.parse(JSON.stringify(data["data"]))
+      let userMapped = adminAPIToMap(parsedObject)
+      
+      console.log("JSON.parse", userMapped)
+
+      return JSON.parse(JSON.stringify(userMapped));
     } catch (error) {
       return new AuthFailure(authFailuresEnum.serverError);
     }
@@ -124,8 +142,8 @@ export class AuthRepository implements IAuthRepository {
     try {
       // await supabase.auth.signOut();
 
-      nookies.set(undefined, 'access_token', '', { path: '/' });
-      window.localStorage.removeItem("prosit.provider.session.user")
+      nookies.set(undefined, 'admin.access_token', '', { path: '/' });
+      window.localStorage.removeItem("prosit.provider.session.admin")
 
       return true;
     } catch (error) {
@@ -203,7 +221,7 @@ export class AuthRepository implements IAuthRepository {
 
       let access_token = data["data"]["access_token"] ?? ""
       
-      nookies.set(undefined, 'access_token', access_token, { path: '/' });
+      nookies.set(undefined, 'admin.access_token', access_token, { path: '/' });
 
       return "SUCCESS";
     } catch (error) {
