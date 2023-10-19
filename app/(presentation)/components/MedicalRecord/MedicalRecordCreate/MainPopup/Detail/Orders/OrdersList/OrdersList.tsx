@@ -4,14 +4,16 @@ import {
   MedicalRecordCreateContext,
 } from "(presentation)/components/MedicalRecord/MedicalRecordCreate/context/MedicalRecordCreateContext";
 import { IMedicalRecord } from "domain/core/entities/medicalRecordEntity";
+import { IUser } from "domain/core/entities/userEntity";
 import React, { useContext, useEffect, useState } from "react";
 import Order from "./Order/Order";
 
 interface IOrdersListProps {
+  user: IUser;
   subjectId: number;
 }
 
-export default function OrdersList({ subjectId }: IOrdersListProps) {
+export default function OrdersList({ user, subjectId }: IOrdersListProps) {
   const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
     MedicalRecordCreateContext
   );
@@ -100,7 +102,7 @@ export default function OrdersList({ subjectId }: IOrdersListProps) {
         <React.Fragment key={medicalRecord.id}>
           {medicalRecord.medicalRecordValues.length > 0 && (
             <div className="mb-4">
-              <Order medicalRecord={medicalRecord} />
+              <Order user={user} medicalRecord={medicalRecord} />
             </div>
           )}
         </React.Fragment>
