@@ -165,7 +165,7 @@ export class TreatmentRepository implements ITreatmentRepository {
       doc.setFontSize(10);
       doc.text(`Cedula Profesional: ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 15);
 
-      doc.text(`${getFullDate(new Date(obj.treatment.treatmentMedicines[0].createdOn))}`, 170, 10);
+      doc.text(`${getFullDate(new Date(obj.treatment.treatmentMedicines[0].createdOn))}`, 160, 10);
 
       if (obj.doctor.pwaProfression.length > 0) {
         doc.text(`${obj.doctor.pwaProfression}`, 42, 20);
@@ -179,7 +179,7 @@ export class TreatmentRepository implements ITreatmentRepository {
 
       doc.setFont("helvetica", "normal", "normal");
       doc.text(`Edad del paciente:`, 10, 45);
-      doc.text(`${obj.treatment.subject?.age} ${obj.treatment.subject?.ageType === "years" ? "años" : "meses"}`, 45, 45);
+      doc.text(`${obj.treatment.subject?.age} ${obj.treatment.subject?.ageType === "years" ? "años" : obj.treatment.subject?.ageType === "days" ? "dias" : "meses"}`, 45, 45);
 
       doc.setLineWidth(0.1); 
       doc.line(10, 50, 200, 50);

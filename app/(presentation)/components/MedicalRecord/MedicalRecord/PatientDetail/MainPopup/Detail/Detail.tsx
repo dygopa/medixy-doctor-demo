@@ -104,7 +104,7 @@ export default function Detail({
       case 6:
         return <Records subjectId={subjectId} />;
       case 7:
-        return <Orders subjectId={subjectId} />;
+        return <Orders user={user} subjectId={subjectId} />;
 
       default:
         return <div />;

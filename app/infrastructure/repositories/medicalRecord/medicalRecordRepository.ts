@@ -313,7 +313,7 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
       doc.setTextColor(0, 0, 0);
-      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 80);
+      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : obj.medicalRecord.subject?.ageType === "days" ? "dias" : "meses"}`, 85, 80);
 
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
@@ -457,7 +457,7 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
       doc.setTextColor(0, 0, 0);
-      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 80);
+      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : obj.medicalRecord.subject?.ageType === "days" ? "dias" : "meses"}`, 85, 80);
 
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "normal");
@@ -604,7 +604,7 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
       doc.setTextColor(0, 0, 0);
-      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 77);
+      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : obj.medicalRecord.subject?.ageType === "days" ? "dias" : "meses"}`, 85, 77);
 
       doc.setFontSize(10);
       doc.setFont("helvetica", "normal", "bold");
@@ -759,7 +759,7 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
       doc.setTextColor(0, 0, 0);
-      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 77);
+      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : obj.medicalRecord.subject?.ageType === "days" ? "dias" : "meses"}`, 85, 77);
 
       doc.setFontSize(10);
       doc.setFont("helvetica", "normal", "bold");
@@ -914,7 +914,7 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
       doc.setFontSize(11);
       doc.setFont("helvetica", "normal", "bold");
       doc.setTextColor(0, 0, 0);
-      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : "meses"}`, 85, 80);
+      doc.text(`${obj.medicalRecord.subject?.age} ${obj.medicalRecord.subject?.ageType === "years" ? "años" : obj.medicalRecord.subject?.ageType === "days" ? "dias" : "meses"}`, 85, 80);
 
       doc.setLineWidth(0.1); 
       doc.line(10, 88, 200, 88);

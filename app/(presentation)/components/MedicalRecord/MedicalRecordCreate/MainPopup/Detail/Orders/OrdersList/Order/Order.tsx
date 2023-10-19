@@ -4,13 +4,15 @@ import {
 } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import MedicalRecordCreateProvider from "(presentation)/components/MedicalRecord/MedicalRecordCreate/context/MedicalRecordCreateContext";
 import { IMedicalRecord } from "domain/core/entities/medicalRecordEntity";
+import { IUser } from "domain/core/entities/userEntity";
 import DownloadPDF from "./DownloadPDF/DownloadPDF";
 
 interface IOrderProps {
+  user: IUser;
   medicalRecord: IMedicalRecord;
 }
 
-export default function Order({ medicalRecord }: IOrderProps) {
+export default function Order({ user, medicalRecord }: IOrderProps) {
   const getTextByOrderType = (medicalRecord: IMedicalRecord): string => {
     if (
       medicalRecord.medicalRecordType.name ===
@@ -95,7 +97,7 @@ export default function Order({ medicalRecord }: IOrderProps) {
 
       <div className="flex items-center lg:mt-0 md:mt-0 mt-3">
         <MedicalRecordCreateProvider>
-          <DownloadPDF medicalRecord={medicalRecord} />
+          <DownloadPDF user={user} medicalRecord={medicalRecord} />
         </MedicalRecordCreateProvider>
       </div>
     </div>
