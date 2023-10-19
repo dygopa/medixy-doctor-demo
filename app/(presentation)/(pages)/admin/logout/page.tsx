@@ -1,4 +1,3 @@
-
 import LogoutIndex from "(presentation)/components/Admin/Logout/LogoutIndex";
 import Providers from "./providers";
 

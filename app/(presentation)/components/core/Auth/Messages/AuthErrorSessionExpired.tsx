@@ -2,7 +2,13 @@
 
 import SessionExpiredComponent from "(presentation)/components/core/BaseComponents/SessionExpired";
 
-export default function AuthErrorSessionExpired() {
+interface IAuthErrorSessionExpiredProps {
+  isAdmin?: boolean;
+}
+
+export default function AuthErrorSessionExpired({
+  isAdmin,
+}: IAuthErrorSessionExpiredProps) {
   return (
     <SessionExpiredComponent
       tittle="Tu sesión ha expirado"
@@ -10,7 +16,7 @@ export default function AuthErrorSessionExpired() {
       show={true}
       textButtonPrincipal="Volver a iniciar sesión"
       onClickButtonPrincipal={() => {
-        window.location.href = "/login";
+        window.location.href = isAdmin ? "/admin/login" : "/login";
       }}
     />
   );

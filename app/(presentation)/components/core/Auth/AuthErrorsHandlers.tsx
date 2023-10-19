@@ -9,19 +9,21 @@ import { redirect } from "next/navigation";
 
 interface IAuthErrorHandlersProps {
   authFailure: AuthFailure;
+  isAdmin?: boolean;
 }
 
 export default function AuthErrorHandlers({
   authFailure,
+  isAdmin,
 }: IAuthErrorHandlersProps) {
   const getErrorComponent = () => {
     switch (authFailure.code) {
       case authFailuresEnum.tokenExpired:
-        return <AuthErrorSessionExpired />;
+        return <AuthErrorSessionExpired isAdmin={isAdmin} />;
       case authFailuresEnum.serverError:
         return <AuthErrorMessage />;
       case authFailuresEnum.notAuthenticated:
-        redirect("/login");
+        redirect(isAdmin ? "/admin/login" : "/login");
 
       default:
         return <AuthErrorMessage />;

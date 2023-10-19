@@ -10,7 +10,13 @@ interface INavigation {
   pathname: string;
 }
 
-function TopbarAdmin({ navigation, user }: { navigation: INavigation[], user: IAdmin }) {
+function TopbarAdmin({
+  navigation,
+  user,
+}: {
+  navigation: INavigation[];
+  user: IAdmin;
+}) {
   const pathname = usePathname();
 
   return (
