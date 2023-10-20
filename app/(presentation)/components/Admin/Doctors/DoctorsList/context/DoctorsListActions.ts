@@ -11,12 +11,13 @@ const getDoctors = (obj: { page?: number | null; limit: number; searchQuery?: st
     try {
         dispatch({ type: "GET_DOCTORS_LOADING" });
 
-        const skip: number | null = getSkipPagination({ page: obj.page ?? 1, limit: obj.limit })
+        const skip: number | null = getSkipPagination({ page: obj.page ?? 1, limit: obj.limit, })
         
         const res: IGetUsersResponse = await new UserUseCase().getDoctors({
           skip: skip,
           limit: obj.limit,
-          searchQuery: obj.searchQuery
+          searchQuery: obj.searchQuery,
+          sort: { field: "fechaRegistro", ascending: false }
         });
     
         dispatch({ type: "GET_DOCTORS_SUCCESSFUL", payload: { data: res } });
