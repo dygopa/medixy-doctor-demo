@@ -30,7 +30,7 @@ const CompletedProfilePopup = ({
         isVisible ? "visible" : "hidden",
       ])}
     >
-      <div className="w-[80%] md:w-[60%] lg:w-[60%] h-auto overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
+      <div className="w-[98%] md:w-[60%] lg:w-[60%] h-auto overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
         <div className="w-full px-4">
           <div className="flex justify-center text-center mb-6">
             <AiOutlineCheckCircle size={70} color="#216AD9" />

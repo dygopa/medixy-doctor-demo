@@ -23,9 +23,10 @@ interface IStep {
 }
 interface IAlertProps {
   user: IUser;
+  disabled?: boolean;
 }
 
-const StepByStepPopup = ({ user }: IAlertProps) => {
+const StepByStepPopup = ({ user, disabled = false }: IAlertProps) => {
   const { state, actions, dispatch } =
     useContext<IStepByStepContext>(StepByStepContext);
   const { getSteps, changeOpenPopup /* getService */ } = actions;
@@ -124,7 +125,6 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
               variant="primary"
               onClick={() => {
                 changeOpenPopup(false)(dispatch);
-
                 router.push(props.cta);
               }}
             >
@@ -215,17 +215,6 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
         ])}
       >
         <div className="w-full px-4">
-          <div className="mb-14 w-full flex justify-between items-center">
-            <Lucide
-              icon="X"
-              size={25}
-              onClick={(e) => {
-                setIsVisible(false);
-                changeOpenPopup(false)(dispatch);
-              }}
-              className="cursor-pointer"
-            />
-          </div>
           <Header user={user} text={openPopupText ?? ""} />
 
           <div
@@ -246,6 +235,7 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
           </div>
 
           <Footer
+            disabled={disabled}
             user={user}
             customClick={() => {
               setIsVisible(false);

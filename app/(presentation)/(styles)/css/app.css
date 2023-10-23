@@ -123,3 +123,48 @@
    background: #cacaca;
    border-radius: 5px;
  }
+
+   /*Arrows*/
+   .triangle-left,
+   .triangle-right,
+   .triangle-top,
+   .triangle-bottom{
+     width: 0;
+     height: 0;
+   }
+   .triangle-left,
+   .triangle-right{
+     border-top:
+       18px solid transparent;
+     border-bottom:
+       18px solid transparent;
+     
+     
+   }
+   .triangle-top,
+   .triangle-bottom{
+     border-left:
+       18px solid transparent;
+     border-right:
+       18px solid transparent;
+     
+     
+   }
+   
+   .triangle-right{
+     border-left:
+       30px solid;
+   }
+   .triangle-left{
+     border-right:
+       30px solid;
+   }
+   .triangle-top{
+     border-bottom:
+       30px solid;
+   }
+   .triangle-bottom{
+     border-top:
+       30px solid;
+   }
+   

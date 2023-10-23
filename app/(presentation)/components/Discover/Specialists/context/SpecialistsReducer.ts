@@ -5,7 +5,6 @@ export const SpecialistsReducer = (state: any, action: any) => {
         ...state,
         getSpecialist: {
           ...state.getSpecialist,
-          data: null,
           loading: true,
           successful: false,
           error: null,

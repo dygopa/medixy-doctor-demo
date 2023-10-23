@@ -4,23 +4,35 @@ import Link from "next/link";
 
 interface IFooterProps {
   user: IUser;
-  customClick: ()=>void;
+  customClick: () => void;
+  disabled?: boolean;
 }
 
-export default function Footer({ user, customClick }:IFooterProps ) {
-
+export default function Footer({
+  user,
+  customClick,
+  disabled = false,
+}: IFooterProps) {
   let userLink =
-  process.env.NEXT_PUBLIC_MARKETPLACE_PROJECT_DOMAIN +
-  `/discover/specialists/${user?.userId}`;
+    process.env.NEXT_PUBLIC_MARKETPLACE_PROJECT_DOMAIN +
+    `/discover/specialists/${user?.userId}`;
+
+  if (disabled) return <div />;
 
   return (
     <div>
       <div className="text-center mb-6">
-        <Button onClick={customClick} variant="outline-primary">Lo hare después</Button>
+        <Button onClick={customClick} variant="outline-primary">
+          Lo hare después
+        </Button>
       </div>
 
       <div className="text-center">
-        <Link target="_blank" href={userLink} className="text-primary font-medium text-lg underline">
+        <Link
+          target="_blank"
+          href={userLink}
+          className="text-primary font-medium text-lg underline"
+        >
           Quiero ver mi tarjeta profesional
         </Link>
       </div>

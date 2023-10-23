@@ -10,6 +10,7 @@ import { UserCardComponent } from "./UserCard/UserCard";
 import UserCardProvider from "./UserCard/context/UserCardContext";
 import CompletedProfilePopup from "./UserCard/CompletedProfilePopup/CompletedProfilePopup";
 import { Specialist } from "domain/core/entities/specialists/specialist";
+import ReservationCard from "./Reservation/Main";
 
 interface ISpecialistIndexProps {
   id: number;
@@ -29,31 +30,22 @@ function SpecialistIndex({ id }: ISpecialistIndexProps) {
 
   return (
     <>
-      <div className="w-full px-24">
+      <div className="w-full lg:px-24 px-0 mt-4">
         {data && data.userId && (
-          <>
-            <div className="h-fit relative flex justify-between items-center bg-primary rounded-md p-3">
-              <div className="text-left flex flex-col justify-center items-start">
-                <p className="text-base text-white font-bold">
-                  Completa tu perfil
-                </p>
-                <p className="text-sm text-white font-light">
-                  Completa los campos restantes para que los pacientes vean
-                  información más detallada sobre tí
-                </p>
-              </div>
+          <div className="lg:flex block">
+            <div className="xl:w-[900px] lg:w-[700px] md:w-[600px] w-[400px]">
+              <UserCardProvider>
+                <UserCardComponent
+                  specialist={data as Specialist}
+                  setIsVisible={setIsVisible}
+                />
+              </UserCardProvider>
             </div>
-            <div className="w-full flex justify-center mt-8">
-              <div>
-                <UserCardProvider>
-                  <UserCardComponent
-                    specialist={data as Specialist}
-                    setIsVisible={setIsVisible}
-                  />
-                </UserCardProvider>
-              </div>
+
+            <div className="xl:block lg:block hidden">
+              <ReservationCard />
             </div>
-          </>
+          </div>
         )}
       </div>
 
