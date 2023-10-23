@@ -6,6 +6,7 @@ import Button from "(presentation)/components/core/BaseComponents/Button";
 import clsx from "clsx";
 import { IMedicalProfile } from "domain/core/entities/medicalProfileEntity";
 import { IOrderMedical } from "domain/core/entities/orderEntity";
+import { IUser } from "domain/core/entities/userEntity";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import Formulary from "./Formulary/Formulary";
 import OrderType from "./OrderType/OrderType";
@@ -19,6 +20,7 @@ export interface valuesTypes {
 }
 
 interface IAddOrderProps {
+  user: IUser;
   orders: IOrderMedical[];
   setOrders: Dispatch<SetStateAction<IOrderMedical[]>>;
   orderEdit: IOrderMedical | null;
@@ -26,6 +28,7 @@ interface IAddOrderProps {
 }
 
 export default function AddOrder({
+  user,
   orders,
   setOrders,
   orderEdit,
@@ -211,6 +214,7 @@ export default function AddOrder({
       >
         {orderType && (
           <Formulary
+            user={user}
             orderType={orderType}
             values={values}
             setValues={setValues}

@@ -1,12 +1,17 @@
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
 import { IOrderMedical } from "domain/core/entities/orderEntity";
+import { IUser } from "domain/core/entities/userEntity";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 import AddOrder from "./AddOrder/AddOrder";
 import OrdersList from "./OrdersList/OrdersList";
 
-export default function Orders() {
+interface IOrdersProps {
+  user: IUser;
+}
+
+export default function Orders({ user }: IOrdersProps) {
   const router = useRouter();
   const params = useSearchParams();
   const pathname = usePathname();
@@ -107,6 +112,7 @@ export default function Orders() {
         <form className={clsx([showBody ? "block" : "hidden"])}>
           <div className="py-4 border-b">
             <AddOrder
+              user={user}
               orders={orders}
               setOrders={setOrders}
               orderEdit={orderEdit}

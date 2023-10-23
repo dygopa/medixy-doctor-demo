@@ -1,3 +1,4 @@
+import { IUser } from "domain/core/entities/userEntity";
 import { Dispatch, SetStateAction } from "react";
 import { valuesTypes } from "../AddOrder";
 import Diagnosis from "./Diagnosis/Diagnosis";
@@ -9,12 +10,14 @@ import Opening from "./Opening/Opening";
 import Specialty from "./Specialty/Specialty";
 
 interface IFormularyProps {
+  user: IUser;
   orderType: number;
   values: valuesTypes;
   setValues: Dispatch<SetStateAction<valuesTypes>>;
 }
 
 export default function Formulary({
+  user,
   orderType,
   values,
   setValues,
@@ -26,7 +29,7 @@ export default function Formulary({
       case 2:
         return <Diagnosis values={values} setValues={setValues} />;
       case 3:
-        return <Specialty values={values} setValues={setValues} />;
+        return <Specialty user={user} values={values} setValues={setValues} />;
       case 4:
         return <MedicalProof values={values} setValues={setValues} />;
       case 5:

@@ -1,8 +1,4 @@
 import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
-import {
   FormInput,
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
@@ -11,6 +7,7 @@ import {
   MedicalRecordCreateContext,
 } from "(presentation)/components/MedicalRecord/MedicalRecordCreate/context/MedicalRecordCreateContext";
 import { ISpecialty } from "domain/core/entities/specialtyEntity";
+import { IUser } from "domain/core/entities/userEntity";
 import {
   ChangeEvent,
   Dispatch,
@@ -21,14 +18,16 @@ import {
 import { valuesTypes } from "../../AddOrder";
 
 interface ISpecialtyProps {
+  user: IUser;
   values: valuesTypes;
   setValues: Dispatch<SetStateAction<valuesTypes>>;
 }
 
-export default function Specialty({ values, setValues }: ISpecialtyProps) {
-  const { state: authState } = useContext<IAuthContext>(AuthContext);
-  const { data: user } = authState.getUserAuthenticated;
-
+export default function Specialty({
+  user,
+  values,
+  setValues,
+}: ISpecialtyProps) {
   const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
     MedicalRecordCreateContext
   );

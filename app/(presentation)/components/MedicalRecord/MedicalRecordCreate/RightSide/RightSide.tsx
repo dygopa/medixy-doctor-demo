@@ -115,7 +115,7 @@ export default function RightSide({ user, width }: IRightSideProps) {
       </div>
 
       <div className="w-full mb-14">
-        <Orders />
+        <Orders user={user} />
       </div>
 
       <div className="w-full mb-14">
