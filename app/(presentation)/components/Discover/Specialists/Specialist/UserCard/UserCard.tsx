@@ -10,6 +10,13 @@ import {
 import { JiraInput } from "(presentation)/components/core/JiraInput/JiraInput";
 import { Specialist } from "domain/core/entities/specialists/specialist";
 import LocalitiesComponent from "./Localities/LocalitiesAndServices";
+import NameField from "./Fields/NameField";
+import ProfessionField from "./Fields/ProfessionField";
+import CURPField from "./Fields/CURPField";
+import clsx from "clsx";
+import TooltipIndicator from "(presentation)/components/core/TooltipIndacator/tooltipIndicator";
+import AboutMeField from "./Fields/AboutMeField";
+import ShortDescriptionField from "./Fields/ShortDescriptionField";
 
 export const UserCardComponent = ({
   specialist,
@@ -30,6 +37,8 @@ export const UserCardComponent = ({
   const { editUser, updateProfileCompleted } = actions;
   const { data, loading, error, successful } = state.editUser;
   const { successful: updateAvatarSucessful } = state.updateAvatar;
+
+  const [step, setStep] = useState(0);
 
   let listProfesions = [
     { id: 8, name: "Bioanalista" },
@@ -138,17 +147,44 @@ export const UserCardComponent = ({
 
   const onValidCompletedProfileSpecialist = () => {
     if (
+      !specialist.avatar ||
+      (specialist.avatar && specialist.avatar.length === 0)
+    ) {
+      setStep(0);
+      return;
+    }
+
+    if (
+      !specialist.pwaProfressionId ||
+      (specialist.pwaProfressionId &&
+        parseInt(specialist.pwaProfressionId.toString(), 10) === 0)
+    ) {
+      setStep(2);
+      return;
+    }
+
+    if (
+      !specialist.shortDescription ||
+      (specialist.shortDescription && specialist.shortDescription.length === 0)
+    ) {
+      setStep(3);
+      return;
+    }
+
+    if (
       specialist.avatar &&
       specialist.avatar.length > 0 &&
       specialist.shortDescription &&
       specialist.shortDescription.length > 0 &&
       specialist.pwaProfressionId &&
-      parseInt(specialist.pwaProfressionId.toString(), 10) > 0 &&
-      !specialist.completedProfile
+      parseInt(specialist.pwaProfressionId.toString(), 10) > 0
     ) {
+      setStep(4);
       setIsVisible(true);
       updateProfileCompleted(specialist.userId, specialist.accountId)(dispatch);
     }
+
+    setStep(4);
   };
 
   useMemo(() => {
@@ -159,129 +195,132 @@ export const UserCardComponent = ({
 
   return (
     <>
-      <div
-        className={twMerge([
-          "bg-white rounded-lg p-6 shadow-sm border relative h-fit flex flex-col justify-start items-start gap-5",
-          "lg:col-span-3",
-          "col-span-6",
+      {step !== 4 && (
+        <div className="fixed top-0 left-0 w-screen h-screen z-[200] bg-black bg-opacity-70" />
+      )}
+
+      {/* <div
+        className={clsx([
+          "h-fit relative flex justify-between items-center bg-primary rounded-md p-3 mb-8",
+          step !== 0 && step !== 4 && "fixed z-[201]",
         ])}
       >
-        <div className="w-full h-fit grid grid-cols-3 justify-start items-start gap-5">
-          <Avatar disabled={false} specialist={specialist} />
-          <div className="col-span-2 h-36 flex flex-col justify-start items-start text-left">
-            <div className="w-full h-fit relative flex justify-start items-start px-1">
-              <span className="w-[10%] h-fit relative block text-lg text-slate-900 font-semibold py-1">
-                {specialist.sex === 1 ? "Dra." : "Dr."}
-              </span>
-              <div className="w-[90%] h-fit relative block">
-                <JiraInput
-                  onClick={() => {
-                    handleOnClick("names");
-                  }}
-                  customStyleText={"text-lg text-slate-900 font-semibold"}
-                  customType="text"
-                  loading={loading}
-                  text={`${specialist?.names} ${specialist?.firstName}`}
-                  onChange={(e) => {
-                    setUserObject({ ...userObject, names: e.target.value });
-                  }}
-                />
-              </div>
+        <div className="text-left flex flex-col justify-center items-start">
+          <p className="text-base text-white font-bold">Completa tu perfil</p>
+          <p className="text-sm text-white font-light">
+            Completa los campos restantes para que los pacientes vean
+            información más detallada sobre tí
+          </p>
+        </div>
+      </div> */}
+
+      <div className="">
+        {step === 0 && (
+          <>
+            <div className="absolute z-[201] top-28 xl:left-[850px] lg:left-[550px] md:left-[470px] lg:block md:block hidden">
+              <TooltipIndicator
+                tittle="¡Completa tu perfil!"
+                description="Para mejorar la visualización de tu presentación en nuestro directorio, es primordial que completes tu perfil."
+                onClick={() => setStep(1)}
+                tittleButton="De acuerdo"
+                direcction="left"
+              />
             </div>
-            <div className="w-full flex flex-col justify-center items-start">
-              <JiraInput
-                onClick={() => {
-                  handleOnClick("pwaProfessionId");
-                }}
-                customStyleText={"text-base text-slate-500 font-light"}
-                placeholder="Selecciona tu especialidad"
-                customType="select"
-                text={profesion?.name ?? "Selecciona tu especialidad"}
-                loading={loading}
-                customList={listProfesions.map((value: any) => ({
-                  id: value.id,
-                  value: value.name,
-                }))}
-                onChange={(e) => {
-                  setUserObject({
-                    ...userObject,
-                    pwaProfessionId: e.target.value,
-                  });
-                }}
+
+            <div className="absolute z-[201] top-[500px] xl:left-[850px] lg:left-[550px] md:left-[470px] left-2 right-2 lg:hidden md:hidden block">
+              <TooltipIndicator
+                tittle="¡Completa tu perfil!"
+                description="Para mejorar la visualización de tu presentación en nuestro directorio, es primordial que completes tu perfil."
+                onClick={() => setStep(1)}
+                tittleButton="De acuerdo"
+                direcction="top"
               />
-              <JiraInput
-                onClick={() => {
-                  handleOnClick("shortDescription");
-                }}
-                customStyleText={
-                  "text-base hidden md:block text-slate-500 font-light"
-                }
-                customType="text"
-                loading={loading}
-                text={
-                  specialist.shortDescription !== ""
-                    ? specialist.shortDescription
-                    : "Descripción corta de tí"
-                }
-                placeholder="Descripción corta de tí"
-                onChange={(e) => {
-                  setUserObject({
-                    ...userObject,
-                    shortDescription: e.target.value,
-                  });
-                }}
+            </div>
+          </>
+        )}
+
+        <div className="w-full">
+          <div
+            className={twMerge([
+              "bg-white rounded-lg p-6 shadow-sm border xl:w-[700px] lg:w-[450px] md:w-[450px] w-[370px]",
+              step === 0 && "absolute z-[200]",
+            ])}
+          >
+            <div className="w-full h-fit grid grid-cols-3 justify-start items-start gap-5">
+              <Avatar
+                disabled={step === 0}
+                specialist={specialist}
+                step={step}
+                setStep={setStep}
               />
-              {specialist.curp && (
-                <div className="flex w-full justify-start items-center px-1">
-                  <span className="block w-[30%] text-base text-slate-500 font-light">
-                    N° de CURP:
+              <div className="col-span-2 h-36 flex flex-col justify-start items-start text-left lg:ml-0 md:ml-0 ml-3">
+                <div className="w-full h-fit flex justify-start items-start px-1">
+                  <span className="w-[10%] h-fit block text-lg text-slate-900 font-semibold py-1">
+                    {specialist.sex === 1 ? "Dra." : "Dr."}
                   </span>
-                  <div className="w-[70%] flex justify-start items-center">
-                    <JiraInput
-                      onClick={() => {
-                        handleOnClick("curp");
-                      }}
-                      customStyleText={"text-base text-slate-500 font-light"}
-                      customType="text"
+                  <div className="w-[90%] h-fit block">
+                    <NameField
+                      step={step}
+                      handleOnClick={handleOnClick}
+                      setUserObject={setUserObject}
                       loading={loading}
-                      text={specialist.curp}
-                      onChange={(e) => {
-                        setUserObject({ ...userObject, curp: e.target.value });
-                      }}
+                      specialist={specialist}
+                      userObject={userObject}
                     />
                   </div>
                 </div>
-              )}
+                <div className="w-full flex flex-col justify-center items-start">
+                  <div className="w-[225px] h-[35px]">
+                    <ProfessionField
+                      handleOnClick={handleOnClick}
+                      setUserObject={setUserObject}
+                      loading={loading}
+                      userObject={userObject}
+                      listProfesions={listProfesions}
+                      profesion={profesion}
+                      step={step}
+                    />
+                  </div>
+                  <div className="w-[225px] h-[35px]">
+                    <ShortDescriptionField
+                      handleOnClick={handleOnClick}
+                      setUserObject={setUserObject}
+                      loading={loading}
+                      specialist={specialist}
+                      userObject={userObject}
+                      step={step}
+                    />
+                  </div>
+                  {specialist.curp && (
+                    <div className="w-[225px] relative h-[35px]">
+                      <CURPField
+                        step={step}
+                        handleOnClick={handleOnClick}
+                        setUserObject={setUserObject}
+                        loading={loading}
+                        specialist={specialist}
+                        userObject={userObject}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+            {specialist?.aboutMe && (
+              <AboutMeField
+                step={step}
+                handleOnClick={handleOnClick}
+                setUserObject={setUserObject}
+                loading={loading}
+                specialist={specialist}
+                userObject={userObject}
+              />
+            )}
+            <div className="mt-4">
+              <LocalitiesComponent specialist={specialist} />
             </div>
           </div>
         </div>
-        {specialist?.aboutMe && (
-          <div className="w-full relative h-fit flex flex-col justify-start items-start gap-6">
-            <div className="w-full flex flex-col justify-center items-start gap-2">
-              <p className="text-lg text-slate-900 font-semibold">
-                Información sobre mí
-              </p>
-              <div className="w-full bg-slate-300 h-px block relative"></div>
-            </div>
-            <div className="w-full flex flex-col justify-start items-start gap-4">
-              <p className="text-base text-slate-500 font-light w-full">
-                <JiraInput
-                  onClick={() => {
-                    handleOnClick("aboutMe");
-                  }}
-                  customStyleText={"text-base text-slate-500 font-light"}
-                  customType="textarea"
-                  text={specialist?.aboutMe}
-                  loading={loading}
-                  onChange={(e) => {
-                    setUserObject({ ...userObject, aboutMe: e.target.value });
-                  }}
-                />
-              </p>
-            </div>
-          </div>
-        )}
-        <LocalitiesComponent specialist={specialist} />
       </div>
     </>
   );

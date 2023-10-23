@@ -1,4 +1,5 @@
 import AppLayout from "(presentation)/(layouts)/AppLayout/AppLayout";
+import DiscoverLayout from "(presentation)/(layouts)/DiscoverLayout/DiscoverLayout";
 import AuthErrorHandlers from "(presentation)/components/core/Auth/AuthErrorsHandlers";
 import SpecialistIndex from "(presentation)/components/Discover/Specialists/Specialist/SpecialistIndex";
 import { IUser } from "domain/core/entities/userEntity";
@@ -35,14 +36,10 @@ export default async function SpecialistPage({
   }
 
   return (
-    <AppLayout
-      user={user}
-      title="Especialista"
-      pathname={`/discover/specialist/${params.specialistId}`}
-    >
+    <DiscoverLayout user={user}>
       <Providers>
         <SpecialistIndex id={parseInt(params.specialistId, 10)} />
       </Providers>
-    </AppLayout>
+    </DiscoverLayout>
   );
 }

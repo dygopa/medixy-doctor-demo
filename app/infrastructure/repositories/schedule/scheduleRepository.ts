@@ -85,8 +85,8 @@ export class ScheduleRepository implements IScheduleRepository {
             `).in("ventanaAtencionId", resVentanasAtencion.data!.map((elem:any)=> elem["id"] ))
 
             if(serviceId) {
-                queryCitas = queryCitas.eq("servicioId", serviceId)
-            }
+                queryCitas = queryCitas.or(`servicioId.eq.${serviceId},and(servicioId.is.null)`);
+            } 
             
             let resCitas = await queryCitas
 

@@ -220,12 +220,13 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
   useMemo(() => {
     if (stepNotCreated) {
       setSuccessfulPopup(true);
+    } else if (createStepSuccessful) {
+      setShowCompletedModal(true);
     }
   }, [stepNotCreated, createStepSuccessful]);
 
   useMemo(() => {
     if (successfulWindowCreated) {
-      setShowCompletedModal(true);
       createUserSteps(user.accountId, "SCHEDULE_CREATED")(dispatchStep);
     }
   }, [successfulWindowCreated]);
