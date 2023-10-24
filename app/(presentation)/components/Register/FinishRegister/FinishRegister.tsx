@@ -100,7 +100,7 @@ export default function FinishRegister({ user }: IFinishRegisterProps) {
         ¡Felicidades, ya te registraste en Prosit!
       </p>
       <p className="text-gray-950 font-semibold text-center lg:text-3xl md:text-3xl text-2xl">
-        Inicia sesión para completar tu perfil y recibe un regalo por un valor
+        Crea tu contraseña, completa tu perfil y recibe un regalo por un valor
         de $2,500.00 pesos
       </p>
       <div className="w-full md:w-[70%] flex flex-col justify-between gap-3">
