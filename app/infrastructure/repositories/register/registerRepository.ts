@@ -71,11 +71,11 @@ export class RegisterRepository implements IRegisterRepository {
   }
   async updatePassword(obj: any): Promise<string | RegisterFailure> {
     try {
-      let token = nookies.get(undefined, 'access_token');
+      let token = localStorage.getItem("prosit.access_token") ?? "";
 
       var myHeaders = new Headers();
       myHeaders.append("Content-Type", "application/json");
-      myHeaders.append("Authorization", `Bearer ${token["access_token"]}`);
+      myHeaders.append("Authorization", `Bearer ${token}`);
 
       var raw = JSON.stringify(obj);
 

@@ -1,4 +1,3 @@
-import { FiImage } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import { useContext, useMemo, useState, Dispatch, SetStateAction } from "react";
 import Avatar from "./Avatar/Avatar";
@@ -7,23 +6,27 @@ import {
   ISpecialistsContext,
   SpecialistsContext,
 } from "../../context/SpecialistsContext";
-import { JiraInput } from "(presentation)/components/core/JiraInput/JiraInput";
 import { Specialist } from "domain/core/entities/specialists/specialist";
 import LocalitiesComponent from "./Localities/LocalitiesAndServices";
 import NameField from "./Fields/NameField";
 import ProfessionField from "./Fields/ProfessionField";
 import CURPField from "./Fields/CURPField";
-import clsx from "clsx";
 import TooltipIndicator from "(presentation)/components/core/TooltipIndacator/tooltipIndicator";
 import AboutMeField from "./Fields/AboutMeField";
 import ShortDescriptionField from "./Fields/ShortDescriptionField";
 
 export const UserCardComponent = ({
+  step,
+  setStep,
   specialist,
   setIsVisible,
+  finishedStep,
 }: {
+  step: number;
+  setStep: Dispatch<SetStateAction<number>>;
   specialist: Specialist;
   setIsVisible: Dispatch<SetStateAction<boolean>>;
+  finishedStep: boolean;
 }) => {
   const {
     state: stateSpecialist,
@@ -37,8 +40,6 @@ export const UserCardComponent = ({
   const { editUser, updateProfileCompleted } = actions;
   const { data, loading, error, successful } = state.editUser;
   const { successful: updateAvatarSucessful } = state.updateAvatar;
-
-  const [step, setStep] = useState(0);
 
   let listProfesions = [
     { id: 8, name: "Bioanalista" },
@@ -177,11 +178,12 @@ export const UserCardComponent = ({
       specialist.shortDescription &&
       specialist.shortDescription.length > 0 &&
       specialist.pwaProfressionId &&
-      parseInt(specialist.pwaProfressionId.toString(), 10) > 0
+      parseInt(specialist.pwaProfressionId.toString(), 10) > 0 &&
+      finishedStep
     ) {
-      setStep(4);
       setIsVisible(true);
       updateProfileCompleted(specialist.userId, specialist.accountId)(dispatch);
+      return;
     }
 
     setStep(4);
@@ -191,11 +193,11 @@ export const UserCardComponent = ({
     if (specialist?.userId) {
       onValidCompletedProfileSpecialist();
     }
-  }, [specialist]);
+  }, [specialist, finishedStep]);
 
   return (
     <>
-      {step !== 4 && (
+      {step !== 5 && (
         <div className="fixed top-0 left-0 w-screen h-screen z-[200] bg-black bg-opacity-70" />
       )}
 

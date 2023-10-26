@@ -23,6 +23,8 @@ function SpecialistIndex({ id }: ISpecialistIndexProps) {
   const { data } = state.getSpecialist;
 
   const [isVisible, setIsVisible] = useState(false);
+  const [step, setStep] = useState(0);
+  const [finishedStep, setFinishedStep] = useState(false);
 
   useMemo(() => {
     getSpecialist(id)(dispatch);
@@ -30,20 +32,27 @@ function SpecialistIndex({ id }: ISpecialistIndexProps) {
 
   return (
     <>
-      <div className="w-full lg:px-24 px-0 mt-4">
+      <div className="w-full lg:px-24 px-0 mt-4 mb-4">
         {data && data.userId && (
-          <div className="lg:flex block">
-            <div className="xl:w-[900px] lg:w-[700px] md:w-[600px] w-[400px]">
+          <div className="lg:flex md:flex block">
+            <div className="xl:w-[710px] lg:w-[475px] md:w-[435px] w-[400px]">
               <UserCardProvider>
                 <UserCardComponent
+                  step={step}
+                  setStep={setStep}
                   specialist={data as Specialist}
                   setIsVisible={setIsVisible}
+                  finishedStep={finishedStep}
                 />
               </UserCardProvider>
             </div>
 
-            <div className="xl:block lg:block hidden">
-              <ReservationCard />
+            <div>
+              <ReservationCard
+                step={step}
+                setStep={setStep}
+                setFinishedStep={setFinishedStep}
+              />
             </div>
           </div>
         )}
