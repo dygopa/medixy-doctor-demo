@@ -96,15 +96,17 @@ const Avatar = ({ step, setStep, specialist, disabled }: IAvatarProps) => {
                 !disabled && "cursor-pointer",
               ])}
             >
-              <input
-                accept="image/png, image/jpeg, application/pdf"
-                type="file"
-                ref={avatarRef}
-                className="opacity-0 top-0 left-0 w-full h-full z-50 absolute cursor-pointer"
-                onChange={(e) => {
-                  !disabled && handleChangeAvatar(e);
-                }}
-              />
+              {!disabled && (
+                <input
+                  accept="image/png, image/jpeg, application/pdf"
+                  type="file"
+                  ref={avatarRef}
+                  className="opacity-0 top-0 left-0 w-full h-full z-50 absolute cursor-pointer"
+                  onChange={(e) => {
+                    !disabled && handleChangeAvatar(e);
+                  }}
+                />
+              )}
               <Image
                 className="object-cover w-full h-full"
                 src={data ? data.toString() : specialist?.avatar}
@@ -126,15 +128,17 @@ const Avatar = ({ step, setStep, specialist, disabled }: IAvatarProps) => {
           </>
         ) : (
           <>
-            <input
-              accept="image/png, image/jpeg, application/pdf"
-              type="file"
-              ref={avatarRef}
-              className="hidden"
-              onChange={(e) => {
-                !disabled && handleChangeAvatar(e);
-              }}
-            />
+            {!disabled && (
+              <input
+                accept="image/png, image/jpeg, application/pdf"
+                type="file"
+                ref={avatarRef}
+                className="hidden"
+                onChange={(e) => {
+                  !disabled && handleChangeAvatar(e);
+                }}
+              />
+            )}
             <div
               onClick={handleClickRef}
               className={twMerge([
