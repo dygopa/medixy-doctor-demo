@@ -188,6 +188,7 @@ export class AuthRepository implements IAuthRepository {
 
       nookies.set(undefined, 'access_token', '', { path: '/' });
       window.localStorage.removeItem("prosit.provider.session.user")
+      window.localStorage.removeItem("prosit.access_token");
 
       return true;
     } catch (error) {
