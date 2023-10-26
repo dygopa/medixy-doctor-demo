@@ -8,7 +8,7 @@ export default function AuthErrorMessage() {
     <div className="text-center w-screen h-[700px] flex justify-center items-center">
       <div>
         <div className="mb-4 flex justify-center">
-          <Lucide icon="AlertCircle" size={60} color="#57419B" />
+          <Lucide icon="AlertCircle" size={60} color="#216AD9" />
         </div>
 
         <div className="mb-3">
