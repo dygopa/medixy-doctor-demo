@@ -5,13 +5,16 @@ sendgrid.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_KEY);
 
 export async function POST(req) {
   try {
-    let {fullnamePatient,
+    console.log("Call api email");
+    let {
+      fullnamePatient,
       fullnameDoctor,
-      serviceName, 
-      date, 
+      serviceName,
+      date,
       localityAddress,
       email_to,
-    } = await req.json()
+    } = await req.json();
+    console.log("resSendgrid");
     let resSendgrid = await sendgrid.send({
       to: email_to,
       from: process.env.EMAIL_FROM_SENDGRID,
@@ -39,7 +42,7 @@ export async function POST(req) {
             line-height: 30px;
         ">
             <p>Estimado ${fullnamePatient}</p>
-            <p>Enhorabuena tu cita de ${serviceName} con ${ fullnameDoctor } esta confirmada.</p>
+            <p>Enhorabuena tu cita de ${serviceName} con ${fullnameDoctor} esta confirmada.</p>
             <p>
               Fecha: ${date}<br/>
               Hora: ${date}<br/>
@@ -52,7 +55,7 @@ export async function POST(req) {
     });
     return NextResponse.json({ message: resSendgrid }, { status: 200 });
   } catch (error) {
-    //console.log(error);
+    console.log(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
