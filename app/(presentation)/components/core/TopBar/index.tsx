@@ -369,7 +369,7 @@ function Main({
                 alt=""
                 width={200}
                 height={200}
-                className="w-[3rem] h-[3rem] rounded-md"
+                className="w-[3rem] h-[3rem] rounded-md object-contain"
               />
             ) : (
               <FiUser />
