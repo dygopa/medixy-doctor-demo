@@ -5,7 +5,6 @@ sendgrid.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_KEY);
 
 export async function POST(req) {
   try {
-    console.log("Call api email");
     let {
       fullnamePatient,
       fullnameDoctor,
@@ -14,10 +13,9 @@ export async function POST(req) {
       localityAddress,
       email_to,
     } = await req.json();
-    console.log("resSendgrid");
     let resSendgrid = await sendgrid.send({
       to: email_to,
-      from: process.env.EMAIL_FROM_SENDGRID,
+      from: "noodus.medhaus@xentraly.com",
       subject: `Nuevo mensaje de contacto - Prosit`,
       html: `<div>
         <div style="

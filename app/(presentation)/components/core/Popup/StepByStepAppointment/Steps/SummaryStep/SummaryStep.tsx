@@ -134,7 +134,7 @@ const SummaryStep = ({
                 doctorId: user.userId,
                 doctor: user,
                 nombreServicio: appointment["service"]["title"],
-                direccion: "asd",
+                direccion: appointment["locality"]["description"],
               },
               appointment["isNow"] ?? false
             )(dispatch);
