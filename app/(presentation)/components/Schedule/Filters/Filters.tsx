@@ -114,19 +114,21 @@ function Filters({
         let localityFinded = [...localities].find(
           (elem: any) => elem["id"] === parseInt(id!)
         );
+
         if (localityFinded) {
           setSelectedLocality({
             id: localityFinded["id"],
             title: localityFinded["name"],
-            description: localityFinded["address"],
+            description: localityFinded["address"]["postal_code"],
           });
         }
         getServicesByLocality(user.userId, params.get("locality"))(dispatch);
       } else {
+        console.log(localities);
         setSelectedLocality({
           id: localities[0]["id"],
           title: localities[0]["name"],
-          description: localities[0]["address"],
+          description: localities[0]["address"]["postal_code"],
         });
         getServicesByLocality(user.userId, localities[0].id)(dispatch);
       }

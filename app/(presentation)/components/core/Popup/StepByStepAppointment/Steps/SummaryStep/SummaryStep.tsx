@@ -86,6 +86,8 @@ const SummaryStep = ({
     }
   }, [successful]);
 
+  console.log(appointment);
+
   return (
     <div className={"w-full h-fit relative flex flex-col gap-5"}>
       <div className="w-full grid grid-cols-2 justify-between items-start gap-2">
@@ -130,6 +132,9 @@ const SummaryStep = ({
                 pacienteId: appointment["patientId"],
                 patient: appointment["patient"],
                 doctorId: user.userId,
+                doctor: user,
+                nombreServicio: appointment["service"]["title"],
+                direccion: appointment["locality"]["description"],
               },
               appointment["isNow"] ?? false
             )(dispatch);

@@ -10,6 +10,7 @@ import { ServicesRepository } from 'infrastructure/repositories/service/serviceR
 import moment from 'moment';
 import SubjectsUseCase from '../subject/subjectUseCase';
 import { ISubject } from 'domain/core/entities/subjectEntity';
+import { EmailRepository } from 'infrastructure/repositories/email/emailRepository';
 
 export default class ScheduleUseCase {
 
@@ -19,6 +20,7 @@ export default class ScheduleUseCase {
   private _repositoryLocalities: LocalitiesRepository = new LocalitiesRepository();
   private _repositorySubjects: SubjectRepository = new SubjectRepository();
   private _repositoryServices: ServicesRepository = new ServicesRepository();
+  private _repositoryEmail: EmailRepository = new EmailRepository()
       
   async getCalendarEvents(id:number, localityId:number, sinceDate:any, untilDate:any, serviceId?:number): Promise<any[]> {
     try {
@@ -173,11 +175,15 @@ export default class ScheduleUseCase {
         }, now);
         if (response instanceof ScheduleFailure) throw response;
 
+        await this._repositoryEmail.sendAppointmentEmail({ patient: obj["patient"], doctor: obj["doctor"], date: obj["fechaReserva"], serviceName: obj["nombreServicio"], address: obj["direccion"] })
+
         return response;
       }else{
 
         const response = await this._repository.createAppointment(obj, now);
         if (response instanceof ScheduleFailure) throw response;
+
+        await this._repositoryEmail.sendAppointmentEmail({ patient: obj["patient"], doctor: obj["doctor"], date: obj["fechaReserva"], serviceName: obj["nombreServicio"], address: obj["direccion"] })
 
         return response;
       }
