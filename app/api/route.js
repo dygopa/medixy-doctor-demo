@@ -16,7 +16,7 @@ export async function POST(req) {
     let resSendgrid = await sendgrid.send({
       to: email_to,
       from: "noodus.medhaus@xentraly.com",
-      subject: `Nuevo mensaje de contacto - Prosit`,
+      subject: `Se ha confirmado tu cita - Prosit`,
       html: `<div>
         <div style="
           position: relative;
