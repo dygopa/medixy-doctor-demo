@@ -1,6 +1,4 @@
 import { twMerge } from "tailwind-merge";
-import { Transition } from "@headlessui/react";
-import { FiCheckCircle } from "react-icons/fi";
 import { useMemo, useState } from "react";
 import Button from "../Button";
 import Lucide from "../Lucide";
@@ -16,7 +14,13 @@ interface IAlertProps {
   onClickButtonPrincipal?: Function;
 }
 
-const sessionExpiredComponent = ({ tittle, show, description, textButtonPrincipal, onClickButtonPrincipal }: IAlertProps) => {
+const sessionExpiredComponent = ({
+  tittle,
+  show,
+  description,
+  textButtonPrincipal,
+  onClickButtonPrincipal,
+}: IAlertProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useMemo(() => {
@@ -33,13 +37,11 @@ const sessionExpiredComponent = ({ tittle, show, description, textButtonPrincipa
       <div className="w-[80%] md:w-[60%] lg:w-[60%] h-auto overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
         <div className="w-full px-4">
           <div className="mb-14 w-full flex justify-center items-center">
-              <p className="font-bold text-2xl text-slate-900">
-                {tittle}
-              </p>
+            <p className="font-bold text-2xl text-slate-900">{tittle}</p>
           </div>
-        
+
           <div className="flex justify-center text-center mb-6">
-            <Lucide icon="XCircle" color="#ff0500" size={60} />
+            <Lucide icon="XCircle" color="#216AD9" size={60} />
           </div>
 
           <div className=" text-center mb-14">
@@ -49,17 +51,17 @@ const sessionExpiredComponent = ({ tittle, show, description, textButtonPrincipa
           </div>
 
           <div className="items-center text-center justify-center mb-4">
-              { textButtonPrincipal && onClickButtonPrincipal &&
-                <div className="lg:mb-0 mb-4">
-                  <Button
-                      variant="primary"
-                      className="w-full"
-                      onClick={() => onClickButtonPrincipal()}
-                  >
-                      {textButtonPrincipal}
-                  </Button>
-                </div>
-              }
+            {textButtonPrincipal && onClickButtonPrincipal && (
+              <div className="lg:mb-0 mb-4">
+                <Button
+                  variant="primary"
+                  className="w-full"
+                  onClick={() => onClickButtonPrincipal()}
+                >
+                  {textButtonPrincipal}
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

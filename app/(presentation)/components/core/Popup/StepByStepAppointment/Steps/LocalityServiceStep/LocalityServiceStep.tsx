@@ -184,13 +184,7 @@ const LocalityServiceStep = ({
         id: elem.id,
         title: elem.name,
         description: `${
-          elem.address.municipality
-            ? elem.address.municipality.name
-            : "Sin dirección"
-        } ${
-          elem.address.country_location
-            ? `- ${elem.address.country_location.name}`
-            : ""
+          elem.address.postal_code ? elem.address.postal_code : "Sin dirección"
         }`,
       }));
 

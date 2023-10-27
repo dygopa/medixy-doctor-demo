@@ -173,6 +173,8 @@ const createAppointment = (obj:any, now?:boolean) => async (dispatch: Dispatch<a
     try {
       dispatch({ type: "CREATE_APPOINTMENT_LOADING" });
       
+      console.log(obj)
+
       const res: any = await new ScheduleUseCase().createAppointment(obj, now);
   
       dispatch({ type: "CREATE_APPOINTMENT_SUCCESSFUL", payload: { data: res } });
