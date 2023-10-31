@@ -19,7 +19,7 @@ export default function SucessfulMessage({
 }: ISucessfulMessageProps) {
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
-  const { getCalendarEvents, getAppointments } = actions;
+  const { getCalendarEvents, getAppointments, changeStatusPopup } = actions;
   const { data: locality } = state.activeLocality;
   const { data: activeDay } = state.activeDay;
   const { data: actualDay } = state.actualDay;
@@ -58,7 +58,7 @@ export default function SucessfulMessage({
         </p>
       </div>
 
-      <div className="lg:flex items-center text-center justify-center mt-14">
+      <div className="lg:flex items-center text-center justify-center mt-8">
         <div className="lg:mr-6 lg:mb-0 mb-4">
           <Button
             variant="primary"
@@ -66,9 +66,10 @@ export default function SucessfulMessage({
             onClick={() => {
               getCalendarEventsDispatch();
               setShowRescheduleModal(false);
+              changeStatusPopup(false)(dispatch);
             }}
           >
-            Regresar
+            De acuerdo, gracias
           </Button>
         </div>
       </div>

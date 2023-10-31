@@ -251,7 +251,11 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
           activeLocality({
             id: params.get("locality"),
             title: localityFinded["name"],
-            description: localityFinded["description"],
+            description:
+              localityFinded["address"] &&
+              localityFinded["address"]["postal_code"]
+                ? localityFinded["address"]["postal_code"]
+                : "Sin dirección",
             type: "LOCALITY",
           })(dispatch);
         }
@@ -259,7 +263,10 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
         activeLocality({
           id: localities[0]["id"],
           title: localities[0]["name"],
-          description: localities[0]["description"],
+          description:
+            localities[0]["address"] && localities[0]["address"]["postal_code"]
+              ? localities[0]["address"]["postal_code"]
+              : "Sin dirección",
           type: "LOCALITY",
         })(dispatch);
       }

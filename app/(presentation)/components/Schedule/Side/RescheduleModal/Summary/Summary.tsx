@@ -72,7 +72,7 @@ export default function Summary({
       <div>
         <div className="w-full flex justify-start items-center gap-2 mb-8">
           <div className="flex justify-center items-center">
-            <div className="w-20 h-20 rounded-lg bg-primary/20 text-primary flex flex-col justify-center items-center text-lg overflow-hidden">
+            <div className="w-20 h-20 rounded-full bg-primary/20 text-primary flex flex-col justify-center items-center text-lg overflow-hidden">
               <FiUser />
             </div>
           </div>
@@ -95,7 +95,26 @@ export default function Summary({
           </div>
         </div>
 
-        <div className="w-full flex flex-col justify-center items-start gap-2 mb-12">
+        <div>
+          <div className="mb-4">
+            <h2 className="text-center font-semibold text-base text-slate-900">
+              ¿Estás seguro que deseas reagendar esta cita?
+            </h2>
+          </div>
+
+          <div>
+            <p>
+              La cita con la fecha{" "}
+              {getFullDate(new Date(newAppointment.fechaInicio))}, a las{" "}
+              {newHour} será reagendada al{" "}
+              {getFullDate(new Date(appointment.fechaReserva))}, a las {hour}.
+              El paciente será notificado por vía correo electrónico de su
+              reagenda.
+            </p>
+          </div>
+        </div>
+
+        {/* <div className="w-full flex flex-col justify-center items-start gap-2 mb-12">
           <p className="font-normal text-sm text-slate-600">
             Fecha y hora de la cita
           </p>
@@ -113,9 +132,9 @@ export default function Summary({
           <p className="font-bold text-sm text-slate-600">
             {getFullDate(new Date(appointment.fechaReserva))}, a las {hour}
           </p>
-        </div>
+  </div> */}
 
-        <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 mt-36 bg-white">
+        <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 mt-16 bg-white">
           <Button
             disabled={loading}
             onClick={() =>

@@ -20,6 +20,10 @@ import {
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
 import { IUser } from "domain/core/entities/userEntity";
+import {
+  get12HoursFormat,
+  getFullDate,
+} from "(presentation)/(helper)/dates/datesHelper";
 
 const SummaryStep = ({
   user,
@@ -95,8 +99,8 @@ const SummaryStep = ({
           label={"Para el día"}
           value={
             appointment["isNow"]
-              ? moment().format("DD-MM-YYYY")
-              : moment(appointment.date?.fechaInicio).format("DD-MM-YYYY")
+              ? "En este momento"
+              : getFullDate(new Date(appointment.date?.fechaInicio))
           }
         />
         <GroupLabelValue

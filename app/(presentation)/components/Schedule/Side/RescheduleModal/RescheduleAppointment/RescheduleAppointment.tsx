@@ -161,7 +161,7 @@ export default function RescheduleAppointment({
 
   return (
     <div>
-      <div className="w-full flex flex-col justify-center items-start gap-2 mb-12">
+      <div className="w-full flex flex-col justify-center items-start gap-2 mb-6">
         <p className="font-normal text-sm text-slate-600">
           Fecha y hora actual de la cita
         </p>
@@ -228,7 +228,7 @@ export default function RescheduleAppointment({
             Ventanas de atención
           </p>
           {
-            <div className="w-full flex flex-col justify-start items-center gap-6">
+            <div className="w-full flex flex-col justify-start items-center gap-6 max-h-[350px] overflow-y-auto">
               {!loadedWindows && !loadingWindows && (
                 <div className="w-full h-fit flex flex-col justify-center items-center text-center gap-2">
                   <p className="text-base text-slate-900 font-medium">

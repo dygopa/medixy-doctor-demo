@@ -72,15 +72,10 @@ function Filters({
     let list_localities = localities.map((elem: any) => ({
       id: elem.id,
       title: elem.name,
-      description: `${
-        elem.address.municipality
-          ? elem.address.municipality.name
-          : "Sin dirección"
-      } ${
-        elem.address.country_location
-          ? `- ${elem.address.country_location.name}`
-          : ""
-      }`,
+      description:
+        elem.address && elem.address.postal_code
+          ? elem.address.postal_code
+          : "Sin dirección",
     }));
 
     setListOfLocalities(list_localities);
@@ -124,7 +119,6 @@ function Filters({
         }
         getServicesByLocality(user.userId, params.get("locality"))(dispatch);
       } else {
-        console.log(localities);
         setSelectedLocality({
           id: localities[0]["id"],
           title: localities[0]["name"],
@@ -171,6 +165,7 @@ function Filters({
                 description: "",
               });
               setSelectedLocality(value);
+
               activeLocality(value)(dispatch);
               getServicesByLocality(user.userId, value["id"])(dispatch);
               getCalendarEvents(

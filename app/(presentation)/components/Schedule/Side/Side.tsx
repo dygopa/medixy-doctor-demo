@@ -20,7 +20,7 @@ import { twMerge } from "tailwind-merge";
 import { FiUser } from "react-icons/fi";
 import { AppointmentEnum } from "(presentation)/(enum)/appointment/appointmentEnum";
 import { Menu, Transition } from "@headlessui/react";
-import RescheduleModal from "./RescheduleModal/RescheduleModal";
+
 import { IUser } from "domain/core/entities/userEntity";
 //import { socket } from '../../../../socket';
 
@@ -100,64 +100,9 @@ const AppointmentComponent = ({
   let isPending = data["estado"] === 1;
   let hour = moment(data["fechaReserva"]).utc().format("hh:mm a").toString();
 
-  const [showRescheduleModal, setShowRescheduleModal] = useState(false);
-
   return (
     <>
-      <div className="cursor-pointer relative w-full min-h-[11vh] h-fit max-h-[14vh] bg-white flex justify-between items-center p-3 gap-2 box-border rounded-md shadow-sm">
-        {data["estado"] === AppointmentEnum.PENDING && (
-          <div className="w-full flex justify-end absolute top-1 right-1">
-            <Menu as="div" className="relative inline-block text-left">
-              <Menu.Button className="rounded-lg hover:bg-gray-100 p-1">
-                <Lucide icon="MoreVertical" className="h-5" />
-              </Menu.Button>
-              <Transition
-                as={Fragment}
-                enter="transition ease-out duration-100"
-                enterFrom="transform opacity-0 scale-95"
-                enterTo="transform opacity-100 scale-100"
-                leave="transition ease-in duration-75"
-                leaveFrom="transform opacity-100 scale-100"
-                leaveTo="transform opacity-0 scale-95"
-              >
-                <Menu.Items className="absolute right-0 z-15 mt-1 w-44 origin-top-right rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5">
-                  <Menu.Item>
-                    {({ active }) => (
-                      <div>
-                        <button
-                          type="button"
-                          className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
-                          onClick={() => setShowRescheduleModal(true)}
-                        >
-                          <Lucide icon="CalendarClock" size={20} />
-                          Reagendar cita
-                        </button>
-                      </div>
-                    )}
-                  </Menu.Item>
-
-                  <Menu.Item>
-                    {({ active }) => (
-                      <div>
-                        <button
-                          type="button"
-                          className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
-                          onClick={cancelAppointment}
-                        >
-                          <div>
-                            <Lucide icon="XSquare" size={20} />
-                          </div>
-
-                          <div>Cancelar cita</div>
-                        </button>
-                      </div>
-                    )}
-                  </Menu.Item>
-                </Menu.Items>
-              </Transition>
-            </Menu>
-          </div>
-        )}
+      <div className="cursor-pointer relative w-full min-h-[9vh] h-fit max-h-[14vh] bg-white flex justify-between items-center p-3 gap-2 box-border rounded-md shadow-sm">
         <div
           onClick={onClick}
           className="flex justify-between items-center gap-2 w-full"
@@ -186,15 +131,6 @@ const AppointmentComponent = ({
           </div>
         </div>
       </div>
-
-      {showRescheduleModal && (
-        <RescheduleModal
-          user={user}
-          appointment={data}
-          showRescheduleModal={showRescheduleModal}
-          setShowRescheduleModal={setShowRescheduleModal}
-        />
-      )}
     </>
   );
 };
