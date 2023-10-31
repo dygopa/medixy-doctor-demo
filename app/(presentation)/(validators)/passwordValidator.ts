@@ -9,9 +9,9 @@ export class PasswordValidator extends Validator {
         return { isValid: true } as IValidator;
     } 
 
-    validate_min_length(): IValidator {
-        if (this.value.trimEnd().length < 6) {
-            return { isValid: false, error: { code: "field-min-length", message: "La contraseña debe contener mínimo 6 carácteres" } } as IValidator;
+    validate_min_length(min_length = 6): IValidator {
+        if (this.value.trimEnd().length < min_length) {
+            return { isValid: false, error: { code: "field-min-length", message: `La contraseña debe contener mínimo ${min_length} carácteres` } } as IValidator;
         }
 
         return { isValid: true } as IValidator;
