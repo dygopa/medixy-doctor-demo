@@ -110,7 +110,7 @@ export default function Formulary({
     countryLocation: "",
     street: "",
     address: "",
-  })
+  });
 
   let [errors, setErrors] = useState({
     postal_code: "",
@@ -167,9 +167,11 @@ export default function Formulary({
       countryLocation: data?.address.countryLocation ?? "",
       street: data?.address.street ?? "",
       city: data?.address.city ?? "",
-      postal_code: data?.address.postal_code ? data.address.postal_code.toString() : "",
+      postal_code: data?.address.postal_code
+        ? data.address.postal_code.toString()
+        : "",
       address: data?.address.address ?? "",
-    })
+    });
   };
 
   useEffect(() => {
@@ -247,6 +249,7 @@ export default function Formulary({
             location_id: localityId,
             price: service.base_price,
             service_parent_id: serviceBaseData.id,
+            has_error: false,
           });
         }
       });
@@ -262,9 +265,9 @@ export default function Formulary({
   if (loading) {
     return (
       <div className="w-full flex flex-col justify-center items-center">
-        <p className="font-bold text-slate-900 text-lg">Un momento...</p>
+        <p className="font-bold text-slate-900 text-lg">Un momento</p>
         <p className="font-light text-slate-500 text-base">
-          Cargando la Localidad.
+          Cargando la Localidad
         </p>
       </div>
     );
@@ -275,9 +278,9 @@ export default function Formulary({
   };
 
   function manageAddToList(serviceId: any, price: any, serviceParentId: any) {
-    let list: Array<ILocalityService> = [...services];
-    if (list.some((elem) => elem["service_id"] === serviceId)) {
-      list = list.filter((elem) => elem["service_id"] !== serviceId);
+    let list: any = [...services];
+    if (list.some((elem: any) => elem["service_id"] === serviceId)) {
+      list = list.filter((elem: any) => elem["service_id"] !== serviceId);
     } else {
       list.push({
         id: 0,
@@ -285,10 +288,9 @@ export default function Formulary({
         location_id: localityId,
         price: price,
         service_parent_id: serviceParentId,
+        has_error: false,
       });
     }
-
-    console.log(list);
 
     setServices(list);
   }
@@ -324,6 +326,8 @@ export default function Formulary({
       : ({} as any);
     let price = serviceAddedForm?.price
       ? serviceAddedForm.price
+      : serviceAddedForm.has_error
+      ? 0
       : serviceAdded?.base_price
       ? serviceAdded.base_price
       : data.base_price;
@@ -381,6 +385,12 @@ export default function Formulary({
                 $
               </div>
             </div>
+
+            {serviceAddedForm && serviceAddedForm?.has_error && (
+              <div>
+                <span className="text-danger">Debe colocar un precio</span>
+              </div>
+            )}
           </div>
 
           <div className="w-1/4 flex flex-col justify-center items-center">
@@ -409,6 +419,31 @@ export default function Formulary({
         </div>
       </div>
     );
+  };
+
+  const onUpdateUserLocality = () => {
+    if (services.length === 0) return;
+
+    let hasError = false;
+    const servicesList: any = [];
+
+    services.forEach((item: any) => {
+      if (!item.price || item.price === 0) {
+        item.has_error = true;
+
+        if (!hasError) hasError = true;
+      } else {
+        item.has_error = false;
+      }
+
+      servicesList.push(item);
+    });
+
+    setServices(servicesList);
+
+    if (!hasError) {
+      updateUserLocality({ ...formData, address }, data.id, services)(dispatch);
+    }
   };
 
   return (
@@ -440,7 +475,7 @@ export default function Formulary({
               services.length === 0
             }
             onClick={() => {
-              updateUserLocality({...formData, address}, data.id, services)(dispatch);
+              onUpdateUserLocality();
               //console.log(formData)
             }}
             variant="primary"
@@ -456,7 +491,7 @@ export default function Formulary({
             {loading ? (
               <div className="w-full flex flex-col justify-center items-center">
                 <p className="font-semibold text-base text-slate-900">
-                  Cargando...
+                  Cargando
                 </p>
                 <p className="font-light text-sm text-slate-500">
                   Espere mientras se carga la información de la localidad
@@ -533,7 +568,7 @@ export default function Formulary({
                   </p>
                   <FormInput
                     type={"text"}
-                    placeholder="Escribe el nombre del consultorio..."
+                    placeholder="Escribe el nombre del consultorio"
                     min={0}
                     value={formData?.name}
                     className="form-control lg:w-[70%]"
@@ -705,7 +740,7 @@ export default function Formulary({
                   </p>
                   <FormInput
                     type={"text"}
-                    placeholder="Escribe la calle..."
+                    placeholder="Escribe la calle"
                     min={0}
                     defaultValue={address.street}
                     className="form-control lg:w-[70%]"
@@ -720,7 +755,7 @@ export default function Formulary({
                   </p>
                   <FormInput
                     type={"text"}
-                    placeholder="Escribe el CLUES del consultorio..."
+                    placeholder="Escribe el CLUES del consultorio"
                     min={0}
                     value={address?.clues}
                     className="form-control lg:w-[70%]"

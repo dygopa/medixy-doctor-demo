@@ -175,6 +175,20 @@ export default function WithoutSteps({
     if (userId) getUserBaseServices(userId)(dispatch);
   }, [userId]);
 
+  const getDisabledButton = () => {
+    if (
+      createUserLocalityLoading ||
+      formData?.name === "" ||
+      address?.postal_code === "" ||
+      address?.federalEntity === 0 ||
+      services.length === 0
+    ) {
+      return true;
+    }
+
+    return false;
+  };
+
   const onClickButtonPrincipal: Function = () => {
     router.push(ScheduleRoutesEnum.Configuration + `?locality=${locality.id}`);
   };
@@ -184,9 +198,9 @@ export default function WithoutSteps({
   };
 
   function manageAddToList(serviceId: any, price: any, serviceParentId: any) {
-    let list: Array<ILocalityService> = [...services];
-    if (list.some((elem) => elem["service_id"] === serviceId)) {
-      list = list.filter((elem) => elem["service_id"] !== serviceId);
+    let list: any = [...services];
+    if (list.some((elem: any) => elem["service_id"] === serviceId)) {
+      list = list.filter((elem: any) => elem["service_id"] !== serviceId);
     } else {
       list.push({
         id: 0,
@@ -194,6 +208,7 @@ export default function WithoutSteps({
         location_id: 0,
         price: price,
         service_parent_id: serviceParentId,
+        has_error: false,
       });
     }
 
@@ -201,9 +216,12 @@ export default function WithoutSteps({
   }
 
   function managePriceChangeInList(value: number, id: number) {
-    let index = services.findIndex((elem: any) => elem["service_id"] === id);
-    services[index].price = value;
-    setServices(services);
+    let servicesList = services;
+    let index = servicesList.findIndex(
+      (elem: any) => elem["service_id"] === id
+    );
+    servicesList[index].price = value;
+    setServices(servicesList);
   }
 
   const ServiceComponent = ({ data }: { data: IService }) => {
@@ -214,6 +232,8 @@ export default function WithoutSteps({
     };
 
     let isInList = services.find((elem: any) => elem["service_id"] === data.id);
+
+    console.log(isInList);
 
     return (
       <div className="w-full border rounded-sm bg-white p-3 grid grid-cols-2 justify-between items-center gap-2">
@@ -262,6 +282,12 @@ export default function WithoutSteps({
                 $
               </div>
             </div>
+
+            {isInList && isInList?.has_error && (
+              <div>
+                <span className="text-danger">Debe colocar un precio</span>
+              </div>
+            )}
           </div>
 
           <div className="w-1/4 flex flex-col justify-center items-center">
@@ -291,6 +317,34 @@ export default function WithoutSteps({
     );
   };
 
+  const onCreateUserLocality = () => {
+    if (services.length === 0) return;
+
+    let hasError = false;
+    const servicesList: any = [];
+
+    services.forEach((item: any) => {
+      if (!item.price || item.price === 0) {
+        item.has_error = true;
+
+        if (!hasError) hasError = true;
+      } else {
+        item.has_error = false;
+      }
+
+      servicesList.push(item);
+    });
+
+    setServices(servicesList);
+
+    if (!hasError) {
+      createUserLocality(
+        { ...formData, address: address, id: userId },
+        services
+      )(dispatch);
+    }
+  };
+
   return (
     <>
       <AlertComponent
@@ -316,18 +370,9 @@ export default function WithoutSteps({
         </div>
         <Button
           className="w-full md:w-fit"
-          disabled={
-            createUserLocalityLoading ||
-            formData?.name === "" ||
-            address?.postal_code === "" ||
-            address?.federalEntity === 0 ||
-            services.length === 0
-          }
+          disabled={getDisabledButton()}
           onClick={() => {
-            createUserLocality(
-              { ...formData, address: address, id: userId },
-              services
-            )(dispatch);
+            onCreateUserLocality();
           }}
           variant="primary"
         >
@@ -408,7 +453,7 @@ export default function WithoutSteps({
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Escribe el nombre del consultorio..."
+                  placeholder="Escribe el nombre del consultorio"
                   min={0}
                   value={formData.name}
                   className="form-control lg:w-[70%]"
@@ -584,7 +629,7 @@ export default function WithoutSteps({
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Escribe la calle..."
+                  placeholder="Escribe la calle"
                   min={0}
                   defaultValue={address.street}
                   className="form-control lg:w-[70%]"
@@ -599,7 +644,7 @@ export default function WithoutSteps({
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Escribe el CLUES del consultorio..."
+                  placeholder="Escribe el CLUES del consultorio"
                   min={0}
                   value={address.clues}
                   className="form-control lg:w-[70%]"

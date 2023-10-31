@@ -154,7 +154,7 @@ const PatientStep = ({
                 console.log("Empty");
               }}
               list={listOfPatients}
-              placeholder={"Buscar..."}
+              placeholder={"Buscar"}
               selectedItem={selectedPatient}
             />
           </>

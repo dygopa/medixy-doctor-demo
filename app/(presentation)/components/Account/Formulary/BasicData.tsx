@@ -275,7 +275,7 @@ export default function BasicData({
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Escribe tu Nombre..."
+                  placeholder="Escribe tu nombre"
                   min={0}
                   defaultValue={user?.names}
                   className="form-control w-full"
@@ -324,7 +324,7 @@ export default function BasicData({
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Escribe tu CURP..."
+                  placeholder="Escribe tu CURP"
                   defaultValue={user?.curp}
                   className="form-control w-full"
                   onChange={(e) => handleCURP(e.target.value)}

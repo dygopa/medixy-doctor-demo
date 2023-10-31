@@ -389,7 +389,7 @@ function CreateAppointment({
               customClick={setSelectedPatient}
               customClickEmpty={() => {}}
               list={listOfPatients}
-              placeholder={"Buscar..."}
+              placeholder={"Buscar"}
               selectedItem={selectedPatient}
               createButton
             />
@@ -430,7 +430,7 @@ function CreateAppointment({
               customClick={setSelectedLocality}
               customClickEmpty={() => {}}
               list={listOfLocalities}
-              placeholder={"Buscar..."}
+              placeholder={"Buscar"}
               selectedItem={selectedLocality}
             />
           )}
@@ -460,7 +460,7 @@ function CreateAppointment({
             customClick={setSelectedService}
             customClickEmpty={() => {}}
             list={listOfServices}
-            placeholder={"Buscar..."}
+            placeholder={"Buscar"}
             selectedItem={selectedService}
           />
           {selectedService["title"] !== "" && (
@@ -598,7 +598,7 @@ function CreateAppointment({
               customClick={setSelectedPatient}
               customClickEmpty={() => {}}
               list={listOfPatients}
-              placeholder={"Buscar..."}
+              placeholder={"Buscar"}
               selectedItem={selectedPatient}
             />
             <div className="w-full flex justify-end items-center">

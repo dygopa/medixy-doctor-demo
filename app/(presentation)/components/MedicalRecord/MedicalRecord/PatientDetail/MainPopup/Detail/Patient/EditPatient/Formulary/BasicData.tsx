@@ -372,7 +372,7 @@ export default function BasicData({
                   </p>
                   <FormInput
                     type={"text"}
-                    placeholder="Nombres..."
+                    placeholder="Nombres"
                     defaultValue={values.name}
                     min={0}
                     className="form-control w-full"
@@ -389,7 +389,7 @@ export default function BasicData({
                   </p>
                   <FormInput
                     type={"text"}
-                    placeholder="Primer Apellido..."
+                    placeholder="Primer Apellido"
                     defaultValue={values.lastname}
                     min={0}
                     className="form-control w-full"
@@ -405,7 +405,7 @@ export default function BasicData({
                   </p>
                   <FormInput
                     type={"text"}
-                    placeholder="Segundo Apellido..."
+                    placeholder="Segundo Apellido"
                     defaultValue={values.motherlastname}
                     min={0}
                     className="form-control w-full"
@@ -423,7 +423,7 @@ export default function BasicData({
                   </p>
                   <FormInput
                     type={"text"}
-                    placeholder="CURP..."
+                    placeholder="CURP"
                     defaultValue={values.curp}
                     onChange={(e: any) =>
                       setValues({ ...values, curp: e.target.value })

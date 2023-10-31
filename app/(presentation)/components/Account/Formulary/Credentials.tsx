@@ -285,7 +285,7 @@ export default function Credentials({
               <FormInput
                 defaultValue={account?.professionalLicense}
                 type={"text"}
-                placeholder="Escribe tu Cédula Profesional..."
+                placeholder="Escribe tu Cédula Profesional"
                 className="form-control w-full"
                 onChange={(e) =>
                   setAccount({
@@ -300,7 +300,7 @@ export default function Credentials({
               <FormInput
                 defaultValue={account?.professionalLicenseInstitution}
                 type={"text"}
-                placeholder="Escribe el nombre de la institución..."
+                placeholder="Escribe el nombre de la institución"
                 className="form-control w-full"
                 onChange={(e) =>
                   setAccount({
@@ -364,7 +364,7 @@ export default function Credentials({
                   <p className="input-label mb-2">Cédula de la especialidad</p>
                   <FormInput
                     type={"text"}
-                    placeholder="Escribe la cédula de la especialidad..."
+                    placeholder="Escribe la cédula de la especialidad"
                     min={0}
                     value={formData["code"]}
                     disabled={
