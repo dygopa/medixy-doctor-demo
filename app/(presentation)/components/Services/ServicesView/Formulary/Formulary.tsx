@@ -374,7 +374,7 @@ export default function Formulary({
                 <FormInput
                   type="text"
                   value={formData?.name}
-                  placeholder="Nombre del Servicio..."
+                  placeholder="Nombre del servicio"
                   className="form-control lg:w-[70%]"
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
@@ -448,7 +448,7 @@ export default function Formulary({
                 </p>
                 <div className="lg:w-[70%]">
                   <FormTextarea
-                    placeholder="Descripcion el Servicio..."
+                    placeholder="Descripcion el servicio"
                     value={formData?.description}
                     className="form-control w-full"
                     onChange={(e) =>
@@ -465,7 +465,7 @@ export default function Formulary({
                   Condiciones
                 </p>
                 <FormTextarea
-                  placeholder="Condiciones del Servicio..."
+                  placeholder="Condiciones del servicio"
                   value={formData?.conditions}
                   className="form-control lg:w-[70%]"
                   onChange={(e) =>

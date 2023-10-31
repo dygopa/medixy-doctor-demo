@@ -30,7 +30,7 @@ export default function RescheduleModal({
 }: RescheduleModalProps) {
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
-  const { rescheduleAppointmentInitialState } = actions;
+  const { rescheduleAppointmentInitialState, changeStatusPopup } = actions;
   const { successful } = state.rescheduleAppointment;
 
   const [step, setStep] = useState(0);
@@ -77,21 +77,17 @@ export default function RescheduleModal({
   return (
     <div
       className={twMerge([
-        "z-[99] fixed top-0 left-0 w-full h-screen overflow-y-auto bg-gray-900/50 flex flex-col justify-center items-center",
+        "z-[99] fixed top-0 left-0 w-full h-screen overflow-y-hidden bg-gray-900/50 flex flex-col justify-center items-center",
         showRescheduleModal ? "visible" : "hidden",
       ])}
     >
       <div
         className={twMerge([
-          "w-full md:w-[60%] xl:w-[45%] lg:w-[60%]  overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8",
-          step === 0 ? "h-[900px]" : step === 1 ? "h-[650px]" : "h-[450px]",
+          "w-full md:w-[60%] xl:w-[45%] lg:w-[60%] flex overflow-y-hidden flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8",
+          step === 0 ? "h-[700px] " : step === 1 ? "h-[425px] " : "h-[375px] ",
         ])}
       >
         <div className="w-full px-4">
-          <div className="mb-14">
-            <p className="font-bold text-2xl text-slate-900">Reagendar cita</p>
-          </div>
-
           <div className="mb-5 text-center">{getComponentByStep()}</div>
         </div>
       </div>

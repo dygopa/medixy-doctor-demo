@@ -18,6 +18,10 @@ import {
 import "react-intl-tel-input/dist/main.css";
 import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
 import ConfirmPopup from "./ConfirmPopup/ConfirmPopup";
+import { EmailValidator } from "(presentation)/(validators)/emailValidator";
+import { NameValidator } from "(presentation)/(validators)/nameValidator";
+import { LastNameValidator } from "(presentation)/(validators)/lastNameValidator";
+import { PhoneNumberValidator } from "(presentation)/(validators)/phoneNumberValidator";
 
 export default function Formulary() {
   const { state, actions, dispatch } =
@@ -109,20 +113,32 @@ export default function Formulary() {
 
   const handlename = (value: string, e: any) => {
     setValues({ ...values, names: value });
-    if (value.length < 2) {
+    if (!new NameValidator(value).validate_not_empty().isValid) {
       setErrors((previousState) => {
         return {
           ...previousState,
-          names: "El nombre es obligatorio",
+          names:
+            new NameValidator(value).validate_not_empty().error?.message ?? "",
         };
       });
       return true;
     }
-    if (!VALIDATE_NAMES(value)) {
+    if (!new NameValidator(value).validate_max_length().isValid) {
       setErrors((previousState) => {
         return {
           ...previousState,
-          names: "El nombre solo debe incluir letras",
+          names:
+            new NameValidator(value).validate_max_length().error?.message ?? "",
+        };
+      });
+      return true;
+    }
+    if (!new NameValidator(value).validate_regexp().isValid) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          names:
+            new NameValidator(value).validate_regexp().error?.message ?? "",
         };
       });
       return true;
@@ -133,20 +149,34 @@ export default function Formulary() {
 
   const handlelastname = (value: string) => {
     setValues({ ...values, first_lastname: value });
-    if (value.length < 2) {
+    if (!new LastNameValidator(value).validate_not_empty().isValid) {
       setErrors((previousState) => {
         return {
           ...previousState,
-          first_lastname: "El apellido es obligatorio",
+          first_lastname:
+            new LastNameValidator(value).validate_not_empty().error?.message ??
+            "",
         };
       });
       return true;
     }
-    if (!VALIDATE_NAMES(value)) {
+    if (!new LastNameValidator(value).validate_max_length().isValid) {
       setErrors((previousState) => {
         return {
           ...previousState,
-          first_lastname: "El apellido solo debe incluir letras",
+          first_lastname:
+            new LastNameValidator(value).validate_max_length().error?.message ??
+            "",
+        };
+      });
+      return true;
+    }
+    if (!new LastNameValidator(value).validate_regexp().isValid) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          first_lastname:
+            new LastNameValidator(value).validate_regexp().error?.message ?? "",
         };
       });
       return true;
@@ -157,11 +187,13 @@ export default function Formulary() {
 
   const handlephone = (value: string, isValid: boolean) => {
     setValues({ ...values, phone_number: value.trim() });
-    if (value.length < 2) {
+    if (!new PhoneNumberValidator(value).validate_not_empty().isValid) {
       setErrors((previousState) => {
         return {
           ...previousState,
-          phone_number: "El teléfono es obligatorio",
+          phone_number:
+            new PhoneNumberValidator(value).validate_not_empty().error
+              ?.message ?? "",
         };
       });
       return true;
@@ -176,11 +208,13 @@ export default function Formulary() {
       });
       return true;
     }
-    if (!VALIDATE_NUMBERS(value)) {
+    if (!new PhoneNumberValidator(value).validate_regexp().isValid) {
       setErrors((previousState) => {
         return {
           ...previousState,
-          phone_number: "El teléfono solo debe incluir números",
+          phone_number:
+            new PhoneNumberValidator(value).validate_regexp().error?.message ??
+            "",
         };
       });
       return true;
@@ -191,11 +225,12 @@ export default function Formulary() {
 
   const handleEmail = (value: string) => {
     setValues({ ...values, email: value.trim() });
-    if (values.email.length > 1) {
-      if (!VALIDATE_EMAIL(values.email)) {
+    if (!new EmailValidator(value).validate_not_empty().isValid) {
+      if (!new EmailValidator(value).validate_regexp().isValid) {
         setErrors({
           ...errors,
-          email: "El correo debe tener un formato válido",
+          email:
+            new EmailValidator(value).validate_regexp().error?.message ?? "",
         });
         return true;
       }
@@ -277,8 +312,14 @@ export default function Formulary() {
       console.log(listOfErrors);
       return;
     }
-    if (!VALIDATE_EMAIL(values.email)) {
+    if (!new EmailValidator(values.email).validate_regexp().isValid) {
       setWrongEmail(true);
+      setErrors({
+        ...errors,
+        email:
+          new EmailValidator(values.email).validate_regexp().error?.message ??
+          "",
+      });
       return;
     } else {
       setWrongEmail(false);

@@ -3,7 +3,7 @@ import {
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
-import { ChangeEvent, useContext, useRef, useEffect } from "react";
+import { ChangeEvent, useContext, useRef, useEffect, useState } from "react";
 import { IUserContext, UserContext } from "../context/UserContext";
 import { twMerge } from "tailwind-merge";
 import { IUser } from "domain/core/entities/userEntity";
@@ -16,6 +16,7 @@ import moment from "moment/moment";
 import Image from "next/image";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { VALIDATE_NAMES } from "(presentation)/(utils)/errors-validation";
+import UpdateProfilePictureModal from "./UpdateProfilePictureModal/UpdateProfilePictureModal";
 
 interface IFormularyProps {
   user: IUser;
@@ -47,6 +48,9 @@ export default function BasicData({
   const { data: countriesISO } = state.getCountriesISO;
 
   const { data, loading, error, successful } = state.updateAvatar;
+
+  const [showUpdateProfilePictureModal, setShowUpdateProfilePictureModal] =
+    useState(false);
 
   let avatarRef = useRef<HTMLInputElement>(null);
 
@@ -186,6 +190,10 @@ export default function BasicData({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect(() => {
+    if (loading) setShowUpdateProfilePictureModal(true);
+  }, [loading]);
+
   return (
     <>
       <AlertComponent
@@ -275,7 +283,7 @@ export default function BasicData({
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Escribe tu Nombre..."
+                  placeholder="Escribe tu nombre"
                   min={0}
                   defaultValue={user?.names}
                   className="form-control w-full"
@@ -324,7 +332,7 @@ export default function BasicData({
                 </p>
                 <FormInput
                   type={"text"}
-                  placeholder="Escribe tu CURP..."
+                  placeholder="Escribe tu CURP"
                   defaultValue={user?.curp}
                   className="form-control w-full"
                   onChange={(e) => handleCURP(e.target.value)}
@@ -405,6 +413,14 @@ export default function BasicData({
           </div>
         </div>
       </div>
+
+      {showUpdateProfilePictureModal && (
+        <UpdateProfilePictureModal
+          showUpdateProfilePictureModal={showUpdateProfilePictureModal}
+          setShowUpdateProfilePictureModal={setShowUpdateProfilePictureModal}
+          loading={loading}
+        />
+      )}
     </>
   );
 }
