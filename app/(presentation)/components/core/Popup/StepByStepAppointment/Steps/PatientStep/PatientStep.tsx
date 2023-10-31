@@ -22,6 +22,10 @@ import {
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
 import { IUser } from "domain/core/entities/userEntity";
+import { NameValidator } from "(presentation)/(validators)/nameValidator";
+import { LastNameValidator } from "(presentation)/(validators)/lastNameValidator";
+import { EmailValidator } from "(presentation)/(validators)/emailValidator";
+import { BirthDateValidator } from "(presentation)/(validators)/birthDateValidator";
 
 const PatientStep = ({
   user,
@@ -49,7 +53,13 @@ const PatientStep = ({
 
   const [listOfPatients, setListOfPatients] = useState([]);
 
-  const [patient, setPatient] = useState({
+  const [values, setValues] = useState({
+    name: "",
+    firstName: "",
+    dateBirth: "",
+    email: "",
+  });
+  const [errors, setErrors] = useState({
     name: "",
     firstName: "",
     dateBirth: "",
@@ -65,6 +75,117 @@ const PatientStep = ({
   const [loadedDataFromAppointment, setLoadedDataFromAppointment] =
     useState(false);
 
+  const handlename = (value: string) => {
+    setValues({ ...values, name: value });
+    if (!new NameValidator(value).validate_not_empty().isValid) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          name:
+            new NameValidator(value).validate_not_empty().error?.message ?? "",
+        };
+      });
+      return true;
+    }
+    if (!new NameValidator(value).validate_max_length().isValid) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          name:
+            new NameValidator(value).validate_max_length().error?.message ?? "",
+        };
+      });
+      return true;
+    }
+    if (!new NameValidator(value).validate_regexp().isValid) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          name: new NameValidator(value).validate_regexp().error?.message ?? "",
+        };
+      });
+      return true;
+    }
+    setErrors({ ...errors, name: "" });
+    return false;
+  };
+
+  const handlelastname = (value: string) => {
+    setValues({ ...values, firstName: value });
+    if (!new LastNameValidator(value).validate_not_empty().isValid) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          firstName:
+            new LastNameValidator(value).validate_not_empty().error?.message ??
+            "",
+        };
+      });
+      return true;
+    }
+    if (!new LastNameValidator(value).validate_max_length().isValid) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          firstName:
+            new LastNameValidator(value).validate_max_length().error?.message ??
+            "",
+        };
+      });
+      return true;
+    }
+    if (!new LastNameValidator(value).validate_regexp().isValid) {
+      setErrors((previousState) => {
+        return {
+          ...previousState,
+          firstName:
+            new LastNameValidator(value).validate_regexp().error?.message ?? "",
+        };
+      });
+      return true;
+    }
+    setErrors({ ...errors, firstName: "" });
+    return false;
+  };
+
+  const handlebirthdate = (value: string) => {
+    setValues({ ...values, dateBirth: value });
+    if (!new BirthDateValidator(value).validate_not_empty().isValid) {
+      setErrors({
+        ...errors,
+        dateBirth:
+          new BirthDateValidator(value).validate_not_empty().error?.message ??
+          "",
+      });
+      return true;
+    }
+
+    setErrors({ ...errors, dateBirth: "" });
+    return false;
+  };
+
+  const handleEmail = (value: string) => {
+    setValues({ ...values, email: value.trim() });
+    if (!new EmailValidator(value).validate_not_empty().isValid) {
+      setErrors({
+        ...errors,
+        email:
+          new EmailValidator(value).validate_not_empty().error?.message ?? "",
+      });
+      return true;
+    }
+
+    if (!new EmailValidator(value).validate_regexp().isValid) {
+      setErrors({
+        ...errors,
+        email: new EmailValidator(value).validate_regexp().error?.message ?? "",
+      });
+      return true;
+    }
+    setErrors({ ...errors, email: "" });
+    return false;
+  };
+
   useEffect(() => {
     if (!loadedDataFromAppointment) {
       if (appointment["patient"]) {
@@ -73,7 +194,7 @@ const PatientStep = ({
           title: appointment["patient"]["name"],
           description: "",
         });
-        setPatient({
+        setValues({
           name: appointment["patient"]["name"],
           firstName: "",
           dateBirth: "",
@@ -86,8 +207,8 @@ const PatientStep = ({
 
   useMemo(() => {
     if (activePatient?.subjectId) {
-      setPatient({
-        ...patient,
+      setValues({
+        ...values,
         name: activePatient["name"],
         firstName: activePatient["lastName"],
         dateBirth: "",
@@ -125,6 +246,23 @@ const PatientStep = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
+  const onSetAppointment = () => {
+    if (
+      handleEmail(values.email) ||
+      handlename(values.name) ||
+      handlelastname(values.firstName) ||
+      handlebirthdate(values.dateBirth)
+    ) {
+      return;
+    }
+
+    setAppointment({
+      ...appointment,
+      patient: values,
+    });
+    setStep(3)(dispatch);
+  };
+
   return (
     <div className={"w-full h-fit relative flex flex-col gap-4"}>
       <div className="w-full flex flex-col justify-center items-start gap-2">
@@ -138,7 +276,7 @@ const PatientStep = ({
               customClick={(value: any) => {
                 setPatientNotFound(false);
                 setSelectedPatient(value);
-                setPatient({
+                setValues({
                   name: value.title,
                   firstName: "",
                   dateBirth: "",
@@ -154,7 +292,7 @@ const PatientStep = ({
                 console.log("Empty");
               }}
               list={listOfPatients}
-              placeholder={"Buscar..."}
+              placeholder={"Buscar"}
               selectedItem={selectedPatient}
             />
           </>
@@ -217,14 +355,14 @@ const PatientStep = ({
                   </p>
                   <FormInput
                     type="text"
-                    onChange={(e: any) => {
-                      setPatient({
-                        ...patient,
-                        name: e.target.value,
-                      });
-                    }}
+                    onChange={(e: any) => handlename(e.target.value)}
                     placeholder="Nombre"
                   />
+                  {errors.name.length > 0 && (
+                    <div className="mt-1">
+                      <span className="text-red-500 mt-3">{errors.name}</span>
+                    </div>
+                  )}
                 </div>
                 <div className="input-group">
                   <p className="input-label pb-2">
@@ -233,14 +371,16 @@ const PatientStep = ({
                   </p>
                   <FormInput
                     type="text"
-                    onChange={(e: any) => {
-                      setPatient({
-                        ...patient,
-                        firstName: e.target.value,
-                      });
-                    }}
+                    onChange={(e: any) => handlelastname(e.target.value)}
                     placeholder="Primer apellido"
                   />
+                  {errors.firstName.length > 0 && (
+                    <div className="mt-1">
+                      <span className="text-red-500 mt-3">
+                        {errors.firstName}
+                      </span>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -252,14 +392,16 @@ const PatientStep = ({
                 <FormInput
                   type={"date"}
                   max={moment().format("YYYY-MM-DD")}
-                  onChange={(e: any) =>
-                    setPatient({
-                      ...patient,
-                      dateBirth: e.target.value,
-                    })
-                  }
+                  onChange={(e: any) => handlebirthdate(e.target.value)}
                   className="form-control w-full"
                 />
+                {errors.dateBirth.length > 0 && (
+                  <div className="mt-1">
+                    <span className="text-red-500 mt-3">
+                      {errors.dateBirth}
+                    </span>
+                  </div>
+                )}
               </div>
 
               <div className="input-group w-full">
@@ -268,14 +410,14 @@ const PatientStep = ({
                 </p>
                 <FormInput
                   type="email"
-                  onChange={(e) => {
-                    setPatient({
-                      ...patient,
-                      email: e.target.value,
-                    });
-                  }}
+                  onChange={(e: any) => handleEmail(e.target.value)}
                   placeholder="Email"
                 />
+                {errors.email.length > 0 && (
+                  <div className="mt-1">
+                    <span className="text-red-500 mt-3">{errors.email}</span>
+                  </div>
+                )}
               </div>
             </div>
           </div>
@@ -285,18 +427,12 @@ const PatientStep = ({
         <Button
           disabled={
             selectedPatient.id === 0 &&
-            (patient.name === "" ||
-              patient.firstName === "" ||
-              patient.dateBirth === "" ||
-              patient.email === "")
+            (values.name === "" ||
+              values.firstName === "" ||
+              values.dateBirth === "" ||
+              values.email === "")
           }
-          onClick={() => {
-            setAppointment({
-              ...appointment,
-              patient,
-            });
-            setStep(3)(dispatch);
-          }}
+          onClick={() => onSetAppointment()}
           variant="primary"
           type="button"
           className="w-full"

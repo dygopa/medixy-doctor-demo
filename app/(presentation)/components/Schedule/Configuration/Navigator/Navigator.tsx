@@ -95,15 +95,10 @@ export default function Navigator({ user }: INavigatorProps) {
     let list_localities = localities.map((elem: any) => ({
       id: elem.id,
       title: elem.name,
-      description: `${
-        elem.address.municipality
-          ? elem.address.municipality.name
-          : "Sin dirección"
-      } ${
-        elem.address.country_location
-          ? `- ${elem.address.country_location.name}`
-          : ""
-      }`,
+      description:
+        elem["address"] && elem["address"]["postal_code"]
+          ? elem["address"]["postal_code"]
+          : "Sin dirección",
     }));
 
     setListOfLocalities(list_localities);
@@ -184,12 +179,26 @@ export default function Navigator({ user }: INavigatorProps) {
 
       if (params.get("locality")) {
         let id = params.get("locality")?.toString();
-        localityFinded = [...localities].find(
+        const localityFindedItem = [...localities].find(
           (elem: any) => elem["id"] === parseInt(id!)
         );
-        if (localityFinded) localityFinded = localityFinded;
+        if (localityFindedItem)
+          localityFinded = {
+            ...localityFindedItem,
+            description:
+              localityFindedItem["address"] &&
+              localityFindedItem["address"]["postal_code"]
+                ? localityFindedItem["address"]["postal_code"]
+                : "Sin dirección",
+          };
       } else {
-        localityFinded = [...localities][0];
+        localityFinded = {
+          ...localities[0],
+          description:
+            localities[0]["address"] && localities[0]["address"]["postal_code"]
+              ? localities[0]["address"]["postal_code"]
+              : "Sin dirección",
+        };
       }
       activeLocality({
         id: localityFinded["id"],

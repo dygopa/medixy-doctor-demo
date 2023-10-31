@@ -1,3 +1,4 @@
+import { PasswordValidator } from "(presentation)/(validators)/passwordValidator";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
@@ -57,10 +58,12 @@ export default function FinishRegister({ user }: IFinishRegisterProps) {
 
   const handlePassword = (value: string) => {
     setValues({ ...values, password: value });
-    if (value.length <= 5) {
+    if (!new PasswordValidator(value).validate_min_length().isValid) {
       setErrors({
         ...errors,
-        password: "La contraseña debe contener al menos 6 carácteres",
+        password:
+          new PasswordValidator(value).validate_min_length().error?.message ??
+          "",
       });
       return true;
     } else {

@@ -135,7 +135,7 @@ export default function FiltersComponent({
             customClick={setSelectedLocality}
             customClickEmpty={() => {}}
             list={listOfLocalities}
-            placeholder={"Buscar..."}
+            placeholder={"Buscar"}
             selectedItem={selectedLocality}
           />
           {selectedLocality["title"] !== "" && (
@@ -164,7 +164,7 @@ export default function FiltersComponent({
             customClick={setSelectedService}
             customClickEmpty={() => {}}
             list={listOfServices}
-            placeholder={"Buscar..."}
+            placeholder={"Buscar"}
             selectedItem={selectedService}
           />
           {selectedService["title"] !== "" && (

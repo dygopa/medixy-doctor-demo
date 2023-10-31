@@ -257,10 +257,10 @@ function CreateAgenda({
   }
 
   function handleFormatList() {
-    let list_localities = localities.map((elem: ILocality) => ({
+    let list_localities = localities.map((elem: any) => ({
       id: elem.id,
       title: elem.name,
-      description: elem.address,
+      description: elem["postal_code"] ? elem["postal_code"] : "Sin dirección",
       type: "LOCALITY",
     }));
     setListOfLocalities(list_localities);
@@ -492,7 +492,7 @@ function CreateAgenda({
   useMemo(() => {
     if (loadedLocalities) handleFormatList();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [loadedLocalities]);
+  }, [loadedLocalities, localities]);
 
   useEffect(() => {
     if (formData.fromHour.length === 0)
@@ -593,7 +593,9 @@ function CreateAgenda({
       setSelectedLocality({
         id: locality.id,
         title: locality.title,
-        description: locality.description,
+        description: locality["postal_code"]
+          ? locality["postal_code"]
+          : "Sin dirección",
         type: "LOCALITY",
       });
       setFormData({

@@ -153,7 +153,7 @@ export default function SpecialSearch({
           "absolute top-10 right-0 w-full bg-white border rounded-md border-slate-100 shadow-md z-[20]",
         ])}
       >
-        <div className="max-h-[30vh] min-h-[10vh] h-fit overflow-y-auto">
+        <div className="max-h-[30vh] h-fit overflow-y-auto">
           {searchedList.length === 0 ? (
             <EmptyList
               customClickEmpty={customClickEmpty}
@@ -279,7 +279,7 @@ export function SpecialSelect({ ...props }: SpecialSelectProps) {
             "absolute top-full right-0 w-full block bg-white border rounded-md border-slate-100 shadow-md z-[20]",
           ])}
         >
-          <div className="max-h-[30vh] w-full relative overflow-hidden min-h-[10vh] h-fit overflow-y-auto">
+          <div className="max-h-[30vh] w-full relative overflow-hidden h-fit overflow-y-auto">
             {props.list.length === 0 ? (
               <EmptyList />
             ) : (
@@ -429,7 +429,7 @@ export function SpecialSelectSchedule({ ...props }: SpecialSelectProps) {
           "absolute top-full right-0 w-full block bg-white border rounded-md border-slate-100 shadow-md z-[20]",
         ])}
       >
-        <div className="max-h-[30vh] w-full relative overflow-hidden min-h-[10vh] h-fit overflow-y-auto">
+        <div className="max-h-[30vh] w-full relative overflow-hidden h-fit overflow-y-auto">
           {props.list.length === 0 ? (
             <EmptyList />
           ) : (

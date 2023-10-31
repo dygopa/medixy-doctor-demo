@@ -16,6 +16,8 @@ import Link from "next/link";
 import { VALIDATE_EMAIL } from "(presentation)/(utils)/errors-validation";
 import { useSearchParams } from "next/navigation";
 import { twMerge } from "tailwind-merge";
+import { EmailValidator } from "(presentation)/(validators)/emailValidator";
+import { PasswordValidator } from "(presentation)/(validators)/passwordValidator";
 
 export default function Formulary() {
   const { state, actions, dispatch } =
@@ -28,7 +30,7 @@ export default function Formulary() {
   const from = searchParams.get("from");
 
   const [showAlertSuccess, setShowAlertSuccess] = useState(false);
-  const [ inputPassword, setInputPassword ] = useState("password");
+  const [inputPassword, setInputPassword] = useState("password");
 
   const [values, setValues] = useState({
     email: "",
@@ -55,17 +57,22 @@ export default function Formulary() {
   const handleEmail = () => {
     let hasError = false;
 
-    if (values.email.length < 6) {
+    if (!new EmailValidator(values.email).validate_min_length().isValid) {
       setErrors({
         ...errors,
-        email: "El correo debe contener más de 6 carácteres",
+        email:
+          new EmailValidator(values.email).validate_min_length().error
+            ?.message ?? "",
       });
       hasError = true;
     }
-    if (!VALIDATE_EMAIL(values.email)) {
+
+    if (!new EmailValidator(values.email).validate_regexp().isValid) {
       setErrors({
         ...errors,
-        email: "El correo debe tener un formato válido",
+        email:
+          new EmailValidator(values.email).validate_regexp().error?.message ??
+          "",
       });
       hasError = true;
     } else {
@@ -78,10 +85,12 @@ export default function Formulary() {
   };
 
   const handlePassword = () => {
-    if (values.password.length < 6) {
+    if (!new PasswordValidator(values.password).validate_min_length().isValid) {
       setErrors({
         ...errors,
-        password: "La contraseña debe contener más de 6 carácteres",
+        password:
+          new PasswordValidator(values.password).validate_min_length().error
+            ?.message ?? "",
       });
       return true;
     } else {
@@ -97,7 +106,10 @@ export default function Formulary() {
       return;
     }
 
-    signInUser({ email: values.email.toLowerCase(), password: values.password })(dispatch);
+    signInUser({
+      email: values.email.toLowerCase(),
+      password: values.password,
+    })(dispatch);
   };
 
   const handleErrors = () => {
@@ -141,12 +153,12 @@ export default function Formulary() {
   };
 
   const viewPassword = () => {
-    if(inputPassword === "password") {
-      setInputPassword("text")
-      return
+    if (inputPassword === "password") {
+      setInputPassword("text");
+      return;
     }
-    setInputPassword("password")
-  }
+    setInputPassword("password");
+  };
 
   useMemo(() => {
     if (successful) window.location.href = "/dashboard";
@@ -236,10 +248,10 @@ export default function Formulary() {
             icon={inputPassword === "text" ? "EyeOff" : "Eye"}
             className={twMerge([
               "absolute inset-y-0 right-7 w-4 h-4 my-auto mr-3 cursor-pointer transition-all",
-              inputPassword === "text" && "text-black", 
+              inputPassword === "text" && "text-black",
             ])}
             onClick={(e: any) => {
-              viewPassword()
+              viewPassword();
             }}
           />
         </div>
