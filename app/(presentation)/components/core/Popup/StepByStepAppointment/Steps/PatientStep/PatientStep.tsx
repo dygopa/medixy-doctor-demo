@@ -248,10 +248,11 @@ const PatientStep = ({
 
   const onSetAppointment = () => {
     if (
-      handleEmail(values.email) ||
-      handlename(values.name) ||
-      handlelastname(values.firstName) ||
-      handlebirthdate(values.dateBirth)
+      selectedPatient.id === 0 &&
+      (handleEmail(values.email) ||
+        handlename(values.name) ||
+        handlelastname(values.firstName) ||
+        handlebirthdate(values.dateBirth))
     ) {
       return;
     }
