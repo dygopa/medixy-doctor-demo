@@ -93,9 +93,7 @@ export default function PatientDetail({ subjectId }: IPatientDetailProps) {
             <div>
               <p className="font-normal text-slate-500 mb-1">Nombre(s)</p>
 
-              <span className="font-medium text-[16px]">
-                {subject?.name} {subject?.lastName}
-              </span>
+              <span className="font-medium text-[16px]">{subject?.name}</span>
             </div>
             <div>
               <p className="font-normal text-slate-500 mb-1">Edad</p>

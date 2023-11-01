@@ -87,7 +87,7 @@ export default function Patient({
                 <p className="font-normal text-slate-500 mb-1">Nombre(s)</p>
 
                 <p className="font-medium text-[16px] text-ellipsis overflow-hidden whitespace-nowrap">
-                  {subject?.name} {subject?.lastName}
+                  {subject?.name}
                 </p>
               </div>
               <div>
