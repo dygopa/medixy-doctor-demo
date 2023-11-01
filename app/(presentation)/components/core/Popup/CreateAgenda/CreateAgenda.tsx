@@ -583,7 +583,7 @@ function CreateAgenda({
 
   useMemo(() => {
     if (!statusPopup) {
-      router.replace(`/schedule/configuration`);
+      // router.push(`/schedule/configuration`);
       setDaysInWeek(
         daysInWeek.map((elem: any) => ({
           ...elem,
