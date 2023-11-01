@@ -157,7 +157,7 @@ export default function AboutPatient() {
                 </p>
 
                 <p className="font-medium text-[14px] text-ellipsis overflow-hidden whitespace-nowrap">
-                  {subject?.name} {subject?.lastName}
+                  {subject?.name}
                 </p>
               </div>
 
