@@ -42,8 +42,8 @@ export class PostalCodeRepository implements IPostalCodeRepository {
         await Promise.all(res.data.map(async (data: any) => {
           const postalCodeMap: IPostalCode = postalCodeSupabaseToMap(data);
 
-          if (res.data[0]?.EntidadFederativa) {
-            const federalEntity: IFederalEntity = federalEntitySupabaseToMap(res.data[0].EntidadFederativa);
+          if (data?.EntidadFederativa) {
+            const federalEntity: IFederalEntity = federalEntitySupabaseToMap(data.EntidadFederativa);
   
             if (federalEntity.entityId > 0) postalCodeMap.federalEntity = federalEntity;
           }
