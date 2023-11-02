@@ -93,7 +93,7 @@ function AddressAutocomplete({
                     federalEntityId: item.additionalId ?? 0,
                     municipalityId: item.thirdAdditionalId ?? 0,
                     municipalityCatalogId: item.secondAdditionalId ?? 0,
-                    location: "",
+                    location: item.text ?? "",
                   });
                   setFormData({
                     ...formData,
@@ -101,7 +101,7 @@ function AddressAutocomplete({
                     federalEntity: item.additionalId ?? 0,
                     municipality: item.thirdAdditionalId ?? 0,
                     municipalityCatalogId: item.secondAdditionalId ?? 0,
-                    countryLocation: "",
+                    countryLocation: item.text ?? "",
                   });
                 }}
                 postalCodeDefault={addressData.postalCode}
@@ -231,7 +231,7 @@ function AddressAutocomplete({
                   countryLocation: value,
                 });
               }}
-              disabled={addressData.municipalityId === 0}
+              disabled
               className="form-control lg:w-full"
               countryLocation={addressData.location}
               municipalityCatalogId={addressData.municipalityCatalogId}

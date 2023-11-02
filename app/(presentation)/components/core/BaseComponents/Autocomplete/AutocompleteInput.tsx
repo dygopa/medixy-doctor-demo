@@ -10,6 +10,7 @@ export interface IAutocompleteValue {
   additionalId?: number | null;
   secondAdditionalId?: number | null;
   thirdAdditionalId?: number | null;
+  text?: string | null;
   name: string;
 }
 
