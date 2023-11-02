@@ -1,5 +1,5 @@
 import Calendar from "(presentation)/components/core/Calendar";
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import {
   IScheduleContext,
   ScheduleContext,
@@ -27,6 +27,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 import { IUser } from "domain/core/entities/userEntity";
 import CompletedStepByStepPopup from "(presentation)/components/core/CompletedStepByStep/CompletedStepByStepPopUp";
+import StepPopup from "./StepPopup/StepPopup";
 
 interface ICalendarIndexProps {
   user: IUser;
@@ -44,6 +45,8 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
     loading: creatingStep,
     successful: createStepSuccessful,
   } = stateSteps.createUserSteps;
+  const { data: steps, successful: stepsSuccessful } =
+    stateSteps.getStepsMessages;
 
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
@@ -83,11 +86,19 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
   const [showWindowModal, setShowWindowModal] = useState(false);
   const [successfulPopup, setSuccessfulPopup] = useState(false);
   const [hasLocalities, setHasLocalities] = useState(false);
-  console.log(hasLocalities);
+  const [showStepPopup, setShowStepPopup] = useState(false);
 
   const [eventSelected, setEventSelected] = useState<EventClickArg>(
     {} as EventClickArg
   );
+
+  useEffect(() => {
+    if (steps && steps.length < 2 && stepsSuccessful) {
+      setTimeout(() => {
+        setShowStepPopup(true);
+      }, 2000);
+    }
+  }, [steps, stepsSuccessful]);
 
   function formatHour(value: number) {
     let h: string = value.toString();
@@ -327,6 +338,8 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
         isVisible={showCompletedStepModal}
         setIsVisible={setShowCompletedModal}
       />
+
+      <StepPopup isVisible={showStepPopup} userId={user.userId} steps={steps} />
     </>
   );
 }

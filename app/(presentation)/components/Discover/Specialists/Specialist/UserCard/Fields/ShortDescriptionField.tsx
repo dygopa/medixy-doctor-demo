@@ -29,9 +29,14 @@ export default function ShortDescriptionField({
             <TooltipIndicator
               tittle="Escribe una descripción corta"
               description="Da un resumen corto de ti y tus servicios como profesional para ser visualizados por tus pacientes"
-              disabledButton
-              onClick={() => {}}
-              tittleButton={""}
+              onClick={
+                loading || userObject?.shortDescription?.length === 0
+                  ? () => {}
+                  : () => {
+                      handleOnClick("shortDescription");
+                    }
+              }
+              tittleButton={loading ? "Guardando" : "Guardar descripción"}
               direcction={"left"}
             />
           </div>
@@ -40,9 +45,14 @@ export default function ShortDescriptionField({
             <TooltipIndicator
               tittle="Escribe una descripción corta"
               description="Da un resumen corto de ti y tus servicios como profesional para ser visualizados por tus pacientes"
-              disabledButton
-              onClick={() => {}}
-              tittleButton={""}
+              onClick={
+                loading || userObject?.shortDescription?.length === 0
+                  ? () => {}
+                  : () => {
+                      handleOnClick("shortDescription");
+                    }
+              }
+              tittleButton={loading ? "Guardando" : "Guardar descripción"}
               direcction={"top"}
             />
           </div>
@@ -56,12 +66,11 @@ export default function ShortDescriptionField({
         ])}
       >
         <JiraInput
-          onClick={() => {
-            handleOnClick("shortDescription");
-          }}
+          onClick={() => {}}
           customStyleText={"text-base text-slate-500 font-light"}
           customType="text"
           loading={loading}
+          disabledButton
           disabled={step === 0}
           text={
             specialist.shortDescription !== ""

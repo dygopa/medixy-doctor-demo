@@ -9,6 +9,7 @@ interface IJiraInputProps extends InputHTMLAttributes<any> {
   customType: string;
   loading?: boolean;
   customList?: any[];
+  disabledButton?: boolean;
 }
 
 export const JiraInput = ({
@@ -21,6 +22,7 @@ export const JiraInput = ({
   disabled,
   loading = false,
   customList,
+  disabledButton = false,
 }: IJiraInputProps) => {
   const [canUpdate, setCanUpdate] = useState(false);
 
@@ -49,7 +51,7 @@ export const JiraInput = ({
         "w-full h-fit relative flex justify-between items-center gap-2",
       ])}
     >
-      {canUpdate && (
+      {canUpdate && !disabledButton && (
         <div
           onClick={onClick}
           className={twMerge([
