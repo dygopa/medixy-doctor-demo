@@ -75,6 +75,16 @@ const StepByStepPopup = ({ user, disabled = false }: IAlertProps) => {
   const [formatList, setFormatList] = useState(false);
 
   const Step = ({ props, children }: { props: IStep; children: any }) => {
+    const getIsDisabledButton = () => {
+      if (props.id === 0) return false;
+
+      if (props.id === 1 && !steps[0].completed) return true;
+
+      if (props.id === 2 && !steps[1].completed) return true;
+
+      return false;
+    };
+
     return (
       <div className="">
         <div className="flex justify-center text-center mb-4">
@@ -123,6 +133,7 @@ const StepByStepPopup = ({ user, disabled = false }: IAlertProps) => {
           ) : (
             <Button
               variant="primary"
+              disabled={getIsDisabledButton()}
               onClick={() => {
                 changeOpenPopup(false)(dispatch);
                 router.push(props.cta);
