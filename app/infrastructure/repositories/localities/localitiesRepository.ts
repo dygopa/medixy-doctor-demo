@@ -190,12 +190,14 @@ export class LocalitiesRepository implements ILocalitiesRepository {
     try {
       let cookies = nookies.get(undefined, 'access_token');
 
-      console.log(obj)
+
 
       var myHeaders = new Headers();
 
       myHeaders.append("Content-Type", "application/json");
       myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
+
+
 
       var raw = JSON.stringify({
           name: obj["name"] ?? "",
@@ -218,7 +220,7 @@ export class LocalitiesRepository implements ILocalitiesRepository {
           country: "MEX",
       });
 
-      console.log(raw)
+
 
       var requestOptions = {
         method: 'PUT',

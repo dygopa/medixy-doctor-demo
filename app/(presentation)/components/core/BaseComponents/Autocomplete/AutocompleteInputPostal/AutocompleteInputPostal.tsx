@@ -37,6 +37,7 @@ export default function AutocompleteInputPostal({
           additionalId: postalCode.federalEntityId,
           secondAdditionalId: postalCode.catalogId,
           thirdAdditionalId: postalCode.municipality.id ?? 0,
+          text: postalCode.settlement,
         };
 
         values.push(value);
@@ -76,6 +77,7 @@ export default function AutocompleteInputPostal({
           additionalId: 0,
           secondAdditionalId: 0,
           thirdAdditionalId: 0,
+          text: null,
         } as IAutocompleteValue)
       }
       onChange={(value: string) => getPostalCodesDispatch(value)}
