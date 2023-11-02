@@ -30,9 +30,14 @@ export default function ProfessionField({
             <TooltipIndicator
               tittle="Selecciona una especialidad"
               description="Escoge la especialidad a la que te dedicas y tus pacientes puedan saberlo."
-              disabledButton
-              onClick={() => {}}
-              tittleButton={""}
+              onClick={
+                loading || !userObject?.pwaProfessionId
+                  ? () => {}
+                  : () => {
+                      handleOnClick("pwaProfessionId");
+                    }
+              }
+              tittleButton={loading ? "Guardando" : "Guardar especialidad"}
               direcction={"left"}
             />
           </div>
@@ -41,9 +46,14 @@ export default function ProfessionField({
             <TooltipIndicator
               tittle="Selecciona una especialidad"
               description="Escoge la especialidad a la que te dedicas y tus pacientes puedan saberlo."
-              disabledButton
-              onClick={() => {}}
-              tittleButton={""}
+              onClick={
+                loading || !userObject?.pwaProfessionId
+                  ? () => {}
+                  : () => {
+                      handleOnClick("pwaProfessionId");
+                    }
+              }
+              tittleButton={loading ? "Guardando" : "Guardar especialidad"}
               direcction={"top"}
             />
           </div>
@@ -57,15 +67,14 @@ export default function ProfessionField({
         ])}
       >
         <JiraInput
-          onClick={() => {
-            handleOnClick("pwaProfessionId");
-          }}
+          onClick={() => {}}
           disabled={step === 0}
           customStyleText={"text-base text-slate-500 font-light"}
           placeholder="Selecciona tu especialidad"
           customType="select"
           text={profesion?.name ?? "Selecciona tu especialidad"}
           loading={loading}
+          disabledButton
           customList={listProfesions.map((value: any) => ({
             id: value.id,
             value: value.name,
