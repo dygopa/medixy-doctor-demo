@@ -22,11 +22,11 @@ export default function Footer({
 
   return (
     <div>
-      <div className="text-center mb-6">
+      {/* <div className="text-center mb-6">
         <Button onClick={customClick} variant="outline-primary">
           Lo hare después
         </Button>
-      </div>
+  </div> */}
 
       <div className="text-center">
         <Link

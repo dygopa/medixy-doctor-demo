@@ -27,7 +27,6 @@ import { useRouter, useSearchParams } from "next/navigation";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 import { IUser } from "domain/core/entities/userEntity";
 import CompletedStepByStepPopup from "(presentation)/components/core/CompletedStepByStep/CompletedStepByStepPopUp";
-import StepPopup from "./StepPopup/StepPopup";
 
 interface ICalendarIndexProps {
   user: IUser;
@@ -39,7 +38,12 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
     state: stateSteps,
     dispatch: dispatchStep,
   } = useContext<IStepByStepContext>(StepByStepContext);
-  const { createUserSteps, changeOpenPopup } = actionsStep;
+  const {
+    createUserSteps,
+    changeOpenPopup,
+    changeOpenPopupText,
+    getStepsMessage,
+  } = actionsStep;
   const {
     error: stepNotCreated,
     loading: creatingStep,
@@ -86,7 +90,6 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
   const [showWindowModal, setShowWindowModal] = useState(false);
   const [successfulPopup, setSuccessfulPopup] = useState(false);
   const [hasLocalities, setHasLocalities] = useState(false);
-  const [showStepPopup, setShowStepPopup] = useState(false);
 
   const [eventSelected, setEventSelected] = useState<EventClickArg>(
     {} as EventClickArg
@@ -95,7 +98,10 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
   useEffect(() => {
     if (steps && steps.length < 2 && stepsSuccessful) {
       setTimeout(() => {
-        setShowStepPopup(true);
+        changeOpenPopup(true)(dispatchStep);
+        changeOpenPopupText(
+          "Para configurar tu agenda, es primordial completar datos primordiales de tu perfil antes y crear un consultorio digital, una vez completado los pasos, podrás configurar tu agenda."
+        )(dispatchStep);
       }, 2000);
     }
   }, [steps, stepsSuccessful]);
@@ -232,6 +238,7 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
     if (stepNotCreated) {
       setSuccessfulPopup(true);
     } else if (createStepSuccessful) {
+      getStepsMessage(user.accountId)(dispatchStep);
       setShowCompletedModal(true);
     }
   }, [stepNotCreated, createStepSuccessful]);
@@ -338,8 +345,6 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
         isVisible={showCompletedStepModal}
         setIsVisible={setShowCompletedModal}
       />
-
-      <StepPopup isVisible={showStepPopup} userId={user.userId} steps={steps} />
     </>
   );
 }

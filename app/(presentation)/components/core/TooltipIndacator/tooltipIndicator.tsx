@@ -5,9 +5,12 @@ interface ITooltipProps {
   tittle: string;
   description: string;
   onClick: Function;
+  onClickSecondary?: Function;
   tittleButton: string;
   direcction: "bootom" | "top" | "rigth" | "left";
   disabledButton?: boolean;
+  secondaryDisabledButton?: boolean;
+  secondaryTittleButton?: string;
 }
 
 export default function TooltipIndicator({
@@ -17,6 +20,9 @@ export default function TooltipIndicator({
   tittleButton,
   direcction,
   disabledButton = false,
+  secondaryDisabledButton = true,
+  onClickSecondary = () => {},
+  secondaryTittleButton = "",
 }: ITooltipProps) {
   return (
     <div
@@ -52,6 +58,16 @@ export default function TooltipIndicator({
           >
             {tittleButton}
           </Button>
+
+          {!secondaryDisabledButton && (
+            <Button
+              variant="outline-primary"
+              onClick={() => onClickSecondary()}
+              className="mb-2 text-left ml-2"
+            >
+              {secondaryTittleButton}
+            </Button>
+          )}
         </div>
       </div>
       <div

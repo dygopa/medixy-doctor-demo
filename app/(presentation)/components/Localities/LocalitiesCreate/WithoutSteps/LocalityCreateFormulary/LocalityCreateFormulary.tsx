@@ -20,7 +20,6 @@ import {
   StepByStepContext,
 } from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 import AddressAutocomplete from "(presentation)/components/core/BaseComponents/Autocomplete/AddressAutocomplete/AddressAutocomplete";
-import StepPopup from "./StepPopup/StepPopup";
 
 export default function LocalityCreateFormulary({
   userId,
@@ -42,11 +41,13 @@ export default function LocalityCreateFormulary({
 
   const { getUserBaseServices } = actions;
 
-  const { state: stateSteps } =
-    useContext<IStepByStepContext>(StepByStepContext);
+  const {
+    state: stateSteps,
+    actions: actionsSteps,
+    dispatch: dispatchSteps,
+  } = useContext<IStepByStepContext>(StepByStepContext);
+  const { changeOpenPopup, changeOpenPopupText } = actionsSteps;
   const { data: steps, successful } = stateSteps.getStepsMessages;
-
-  const [showStepPopup, setShowStepPopup] = useState(false);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -72,7 +73,10 @@ export default function LocalityCreateFormulary({
   useEffect(() => {
     if (steps && steps.length === 0 && successful) {
       setTimeout(() => {
-        setShowStepPopup(true);
+        changeOpenPopup(true)(dispatchSteps);
+        changeOpenPopupText(
+          "Para crear un consultorio digital, es primordial completar datos primordiales de tu perfil antes, una vez completado el paso, podrás crear tu primer consultorio digital."
+        )(dispatchSteps);
       }, 2000);
     }
   }, [steps, successful]);
@@ -221,8 +225,6 @@ export default function LocalityCreateFormulary({
           </div>
         </div>
       </div>
-
-      <StepPopup isVisible={showStepPopup} userId={userId} />
     </>
   );
 }

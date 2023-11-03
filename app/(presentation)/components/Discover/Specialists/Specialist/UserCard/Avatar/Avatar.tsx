@@ -62,10 +62,18 @@ const Avatar = ({ step, setStep, specialist, disabled }: IAvatarProps) => {
             <TooltipIndicator
               tittle="Sube una foto de perfil"
               description="Una foto de ti, ayudará a generar más confianza a tus pacientes o futuros pacientes. Haz click en el cuadro para subir una foto."
-              disabledButton
+              disabledButton={
+                specialist.avatar && specialist.avatar.length > 0 ? false : true
+              }
               direcction="left"
-              onClick={() => {}}
-              tittleButton=""
+              onClick={
+                loading
+                  ? () => {}
+                  : () => {
+                      setStep(step + 1);
+                    }
+              }
+              tittleButton="Continuar"
             />
           </div>
 
@@ -73,10 +81,18 @@ const Avatar = ({ step, setStep, specialist, disabled }: IAvatarProps) => {
             <TooltipIndicator
               tittle="Sube una foto de perfil"
               description="Una foto de ti, ayudará a generar más confianza a tus pacientes o futuros pacientes. Haz click en el cuadro para subir una foto."
-              disabledButton
-              direcction="top"
-              onClick={() => {}}
-              tittleButton=""
+              disabledButton={
+                specialist.avatar && specialist.avatar.length > 0 ? false : true
+              }
+              direcction="left"
+              onClick={
+                loading
+                  ? () => {}
+                  : () => {
+                      setStep(step + 1);
+                    }
+              }
+              tittleButton="Continuar"
             />
           </div>
         </>
