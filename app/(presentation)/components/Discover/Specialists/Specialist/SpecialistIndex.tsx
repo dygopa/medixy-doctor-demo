@@ -1,28 +1,33 @@
 "use client";
 
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { FiX } from "react-icons/fi";
+import React, { useContext, useMemo, useState } from "react";
 import {
   ISpecialistsContext,
   SpecialistsContext,
 } from "../context/SpecialistsContext";
 import { UserCardComponent } from "./UserCard/UserCard";
 import UserCardProvider from "./UserCard/context/UserCardContext";
-import CompletedProfilePopup from "./UserCard/CompletedProfilePopup/CompletedProfilePopup";
 import { Specialist } from "domain/core/entities/specialists/specialist";
 import ReservationCard from "./Reservation/Main";
+import {
+  IStepByStepContext,
+  StepByStepContext,
+} from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 
 interface ISpecialistIndexProps {
   id: number;
 }
 
 function SpecialistIndex({ id }: ISpecialistIndexProps) {
+  const { actions: actionsStep, dispatch: dispatchStep } =
+    useContext<IStepByStepContext>(StepByStepContext);
+  const { changeOpenPopup, changeOpenPopupText } = actionsStep;
+
   const { state, actions, dispatch } =
     useContext<ISpecialistsContext>(SpecialistsContext);
   const { getSpecialist } = actions;
   const { data } = state.getSpecialist;
 
-  const [isVisible, setIsVisible] = useState(false);
   const [step, setStep] = useState(0);
   const [finishedStep, setFinishedStep] = useState(false);
 
@@ -41,7 +46,12 @@ function SpecialistIndex({ id }: ISpecialistIndexProps) {
                   step={step}
                   setStep={setStep}
                   specialist={data as Specialist}
-                  setIsVisible={setIsVisible}
+                  setIsVisible={() => {
+                    changeOpenPopup(true)(dispatchStep);
+                    changeOpenPopupText(
+                      "Has completado los datos básicos de tu perfil.  Los datos proporcionados serán visibles en tu directorio, esta información es importante ya que brinda una rápida visualización a tus pacientes o futuros pacientes que te busquen o encuentren en tu directorio"
+                    )(dispatchStep);
+                  }}
                   finishedStep={finishedStep}
                 />
               </UserCardProvider>
@@ -57,11 +67,6 @@ function SpecialistIndex({ id }: ISpecialistIndexProps) {
           </div>
         )}
       </div>
-
-      <CompletedProfilePopup
-        isVisible={isVisible}
-        setIsVisible={setIsVisible}
-      />
     </>
   );
 }

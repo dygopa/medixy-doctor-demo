@@ -1,5 +1,12 @@
 import { twMerge } from "tailwind-merge";
-import { useContext, useMemo, useState, Dispatch, SetStateAction } from "react";
+import {
+  useContext,
+  useMemo,
+  useState,
+  Dispatch,
+  SetStateAction,
+  useEffect,
+} from "react";
 import Avatar from "./Avatar/Avatar";
 import { IUserCardContext, UserCardContext } from "./context/UserCardContext";
 import {
@@ -25,7 +32,7 @@ export const UserCardComponent = ({
   step: number;
   setStep: Dispatch<SetStateAction<number>>;
   specialist: Specialist;
-  setIsVisible: Dispatch<SetStateAction<boolean>>;
+  setIsVisible: () => void;
   finishedStep: boolean;
 }) => {
   const {
@@ -39,6 +46,8 @@ export const UserCardComponent = ({
     useContext<IUserCardContext>(UserCardContext);
   const { editUser, updateProfileCompleted } = actions;
   const { data, loading, error, successful } = state.editUser;
+  const { successful: updateCompletedProfileSucessful } =
+    state.updateCompletedProfile;
   const { successful: updateAvatarSucessful } = state.updateAvatar;
 
   let listProfesions = [
@@ -181,7 +190,6 @@ export const UserCardComponent = ({
       parseInt(specialist.pwaProfressionId.toString(), 10) > 0 &&
       finishedStep
     ) {
-      setIsVisible(true);
       updateProfileCompleted(specialist.userId, specialist.accountId)(dispatch);
       return;
     }
@@ -194,6 +202,13 @@ export const UserCardComponent = ({
       onValidCompletedProfileSpecialist();
     }
   }, [specialist, finishedStep]);
+
+  useEffect(() => {
+    if (updateCompletedProfileSucessful) {
+      setIsVisible();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [updateCompletedProfileSucessful]);
 
   return (
     <>
@@ -281,6 +296,7 @@ export const UserCardComponent = ({
                       listProfesions={listProfesions}
                       profesion={profesion}
                       step={step}
+                      setStep={setStep}
                     />
                   </div>
                   <div className="w-[225px] h-[35px]">
@@ -291,6 +307,7 @@ export const UserCardComponent = ({
                       specialist={specialist}
                       userObject={userObject}
                       step={step}
+                      setStep={setStep}
                     />
                   </div>
                   {specialist.curp && (

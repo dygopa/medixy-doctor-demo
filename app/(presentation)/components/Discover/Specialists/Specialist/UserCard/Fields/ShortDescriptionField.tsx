@@ -11,6 +11,7 @@ interface IShortDescriptionFieldProps {
   specialist: Specialist;
   userObject: any;
   step: number;
+  setStep: Dispatch<SetStateAction<number>>;
 }
 
 export default function ShortDescriptionField({
@@ -20,6 +21,7 @@ export default function ShortDescriptionField({
   specialist,
   userObject,
   step,
+  setStep,
 }: IShortDescriptionFieldProps) {
   return (
     <>
@@ -36,8 +38,17 @@ export default function ShortDescriptionField({
                       handleOnClick("shortDescription");
                     }
               }
-              tittleButton={loading ? "Guardando" : "Guardar descripción"}
+              tittleButton={loading ? "Guardando" : "Guardar"}
               direcction={"left"}
+              secondaryTittleButton="Volver"
+              secondaryDisabledButton={false}
+              onClickSecondary={
+                loading
+                  ? () => {}
+                  : () => {
+                      setStep(step - 1);
+                    }
+              }
             />
           </div>
 
@@ -52,8 +63,17 @@ export default function ShortDescriptionField({
                       handleOnClick("shortDescription");
                     }
               }
-              tittleButton={loading ? "Guardando" : "Guardar descripción"}
+              tittleButton={loading ? "Guardando" : "Guardar"}
               direcction={"top"}
+              secondaryTittleButton="Volver"
+              secondaryDisabledButton={false}
+              onClickSecondary={
+                loading
+                  ? () => {}
+                  : () => {
+                      setStep(step - 1);
+                    }
+              }
             />
           </div>
         </>
@@ -68,7 +88,7 @@ export default function ShortDescriptionField({
         <JiraInput
           onClick={() => {}}
           customStyleText={"text-base text-slate-500 font-light"}
-          customType="text"
+          customType="textarea"
           loading={loading}
           disabledButton
           disabled={step === 0}
