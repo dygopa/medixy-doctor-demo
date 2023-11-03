@@ -44,6 +44,8 @@ export default function AutocompleteInputPostal({
       });
     }
 
+    console.log(values);
+
     return values;
   };
 

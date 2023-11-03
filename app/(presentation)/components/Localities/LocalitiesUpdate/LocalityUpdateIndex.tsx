@@ -42,7 +42,10 @@ export default function LocalityUpdateIndex({
             userId={user.userId}
             localityId={localityId}
             setStep={setStep}
+            step={step}
             setData={setData}
+            dataFormData={data}
+            addressData={addressData}
             setAddressData={setAddressData}
           />
         );
@@ -52,6 +55,7 @@ export default function LocalityUpdateIndex({
             formData={data}
             address={addressData}
             setStep={setStep}
+            step={step}
             localityId={localityId}
           />
         );

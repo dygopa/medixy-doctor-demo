@@ -14,16 +14,19 @@ import {
   ILocalitiesContext,
   LocalitiesContext,
 } from "../../context/LocalitiesContext";
+import Steps from "../Steps/Steps";
 
 export default function Services({
   formData,
   address,
   setStep,
+  step,
   localityId,
 }: {
   formData: any;
   address: any;
   setStep: Dispatch<SetStateAction<number>>;
+  step: number;
   localityId: number;
 }) {
   const router = useRouter();
@@ -291,19 +294,7 @@ export default function Services({
         </div>
       </div>
 
-      <button
-        type="button"
-        className="flex items-center mt-3"
-        onClick={() => setStep(0)}
-      >
-        <div className="mr-2">
-          <Lucide icon="ChevronLeft" size={25} color="#216AD9" />
-        </div>
-
-        <div>
-          <p className="text-primary">Volver al paso anterior</p>
-        </div>
-      </button>
+      <Steps setSteps={setStep} steps={step} />
 
       <div className="flex justify-center w-full mt-5">
         <div className="bg-white lg:w-[40%] w-full shadow-xl shadow-slate-100 rounded-md h-fit lg:max-h-[80vh] lg:overflow-y-auto p-7 lg:ml-4 lg:mt-0 mt-5 lg:sticky lg:top-[140px]">
