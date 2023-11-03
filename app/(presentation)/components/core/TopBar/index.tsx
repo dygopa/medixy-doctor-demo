@@ -42,6 +42,7 @@ import {
   IStepByStepContext,
   StepByStepContext,
 } from "../StepByStepPopup/context/StepByStepContext";
+import { ConfigEnviroment } from "infrastructure/config/env/env";
 
 interface INavigation {
   title: string;
@@ -86,7 +87,7 @@ function Main({
     const [copied, setCopied] = useState(false);
     let token = nookies.get(undefined, "access_token");
     let userLink =
-      process.env.NEXT_PUBLIC_MARKETPLACE_PROJECT_DOMAIN +
+      new ConfigEnviroment().nextPublicMarketPlaceDomain +
       `/discover/specialists/${user.userId}`;
 
     useMemo(() => {

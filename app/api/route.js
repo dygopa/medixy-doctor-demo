@@ -1,7 +1,8 @@
 import sendgrid from "@sendgrid/mail";
+import { ConfigEnviroment } from "infrastructure/config/env/env";
 import { NextResponse } from "next/server";
 
-sendgrid.setApiKey(process.env.NEXT_PUBLIC_SENDGRID_API_KEY);
+sendgrid.setApiKey(new ConfigEnviroment().nextPublicSendgridApiKey);
 
 export async function POST(req) {
   try {
