@@ -2,6 +2,7 @@ import { Specialist } from "domain/core/entities/specialists/specialist";
 import { SpecialtyFailure, specialtyFailuresEnum } from "domain/core/failures/specialty/specialtyFailure";
 import { specialistDBToMap } from "domain/mappers/specialty/supabase/specialtySupabaseMapper";
 import { UPDATE_SPECIALIST_ENDPOINT } from "infrastructure/config/api/dictionary";
+import { ConfigEnviroment } from "infrastructure/config/env/env";
 import { supabase } from "infrastructure/config/supabase/supabase-client";
 import { getFileFromBase64 } from "infrastructure/utils/files/filesUtils";
 import { nanoid } from "nanoid";
@@ -63,7 +64,7 @@ export class SpecialistsRepository implements ISpecialistsRepository {
         redirect: 'follow'
       } as RequestInit;
 
-      let URL = process.env.NEXT_PUBLIC_API_URL + `/doctor/${id}/location/MEX` as RequestInfo
+      let URL = new ConfigEnviroment().nextPublicAPIUrl + `/doctor/${id}/location/MEX` as RequestInfo
 
       const response = await fetch(URL, requestOptions)
       let data = await response.json()

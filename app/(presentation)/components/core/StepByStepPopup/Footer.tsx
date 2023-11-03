@@ -1,6 +1,7 @@
 import { IUser } from "domain/core/entities/userEntity";
 import Button from "../BaseComponents/Button";
 import Link from "next/link";
+import { ConfigEnviroment } from "infrastructure/config/env/env";
 
 interface IFooterProps {
   user: IUser;
@@ -14,7 +15,7 @@ export default function Footer({
   disabled = false,
 }: IFooterProps) {
   let userLink =
-    process.env.NEXT_PUBLIC_MARKETPLACE_PROJECT_DOMAIN +
+    new ConfigEnviroment().nextPublicMarketPlaceDomain +
     `/discover/specialists/${user?.userId}`;
 
   if (disabled) return <div />;

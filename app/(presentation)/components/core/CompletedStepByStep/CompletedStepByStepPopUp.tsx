@@ -5,6 +5,7 @@ import Lucide from "../BaseComponents/Lucide";
 import Button from "../BaseComponents/Button";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { ConfigEnviroment } from "infrastructure/config/env/env";
 
 interface IAlertProps {
   user: IUser;
@@ -52,14 +53,18 @@ const CompletedStepByStepPopup = ({
           </div>
 
           <div className="text-center mb-6">
-            <h3 className="text-[30px] font-bold leading-normal" style={{ color: "#000066" }}>
+            <h3
+              className="text-[30px] font-bold leading-normal"
+              style={{ color: "#000066" }}
+            >
               Has creado tu Consultorio Digital
             </h3>
           </div>
 
           <div className="text-center my-5">
             <p className="text-[16px] text-gray-400">
-              Estamos muy contentos de que hayas elegido nuestra plataforma <br/>
+              Estamos muy contentos de que hayas elegido nuestra plataforma{" "}
+              <br />
               para ayudarte a brindar la mejor atención médica a tus pacientes.
             </p>
           </div>
@@ -73,7 +78,14 @@ const CompletedStepByStepPopup = ({
           </div>
 
           <div className=" text-center mb-14">
-            <Link target="_blank" href={process.env.NEXT_PUBLIC_MARKETPLACE_PROJECT_DOMAIN + `/discover/specialists/${user.userId}`} className="font-normal text-lg text-primary underline">
+            <Link
+              target="_blank"
+              href={
+                new ConfigEnviroment().nextPublicMarketPlaceDomain +
+                `/discover/specialists/${user.userId}`
+              }
+              className="font-normal text-lg text-primary underline"
+            >
               Has creado tu consultorio digital con éxito.
             </Link>
           </div>
