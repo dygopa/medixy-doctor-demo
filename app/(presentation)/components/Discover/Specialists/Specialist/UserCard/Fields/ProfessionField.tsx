@@ -11,6 +11,7 @@ interface IProfessionFieldProps {
   listProfesions: any;
   profesion: any;
   step: number;
+  setStep: Dispatch<SetStateAction<number>>;
 }
 
 export default function ProfessionField({
@@ -21,6 +22,7 @@ export default function ProfessionField({
   listProfesions,
   profesion,
   step,
+  setStep,
 }: IProfessionFieldProps) {
   return (
     <>
@@ -37,8 +39,17 @@ export default function ProfessionField({
                       handleOnClick("pwaProfessionId");
                     }
               }
-              tittleButton={loading ? "Guardando" : "Guardar especialidad"}
+              tittleButton={loading ? "Guardando" : "Guardar"}
               direcction={"left"}
+              secondaryTittleButton="Volver"
+              secondaryDisabledButton={false}
+              onClickSecondary={
+                loading
+                  ? () => {}
+                  : () => {
+                      setStep(step - 1);
+                    }
+              }
             />
           </div>
 
@@ -53,8 +64,17 @@ export default function ProfessionField({
                       handleOnClick("pwaProfessionId");
                     }
               }
-              tittleButton={loading ? "Guardando" : "Guardar especialidad"}
+              tittleButton={loading ? "Guardando" : "Guardar"}
               direcction={"top"}
+              secondaryTittleButton="Volver"
+              secondaryDisabledButton={false}
+              onClickSecondary={
+                loading
+                  ? () => {}
+                  : () => {
+                      setStep(step - 1);
+                    }
+              }
             />
           </div>
         </>

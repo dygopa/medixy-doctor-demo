@@ -575,9 +575,7 @@ function CreateAgenda({
       setDaysRepeatedList([]);
       setListOfHours([]);
       getAttentionWindows(formData.localityId, "LOCALITY")(dispatch);
-      setTimeout(() => {
-        changeStatusPopup(false)(dispatch);
-      }, 2000);
+      changeStatusPopup(false)(dispatch);
     }
   }, [successful]);
 

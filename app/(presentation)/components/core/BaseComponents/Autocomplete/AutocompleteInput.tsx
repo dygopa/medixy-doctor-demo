@@ -132,6 +132,8 @@ export default function AutocompleteInput({
   useEffect(() => {
     if (items.length > 0) {
       setItemsList(items);
+    } else {
+      setItemsList([]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [items]);
@@ -197,26 +199,35 @@ export default function AutocompleteInput({
           showDropdown ? "visible" : "invisible",
         ])}
       >
-        {itemsList.map((itemShow: IAutocompleteValue) => (
-          <button
-            type="button"
-            key={itemShow.id}
-            className="py-2 hover:bg-gray-500 hover:bg-opacity-10 w-full text-left"
-            onClick={() => onClickItem(itemShow)}
-          >
-            <div className="flex justify-between px-2">
-              <div>
-                <p className="text-slate-900 text-md">{itemShow.name}</p>
-              </div>
-
-              {isAdded(itemShow.name) && (
+        {itemsList.length > 0 ? (
+          itemsList.map((itemShow: IAutocompleteValue) => (
+            <button
+              type="button"
+              key={itemShow.id}
+              className="py-2 hover:bg-gray-500 hover:bg-opacity-10 w-full text-left"
+              onClick={() => onClickItem(itemShow)}
+            >
+              <div className="flex justify-between px-2">
                 <div>
-                  <Lucide icon="Check" color="#22345F" size={20} />
+                  <p className="text-slate-900 text-md">{itemShow.name}</p>
                 </div>
-              )}
-            </div>
-          </button>
-        ))}
+
+                {isAdded(itemShow.name) && (
+                  <div>
+                    <Lucide icon="Check" color="#22345F" size={20} />
+                  </div>
+                )}
+              </div>
+            </button>
+          ))
+        ) : itemsList.length === 0 && field.length > 0 ? (
+          <div className="text-center py-3">
+            <p>No se han encontrado resultados respecto a tu búsqueda.</p>
+          </div>
+        ) : (
+          ""
+        )}
+
         {field.length > 0 && showCreateItem && (
           <button
             type="button"

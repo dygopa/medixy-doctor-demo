@@ -25,25 +25,63 @@ import {
   getBase64ImageFromUrl,
 } from "(presentation)/(helper)/files/filesHelper";
 import AddressAutocomplete from "(presentation)/components/core/BaseComponents/Autocomplete/AddressAutocomplete/AddressAutocomplete";
+import Steps from "../Steps/Steps";
+import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
+import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
+import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
+import { useRouter } from "next/navigation";
 
 export default function Formulary({
   userId,
   localityId,
+  step,
   setStep,
+  dataFormData,
+  addressData,
   setData,
   setAddressData,
 }: {
   userId: string;
   localityId: number;
+  step: number;
   setStep: Dispatch<SetStateAction<number>>;
+  dataFormData: any;
   setData: any;
+  addressData: any;
   setAddressData: any;
 }) {
   const { state, actions, dispatch } =
     useContext<ILocalitiesContext>(LocalitiesContext);
-  const { gettingUserLocality, getUserBaseServices, getUserServices } = actions;
+  const {
+    gettingUserLocality,
+    getUserBaseServices,
+    getUserServices,
+    updateUserLocality,
+  } = actions;
   const { data, loading, successful } = state.gettingUserLocality;
-  const { loading: loadingUpdate } = state.updateUserLocality;
+
+  const {
+    data: dataUpdate,
+    loading: loadingUpdate,
+    successful: successfulUpdate,
+    error: errorUpdate,
+  } = state.updateUserLocality;
+  const {
+    data: servicesBaseData,
+    loading: loadingBaseServices,
+    error: errorBaseServices,
+    successful: successFulBaseServices,
+  } = state.getUserBaseServices;
+  const {
+    data: servicesData,
+    loading: loadingServices,
+    error: errorServices,
+    successful: successFulServices,
+  } = state.getUserServices;
+
+  const [services, setServices] = useState<any>([]);
+
+  const router = useRouter();
 
   let [formData, setFormData] = useState({
     name: "",
@@ -71,9 +109,9 @@ export default function Formulary({
   });
 
   useMemo(() => {
-    gettingUserLocality(localityId, userId)(dispatch);
+    if (!data?.id) gettingUserLocality(localityId, userId)(dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [data]);
 
   const setFormDataValues = async () => {
     let imageUrl: any = "";
@@ -82,6 +120,7 @@ export default function Formulary({
       if (data.image_url.length > 0)
         imageUrl = await getBase64ImageFromUrl(data.image_url);
     }
+    console.log("aca");
     setFormData({
       ...formData,
       name: data?.name ?? "",
@@ -97,6 +136,33 @@ export default function Formulary({
     });
     setAddress({
       ...address,
+      clues: data?.address.clues ?? "",
+      federalEntity: data?.address?.state?.id ?? 0,
+      municipality: data?.address.municipalityId ?? 0,
+      countryLocation: data?.address.countryLocation ?? "",
+      street: data?.address.street ?? "",
+      city: data?.address.city ?? "",
+      postal_code: data?.address.postal_code
+        ? data.address.postal_code.toString()
+        : "",
+      address: data?.address.address ?? "",
+    });
+
+    setData({
+      ...dataFormData,
+      name: data?.name ?? "",
+      code: data?.code ?? "",
+      latitude: data?.latitude ?? "",
+      longitude: data?.longitude ?? "",
+      isPublic: data?.is_public ? 1 : 0,
+      isVirtual: data?.is_virtual ? 1 : 0,
+      media: {
+        data: imageUrl.toString().split(",")[1],
+        type: data?.type,
+      },
+    });
+    setAddressData({
+      ...addressData,
       clues: data?.address.clues ?? "",
       federalEntity: data?.address?.state?.id ?? 0,
       municipality: data?.address.municipalityId ?? 0,
@@ -152,6 +218,50 @@ export default function Formulary({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userId]);
 
+  const setServicesInList = () => {
+    if (
+      typeof servicesData === "string" ||
+      typeof servicesBaseData === "string"
+    )
+      return;
+
+    const services: any[] = [];
+
+    if (
+      servicesData &&
+      servicesBaseData &&
+      servicesData?.length > 0 &&
+      servicesBaseData?.length > 0
+    ) {
+      servicesBaseData.forEach((serviceBaseData) => {
+        const service = servicesData.find(
+          (serviceData) =>
+            serviceData.service_parent_id === serviceBaseData.id &&
+            serviceData.location_id === localityId
+        );
+
+        if (service) {
+          services.push({
+            id: 0,
+            service_id: service.id,
+            location_id: localityId,
+            price: service.base_price,
+          });
+        }
+      });
+    }
+
+    setServices(services);
+  };
+
+  useMemo(() => {
+    setServicesInList();
+  }, [successFulServices, successFulBaseServices]);
+
+  const onClickButtonPrincipal: Function = () => {
+    router.push(LocalitiesRoutesEnum.Localities);
+  };
+
   if (loading) {
     return (
       <div className="w-full flex flex-col justify-center items-center">
@@ -165,6 +275,18 @@ export default function Formulary({
 
   return (
     <>
+      <AlertComponent
+        variant="error"
+        show={errorUpdate !== null}
+        description="Ha ocurrido un error inesperado en la actualización"
+      />
+      <SuccessfulComponent
+        tittle="Actualizado con exito"
+        show={successfulUpdate}
+        description={"Tu consultorio se ha actualizado exitosamente"}
+        textButtonPrincipal={"Ir a lista de consultorios"}
+        onClickButtonPrincipal={onClickButtonPrincipal}
+      />
       <div className="w-full md:flex justify-between items-start sticky top-[67px] z-[50]  bg-slate-100 py-3">
         <h2 className="lg:mr-5 lg:mb-0 mb-4 text-2xl font-bold truncate">
           Actualizar Consultorio
@@ -178,16 +300,21 @@ export default function Formulary({
               address?.federalEntity === 0
             }
             onClick={() => {
-              setData(formData);
-              setAddressData(address);
-              setStep(1);
+              updateUserLocality(
+                { ...formData, address },
+                data.id,
+                services
+              )(dispatch);
             }}
             variant="primary"
             className="w-full"
           >
-            Continuar
+            {loadingUpdate ? "Actualizando..." : "Actualizar"}
           </Button>
         </div>
+      </div>
+      <div>
+        <Steps steps={step} setSteps={setStep} />
       </div>
       <div className="flex justify-center mt-5 w-full">
         <div className="relative flex justify-center w-full">
