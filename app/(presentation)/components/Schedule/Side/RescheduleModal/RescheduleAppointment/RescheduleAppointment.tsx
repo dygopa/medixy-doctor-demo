@@ -30,7 +30,7 @@ export default function RescheduleAppointment({
 }: IRescheduleAppointmentProps) {
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
-  const { getAttentionWindowsByService } = actions;
+  const { getAttentionWindowsByService, getNextAttentionWindow } = actions;
 
   const {
     data: attentionWindows,
@@ -38,6 +38,12 @@ export default function RescheduleAppointment({
     successful: loadedWindows,
     error: errorWindows,
   } = state.getAttentionWindowsByService;
+
+  const {
+    data: attentionWindow,
+    loading: loadingAttentionWindow,
+    successful: attentionWindowSuccessful,
+  } = state.getNextAttentionWindow;
 
   const [isNow, setIsNow] = useState(false);
   const [selectedDate, setSelectedDate] = useState(
@@ -62,6 +68,24 @@ export default function RescheduleAppointment({
   });
 
   useMemo(() => {
+    if (attentionWindowSuccessful && attentionWindow?.fechaInicio) {
+      setSelectedDate(moment(attentionWindow.fechaInicio).format("YYYY-MM-DD"));
+      getAttentionWindowsByService(
+        appointment.servicioId,
+        moment(attentionWindow.fechaInicio).format("YYYY-MM-DD")
+      )(dispatch);
+    }
+
+    if (attentionWindowSuccessful && !attentionWindow?.fechaInicio) {
+      setSelectedDate(moment().format("YYYY-MM-DD"));
+      getAttentionWindowsByService(
+        appointment.servicioId,
+        moment().format("YYYY-MM-DD")
+      )(dispatch);
+    }
+  }, [attentionWindowSuccessful]);
+
+  useMemo(() => {
     if (loadedWindows) setWindows(attentionWindows);
   }, [loadingWindows]);
 
@@ -70,10 +94,8 @@ export default function RescheduleAppointment({
   }, []);
 
   useMemo(() => {
-    getAttentionWindowsByService(
-      appointment.servicioId,
-      selectedDate
-    )(dispatch);
+    console.log(appointment);
+    getNextAttentionWindow({ serviceId: appointment.servicioId })(dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -158,6 +180,13 @@ export default function RescheduleAppointment({
       </div>
     );
   };
+
+  if (loadingAttentionWindow || loadingWindows)
+    return (
+      <div className="mt-20">
+        <Loading />
+      </div>
+    );
 
   return (
     <div>
@@ -250,7 +279,7 @@ export default function RescheduleAppointment({
                   </p>
                 </div>
               )}
-              {loadingWindows && <Loading />}
+
               {loadedWindows &&
                 windows.length > 0 &&
                 windows.map((elem: any) => (

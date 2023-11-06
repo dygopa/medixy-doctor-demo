@@ -812,6 +812,39 @@ export const ScheduleReducer = (state: any, action: any) => {
           error: action.payload.error,
         },
       };
+      case 'GET_NEXT_ATTENTION_WINDOW_LOADING':
+        return {
+          ...state,
+          getNextAttentionWindow: {
+            ...state.getNextAttentionWindow,
+            data: null,
+            loading: true,
+            successful: false,
+            error: null,
+          },
+        };
+      case 'GET_NEXT_ATTENTION_WINDOW_SUCCESSFUL':
+        return {
+          ...state,
+          getNextAttentionWindow: {
+            ...state.getNextAttentionWindow,
+            data: action.payload.data,
+            loading: false,
+            successful: true,
+            error: null,
+          },
+        };
+      case 'GET_NEXT_ATTENTION_WINDOW_ERROR':
+        return {
+          ...state,
+          getNextAttentionWindow: {
+            ...state.getNextAttentionWindow,
+            data: null,
+            loading: false,
+            successful: false,
+            error: action.payload.error,
+          },
+        };
     default:
       return state;
   }

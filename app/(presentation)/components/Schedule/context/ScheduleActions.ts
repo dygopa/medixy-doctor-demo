@@ -35,6 +35,7 @@ export interface IScheduleActions {
   unlockSlotInAttentionWindow: Function;
   rescheduleAppointmentInitialState: Function;
   activeAttentionWindowId: Function;
+  getNextAttentionWindow: Function;
 }
 
 const getCalendarEvents = (id:number, localityId:number, sinceDate:any, untilDate:any, serviceId:number) => async (dispatch: Dispatch<any>) => {
@@ -346,6 +347,21 @@ const getPatients = (obj: { userId?: number | string | undefined }) => async (di
     }
 }
 
+const getNextAttentionWindow = (obj: { serviceId: number }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_NEXT_ATTENTION_WINDOW_LOADING" });
+    
+    const res: any = await new ScheduleUseCase().getNextAttentionWindow({
+      serviceId: obj.serviceId
+    });
+
+    dispatch({ type: "GET_NEXT_ATTENTION_WINDOW_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "GET_NEXT_ATTENTION_WINDOW_ERROR", payload: { error: error } });
+  }
+}
+
 export const actions: IScheduleActions = {
   getCalendarEvents,
   predifinedReservationData,
@@ -379,5 +395,6 @@ export const actions: IScheduleActions = {
   blockSlotInAttentionWindow,
   unlockSlotInAttentionWindow,
   rescheduleAppointmentInitialState,
-  activeAttentionWindowId
+  activeAttentionWindowId,
+  getNextAttentionWindow
 }
