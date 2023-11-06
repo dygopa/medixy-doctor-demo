@@ -218,6 +218,7 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
         nombre: data["nombre"],
         Localidades: data["Localidades"],
         estado: data["estado"],
+        servicioId: data.serviceId,
       })(dispatch);
       changeStatusPopup(true)(dispatch);
       changeTypePopup(2)(dispatch);

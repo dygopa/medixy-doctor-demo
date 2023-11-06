@@ -17,6 +17,7 @@ export default interface IScheduleRepository {
     unblockSlotInAttentionWindow(id:any): Promise<any | ScheduleFailure>;
     blockSlotInAttentionWindow(id:any): Promise<any | ScheduleFailure>;
     getSlotsByAttentionWindow(id:any): Promise<any | ScheduleFailure>;
+    getNextAttentionWindow(obj: { serviceId: number }): Promise<any | ScheduleFailure>;
 }
 
 export class ScheduleRepository implements IScheduleRepository {
@@ -557,6 +558,25 @@ export class ScheduleRepository implements IScheduleRepository {
 
             
             return data["data"] ?? {};
+        } catch (error) {
+            const exception = error as any;
+            return new ScheduleFailure(scheduleFailuresEnum.serverError);
+        }
+    }
+
+    async getNextAttentionWindow(obj: { serviceId: number }): Promise<any | ScheduleFailure> {
+        try {
+            let queryServiciosEnVentanasAtencion = supabase.from("ServiciosEnVentanasAtencion").select(`*`).eq("servicioId",  obj.serviceId);
+
+            const resVentanasAtencion = await queryServiciosEnVentanasAtencion;
+
+            if (!resVentanasAtencion.data || resVentanasAtencion.data.length === 0) return {};
+
+            let query = supabase.from("VentanasAtencion").select(`*`).eq("ventanaAtencionBaseId", resVentanasAtencion.data[0].ventanaAtencionBaseId).gte("fechaInicio", moment().format("YYYY-MM-DD")).order("fechaInicio", { ascending: true }).limit(1);
+
+            let res = await query;
+
+            return res.data && res.data.length > 0 ? res.data[0] : {}
         } catch (error) {
             const exception = error as any;
             return new ScheduleFailure(scheduleFailuresEnum.serverError);

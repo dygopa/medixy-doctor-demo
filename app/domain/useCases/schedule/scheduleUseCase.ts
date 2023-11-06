@@ -272,4 +272,16 @@ export default class ScheduleUseCase {
       throw error;
     }
   }
+
+  async getNextAttentionWindow(obj: { serviceId: number }): Promise<any | ScheduleFailure> {
+    try {
+      const response = await this._repository.getNextAttentionWindow({ serviceId: obj.serviceId });
+
+      if (response instanceof ScheduleFailure) throw response;
+
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
 }
