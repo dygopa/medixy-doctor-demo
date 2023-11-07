@@ -267,9 +267,11 @@ const Side = ({ user }: ISideProps) => {
               data={elem}
               onClick={() => {
                 console.log(elem);
-                appointmentDetail({ ...elem, appoinmentId: elem["id"] })(
-                  dispatch
-                );
+                appointmentDetail({
+                  ...elem,
+                  appoinmentId: elem["id"],
+                  creadoPorDoctor: elem["creadoPorDoctor"],
+                })(dispatch);
                 changeStatusPopup(true)(dispatch);
                 changeTypePopup(2)(dispatch);
               }}

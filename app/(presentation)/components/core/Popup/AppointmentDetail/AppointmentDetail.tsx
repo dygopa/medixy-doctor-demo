@@ -292,7 +292,11 @@ function AppointmentDetail({
               <div className="w-full grid grid-cols-2 justify-between items-center gap-3">
                 <DataSpan
                   label={"Quien hizo la cita"}
-                  value={`${user.names} ${user.lastName}`}
+                  value={`${
+                    data["creadoPorDoctor"]
+                      ? `Dr/a ${user.names} ${user.firstName}`
+                      : `${data["nombres"]} ${data["primerApellido"]}`
+                  } `}
                 />
               </div>
             </>
