@@ -85,6 +85,8 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
   function formatEvent(elem: any) {
     let object = {};
 
+    console.log(elem);
+
     let isBlocked = elem["estado"] === 9;
     let type = elem["sujetoId"] ? "APPOINMENT" : "FREE_SLOT";
     let text =
@@ -115,6 +117,7 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
         : "#fda4af";
 
     object = {
+      appointmentId: elem["id"],
       title: text,
       start: moment(elem["fechaReserva"]).utc().format("YYYY-MM-DD HH:mm"),
       end: moment(elem["fechaFinReserva"]).utc().format("YYYY-MM-DD HH:mm"),
@@ -214,6 +217,7 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
       console.log(data);
       appointmentDetail({
         ...data["sujetos"],
+        id: data["appointmentId"],
         fechaReserva: data["dateEvent"],
         nombre: data["nombre"],
         Localidades: data["Localidades"],
