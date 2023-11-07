@@ -16,7 +16,7 @@ export async function POST(req) {
     } = await req.json();
     let resSendgrid = await sendgrid.send({
       to: email_to,
-      from: "noodus.medhaus@xentraly.com",
+      from: "hola@prosit.bio",
       subject: `Se ha confirmado tu cita - Prosit`,
       html: `<div>
         <div style="
