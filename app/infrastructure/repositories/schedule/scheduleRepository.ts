@@ -171,6 +171,7 @@ export class ScheduleRepository implements IScheduleRepository {
                 observaciones: elem["observaciones"],
                 sujetoId: elem["sujetoId"],
                 servicioId: elem["servicioId"],
+                creadoPorDoctor: elem["creadoPorDoctor"]
             }))
 
             if(status){
@@ -269,6 +270,7 @@ export class ScheduleRepository implements IScheduleRepository {
                     servicioId: obj["servicioId"],
                     fechaReserva: moment().toDate(),
                     fechaFinReserva: moment().add(30, "minutes").toDate(),
+                    creadoPorDoctor: true
                 }
 
                 let query = supabase.from("Citas")
@@ -282,7 +284,8 @@ export class ScheduleRepository implements IScheduleRepository {
                     sujetoId: obj["pacienteId"],
                     servicioId: obj["servicioId"],
                     doctorId: obj["doctorId"],
-                    estado: AppointmentEnum.PENDING
+                    estado: AppointmentEnum.PENDING,
+                    creadoPorDoctor: true
                 }
 
                 let query = supabase.from("Citas")

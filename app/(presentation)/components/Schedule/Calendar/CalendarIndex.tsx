@@ -119,6 +119,7 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
     object = {
       appointmentId: elem["id"],
       title: text,
+      createdByDoctor: elem["creadoPorDoctor"],
       start: moment(elem["fechaReserva"]).utc().format("YYYY-MM-DD HH:mm"),
       end: moment(elem["fechaFinReserva"]).utc().format("YYYY-MM-DD HH:mm"),
       isBlocked,
@@ -223,6 +224,7 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
         Localidades: data["Localidades"],
         estado: data["estado"],
         servicioId: data.serviceId,
+        creadoPorDoctor: data["createdByDoctor"],
       })(dispatch);
       changeStatusPopup(true)(dispatch);
       changeTypePopup(2)(dispatch);
