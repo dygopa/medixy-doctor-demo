@@ -94,7 +94,6 @@ export default function RescheduleAppointment({
   }, []);
 
   useMemo(() => {
-    console.log(appointment);
     getNextAttentionWindow({ serviceId: appointment.servicioId })(dispatch);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

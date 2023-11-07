@@ -34,8 +34,6 @@ export default function Summary({
   const [isBlockAppointment, setIsBlockAppointment] = useState(false);
   const [hasError, setHasError] = useState(false);
 
-  console.log(patient);
-
   let hour = moment(appointment["fechaReserva"])
     .utc()
     .format("hh:mm a")
