@@ -23,6 +23,8 @@ export default function Nav() {
         return "top-60";
       case "recipe":
         return "top-[305px]";
+      case "images":
+        return "top-[370px]";
 
       default:
         return "top-0";
@@ -98,6 +100,14 @@ export default function Nav() {
             text="Receta"
             href={`${pathname}?view=recipe&type=${type ?? "medical-record"}`}
             isActive={getNavIsActive("recipe")}
+          />
+        </div>
+
+        <div className="py-1">
+          <NavItem
+            text="Imagenes"
+            href={`${pathname}?view=images&type=${type ?? "medical-record"}`}
+            isActive={getNavIsActive("images")}
           />
         </div>
       </div>

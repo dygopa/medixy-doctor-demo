@@ -9,6 +9,7 @@ import {
 } from "../context/MedicalRecordCreateContext";
 import CurrentConsultation from "./CurrentConsultation/CurrentConsultation";
 import Diagnosis from "./Diagnosis/Diagnosis";
+import Images from "./Images/Images";
 import Orders from "./Orders/Orders";
 import Recipe from "./Recipe/Recipe";
 import Records from "./Records/Records";
@@ -120,6 +121,10 @@ export default function RightSide({ user, width }: IRightSideProps) {
 
       <div className="w-full mb-14">
         <Recipe />
+      </div>
+
+      <div className="w-full mb-14">
+        <Images />
       </div>
     </div>
   );

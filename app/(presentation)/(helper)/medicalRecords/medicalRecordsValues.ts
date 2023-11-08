@@ -17,6 +17,7 @@ export const medicalConsultyInitialValues = {
     diagnose: [],
     observations: "",
   },
+  images: [],
   physical: {
     abnormalAppearance: {
       isChecked: false,

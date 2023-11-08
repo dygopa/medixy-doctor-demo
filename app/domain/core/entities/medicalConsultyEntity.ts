@@ -29,7 +29,17 @@ export interface IMedicalConsulty {
     medicalMeasures?: IMedicalMeasure[];
     treatments?: ITreatment[];
     medicalRecords?: IMedicalRecord[];
+    medicalConsultyImages?: IMedicalConsultyImage[];
     createdOn: Date;
     updatedOn: Date | null;
     deletedOn: Date | null;
+}
+
+
+export interface IMedicalConsultyImage {
+    id: number;
+    url: string;
+    description?: string | null;
+    medicalConsultyId: number; 
+    file?: { data: string, type: string }; 
 }
