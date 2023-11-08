@@ -6,6 +6,7 @@ import {
   MedicalRecordCreateSummaryContext,
 } from "../context/MedicalRecordCreateSummaryContext";
 import Diagnosis from "./Diagnosis/Diagnosis";
+import Images from "./Images/Images";
 import Orders from "./Orders/Orders";
 import Physical from "./Physical/Physical";
 import Reason from "./Reason/Reason";
@@ -119,6 +120,10 @@ export default function Detail({ user }: IDetailProps) {
 
       <div>
         <Orders user={user} medicalConsulty={medicalConsulty} />
+      </div>
+
+      <div>
+        <Images medicalConsulty={medicalConsulty} />
       </div>
     </div>
   );

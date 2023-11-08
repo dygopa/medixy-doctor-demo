@@ -1,4 +1,4 @@
-import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import { IMedicalConsulty, IMedicalConsultyImage } from "domain/core/entities/medicalConsultyEntity";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import { getDateFormatUTC } from "infrastructure/utils/dates/datesUtils";
 
@@ -28,6 +28,7 @@ export function medicalConsultySupabaseToMap(data: any): IMedicalConsulty {
     medicalMeasures: [],
     medicalRecords: [],
     treatments: [],
+    medicalConsultyImages: [],
     createdOn: data?.fechaConsulta ? new Date(new Date(data.fechaConsulta).getFullYear(), new Date(data.fechaConsulta).getMonth() + 1, new Date(data.fechaConsulta).getDate()) : new Date(),
     updatedOn: data?.fechaActualizacion ? new Date(data.fechaActualizacion) : null,
     deletedOn: data?.fechaEliminacion ? new Date(data.fechaEliminacion) : null,
@@ -60,3 +61,21 @@ export function fromMedicalConsultySupabaseDocumentData(medicalConsulty: IMedica
   return documentData;
 }
 
+export function medicalConsultyImageSupabaseToMap(data: any): IMedicalConsultyImage {
+  return {
+    id: data?.id ?? 0,
+    url: data?.url ?? "",
+    description: data?.descripcion,
+    medicalConsultyId: data?.consultaMedicaId ?? 0,
+  } as IMedicalConsultyImage;
+}
+
+export function fromMedicalConsultyImageSupabaseDocumentData(medicalConsultyImage: IMedicalConsultyImage): any {
+  const documentData = {
+    url: medicalConsultyImage.url,
+    descripcion: medicalConsultyImage.description,
+    consultaMedicaId: medicalConsultyImage.medicalConsultyId,
+  } as any;
+
+  return documentData;
+}

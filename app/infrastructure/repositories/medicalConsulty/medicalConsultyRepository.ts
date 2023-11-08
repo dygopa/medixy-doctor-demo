@@ -13,7 +13,7 @@ import { MedicalConsultyFailure, medicalConsultyFailuresEnum } from 'domain/core
 import { MedicalRecordFailure, medicalRecordFailuresEnum } from 'domain/core/failures/medicalRecord/medicalRecordFailure';
 import { ICreateMedicalConsultyImageResponse, ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse, IGetMedicalConsultyPDFResponse } from 'domain/core/response/medicalConsultyResponse';
 import { diagnosisSupabaseToMap } from 'domain/mappers/diagnosis/diagnosisSupabaseMapper';
-import { fromMedicalConsultySupabaseDocumentData, medicalConsultySupabaseToMap } from "domain/mappers/medicalConsulty/supabase/medicalConsultySupabaseMapper";
+import { fromMedicalConsultyImageSupabaseDocumentData, fromMedicalConsultySupabaseDocumentData, medicalConsultyImageSupabaseToMap, medicalConsultySupabaseToMap } from "domain/mappers/medicalConsulty/supabase/medicalConsultySupabaseMapper";
 import { medicalMeasureSupabaseToMap, medicalMeasureTypeSupabaseToMap } from 'domain/mappers/medicalMeasure/supabase/medicalMeasureSupabaseMapper';
 import { medicalRecordSupabaseToMap, medicalRecordTypeSupabaseToMap, medicalRecordValueSupabaseToMap, medicalRecordValueTypeSupabaseToMap } from 'domain/mappers/medicalRecord/supabase/medicalRecordSupabaseMapper';
 import { subjectSupabaseToMap } from 'domain/mappers/patient/supabase/subjectSupabaseMapper';
@@ -71,7 +71,8 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
           *,
           MedicamentosTratamiento (*),
           Sujetos (*)
-        )
+        ),
+        ImagenesConsultas (*)
       `,
       { count: "exact" }).eq("id",id).limit(1);
 
@@ -175,6 +176,13 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
           })
         }
       
+        if (res.data[0].ImagenesConsultas?.length > 0) {
+          res.data[0].ImagenesConsultas.map((medicalImageData: any) => {
+            const medicalConsultyImageMap: IMedicalConsultyImage = medicalConsultyImageSupabaseToMap(medicalImageData);
+  
+            if (medicalConsultyImageMap.id > 0) medicalConsulty.medicalConsultyImages?.push(medicalConsultyImageMap)
+          })
+        }
       }
 
       return medicalConsulty;
@@ -749,11 +757,7 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
       medicalConsultyImage.url = pictureUrl;
     }
 
-      const res = await supabase.from("ImagenesConsultas").insert({
-        url: medicalConsultyImage.url,
-        descripcion: medicalConsultyImage.description,
-        consultaMedicaId: medicalConsultyImage.medicalConsultyId,
-      }).select();
+      const res = await supabase.from("ImagenesConsultas").insert(fromMedicalConsultyImageSupabaseDocumentData(medicalConsultyImage)).select();
 
       if (res.data && res.data?.length > 0) medicalConsultyImage.id = res.data[0].id;
 
