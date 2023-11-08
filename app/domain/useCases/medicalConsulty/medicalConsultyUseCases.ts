@@ -90,6 +90,14 @@ export default class MedicalConsultyUseCase {
         })))
       } 
 
+      if (obj.medicalConsulty.medicalConsultyImages && obj.medicalConsulty.medicalConsultyImages.length > 0) {
+        await Promise.all((obj.medicalConsulty.medicalConsultyImages.map(async (medicalConsultyImage) => {
+          medicalConsultyImage.medicalConsultyId = response.data.id;
+
+          await this._repository.createMedicalConsultyImage(medicalConsultyImage);
+        })))
+      } 
+
       return response
     } catch (error) {
       throw error;

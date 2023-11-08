@@ -3,7 +3,7 @@ import { treatmentViaDosisEnum } from '(presentation)/(enum)/treatment/treatment
 import { get12HoursFormat, getFullDate } from '(presentation)/(helper)/dates/datesHelper';
 import { getDosisTypeText, getDuringText, getFrequencyText } from '(presentation)/(helper)/medicalRecords/recipesHelper';
 import { IDiagnosis } from 'domain/core/entities/diagnosis';
-import { IMedicalConsulty } from 'domain/core/entities/medicalConsultyEntity';
+import { IMedicalConsulty, IMedicalConsultyImage } from 'domain/core/entities/medicalConsultyEntity';
 import { IMedicalMeasure, IMedicalMeasureType } from 'domain/core/entities/medicalMeasureEntity';
 import { IMedicalRecord, IMedicalRecordType, IMedicalRecordValue, IMedicalRecordValueType } from 'domain/core/entities/medicalRecordEntity';
 import { ISubject } from 'domain/core/entities/subjectEntity';
@@ -11,17 +11,19 @@ import { ITreatment, ITreatmentMedicine } from 'domain/core/entities/treatmentEn
 import { IUser } from 'domain/core/entities/userEntity';
 import { MedicalConsultyFailure, medicalConsultyFailuresEnum } from 'domain/core/failures/medicalConsulty/medicalConsultyFailure';
 import { MedicalRecordFailure, medicalRecordFailuresEnum } from 'domain/core/failures/medicalRecord/medicalRecordFailure';
-import { ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse, IGetMedicalConsultyPDFResponse } from 'domain/core/response/medicalConsultyResponse';
+import { ICreateMedicalConsultyImageResponse, ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse, IGetMedicalConsultyPDFResponse } from 'domain/core/response/medicalConsultyResponse';
 import { diagnosisSupabaseToMap } from 'domain/mappers/diagnosis/diagnosisSupabaseMapper';
-import { fromMedicalConsultySupabaseDocumentData, medicalConsultySupabaseToMap } from "domain/mappers/medicalConsulty/supabase/medicalConsultySupabaseMapper";
+import { fromMedicalConsultyImageSupabaseDocumentData, fromMedicalConsultySupabaseDocumentData, medicalConsultyImageSupabaseToMap, medicalConsultySupabaseToMap } from "domain/mappers/medicalConsulty/supabase/medicalConsultySupabaseMapper";
 import { medicalMeasureSupabaseToMap, medicalMeasureTypeSupabaseToMap } from 'domain/mappers/medicalMeasure/supabase/medicalMeasureSupabaseMapper';
 import { medicalRecordSupabaseToMap, medicalRecordTypeSupabaseToMap, medicalRecordValueSupabaseToMap, medicalRecordValueTypeSupabaseToMap } from 'domain/mappers/medicalRecord/supabase/medicalRecordSupabaseMapper';
 import { subjectSupabaseToMap } from 'domain/mappers/patient/supabase/subjectSupabaseMapper';
 import { treatmentMedicineSupabaseToMap, treatmentSupabaseToMap } from 'domain/mappers/treatment/supabase/treatmentSupabaseMapper';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
+import { getFileFromBase64 } from 'infrastructure/utils/files/filesUtils';
 import { getLetterByMeasureType, getMedicalMeasuresMap, getTitleByMeasureType } from 'infrastructure/utils/medicalMeasures/medicalMeasuresHelper';
 import { getMedicalRecordsHistory, getMedicalRecordsPhysical } from 'infrastructure/utils/medicalRecord/medicalRecordHelper';
 import jsPDF from "jspdf";
+import { nanoid } from 'nanoid';
 import * as QRCode from "qrcode";
 
 export default interface IMedicalConsultyRepository {
@@ -41,6 +43,7 @@ export default interface IMedicalConsultyRepository {
     doctor: IUser;
     medicalConsulty: IMedicalConsulty;
   }): Promise<IGetMedicalConsultyPDFResponse | MedicalConsultyFailure>;
+  createMedicalConsultyImage(medicalConsultyImage: IMedicalConsultyImage): Promise<ICreateMedicalConsultyImageResponse | MedicalConsultyFailure>;
 }
 
 export class MedicalConsultyRepository implements IMedicalConsultyRepository {
@@ -68,7 +71,8 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
           *,
           MedicamentosTratamiento (*),
           Sujetos (*)
-        )
+        ),
+        ImagenesConsultas (*)
       `,
       { count: "exact" }).eq("id",id).limit(1);
 
@@ -172,6 +176,13 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
           })
         }
       
+        if (res.data[0].ImagenesConsultas?.length > 0) {
+          res.data[0].ImagenesConsultas.map((medicalImageData: any) => {
+            const medicalConsultyImageMap: IMedicalConsultyImage = medicalConsultyImageSupabaseToMap(medicalImageData);
+  
+            if (medicalConsultyImageMap.id > 0) medicalConsulty.medicalConsultyImages?.push(medicalConsultyImageMap)
+          })
+        }
       }
 
       return medicalConsulty;
@@ -715,6 +726,49 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
     } catch (error) {
       const exception = error as any;
       console.log(exception)
+      return new MedicalConsultyFailure(medicalConsultyFailuresEnum.serverError);
+    }
+  }
+
+  async createMedicalConsultyImage(medicalConsultyImage: IMedicalConsultyImage): Promise<ICreateMedicalConsultyImageResponse | MedicalConsultyFailure> {
+    try {
+      if (medicalConsultyImage.file?.data) {
+        const id = nanoid(11);
+        const fileName = `${id}.${medicalConsultyImage.file.type}`;
+
+        const file = getFileFromBase64(medicalConsultyImage.file.data, fileName);   
+
+        const { data, error } = await supabase.storage
+        .from("medical-consulties")
+        .upload(`${medicalConsultyImage.medicalConsultyId}/${fileName}`, file, {
+            cacheControl: '3600',
+            upsert: false
+        });
+
+      if (error) return new MedicalConsultyFailure(medicalConsultyFailuresEnum.serverError)
+
+      const res = supabase
+          .storage
+          .from("medical-consulties")
+          .getPublicUrl(data.path);
+
+      const pictureUrl = res.data.publicUrl;
+
+      medicalConsultyImage.url = pictureUrl;
+    }
+
+      const res = await supabase.from("ImagenesConsultas").insert(fromMedicalConsultyImageSupabaseDocumentData(medicalConsultyImage)).select();
+
+      if (res.data && res.data?.length > 0) medicalConsultyImage.id = res.data[0].id;
+
+      const response: ICreateMedicalConsultyImageResponse = {
+          data: medicalConsultyImage,
+          metadata: {},
+      }
+
+      return response;
+    } catch (error) {
+      const exception = error as any;
       return new MedicalConsultyFailure(medicalConsultyFailuresEnum.serverError);
     }
   }

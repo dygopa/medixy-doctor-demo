@@ -17,7 +17,10 @@ import AlertComponent from "(presentation)/components/core/BaseComponents/Alert"
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import { ICIE10 } from "domain/core/entities/cie10Entity";
 import { IDiagnosis } from "domain/core/entities/diagnosis";
-import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import {
+  IMedicalConsulty,
+  IMedicalConsultyImage,
+} from "domain/core/entities/medicalConsultyEntity";
 import {
   IMedicalMeasure,
   IMedicalMeasureType,
@@ -569,6 +572,18 @@ export default function Navigator({
     return medicalRecords;
   };
 
+  const getMedicalConsultyImages = (values: any) => {
+    const medicalConsultyImages: IMedicalConsultyImage[] = [];
+
+    if (values && values.images && values.images.length > 0) {
+      values.images.forEach((image: any) => {
+        medicalConsultyImages.push(image as IMedicalConsultyImage);
+      });
+    }
+
+    return medicalConsultyImages;
+  };
+
   const onCreateMedicalRecord = () => {
     setIsLoading(true);
 
@@ -586,6 +601,8 @@ export default function Navigator({
       const diagnoses = getDiagnosis(values.currentConsultation);
 
       const medicalRecords = getMedicalRecords(values);
+
+      const medicalConsultyImages = getMedicalConsultyImages(values);
 
       const medicalConsulty: IMedicalConsulty = {
         id: 0,
@@ -633,6 +650,7 @@ export default function Navigator({
         deletedOn: null,
         subjectId: subject?.subjectId ?? 0,
         subject: subject ?? ({} as ISubject),
+        medicalConsultyImages: medicalConsultyImages,
       };
 
       createMedicalConsulty({

@@ -1,4 +1,4 @@
-import { IMedicalConsulty } from "../entities/medicalConsultyEntity";
+import { IMedicalConsulty, IMedicalConsultyImage } from "../entities/medicalConsultyEntity";
 
 export interface IGetMedicalConsultiesResponse {
     data: IMedicalConsulty[];
@@ -16,4 +16,9 @@ export interface ICreateMedicalConsultyResponse {
 export interface IGetMedicalConsultyPDFResponse {
     data: IMedicalConsulty;
     metadata: { }
+}
+
+export interface ICreateMedicalConsultyImageResponse {
+    data: IMedicalConsultyImage;
+    metadata: {}
 }
