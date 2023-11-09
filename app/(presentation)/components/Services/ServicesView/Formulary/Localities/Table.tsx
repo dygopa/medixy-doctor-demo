@@ -146,7 +146,7 @@ export default function TableLocalities({services, setServices} : ITableProps) {
                 Vaya, no tienes Localidades aún
               </p>
               <p className="font-light text-slate-500 text-base text-center">
-                Aún no tienes prestas este servicio en ninguna localidad.
+                Aún no prestas este servicio en ninguna localidad.
               </p>
             </div>
           )}
