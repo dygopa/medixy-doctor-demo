@@ -18,6 +18,7 @@ export default interface IScheduleRepository {
     blockSlotInAttentionWindow(id:any): Promise<any | ScheduleFailure>;
     getSlotsByAttentionWindow(id:any): Promise<any | ScheduleFailure>;
     getNextAttentionWindow(obj: { serviceId: number }): Promise<any | ScheduleFailure>;
+    getAllAttentionWindows(doctorId: number): Promise<any[] | ScheduleFailure>;
 }
 
 export class ScheduleRepository implements IScheduleRepository {
@@ -229,6 +230,41 @@ export class ScheduleRepository implements IScheduleRepository {
             `).eq("ventanaAtencionBaseId", id)
 
             let resVentanasAtencion = await queryVentanasAtencion
+
+            return resVentanasAtencion.data ?? []
+        } catch (error) {
+            const exception = error as any;
+            return new ScheduleFailure(scheduleFailuresEnum.serverError);
+        }
+    }
+
+    async getAllAttentionWindows(doctorId: number, initialDate?: Date | null): Promise<any[] | ScheduleFailure> {
+        try {
+            const response = await supabase.from("ServiciosDoctores").select("*").eq("doctorId", doctorId);
+
+            if (response.error || response.data?.length === 0) return [];
+
+            const resBaseAttentionWindows = await supabase.from("ServiciosEnVentanasAtencion").select("*").in("servicioId", response.data.map((data) => data.servicioId));
+
+            if (resBaseAttentionWindows.error || resBaseAttentionWindows.data?.length === 0) return [];
+
+            let queryVentanasAtencion = supabase.from("VentanasAtencion")
+            .select(`
+                *,
+                Servicios (
+                    nombre
+                )
+            `).in("ventanaAtencionBaseId", resBaseAttentionWindows.data.map((data) => data.ventanaAtencionBaseId))
+
+            if (initialDate) {
+                queryVentanasAtencion = queryVentanasAtencion.gte("fechaInicio", initialDate);
+            }
+
+            let resVentanasAtencion = await queryVentanasAtencion
+
+            console.log("aca")
+            console.log(resVentanasAtencion)
+
 
             return resVentanasAtencion.data ?? []
         } catch (error) {

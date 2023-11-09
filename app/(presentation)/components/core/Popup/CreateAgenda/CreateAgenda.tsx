@@ -20,6 +20,7 @@ import { ILocality } from "domain/core/entities/localityEntity";
 import AlertComponent from "../../BaseComponents/Alert";
 import Tooltip from "../../BaseComponents/Tooltip/Tooltip";
 import { IUser } from "domain/core/entities/userEntity";
+import Lucide from "../../BaseComponents/Lucide";
 
 function CreateAgenda({
   user,
@@ -40,13 +41,13 @@ function CreateAgenda({
     activeLocality,
     createWindowAttention,
     getAttentionWindows,
-    getAttentionWindowsByLocation,
+    getAllAttentionWindows,
   } = actions;
   const { data: localities, successful: loadedLocalities } =
     state.getLocalitiesWithServices;
   const { data: services, successful: loadedServices } =
     state.getServicesByLocality;
-  const { data: attentionWindows } = state.getAttentionWindowsByLocality;
+  const { data: attentionWindows } = state.getAllAttentionWindows;
   const { loading, successful, error } = state.createWindowAttention;
   const { data: activeService, successful: changedActiveService } =
     state.activeService;
@@ -66,6 +67,7 @@ function CreateAgenda({
 
   const [loadedLists, setLoadedLists] = useState<boolean>(false);
   const [generatedHours, setGeneratedHours] = useState<boolean>(false);
+  const [showAlertDaysMessage, setShowAlertDaysMessage] = useState(false);
 
   const [listOfLocalities, setListOfLocalities] = useState<Array<any>>([]);
   const [listOfServices, setListOfServices] = useState<Array<any>>([]);
@@ -194,12 +196,7 @@ function CreateAgenda({
         key={index}
       >
         <p> {elem["title"]}</p>
-        {elem.isBlock && (
-          <Tooltip>
-            Ya tienes una ventana de atención creada para este día y dentro de
-            las horas que seleccionaste
-          </Tooltip>
-        )}
+        {elem.isBlock && <Tooltip>Día bloqueado</Tooltip>}
       </div>
     );
   };
@@ -327,6 +324,7 @@ function CreateAgenda({
         }
       });
 
+      setShowAlertDaysMessage(true);
       setDaysInWeek(daysInWeekList);
       return;
     }
@@ -368,6 +366,8 @@ function CreateAgenda({
         isBlock: false,
       },
     ]);
+
+    setShowAlertDaysMessage(false);
   }
 
   function onHandleHours(name: string, value: string, startDate: Date) {
@@ -466,7 +466,10 @@ function CreateAgenda({
         },
       ]);
       console.log(selectedLocality["id"]);
-      getAttentionWindowsByLocation(id)(dispatch);
+      getAllAttentionWindows(
+        user.userId,
+        moment().format("YYYY-MM-DD")
+      )(dispatch);
     }
   }, [selectedLocality]);
 
@@ -812,6 +815,7 @@ function CreateAgenda({
             <p className="font-normal text-sm text-slate-600">Desde</p>
             <FormSelect
               value={formData.fromHour}
+              disabled={formData.spanTime === 0}
               name="fromHour"
               className="form-control"
               onChange={(e) => {
@@ -833,6 +837,7 @@ function CreateAgenda({
             <p className="font-normal text-sm text-slate-600">Hasta</p>
             <FormSelect
               value={formData.toHour}
+              disabled={formData.spanTime === 0}
               name="toHour"
               className="form-control"
               onChange={(e) => {
@@ -868,6 +873,25 @@ function CreateAgenda({
             ))}
           </div>
         </div>
+        {showAlertDaysMessage && (
+          <div className="w-full flex flex-col justify-center items-start gap-2">
+            <div className="transition w-full h-auto p-3 flex flex-col justify-center items-start border rounded-md relative border-slate-300 bg-slate-100">
+              <div className="flex items-center">
+                <div>
+                  <Lucide icon="AlertCircle" color="#216AD9" size={25} />
+                </div>
+
+                <div className="ml-2">
+                  <p className="font-normal text-sm text-slate-600">
+                    Los días bloqueados, son días donde ya posees ventanas de
+                    atención creadas en ese horario en este consultorio u otro
+                    de tus consultorios creados.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
         <div className="w-full flex flex-col justify-center items-start gap-2">
           <p className="font-normal text-sm text-slate-600">Termina</p>
           <div className="w-full flex justify-between items-center gap-3">

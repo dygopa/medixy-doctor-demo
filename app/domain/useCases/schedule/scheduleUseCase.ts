@@ -52,6 +52,16 @@ export default class ScheduleUseCase {
     }
   }
 
+  async getAllAttentionWindows(doctorId:number, initialDate?: Date | null): Promise<Array<any>> {
+    try {
+      const response = await this._repository.getAllAttentionWindows(doctorId, initialDate);
+      if (response instanceof ScheduleFailure) throw response;
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async deleteAppointment(id:string): Promise<Array<any>> {
     try {
       const response = await this._repository.deleteAppointment(id);
