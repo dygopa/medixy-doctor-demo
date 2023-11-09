@@ -14,7 +14,7 @@ import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import { nanoid } from 'nanoid';
 import { getFileFromBase64 } from 'infrastructure/utils/files/filesUtils';
 import { ILocalityService } from 'domain/core/entities/localityEntity';
-import { fromServiceToLocalitiesSupabaseDocumentData, servicesSupabaseMapper, serviceToLocalitiesSupabaseToMap } from 'domain/mappers/services/servicesSupabaseMapper';
+import { fromServiceToLocalitiesSupabaseDocumentData, servicesSondsSupabaseMapper, servicesSupabaseMapper, serviceToLocalitiesSupabaseToMap } from 'domain/mappers/services/servicesSupabaseMapper';
 import { ICreateServiceCategoryResponse } from 'domain/core/response/servicesResponse';
 
 export default interface IServiceRepository {
@@ -30,6 +30,7 @@ export default interface IServiceRepository {
   getServicesByAttentionWindow(attentionWindowId: string): Promise<Array<any> | ServiceFailure>
   getCategoriesDoctor(doctorId: number, searchQuery?: string | null): Promise<Array<any> | ServiceFailure>;
   createServiceCategory(serviceCategory: IServiceCategory): Promise<ICreateServiceCategoryResponse | ServiceFailure>
+  getServicesChildren(serviceId: number): Promise<Array<any> | ServiceFailure>;
 }
 
 export class ServicesRepository implements IServiceRepository {
@@ -463,5 +464,27 @@ export class ServicesRepository implements IServiceRepository {
       const exception = error as any;
       return new ServiceFailure(serviceFailuresEnum.serverError);
     }
+  }
+
+  async getServicesChildren(serviceId: number): Promise<Array<any> | ServiceFailure> {
+    try {
+      const res = await supabase.from("Servicios").select("*", { count: "exact" }).eq("servicioPadreId", serviceId);
+
+      const services: any[] = [];
+
+      if (res.data && res.data.length > 0) {
+        await Promise.all(res.data.map(async (data: any) => {
+          const localitieMap: any = servicesSondsSupabaseMapper(data);
+
+          services.push(localitieMap);
+        }));
+      }
+
+      return services;
+    } catch (error) { 
+      const exception = error as any;
+      return new ServiceFailure(serviceFailuresEnum.serverError);
+    }
+
   }
 }

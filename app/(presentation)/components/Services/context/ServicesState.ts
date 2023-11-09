@@ -34,7 +34,7 @@ interface IServiceServicesState {
 }
 
 interface IGetLocalitiesToService {
-  data: IServiceToLocality[];
+  data: any[];
   loading: boolean;
   successful: boolean;
   error: ServiceFailure | null; 

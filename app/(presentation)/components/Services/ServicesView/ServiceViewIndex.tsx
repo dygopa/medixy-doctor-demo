@@ -1,7 +1,7 @@
 "use client";
 
 import ServicesProvider from "../context/ServicesContext";
-import Formulary from "./Formulary/Formulary";
+import FormularyIndex from "./Formulary/IndexFormulary";
 import { IUser } from "domain/core/entities/userEntity";
 
 interface IServiceViewIndexProps {
@@ -12,7 +12,7 @@ export default function ServiceViewIndex({ user }: IServiceViewIndexProps) {
   return (
     <div className="py-5">
       <ServicesProvider>
-        <Formulary accountId={user.accountId} userId={user.userId} />
+        <FormularyIndex accountId={user.accountId} userId={user.userId} />
       </ServicesProvider>
     </div>
   );

@@ -1,11 +1,14 @@
 import { ServiceFailure } from './../../core/failures/service/serviceFailure';
 import { ServicesRepository } from 'infrastructure/repositories/service/serviceRepository';
 import { IService, IServiceCategory, IServiceToLocality } from './../../core/entities/serviceEntity';
-import { ILocalityService } from 'domain/core/entities/localityEntity';
+import { ILocality, ILocalityService } from 'domain/core/entities/localityEntity';
 import { ICreateServiceCategoryResponse } from 'domain/core/response/servicesResponse';
+import { LocalityFailure } from 'domain/core/failures/locality/localityFailure';
+import { LocalitiesRepository } from 'infrastructure/repositories/localities/localitiesRepository';
 
 export default class ServiceUseCase {
   private _repository: ServicesRepository = new ServicesRepository();
+  private _localityRepository: LocalitiesRepository = new LocalitiesRepository();
     
   async getCategories(): Promise<Array<any>> {
     try {
@@ -87,11 +90,20 @@ export default class ServiceUseCase {
     }
   }
 
-  async updateService(obj: {dataService: any; serviceId: number;}): Promise<number> {
+  async updateService(obj: {dataService: any; serviceId: number; servicesChildren: any[];}): Promise<number> {
     try {
       const response = await this._repository.updateService(obj);
 
       if (response instanceof ServiceFailure) throw response;
+
+      obj.servicesChildren.map(async (elem) => {
+        let res = await this._repository.updateService({
+          dataService: elem,
+          serviceId: elem.id,
+        });
+
+        if (res instanceof ServiceFailure) throw res;
+      })
 
       if(obj["dataService"]["media"]["data"] !== "" && obj["dataService"]["media"]["type"] !== "") await this._repository.addMediaService({...obj["dataService"]["media"], id: obj["dataService"]["id"]}, obj.serviceId);
       
@@ -112,14 +124,28 @@ export default class ServiceUseCase {
     }
   }
 
-  async getLocalitiesToService(serviceId: number): Promise<Array<IServiceToLocality>> {
+  async getLocalitiesToService(serviceId: number, userId: number): Promise<Array<any>> {
     try {
 
-      const response = await this._repository.getLocalitiesToService(serviceId);
+      const services = await this._repository.getServicesChildren(serviceId);
 
-      if (response instanceof ServiceFailure) throw response;
+      if (services instanceof ServiceFailure) throw services;
 
-      return response;
+      const localities = await this._localityRepository.getUserLocalities(userId);
+
+      if (localities instanceof LocalityFailure) throw localities;
+
+      let localitiesList: any[] = [];
+
+      services.map((service: any) => {
+        let findedLocality = [...localities as Array<ILocality>].find(elem => elem["id"] === service.location_id)
+        
+        if (findedLocality === undefined) throw LocalityFailure;
+        
+        localitiesList.push({...findedLocality, service})
+      })
+
+      return localitiesList;
     } catch (error) {
       throw error;
     }

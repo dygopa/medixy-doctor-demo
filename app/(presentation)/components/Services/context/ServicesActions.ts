@@ -107,7 +107,7 @@ const createUserService = (obj:any) => async (dispatch: Dispatch<any>) => {
   }
 }
 
-const updateService = (obj: {dataService: any; serviceId: number;}) => async (dispatch: Dispatch<any>) => {
+const updateService = (obj: {dataService: any; serviceId: number; servicesChildren: any[];}) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "UPDATE_USER_SERVICE_LOADING" });
 
@@ -145,11 +145,11 @@ const deleteService = (id:number, userId:number) => async (dispatch: Dispatch<an
   }
 }
 
-const getLocalitiesToService = (serviceId: number) => async (dispatch: Dispatch<any>) => {
+const getLocalitiesToService = (serviceId: number, userId: number) => async (dispatch: Dispatch<any>) => {
   try {
       dispatch({ type: "GET_LOCALITIES_LOADING" });
 
-      const res = await new ServiceUseCase().getLocalitiesToService(serviceId);
+      const res = await new ServiceUseCase().getLocalitiesToService(serviceId, userId);
 
       dispatch({ type: "GET_LOCALITIES_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
