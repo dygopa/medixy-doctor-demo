@@ -26,6 +26,7 @@ export interface IScheduleActions {
   getLocalities: Function;
   getLocalitiesWithServices: Function;
   getAttentionWindowsByLocation: Function;
+  getAllAttentionWindows: Function;
   getPatients: Function;
   activeActualDay: Function;
   setListOfColors: Function;
@@ -197,6 +198,20 @@ const getAttentionWindowsByService = (id:number, date?:string) => async (dispatc
       dispatch({ type: "GET_ATTENTION_WINDOWS_BY_SERVICE_ERROR", payload: { error: error } });
     }
 }
+
+const getAllAttentionWindows = (doctorId: number, initialDate?: Date | null) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_ALL_ATTENTION_WINDOWS_LOADING" });
+    
+    const res: Array<any> = await new ScheduleUseCase().getAllAttentionWindows(doctorId, initialDate);
+
+    dispatch({ type: "GET_ALL_ATTENTION_WINDOWS_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "GET_ALL_ATTENTION_WINDOWS_ERROR", payload: { error: error } });
+  }
+}
+
 
 const unlockSlotInAttentionWindow = (id:string) => async (dispatch: Dispatch<any>) => {
     try {
@@ -396,5 +411,6 @@ export const actions: IScheduleActions = {
   unlockSlotInAttentionWindow,
   rescheduleAppointmentInitialState,
   activeAttentionWindowId,
-  getNextAttentionWindow
+  getNextAttentionWindow,
+  getAllAttentionWindows
 }

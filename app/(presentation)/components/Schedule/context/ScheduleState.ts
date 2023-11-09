@@ -35,6 +35,7 @@ export interface IScheduleState {
   activeAttentionWindowId: IScheduleUserState;
   getServicesByAttentionWindow: IScheduleUserState;
   getNextAttentionWindow: IScheduleUserState;
+  getAllAttentionWindows: IScheduleUserState;
 }
 
 interface IScheduleUserState {
@@ -245,6 +246,12 @@ export const initialState: IScheduleState = {
   },
   getNextAttentionWindow: {
     data: {},
+    loading: false,
+    successful: false,
+    error: null,
+  },
+  getAllAttentionWindows: {
+    data: [],
     loading: false,
     successful: false,
     error: null,
