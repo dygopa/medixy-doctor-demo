@@ -118,7 +118,7 @@ export default function Detail({
           <PatientDetail subjectId={subjectId} appointment={appointment} />
         </div>
 
-        <div className="w-full flex justify-start items-center overflow-x-auto overflow-y-hidden py-4 scroll-horizontal">
+        <div className="w-full flex justify-start items-center overflow-x-auto overflow-y-hidden pb-2 scroll-horizontal">
           {listTabs.map((tab, i) => (
             <React.Fragment key={i}>
               <div className="mr-3">

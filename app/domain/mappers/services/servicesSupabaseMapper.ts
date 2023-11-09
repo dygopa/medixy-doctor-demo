@@ -21,6 +21,21 @@ export function fromServiceToLocalitiesSupabaseDocumentData(relation: ILocalityS
 
     return documentData;
 }
+
+export function servicesSondsSupabaseMapper(data: any): any {
+    return {
+        id: data?.id ?? 0,
+        name: data?.nombre ?? "",
+        service_category_id: data?.categoriaServicioId ?? "",
+        image_url: data?.fotoUrl ?? 0,
+        description: data?.descripcion ?? 0,
+        conditions: data?.condiciones ?? 0,
+        status: data?.estado ?? 0,
+        base_price: data?.precioBase ?? 0,
+        location_id: data?.localidadId ?? 0,
+    } as any;
+}
+
 export function servicesSupabaseMapper(data: any): IService {
     return {
         id: data?.id ?? 0,

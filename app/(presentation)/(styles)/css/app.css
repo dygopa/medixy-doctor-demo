@@ -110,7 +110,7 @@
  }
 
  .scroll-horizontal::-webkit-scrollbar {
-   height: 7px;
+   height: 5px;
 }
  
  /* Track */
