@@ -46,7 +46,11 @@ export default function LocalityCreateFormulary({
     actions: actionsSteps,
     dispatch: dispatchSteps,
   } = useContext<IStepByStepContext>(StepByStepContext);
-  const { changeOpenPopup, changeOpenPopupText } = actionsSteps;
+  const {
+    changeOpenPopup,
+    changeOpenPopupText,
+    changeOpenPopupDisabledButton,
+  } = actionsSteps;
   const { data: steps, successful } = stateSteps.getStepsMessages;
 
   const [formData, setFormData] = useState({
@@ -73,6 +77,7 @@ export default function LocalityCreateFormulary({
   useEffect(() => {
     if (steps && steps.length === 0 && successful) {
       setTimeout(() => {
+        changeOpenPopupDisabledButton(true)(dispatchSteps);
         changeOpenPopup(true)(dispatchSteps);
         changeOpenPopupText(
           "Para crear un consultorio digital, es primordial completar datos primordiales de tu perfil antes, una vez completado el paso, podrás crear tu primer consultorio digital."

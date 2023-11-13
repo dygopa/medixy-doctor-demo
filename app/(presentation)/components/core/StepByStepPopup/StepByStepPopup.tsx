@@ -23,10 +23,9 @@ interface IStep {
 }
 interface IAlertProps {
   user: IUser;
-  disabled?: boolean;
 }
 
-const StepByStepPopup = ({ user, disabled = false }: IAlertProps) => {
+const StepByStepPopup = ({ user }: IAlertProps) => {
   const { state, actions, dispatch } =
     useContext<IStepByStepContext>(StepByStepContext);
   const { getSteps, changeOpenPopup /* getService */ } = actions;
@@ -246,7 +245,6 @@ const StepByStepPopup = ({ user, disabled = false }: IAlertProps) => {
           </div>
 
           <Footer
-            disabled={disabled}
             user={user}
             customClick={() => {
               setIsVisible(false);

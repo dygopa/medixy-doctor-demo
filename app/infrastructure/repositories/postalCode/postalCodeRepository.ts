@@ -23,7 +23,7 @@ export class PostalCodeRepository implements IPostalCodeRepository {
       `,{ count: "exact" })
 
       if (obj.searchQuery) {
-        query = query.or(`or(codigoPostal.ilike.%${obj.searchQuery.trim().toLowerCase()}%),and(codigoPostal.ilike.%${obj.searchQuery.trim().toLowerCase()}%)`);
+        query = query.or(`or(codigoPostal.ilike.${obj.searchQuery.trim().toLowerCase()}%),and(codigoPostal.ilike.${obj.searchQuery.trim().toLowerCase()}%)`);
       }
 
       if (obj.federalEntityId) {

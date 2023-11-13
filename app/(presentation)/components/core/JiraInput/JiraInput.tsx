@@ -18,6 +18,8 @@ export const JiraInput = ({
   customType,
   onChange,
   onClick,
+  onFocus,
+  onBlur,
   placeholder,
   disabled,
   loading = false,
@@ -72,6 +74,8 @@ export const JiraInput = ({
         <>
           {customType === "text" && (
             <input
+              onFocus={onFocus}
+              onBlur={onBlur}
               className={twMerge([
                 "w-full h-fit relative block p-1 rounded outline-none border border-primary",
                 "focus:border focus:border-primary",
@@ -85,6 +89,8 @@ export const JiraInput = ({
           )}
           {customType === "textarea" && (
             <textarea
+              onFocus={onFocus}
+              onBlur={onBlur}
               className={twMerge([
                 "w-full h-fit relative block p-1 rounded outline-none border border-primary",
                 "focus:border focus:border-primary",
@@ -127,7 +133,7 @@ export const JiraInput = ({
             customStyleText,
           ])}
         >
-          {text}
+          {text.length === 0 ? placeholder : text}
         </span>
       )}
     </div>

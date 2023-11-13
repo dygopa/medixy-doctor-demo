@@ -121,6 +121,17 @@ export const StepByStepReducer = (state: any, action: any) => {
               error: null,
             },
           };
+          case 'CHANGE_OPEN_POPUP_DISABLED_BUTTON':
+          return {
+            ...state,
+            openPopupDisabledButton: {
+              ...state.openPopupDisabledButton,
+              data: action.payload.data,
+              loading: false,
+              successful: true,
+              error: null,
+            },
+          };
       /* case 'GET_SERVICE_SUCCESSFUL':
         return {
           ...state,

@@ -2,18 +2,21 @@ import { IUser } from "domain/core/entities/userEntity";
 import Button from "../BaseComponents/Button";
 import Link from "next/link";
 import { ConfigEnviroment } from "infrastructure/config/env/env";
+import { useContext } from "react";
+import {
+  IStepByStepContext,
+  StepByStepContext,
+} from "./context/StepByStepContext";
 
 interface IFooterProps {
   user: IUser;
   customClick: () => void;
-  disabled?: boolean;
 }
 
-export default function Footer({
-  user,
-  customClick,
-  disabled = false,
-}: IFooterProps) {
+export default function Footer({ user, customClick }: IFooterProps) {
+  const { state } = useContext<IStepByStepContext>(StepByStepContext);
+  const { data: disabled } = state.openPopupDisabledButton;
+
   let userLink =
     new ConfigEnviroment().nextPublicMarketPlaceDomain +
     `/discover/specialists/${user?.userId}`;
@@ -22,11 +25,11 @@ export default function Footer({
 
   return (
     <div>
-      {/* <div className="text-center mb-6">
+      <div className="text-center mb-6">
         <Button onClick={customClick} variant="outline-primary">
           Lo hare después
         </Button>
-  </div> */}
+      </div>
 
       <div className="text-center">
         <Link
