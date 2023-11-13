@@ -21,7 +21,11 @@ interface ISpecialistIndexProps {
 function SpecialistIndex({ id }: ISpecialistIndexProps) {
   const { actions: actionsStep, dispatch: dispatchStep } =
     useContext<IStepByStepContext>(StepByStepContext);
-  const { changeOpenPopup, changeOpenPopupText } = actionsStep;
+  const {
+    changeOpenPopup,
+    changeOpenPopupText,
+    changeOpenPopupDisabledButton,
+  } = actionsStep;
 
   const { state, actions, dispatch } =
     useContext<ISpecialistsContext>(SpecialistsContext);
@@ -47,6 +51,7 @@ function SpecialistIndex({ id }: ISpecialistIndexProps) {
                   setStep={setStep}
                   specialist={data as Specialist}
                   setIsVisible={() => {
+                    changeOpenPopupDisabledButton(true)(dispatchStep);
                     changeOpenPopup(true)(dispatchStep);
                     changeOpenPopupText(
                       "Has completado los datos básicos de tu perfil.  Los datos proporcionados serán visibles en tu directorio, esta información es importante ya que brinda una rápida visualización a tus pacientes o futuros pacientes que te busquen o encuentren en tu directorio"

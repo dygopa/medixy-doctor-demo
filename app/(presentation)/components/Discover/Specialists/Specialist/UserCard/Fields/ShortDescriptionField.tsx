@@ -2,7 +2,7 @@ import { JiraInput } from "(presentation)/components/core/JiraInput/JiraInput";
 import TooltipIndicator from "(presentation)/components/core/TooltipIndacator/tooltipIndicator";
 import clsx from "clsx";
 import { Specialist } from "domain/core/entities/specialists/specialist";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 interface IShortDescriptionFieldProps {
   handleOnClick: (value: string) => void;
@@ -92,12 +92,8 @@ export default function ShortDescriptionField({
           loading={loading}
           disabledButton
           disabled={step === 0}
-          text={
-            specialist.shortDescription !== ""
-              ? specialist.shortDescription
-              : "Descripción corta de tí"
-          }
-          placeholder="Descripción corta de tí"
+          text={specialist.shortDescription}
+          placeholder="Descripción corta sobre ti"
           onChange={(e) => {
             setUserObject({
               ...userObject,
