@@ -29,7 +29,7 @@ export default function ImageUploadPopup({
     >
       <div
         className={twMerge([
-          "w-full md:w-[60%] xl:w-[45%] lg:w-[60%] flex overflow-y-hidden flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8 h-[425px]",
+          "w-full md:w-[60%] xl:w-[45%] lg:w-[60%] flex overflow-y-hidden flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8 h-[450px]",
         ])}
       >
         <div className="w-full px-4">

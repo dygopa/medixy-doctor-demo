@@ -9,6 +9,7 @@ export default interface IScheduleRepository {
     getCalendarEvents(id:number, localityId:number, sinceDate:any, untilDate:any, serviceId?:number): Promise<any[] | ScheduleFailure>;
     getAppointments(id:number, dateStart?:string, dateEnd?:string, localityId?:number, status?:number, onlySubjects?: boolean): Promise<any[] | ScheduleFailure>;
     getAttentionWindows(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure>;
+    getBaseAttentionWindows(doctorId:number): Promise<any[] | ScheduleFailure>
     getBaseAttentionWindowsByLocality(id:number | null, by?:string | undefined): Promise<any[] | ScheduleFailure>;
     createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
     getAttentionWindowsByService(id:number, date?:string): Promise<any[] | ScheduleFailure>;
@@ -19,6 +20,7 @@ export default interface IScheduleRepository {
     getSlotsByAttentionWindow(id:any): Promise<any | ScheduleFailure>;
     getNextAttentionWindow(obj: { serviceId: number }): Promise<any | ScheduleFailure>;
     getAllAttentionWindows(doctorId: number): Promise<any[] | ScheduleFailure>;
+    getAttentionWindowsByLocalities(localities:number[]): Promise<any[] | ScheduleFailure>;
 }
 
 export class ScheduleRepository implements IScheduleRepository {
@@ -238,6 +240,42 @@ export class ScheduleRepository implements IScheduleRepository {
         }
     }
 
+    async getAttentionWindowsByLocalities(localities:number[]): Promise<any[] | ScheduleFailure> {
+        try {
+            let queryOfServices = supabase.from("Servicios").select(`*`).in("localidadId", localities);
+                        
+            let resServices = await queryOfServices
+            
+            if(resServices.error) return new ScheduleFailure(scheduleFailuresEnum.serverError);
+            
+            if(resServices.data?.length === 0) return []
+
+            let queryServiciosEnVentanasAtencion = supabase.from("ServiciosEnVentanasAtencion")
+            .select(`*, VentanasAtencionBase(*)`).in("servicioId", resServices.data!.map((elem:any)=> elem["id"] ))
+
+            let resServiciosEnVentanasAtencion = await queryServiciosEnVentanasAtencion
+
+            if(resServiciosEnVentanasAtencion.data?.length === 0) return []
+
+            let windowAttentionId = resServiciosEnVentanasAtencion.data![0]["ventanaAtencionBaseId"].toString()
+
+            let queryVentanasAtencion = supabase.from("VentanasAtencion")
+            .select(`
+                *,
+                Servicios (
+                    nombre
+                )
+            `).in("ventanaAtencionBaseId", resServiciosEnVentanasAtencion.data!.map((elem:any)=> elem["ventanaAtencionBaseId"] ))
+
+            let resVentanasAtencion = await queryVentanasAtencion
+
+            return resVentanasAtencion.data ?? []
+        } catch (error) {
+            const exception = error as any;
+            return new ScheduleFailure(scheduleFailuresEnum.serverError);
+        }
+    }
+
     async getAllAttentionWindows(doctorId: number, initialDate?: Date | null): Promise<any[] | ScheduleFailure> {
         try {
             const response = await supabase.from("ServiciosDoctores").select("*").eq("doctorId", doctorId);
@@ -267,6 +305,32 @@ export class ScheduleRepository implements IScheduleRepository {
 
 
             return resVentanasAtencion.data ?? []
+        } catch (error) {
+            const exception = error as any;
+            return new ScheduleFailure(scheduleFailuresEnum.serverError);
+        }
+    }
+
+    async getBaseAttentionWindows(doctorId:number, initialDate?: Date | null): Promise<any[] | ScheduleFailure> {
+        try {
+            const response = await supabase.from("ServiciosDoctores").select("*").eq("doctorId", doctorId);
+
+            if (response.error || response.data?.length === 0) return [];
+
+            let queryBaseAttentionWindows = supabase.from("ServiciosEnVentanasAtencion").select(`*, VentanasAtencionBase(*)`).in("servicioId", response.data.map((data) => data.servicioId));
+
+            /* if (initialDate) {
+                queryBaseAttentionWindows = queryBaseAttentionWindows.gte("VentanasAtencionBase.fechaInicio", initialDate);
+            } */
+
+            const resBaseAttentionWindows = await queryBaseAttentionWindows;
+
+            console.log("aca")
+            console.log(resBaseAttentionWindows)
+
+            if (resBaseAttentionWindows.error || resBaseAttentionWindows.data?.length === 0) return [];
+
+            return resBaseAttentionWindows.data ?? []
         } catch (error) {
             const exception = error as any;
             return new ScheduleFailure(scheduleFailuresEnum.serverError);

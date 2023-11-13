@@ -17,6 +17,7 @@ import { IService } from "domain/core/entities/serviceEntity";
 import { useRouter } from "next/navigation";
 import {
   Dispatch,
+  MutableRefObject,
   SetStateAction,
   useContext,
   useMemo,
@@ -72,6 +73,8 @@ export default function Services({
   } = stateSteps.createUserSteps;
 
   const [services, setServices] = useState<any>([]);
+  const [inputIndex, setInputIndex] = useState(0);
+  const [showServicesError, setShowServicesError] = useState(false);
   const [successfulPopup, setSuccessfulPopup] = useState(false);
 
   const router = useRouter();
@@ -96,34 +99,37 @@ export default function Services({
   }, [createUserLocalitySuccess]);
 
   const onCreateUserLocality = () => {
-    if (services.length === 0) return;
+    if (services.length === 0) {
+      setShowServicesError(true);
 
-    let hasError = false;
-    const servicesList: any = [];
-
-    services.forEach((item: any) => {
-      if (!item.price || item.price === 0) {
-        item.has_error = true;
-
-        if (!hasError) hasError = true;
-      } else {
-        item.has_error = false;
-      }
-
-      servicesList.push(item);
-    });
-
-    setServices(servicesList);
-
-    if (!hasError) {
-      createUserLocality(
-        { ...formData, address: address, id: userId },
-        services
-      )(dispatch);
+      setTimeout(() => {
+        setShowServicesError(false);
+      }, 3000);
+      return;
     }
+
+    const servicesPrices = services.filter(
+      (serviceFind: any) => serviceFind["price"] > 0
+    );
+
+    if (!servicesPrices || servicesPrices.length === 0) {
+      setShowServicesError(true);
+
+      setTimeout(() => {
+        setShowServicesError(false);
+      }, 3000);
+      return;
+    }
+
+    createUserLocality(
+      { ...formData, address: address, id: userId },
+      servicesPrices
+    )(dispatch);
   };
 
   const getDisabledButton = () => {
+    if (showServicesError) return true;
+
     if (services.length === 0) {
       return true;
     }
@@ -157,22 +163,34 @@ export default function Services({
     setServices(list);
   }
 
-  function managePriceChangeInList(value: number, id: number) {
-    let servicesList = services;
-    let index = servicesList.findIndex(
-      (elem: any) => elem["service_id"] === id
+  function managePriceChangeInList(
+    price: number,
+    serviceId: number,
+    serviceParentId: any
+  ) {
+    let list: any = [...services];
+    const serviceIndex = list.findIndex(
+      (serviceFind: any) => serviceFind["service_id"] === serviceId
     );
-    servicesList[index].price = value;
-    setServices(servicesList);
+
+    if (serviceIndex >= 0) {
+      list[serviceIndex].price = price;
+      setServices(list);
+      return;
+    }
+
+    list.push({
+      id: 0,
+      service_id: serviceId,
+      location_id: 0,
+      price: price,
+      service_parent_id: serviceParentId,
+      has_error: false,
+    });
+    setServices(list);
   }
 
-  const ServiceComponent = ({ data }: { data: IService }) => {
-    let ref = useRef<HTMLInputElement | null>(null);
-
-    const getInputRef = (el: HTMLInputElement) => {
-      ref.current = el;
-    };
-
+  const ServiceComponent = ({ data, i }: { data: IService; i: number }) => {
     let isInList = services.find((elem: any) => elem["service_id"] === data.id);
 
     return (
@@ -185,31 +203,38 @@ export default function Services({
           {/*  <p className="font-light text-sm text-slate-400">{data.state.name}</p> */}
         </div>
         <div className="flex justify-between items-center gap-2">
-          <div className="w-3/4 flex flex-col justify-start items-start gap-1 text-left">
+          <div className="w-full flex flex-col justify-start items-start gap-1 text-left">
             <div className="relative w-full">
               <div className="w-full">
                 <NumericFormat
-                  getInputRef={getInputRef}
+                  autoFocus={inputIndex === i}
+                  onFocus={() => setInputIndex(i)}
                   value={
                     isInList?.price && isInList.price > 0
                       ? isInList.price
                       : undefined
                   }
-                  disabled={!isInList}
                   placeholder="Precio"
                   decimalScale={2}
                   defaultValue={""}
                   thousandSeparator="."
                   decimalSeparator=","
                   prefix={""}
-                  onValueChange={(values, sourceInfo) =>
+                  onValueChange={(values, sourceInfo) => {
+                    /* manageAddToList(
+                      data.id,
+                      isInList?.price ? isInList.price : data.base_price,
+                      data.id
+                    ); */
+
                     managePriceChangeInList(
                       values.floatValue && values.floatValue > 0
                         ? values.floatValue
                         : 0,
+                      data.id,
                       data.id
-                    )
-                  }
+                    );
+                  }}
                   className={twMerge([
                     "disabled:bg-gray-300 text-right pl-7 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 form-control w-[100%]",
                     "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
@@ -222,35 +247,6 @@ export default function Services({
                 $
               </div>
             </div>
-
-            {isInList && isInList?.has_error && (
-              <div>
-                <span className="text-danger">Debe colocar un precio</span>
-              </div>
-            )}
-          </div>
-
-          <div className="w-1/4 flex flex-col justify-center items-center">
-            <span
-              onClick={() => {
-                manageAddToList(
-                  data.id,
-                  isInList?.price ? isInList.price : data.base_price,
-                  data.id
-                );
-
-                if (!isInList && ref?.current) {
-                  ref.current?.focus();
-                }
-              }}
-              className={twMerge([
-                "transition w-8 h-8 cursor-pointer rounded-full text-slate-400 border border-slate-400 flex flex-col justify-center items-center bg-white",
-                "hover:bg-primary hover:border-primary hover:text-white",
-                isInList && "bg-green-500 border-green-500 text-white",
-              ])}
-            >
-              <FiCheck />
-            </span>
           </div>
         </div>
       </div>
@@ -263,6 +259,11 @@ export default function Services({
         variant="error"
         show={createUserLocalityError !== null}
         description="Ha ocurrido un error inesperado en la creación"
+      />
+      <AlertComponent
+        variant="error"
+        show={showServicesError}
+        description="Debe colocar un precio por lo minimo a un servicio para este consultorio"
       />
       <SuccessfulComponent
         tittle="Agregado con exito"
@@ -331,7 +332,7 @@ export default function Services({
             {servicesData?.length > 0 &&
               successFulServices &&
               [...(servicesData as Array<IService>)].map((l, i) => (
-                <ServiceComponent data={l} key={i} />
+                <ServiceComponent data={l} i={i} key={i} />
               ))}
           </div>
         </div>

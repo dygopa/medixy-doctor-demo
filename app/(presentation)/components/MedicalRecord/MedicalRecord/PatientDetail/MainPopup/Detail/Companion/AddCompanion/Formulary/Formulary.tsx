@@ -123,7 +123,7 @@ export default function CompanionCreate({
   };
 
   const handleSecondLastname = (value: string) => {
-    setValues({ ...values, motherlastname: value })
+    setValues({ ...values, motherlastname: value });
     if (value.length > 0 && !VALIDATE_NAMES(value)) {
       setErrors((previousState: any) => {
         return {
@@ -132,23 +132,23 @@ export default function CompanionCreate({
         };
       });
       return true;
-    };
+    }
     setErrors({ ...errors, motherlastname: "" });
     return false;
   };
 
   const handleage = (value: string) => {
     setValues({ ...values, birthDate: value });
-    let day = new Date()
-    let birthdate= new Date(value);
+    let day = new Date();
+    let birthdate = new Date(value);
     let age = day.getFullYear() - birthdate.getFullYear();
     let month = day.getMonth() - birthdate.getMonth();
 
     if (month < 0 || (month === 0 && day.getDate() < birthdate.getDate())) {
-      age--
+      age--;
     }
-    
-    if(age <= 15) {
+
+    if (age <= 15) {
       setErrors((previousState: any) => {
         return {
           ...previousState,
@@ -308,7 +308,7 @@ export default function CompanionCreate({
         />
       )}
 
-      <div className="flex items-center justify-between sticky top-[0px] bg-white">
+      <div className="lg:flex md:flex block items-center justify-between sticky top-[0px] bg-white">
         <div className="flex items-center">
           <div className="mr-4">
             <button
@@ -383,9 +383,7 @@ export default function CompanionCreate({
             <p className="input-label py-2">Segundo Apellido</p>
             <FormInput
               type="text"
-              onChange={(e: any) =>
-                handleSecondLastname(e.target.value)
-              }
+              onChange={(e: any) => handleSecondLastname(e.target.value)}
               placeholder="Segundo Apellido"
             />
             {errors.motherlastname.length > 0 && (

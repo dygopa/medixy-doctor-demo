@@ -4,9 +4,17 @@ import Button from "(presentation)/components/core/BaseComponents/Button";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 import Tooltip from "(presentation)/components/core/BaseComponents/Tooltip/Tooltip";
+import clsx from "clsx";
 import { IService } from "domain/core/entities/serviceEntity";
 import { useRouter } from "next/navigation";
-import { Dispatch, SetStateAction, useContext, useMemo, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 import { FiCheck } from "react-icons/fi";
 import { NumericFormat } from "react-number-format";
 import { twMerge } from "tailwind-merge";
@@ -102,6 +110,15 @@ export default function Services({
             service_parent_id: serviceBaseData.id,
             has_error: false,
           });
+        } else {
+          services.push({
+            id: 0,
+            service_id: serviceBaseData.id,
+            location_id: localityId,
+            price: serviceBaseData.base_price,
+            service_parent_id: serviceBaseData.id,
+            has_error: false,
+          });
         }
       });
     }
@@ -117,24 +134,6 @@ export default function Services({
   const onClickButtonPrincipal: Function = () => {
     router.push(LocalitiesRoutesEnum.Localities);
   };
-
-  function manageAddToList(serviceId: any, price: any, serviceParentId: any) {
-    let list: any = [...services];
-    if (list.some((elem: any) => elem["service_id"] === serviceId)) {
-      list = list.filter((elem: any) => elem["service_id"] !== serviceId);
-    } else {
-      list.push({
-        id: 0,
-        service_id: serviceId,
-        location_id: localityId,
-        price: price,
-        service_parent_id: serviceParentId,
-        has_error: false,
-      });
-    }
-
-    setServices(list);
-  }
 
   function managePriceChangeInList(value: number, id: number) {
     let index = services.findIndex((elem: any) => elem["service_id"] === id);
@@ -194,12 +193,15 @@ export default function Services({
           {/*  <p className="font-light text-sm text-slate-400">{data.state.name}</p> */}
         </div>
         <div className="flex justify-between items-center gap-2">
-          <div className="w-3/4 flex flex-col justify-start items-start gap-1 text-left">
+          <div
+            className={clsx([
+              "w-3/4 flex flex-col justify-start items-start gap-1 text-left",
+            ])}
+          >
             <div className="relative w-full">
               <div className="w-full">
                 <NumericFormat
                   value={price && price > 0 ? price : undefined}
-                  disabled={!isInList}
                   placeholder="Precio"
                   decimalScale={2}
                   thousandSeparator="."
@@ -234,29 +236,20 @@ export default function Services({
             )}
           </div>
 
-          <div className="w-1/4 flex flex-col justify-center items-center">
-            <button
-              onClick={() => {
-                manageAddToList(
-                  serviceAddedForm?.service_id
-                    ? serviceAddedForm.service_id
-                    : data.id,
-                  serviceAddedForm?.price
-                    ? serviceAddedForm.price
-                    : data.base_price,
-                  data.id
-                );
-              }}
-              disabled={isAdded}
-              className={twMerge([
-                "transition w-8 h-8 cursor-pointer rounded-full text-slate-400 border border-slate-400 flex flex-col justify-center items-center bg-white",
-                "hover:bg-primary hover:border-primary hover:text-white",
-                isInList && "bg-green-500 border-green-500 text-white",
-              ])}
-            >
-              <FiCheck />
-            </button>
-          </div>
+          {isAdded && (
+            <div className="w-1/4 flex flex-col justify-center items-center">
+              <button
+                disabled={isAdded}
+                className={twMerge([
+                  "transition w-8 h-8 cursor-pointer rounded-full text-slate-400 border border-slate-400 flex flex-col justify-center items-center bg-white",
+
+                  isInList && "bg-green-500 border-green-500 text-white",
+                ])}
+              >
+                <FiCheck />
+              </button>
+            </div>
+          )}
         </div>
       </div>
     );

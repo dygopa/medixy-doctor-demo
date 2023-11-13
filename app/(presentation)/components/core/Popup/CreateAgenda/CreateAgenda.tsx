@@ -132,7 +132,12 @@ function CreateAgenda({
     type: "SERVICE",
   });
 
-  const [selectedLocality, setSelectedLocality] = useState({
+  const [selectedLocality, setSelectedLocality] = useState<{
+    id: string | number;
+    title: string;
+    description: string;
+    type: string;
+  }>({
     id: 0,
     title: "",
     description: "",
@@ -412,8 +417,11 @@ function CreateAgenda({
   }
 
   useMemo(() => {
-    if (selectedLocality["title"] !== "") {
-      let id: number = selectedLocality.id;
+    if (selectedLocality["title"] !== "" && selectedLocality.id) {
+      let id: number =
+        selectedLocality.id === "ALL"
+          ? 0
+          : parseInt(selectedLocality.id.toString(), 10);
       setFormData({
         ...formData,
         localityId: id,
@@ -474,7 +482,21 @@ function CreateAgenda({
   }, [selectedLocality]);
 
   useEffect(() => {
-    if (locality) {
+    if (
+      locality &&
+      locality.id === "ALL" &&
+      localities &&
+      localities.length > 0
+    ) {
+      setSelectedLocality({
+        id: localities[0].id,
+        title: localities[0].title,
+        description: localities[0].description,
+        type: "LOCALITY",
+      });
+    }
+
+    if (locality && locality.id !== "ALL") {
       setSelectedLocality({
         id: locality.id,
         title: locality.title,
@@ -482,7 +504,7 @@ function CreateAgenda({
         type: "LOCALITY",
       });
     }
-  }, [locality]);
+  }, [locality, localities]);
 
   useMemo(() => {
     if (selectedService["title"] !== "") {
@@ -591,14 +613,31 @@ function CreateAgenda({
           isBlock: false,
         }))
       );
-      setSelectedLocality({
-        id: locality.id,
-        title: locality.title,
-        description: locality["postal_code"]
-          ? locality["postal_code"]
-          : "Sin dirección",
-        type: "LOCALITY",
-      });
+      if (
+        locality &&
+        locality.id === "ALL" &&
+        localities &&
+        localities.length > 0
+      ) {
+        setSelectedLocality({
+          id: localities[0].id,
+          title: localities[0].title,
+          description: localities[0].description,
+          type: "LOCALITY",
+        });
+      }
+
+      if (locality && locality.id !== "ALL") {
+        setSelectedLocality({
+          id: locality.id,
+          title: locality.title,
+          description: locality["postal_code"]
+            ? locality["postal_code"]
+            : "Sin dirección",
+          type: "LOCALITY",
+        });
+      }
+
       setFormData({
         typeEnd: 1,
         daysRepeated: daysRepeatedList,

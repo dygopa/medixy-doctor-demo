@@ -124,9 +124,10 @@ export default function ImageUpload({
         />
       </div>
 
-      <div className="flex items-center justify-center mt-8">
-        <div className="mr-3">
+      <div className="lg:flex md:flex block items-center justify-center mt-8">
+        <div className="lg:mr-3 md:mr-3 mr-0">
           <Button
+            disabled={!file}
             onClick={() => onClick()}
             variant="primary"
             className="w-[250px]"
@@ -135,7 +136,7 @@ export default function ImageUpload({
           </Button>
         </div>
 
-        <div>
+        <div className="lg:mt-0 md:mt-0 mt-4">
           <Button
             variant="outline-primary"
             className="w-[250px]"

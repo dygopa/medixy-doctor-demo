@@ -72,8 +72,8 @@ export default function Order({ medicalRecord }: IOrderProps) {
   return (
     <div className="flex items-center justify-between w-full">
       <div className="flex items-center w-full">
-        <div className="mr-8">
-          <p className="text-slate-500 font-normal lg:text-md">
+        <div className="lg:mr-8 md:mr-8 mr-3">
+          <p className="text-slate-500 font-normal lg:text-[14px] md:text-[14px] text-xs">
             {new Date(medicalRecord.medicalConsulty.consultationDate).getDate()}
             /
             {new Date(
@@ -87,7 +87,7 @@ export default function Order({ medicalRecord }: IOrderProps) {
         </div>
 
         <div className="lg:w-auto w-[250px]">
-          <p className="text-slate-900 lg:text-md text-ellipsis overflow-hidden whitespace-nowrap">
+          <p className="text-slate-900 lg:text-[14px] md:text-[14px] text-xs text-ellipsis overflow-hidden whitespace-nowrap">
             {getTextByOrderType(medicalRecord)}
           </p>
         </div>

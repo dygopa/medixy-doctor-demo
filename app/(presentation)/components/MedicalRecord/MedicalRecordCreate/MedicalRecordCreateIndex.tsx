@@ -187,7 +187,7 @@ export default function MedicalRecordCreateIndex({
         />
 
         <div className="mt-10 grid grid-cols-12 gap-4">
-          <div className={clsx(["col-span-5", getLeftSideColSpan()])}>
+          <div className={clsx([getLeftSideColSpan()])}>
             <LeftSide windowWidth={screenSize.width} />
           </div>
 
