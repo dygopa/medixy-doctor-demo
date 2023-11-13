@@ -150,8 +150,8 @@ export default function AboutPatient() {
               </Menu>
             </div>
 
-            <div className="grid lg:grid-cols-3 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-4">
-              <div>
+            <div className="grid grid-cols-12 gap-4">
+              <div className="lg:col-span-4 md:col-span-4 sm:col-span-6 col-span-6">
                 <p className="font-normal text-slate-500 mb-1 text-[13px]">
                   Nombre(s)
                 </p>
@@ -161,7 +161,7 @@ export default function AboutPatient() {
                 </p>
               </div>
 
-              <div>
+              <div className="lg:col-span-4 md:col-span-4 sm:col-span-6 col-span-6">
                 <p className="font-normal text-slate-500 mb-1 text-[13px]">
                   Primer Apellido
                 </p>
@@ -171,7 +171,7 @@ export default function AboutPatient() {
                 </p>
               </div>
 
-              <div>
+              <div className="lg:col-span-4 md:col-span-4 sm:col-span-6 col-span-6">
                 <p className="font-normal text-slate-500 mb-1 text-[13px]">
                   Segundo Apellido
                 </p>
@@ -183,7 +183,7 @@ export default function AboutPatient() {
                 </p>
               </div>
 
-              <div>
+              <div className="lg:col-span-4 md:col-span-4 sm:col-span-6 col-span-6">
                 <p className="font-normal text-slate-500 mb-1 text-[13px]">
                   Edad
                 </p>
@@ -209,7 +209,7 @@ export default function AboutPatient() {
                 </p>
               </div>
 
-              <div>
+              <div className="lg:col-span-4 md:col-span-4 sm:col-span-6 col-span-6">
                 <p className="font-normal text-slate-500 mb-1 text-[13px]">
                   CURP
                 </p>
@@ -221,7 +221,7 @@ export default function AboutPatient() {
                 </p>
               </div>
 
-              <div>
+              <div className="lg:col-span-4 md:col-span-4 sm:col-span-6 col-span-12">
                 <p className="font-normal text-slate-500 mb-1 text-[13px]">
                   Teléfono
                 </p>
@@ -231,7 +231,7 @@ export default function AboutPatient() {
                 </p>
               </div>
 
-              <div className="col-span-3">
+              <div className="lg:col-span-4 md:col-span-4 sm:col-span-6 col-span-12">
                 <p className="font-normal text-slate-500 mb-1 text-[13px]">
                   Correo Electrónico
                 </p>

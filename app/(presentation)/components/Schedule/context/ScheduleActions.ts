@@ -16,6 +16,7 @@ export interface IScheduleActions {
   changeStatusPopup: Function;
   getAppointments: Function;
   getAttentionWindows: Function;
+  getBaseAttentionWindows: Function;
   getBaseAttentionWindowsByLocality: Function;
   createAppointment: Function;
   getAttentionWindowsByService: Function;
@@ -37,6 +38,7 @@ export interface IScheduleActions {
   rescheduleAppointmentInitialState: Function;
   activeAttentionWindowId: Function;
   getNextAttentionWindow: Function;
+  getAttentionWindowsByLocalities: Function;
 }
 
 const getCalendarEvents = (id:number, localityId:number, sinceDate:any, untilDate:any, serviceId:number) => async (dispatch: Dispatch<any>) => {
@@ -143,6 +145,19 @@ const getAttentionWindows = (id:number, by?:string) => async (dispatch: Dispatch
     }
 }
 
+const getAttentionWindowsByLocalities = (localities:number[]) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_ATTENTION_WINDOWS_LOADING" });
+    
+    const res: Array<any> = await new ScheduleUseCase().getAttentionWindowsByLocalities(localities);
+
+    dispatch({ type: "GET_ATTENTION_WINDOWS_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "GET_ATTENTION_WINDOWS_ERROR", payload: { error: error } });
+  }
+}
+
 const getAttentionWindowsByLocation = (id:number) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "GET_ATTENTION_WINDOWS_BY_LOCALITY_LOADING" });
@@ -155,6 +170,21 @@ const getAttentionWindowsByLocation = (id:number) => async (dispatch: Dispatch<a
   } catch (error) {
     console.log("Error calling action", error)
     dispatch({ type: "GET_ATTENTION_WINDOWS_BY_LOCALITY_ERROR", payload: { error: error } });
+  }
+}
+
+const getBaseAttentionWindows = (doctorId:number, initialDate?: Date | null) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "GET_BASE_ATTENTION_WINDOWS_BY_LOCALITY_LOADING" });
+
+    console.log("aca");
+    
+    const res: Array<any> = await new ScheduleUseCase().getBaseAttentionWindows(doctorId, initialDate);
+
+    dispatch({ type: "GET_BASE_ATTENTION_WINDOWS_BY_LOCALITY_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    console.log("Error calling action", error)
+    dispatch({ type: "GET_BASE_ATTENTION_WINDOWS_BY_LOCALITY_ERROR", payload: { error: error } });
   }
 }
 
@@ -412,5 +442,7 @@ export const actions: IScheduleActions = {
   rescheduleAppointmentInitialState,
   activeAttentionWindowId,
   getNextAttentionWindow,
-  getAllAttentionWindows
+  getAllAttentionWindows,
+  getBaseAttentionWindows,
+  getAttentionWindowsByLocalities
 }

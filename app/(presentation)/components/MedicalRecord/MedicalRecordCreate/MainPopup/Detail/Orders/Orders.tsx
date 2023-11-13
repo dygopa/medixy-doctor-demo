@@ -9,7 +9,13 @@ interface IOrdersProps {
 export default function Orders({ user, subjectId }: IOrdersProps) {
   return (
     <div>
-      <OrdersList user={user} subjectId={subjectId} />
+      <div className="mb-3">
+        <p className="text-lg font-bold">Ordenes</p>
+      </div>
+
+      <div>
+        <OrdersList subjectId={subjectId} user={user} />
+      </div>
     </div>
   );
 }

@@ -73,13 +73,13 @@ export default function Navigator({ user }: INavigatorProps) {
         <div className="lg:flex items-center justify-between">
           <div>
             <div className="mb-2">
-              <h2 className="font-bold text-2xl truncate">
+              <h2 className="font-bold lg:text-2xl md:text-2xl text-lg truncate">
                 Resumen del Expediente
               </h2>
             </div>
 
             <div>
-              <p className="text-slate-500 text-md">
+              <p className="text-slate-500 lg:text-md md:text-md text-xs">
                 Información detallada del expediente del paciente
               </p>
             </div>

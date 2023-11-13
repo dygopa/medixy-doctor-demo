@@ -52,6 +52,16 @@ export default class ScheduleUseCase {
     }
   }
 
+  async getAttentionWindowsByLocalities(localities:number[]): Promise<Array<any>> {
+    try {
+      const response = await this._repository.getAttentionWindowsByLocalities(localities);
+      if (response instanceof ScheduleFailure) throw response;
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
   async getAllAttentionWindows(doctorId:number, initialDate?: Date | null): Promise<Array<any>> {
     try {
       const response = await this._repository.getAllAttentionWindows(doctorId, initialDate);
@@ -65,6 +75,16 @@ export default class ScheduleUseCase {
   async deleteAppointment(id:string): Promise<Array<any>> {
     try {
       const response = await this._repository.deleteAppointment(id);
+      if (response instanceof ScheduleFailure) throw response;
+      return response;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getBaseAttentionWindows(doctorId:number, initialDate?: Date | null): Promise<Array<any>> {
+    try {
+      const response = await this._repository.getBaseAttentionWindows(doctorId, initialDate);
       if (response instanceof ScheduleFailure) throw response;
       return response;
     } catch (error) {

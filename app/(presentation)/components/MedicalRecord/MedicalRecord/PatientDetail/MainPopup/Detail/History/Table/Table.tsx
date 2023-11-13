@@ -85,15 +85,21 @@ export default function HistoryTable({
   if (!medicalConsulties.data) return <div />;
 
   return (
-    <div className="grid grid-cols-12 gap-2 mt-4">
-      {medicalConsulties.data.map((medicalConsulty: IMedicalConsulty) => (
-        <div key={medicalConsulty.id} className="col-span-12 w-full">
-          <MedicalConsulty
-            medicalConsulty={medicalConsulty}
-            setMedicalConsulty={setMedicalConsulty}
-          />
-        </div>
-      ))}
+    <div>
+      <div className="mb-3">
+        <p className="text-lg font-bold">Historial de consultas</p>
+      </div>
+
+      <div className="grid grid-cols-12 gap-2 mt-4">
+        {medicalConsulties.data.map((medicalConsulty: IMedicalConsulty) => (
+          <div key={medicalConsulty.id} className="col-span-12 w-full">
+            <MedicalConsulty
+              medicalConsulty={medicalConsulty}
+              setMedicalConsulty={setMedicalConsulty}
+            />
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

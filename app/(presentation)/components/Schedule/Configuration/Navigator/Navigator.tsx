@@ -44,11 +44,13 @@ export default function Navigator({ user }: INavigatorProps) {
     useContext<IScheduleContext>(ScheduleContext);
   const {
     activeLocality,
+    getAttentionWindowsByLocalities,
     getAttentionWindows,
     changeTypePopup,
     changeStatusPopup,
     getLocalities,
     getBaseAttentionWindowsByLocality,
+    getBaseAttentionWindows,
     setListOfColors,
   } = actions;
   const { data: locality } = state.activeLocality;
@@ -79,8 +81,12 @@ export default function Navigator({ user }: INavigatorProps) {
     []
   );
 
-  const [selectedLocality, setSelectedLocality] = useState({
-    id: 0,
+  const [selectedLocality, setSelectedLocality] = useState<{
+    id: string | number;
+    title: string;
+    description: string;
+  }>({
+    id: "",
     title: "",
     description: "",
   });
@@ -100,6 +106,12 @@ export default function Navigator({ user }: INavigatorProps) {
           ? elem["address"]["postal_code"]
           : "Sin dirección",
     }));
+
+    list_localities.unshift({
+      id: "ALL",
+      title: "Todos los consultorios",
+      description: "Filtrar por todos los consultorios disponibles",
+    });
 
     setListOfLocalities(list_localities);
   }
@@ -149,31 +161,44 @@ export default function Navigator({ user }: INavigatorProps) {
     });
 
     setListOfBaseAttentionWindows(list_base_attention_windows);
-    getAttentionWindows(selectedLocality.id, "LOCALITY")(dispatch);
+
+    if (localities && localities.length > 0) {
+      const localitiesIds = localities.map((locality: any) => locality.id);
+
+      getAttentionWindowsByLocalities(
+        selectedLocality.id !== "ALL" ? [selectedLocality.id] : localitiesIds
+      )(dispatch);
+    }
   }
 
   useMemo(() => {
-    if (selectedLocality.id > 0) {
-      setSelectedBaseAttentionWindow({
-        id: "",
-        title: "",
-        description: "",
-      });
-      activeLocality(selectedLocality)(dispatch);
+    setSelectedBaseAttentionWindow({
+      id: "",
+      title: "",
+      description: "",
+    });
+    activeLocality(selectedLocality)(dispatch);
+    if (selectedLocality.id === "ALL") {
+      getBaseAttentionWindows(
+        user.userId,
+        moment().format("YYYY-MM-DD")
+      )(dispatch);
+    } else if (selectedLocality.id > 0) {
       getBaseAttentionWindowsByLocality(selectedLocality.id)(dispatch);
-      //setTimeout(() => {
-      //  router.replace(`/schedule/configuration?service=${selectedLocality.id}`)
-      //}, 0);
     }
+
+    //setTimeout(() => {
+    //  router.replace(`/schedule/configuration?service=${selectedLocality.id}`)
+    //}, 0);
   }, [selectedLocality]);
 
   useMemo(() => {
     if (localitiesSuccessful && localities.length > 0) {
       handleFormatList();
       let localityFinded = {
-        id: 0,
-        name: "",
-        description: "",
+        id: "ALL",
+        name: "Todos los consultorios",
+        description: "Selecciona un consultorio de la lista",
         type: "LOCALITY",
       };
 
@@ -191,14 +216,6 @@ export default function Navigator({ user }: INavigatorProps) {
                 ? localityFindedItem["address"]["postal_code"]
                 : "Sin dirección",
           };
-      } else {
-        localityFinded = {
-          ...localities[0],
-          description:
-            localities[0]["address"] && localities[0]["address"]["postal_code"]
-              ? localities[0]["address"]["postal_code"]
-              : "Sin dirección",
-        };
       }
       activeLocality({
         id: localityFinded["id"],
@@ -283,13 +300,14 @@ export default function Navigator({ user }: INavigatorProps) {
                 }}
                 customClick={(value: any) => {
                   setSelectedBaseAttentionWindow(value);
+                  console.log(value);
+                  const localitiesIds = localities.map(
+                    (locality: any) => locality.id
+                  );
                   if (value["id"] === "ALL") {
-                    getAttentionWindows(
-                      selectedLocality["id"],
-                      "LOCALITY"
-                    )(dispatch);
+                    getAttentionWindowsByLocalities(localitiesIds)(dispatch);
                   } else {
-                    getAttentionWindows(value["id"])(dispatch);
+                    getAttentionWindows([value["id"]])(dispatch);
                   }
                 }}
                 selectedItem={selectedBaseAttentionWindow}

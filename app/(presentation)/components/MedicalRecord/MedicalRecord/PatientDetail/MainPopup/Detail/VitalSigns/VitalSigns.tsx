@@ -7,7 +7,13 @@ interface IVitalSignsProps {
 export default function VitalSigns({ subjectId }: IVitalSignsProps) {
   return (
     <div>
-      <VitalSignsList subjectId={subjectId} />
+      <div className="mb-3">
+        <p className="text-lg font-bold">Signos vítales</p>
+      </div>
+
+      <div>
+        <VitalSignsList subjectId={subjectId} />
+      </div>
     </div>
   );
 }

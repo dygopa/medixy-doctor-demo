@@ -98,7 +98,7 @@ export default function RecordList() {
               MedicalRecordTypesEnum.TAKE_MEDICATIONS && (
               <div key={medicalRecord.id} className="flex items-center mb-2">
                 <div className="mr-1">
-                  <p className="text-slate-900 text-md font-medium">
+                  <p className="text-slate-900 lg:text-[14px] md:text-[14px] text-xs font-medium">
                     {
                       medicalRecordTypeEnum[
                         medicalRecord.medicalRecordType.name
@@ -114,7 +114,7 @@ export default function RecordList() {
                       (medicalRecordValue: IMedicalRecordValue, i: number) => (
                         <p
                           key={i}
-                          className="text-slate-900 text-md font-medium overflow-hidden block text-ellipsis mr-1"
+                          className="text-slate-900 lg:text-[14px] md:text-[14px] text-xs font-medium overflow-hidden block text-ellipsis mr-1"
                           style={{ wordBreak: "break-word", maxHeight: "3em" }}
                         >
                           {medicalRecordValue.value}

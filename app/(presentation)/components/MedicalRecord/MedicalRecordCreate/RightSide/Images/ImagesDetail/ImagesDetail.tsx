@@ -37,7 +37,9 @@ export default function ImagesDetail({
           <div
             className={clsx([
               "w-full",
-              values.images.length > 0 ? "ml-4" : "ml-0",
+              values.images.length > 0
+                ? "lg:ml-4 md:ml-4 ml-0 lg:mt-0 md:mt-0 mt-4"
+                : "ml-0",
             ])}
           >
             <ImageUpload values={values} setValues={setValues} />
