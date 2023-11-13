@@ -11,6 +11,7 @@ import moment from 'moment';
 import SubjectsUseCase from '../subject/subjectUseCase';
 import { ISubject } from 'domain/core/entities/subjectEntity';
 import { EmailRepository } from 'infrastructure/repositories/email/emailRepository';
+import { AppointmentRepository } from 'infrastructure/repositories/appointment/appointmentRepository';
 
 export default class ScheduleUseCase {
 
@@ -21,6 +22,7 @@ export default class ScheduleUseCase {
   private _repositorySubjects: SubjectRepository = new SubjectRepository();
   private _repositoryServices: ServicesRepository = new ServicesRepository();
   private _repositoryEmail: EmailRepository = new EmailRepository()
+  private _repositoryAppointment: AppointmentRepository = new AppointmentRepository()
       
   async getCalendarEvents(id:number, localityId:number, sinceDate:any, untilDate:any, serviceId?:number): Promise<any[]> {
     try {
@@ -199,7 +201,7 @@ export default class ScheduleUseCase {
         const responsePatient = await this._useCaseSubject.createSubject(patient, obj["doctorId"])
         if (responsePatient instanceof ScheduleFailure) throw responsePatient;
 
-        const response = await this._repository.createAppointment({
+        const response = await this._repositoryAppointment.createAppointment({
           ...obj,
           pacienteId: responsePatient.subjectId
         }, now);
@@ -210,7 +212,7 @@ export default class ScheduleUseCase {
         return response;
       }else{
 
-        const response = await this._repository.createAppointment(obj, now);
+        const response = await this._repositoryAppointment.createAppointment(obj, now);
         if (response instanceof ScheduleFailure) throw response;
 
         await this._repositoryEmail.sendAppointmentEmail({ patient: obj["patient"], doctor: obj["doctor"], date: obj["fechaReserva"], serviceName: obj["nombreServicio"], address: obj["direccion"] })

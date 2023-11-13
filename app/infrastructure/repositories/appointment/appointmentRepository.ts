@@ -1,12 +1,17 @@
+import { AppointmentEnum } from "(presentation)/(enum)/appointment/appointmentEnum";
 import { IAppointment } from "domain/core/entities/appointmentEntity";
 import { IService } from "domain/core/entities/serviceEntity";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import { AppointmentFailure, appointmentFailuresEnum } from "domain/core/failures/appointment/appintmentFailure";
+import { ScheduleFailure, scheduleFailuresEnum } from "domain/core/failures/schedule/scheduleFailure";
 import { IGetAppointmentResponse, IGetAppointmentsResponse, IUpdateAppointmentResponse } from "domain/core/response/appointmentsResponse";
 import { appointmentSupabaseToMap } from "domain/mappers/appointment/supabase/appointmentSupabaseMapper";
 import { subjectSupabaseToMap } from "domain/mappers/patient/supabase/subjectSupabaseMapper";
 import { servicesSupabaseMapper } from "domain/mappers/services/servicesSupabaseMapper";
+import { CREATE_APPOINTMENT_ENDPOINT } from "infrastructure/config/api/dictionary";
 import { supabase } from "infrastructure/config/supabase/supabase-client";
+import moment from "moment";
+import nookies from 'nookies';
 
 export default interface IAppointmentRepository {
   getAppointments(obj: { 
@@ -21,6 +26,7 @@ export default interface IAppointmentRepository {
   }): Promise<number | AppointmentFailure>;
   getAppointmentById(appointmentId: string): Promise<IGetAppointmentResponse | AppointmentFailure>;
   editAppointmentStatus(obj: { appointmentId: string; status: number }): Promise<IUpdateAppointmentResponse | AppointmentFailure>;
+  createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
 }
 
 export class AppointmentRepository implements IAppointmentRepository {
@@ -165,5 +171,110 @@ export class AppointmentRepository implements IAppointmentRepository {
           return new AppointmentFailure(appointmentFailuresEnum.serverError);
         }
     }
+
+    async createAppointment(obj:any, now?: boolean): Promise<any | ScheduleFailure> {
+      try {
+        console.log(obj, now)
+          if(now){
+              let appointment = {
+                  sujetoId: obj["pacienteId"],
+                  doctorId: obj["doctorId"],
+                  estado: AppointmentEnum.PENDING,
+                  servicioId: obj["servicioId"],
+                  fechaReserva: moment().toDate(),
+                  fechaFinReserva: moment().add(30, "minutes").toDate(),
+                  creadoPorDoctor: true
+              }
+
+              let query = supabase.from("Citas")
+              .insert(appointment).select("*").single()
+              
+              let res = await query
+
+              let cookies = nookies.get(undefined, 'access_token');
+
+              var myHeaders = new Headers();
+
+              myHeaders.append("Content-Type", "application/json");
+              myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
+
+              var raw = JSON.stringify({
+                patient_id: obj["pacienteId"] ?? "",
+                service_id: obj["servicioId"] ?? "",
+                doctor_id: obj["doctorId"] ?? "",
+                created_for_doctor: true,
+                appointment_id: null,
+                is_now: now
+              });
+      
+              var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+              } as RequestInit;
+
+              let URL = CREATE_APPOINTMENT_ENDPOINT() as RequestInfo
+
+              const response = await fetch(URL, requestOptions)
+              
+              if(response.status >= 400) {
+                return new ScheduleFailure(scheduleFailuresEnum.serverError)
+              }
+  
+              return res.data ?? {};
+          }else{
+              let appointment = {
+                  sujetoId: obj["pacienteId"],
+                  servicioId: obj["servicioId"],
+                  doctorId: obj["doctorId"],
+                  estado: AppointmentEnum.PENDING,
+                  creadoPorDoctor: true
+              }
+
+              let query = supabase.from("Citas")
+              .update(appointment)
+              .eq('id', obj["id"])
+
+              let res = await query;
+
+              let cookies = nookies.get(undefined, 'access_token');
+
+              var myHeaders = new Headers();
+
+              myHeaders.append("Content-Type", "application/json");
+              myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
+
+              var raw = JSON.stringify({
+                patient_id: obj["pacienteId"] ?? "",
+                service_id: obj["servicioId"] ?? "",
+                doctor_id: obj["doctorId"] ?? "",
+                created_for_doctor: true,
+                appointment_id: obj["id"] ?? null,
+                is_now: false,
+              });
+      
+              var requestOptions = {
+                method: 'POST',
+                headers: myHeaders,
+                body: raw,
+                redirect: 'follow'
+              } as RequestInit;
+
+              let URL = CREATE_APPOINTMENT_ENDPOINT() as RequestInfo
+
+              const response = await fetch(URL, requestOptions)
+              
+              if(response.status >= 400) {
+                return new ScheduleFailure(scheduleFailuresEnum.serverError)
+              }
+  
+              return res.data ?? {};
+          }
+      } catch (error) {
+          const exception = error as any;
+          return new ScheduleFailure(scheduleFailuresEnum.serverError);
+      }
+  }
 }
   
