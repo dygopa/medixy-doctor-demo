@@ -105,8 +105,6 @@ export default class MedicalConsultyUseCase {
 
         urlPDF = urlPDF.replace("data:application/pdf;base64,", "");
 
-        console.log(urlPDF)
-
         await this._appointmentRepository.finishedAppointment({
           trataimentId: obj.medicalConsulty.treatments[0].id ?? null,
           trataimentPDF: urlPDF ?? null,

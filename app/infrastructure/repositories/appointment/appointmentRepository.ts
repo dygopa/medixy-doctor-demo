@@ -282,7 +282,7 @@ export class AppointmentRepository implements IAppointmentRepository {
 
   async finishedAppointment(obj: {trataimentId: number | null, trataimentPDF: string | null, appointmentId: string }): Promise<any | MedicalConsultyFailure> {
     try {
-      console.log(obj)
+
       let cookies = nookies.get(undefined, 'access_token');
 
       var myHeaders = new Headers();
