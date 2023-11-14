@@ -1,14 +1,17 @@
 import { AppointmentEnum } from "(presentation)/(enum)/appointment/appointmentEnum";
+import { base64 } from "@firebase/util";
 import { IAppointment } from "domain/core/entities/appointmentEntity";
+import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import { IService } from "domain/core/entities/serviceEntity";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import { AppointmentFailure, appointmentFailuresEnum } from "domain/core/failures/appointment/appintmentFailure";
+import { MedicalConsultyFailure, medicalConsultyFailuresEnum } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
 import { ScheduleFailure, scheduleFailuresEnum } from "domain/core/failures/schedule/scheduleFailure";
 import { IGetAppointmentResponse, IGetAppointmentsResponse, IUpdateAppointmentResponse } from "domain/core/response/appointmentsResponse";
 import { appointmentSupabaseToMap } from "domain/mappers/appointment/supabase/appointmentSupabaseMapper";
 import { subjectSupabaseToMap } from "domain/mappers/patient/supabase/subjectSupabaseMapper";
 import { servicesSupabaseMapper } from "domain/mappers/services/servicesSupabaseMapper";
-import { CREATE_APPOINTMENT_ENDPOINT } from "infrastructure/config/api/dictionary";
+import { CREATE_APPOINTMENT_ENDPOINT, FINISHED_APPOINTMENT_ENDPOINT } from "infrastructure/config/api/dictionary";
 import { supabase } from "infrastructure/config/supabase/supabase-client";
 import moment from "moment";
 import nookies from 'nookies';
@@ -27,6 +30,7 @@ export default interface IAppointmentRepository {
   getAppointmentById(appointmentId: string): Promise<IGetAppointmentResponse | AppointmentFailure>;
   editAppointmentStatus(obj: { appointmentId: string; status: number }): Promise<IUpdateAppointmentResponse | AppointmentFailure>;
   createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
+  finishedAppointment(obj: {trataimentId: number | null, trataimentPDF: string | null, appointmentId: string }): Promise<any | MedicalConsultyFailure>;
 }
 
 export class AppointmentRepository implements IAppointmentRepository {
@@ -174,7 +178,6 @@ export class AppointmentRepository implements IAppointmentRepository {
 
     async createAppointment(obj:any, now?: boolean): Promise<any | ScheduleFailure> {
       try {
-        console.log(obj, now)
           if(now){
               let appointment = {
                   sujetoId: obj["pacienteId"],
@@ -275,6 +278,40 @@ export class AppointmentRepository implements IAppointmentRepository {
           const exception = error as any;
           return new ScheduleFailure(scheduleFailuresEnum.serverError);
       }
+  }
+
+  async finishedAppointment(obj: {trataimentId: number | null, trataimentPDF: string | null, appointmentId: string }): Promise<any | MedicalConsultyFailure> {
+    try {
+      let cookies = nookies.get(undefined, 'access_token');
+
+      var myHeaders = new Headers();
+
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
+
+      var raw = JSON.stringify({
+        treatment_id: obj.trataimentId,
+        treatment_pdf: obj.trataimentPDF
+      });
+
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      } as RequestInit;
+
+      let URL = FINISHED_APPOINTMENT_ENDPOINT(obj.appointmentId) as RequestInfo
+
+      const response = await fetch(URL, requestOptions)
+      
+      if(response.status >= 400) {
+        return new ScheduleFailure(scheduleFailuresEnum.serverError)
+      }
+    } catch (error) {
+      const exception = error as any;
+      return new MedicalConsultyFailure(medicalConsultyFailuresEnum.serverError);
+    }
   }
 }
   

@@ -2,6 +2,7 @@ import { MedicalRecordStatusEnum } from "(presentation)/(enum)/medicalRecord/med
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import { IUser } from "domain/core/entities/userEntity";
 import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
+import { TreatmentFailure } from "domain/core/failures/treatment/treatmentFailure";
 import { ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse, IGetMedicalConsultyPDFResponse } from "domain/core/response/medicalConsultyResponse";
 import IAppointmentRepository, { AppointmentRepository } from "infrastructure/repositories/appointment/appointmentRepository";
 import IDiagnosisRepository, { DiagnosisRepository } from "infrastructure/repositories/diagnosis/diagnosisRepository";
@@ -51,7 +52,7 @@ export default class MedicalConsultyUseCase {
     }
   }
 
-  async createMedicalConsulty(obj: { medicalConsulty: IMedicalConsulty; appointmentId?: string | null }): Promise<ICreateMedicalConsultyResponse> {
+  async createMedicalConsulty(obj: { doctor: IUser; medicalConsulty: IMedicalConsulty; appointmentId?: string | null }): Promise<ICreateMedicalConsultyResponse> {
     try {
       const response = await this._repository.createMedicalConsulty(obj.medicalConsulty);
 
@@ -71,7 +72,19 @@ export default class MedicalConsultyUseCase {
         await Promise.all((obj.medicalConsulty.treatments.map(async (treatment) => {
           treatment.medicalConsultyId = response.data.id;
 
-          await this._treatmentRepository.createTreatment(treatment);
+          const createTreatment = await this._treatmentRepository.createTreatment(treatment);
+
+          if (createTreatment instanceof TreatmentFailure) throw response;
+
+          const urlPDF = await this._treatmentRepository.getTreatmentPDFReturnURL({doctor: obj.doctor, treatment: treatment})
+
+          if (urlPDF instanceof TreatmentFailure) throw response;
+
+          await this._appointmentRepository.finishedAppointment({
+            trataimentId: createTreatment.data.id ?? null,
+            trataimentPDF: urlPDF,
+            appointmentId: obj.appointmentId ? obj.appointmentId : "",
+          })
         })))
       } 
 

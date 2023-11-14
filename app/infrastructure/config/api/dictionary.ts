@@ -41,7 +41,8 @@ export const CREATE_ATTENTION_WINDOW_ENDPOINT = (id:number) => new ConfigEnvirom
 export const RESCHEDULE_APPOINTMENT_ENDPOINT = (id:string) => new ConfigEnviroment().nextPublicAPIUrl + `/canceled_appointments/${id}`;
 export const UNBLOCK_APPOINTMENT_ENDPOINT = (id:string) => new ConfigEnviroment().nextPublicAPIUrl + `/unlockeded_appointments/${id}`;
 export const BLOCK_APPOINTMENT_ENDPOINT = (id:string) => new ConfigEnviroment().nextPublicAPIUrl + `/blockeded_appointments/${id}`;
-export const CREATE_APPOINTMENT_ENDPOINT = () => new ConfigEnviroment().nextPublicAPIUrl + `/appointments`
+export const CREATE_APPOINTMENT_ENDPOINT = () => new ConfigEnviroment().nextPublicAPIUrl + `/appointments`;
+export const FINISHED_APPOINTMENT_ENDPOINT = (id:string) => new ConfigEnviroment().nextPublicAPIUrl + `/finished_appointments/${id}`
 
 export const UPDATE_SPECIALIST_ENDPOINT = (id:number) => new ConfigEnviroment().nextPublicAPIUrl + `/doctor/${id}`;
 
