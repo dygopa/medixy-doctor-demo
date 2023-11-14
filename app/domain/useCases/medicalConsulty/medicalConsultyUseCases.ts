@@ -100,29 +100,25 @@ export default class MedicalConsultyUseCase {
       } 
 
       if (obj.medicalConsulty.treatments && obj.medicalConsulty.treatments.length > 0) {
-        console.log(0)
 
-        const urlPDF = await this._treatmentRepository.getTreatmentPDFReturnURL({doctor: obj.doctor, treatment: obj.medicalConsulty.treatments[0]})
-        
-        console.log("1", obj.medicalConsulty.treatments, urlPDF, obj.appointmentId)
+        let urlPDF = await this._treatmentRepository.getTreatmentPDFReturnURL({doctor: obj.doctor, treatment: obj.medicalConsulty.treatments[0]})
+
+        urlPDF = urlPDF.replace("data:application/pdf;base64,", "");
+
+        console.log(urlPDF)
 
         await this._appointmentRepository.finishedAppointment({
           trataimentId: obj.medicalConsulty.treatments[0].id ?? null,
           trataimentPDF: urlPDF ?? null,
           appointmentId: obj.appointmentId ? obj.appointmentId : "",
         })
-
-        console.log("2")
       } else {
-        console.log("3", obj.medicalConsulty.treatments, null, obj.appointmentId)
 
         await this._appointmentRepository.finishedAppointment({
           trataimentId: null,
           trataimentPDF: null,
           appointmentId: obj.appointmentId ? obj.appointmentId : "",
         })
-
-        console.log("4")
       }
 
       return response
