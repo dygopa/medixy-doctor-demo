@@ -282,6 +282,7 @@ export class AppointmentRepository implements IAppointmentRepository {
 
   async finishedAppointment(obj: {trataimentId: number | null, trataimentPDF: string | null, appointmentId: string }): Promise<any | MedicalConsultyFailure> {
     try {
+      console.log(obj)
       let cookies = nookies.get(undefined, 'access_token');
 
       var myHeaders = new Headers();
@@ -290,8 +291,8 @@ export class AppointmentRepository implements IAppointmentRepository {
       myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
 
       var raw = JSON.stringify({
-        treatment_id: obj.trataimentId,
-        treatment_pdf: obj.trataimentPDF
+        treatment_id: obj.trataimentId ?? null,
+        treatment_pdf: obj.trataimentPDF ?? null,
       });
 
       var requestOptions = {
@@ -304,12 +305,8 @@ export class AppointmentRepository implements IAppointmentRepository {
       let URL = FINISHED_APPOINTMENT_ENDPOINT(obj.appointmentId) as RequestInfo
 
       const response = await fetch(URL, requestOptions)
-      
-      if(response.status >= 400) {
-        return new ScheduleFailure(scheduleFailuresEnum.serverError)
-      }
 
-      return "SUCCESS"
+      return response;
     } catch (error) {
       const exception = error as any;
       return new MedicalConsultyFailure(medicalConsultyFailuresEnum.serverError);
