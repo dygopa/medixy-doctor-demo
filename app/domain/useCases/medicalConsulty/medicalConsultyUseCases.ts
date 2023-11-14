@@ -2,6 +2,7 @@ import { MedicalRecordStatusEnum } from "(presentation)/(enum)/medicalRecord/med
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
 import { IUser } from "domain/core/entities/userEntity";
 import { MedicalConsultyFailure } from "domain/core/failures/medicalConsulty/medicalConsultyFailure";
+import { SubjectFailure } from "domain/core/failures/subject/subjectFailure";
 import { TreatmentFailure } from "domain/core/failures/treatment/treatmentFailure";
 import { ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse, IGetMedicalConsultyPDFResponse } from "domain/core/response/medicalConsultyResponse";
 import IAppointmentRepository, { AppointmentRepository } from "infrastructure/repositories/appointment/appointmentRepository";
@@ -9,6 +10,7 @@ import IDiagnosisRepository, { DiagnosisRepository } from "infrastructure/reposi
 import { MedicalConsultyRepository } from "infrastructure/repositories/medicalConsulty/medicalConsultyRepository";
 import IMedicalMeasureRepository, { MedicalMeasureRepository } from "infrastructure/repositories/medicalMeasure/medicalMeasureRepository";
 import IMedicalRecordRepository, { MedicalRecordRepository } from "infrastructure/repositories/medicalRecord/medicalRecordRepository";
+import { SubjectRepository } from "infrastructure/repositories/subject/subjectRepository";
 import ITreatmentRepository, { TreatmentRepository } from "infrastructure/repositories/treatment/treatmentRepository";
 
 export default class MedicalConsultyUseCase {
@@ -18,6 +20,7 @@ export default class MedicalConsultyUseCase {
   private _diagnosisRepository: IDiagnosisRepository = new DiagnosisRepository();
   private _medicalRecordRepository: IMedicalRecordRepository = new MedicalRecordRepository();
   private _appointmentRepository: IAppointmentRepository = new AppointmentRepository();
+  private _subjectRepository: SubjectRepository = new SubjectRepository();
 
   async getMedicalConsulties(obj: { skip?: number | null; sort?: any; limit?: number | null; doctorId?: number | null; subjectId?: number | null; searchQuery?: string | null; sinceAt?: Date | null; untilAt?: Date | null }): Promise<IGetMedicalConsultiesResponse> {
     try {
@@ -101,6 +104,12 @@ export default class MedicalConsultyUseCase {
 
       if (obj.medicalConsulty.treatments && obj.medicalConsulty.treatments.length > 0) {
 
+        const subject = await this._subjectRepository.getSubjectById(obj.medicalConsulty.treatments[0].subjectId);
+
+        if (subject instanceof SubjectFailure) return response;
+
+        obj.medicalConsulty.treatments[0].subject = subject;
+        
         let urlPDF = await this._treatmentRepository.getTreatmentPDFReturnURL({doctor: obj.doctor, treatment: obj.medicalConsulty.treatments[0]})
 
         urlPDF = urlPDF.replace("data:application/pdf;base64,", "");
