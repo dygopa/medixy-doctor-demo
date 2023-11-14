@@ -85,7 +85,7 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
   function formatEvent(elem: any) {
     let object = {};
 
-    console.log(elem);
+    //console.log(elem);
 
     let isBlocked = elem["estado"] === 9;
     let type = elem["sujetoId"] ? "APPOINMENT" : "FREE_SLOT";
@@ -215,7 +215,7 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
       changeTypePopup(0)(dispatch);
     }
     if (data["type"] === "APPOINMENT") {
-      console.log(data);
+      //console.log(data);
       appointmentDetail({
         ...data["sujetos"],
         id: data["appointmentId"],
@@ -330,7 +330,7 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
         <div className="w-full lg:w-2/3 h-[64vh]">
           <Calendar
             handleChangeInWeek={(param: DatesSetArg) => {
-              console.log(param);
+              //console.log(param);
               activeDay({ start: param.start, end: param.end })(dispatch);
             }}
             events={appointments}
