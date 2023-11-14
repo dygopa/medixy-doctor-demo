@@ -25,6 +25,7 @@ const nextConfig = {
       "accountmanagement.gettyimages.com",
       "tokexynaxhnsroxlpatn.supabase.co",
       "hqdiyiqhqbknumobtkox.supabase.co",
+      "hygbfnfuovmjthubobor.supabase.co",
       "sasmgahawiiyqdfmwvkm.supabase.co",
     ],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
