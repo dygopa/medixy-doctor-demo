@@ -308,6 +308,8 @@ export class AppointmentRepository implements IAppointmentRepository {
       if(response.status >= 400) {
         return new ScheduleFailure(scheduleFailuresEnum.serverError)
       }
+
+      return "SUCCESS"
     } catch (error) {
       const exception = error as any;
       return new MedicalConsultyFailure(medicalConsultyFailuresEnum.serverError);

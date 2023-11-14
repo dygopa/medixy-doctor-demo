@@ -74,13 +74,9 @@ export default class MedicalConsultyUseCase {
         await Promise.all((obj.medicalConsulty.treatments.map(async (treatment) => {
           treatment.medicalConsultyId = response.data.id;
 
-          const createTreatment = await this._treatmentRepository.createTreatment(treatment);
+          await this._treatmentRepository.createTreatment(treatment);
 
           urlPDF = await this._treatmentRepository.getTreatmentPDFReturnURL({doctor: obj.doctor, treatment: treatment})
-          
-          if (createTreatment instanceof TreatmentFailure) return;
-
-          treatment.id = createTreatment.data.id;
         })))
       } 
 
