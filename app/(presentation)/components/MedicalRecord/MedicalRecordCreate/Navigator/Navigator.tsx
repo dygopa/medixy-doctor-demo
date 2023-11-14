@@ -654,6 +654,7 @@ export default function Navigator({
       };
 
       createMedicalConsulty({
+        doctor: user,
         medicalConsulty: medicalConsulty,
         appointmentId: appointment.data?.id ? appointment.data.id : null,
       })(dispatch);

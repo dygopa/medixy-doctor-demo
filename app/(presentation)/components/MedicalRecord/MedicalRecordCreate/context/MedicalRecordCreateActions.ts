@@ -41,7 +41,7 @@ export interface IMedicalRecordCreateActions {
     getTreatmentPDF: (obj: { doctor: IUser; treatment: ITreatment }) => (dispatch: Dispatch<any>) => {};
     getMedicalConsultyPDF: (obj: { doctor: IUser; medicalConsulty: IMedicalConsulty }) => (dispatch: Dispatch<any>) => {};
     getMedicalRecordPDF: (obj: { doctor: IUser; medicalRecord: IMedicalRecord }) => (dispatch: Dispatch<any>) => {};
-    createMedicalConsulty: (obj: { medicalConsulty: IMedicalConsulty; appointmentId?: string | null }) => (dispatch: Dispatch<any>) => {};
+    createMedicalConsulty: (obj: { doctor: IUser; medicalConsulty: IMedicalConsulty; appointmentId?: string | null }) => (dispatch: Dispatch<any>) => {};
     updateAvatar: (obj:any, doctorId: string) => (dispatch: Dispatch<any>) => {};
     getCountriesISO: Function;
 }
@@ -295,11 +295,11 @@ const getMedicalRecordPDF = (obj: { doctor: IUser; medicalRecord: IMedicalRecord
   }
 }
 
-const createMedicalConsulty = (obj: { medicalConsulty: IMedicalConsulty; appointmentId?: string | null }) => async (dispatch: Dispatch<any>) => {
+const createMedicalConsulty = (obj: { doctor: IUser; medicalConsulty: IMedicalConsulty; appointmentId?: string | null }) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "CREATE_MEDICAL_CONSULTY_LOADING" });
     
-    const res: ICreateMedicalConsultyResponse = await new MedicalConsultyUseCase().createMedicalConsulty({ medicalConsulty: obj.medicalConsulty, appointmentId: obj.appointmentId });
+    const res: ICreateMedicalConsultyResponse = await new MedicalConsultyUseCase().createMedicalConsulty({ doctor: obj.doctor, medicalConsulty: obj.medicalConsulty, appointmentId: obj.appointmentId });
 
     dispatch({ type: "CREATE_MEDICAL_CONSULTY_SUCCESSFUL", payload: { data: res } });
   } catch (error) {
