@@ -8,10 +8,10 @@ import { IGetAppointmentResponse, IGetAppointmentsResponse, IUpdateAppointmentRe
 import { appointmentSupabaseToMap } from "domain/mappers/appointment/supabase/appointmentSupabaseMapper";
 import { subjectSupabaseToMap } from "domain/mappers/patient/supabase/subjectSupabaseMapper";
 import { servicesSupabaseMapper } from "domain/mappers/services/servicesSupabaseMapper";
-//import { CREATE_APPOINTMENT_ENDPOINT } from "infrastructure/config/api/dictionary";
+import { CREATE_APPOINTMENT_ENDPOINT } from "infrastructure/config/api/dictionary";
 import { supabase } from "infrastructure/config/supabase/supabase-client";
-//import moment from "moment";
-//import nookies from 'nookies';
+import moment from "moment";
+import nookies from 'nookies';
 
 export default interface IAppointmentRepository {
   getAppointments(obj: { 
@@ -26,7 +26,7 @@ export default interface IAppointmentRepository {
   }): Promise<number | AppointmentFailure>;
   getAppointmentById(appointmentId: string): Promise<IGetAppointmentResponse | AppointmentFailure>;
   editAppointmentStatus(obj: { appointmentId: string; status: number }): Promise<IUpdateAppointmentResponse | AppointmentFailure>;
-  //createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
+  createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
 }
 
 export class AppointmentRepository implements IAppointmentRepository {
@@ -172,7 +172,7 @@ export class AppointmentRepository implements IAppointmentRepository {
         }
     }
 
-    /*async createAppointment(obj:any, now?: boolean): Promise<any | ScheduleFailure> {
+    async createAppointment(obj:any, now?: boolean): Promise<any | ScheduleFailure> {
       try {
         console.log(obj, now)
           if(now){
@@ -275,6 +275,6 @@ export class AppointmentRepository implements IAppointmentRepository {
           const exception = error as any;
           return new ScheduleFailure(scheduleFailuresEnum.serverError);
       }
-  }*/
+  }
 }
   
