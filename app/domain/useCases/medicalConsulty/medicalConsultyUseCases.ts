@@ -76,9 +76,9 @@ export default class MedicalConsultyUseCase {
 
           const createTreatment = await this._treatmentRepository.createTreatment(treatment);
 
-          if (createTreatment instanceof TreatmentFailure) return;
-
           urlPDF = await this._treatmentRepository.getTreatmentPDFReturnURL({doctor: obj.doctor, treatment: treatment})
+          
+          if (createTreatment instanceof TreatmentFailure) return;
 
           treatment.id = createTreatment.data.id;
         })))
