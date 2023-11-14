@@ -68,23 +68,19 @@ export default class MedicalConsultyUseCase {
         })))
       }
 
+      let urlPDF: any;
+
       if (obj.medicalConsulty.treatments && obj.medicalConsulty.treatments.length > 0) {
         await Promise.all((obj.medicalConsulty.treatments.map(async (treatment) => {
           treatment.medicalConsultyId = response.data.id;
 
           const createTreatment = await this._treatmentRepository.createTreatment(treatment);
 
-          if (createTreatment instanceof TreatmentFailure) throw response;
+          if (createTreatment instanceof TreatmentFailure) return;
 
-          const urlPDF = await this._treatmentRepository.getTreatmentPDFReturnURL({doctor: obj.doctor, treatment: treatment})
+          urlPDF = await this._treatmentRepository.getTreatmentPDFReturnURL({doctor: obj.doctor, treatment: treatment})
 
-          if (urlPDF instanceof TreatmentFailure) throw response;
-
-          await this._appointmentRepository.finishedAppointment({
-            trataimentId: createTreatment.data.id ?? null,
-            trataimentPDF: urlPDF,
-            appointmentId: obj.appointmentId ? obj.appointmentId : "",
-          })
+          treatment.id = createTreatment.data.id;
         })))
       } 
 
@@ -110,6 +106,12 @@ export default class MedicalConsultyUseCase {
           await this._repository.createMedicalConsultyImage(medicalConsultyImage);
         })))
       } 
+
+      await this._appointmentRepository.finishedAppointment({
+        trataimentId: obj.medicalConsulty.treatments ? obj.medicalConsulty.treatments[0].id : null,
+        trataimentPDF: urlPDF ?? null,
+        appointmentId: obj.appointmentId ? obj.appointmentId : "",
+      })
 
       return response
     } catch (error) {
