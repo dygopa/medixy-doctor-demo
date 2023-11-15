@@ -74,13 +74,23 @@ export default function ImageUpload({
       <div className="flex text-center justify-center w-full">
         {file && file.file?.data && file?.file?.data.length > 0 ? (
           <>
-            <div className="w-[150px] h-[150px] relative flex justify-center hover:border hover:border-primary rounded-xl">
-              <Image
-                className="object-cover rounded-xl "
-                src={URL.createObjectURL(b64toBlob(file.file.data))}
-                alt=""
-                fill
-              />
+            <div className="w-full">
+              <div className="w-full flex justify-center">
+                <div className="w-[150px] h-[150px] relative flex justify-center hover:border hover:border-primary rounded-xl">
+                  <Image
+                    className="object-cover rounded-xl "
+                    src={URL.createObjectURL(b64toBlob(file.file.data))}
+                    alt=""
+                    fill
+                  />
+                </div>
+              </div>
+
+              <div className="mt-3">
+                <Button variant="outline-primary" onClick={() => setFile(null)}>
+                  Eliminar
+                </Button>
+              </div>
             </div>
           </>
         ) : (
@@ -126,24 +136,39 @@ export default function ImageUpload({
 
       <div className="lg:flex md:flex block items-center justify-center mt-8">
         <div className="lg:mr-3 md:mr-3 mr-0">
-          <Button
-            disabled={!file}
-            onClick={() => onClick()}
-            variant="primary"
-            className="w-[250px]"
-          >
-            Cargar imagen
-          </Button>
-        </div>
-
-        <div className="lg:mt-0 md:mt-0 mt-4">
-          <Button
-            variant="outline-primary"
-            className="w-[250px]"
-            onClick={() => setShowImageUploadPopup(false)}
-          >
-            Cerrar
-          </Button>
+          {!file ? (
+            <>
+              <input
+                accept="image/png, image/jpeg, application/pdf"
+                type="file"
+                ref={imageRef}
+                className="hidden"
+                onChange={(e) => {
+                  handleChangeMedia(e);
+                }}
+              />
+              <div className={twMerge(["w-[250px] h-[40px]"])}>
+                <Button
+                  onClick={handleClickRef}
+                  type="button"
+                  variant="primary"
+                  className="w-[250px]"
+                >
+                  Cargar imágen
+                </Button>
+              </div>
+            </>
+          ) : (
+            <Button
+              type="button"
+              disabled={!file}
+              onClick={() => onClick()}
+              variant="primary"
+              className="w-[250px]"
+            >
+              Guardar
+            </Button>
+          )}
         </div>
       </div>
     </div>
