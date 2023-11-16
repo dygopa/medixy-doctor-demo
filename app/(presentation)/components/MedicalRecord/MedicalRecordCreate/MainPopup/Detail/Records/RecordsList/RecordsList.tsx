@@ -5,20 +5,30 @@ import {
 import { getMedicalRecordsForTypes } from "(presentation)/(helper)/medicalRecords/medicalRecordsHelper";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
+  IMedicalRecordCreateContext,
+  MedicalRecordCreateContext,
+} from "(presentation)/components/MedicalRecord/MedicalRecordCreate/context/MedicalRecordCreateContext";
+import {
   IMedicalRecord,
   IMedicalRecordValue,
 } from "domain/core/entities/medicalRecordEntity";
-import { useContext, useEffect, useState } from "react";
 import {
-  IMedicalRecordCreateContext,
-  MedicalRecordCreateContext,
-} from "../../../../context/MedicalRecordCreateContext";
+  Dispatch,
+  SetStateAction,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 interface IRecordListProps {
   subjectId: number;
+  setShowRecordsForm: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function RecordList({ subjectId }: IRecordListProps) {
+export default function RecordList({
+  subjectId,
+  setShowRecordsForm,
+}: IRecordListProps) {
   const { state, actions, dispatch } = useContext<IMedicalRecordCreateContext>(
     MedicalRecordCreateContext
   );
@@ -82,10 +92,24 @@ export default function RecordList({ subjectId }: IRecordListProps) {
 
   if (successful && medicalRecords.length === 0) {
     return (
-      <div className="w-full flex flex-col justify-center items-center mt-8">
-        <p className="font-light text-slate-500 text-base">
-          El paciente no posee antecedentes.
-        </p>
+      <div>
+        <div className="flex items-center justify-between mb-3">
+          <div>
+            <p className="text-lg font-bold">Antecedentes</p>
+          </div>
+
+          <div>
+            <Button onClick={() => setShowRecordsForm(true)} variant="primary">
+              Agregar
+            </Button>
+          </div>
+        </div>
+
+        <div className="w-full flex flex-col justify-center items-center mt-8">
+          <p className="font-light text-slate-500 text-base">
+            El paciente no posee antecedentes.
+          </p>
+        </div>
       </div>
     );
   }
@@ -94,7 +118,19 @@ export default function RecordList({ subjectId }: IRecordListProps) {
 
   return (
     <div className="mt-4">
-      <div>
+      <div className="flex items-center justify-between mb-3">
+        <div>
+          <p className="text-lg font-bold">Antecedentes</p>
+        </div>
+
+        <div>
+          <Button onClick={() => setShowRecordsForm(true)} variant="primary">
+            Agregar
+          </Button>
+        </div>
+      </div>
+
+      <div className="mt-4">
         {medicalRecords.map((medicalRecord: IMedicalRecord) => (
           <div key={medicalRecord.id} className="mb-3 border-b py-2">
             <div>

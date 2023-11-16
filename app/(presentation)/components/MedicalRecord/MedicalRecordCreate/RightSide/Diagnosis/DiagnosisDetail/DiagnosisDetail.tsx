@@ -22,26 +22,18 @@ type valuesTypes = {
 interface IDiagnosisProps {
   values: valuesTypes;
   setValues: Dispatch<SetStateAction<valuesTypes>>;
+  diagnoseError: boolean;
+  setDiagnoseError: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function DiagnosisDetail({
   values,
   setValues,
+  diagnoseError,
+  setDiagnoseError,
 }: IDiagnosisProps) {
   const [showBody, setShowBody] = useState(false);
   const [value, setValue] = useState("");
-  const [diagnoseError, setDiagnoseError] = useState(false);
-
-  const params = useSearchParams();
-
-  const diagnose = params.get("diagnose");
-
-  useEffect(() => {
-    if (diagnose === "true") {
-      setDiagnoseError(true);
-      setShowBody(true);
-    }
-  }, [diagnose]);
 
   return (
     <div>

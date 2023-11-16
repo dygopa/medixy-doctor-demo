@@ -33,7 +33,7 @@ export function medicalRecordSupabaseToMap(data: any): IMedicalRecord {
 export function fromMedicalRecordSupabaseDocumentData(medicalRecord: IMedicalRecord): any {
     const documentData = {
       tipoRegistroMedicoId: medicalRecord.medicalRecordTypeId,
-      consultaMedicaId: medicalRecord.medicalConsultyId, 
+      consultaMedicaId: medicalRecord.medicalConsultyId === 0 ? null : medicalRecord.medicalConsultyId, 
       sujetoId: medicalRecord.subjectId,
     } as any;
   

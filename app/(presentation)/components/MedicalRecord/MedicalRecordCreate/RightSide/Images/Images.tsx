@@ -1,16 +1,23 @@
+import Button from "(presentation)/components/core/BaseComponents/Button";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
 import { ICIE10 } from "domain/core/entities/cie10Entity";
 import { IMedicalConsultyImage } from "domain/core/entities/medicalConsultyEntity";
+import { IUser } from "domain/core/entities/userEntity";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import FinishedButton from "./FinishedButton/FinishedButton";
 import ImagesDetail from "./ImagesDetail/ImagesDetail";
 
 type valuesTypes = {
   images: IMedicalConsultyImage[];
 };
 
-export default function Images() {
+interface IImagesProps {
+  user: IUser;
+}
+
+export default function Images({ user }: IImagesProps) {
   const router = useRouter();
   const params = useSearchParams();
   const pathname = usePathname();
@@ -96,36 +103,39 @@ export default function Images() {
       ])}
     >
       <div className="p-4 box h-full">
-        <button
-          type="button"
-          onClick={() => {
-            setShowBody(!showBody);
-            router.push(
-              `${pathname}?view=images&type=${type ?? "medical-record"}`
-            );
-          }}
-          className="w-full"
-        >
+        <button type="button" className="w-full">
           <div className="w-full flex justify-between items-center border-b pb-2">
             <div>
               <p className="font-bold text-lg text-slate-900">Imagenes</p>
             </div>
-
-            <div>
-              <Lucide
-                icon={showBody ? "Minus" : "Plus"}
-                color="#22345F"
-                size={30}
-              />
-            </div>
           </div>
         </button>
 
-        <form className={clsx([showBody ? "block" : "hidden"])}>
+        <form>
           <div className="py-4">
             <ImagesDetail values={values} setValues={setValues} />
           </div>
         </form>
+
+        <div className="flex justify-end w-full">
+          <div className="mr-2">
+            <Button
+              variant="outline-primary"
+              className="h-[43px]"
+              onClick={() => {
+                router.replace(
+                  `${pathname}?view=recipe&type=${type ?? "medical-record"}`
+                );
+              }}
+            >
+              Volver
+            </Button>
+          </div>
+
+          <div>
+            <FinishedButton user={user} />
+          </div>
+        </div>
       </div>
     </div>
   );

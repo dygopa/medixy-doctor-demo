@@ -38,6 +38,7 @@ export interface IMedicalRecordCreateState {
     createMedicalConsulty: ICreateMedicalConsultyState;
     updateAvatar: ISubjectAvatarState;
     getCountriesISO: IGetCountriesISOState;
+    createMedicalRecords: ICreateMedicalRecordsState;
 }
 
 interface IGetSubjectState {
@@ -169,7 +170,14 @@ interface IGetCountriesISOState {
     loading: boolean;
     successful: boolean;
     error: CountryFailure| null;
-  }
+}
+
+interface ICreateMedicalRecordsState {
+    data: boolean;
+    loading: boolean;
+    successful: boolean;
+    error: MedicalRecordFailure | null;
+}
 
 export const initialState: IMedicalRecordCreateState = {
     subject: {
@@ -282,5 +290,11 @@ export const initialState: IMedicalRecordCreateState = {
         loading: false,
         successful: false,
         error: null,
-      },
+    },
+    createMedicalRecords: {
+        data: false,
+        loading: false,
+        successful: false,
+        error: null,
+    },
 }

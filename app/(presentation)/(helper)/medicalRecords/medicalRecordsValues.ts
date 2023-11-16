@@ -1,16 +1,9 @@
+import moment from "moment";
 
 export const medicalConsultyInitialValues = {
   appointmentId: "",
   currentConsultation: {
-    consultationDate: `${new Date().getFullYear()}-${
-      new Date().getMonth() + 1 < 10
-        ? `0${new Date().getMonth() + 1}`
-        : new Date().getMonth()
-    }-${
-      new Date().getDate() < 10
-        ? `0${new Date().getDate()}`
-        : new Date().getDate()
-    }`,
+    consultationDate: moment().format("YYYY-MM-DD"),
     referredBy: "",
     consultationReason: "",
     sufferingDate: "",
@@ -106,92 +99,6 @@ export const medicalConsultyInitialValues = {
     oximetry: "",
     muscleMass: "",
     glicemy: "",
-  },
-  records: {
-    allergiesPathological: {
-      isChecked: false,
-      values: [],
-    },
-    surgicalInterventions: {
-      isChecked: false,
-      values: [],
-    },
-    takeMedication: {
-      isChecked: false,
-      values: [],
-    },
-    transfusions: {
-      isChecked: false,
-      value: "",
-    },
-    anemia: {
-      isChecked: false,
-      value: "",
-    },
-    arthritis: {
-      isChecked: false,
-      value: "",
-    },
-    asma: {
-      isChecked: false,
-      value: "",
-    },
-    cancer: {
-      isChecked: false,
-      value: "",
-    },
-    bloodClots: {
-      isChecked: false,
-      value: "",
-    },
-    colitis: {
-      isChecked: false,
-      value: "",
-    },
-    bloodTypeNonPathological: {
-      isChecked: false,
-      values: [],
-    },
-    smokingNonPathological: {
-      isChecked: false,
-      value: "",
-    },
-    alcoholicBeveragesNonPathological: {
-      isChecked: false,
-      value: "",
-    },
-    drugsNonPathological: {
-      isChecked: false,
-      value: "",
-    },
-    exerciseNonPathological: {
-      isChecked: false,
-      value: "",
-    },
-    covidNonPathological: {
-      isChecked: false,
-      value: "",
-    },
-    diabetesFamily: {
-      isChecked: false,
-      values: [],
-    },
-    cancerFamily: {
-      isChecked: false,
-      values: [],
-    },
-    hypertensionFamily: {
-      isChecked: false,
-      values: [],
-    },
-    sidaFamily: {
-      isChecked: false,
-      values: [],
-    },
-    otherFamily: {
-      isChecked: false,
-      values: [],
-    },
   },
   orders: [],
   recipes: [],

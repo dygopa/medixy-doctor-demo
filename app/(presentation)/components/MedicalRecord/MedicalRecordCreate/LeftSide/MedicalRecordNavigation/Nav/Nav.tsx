@@ -1,40 +1,30 @@
 import clsx from "clsx";
-import { usePathname, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import NavItem from "./NavItem/NavItem";
 
 export default function Nav() {
   const params = useSearchParams();
-  const pathname = usePathname();
 
   const view = params.get("view");
-  const type = params.get("type");
 
-  const getTopLineByView = (): string => {
-    switch (view?.toLowerCase()) {
-      case "vital-signs":
-        return "top-0";
-      case "records":
-        return "top-16";
+  const getTitleStep = () => {
+    switch (view) {
+      case "exploration":
+        return "Exploración";
       case "current-consultation":
-        return "top-32";
+        return "Consulta actual";
       case "diagnosis":
-        return "top-48";
+        return "Diagnóstico";
       case "orders":
-        return "top-60";
+        return "Ordenes";
       case "recipe":
-        return "top-[305px]";
+        return "Receta";
       case "images":
-        return "top-[370px]";
+        return "Imagenes";
 
       default:
-        return "top-0";
+        return "Exploración";
     }
-  };
-
-  const getNavIsActive = (viewNav: string): boolean => {
-    if (viewNav.toLowerCase() === view?.toLowerCase()) return true;
-
-    return false;
   };
 
   return (
@@ -42,73 +32,73 @@ export default function Nav() {
       <div className="relative h-auto">
         <div
           className={clsx([
-            "h-[40px] w-[6px] bg-primary absolute z-50 transition-all",
-            getTopLineByView(),
+            "h-[40px] w-[6px] bg-primary absolute z-50 transition-all top-0",
           ])}
         />
 
         <div className="h-full w-[4px] bg-gray-300 absolute top-0 left-[1px] z-40" />
       </div>
 
-      <div className="ml-8 w-full">
-        <div className="py-1">
+      <div className="ml-8 w-full mt-2">
+        <div className="mb-3">
+          <h1 className="text-lg font-bold">{getTitleStep()}</h1>
+        </div>
+
+        <div>
           <NavItem
-            text="Signos vítales"
-            href={`${pathname}?view=vital-signs&type=${
-              type ?? "medical-record"
-            }`}
-            isActive={getNavIsActive("vital-signs")}
+            text="Exploración"
+            isActive={!view || view === "exploration"}
+            isCompleted={
+              view === "current-consultation" ||
+              view === "diagnosis" ||
+              view === "orders" ||
+              view === "recipe" ||
+              view === "images"
+            }
           />
         </div>
 
-        <div className="py-1">
-          <NavItem
-            text="Antecedentes"
-            href={`${pathname}?view=records&type=${type ?? "medical-record"}`}
-            isActive={getNavIsActive("records")}
-          />
-        </div>
-
-        <div className="py-1">
+        <div>
           <NavItem
             text="Consulta actual"
-            href={`${pathname}?view=current-consultation&type=${
-              type ?? "medical-record"
-            }`}
-            isActive={getNavIsActive("current-consultation")}
+            isActive={view === "current-consultation"}
+            isCompleted={
+              view === "diagnosis" ||
+              view === "orders" ||
+              view === "recipe" ||
+              view === "images"
+            }
           />
         </div>
 
-        <div className="py-1">
+        <div>
           <NavItem
             text="Diagnóstico"
-            href={`${pathname}?view=diagnosis&type=${type ?? "medical-record"}`}
-            isActive={getNavIsActive("diagnosis")}
+            isActive={view === "diagnosis"}
+            isCompleted={
+              view === "orders" || view === "recipe" || view === "images"
+            }
           />
         </div>
 
-        <div className="py-1">
+        <div>
           <NavItem
             text="Ordenes"
-            href={`${pathname}?view=orders&type=${type ?? "medical-record"}`}
-            isActive={getNavIsActive("orders")}
+            isActive={view === "orders"}
+            isCompleted={view === "recipe" || view === "images"}
           />
         </div>
 
-        <div className="py-1">
+        <div>
           <NavItem
             text="Receta"
-            href={`${pathname}?view=recipe&type=${type ?? "medical-record"}`}
-            isActive={getNavIsActive("recipe")}
+            isActive={view === "recipe"}
+            isCompleted={view === "images"}
           />
         </div>
 
-        <div className="py-1">
-          <NavItem
-            text="Imagenes"
-            href={`${pathname}?view=images&type=${type ?? "medical-record"}`}
-            isActive={getNavIsActive("images")}
-          />
+        <div>
+          <NavItem text="Imagenes" isActive={view === "images"} finalStep />
         </div>
       </div>
     </div>

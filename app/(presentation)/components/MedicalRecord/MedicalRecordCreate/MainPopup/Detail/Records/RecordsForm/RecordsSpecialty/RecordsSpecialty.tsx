@@ -2,7 +2,7 @@ import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
-import { valuesTypes } from "../Records";
+import { valuesTypes } from "../RecordsForm";
 
 interface IRecordsSpecialtyProps {
   values: valuesTypes;
@@ -195,9 +195,7 @@ export default function RecordsSpecialty({
         <div className="flex items-center justify-between mb-4 w-full">
           <div className="flex items-center w-full">
             <div className="mr-5 w-[200px]">
-              <p className="input-label">
-                Hipertensión
-              </p>
+              <p className="input-label">Hipertensión</p>
             </div>
 
             <div className="flex items-center w-full">
@@ -246,9 +244,7 @@ export default function RecordsSpecialty({
         <div className="flex items-center justify-between mb-4 w-full">
           <div className="flex items-center w-full">
             <div className="mr-5 w-[200px]">
-              <p className="input-label">
-                Ingiere bebidas alcohólicas
-              </p>
+              <p className="input-label">Ingiere bebidas alcohólicas</p>
             </div>
 
             <div className="flex items-center w-full">

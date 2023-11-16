@@ -1,3 +1,4 @@
+import Button from "(presentation)/components/core/BaseComponents/Button";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
 import { IRecipe } from "domain/core/entities/recipeEntity";
@@ -79,32 +80,15 @@ export default function Recipe() {
       ])}
     >
       <div className="p-4 box h-full">
-        <button
-          type="button"
-          onClick={() => {
-            setShowBody(!showBody);
-            router.push(
-              `${pathname}?view=recipe&type=${type ?? "medical-record"}`
-            );
-          }}
-          className="w-full"
-        >
+        <button type="button" className="w-full">
           <div className="w-full flex justify-between items-center border-b pb-2">
             <div>
               <p className="font-bold text-lg text-slate-900">Receta</p>
             </div>
-
-            <div>
-              <Lucide
-                icon={showBody ? "Minus" : "Plus"}
-                color="#22345F"
-                size={30}
-              />
-            </div>
           </div>
         </button>
 
-        <form className={clsx([showBody ? "block" : "hidden"])}>
+        <form>
           <div className="py-4 border-b">
             <AddRecipe
               recipes={recipes}
@@ -123,6 +107,41 @@ export default function Recipe() {
             />
           </div>
         </form>
+
+        <div className="w-full flex justify-end">
+          <div className="mr-2">
+            <Button
+              variant="outline-primary"
+              className="h-[43px]"
+              onClick={() => {
+                router.replace(
+                  `${pathname}?view=orders&type=${type ?? "medical-record"}`
+                );
+              }}
+            >
+              Volver
+            </Button>
+          </div>
+
+          <div>
+            <Button
+              variant="primary"
+              onClick={() => {
+                router.replace(
+                  `${pathname}?view=images&type=${type ?? "medical-record"}`
+                );
+              }}
+            >
+              <div className="flex items-center">
+                <div className="mr-2">Imagenes</div>
+
+                <div>
+                  <Lucide icon="ArrowRight" color="#fff" size={25} />
+                </div>
+              </div>
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );
