@@ -5,9 +5,8 @@ import AutocompleteInputMedicines from "(presentation)/components/core/BaseCompo
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
-import { IMedicine } from "domain/core/entities/medicineEntity";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
-import { valuesTypes } from "../Records";
+import { valuesTypes } from "../RecordsForm";
 
 interface IRecordsPathologicalProps {
   values: valuesTypes;
@@ -18,7 +17,7 @@ export default function RecordsPathological({
   values,
   setValues,
 }: IRecordsPathologicalProps) {
-  const [showFields, setShowFields] = useState(true);
+  const [showFields, setShowFields] = useState(false);
 
   const getItemsAutocompleteValues = (list: string[]): IAutocompleteValue[] => {
     const values: IAutocompleteValue[] = [];

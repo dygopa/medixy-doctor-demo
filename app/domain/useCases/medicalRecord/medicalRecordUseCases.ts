@@ -1,7 +1,7 @@
 import { IMedicalRecord } from "domain/core/entities/medicalRecordEntity";
 import { IUser } from "domain/core/entities/userEntity";
 import { MedicalRecordFailure } from "domain/core/failures/medicalRecord/medicalRecordFailure";
-import { IGetMedicalRecordPDFResponse, IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
+import { ICreateMedicalRecordResponse, IGetMedicalRecordPDFResponse, IGetMedicalRecordsResponse } from "domain/core/response/medicalRecordResponse";
 import IMedicalRecordRepository, { MedicalRecordRepository } from "infrastructure/repositories/medicalRecord/medicalRecordRepository";
 
 export default class MedicalRecordUseCase {
@@ -95,7 +95,6 @@ export default class MedicalRecordUseCase {
 
     async getMedicalRecordHospitalizationPDF(obj: { doctor: IUser; medicalRecord: IMedicalRecord }): Promise<IGetMedicalRecordPDFResponse> {
         try {
-            console.log(obj)
             const response = await this._repository.getMedicalRecordHospitalizationPDF({
                 doctor: obj.doctor,
                 medicalRecord: obj.medicalRecord
@@ -105,6 +104,20 @@ export default class MedicalRecordUseCase {
             return response;
         } catch (error) {
             throw error;
+        }
+    }
+
+    async createMedicalRecords(obj: { medicalRecords: IMedicalRecord[] }): Promise<boolean> {
+        try {
+            if (obj.medicalRecords && obj.medicalRecords.length > 0) {
+                await Promise.all((obj.medicalRecords.map(async (medicalRecord) => {        
+                    await this._repository.createMedicalRecord(medicalRecord);
+                })));
+            } 
+    
+          return true
+        } catch (error) {
+          throw error;
         }
     }
 }

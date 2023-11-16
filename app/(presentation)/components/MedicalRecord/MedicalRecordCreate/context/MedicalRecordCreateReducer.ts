@@ -655,5 +655,63 @@ export const MedicalRecordCreateReducer = (state: any, action: any) => {
               error: action.payload.error,
             },
           };
+
+          case 'GET_MEDICAL_RECORD_PDF_ERROR':
+            return {
+              ...state,
+              getMedicalRecordPDF: {
+                ...state.getMedicalRecordPDF,
+                loading: false,
+                successful: false,
+                error: action.payload.error,
+              },
+            }
+
+          case 'CREATE_MEDICAL_RECORDS_LOADING' :
+            return {
+              ...state,
+              createMedicalRecords: {
+                ...state.createMedicalRecords,
+                data: false,
+                loading: true,
+                successful: false,
+                error: null,
+              },
+            };
+          case 'CREATE_MEDICAL_RECORDS_SUCCESSFUL' :
+            return {
+              ...state,
+              createMedicalRecords: {
+                ...state.createMedicalRecords,
+                data: action.payload.data,
+                loading: false,
+                successful: true,
+                error: null,
+              },
+            }
+          case 'CREATE_MEDICAL_RECORDS_ERROR' :
+            return {
+              ...state,
+              createMedicalRecords: {
+                ...state.createMedicalRecords,
+                data: false,
+                loading: false,
+                successful: false,
+                error: action.payload.error,
+              },
+            }
+
+            case 'CREATE_MEDICAL_RECORDS_INITIAL_STATE' :
+            return {
+              ...state,
+              createMedicalRecords: {
+                ...state.createMedicalRecords,
+                data: false,
+                loading: false,
+                successful: false,
+                error: null,
+              },
+            };
+
       }
   }

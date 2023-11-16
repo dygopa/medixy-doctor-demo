@@ -1,14 +1,11 @@
 import AutocompleteInput, {
   IAutocompleteValue,
 } from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInput";
-import {
-  FormCheck,
-  FormInput,
-} from "(presentation)/components/core/BaseComponents/Form";
+import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
-import { valuesTypes } from "../Records";
+import { valuesTypes } from "../RecordsForm";
 
 interface IRecordsNonPathologicalProps {
   values: valuesTypes;

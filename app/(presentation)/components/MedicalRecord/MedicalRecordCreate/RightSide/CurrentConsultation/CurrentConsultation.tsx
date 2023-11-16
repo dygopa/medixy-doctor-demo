@@ -1,10 +1,11 @@
+import Button from "(presentation)/components/core/BaseComponents/Button";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
 import { ICIE10 } from "domain/core/entities/cie10Entity";
+import moment from "moment";
 import { useSearchParams, useRouter, usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import BasicDetails from "./BasicDetails/BasicDetails";
-import PhysicalExploration from "./PhysicalExploration/PhysicalExploration";
 
 interface ICurrentConsultationProps {
   width: number;
@@ -75,15 +76,7 @@ export default function CurrentConsultation({
 
     valuesJSON.currentConsultation.consultationDate =
       valuesJSON.currentConsultation.consultationDate?.length === 0
-        ? `${new Date().getFullYear()}-${
-            new Date().getMonth() + 1 < 10
-              ? `0${new Date().getMonth() + 1}`
-              : new Date().getMonth()
-          }-${
-            new Date().getDate() < 10
-              ? `0${new Date().getDate()}`
-              : new Date().getDate()
-          }`
+        ? moment().format("YYYY-MM-DD")
         : valuesJSON.currentConsultation.consultationDate;
 
     setValues(valuesJSON.currentConsultation);
@@ -119,36 +112,17 @@ export default function CurrentConsultation({
       ])}
     >
       <div className="p-4 box h-full">
-        <button
-          type="button"
-          onClick={() => {
-            setShowBody(!showBody);
-            router.push(
-              `${pathname}?view=current-consultation&type=${
-                type ?? "medical-record"
-              }`
-            );
-          }}
-          className="w-full"
-        >
+        <button type="button" className="w-full">
           <div className="w-full flex justify-between items-center border-b pb-2">
             <div>
               <p className="font-bold text-lg text-slate-900">
                 Consulta actual
               </p>
             </div>
-
-            <div>
-              <Lucide
-                icon={showBody ? "Minus" : "Plus"}
-                color="#22345F"
-                size={30}
-              />
-            </div>
           </div>
         </button>
 
-        <form className={clsx([showBody ? "block" : "hidden"])}>
+        <form>
           <div className="py-4">
             <BasicDetails
               values={values}
@@ -157,11 +131,62 @@ export default function CurrentConsultation({
               setErrors={setErrors}
             />
           </div>
-
-          <div className="py-4">
-            <PhysicalExploration />
-          </div>
         </form>
+
+        <div className="w-full flex justify-end">
+          <div className="mr-2">
+            <Button
+              variant="outline-primary"
+              className="h-[43px]"
+              onClick={() => {
+                router.replace(
+                  `${pathname}?view=exploration&type=${
+                    type ?? "medical-record"
+                  }`
+                );
+              }}
+            >
+              Volver
+            </Button>
+          </div>
+
+          <div>
+            <Button
+              variant="primary"
+              onClick={() => {
+                if (values.consultationDate.length === 0) {
+                  setErrors({
+                    ...errors,
+                    consultationDate:
+                      "Debe seleccionar la fecha de la consulta",
+                  });
+                  return;
+                }
+
+                if (values.consultationReason.length === 0) {
+                  setErrors({
+                    ...errors,
+                    consultationReason:
+                      "Debe escribir el mótivo de la consulta",
+                  });
+                  return;
+                }
+
+                router.replace(
+                  `${pathname}?view=diagnosis&type=${type ?? "medical-record"}`
+                );
+              }}
+            >
+              <div className="flex items-center">
+                <div className="mr-2">Diagnóstico</div>
+
+                <div>
+                  <Lucide icon="ArrowRight" color="#fff" size={25} />
+                </div>
+              </div>
+            </Button>
+          </div>
+        </div>
       </div>
     </div>
   );

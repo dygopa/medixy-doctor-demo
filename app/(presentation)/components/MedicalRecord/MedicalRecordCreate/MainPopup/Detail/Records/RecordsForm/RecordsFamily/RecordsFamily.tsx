@@ -5,7 +5,7 @@ import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
 import { ChangeEvent, Dispatch, SetStateAction, useState } from "react";
-import { valuesTypes } from "../Records";
+import { valuesTypes } from "../RecordsForm";
 
 interface IRecordsFamilyProps {
   values: valuesTypes;

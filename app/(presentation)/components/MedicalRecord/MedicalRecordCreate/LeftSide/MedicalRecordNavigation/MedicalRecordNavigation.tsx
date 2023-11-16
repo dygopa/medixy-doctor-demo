@@ -11,9 +11,9 @@ export default function MedicalRecordNavigation() {
       ])}
     >
       <div className="p-4 box h-full">
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <Header />
-        </div>
+    </div> */}
 
         <div>
           <Nav />

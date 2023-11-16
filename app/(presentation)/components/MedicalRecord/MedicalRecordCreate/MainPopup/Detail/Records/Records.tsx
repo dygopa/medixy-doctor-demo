@@ -1,19 +1,18 @@
-import RecordList from "./RecordList/RecordList";
+import { useState } from "react";
+import RecordsForm from "./RecordsForm/RecordsForm";
+import RecordList from "./RecordsList/RecordsList";
 
 interface IRecordsProps {
   subjectId: number;
 }
 
 export default function Records({ subjectId }: IRecordsProps) {
-  return (
-    <div>
-      <div className="mb-3">
-        <p className="text-lg font-bold">Antecedentes</p>
-      </div>
+  const [showRecordsForm, setShowRecordsForm] = useState(false);
 
-      <div>
-        <RecordList subjectId={subjectId} />
-      </div>
-    </div>
+  if (showRecordsForm)
+    return <RecordsForm setShowRecordsForm={setShowRecordsForm} />;
+
+  return (
+    <RecordList subjectId={subjectId} setShowRecordsForm={setShowRecordsForm} />
   );
 }

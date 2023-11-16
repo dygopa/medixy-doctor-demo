@@ -42,7 +42,9 @@ export interface IMedicalRecordCreateActions {
     getMedicalConsultyPDF: (obj: { doctor: IUser; medicalConsulty: IMedicalConsulty }) => (dispatch: Dispatch<any>) => {};
     getMedicalRecordPDF: (obj: { doctor: IUser; medicalRecord: IMedicalRecord }) => (dispatch: Dispatch<any>) => {};
     createMedicalConsulty: (obj: { doctor: IUser; medicalConsulty: IMedicalConsulty; appointmentId?: string | null }) => (dispatch: Dispatch<any>) => {};
+    createMedicalRecords: (obj: { medicalRecords: IMedicalRecord[] }) => (dispatch: Dispatch<any>) => {};
     updateAvatar: (obj:any, doctorId: string) => (dispatch: Dispatch<any>) => {};
+    createMedicalRecordsInitialState: Function;
     getCountriesISO: Function;
 }
 
@@ -307,6 +309,18 @@ const createMedicalConsulty = (obj: { doctor: IUser; medicalConsulty: IMedicalCo
   }
 }
 
+const createMedicalRecords = (obj: { medicalRecords: IMedicalRecord[] }) => async (dispatch: Dispatch<any>) => {
+  try {
+    dispatch({ type: "CREATE_MEDICAL_RECORDS_LOADING" });
+    
+    const res: boolean = await new MedicalRecordUseCase().createMedicalRecords({ medicalRecords: obj.medicalRecords });
+
+    dispatch({ type: "CREATE_MEDICAL_RECORDS_SUCCESSFUL", payload: { data: res } });
+  } catch (error) {
+    dispatch({ type: "CREATE_MEDICAL_RECORDS_ERROR", payload: { error: error } });
+  }
+}
+
 const updateAvatar = (obj:any, doctorId: string) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "UPDATE_AVATAR_LOADING" });
@@ -333,6 +347,10 @@ const getCountriesISO = () => async (dispatch: Dispatch<any>) => {
   }
 }
 
+const createMedicalRecordsInitialState = () => (dispatch: Dispatch<any>) => {
+  dispatch({ type: "CREATE_MEDICAL_RECORDS_INITIAL_STATE" });
+}
+
 export const actions: IMedicalRecordCreateActions = {
     getSubjectById,
     getAppointmentById,
@@ -353,4 +371,6 @@ export const actions: IMedicalRecordCreateActions = {
     createMedicalConsulty,
     updateAvatar,
     getCountriesISO,
+    createMedicalRecords,
+    createMedicalRecordsInitialState,
 }

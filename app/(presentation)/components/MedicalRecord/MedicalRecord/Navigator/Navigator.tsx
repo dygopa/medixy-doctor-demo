@@ -79,7 +79,7 @@ export default function Navigator({ user }: INavigatorProps) {
             </div>
 
             <div>
-              <p className="text-slate-500 lg:text-md md:text-md text-xs">
+              <p className="text-slate-500 lg:text-[14px] md:text-[14px] text-xs">
                 Información detallada del expediente del paciente
               </p>
             </div>
