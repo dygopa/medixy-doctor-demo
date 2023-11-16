@@ -75,10 +75,10 @@ export default function RightSide({ user, width }: IRightSideProps) {
 
   const setInitialStep = () => {
     switch (view) {
-      case "exploration":
+      case "current-consultation":
         setStep(0);
         break;
-      case "current-consultation":
+      case "exploration":
         setStep(1);
         break;
       case "diagnosis":
@@ -108,9 +108,9 @@ export default function RightSide({ user, width }: IRightSideProps) {
   const getComponentByStep = () => {
     switch (step) {
       case 0:
-        return <Exploration />;
-      case 1:
         return <CurrentConsultation width={width} />;
+      case 1:
+        return <Exploration />;
       case 2:
         return <Diagnosis />;
       case 3:

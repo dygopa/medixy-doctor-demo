@@ -1,4 +1,4 @@
-import AppLayout from "(presentation)/(layouts)/AppLayout/AppLayout";
+import MedicalRecordLayout from "(presentation)/(layouts)/MedicalRecordLayout/MedicalRecordLayout";
 import { MedicalRecordRoutesEnum } from "(presentation)/(routes)/medicalRecordRoutes";
 import AuthErrorHandlers from "(presentation)/components/core/Auth/AuthErrorsHandlers";
 import MedicalRecordCreateIndex from "(presentation)/components/MedicalRecord/MedicalRecordCreate/MedicalRecordCreateIndex";
@@ -36,7 +36,7 @@ export default async function MedicalRecordCreatePage({
   }
 
   return (
-    <AppLayout
+    <MedicalRecordLayout
       user={user}
       showStepsBySteps={false}
       title="Nueva Consulta"
@@ -50,6 +50,6 @@ export default async function MedicalRecordCreatePage({
       <Providers>
         <MedicalRecordCreateIndex user={user} id={params.id} />
       </Providers>
-    </AppLayout>
+    </MedicalRecordLayout>
   );
 }
