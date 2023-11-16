@@ -22,7 +22,7 @@ export default function LeftSide({ windowWidth }: ILeftSideProps) {
           "h-auto mb-8",
           windowWidth <= 992 && "hidden",
           showCompleteDetails && windowWidth >= 992
-            ? "xl:w-[985px] lg:w-[875px] md:w-[840px]"
+            ? "xl:w-[1000px] lg:w-[875px] md:w-[840px]"
             : "w-full",
         ])}
       >
@@ -35,7 +35,7 @@ export default function LeftSide({ windowWidth }: ILeftSideProps) {
 
       <div
         className={clsx([
-          "xl:w-[300px] lg:w-[300px] w-[300px]",
+          "xl:w-[325px] lg:w-[300px] w-[300px]",
           windowWidth <= 992 ? "hidden" : "block",
         ])}
       >

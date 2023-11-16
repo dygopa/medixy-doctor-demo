@@ -96,45 +96,47 @@ export default function Images({ user }: IImagesProps) {
   }, [view, imagesExpanded]);
 
   return (
-    <div
-      className={clsx([
-        "h-auto z-40 w-full",
-        " bg-slate-50 before:h-full before:mt-3 before:rounded-md before:dark:bg-darkmode-400/70",
-      ])}
-    >
-      <div className="p-4 box h-full">
-        <button type="button" className="w-full">
-          <div className="w-full flex justify-between items-center border-b pb-2">
-            <div>
-              <p className="font-bold text-lg text-slate-900">Imagenes</p>
+    <div>
+      <div
+        className={clsx([
+          "h-auto z-40 w-full",
+          " bg-slate-50 before:h-full before:mt-3 before:rounded-md before:dark:bg-darkmode-400/70",
+        ])}
+      >
+        <div className="p-4 box h-full">
+          <button type="button" className="w-full">
+            <div className="w-full flex justify-between items-center border-b pb-2">
+              <div>
+                <p className="font-bold text-lg text-slate-900">Imagenes</p>
+              </div>
             </div>
-          </div>
-        </button>
+          </button>
 
-        <form>
-          <div className="py-4">
-            <ImagesDetail values={values} setValues={setValues} />
-          </div>
-        </form>
+          <form>
+            <div className="py-4">
+              <ImagesDetail values={values} setValues={setValues} />
+            </div>
+          </form>
+        </div>
+      </div>
 
-        <div className="flex justify-end w-full">
-          <div className="mr-2">
-            <Button
-              variant="outline-primary"
-              className="h-[43px]"
-              onClick={() => {
-                router.replace(
-                  `${pathname}?view=recipe&type=${type ?? "medical-record"}`
-                );
-              }}
-            >
-              Volver
-            </Button>
-          </div>
+      <div className="flex justify-end w-full mt-14">
+        <div className="mr-2">
+          <Button
+            variant="outline-primary"
+            className="h-[46px]"
+            onClick={() => {
+              router.replace(
+                `${pathname}?view=recipe&type=${type ?? "medical-record"}`
+              );
+            }}
+          >
+            Volver
+          </Button>
+        </div>
 
-          <div>
-            <FinishedButton user={user} />
-          </div>
+        <div>
+          <FinishedButton user={user} />
         </div>
       </div>
     </div>

@@ -11,6 +11,7 @@ interface INavItemProps {
   isCompleted?: boolean;
   subItems?: ISubItem[];
   finalStep?: boolean;
+  subStep?: boolean;
 }
 
 export default function NavItem({
@@ -19,6 +20,7 @@ export default function NavItem({
   isActive = false,
   isCompleted = false,
   finalStep = false,
+  subStep = false,
 }: INavItemProps) {
   return (
     <div className="py-1 w-full">
@@ -59,7 +61,12 @@ export default function NavItem({
 
         <div className="flex items-center justify-between w-full">
           <div>
-            <div className={clsx(["text-slate-900 text-md font-medium"])}>
+            <div
+              className={clsx([
+                "text-slate-900 font-medium",
+                subStep ? "text-xs" : "text-md",
+              ])}
+            >
               {text}
             </div>
           </div>

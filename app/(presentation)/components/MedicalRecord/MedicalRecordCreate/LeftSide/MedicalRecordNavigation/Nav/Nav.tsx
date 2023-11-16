@@ -23,7 +23,7 @@ export default function Nav() {
         return "Imagenes";
 
       default:
-        return "Exploración";
+        return "Consulta actual";
     }
   };
 
@@ -46,23 +46,10 @@ export default function Nav() {
 
         <div>
           <NavItem
-            text="Exploración"
-            isActive={!view || view === "exploration"}
-            isCompleted={
-              view === "current-consultation" ||
-              view === "diagnosis" ||
-              view === "orders" ||
-              view === "recipe" ||
-              view === "images"
-            }
-          />
-        </div>
-
-        <div>
-          <NavItem
             text="Consulta actual"
-            isActive={view === "current-consultation"}
+            isActive={!view || view === "current-consultation"}
             isCompleted={
+              view === "exploration" ||
               view === "diagnosis" ||
               view === "orders" ||
               view === "recipe" ||
@@ -73,19 +60,57 @@ export default function Nav() {
 
         <div>
           <NavItem
-            text="Diagnóstico"
-            isActive={view === "diagnosis"}
+            text="Exploración física"
+            isActive={view === "exploration"}
             isCompleted={
-              view === "orders" || view === "recipe" || view === "images"
+              view === "diagnosis" ||
+              view === "orders" ||
+              view === "recipe" ||
+              view === "images"
             }
+            subStep
+          />
+        </div>
+
+        <div>
+          <NavItem
+            text="Signos vítales"
+            isActive={view === "exploration"}
+            isCompleted={
+              view === "diagnosis" ||
+              view === "orders" ||
+              view === "recipe" ||
+              view === "images"
+            }
+            subStep
           />
         </div>
 
         <div>
           <NavItem
             text="Ordenes"
+            isActive={view === "diagnosis" || view === "orders"}
+            isCompleted={view === "recipe" || view === "images"}
+          />
+        </div>
+
+        <div>
+          <NavItem
+            text="Diagnósticos"
+            isActive={view === "diagnosis"}
+            isCompleted={
+              view === "orders" || view === "recipe" || view === "images"
+            }
+            subStep
+          />
+        </div>
+
+        <div>
+          <NavItem
+            text="Estudios y especialidad"
             isActive={view === "orders"}
             isCompleted={view === "recipe" || view === "images"}
+            subStep
           />
         </div>
 
@@ -98,7 +123,7 @@ export default function Nav() {
         </div>
 
         <div>
-          <NavItem text="Imagenes" isActive={view === "images"} finalStep />
+          <NavItem text="Imágenes" isActive={view === "images"} finalStep />
         </div>
       </div>
     </div>

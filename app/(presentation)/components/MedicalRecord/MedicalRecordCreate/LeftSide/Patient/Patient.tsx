@@ -26,20 +26,15 @@ export default function Patient({
 
   return (
     <div
-      onClick={
-        !showCompleteDetails
-          ? () => setShowCompleteDetails(!showCompleteDetails)
-          : () => {}
-      }
       className={clsx([
         "relative h-auto transition-all z-50",
         "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
         !showCompleteDetails && "zoom-in",
         windowWidth <= 992
-          ? "w-[305px]"
+          ? "w-[325px]"
           : showCompleteDetails
           ? "w-full"
-          : "w-[305px]",
+          : "w-[325px]",
       ])}
     >
       <div className="p-4 box h-full">
@@ -76,22 +71,22 @@ export default function Patient({
           <div className="lg:pl-4 w-full flex justify-between xl:mt-0 mt-4">
             <div
               className={clsx([
-                windowWidth <= 992
-                  ? "grid xl:grid-cols-3 md:grid-cols-3 grid-cols-1 gap-8"
-                  : showCompleteDetails
-                  ? "grid lg:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8"
-                  : "grid xl:grid-cols-1 lg:grid-cols-1 md:grid-cols-1 grid-cols-1 gap-8",
+                windowWidth <= 992 &&
+                  "grid xl:grid-cols-3 md:grid-cols-3 grid-cols-1 gap-8",
               ])}
             >
-              <div>
-                <p className="font-normal text-slate-500 mb-1">Nombre(s)</p>
+              <div className="mb-2">
+                <p className="font-normal text-slate-500 mb-1 text-md">
+                  Nombre(s)
+                </p>
 
                 <p className="font-medium text-[16px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject?.name}
                 </p>
               </div>
-              <div>
-                <p className="font-normal text-slate-500 mb-1">Edad</p>
+
+              <div className="mb-2">
+                <p className="font-normal text-slate-500 mb-1 text-md">Edad</p>
 
                 <p className="font-medium text-[16px] text-ellipsis overflow-hidden whitespace-nowrap">
                   {subject?.age
@@ -114,117 +109,17 @@ export default function Patient({
                 </p>
               </div>
 
-              <div
-                className={clsx([
-                  windowWidth <= 992
-                    ? "block"
-                    : showCompleteDetails
-                    ? "block"
-                    : "xl:hidden lg:hidden md:hidden block",
-                ])}
-              >
-                <p className="font-normal text-slate-500 mb-1">
-                  Primer apellido
-                </p>
+              <div>
+                <p className="font-normal text-slate-500 mb-1 text-md">Sexo</p>
 
                 <p className="font-medium text-[16px] text-ellipsis overflow-hidden whitespace-nowrap">
-                  {subject?.lastName}
-                </p>
-              </div>
-
-              <div
-                className={clsx([
-                  windowWidth <= 992
-                    ? "block"
-                    : showCompleteDetails
-                    ? "block"
-                    : "xl:hidden lg:hidden md:hidden block",
-                ])}
-              >
-                <p className="font-normal text-slate-500 mb-1">
-                  Segundo apellido
-                </p>
-
-                <p className="font-medium text-[16px] text-ellipsis overflow-hidden whitespace-nowrap">
-                  {subject && subject.motherLastName?.length > 0
-                    ? subject.motherLastName
+                  {subject?.sex
+                    ? subject.sex === 1
+                      ? "Femenino"
+                      : "Masculino"
                     : "No especificado"}
                 </p>
               </div>
-
-              <div
-                className={clsx([
-                  windowWidth <= 992
-                    ? "block"
-                    : showCompleteDetails
-                    ? "block"
-                    : "xl:hidden lg:hidden md:hidden block",
-                ])}
-              >
-                <p className="font-normal text-slate-500 mb-1">CURP</p>
-
-                <p className="font-medium text-[16px] text-ellipsis overflow-hidden whitespace-nowrap">
-                  {subject && subject.curp?.length > 0
-                    ? subject.curp
-                    : "No especificado"}
-                </p>
-              </div>
-
-              <div
-                className={clsx([
-                  windowWidth <= 992
-                    ? "block"
-                    : showCompleteDetails
-                    ? "block"
-                    : "xl:hidden lg:hidden md:hidden block",
-                ])}
-              >
-                <p className="font-normal text-slate-500 mb-1">Teléfono</p>
-
-                <p className="font-medium text-[16px] text-ellipsis overflow-hidden whitespace-nowrap">
-                  {subject && subject.phoneNumber?.length > 0
-                    ? subject.phoneNumber
-                    : "No especificado"}
-                </p>
-              </div>
-
-              <div
-                className={clsx([
-                  windowWidth <= 992
-                    ? "block"
-                    : showCompleteDetails
-                    ? "block"
-                    : "xl:hidden lg:hidden md:hidden block",
-                ])}
-              >
-                <p className="font-normal text-slate-500 mb-1">
-                  Correo electrónico
-                </p>
-
-                <p className="font-medium text-[16px] text-ellipsis overflow-hidden whitespace-nowrap">
-                  {subject && subject.email?.length > 0
-                    ? subject.email
-                    : "No especificado"}
-                </p>
-              </div>
-            </div>
-
-            <div
-              className={clsx([
-                "h-full justify-center align-middle items-center -mr-6 hidden",
-                windowWidth <= 992 ? "hidden" : "xl:flex lg:flex md:flex",
-              ])}
-            >
-              <button
-                type="button"
-                className="rounded-full shadow-md bg-white hover:bg-primary hover:text-white"
-                onClick={() => setShowCompleteDetails(!showCompleteDetails)}
-              >
-                <Lucide
-                  icon={showCompleteDetails ? "ChevronLeft" : "ChevronRight"}
-                  size={30}
-                />
-              </button>
             </div>
           </div>
         </div>
