@@ -119,7 +119,7 @@ export default function Navigator({ user }: INavigatorProps) {
         </div>
       </div>
 
-      <Popup user={user} />
+      <Popup user={user} from="MEDICAL_RECORD" />
     </>
   );
 }

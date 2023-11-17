@@ -272,7 +272,7 @@ export class AppointmentRepository implements IAppointmentRepository {
                 return new ScheduleFailure(scheduleFailuresEnum.serverError)
               }
   
-              return res.data ?? {};
+              return {id: obj["id"] ?? ""};
           }
       } catch (error) {
           const exception = error as any;

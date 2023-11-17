@@ -18,9 +18,10 @@ import { IUser } from "domain/core/entities/userEntity";
 
 interface IStepsProps {
   user: IUser;
+  from: "SCHEDULE" | "MEDICAL_RECORD";
 }
 
-const Steps = ({ user }: IStepsProps) => {
+const Steps = ({ user, from = "SCHEDULE" }: IStepsProps) => {
   const { state: stateSchedule } =
     useContext<IScheduleContext>(ScheduleContext);
 
@@ -172,6 +173,7 @@ const Steps = ({ user }: IStepsProps) => {
           user={user}
           setAppointment={setAppointment}
           appointment={appointment}
+          from={from}
         />
       )}
     </div>

@@ -8,10 +8,12 @@ const StepByStepAppointment = ({
   user,
   cancelFuntion,
   customRef,
+  from = "SCHEDULE",
 }: {
   user: IUser;
   cancelFuntion: Function;
   customRef: React.LegacyRef<HTMLDivElement>;
+  from: "SCHEDULE" | "MEDICAL_RECORD";
 }) => {
   return (
     <StepByStepAppointmentProvider>
@@ -23,7 +25,7 @@ const StepByStepAppointment = ({
           "lg:w-[45%] lg:min-h-[50vh] lg:h-fit lg:max-h-[90vh] lg:rounded-md",
         ])}
       >
-        <Steps user={user} />
+        <Steps user={user} from={from} />
       </div>
     </StepByStepAppointmentProvider>
   );

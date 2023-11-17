@@ -3,7 +3,8 @@
 import ScheduleProvider from "(presentation)/components/Schedule/context/ScheduleContext";
 import { IUser } from "domain/core/entities/userEntity";
 import { useSearchParams } from "next/navigation";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
+import AppointmentCreatePopup from "./AppointmentCreatePopup/AppointmentCreatePopup";
 import {
   IMedicalRecordContext,
   MedicalRecordContext,
@@ -37,6 +38,11 @@ export default function MedicalRecordIndex({
 
   const edit = searchParams.get("edit_subject");
 
+  const appointmentCreate = searchParams.get("appointment_create");
+
+  const [showAppointmentCreatePopup, setShowAppointmentCreatePopup] =
+    useState(false);
+
   useEffect(() => {
     let isCleanup = true;
 
@@ -51,7 +57,10 @@ export default function MedicalRecordIndex({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [edit]);
 
-  console.log(subject);
+  useEffect(() => {
+    if (appointmentCreate && appointmentCreate === "true")
+      setShowAppointmentCreatePopup(true);
+  }, [appointmentCreate]);
 
   if (loading || appointmentLoading)
     return (
@@ -116,20 +125,29 @@ export default function MedicalRecordIndex({
     return <div className="mt-5" style={{ height: "80vh" }} />;
 
   return (
-    <div className="py-5">
-      <ScheduleProvider>
-        <Navigator user={user} />
-      </ScheduleProvider>
+    <>
+      <div className="py-5">
+        <ScheduleProvider>
+          <Navigator user={user} />
+        </ScheduleProvider>
 
-      <div className="mt-10">
-        <div className="mt-4">
-          <PatientDetails
-            user={user}
-            subjectId={subject?.subjectId ?? 0}
-            appointment={appointment}
-          />
+        <div className="mt-10">
+          <div className="mt-4">
+            <PatientDetails
+              user={user}
+              subjectId={subject?.subjectId ?? 0}
+              appointment={appointment}
+            />
+          </div>
         </div>
       </div>
-    </div>
+
+      {showAppointmentCreatePopup && (
+        <AppointmentCreatePopup
+          showAppointmentCreatePopup={showAppointmentCreatePopup}
+          setShowAppointmentCreatePopup={setShowAppointmentCreatePopup}
+        />
+      )}
+    </>
   );
 }
