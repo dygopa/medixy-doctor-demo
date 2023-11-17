@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { twMerge } from "tailwind-merge";
 import { Menu as HeadlessMenu, Transition } from "@headlessui/react";
 import { Fragment } from "react";

@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { useContext, forwardRef } from "react";
 import { formInlineContext } from "../FormInline";
 import { inputGroupContext } from "../InputGroup";

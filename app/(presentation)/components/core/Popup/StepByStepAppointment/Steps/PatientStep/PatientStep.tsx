@@ -259,10 +259,12 @@ const PatientStep = ({
 
     setAppointment({
       ...appointment,
-      patient: values,
+      patient: { ...values, patientId: selectedPatient.id },
     });
     setStep(3)(dispatch);
   };
+
+  console.log(appointment);
 
   return (
     <div className={"w-full h-fit relative flex flex-col gap-4"}>

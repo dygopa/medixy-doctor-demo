@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name */
+/* eslint-disable react-hooks/rules-of-hooks */
 import { twMerge } from "tailwind-merge";
 import { Tab as HeadlessTab, Transition } from "@headlessui/react";
 import { Fragment, createContext, useContext } from "react";

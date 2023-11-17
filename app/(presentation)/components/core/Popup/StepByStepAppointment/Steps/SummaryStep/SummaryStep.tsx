@@ -29,10 +29,12 @@ const SummaryStep = ({
   user,
   appointment,
   setAppointment,
+  from,
 }: {
   user: IUser;
   appointment: any;
   setAppointment: Dispatch<SetStateAction<{}>>;
+  from: "SCHEDULE" | "MEDICAL_RECORD";
 }) => {
   const {
     actions: actionsSchedule,
@@ -66,6 +68,11 @@ const SummaryStep = ({
     if (successful) {
       changeStatusPopup(false)(dispatchSchedule);
       setStep(0)(dispatch);
+      if (from === "MEDICAL_RECORD") {
+        console.log("redirect");
+        console.log(data);
+        window.location.href = `/medical-record/${data["id"]}?type=appointment&appointment_create=true`;
+      }
       if (appointment["isNow"]) {
         setTimeout(() => {
           window.location.href = `/medical-record/${data["id"]}/create?type=appointment`;

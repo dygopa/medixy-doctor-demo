@@ -15,9 +15,10 @@ import { IUser } from "domain/core/entities/userEntity";
 
 interface IPopupProps {
   user: IUser;
+  from: "SCHEDULE" | "MEDICAL_RECORD";
 }
 
-function Popup({ user }: IPopupProps) {
+function Popup({ user, from }: IPopupProps) {
   const { state, actions, dispatch } =
     useContext<IScheduleContext>(ScheduleContext);
   const { changeStatusPopup, cancelAppointment } = actions;
@@ -57,6 +58,7 @@ function Popup({ user }: IPopupProps) {
           cancelFuntion={() => {
             changeStatusPopup(false)(dispatch);
           }}
+          from={from}
         />
       )}
       {type === 1 && (

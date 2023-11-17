@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import { twMerge } from "tailwind-merge";
 
 export type FormCheckProps = React.PropsWithChildren &
