@@ -1,8 +1,6 @@
-import dayjs from "dayjs";
-import duration from "dayjs/plugin/duration";
 import { parseColor } from "tailwindcss/lib/util/color";
 
-dayjs.extend(duration);
+
 
 const cutText = (text: string, length: number) => {
   if (text.split(" ").length > 1) {
@@ -13,10 +11,6 @@ const cutText = (text: string, length: number) => {
   } else {
     return text;
   }
-};
-
-const formatDate = (date: string, format: string) => {
-  return dayjs(date).format(format);
 };
 
 const capitalizeFirstLetter = (string: string) => {
@@ -52,54 +46,6 @@ const formatCurrency = (number: number) => {
   } else {
     return "";
   }
-};
-
-const timeAgo = (time: string) => {
-  const date = new Date((time || "").replace(/-/g, "/").replace(/[TZ]/g, " "));
-  const diff = (new Date().getTime() - date.getTime()) / 1000;
-  const dayDiff = Math.floor(diff / 86400);
-
-  if (isNaN(dayDiff) || dayDiff < 0 || dayDiff >= 31) {
-    return dayjs(time).format("MMMM DD, YYYY");
-  }
-
-  return (
-    (dayDiff === 0 &&
-      ((diff < 60 && "just now") ||
-        (diff < 120 && "1 minute ago") ||
-        (diff < 3600 && Math.floor(diff / 60) + " minutes ago") ||
-        (diff < 7200 && "1 hour ago") ||
-        (diff < 86400 && Math.floor(diff / 3600) + " hours ago"))) ||
-    (dayDiff === 1 && "Yesterday") ||
-    (dayDiff < 7 && dayDiff + " days ago") ||
-    (dayDiff < 31 && Math.ceil(dayDiff / 7) + " weeks ago")
-  );
-};
-
-const diffTimeByNow = (time: string) => {
-  const startDate = dayjs(dayjs().format("YYYY-MM-DD HH:mm:ss").toString());
-  const endDate = dayjs(dayjs(time).format("YYYY-MM-DD HH:mm:ss").toString());
-
-  const duration = dayjs.duration(endDate.diff(startDate));
-  const milliseconds = Math.floor(duration.asMilliseconds());
-
-  const days = Math.round(milliseconds / 86400000);
-  const hours = Math.round((milliseconds % 86400000) / 3600000);
-  let minutes = Math.round(((milliseconds % 86400000) % 3600000) / 60000);
-  const seconds = Math.round(
-    (((milliseconds % 86400000) % 3600000) % 60000) / 1000
-  );
-
-  if (seconds < 30 && seconds >= 0) {
-    minutes += 1;
-  }
-
-  return {
-    days: days.toString().length < 2 ? "0" + days : days,
-    hours: hours.toString().length < 2 ? "0" + hours : hours,
-    minutes: minutes.toString().length < 2 ? "0" + minutes : minutes,
-    seconds: seconds.toString().length < 2 ? "0" + seconds : seconds,
-  };
 };
 
 const isset = (obj: object | string) => {
@@ -201,12 +147,9 @@ const slideDown = (
 
 export {
   cutText,
-  formatDate,
   capitalizeFirstLetter,
   onlyNumber,
   formatCurrency,
-  timeAgo,
-  diffTimeByNow,
   isset,
   toRaw,
   randomNumbers,

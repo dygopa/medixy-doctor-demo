@@ -1,3 +1,4 @@
+/* eslint-disable react/display-name */
 import FormCheck, { FormCheckProps, LabelProps } from "../FormCheck";
 import { twMerge } from "tailwind-merge";
 

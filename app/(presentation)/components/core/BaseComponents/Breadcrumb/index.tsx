@@ -1,3 +1,5 @@
+/* eslint-disable react/display-name */
+/* eslint-disable react-hooks/rules-of-hooks */
 import clsx from "clsx";
 import Link from "next/link";
 import { createContext, useContext } from "react";

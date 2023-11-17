@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable react/display-name */
 import { createContext, useContext } from "react";
 import { twMerge } from "tailwind-merge";
 
