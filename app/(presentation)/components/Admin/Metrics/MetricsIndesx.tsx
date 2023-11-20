@@ -7,6 +7,12 @@ export default function MetricsIndex() {
 
   const [steps, setSteps] = useState(0);
 
+  const showMetrics = () => { 
+    switch(steps) {
+      default: return <div></div>
+    }
+  }
+
   return (
     <div className="py-5">
       <div className="mb-8">
@@ -18,7 +24,7 @@ export default function MetricsIndex() {
       </div>
 
       <div className="md:grid grid-cols-2 gap-4">
-        
+        {showMetrics()}
       </div>
     </div>
   )
