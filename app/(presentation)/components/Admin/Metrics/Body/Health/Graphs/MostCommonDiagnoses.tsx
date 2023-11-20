@@ -4,10 +4,15 @@ import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts'
 const MostCommonDiagnoses = () => {
 
     const data = [
-        { name: 'Group A', value: 400 },
-        { name: 'Group B', value: 300 },
-        { name: 'Group C', value: 300 },
-        { name: 'Group D', value: 200 },
+        { name: 'Anema', value: 400 },
+        { name: 'Angina de pecho', value: 300 },
+        { name: 'Artritis', value: 300 },
+        { name: 'Asma', value: 200 },
+        { name: 'Colesterol elevado', value: 400 },
+        { name: 'Diabetes', value: 500 },
+        { name: 'Glaucoma', value: 100 },
+        { name: 'Obesidad', value: 50 },
+        { name: 'Problemas gástricos', value: 300 },
     ];
 
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];

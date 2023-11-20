@@ -4,10 +4,14 @@ import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts'
 const Age = () => {
 
     const data = [
-        { name: 'Group A', value: 400 },
-        { name: 'Group B', value: 300 },
-        { name: 'Group C', value: 300 },
-        { name: 'Group D', value: 200 },
+        { name: '+70', value: 400 },
+        { name: '60 - 70', value: 300 },
+        { name: '50 - 60', value: 300 },
+        { name: '40 - 50', value: 200 },
+        { name: '30 - 40', value: 400 },
+        { name: '20 - 30', value: 500 },
+        { name: '10 - 20', value: 100 },
+        { name: '-10', value: 50 }
     ];
 
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
@@ -58,7 +62,7 @@ const Age = () => {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                 </Pie>
-                <Legend 
+                <Legend
                     verticalAlign='middle' 
                     layout='vertical' 
                     align='right'

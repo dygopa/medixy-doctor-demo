@@ -4,10 +4,12 @@ import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts'
 const RequestedByDoctors = () => {
 
     const data = [
-        { name: 'Group A', value: 400 },
-        { name: 'Group B', value: 300 },
-        { name: 'Group C', value: 300 },
-        { name: 'Group D', value: 200 },
+        {name: 'Imagenologia', value: 200},
+        {name: 'Laboratorio', value: 300},
+        {name: 'Quirófano', value: 300},
+        {name: 'Farmacia', value: 400},
+        {name: 'Terapias', value: 600},
+        {name: 'Otros', value: 100},
     ];
 
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
