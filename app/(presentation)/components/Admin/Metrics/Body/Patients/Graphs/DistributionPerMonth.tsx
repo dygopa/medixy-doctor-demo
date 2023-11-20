@@ -1,6 +1,5 @@
-import { LineChart } from 'lucide-react'
 import React from 'react'
-import { CartesianGrid, Line, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts'
+import { CartesianGrid, Line, ResponsiveContainer, XAxis, YAxis, Tooltip, LineChart } from 'recharts'
 
 const DistributionPerMonth = () => {
 

@@ -1,4 +1,3 @@
-import { BarChart } from 'lucide-react';
 import React from 'react'
 import {
     CartesianGrid,
@@ -8,7 +7,8 @@ import {
     Tooltip,
     Legend,
     Bar,
-    Rectangle
+    Rectangle,
+    BarChart
 } from 'recharts';
 
 const Diabetes = () => {
