@@ -5,18 +5,21 @@ interface ISummaryItemProps {
   title: string;
   quantity: string | number;
   icon: any;
+  active?: boolean;
 }
 
 export default function SummaryItem({
   title,
   quantity,
   icon,
+  active = false,
 }: ISummaryItemProps) {
   return (
     <div
       className={clsx([
-        "relative zoom-in h-auto md:h-[180px]",
-        "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
+        "relative h-auto md:h-[180px] transition-all",
+        "bg-slate-50 hover:border-primary hover:border-2 hover:rounded-md hover:scale-105",
+        active && "scale-105 border-primary border-2 rounded-md",
       ])}
     >
       <div className="px-4 py-8 box h-full overflow-y-hidden">

@@ -1,11 +1,11 @@
 import { useContext, useEffect } from "react";
 import SummaryItem from "../SummaryItem/SummaryItem";
 
-export default function Doctors() {
+export default function Services({steps}:{steps: number;}) {
 
   return (
     <SummaryItem
-      title="Cantidad de doctores"
+      title="Servicios"
       quantity={"1515"}
       icon="HeartPulse"
     />
