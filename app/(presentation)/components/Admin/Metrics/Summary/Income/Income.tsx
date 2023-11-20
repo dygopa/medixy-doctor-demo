@@ -4,6 +4,11 @@ import SummaryItem from "../SummaryItem/SummaryItem";
 export default function Income({steps}:{steps: number;}) {
 
   return (
-    <SummaryItem title="Ingresos" quantity={""} icon="CalendarCheck" active={steps === 3} />
+    <SummaryItem 
+      title="Ingresos" 
+      quantity={"$111523"} 
+      icon="CalendarCheck" 
+      active={steps === 0} 
+    />
   );
 }
