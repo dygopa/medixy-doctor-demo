@@ -5,7 +5,7 @@ export default function Patients({steps}:{steps: number;}) {
   return (
     <SummaryItem 
       title="Pacientes" 
-      quantity={""} 
+      quantity={"1515"} 
       icon="Users" 
       active={steps === 3} 
     />

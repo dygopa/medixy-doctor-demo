@@ -6,7 +6,7 @@ export default function Services({steps}:{steps: number;}) {
   return (
     <SummaryItem
       title="Servicios"
-      quantity={"1515"}
+      quantity={""}
       icon="Briefcase"
       active={steps === 1} 
     />

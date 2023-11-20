@@ -1,5 +1,5 @@
 import React from 'react'
-import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
+import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts'
 
 const RevenueServices = () => {
 
@@ -58,6 +58,7 @@ const RevenueServices = () => {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                 </Pie>
+                <Legend />
             </PieChart>
         </ResponsiveContainer>
     )
