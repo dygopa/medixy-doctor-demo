@@ -1,3 +1,5 @@
+import { FormInput } from '(presentation)/components/core/BaseComponents/Form'
+import moment from 'moment'
 import React from 'react'
 import { twMerge } from 'tailwind-merge'
 import DistributionLastMonths from './Graphs/DistributionLastMonths'
@@ -7,6 +9,15 @@ import List from './List/List'
 function IncomeBody() {
   return (
     <div className='md:grid grid-cols-2 gap-4'>
+      <div className='col-span-2 flex justify-end my-1 items-center gap-2'>
+        <p className="text-left font-bold text-md text-slate-900">Fecha</p>
+        <FormInput
+          type={"date"}
+          name="fromDate"
+          max={moment().format("YYYY-MM-DD")}
+          className="w-fit bg-white"
+        />
+      </div>
       <div
         className={twMerge([
           "relative h-auto cursor-default",
