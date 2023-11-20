@@ -13,19 +13,19 @@ export default function Summary({steps, setSteps}: ISummaryProps) {
 
   return (
     <div className="md:grid grid-cols-4 gap-4">
-      <div className="my-6 md:my-0" onClick={() => setSteps(0)}>
+      <div className="my-6 md:my-0 cursor-pointer" onClick={() => setSteps(0)}>
         <Income steps={steps} />  
       </div>
 
-      <div className="my-6 md:my-0" onClick={() => setSteps(1)}>
+      <div className="my-6 md:my-0 cursor-pointer" onClick={() => setSteps(1)}>
         <Services steps={steps} />
       </div>
 
-      <div className="my-6 md:my-0" onClick={() => setSteps(2)}>
+      <div className="my-6 md:my-0 cursor-pointer" onClick={() => setSteps(2)}>
         <Health steps={steps} />
       </div>
 
-      <div className="my-6 md:my-0" onClick={() => setSteps(3)}>
+      <div className="my-6 md:my-0 cursor-pointer" onClick={() => setSteps(3)}>
         <Patients steps={steps} />
       </div>
     </div>
