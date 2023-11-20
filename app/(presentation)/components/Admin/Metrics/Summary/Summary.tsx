@@ -10,6 +10,7 @@ interface ISummaryProps {
 }
 
 export default function Summary({steps, setSteps}: ISummaryProps) {
+
   return (
     <div className="md:grid grid-cols-4 gap-4">
       <div className="my-6 md:my-0" onClick={() => setSteps(0)}>

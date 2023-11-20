@@ -17,7 +17,7 @@ export default function SummaryItem({
   return (
     <div
       className={clsx([
-        "relative h-auto md:h-[180px] transition-all",
+        "relative h-auto md:h-[150px] transition-all",
         "bg-slate-50 hover:border-primary hover:border-2 hover:rounded-md hover:scale-105",
         active && "scale-105 border-primary border-2 rounded-md",
       ])}

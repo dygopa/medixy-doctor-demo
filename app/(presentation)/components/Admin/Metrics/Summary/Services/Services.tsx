@@ -7,7 +7,8 @@ export default function Services({steps}:{steps: number;}) {
     <SummaryItem
       title="Servicios"
       quantity={"1515"}
-      icon="HeartPulse"
+      icon="Briefcase"
+      active={steps === 1} 
     />
   );
 }
