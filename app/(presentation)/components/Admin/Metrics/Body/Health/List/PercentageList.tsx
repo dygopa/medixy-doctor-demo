@@ -19,7 +19,7 @@ const PercentageList = () => {
                         Detalle
                     </Table.Th>
                     <Table.Th className="border-b-0 whitespace-nowrap text-base">
-                        Porcentage
+                        Porcentaje
                     </Table.Th>
                 </Table.Tr>
             </Table.Thead>

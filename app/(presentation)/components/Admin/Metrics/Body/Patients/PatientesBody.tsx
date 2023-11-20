@@ -10,7 +10,7 @@ function PatientesBody() {
     <div className='md:grid grid-cols-2 gap-4'>
       <div
         className={twMerge([
-          "relative zoom-in h-auto cursor-default",
+          "relative h-auto cursor-default",
           "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
         ])}
       >
@@ -31,7 +31,7 @@ function PatientesBody() {
 
       <div
         className={twMerge([
-          "relative zoom-in h-auto cursor-default",
+          "relative h-auto cursor-default",
           "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
         ])}
       >
@@ -52,7 +52,7 @@ function PatientesBody() {
 
       <div
         className={twMerge([
-          "relative zoom-in h-auto cursor-default",
+          "relative h-auto cursor-default",
           "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
         ])}
       >
@@ -73,7 +73,7 @@ function PatientesBody() {
 
       <div
         className={twMerge([
-          "relative zoom-in h-auto cursor-default",
+          "relative h-auto cursor-default",
           "before:content-[''] before:w-[90%] before:shadow-[0px_3px_20px_#0000000b] before:bg-slate-50 bg-slate-50 before:h-full before:mt-3 before:absolute before:rounded-md before:mx-auto before:inset-x-0 before:dark:bg-darkmode-400/70",
         ])}
       >

@@ -4,10 +4,10 @@ import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts'
 const RevenueServices = () => {
 
     const data = [
-        { name: 'Group A', value: 400 },
-        { name: 'Group B', value: 300 },
-        { name: 'Group C', value: 300 },
-        { name: 'Group D', value: 200 },
+        { name: 'Quirófano', value: 400 },
+        { name: 'Laboratorio', value: 300 },
+        { name: 'Farmacia', value: 300 },
+        { name: 'Otros Servicios', value: 200 },
     ];
 
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
@@ -43,14 +43,14 @@ const RevenueServices = () => {
 
     return (
         <ResponsiveContainer width="100%" height="100%">
-            <PieChart width={400} height={400}>
+            <PieChart width={900} height={900}>
                 <Pie
                     data={data}
                     cx="50%"
                     cy="50%"
                     labelLine={false}
                     label={renderCustomizedLabel}
-                    outerRadius={80}
+                    outerRadius={120}
                     fill="#8884d8"
                     dataKey="value"
                 >
@@ -58,7 +58,12 @@ const RevenueServices = () => {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                 </Pie>
-                <Legend />
+                <Legend 
+                    verticalAlign='middle' 
+                    layout='vertical' 
+                    align='right'
+                    width={200}
+                />
             </PieChart>
         </ResponsiveContainer>
     )

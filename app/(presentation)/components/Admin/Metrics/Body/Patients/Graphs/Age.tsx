@@ -1,5 +1,5 @@
 import React from 'react'
-import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts'
+import { ResponsiveContainer, PieChart, Pie, Cell, Legend } from 'recharts'
 
 const Age = () => {
 
@@ -50,7 +50,7 @@ const Age = () => {
                     cy="50%"
                     labelLine={false}
                     label={renderCustomizedLabel}
-                    outerRadius={80}
+                    outerRadius={120}
                     fill="#8884d8"
                     dataKey="value"
                 >
@@ -58,6 +58,12 @@ const Age = () => {
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                 </Pie>
+                <Legend 
+                    verticalAlign='middle' 
+                    layout='vertical' 
+                    align='right'
+                    width={200}
+                />
             </PieChart>
         </ResponsiveContainer>
     )
