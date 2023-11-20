@@ -1,8 +1,12 @@
 "use client";
 
+import { useState } from "react";
 import Summary from "./Summary/Summary";
 
 export default function MetricsIndex() {
+
+  const [steps, setSteps] = useState(0);
+
   return (
     <div className="py-5">
       <div className="mb-8">
@@ -10,7 +14,7 @@ export default function MetricsIndex() {
       </div>
 
       <div className="mb-14">
-        <Summary />
+        <Summary steps={steps} setSteps={setSteps} />
       </div>
 
       <div className="md:grid grid-cols-2 gap-4">
