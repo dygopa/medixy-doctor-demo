@@ -50,6 +50,8 @@ const SummaryStep = ({
   const { setStep, createAppointment } = actions;
 
   const { data, loading, successful, error } = state.appointmentCreation;
+  console.log(data);
+  console.log(appointment);
 
   const { data: activeLocality } = scheduleState.activeLocality;
   const { data: actualDay } = scheduleState.actualDay;
@@ -68,7 +70,7 @@ const SummaryStep = ({
     if (successful) {
       changeStatusPopup(false)(dispatchSchedule);
       setStep(0)(dispatch);
-      if (from === "MEDICAL_RECORD") {
+      if (from === "MEDICAL_RECORD" && !appointment["isNow"]) {
         console.log("redirect");
         console.log(data);
         window.location.href = `/medical-record/${data["id"]}?type=appointment&appointment_create=true`;
@@ -140,7 +142,7 @@ const SummaryStep = ({
                   ? ""
                   : appointment.date?.fechaInicio,
                 servicioId: appointment["serviceId"],
-                pacienteId: appointment["patientId"],
+                pacienteId: appointment["patient"]["patientId"],
                 patient: appointment["patient"],
                 doctorId: user.userId,
                 doctor: user,

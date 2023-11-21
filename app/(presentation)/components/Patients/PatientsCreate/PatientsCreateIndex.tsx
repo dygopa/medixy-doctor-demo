@@ -13,7 +13,7 @@ export default function PatientsCreateIndex({
 }: IPatientsCreateIndexProps) {
   return (
     <CreatePatientProvider>
-      <div className="container">
+      <div className="container mb-8">
         <div className="">
           <Steps user={user} />
         </div>

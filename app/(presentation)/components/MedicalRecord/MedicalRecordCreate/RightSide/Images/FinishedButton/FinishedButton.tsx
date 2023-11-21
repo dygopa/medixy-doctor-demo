@@ -686,7 +686,7 @@ export default function FinishedButton({ user }: IFinishedButtonProps) {
 
       <Button
         variant="primary"
-        className="h-[46px]"
+        className="h-[46px] lg:w-[300px] md:w-[300px] w-full"
         disabled={isLoading || loading || successful}
         onClick={() => setShowConfirmModal(true)}
       >

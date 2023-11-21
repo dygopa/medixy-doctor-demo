@@ -14,6 +14,7 @@ import LeftSide from "./LeftSide/LeftSide";
 import MainPopup from "./MainPopup/MainPopup";
 import Navigator from "./Navigator/Navigator";
 import RightSide from "./RightSide/RightSide";
+import StepsMobile from "./StepsMobile/StepsMobile";
 
 interface IMedicalRecordCreateIndexProps {
   user: IUser;
@@ -44,6 +45,7 @@ export default function MedicalRecordCreateIndex({
   const searchParams = useSearchParams();
 
   const type = searchParams.get("type");
+  const view = searchParams.get("view");
 
   function getCurrentDimension() {
     return {
@@ -114,6 +116,10 @@ export default function MedicalRecordCreateIndex({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appointmentSucessful]);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [view]);
 
   if (loading || appointmentLoading)
     return (
@@ -187,12 +193,22 @@ export default function MedicalRecordCreateIndex({
         />
 
         <div className="mt-10 grid grid-cols-12 gap-4">
+          <div
+            className={clsx([
+              screenSize.width <= 992
+                ? "col-span-12 block"
+                : "hidden col-span-0",
+            ])}
+          >
+            <StepsMobile />
+          </div>
+
           <div className={clsx([getLeftSideColSpan()])}>
             <LeftSide windowWidth={screenSize.width} />
           </div>
 
           <div
-            className={clsx([getRightSideColSpan(), "lg:pl-5 md:pl-5 pl-0"])}
+            className={clsx([getRightSideColSpan(), "lg:pl-5 md:pl-0 pl-0"])}
           >
             <RightSide user={user} width={screenSize.width} />
           </div>

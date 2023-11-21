@@ -1,4 +1,4 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 
 import {
   IStepByStepAppointmentContext,
@@ -37,6 +37,8 @@ const Steps = ({ user, from = "SCHEDULE" }: IStepsProps) => {
   const { data: step } = state.step;
 
   const [appointment, setAppointment] = useState({});
+
+  console.log(appointment);
 
   const ItemStep = ({ number, label }: { number: number; label: string }) => {
     const [isHover, setIsHover] = useState(false);

@@ -120,11 +120,11 @@ export default function Images({ user }: IImagesProps) {
         </div>
       </div>
 
-      <div className="flex justify-end w-full mt-14">
-        <div className="mr-2">
+      <div className="w-full lg:flex md:flex justify-end mt-14">
+        <div className="lg:mr-2 md:mr-2 mr-0 lg:mb-0 md:mb-0 mb-4">
           <Button
             variant="outline-primary"
-            className="h-[46px]"
+            className="h-[46px] lg:w-[150px] md:w-[150px] w-full"
             onClick={() => {
               router.replace(
                 `${pathname}?view=recipe&type=${type ?? "medical-record"}`

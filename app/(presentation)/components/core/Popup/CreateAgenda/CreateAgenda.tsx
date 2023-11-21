@@ -490,10 +490,11 @@ function CreateAgenda({
     ) {
       setSelectedLocality({
         id: localities[0].id,
-        title: localities[0].title,
-        description: localities[0].description,
+        title: localities[0].name,
+        description: localities[0].code,
         type: "LOCALITY",
       });
+      return;
     }
 
     if (locality && locality.id !== "ALL") {
@@ -621,8 +622,8 @@ function CreateAgenda({
       ) {
         setSelectedLocality({
           id: localities[0].id,
-          title: localities[0].title,
-          description: localities[0].description,
+          title: localities[0].name,
+          description: localities[0].code,
           type: "LOCALITY",
         });
       }

@@ -179,7 +179,7 @@ function Filters({
             list={listOfLocalities}
           />
         </div>
-        <div className="w-full flex lg:w-[25%] lg:h-full md:ml-3">
+        <div className="w-full flex lg:w-[25%] lg:h-full lg:ml-3 md:ml-0">
           <SpecialSelect
             emptySelectedValue={{
               title: "Servicio",

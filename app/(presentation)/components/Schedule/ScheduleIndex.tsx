@@ -23,7 +23,7 @@ export default function ScheduleIndex({ user }: IScheduleIndexProps) {
     <div className="container pt-8">
       <ScheduleProvider>
         <Navigator selectedLocality={selectedLocality} />
-        <Popup user={user} />
+        <Popup user={user} from={"SCHEDULE"} />
         <Filters
           user={user}
           selectedLocality={selectedLocality}
