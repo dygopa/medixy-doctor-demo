@@ -16,6 +16,7 @@ import { CREATE_APPOINTMENT_ENDPOINT, FINISHED_APPOINTMENT_ENDPOINT } from "infr
 import { supabase } from "infrastructure/config/supabase/supabase-client";
 import moment from "moment";
 import nookies from 'nookies';
+import { v4 as uuidv4 } from 'uuid';
 
 export default interface IAppointmentRepository {
   getAppointments(obj: { 
@@ -188,6 +189,7 @@ export class AppointmentRepository implements IAppointmentRepository {
       try {
           if(now){
               let appointment = {
+                  id: uuidv4(),
                   sujetoId: obj["pacienteId"],
                   doctorId: obj["doctorId"],
                   estado: AppointmentEnum.PENDING,
@@ -197,43 +199,15 @@ export class AppointmentRepository implements IAppointmentRepository {
                   creadoPorDoctor: true
               }
 
+
+
               let query = supabase.from("Citas")
-              .insert(appointment).select("*").single()
+              .insert(appointment).select("*")
               
               let res = await query
 
-              let cookies = nookies.get(undefined, 'access_token');
-
-              var myHeaders = new Headers();
-
-              myHeaders.append("Content-Type", "application/json");
-              myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
-
-              var raw = JSON.stringify({
-                patient_id: obj["pacienteId"] ?? "",
-                service_id: obj["servicioId"] ?? "",
-                doctor_id: obj["doctorId"] ?? "",
-                created_for_doctor: true,
-                appointment_id: null,
-                is_now: now
-              });
-      
-              var requestOptions = {
-                method: 'POST',
-                headers: myHeaders,
-                body: raw,
-                redirect: 'follow'
-              } as RequestInit;
-
-              let URL = CREATE_APPOINTMENT_ENDPOINT() as RequestInfo
-
-              const response = await fetch(URL, requestOptions)
-              
-              if(response.status >= 400) {
-                return new ScheduleFailure(scheduleFailuresEnum.serverError)
-              }
   
-              return res.data ?? {};
+              return res.data && res.data.length > 0 ? res.data[0] : {};
           }else{
               let appointment = {
                   sujetoId: obj["pacienteId"],
@@ -321,4 +295,4 @@ export class AppointmentRepository implements IAppointmentRepository {
     }
   }
 }
-  
+

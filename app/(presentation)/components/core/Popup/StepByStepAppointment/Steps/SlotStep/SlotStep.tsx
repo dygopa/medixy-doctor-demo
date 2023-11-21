@@ -130,6 +130,7 @@ const SlotStep = ({
         onClick={() => {
           setAppointment({
             ...appointment,
+            isNow: false,
             attentionWindowId: data["id"],
             date: data,
           });

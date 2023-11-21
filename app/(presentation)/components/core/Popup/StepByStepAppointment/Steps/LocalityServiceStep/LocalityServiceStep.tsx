@@ -84,6 +84,8 @@ const LocalityServiceStep = ({
     description: "",
   });
 
+  console.log(selectedService);
+
   const [loadedAppointment, setLoadedAppointment] = useState(false);
   const [loadedDataFromAppointment, setLoadedDataFromAppointment] =
     useState(false);
@@ -345,10 +347,15 @@ const LocalityServiceStep = ({
         <Button
           disabled={
             !appointment["localityId"] ||
-            !appointment["serviceId"] ||
-            appointment["service"]["id"] === "ALL"
+            selectedService.id === 0 ||
+            (appointment["service"] && appointment["service"]["id"] === "ALL")
           }
           onClick={() => {
+            setAppointment({
+              ...appointment,
+              serviceId: selectedService["id"],
+              service: service,
+            });
             setStep(1)(dispatch);
           }}
           variant="primary"

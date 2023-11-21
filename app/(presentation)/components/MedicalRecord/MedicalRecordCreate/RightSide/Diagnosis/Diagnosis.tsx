@@ -132,11 +132,11 @@ export default function Diagnosis() {
         </div>
       </div>
 
-      <div className="w-full flex justify-end mt-14">
-        <div className="mr-2">
+      <div className="w-full lg:flex md:flex justify-end mt-14">
+        <div className="lg:mr-2 md:mr-2 mr-0 lg:mb-0 md:mb-0 mb-4">
           <Button
             variant="outline-primary"
-            className="h-[43px]"
+            className="h-[43px] lg:w-[150px] md:w-[150px] w-full"
             onClick={() => {
               router.replace(
                 `${pathname}?view=exploration&type=${type ?? "medical-record"}`
@@ -150,6 +150,7 @@ export default function Diagnosis() {
         <div>
           <Button
             variant="primary"
+            className="lg:w-[300px] md:w-[300px] w-full"
             onClick={() => {
               if (values.diagnose.length === 0) {
                 setDiagnoseError(true);

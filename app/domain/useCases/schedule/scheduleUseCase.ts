@@ -168,7 +168,6 @@ export default class ScheduleUseCase {
 
   async createAppointment(obj:any, now?:boolean): Promise<any> {
     try {
-
       if(!obj["pacienteId"] || obj["pacienteId"] === 0){
 
         let patient = {
@@ -192,6 +191,7 @@ export default class ScheduleUseCase {
           city: "",
           postalCode: null,
           isPatient: true,
+          type: "",
           birthDate: moment(obj["patient"]["dateBirth"]).format(),
           updatedOn: null,
           deletedOn: null,
