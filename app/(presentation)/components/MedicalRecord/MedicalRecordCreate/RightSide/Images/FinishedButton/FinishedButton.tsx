@@ -581,7 +581,7 @@ export default function FinishedButton({ user }: IFinishedButtonProps) {
       const medicalConsultyImages = getMedicalConsultyImages(values);
 
       const medicalConsulty: IMedicalConsulty = {
-        id: 0,
+        id: appointment.data.medicalConsultyId ?? 0,
         doctorId: user.userId ? parseInt(user.userId, 10) : 0,
         consultationDate: values.currentConsultation.consultationDate
           ? new Date(

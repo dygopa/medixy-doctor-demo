@@ -11,7 +11,7 @@ import { ITreatment, ITreatmentMedicine } from 'domain/core/entities/treatmentEn
 import { IUser } from 'domain/core/entities/userEntity';
 import { MedicalConsultyFailure, medicalConsultyFailuresEnum } from 'domain/core/failures/medicalConsulty/medicalConsultyFailure';
 import { MedicalRecordFailure, medicalRecordFailuresEnum } from 'domain/core/failures/medicalRecord/medicalRecordFailure';
-import { ICreateMedicalConsultyImageResponse, ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse, IGetMedicalConsultyPDFResponse } from 'domain/core/response/medicalConsultyResponse';
+import { ICreateMedicalConsultyImageResponse, ICreateMedicalConsultyResponse, IGetMedicalConsultiesResponse, IGetMedicalConsultyPDFResponse, IUpdateMedicalConsultyResponse } from 'domain/core/response/medicalConsultyResponse';
 import { diagnosisSupabaseToMap } from 'domain/mappers/diagnosis/diagnosisSupabaseMapper';
 import { fromMedicalConsultyImageSupabaseDocumentData, fromMedicalConsultySupabaseDocumentData, medicalConsultyImageSupabaseToMap, medicalConsultySupabaseToMap } from "domain/mappers/medicalConsulty/supabase/medicalConsultySupabaseMapper";
 import { medicalMeasureSupabaseToMap, medicalMeasureTypeSupabaseToMap } from 'domain/mappers/medicalMeasure/supabase/medicalMeasureSupabaseMapper';
@@ -39,6 +39,7 @@ export default interface IMedicalConsultyRepository {
     untilAt?: Date | null
   }): Promise<IGetMedicalConsultiesResponse | MedicalConsultyFailure>;
   createMedicalConsulty(medicalConsulty: IMedicalConsulty): Promise<ICreateMedicalConsultyResponse | MedicalConsultyFailure>;
+  updateMedicalConsulty(medicalConsulty: IMedicalConsulty): Promise<IUpdateMedicalConsultyResponse | MedicalConsultyFailure>;
   getMedicalConsultyPDF(obj: { 
     doctor: IUser;
     medicalConsulty: IMedicalConsulty;
@@ -396,6 +397,24 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
       if (res.data && res.data.length > 0) medicalConsulty.id = res.data[0].id;
 
       const response: ICreateMedicalConsultyResponse = {
+          data: medicalConsulty,
+          metadata: {}
+      }
+
+      return JSON.parse(JSON.stringify(response));
+    } catch (error) {
+      const exception = error as any;
+      return new MedicalConsultyFailure(medicalConsultyFailuresEnum.serverError);
+    }
+  }
+
+  async updateMedicalConsulty(medicalConsulty: IMedicalConsulty): Promise<IUpdateMedicalConsultyResponse | MedicalConsultyFailure> {
+    try {
+      const res = await supabase.from("ConsultasMedicas").update(fromMedicalConsultySupabaseDocumentData(medicalConsulty)).match({ id: medicalConsulty.id });
+
+      if (res.error) return new MedicalConsultyFailure(medicalConsultyFailuresEnum.serverError);
+
+      const response: IUpdateMedicalConsultyResponse = {
           data: medicalConsulty,
           metadata: {}
       }

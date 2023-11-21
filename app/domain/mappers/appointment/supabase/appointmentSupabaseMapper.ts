@@ -11,6 +11,7 @@ export function appointmentSupabaseToMap(data: any): IAppointment {
       startHour: data?.horaInicio ?? 0,
       endHour: data?.horaFin ?? 0,
       index: data?.indice ?? 0,
+      medicalConsultyId: data?.consultaMedicaId ?? null,
       attentionWindowId: data?.ventanaAtencionId ?? 0,
       bookingDate: data?.fechaReserva ? new Date(data.fechaReserva) : new Date(),
       bookingEndDate: data?.fechaFinReserva ? new Date(data.fechaFinReserva) : new Date(),

@@ -59,6 +59,14 @@ export default function RightSide({ user, width }: IRightSideProps) {
     valuesFormulary.appointmentId = appointment.data?.id;
 
     if (
+      appointment.data.medicalConsulty &&
+      appointment.data.medicalConsulty.consultationReason
+    ) {
+      valuesFormulary.currentConsultation.consultationReason =
+        appointment.data.medicalConsulty.consultationReason;
+    }
+
+    if (
       valuesJSON &&
       valuesJSON?.appointmentId === appointment.data?.id &&
       JSON.stringify(valuesJSON) !== JSON.stringify(valuesFormulary) &&
