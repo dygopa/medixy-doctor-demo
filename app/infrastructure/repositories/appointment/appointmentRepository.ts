@@ -9,6 +9,7 @@ import { MedicalConsultyFailure, medicalConsultyFailuresEnum } from "domain/core
 import { ScheduleFailure, scheduleFailuresEnum } from "domain/core/failures/schedule/scheduleFailure";
 import { IGetAppointmentResponse, IGetAppointmentsResponse, IUpdateAppointmentResponse } from "domain/core/response/appointmentsResponse";
 import { appointmentSupabaseToMap } from "domain/mappers/appointment/supabase/appointmentSupabaseMapper";
+import { medicalConsultySupabaseToMap } from "domain/mappers/medicalConsulty/supabase/medicalConsultySupabaseMapper";
 import { subjectSupabaseToMap } from "domain/mappers/patient/supabase/subjectSupabaseMapper";
 import { servicesSupabaseMapper } from "domain/mappers/services/servicesSupabaseMapper";
 import { CREATE_APPOINTMENT_ENDPOINT, FINISHED_APPOINTMENT_ENDPOINT } from "infrastructure/config/api/dictionary";
@@ -127,7 +128,8 @@ export class AppointmentRepository implements IAppointmentRepository {
             Servicios (
               *,
               Localidades(*)
-            )
+            ),
+            ConsultasMedicas(*)
             `).eq("id", appointmentId).limit(1);
   
           let appointment: IAppointment = {} as IAppointment;
@@ -145,6 +147,12 @@ export class AppointmentRepository implements IAppointmentRepository {
               const service: IService = servicesSupabaseMapper(res.data[0].Servicios);
 
               if (service.id > 0) appointment.service = service;
+            }
+
+            if (res.data[0]?.ConsultasMedicas) {
+              const medicalConsulty: IMedicalConsulty = medicalConsultySupabaseToMap(res.data[0].ConsultasMedicas);
+
+              if (medicalConsulty.id > 0) appointment.medicalConsulty = medicalConsulty;
             }
           }
 

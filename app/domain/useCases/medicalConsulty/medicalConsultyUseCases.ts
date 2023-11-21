@@ -57,9 +57,23 @@ export default class MedicalConsultyUseCase {
 
   async createMedicalConsulty(obj: { doctor: IUser; medicalConsulty: IMedicalConsulty; appointmentId?: string | null }): Promise<ICreateMedicalConsultyResponse> {
     try {
-      const response = await this._repository.createMedicalConsulty(obj.medicalConsulty);
+      console.log(obj.medicalConsulty)
+      let response: ICreateMedicalConsultyResponse = {
+        data: obj.medicalConsulty,
+        metadata: {}
+      } as ICreateMedicalConsultyResponse;
 
-      if (response instanceof MedicalConsultyFailure) throw response;
+      if (obj.medicalConsulty.id === 0) {
+        const responseCreateMedicalConsulty = await this._repository.createMedicalConsulty(obj.medicalConsulty);
+
+        if (responseCreateMedicalConsulty instanceof MedicalConsultyFailure) throw responseCreateMedicalConsulty;
+
+        response = responseCreateMedicalConsulty;
+      } else {
+        const responseUpdateMedicalConsulty = await this._repository.updateMedicalConsulty(obj.medicalConsulty);
+
+        if (responseUpdateMedicalConsulty instanceof MedicalConsultyFailure) throw responseUpdateMedicalConsulty;
+      }
 
       if (obj.appointmentId) await this._appointmentRepository.editAppointmentStatus({ appointmentId: obj.appointmentId, status: MedicalRecordStatusEnum.COMPLETE });
 
@@ -103,7 +117,6 @@ export default class MedicalConsultyUseCase {
       } 
 
       if (obj.medicalConsulty.treatments && obj.medicalConsulty.treatments.length > 0) {
-
         const subject = await this._subjectRepository.getSubjectById(obj.medicalConsulty.treatments[0].subjectId);
 
         if (subject instanceof SubjectFailure) return response;
@@ -120,7 +133,6 @@ export default class MedicalConsultyUseCase {
           appointmentId: obj.appointmentId ? obj.appointmentId : "",
         })
       } else {
-
         await this._appointmentRepository.finishedAppointment({
           trataimentId: null,
           trataimentPDF: null,

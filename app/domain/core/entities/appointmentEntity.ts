@@ -1,3 +1,4 @@
+import { IMedicalConsulty } from "./medicalConsultyEntity";
 import { IService } from "./serviceEntity";
 import { ISubject } from "./subjectEntity";
 
@@ -16,5 +17,7 @@ export interface IAppointment {
     attentionWindowId: number;
     bookingDate: Date;
     bookingEndDate: Date;
+    medicalConsultyId?: number | null;
+    medicalConsulty?: IMedicalConsulty | null;
     createdAt: Date;
 }
