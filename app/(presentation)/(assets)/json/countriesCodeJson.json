@@ -826,7 +826,8 @@
       "name_en": "Mexico",
       "name_es": "Mexico",
       "dial_code": "+52",
-      "code": "MX"
+      "code": "MX",
+      "placeholder": "33 5555 5555"
     },
     {
       "name_en": "Micronesia, Federated States of",
@@ -1372,7 +1373,8 @@
       "name_en": "United States",
       "name_es": "Estados Unidos",
       "dial_code": "+1",
-      "code": "US"
+      "code": "US",
+      "placeholder": "415 555 5555"
     },
     {
       "name_en": "Uruguay",
@@ -1396,7 +1398,8 @@
       "name_en": "Venezuela, Bolivarian Republic of",
       "name_es": "Venezuela",
       "dial_code": "+58",
-      "code": "VE"
+      "code": "VE",
+      "placeholder": "412 555 5555"
     },
     {
       "name_en": "Viet Nam",

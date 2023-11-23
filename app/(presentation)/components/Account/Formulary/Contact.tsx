@@ -1,10 +1,8 @@
 import { VALIDATE_NUMBERS } from "(presentation)/(utils)/errors-validation";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
-import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
+import PhoneNumberInput from "(presentation)/components/core/BaseComponents/Inputs/PhoneNumberInput/PhoneNumberInput";
 import { IUser } from "domain/core/entities/userEntity";
 import { useState } from "react";
-import IntlTelInput from "react-intl-tel-input";
-import "react-intl-tel-input/dist/main.css";
 import { twMerge } from "tailwind-merge";
 
 interface IFormularyProps {
@@ -18,7 +16,6 @@ export default function Contact({ account, setAccount }: IFormularyProps) {
   });
 
   const handlephone = (value: string, isValid: boolean) => {
-    console.log(isValid)
     setAccount({ ...account, phone: value });
     if (!VALIDATE_NUMBERS(value) && value.length > 0) {
       setErrors((previousState) => {
@@ -42,6 +39,8 @@ export default function Contact({ account, setAccount }: IFormularyProps) {
     return false;
   };
 
+  console.log(account);
+
   return (
     <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">
       <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
@@ -53,21 +52,14 @@ export default function Contact({ account, setAccount }: IFormularyProps) {
             <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
               Teléfono de Contacto
             </p>
-            <IntlPhoneNumberInput
-              preferredCountries={["mx"]}
-              defaultCountry={"mx"}
-              defaultValue={account.phone}
-              value={account.phone}
-              onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
-                handlephone(fullNumber, isValid) 
-              }
-              inputClassName={twMerge([
-                "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900",
-                "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
-                "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
-              ])}
-              placeholder="33 1234 5678"
+            <PhoneNumberInput
+              defaultSelectedCountry="mx"
+              onPhoneNumberChange={(values) => {
+                handlephone(values.fullPhoneNumber, true);
+              }}
+              isDark
             />
+
             {errors.phone.length > 0 && (
               <span className="text-red-500">{errors.phone}</span>
             )}

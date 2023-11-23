@@ -27,11 +27,9 @@ import {
   EditPatientContext,
   IEditPatientContext,
 } from "../../context/EditPatientContext";
-import IntlTelInput from "react-intl-tel-input";
-import "react-intl-tel-input/dist/main.css";
 import { getCountriesDialCodeES } from "(presentation)/(helper)/intl/intlHelper";
-import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
 import moment from "moment";
+import PhoneNumberInput from "(presentation)/components/core/BaseComponents/Inputs/PhoneNumberInput/PhoneNumberInput";
 
 interface IEditProps {
   companionEdit: ISubject;
@@ -225,16 +223,16 @@ export default function CompanionEdit({
   const handleage = (value: string) => {
     setValues({ ...values, birthDate: value });
 
-    let day = new Date()
-    let birthdate= new Date(value);
+    let day = new Date();
+    let birthdate = new Date(value);
     let age = day.getFullYear() - birthdate.getFullYear();
     let month = day.getMonth() - birthdate.getMonth();
 
     if (month < 0 || (month === 0 && day.getDate() < birthdate.getDate())) {
-      age--
+      age--;
     }
-    
-    if(age <= 15) {
+
+    if (age <= 15) {
       setErrors((previousState: any) => {
         return {
           ...previousState,
@@ -495,23 +493,11 @@ export default function CompanionEdit({
                 <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                   Teléfono
                 </p>
-                <IntlPhoneNumberInput
-                  preferredCountries={["mx", "US"]}
-                  defaultValue={values.phone}
-                  value={values.phone}
-                  onPhoneNumberChange={(
-                    isValid,
-                    value,
-                    countryData,
-                    fullNumber
-                  ) => handlephone(fullNumber, isValid)}
-                  containerClassName="intl-tel-input w-full"
-                  inputClassName={twMerge([
-                    "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
-                    "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
-                    "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
-                  ])}
-                  placeholder="33 1234 5678"
+                <PhoneNumberInput
+                  defaultSelectedCountry="mx"
+                  onPhoneNumberChange={(values) => {
+                    handlephone(values.fullPhoneNumber, true);
+                  }}
                 />
                 {errors.phone.length > 0 && (
                   <span className="text-red-500">{errors.phone}</span>

@@ -23,7 +23,7 @@ export default function Navigator({
   const { loading, successful } = state.createMedicalConsulty;
 
   return (
-    <div className="w-full md:flex justify-between items-center sticky top-[67px] z-[69]  bg-slate-100 lg:pb-0 md:pb-0 pb-4">
+    <div className="w-full md:flex justify-between sticky top-[67px] z-[69]  bg-slate-100 lg:pb-0 md:pb-0 pb-4">
       <div className="md:w-[50%] lg:mb-0 mb-4">
         <h2 className="lg:mr-5 text-[22px] font-bold truncate mb-1">
           Nueva consulta

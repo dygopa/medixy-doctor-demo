@@ -15,13 +15,12 @@ import {
   VALIDATE_NUMBERS,
 } from "(presentation)/(utils)/errors-validation";
 
-import "react-intl-tel-input/dist/main.css";
-import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
 import ConfirmPopup from "./ConfirmPopup/ConfirmPopup";
 import { EmailValidator } from "(presentation)/(validators)/emailValidator";
 import { NameValidator } from "(presentation)/(validators)/nameValidator";
 import { LastNameValidator } from "(presentation)/(validators)/lastNameValidator";
 import { PhoneNumberValidator } from "(presentation)/(validators)/phoneNumberValidator";
+import PhoneNumberInput from "(presentation)/components/core/BaseComponents/Inputs/PhoneNumberInput/PhoneNumberInput";
 
 export default function Formulary() {
   const { state, actions, dispatch } =
@@ -202,13 +201,12 @@ export default function Formulary() {
       setErrors((previousState: any) => {
         return {
           ...previousState,
-          phone_number:
-            "El teléfono no tiene un formato correcto (33 1234 5678)",
+          phone_number: "El teléfono no tiene un formato correcto",
         };
       });
       return true;
     }
-    if (!new PhoneNumberValidator(value).validate_regexp().isValid) {
+    /* if (!new PhoneNumberValidator(value).validate_regexp().isValid) {
       setErrors((previousState) => {
         return {
           ...previousState,
@@ -218,7 +216,7 @@ export default function Formulary() {
         };
       });
       return true;
-    }
+    } */
     setErrors({ ...errors, phone_number: "" });
     return false;
   };
@@ -502,19 +500,11 @@ export default function Formulary() {
         </div>
 
         <div className="relative w-full">
-          <IntlPhoneNumberInput
-            preferredCountries={["mx", "US"]}
-            onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
-              handlephone(fullNumber, isValid)
-            }
-            onPhoneNumberBlur={(e) => console.log(e)}
-            containerClassName="intl-tel-input w-full"
-            inputClassName={twMerge([
-              "disabled:bg-white disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
-              "[&[readonly]]:bg-white [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
-              "transition duration-200 ease-in-out w-full bg-white text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80 py-3 pr-10",
-            ])}
-            placeholder="33 1234 5678"
+          <PhoneNumberInput
+            defaultSelectedCountry="mx"
+            onPhoneNumberChange={(values) => {
+              handlephone(values.fullPhoneNumber, true);
+            }}
           />
           {errors.phone_number.length > 0 && (
             <div className="mt-1">
@@ -528,7 +518,9 @@ export default function Formulary() {
           )}
         </div>
 
-        {/*<div className="relative w-full">
+        {/*
+
+        <div className="relative w-full">
         <FormInput
           type={"text"}
           placeholder="Fecha de Nacimiento (No obligatorio)"

@@ -10,7 +10,7 @@ import {
   FormInput,
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
-import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
+import PhoneNumberInput from "(presentation)/components/core/BaseComponents/Inputs/PhoneNumberInput/PhoneNumberInput";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import {
   IMedicalRecordContext,
@@ -25,8 +25,6 @@ import React, {
   useEffect,
   useState,
 } from "react";
-import IntlTelInput from "react-intl-tel-input";
-import "react-intl-tel-input/dist/main.css";
 import { twMerge } from "tailwind-merge";
 
 interface ICompanionCreateProps {
@@ -126,7 +124,7 @@ export default function CompanionCreate({
   };
 
   const handleSecondLastname = (value: string) => {
-    setValues({ ...values, motherlastname: value })
+    setValues({ ...values, motherlastname: value });
     if (value.length > 0 && !VALIDATE_NAMES(value)) {
       setErrors((previousState: any) => {
         return {
@@ -135,23 +133,23 @@ export default function CompanionCreate({
         };
       });
       return true;
-    };
+    }
     setErrors({ ...errors, motherlastname: "" });
     return false;
   };
 
   const handleage = (value: string) => {
     setValues({ ...values, birthDate: value });
-    let day = new Date()
-    let birthdate= new Date(value);
+    let day = new Date();
+    let birthdate = new Date(value);
     let age = day.getFullYear() - birthdate.getFullYear();
     let month = day.getMonth() - birthdate.getMonth();
 
     if (month < 0 || (month === 0 && day.getDate() < birthdate.getDate())) {
-      age--
+      age--;
     }
-    
-    if(age <= 15) {
+
+    if (age <= 15) {
       setErrors((previousState: any) => {
         return {
           ...previousState,
@@ -413,9 +411,7 @@ export default function CompanionCreate({
             <FormInput
               type="text"
               value={values.motherlastname}
-              onChange={(e: any) =>
-                handleSecondLastname(e.target.value)
-              }
+              onChange={(e: any) => handleSecondLastname(e.target.value)}
               placeholder="Segundo Apellido"
             />
             {errors.motherlastname.length > 0 && (
@@ -478,21 +474,14 @@ export default function CompanionCreate({
           <p className="input-label py-2">
             Teléfono <span className="text-primary font-bold">*</span>
           </p>
-          <IntlPhoneNumberInput
-            preferredCountries={["mx", "US"]}
-            defaultValue={values.phone}
-            value={values.phone}
-            onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
-              handlephone(fullNumber, isValid)
-            }
-            containerClassName="intl-tel-input w-full"
-            inputClassName={twMerge([
-              "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
-              "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
-              "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
-            ])}
-            placeholder="33 1234 5678"
+          <PhoneNumberInput
+            defaultSelectedCountry="mx"
+            onPhoneNumberChange={(values) => {
+              handlephone(values.fullPhoneNumber, true);
+            }}
+            isDark
           />
+
           {errors.phone.length > 0 && (
             <span className="text-red-500">{errors.phone}</span>
           )}

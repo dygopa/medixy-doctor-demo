@@ -4,12 +4,10 @@ import Table from "(presentation)/components/core/BaseComponents/Table";
 import { ISpecialty } from "domain/core/entities/specialtyEntity";
 import { IUser } from "domain/core/entities/userEntity";
 import { useState } from "react";
-import IntlTelInput from "react-intl-tel-input";
-import 'react-intl-tel-input/dist/main.css';
 import { twMerge } from "tailwind-merge";
 
 interface IFormularyProps {
-  specialities: Array<any>,
+  specialities: Array<any>;
 }
 
 export default function Credentials({ specialities }: IFormularyProps) {
@@ -39,30 +37,25 @@ export default function Credentials({ specialities }: IFormularyProps) {
           </Table.Thead>
 
           <Table.Tbody className="z-0">
-          {specialities?.length > 0 &&
-            specialities.map((speciality: any) => (
-              <Table.Tr key={speciality.id}>
-                <Table.Td className="">
-                    {speciality.name}
-                </Table.Td>
-                <Table.Td className="">
-                    {speciality.code}
-                </Table.Td>
-                <Table.Td className="">
+            {specialities?.length > 0 &&
+              specialities.map((speciality: any) => (
+                <Table.Tr key={speciality.id}>
+                  <Table.Td className="">{speciality.name}</Table.Td>
+                  <Table.Td className="">{speciality.code}</Table.Td>
+                  <Table.Td className="">
                     {speciality.institution_name}
-                </Table.Td>
-              </Table.Tr>
-            ))
-          }
+                  </Table.Td>
+                </Table.Tr>
+              ))}
           </Table.Tbody>
         </Table>
-        {specialities?.length === 0 &&
+        {specialities?.length === 0 && (
           <div className="w-full flex flex-col justify-center items-center text-center">
             <p className="font-light text-slate-500 text-base text-center">
               No especificadas
             </p>
-        </div>
-        }
+          </div>
+        )}
       </div>
     </div>
   );

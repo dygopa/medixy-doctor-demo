@@ -28,11 +28,8 @@ import {
 } from "(presentation)/(utils)/errors-validation";
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
 import { ICountryLocation } from "domain/core/entities/countryEntity";
-import IntlTelInput from "react-intl-tel-input";
-import "react-intl-tel-input/dist/main.css";
 import { twMerge } from "tailwind-merge";
 import { getCountriesDialCodeES } from "(presentation)/(helper)/intl/intlHelper";
-import IntlPhoneNumberInput from "(presentation)/components/core/BaseComponents/Intl/IntlPhoneNumberInput/IntlPhoneNumberInput";
 import moment from "moment";
 import AutocompleteInputStates from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputStates/AutocompleteInputStates";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
@@ -40,6 +37,7 @@ import AutocompleteInputMunicipalities from "(presentation)/components/core/Base
 import AutocompleteInputLocations from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputLocations/AutocompleteInputLocations";
 import AddressAutocomplete from "(presentation)/components/core/BaseComponents/Autocomplete/AddressAutocomplete/AddressAutocomplete";
 import Link from "next/link";
+import PhoneNumberInput from "(presentation)/components/core/BaseComponents/Inputs/PhoneNumberInput/PhoneNumberInput";
 
 interface IBasicDataProps {
   values: {
@@ -395,18 +393,13 @@ export default function Formulary({
             Teléfono <span className="text-primary font-bold">*</span>
           </p>
           <div className="w-full">
-            <IntlPhoneNumberInput
-              preferredCountries={["mx", "US"]}
-              onPhoneNumberChange={(isValid, value, countryData, fullNumber) =>
-                handlephone(fullNumber, isValid) 
-              }
-              containerClassName="intl-tel-input w-full"
-              inputClassName={twMerge([
-                "disabled:bg-gray-300 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
-                "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
-                "transition duration-200 ease-in-out w-full bg-gray-100 text-sm border-none shadow-sm rounded-md placeholder:text-gray-400/90 focus:ring-4 focus:ring-primary focus:ring-opacity-20 focus:border-primary focus:border-opacity-40 dark:bg-darkmode-800 dark:border-transparent dark:focus:ring-gray-700 dark:focus:ring-opacity-50 dark:placeholder:text-gray-500/80",
-              ])}
-              placeholder="33 1234 5678"
+            <PhoneNumberInput
+              defaultSelectedCountry="mx"
+              onPhoneNumberChange={(values) => {
+                handlephone(values.fullPhoneNumber, true);
+              }}
+              isDark
+              height={37}
             />
           </div>
           {errors.phone.length > 0 && (

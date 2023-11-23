@@ -23,10 +23,12 @@ export default function Navigator({
   const { changeTypePopup, changeStatusPopup, predifinedReservationData } =
     actions;
   return (
-    <div className="w-full md:flex justify-between items-start gap-5">
+    <div className="w-full md:flex justify-between items-start gap-5 lg:static md:static sticky top-[67px] z-[69] bg-slate-100">
       <div className="w-full lg:w-2/4 relative flex flex-col justify-between items-start gap-2">
-        <h2 className="mr-5 text-2xl font-bold truncate">Mi Agenda</h2>
-        <p>
+        <h2 className="mr-5 lg:text-[22px] md:text-[22px] text-lg font-bold truncate">
+          Mi agenda
+        </h2>
+        <p className="lg:block md:block hidden">
           Mantén un seguimiento de tus citas médicos y asegúrate de estar
           preparado para cada consulta
         </p>
