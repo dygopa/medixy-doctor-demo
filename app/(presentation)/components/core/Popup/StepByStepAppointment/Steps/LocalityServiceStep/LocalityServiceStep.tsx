@@ -84,8 +84,6 @@ const LocalityServiceStep = ({
     description: "",
   });
 
-  console.log(selectedService);
-
   const [loadedAppointment, setLoadedAppointment] = useState(false);
   const [loadedDataFromAppointment, setLoadedDataFromAppointment] =
     useState(false);
@@ -164,11 +162,26 @@ const LocalityServiceStep = ({
     }
 
     if (list_services.length > 0 && service["id"]) {
-      setSelectedService(service);
+      setSelectedService(
+        service?.id && service.id === "ALL"
+          ? {
+              id: service.id,
+              title: "Selecciona un servicio",
+              description: "Para continuar debes seleccionar un servicio",
+            }
+          : service
+      );
       setAppointment({
         ...appointment,
         serviceId: service["id"],
-        service: service,
+        service:
+          service?.id && service.id === "ALL"
+            ? {
+                id: service.id,
+                title: "Selecciona un servicio",
+                description: "Para continuar debes seleccionar un servicio",
+              }
+            : service,
       });
     }
 
@@ -241,7 +254,13 @@ const LocalityServiceStep = ({
       });
     }
 
-    if (service?.id) {
+    if (service?.id && service.id === "ALL") {
+      setSelectedService({
+        id: service.id,
+        title: "Selecciona un servicio",
+        description: "Para continuar debes seleccionar un servicio",
+      });
+    } else if (service?.id) {
       setSelectedService({
         id: service.id,
         title: service.title,
@@ -254,7 +273,14 @@ const LocalityServiceStep = ({
         localityId: locality.id,
         locality: locality,
         serviceId: service.id,
-        service: service,
+        service:
+          service?.id && service.id === "ALL"
+            ? {
+                id: service.id,
+                title: "Selecciona un servicio",
+                description: "Para continuar debes seleccionar un servicio",
+              }
+            : service,
       });
     }
 
@@ -287,6 +313,8 @@ const LocalityServiceStep = ({
   useMemo(() => {
     getLocalities(user.userId)(dispatchSchedule);
   }, []);
+
+  console.log(listOfServices);
 
   if (loadingServicesByAttentionWindow) return <div />;
 

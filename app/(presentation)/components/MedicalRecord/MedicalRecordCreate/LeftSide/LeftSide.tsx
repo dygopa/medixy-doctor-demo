@@ -13,7 +13,7 @@ export default function LeftSide({ windowWidth }: ILeftSideProps) {
   return (
     <div
       className={clsx([
-        "top-[115px] z-[95]",
+        "top-[115px] z-[68]",
         windowWidth <= 992 ? "static" : "sticky",
       ])}
     >

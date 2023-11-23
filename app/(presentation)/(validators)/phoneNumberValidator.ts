@@ -18,7 +18,7 @@ export class PhoneNumberValidator extends Validator {
     } 
 
     validate_regexp(): IValidator {
-        if (!/^[+0-9- 0-9]+$/.test(this.value.trimEnd())) {
+        if (!/^\d+$/.test(this.value.trimEnd())) {
             return { isValid: false, error: { code: "field-invalid-format", message: "Debe escribir un teléfono válido" } } as IValidator;
         }
 

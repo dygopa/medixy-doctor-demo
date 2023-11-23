@@ -255,20 +255,32 @@ export function SpecialSelect({ ...props }: SpecialSelectProps) {
           "transition relative w-full h-fit cursor-pointer justify-center items-start bg-white border border-slate-300 rounded-md p-2",
         ])}
       >
-        <p className="block whitespace-nowrap font-medium text-gray-950 text-[0.9rem] w-full overflow-hidden text-ellipsis">
-          {activeValue.title
-            ? activeValue.title
-            : props.emptySelectedValue
-            ? props.emptySelectedValue["title"]
-            : "Nada aún"}
-        </p>
-        <p className="block whitespace-nowrap font-light text-gray-500 text-[0.8rem] w-full overflow-hidden text-ellipsis">
-          {activeValue.description
-            ? activeValue.description
-            : props.emptySelectedValue
-            ? props.emptySelectedValue["description"]
-            : "Selecciona un valor de la lista"}
-        </p>
+        <div className="flex items-center justify-between">
+          <div className="w-full">
+            <p className="block whitespace-nowrap font-medium text-gray-950 text-[0.9rem] w-full overflow-hidden text-ellipsis max-w-[300px">
+              {activeValue.title
+                ? activeValue.title
+                : props.emptySelectedValue
+                ? props.emptySelectedValue["title"]
+                : "Nada aún"}
+            </p>
+            <p className="block whitespace-nowrap font-light text-gray-500 text-[0.8rem] w-full overflow-hidden text-ellipsis max-w-[300px]">
+              {activeValue.description
+                ? activeValue.description
+                : props.emptySelectedValue
+                ? props.emptySelectedValue["description"]
+                : "Selecciona un valor de la lista"}
+            </p>
+          </div>
+
+          <div>
+            <i
+              className={
+                active ? "fa-solid fa-chevron-up" : "fa-solid fa-chevron-down"
+              }
+            />
+          </div>
+        </div>
       </div>
       {!props.disabled && (
         <motion.div
@@ -398,28 +410,40 @@ export function SpecialSelectSchedule({ ...props }: SpecialSelectProps) {
           "transition relative w-full h-fit cursor-pointer justify-center items-start bg-white border border-slate-300 rounded-md p-2",
         ])}
       >
-        <div className="w-full overflow-hidden flex justify-start items-center gap-1">
-          {activeValue.title && activeValue.id !== "ALL" && (
-            <span
-              style={{ backgroundColor: activeValue.color }}
-              className={`w-[10px] h-[10px] relative block rounded-full`}
-            ></span>
-          )}
-          <p className="block whitespace-nowrap font-medium text-gray-950 text-[0.9rem] w-[98%] overflow-hidden text-ellipsis">
-            {activeValue.title
-              ? activeValue.title
-              : props.emptySelectedValue
-              ? props.emptySelectedValue["title"]
-              : "Nada aún"}
-          </p>
+        <div className="flex items-center justify-between">
+          <div className="w-full">
+            <div className="w-full overflow-hidden flex justify-start items-center gap-1">
+              {activeValue.title && activeValue.id !== "ALL" && (
+                <span
+                  style={{ backgroundColor: activeValue.color }}
+                  className={`w-[10px] h-[10px] relative block rounded-full`}
+                ></span>
+              )}
+              <p className="block whitespace-nowrap font-medium text-gray-950 text-[0.9rem] w-[98%] overflow-hidden text-ellipsis">
+                {activeValue.title
+                  ? activeValue.title
+                  : props.emptySelectedValue
+                  ? props.emptySelectedValue["title"]
+                  : "Nada aún"}
+              </p>
+            </div>
+            <p className="block whitespace-nowrap font-light text-gray-500 text-[0.8rem] w-full overflow-hidden text-ellipsis">
+              {activeValue.description
+                ? activeValue.description
+                : props.emptySelectedValue
+                ? props.emptySelectedValue["description"]
+                : "Selecciona un valor de la lista"}
+            </p>
+          </div>
+
+          <div>
+            <i
+              className={
+                active ? "fa-solid fa-chevron-up" : "fa-solid fa-chevron-down"
+              }
+            />
+          </div>
         </div>
-        <p className="block whitespace-nowrap font-light text-gray-500 text-[0.8rem] w-full overflow-hidden text-ellipsis">
-          {activeValue.description
-            ? activeValue.description
-            : props.emptySelectedValue
-            ? props.emptySelectedValue["description"]
-            : "Selecciona un valor de la lista"}
-        </p>
       </div>
       <motion.div
         ref={wrapperRef}
