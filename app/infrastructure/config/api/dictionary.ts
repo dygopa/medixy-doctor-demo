@@ -6,6 +6,7 @@ export const REGISTER_USER_ENDPOINT : string = new ConfigEnviroment().nextPublic
 export const UPDATE_PASSWORD_ENDPOINT : string = new ConfigEnviroment().nextPublicAPIUrl + '/doctor/auth/password';
 export const UPDATE_USER_ENDPOINT = (id:number) => new ConfigEnviroment().nextPublicAPIUrl + `/doctor/${id}`;
 export const UPDATE_AVATAR_ENDPOINT = (id:number) => new ConfigEnviroment().nextPublicAPIUrl + `/doctor/${id}/avatar`;
+export const UPDATE_RESET_PASSWORD_ENDPOINT = () => new ConfigEnviroment().nextPublicAPIUrl + `/doctor/reset-password`;
 export const GET_OTP_CODE = () => new ConfigEnviroment().nextPublicAPIUrl + `/doctor/otp`;
 export const SEND_OTP_CODE = () => new ConfigEnviroment().nextPublicAPIUrl + `/doctor/otp/verify`;
 

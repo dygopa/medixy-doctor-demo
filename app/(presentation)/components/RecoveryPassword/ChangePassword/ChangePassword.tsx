@@ -114,7 +114,9 @@ export default function ChangePassword({
       </div>
 
       <Button
-        onClick={() => updatePassword(values.email, values.password)(dispatch)}
+        onClick={() =>
+          updatePassword(values.email, values.password, values.otp)(dispatch)
+        }
         disabled={
           values.password.length === 0 || errors.password.length > 0 || loading
         }

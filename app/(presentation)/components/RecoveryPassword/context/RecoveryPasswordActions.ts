@@ -6,7 +6,7 @@ import { Dispatch } from "react";
 export interface IRecoveryPasswordActions {
   getDoctorOTPCode: (email: string) => (dispatch: Dispatch<any>) => {};
   sendDoctorOTPCode: (email: string, otp: string) => (dispatch: Dispatch<any>) => {};
-  updatePassword: (email: string, password: string) => (dispatch: Dispatch<any>) => {};
+  updatePassword: (email: string, password: string, otp: string) => (dispatch: Dispatch<any>) => {};
 }
 
 const getDoctorOTPCode = (email: string) => async (dispatch: Dispatch<any>) => {
@@ -33,11 +33,11 @@ const sendDoctorOTPCode = (email: string, otp: string) => async (dispatch: Dispa
   }
 }
 
-const updatePassword = (email: string, password: string) => async (dispatch: Dispatch<any>) => {
+const updatePassword = (email: string, password: string, otp: string) => async (dispatch: Dispatch<any>) => {
   try {
     dispatch({ type: "UPDATE_PASSWORD_LOADING" });
 
-    const res: any = await new AuthUseCase().updatePasswordByEmail({email, password});
+    const res: any = await new AuthUseCase().updatePasswordByEmail({email, password, otp});
 
     dispatch({ type: "UPDATE_PASSWORD_SUCCESSFUL", payload: { data: res } });
   } catch (error) {

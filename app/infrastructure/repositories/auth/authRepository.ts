@@ -3,7 +3,7 @@ import { createClient, SignInWithPasswordCredentials, User } from '@supabase/sup
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import nookies from 'nookies';
 import { AuthFailure, authFailuresEnum } from 'domain/core/failures/auth/authFailure';
-import { AUTH_ENDPOINT, CHECK_OTP_ENDPOINT, GET_USER_ENDPOINT, UPDATE_USER_OTP_ENDPOINT } from 'infrastructure/config/api/dictionary';
+import { AUTH_ENDPOINT, CHECK_OTP_ENDPOINT, GET_USER_ENDPOINT, UPDATE_RESET_PASSWORD_ENDPOINT, UPDATE_USER_OTP_ENDPOINT } from 'infrastructure/config/api/dictionary';
 import { redirect } from "next/navigation";
 import { userAPIToMap } from 'domain/mappers/user/userMapper';
 
@@ -289,35 +289,40 @@ export class AuthRepository implements IAuthRepository {
     }
   }
 
-  async updatePasswordByEmail(obj: { email: string; password: string }): Promise<any | AuthFailure> {
+  async updatePasswordByEmail(obj: { email: string; password: string; otp: string }): Promise<any | AuthFailure> {
     try {
-      const supabase = createClient("https://tokexynaxhnsroxlpatn.supabase.co", "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRva2V4eW5heGhuc3JveGxwYXRuIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTY4MDg5MDk5OSwiZXhwIjoxOTk2NDY2OTk5fQ.EySZaRFwnxYgnoqqBEAriZyGBJdhjvtk_r33f4CtI3g", {
-          auth: {
-              autoRefreshToken: false,
-              persistSession: false
-          }
+      var myHeaders = new Headers();
+
+      myHeaders.append("Content-Type", "application/json");
+
+      var raw = JSON.stringify({
+        email: obj.email,
+        password: obj.password,
+        otp: obj.otp,
       });
 
-      const users = await supabase.auth.admin.listUsers({
-        perPage: 1000
-      });
+      var requestOptions = {
+        method: 'POST',
+        headers: myHeaders,
+        body: raw,
+        redirect: 'follow'
+      } as RequestInit;
 
-      let user: User = {} as User;
+      let URL = UPDATE_RESET_PASSWORD_ENDPOINT() as RequestInfo
 
-      if (users.data.users.length > 0) {
-        for (let i = 0; i < users.data.users.length; i++) {
-          if (users.data.users[i].email === obj.email) {
-            user = users.data.users[i];
-            break;
-          }
-        }
+      const res = await fetch(URL, requestOptions);
+
+      if (res.status >= 500) return new AuthFailure(authFailuresEnum.serverError);
+
+      if (res.status >= 400) {
+          let data = await res.json();
+
+          const type = data?.detail?.meta?.error?.type ?? null;
+
+          if (type === "EMAIL_NOT_FOUND") return new AuthFailure(authFailuresEnum.emailNotFound);
+
+          if (type === "OTP_INVALID") return new AuthFailure(authFailuresEnum.otpInvalid);
       }
-
-      if (!user || !user.id) return new AuthFailure(authFailuresEnum.serverError);
-
-      supabase.auth.admin.updateUserById(user.id, {
-        password: obj.password
-      });
 
       return "SUCCESS"
     } catch (error) {

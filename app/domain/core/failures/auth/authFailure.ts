@@ -9,5 +9,7 @@ export const enum authFailuresEnum {
   userNotFound = "INVALID_CREDENTIALS",
   badGateway = "BAD_GATEWAY",
   tokenExpired = "TOKEN_EXPIRED",
+  otpInvalid = "OTP_INVALID",
+  emailNotFound = "EMAIL_NOT_FOUND",
   serverError = "SERVER_ERROR"
 }
