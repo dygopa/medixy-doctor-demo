@@ -50,3 +50,7 @@ export const UPDATE_SPECIALIST_ENDPOINT = (id:number) => new ConfigEnviroment().
 //Notifications
 export const TEST_NOTIFICATION = new ConfigEnviroment().nextPublicAPIUrl + `/appointments`;
 export const GET_NOTIFICATIONS = (userId: number | string | undefined) => new ConfigEnviroment().nextPublicAPIUrl + `/notifications/${userId}`;
+
+export const GET_MEDICAL_CONSULTY_REPORT_ENDPOINT = (id:number, type: string) => new ConfigEnviroment().nextPublicAPIUrl + `/medical-consulties/${id}/report/${type}`;
+export const GET_MEDICAL_RECORDS_REPORT_ENDPOINT = (id:number, type: string) => new ConfigEnviroment().nextPublicAPIUrl + `/medical-records/${id}/report/${type}`;
+export const GET_TREATMENTS_REPORT_ENDPOINT = (id:number, type: string) => new ConfigEnviroment().nextPublicAPIUrl + `/treatments/${id}/report/${type}`;

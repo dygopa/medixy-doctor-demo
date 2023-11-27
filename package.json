@@ -29,7 +29,6 @@
     "firebase": "^10.4.0",
     "flag-icons": "^7.0.2",
     "framer-motion": "^10.10.0",
-    "jspdf": "^2.5.1",
     "lucide-react": "^0.105.0-alpha.4",
     "moment": "^2.29.4",
     "nanoid": "^4.0.0",
