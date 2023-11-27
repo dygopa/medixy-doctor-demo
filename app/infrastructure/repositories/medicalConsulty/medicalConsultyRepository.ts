@@ -18,13 +18,14 @@ import { medicalMeasureSupabaseToMap, medicalMeasureTypeSupabaseToMap } from 'do
 import { medicalRecordSupabaseToMap, medicalRecordTypeSupabaseToMap, medicalRecordValueSupabaseToMap, medicalRecordValueTypeSupabaseToMap } from 'domain/mappers/medicalRecord/supabase/medicalRecordSupabaseMapper';
 import { subjectSupabaseToMap } from 'domain/mappers/patient/supabase/subjectSupabaseMapper';
 import { treatmentMedicineSupabaseToMap, treatmentSupabaseToMap } from 'domain/mappers/treatment/supabase/treatmentSupabaseMapper';
+import { GET_MEDICAL_CONSULTY_REPORT_ENDPOINT } from 'infrastructure/config/api/dictionary';
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import { getFileFromBase64 } from 'infrastructure/utils/files/filesUtils';
 import { getLetterByMeasureType, getMedicalMeasuresMap, getTitleByMeasureType } from 'infrastructure/utils/medicalMeasures/medicalMeasuresHelper';
 import { getMedicalRecordsHistory, getMedicalRecordsPhysical } from 'infrastructure/utils/medicalRecord/medicalRecordHelper';
-import jsPDF from "jspdf";
 import { nanoid } from 'nanoid';
 import * as QRCode from "qrcode";
+import nookies from 'nookies';
 
 export default interface IMedicalConsultyRepository {
   getMedicalConsultiesById(id:number): Promise<IMedicalConsulty | MedicalConsultyFailure>;
@@ -431,310 +432,36 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
     medicalConsulty: IMedicalConsulty;
   }): Promise<IGetMedicalConsultyPDFResponse | MedicalConsultyFailure> {
     try {
-      if (obj.doctor.pwaProfressionId) {
-        const res = await supabase.from("ProfesionesPQA").select("*").eq("id", obj.doctor.pwaProfressionId).limit(1);
+      let cookies = nookies.get(undefined, 'access_token');
 
-        if (res.data && res.data.length > 0) obj.doctor.pwaProfression = res.data[0].nombre;
-      }
+      var myHeaders = new Headers();
 
-      const doc = new jsPDF();
+      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
 
-      doc.setProperties({
-        title: `Resumen de la consulta - ${getFullDate(new Date())} ${get12HoursFormat(new Date())}.pdf`,
-        subject: `Consulta medica ${obj.medicalConsulty.subject.name} ${obj.medicalConsulty.subject.lastName} - ${new Date(obj.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalConsulty.consultationDate).getFullYear()}`
-      });
+      var requestOptions = {
+        method: 'GET',
+        headers: myHeaders,
+        redirect: 'follow'
+      } as RequestInit;
 
-      var img = new Image();
+      let URL = GET_MEDICAL_CONSULTY_REPORT_ENDPOINT(obj.medicalConsulty.id, "pdf") as RequestInfo
 
-      if (obj.doctor.avatar?.length > 0) {
-        img.src = obj.doctor.avatar;
-        doc.addImage(img, "png", 10, 5, 25, 25);
-      } else {
-        img.src = "https://tokexynaxhnsroxlpatn.supabase.co/storage/v1/object/public/utils/medical-logo-1.jpg";
-        doc.addImage(img, "png", 10, 0, 25, 30);
-      }
-    
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a) ${obj.doctor.names} ${obj.doctor.firstName}`, 42, 10);
-      doc.text(`${obj.doctor.pwaProfression}`, 42, 15);
+      const res = await fetch(URL, requestOptions)
 
-      if (obj.doctor.pwaProfression.length > 0) {
-        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 20);
+      if (res.status === 200 && res.body) {
+        const data = await res.body.getReader().read();
+        const decoder = new TextDecoder();
 
-        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 42, 27);
-      } else {
-        doc.text(`Cedula profesional ${obj.doctor.professionalLicense.length > 0 ? obj.doctor.professionalLicense : "000000000"}`, 42, 15);
+        if (!data.done && data.value) {
+          const decodedChunk = decoder.decode(data.value, { stream: true });
 
-        if (obj.doctor.professionalLicenseInstitution.length > 0) doc.text(`${obj.doctor.professionalLicenseInstitution}`, 42, 22);
-      }
+          let blob = new Blob([decodedChunk], { type: 'application/pdf' });
+          let url = window.URL.createObjectURL(blob)
 
-      doc.setFontSize(12);
-      doc.text(`${obj.medicalConsulty.subject.lastName} ${obj.medicalConsulty.subject.name}`, 10, 40);
-      doc.setFontSize(11);
-
-      doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Edad del paciente:`, 10, 45);
-      doc.text(`${obj.medicalConsulty.subject?.age} ${obj.medicalConsulty.subject?.ageType === "years" ? "años" : "meses"}`, 45, 45);
-
-      doc.text(`Fecha:`, 130, 40);
-      doc.setFontSize(11);
-      doc.setFont("helvetica", "normal", "bold");
-      doc.setTextColor(0, 0, 0);
-      doc.text(`${new Date(obj.medicalConsulty.consultationDate).getDate()}-${new Date(obj.medicalConsulty.consultationDate).getMonth()}-${new Date(obj.medicalConsulty.consultationDate).getFullYear()}`, 143, 40);
-
-      doc.setLineWidth(0.1); 
-      doc.line(10, 50, 200, 50);
-
-      const medicalRecordsHistory = getMedicalRecordsHistory(obj.medicalConsulty.medicalRecords ?? []);
-
-      let y = 60;
-      let pageHeight = doc.internal.pageSize.height - 10;
-
-      if (medicalRecordsHistory?.length > 0) {
-        doc.setFontSize(11);
-        doc.setFont("helvetica", "normal", "bold");
-        doc.text(`Antecedentes:`, 10, y);
-
-        y += 7;
-
-        if (y >= pageHeight) {
-          y = 5;
-          pageHeight = doc.internal.pageSize.height - 5;
-          doc.addPage();
-        }
-
-        doc.setFont("helvetica", "normal", "normal");
-
-        medicalRecordsHistory.forEach((medicalRecordHistory) => {
-          doc.setFontSize(10);
-          doc.setFont("helvetica", "normal", "bold");
-          doc.text(`${medicalRecordTypeEnum[medicalRecordHistory.medicalRecordType.name]}`, 15, y);
-
-          medicalRecordHistory.medicalRecordValues.forEach((medicalRecordValue) => {
-            doc.setFontSize(10);
-            doc.setFont("helvetica", "normal", "normal");
-            doc.text(`${medicalRecordValue.value}`, 15, y + 5);
-
-            y += 5;
-
-            if (y >= pageHeight) {
-              y = 5;
-              pageHeight = doc.internal.pageSize.height - 5;
-              doc.addPage();
-            }
-          });
-
-          y += 7;
-
-          if (y >= pageHeight) {
-            y = 5;
-            pageHeight = doc.internal.pageSize.height - 5;
-            doc.addPage();
-          }
-        });
-      }
-
-      const medicalRecordsPhysical = getMedicalRecordsPhysical(obj.medicalConsulty.medicalRecords ?? []);
-
-      if (medicalRecordsPhysical?.length > 0) {
-        doc.setFontSize(11);
-        doc.setFont("helvetica", "normal", "bold");
-        doc.text(`Exploración física:`, 10, y);
-
-        y += 7;
-
-        if (y >= pageHeight) {
-          y = 5;
-          pageHeight = doc.internal.pageSize.height - 5;
-          doc.addPage();
-        }
-
-        doc.setFont("helvetica", "normal", "normal");
-
-        medicalRecordsPhysical.forEach((medicalRecordPhysical) => {
-          console.log(medicalRecordPhysical)
-          doc.setFontSize(10);
-          doc.setFont("helvetica", "normal", "bold");
-          doc.text(`${medicalRecordTypePhysicalEnum[medicalRecordPhysical.medicalRecordType.name]}`, 15, y);
-
-          medicalRecordPhysical.medicalRecordValues.forEach((medicalRecordValue) => {
-            doc.setFontSize(10);
-            doc.setFont("helvetica", "normal", "normal");
-            doc.text(`${medicalRecordValue.value}`, 15, y + 5);
-
-            y += 5;
-
-            if (y >= pageHeight) {
-              y = 5;
-              pageHeight = doc.internal.pageSize.height - 5;
-              doc.addPage();
-            }
-          });
-
-          y += 7;
-
-          if (y >= pageHeight) {
-            y = 5;
-            pageHeight = doc.internal.pageSize.height - 5;
-            doc.addPage();
-          }
-        });
-      }
-
-      const medicalMeasures = getMedicalMeasuresMap(obj.medicalConsulty.medicalMeasures ?? []);
-
-      if (medicalMeasures?.length > 0) {
-        doc.setFontSize(11);
-        doc.setFont("helvetica", "normal", "bold");
-        doc.text(`Signos vítales:`, 10, y);
-
-        y += 7;
-
-        if (y >= pageHeight) {
-          y = 5;
-          pageHeight = doc.internal.pageSize.height - 5;
-          doc.addPage();
-        }
-
-        doc.setFont("helvetica", "normal", "normal");
-
-        medicalMeasures.forEach((medicalMeasure) => {
-          doc.setFontSize(10);
-          doc.setFont("helvetica", "normal", "bold");
-          doc.text(`${getTitleByMeasureType(medicalMeasure.medicalMeasureType.type)}`, 15, y);
-
-          y += 5;
-
-          if (y >= pageHeight) {
-            y = 5;
-            pageHeight = doc.internal.pageSize.height - 5;
-            doc.addPage();
-          }
-
-          doc.setFontSize(10);
-          doc.setFont("helvetica", "normal", "normal");
-          doc.text(`${medicalMeasure.value.toFixed(2)} ${getLetterByMeasureType(medicalMeasure.medicalMeasureType.type)}`, 15, y);
-
-          y += 7;
-
-          if (y >= pageHeight) {
-            y = 5;
-            pageHeight = doc.internal.pageSize.height - 5;
-            doc.addPage();
-          }
-        });
-
-        y += 7;
-
-        if (y >= pageHeight) {
-          y = 5;
-          pageHeight = doc.internal.pageSize.height - 5;
-          doc.addPage();
-        }
-      }
-
-      if (obj.medicalConsulty.diagnose && obj.medicalConsulty.diagnose?.length > 0) {
-        doc.setFontSize(11);
-        doc.setFont("helvetica", "normal", "bold");
-        doc.text(`Diagnósticos:`, 10, y);
-
-        y += 7;
-
-        if (y >= pageHeight) {
-          y = 5;
-          pageHeight = doc.internal.pageSize.height - 5;
-          doc.addPage();
-        }
-
-        doc.setFont("helvetica", "normal", "normal");
-
-        obj.medicalConsulty.diagnose.forEach((diagnose) => {
-          doc.setFontSize(10);
-          doc.text(`${diagnose.description}`, 15, y);
-
-          y += 7;
-
-          if (y >= pageHeight) {
-            y = 5;
-            pageHeight = doc.internal.pageSize.height - 5;
-            doc.addPage();
-          }
-        });
-      }
-
-      if (obj.medicalConsulty.treatments && obj.medicalConsulty.treatments?.length > 0) {
-        doc.setFontSize(11);
-        doc.setFont("helvetica", "normal", "bold");
-        doc.text(`Medicamentos:`, 10, y);
-
-        y += 7;
-
-        if (y >= pageHeight) {
-          y = 5;
-          pageHeight = doc.internal.pageSize.height - 5;
-          doc.addPage();
-        }
-
-        doc.setFont("helvetica", "normal", "normal");
-
-        obj.medicalConsulty.treatments.forEach((treatment) => {
-          if (treatment.treatmentMedicines.length > 0) {
-            treatment.treatmentMedicines.forEach((treatmentMedicine) => {
-              doc.setFontSize(10);
-              doc.text(`${treatmentMedicine.medicine}`, 15, y);
-              doc.setFontSize(9);
-              doc.text(`Vía ${treatmentViaDosisEnum[treatmentMedicine.viaDosis]}, ${getDosisTypeText(treatmentMedicine)} cada ${getFrequencyText(treatmentMedicine)} por ${getDuringText(treatmentMedicine)}`, 15, y + 4);
-
-              y += 10;
-
-              if (y >= pageHeight) {
-                y = 5;
-                pageHeight = doc.internal.pageSize.height - 5;
-                doc.addPage();
-              }
-            });
-          }
-        });
-
-        y += 7;
-
-        if (y >= pageHeight) {
-          y = 5;
-          pageHeight = doc.internal.pageSize.height - 5;
-          doc.addPage();
-        }
-      }
-
-      y += 30;
-
-      if (y >= pageHeight) {
-        y = 5;
-        pageHeight = doc.internal.pageSize.height - 5;
-        doc.addPage();
-      }
-
-      doc.setFontSize(11);
-
-      doc.setLineWidth(0.1); 
-      doc.line(30, y, 60, y);
-
-      doc.setFontSize(10);
-      doc.setFont("helvetica", "normal", "normal");
-      doc.text(`Dr(a): ${obj.doctor.names} ${obj.doctor.firstName}`, 27, y + 5);
-
-      QRCode.toDataURL(obj.medicalConsulty.id.toString(),  (err, url) => {
-        if (err) return new MedicalRecordFailure(medicalRecordFailuresEnum.serverError);
- 
-        var img = new Image();
-        img.src = url;
-        doc.addImage(img, "png", 150, y - 25, 45, 45);
-      });
-
-      doc.text(`${obj.doctor.address}`, 50, y + 20);
-      doc.text(`Tel: ${obj.doctor.phone}​​`, 75, y + 25);
-    
-      window.open(doc.output("bloburl"), "_blank");
+          window.open(url, "_blank");
+        } 
+      }    
 
       const response: IGetMedicalConsultyPDFResponse = {
           data: obj.medicalConsulty,

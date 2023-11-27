@@ -106,9 +106,9 @@ export default class AuthUseCase {
     }
   }
 
-  async updatePasswordByEmail(obj: { email: string; password: string; }): Promise<boolean> {
+  async updatePasswordByEmail(obj: { email: string; password: string; otp: string }): Promise<boolean> {
     try {
-      const response = await this._repository.updatePasswordByEmail({ email: obj.email, password: obj.password });
+      const response = await this._repository.updatePasswordByEmail({ email: obj.email, password: obj.password, otp: obj.otp });
 
       if (response instanceof AuthFailure) throw response;
 
