@@ -13,6 +13,7 @@ import { GET_TREATMENTS_REPORT_ENDPOINT } from 'infrastructure/config/api/dictio
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import * as QRCode from "qrcode";
 import nookies from 'nookies';
+import FileSaver from 'file-saver';
 
 export default interface ITreatmentRepository {
   getTreatments(obj: { 
@@ -144,7 +145,7 @@ export class TreatmentRepository implements ITreatmentRepository {
 
       var myHeaders = new Headers();
 
-      myHeaders.append("Content-Type", "application/json");
+      myHeaders.append("Content-Type", "application/pdf");
       myHeaders.append("Authorization", `Bearer ${cookies["access_token"]}`);
 
       var requestOptions = {
@@ -157,19 +158,10 @@ export class TreatmentRepository implements ITreatmentRepository {
 
       const res = await fetch(URL, requestOptions)
 
-      if (res.status === 200 && res.body) {
-        const data = await res.body.getReader().read();
-        const decoder = new TextDecoder();
-
-        if (!data.done && data.value) {
-          const decodedChunk = decoder.decode(data.value, { stream: true });
-
-          let blob = new Blob([decodedChunk], { type: 'application/pdf' });
-          let url = window.URL.createObjectURL(blob)
-
-          window.open(url, "_blank");
-        } 
-      }    
+      if (res.status === 200) {
+        let blob = await res.blob();
+        FileSaver.saveAs(blob, "Receta médica.pdf");
+      }
 
       const response: IGetTreatmentPDFResponse = {
           data: obj.treatment,

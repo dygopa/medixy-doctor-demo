@@ -123,19 +123,17 @@ export default class MedicalConsultyUseCase {
 
         obj.medicalConsulty.treatments[0].subject = subject;
         
-        let urlPDF = await this._treatmentRepository.getTreatmentPDFReturnURL({doctor: obj.doctor, treatment: obj.medicalConsulty.treatments[0]})
+        //let urlPDF = await this._treatmentRepository.getTreatmentPDFReturnURL({doctor: obj.doctor, treatment: obj.medicalConsulty.treatments[0]})
 
-        urlPDF = urlPDF.replace("data:application/pdf;base64,", "");
+        // urlPDF = urlPDF.replace("data:application/pdf;base64,", "");
 
         await this._appointmentRepository.finishedAppointment({
           trataimentId: obj.medicalConsulty.treatments[0].id ?? null,
-          trataimentPDF: urlPDF ?? null,
           appointmentId: obj.appointmentId ? obj.appointmentId : "",
         })
       } else {
         await this._appointmentRepository.finishedAppointment({
           trataimentId: null,
-          trataimentPDF: null,
           appointmentId: obj.appointmentId ? obj.appointmentId : "",
         })
       }

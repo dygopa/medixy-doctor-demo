@@ -26,6 +26,7 @@ import { getMedicalRecordsHistory, getMedicalRecordsPhysical } from 'infrastruct
 import { nanoid } from 'nanoid';
 import * as QRCode from "qrcode";
 import nookies from 'nookies';
+import FileSaver from 'file-saver';
 
 export default interface IMedicalConsultyRepository {
   getMedicalConsultiesById(id:number): Promise<IMedicalConsulty | MedicalConsultyFailure>;
@@ -449,19 +450,10 @@ export class MedicalConsultyRepository implements IMedicalConsultyRepository {
 
       const res = await fetch(URL, requestOptions)
 
-      if (res.status === 200 && res.body) {
-        const data = await res.body.getReader().read();
-        const decoder = new TextDecoder();
-
-        if (!data.done && data.value) {
-          const decodedChunk = decoder.decode(data.value, { stream: true });
-
-          let blob = new Blob([decodedChunk], { type: 'application/pdf' });
-          let url = window.URL.createObjectURL(blob)
-
-          window.open(url, "_blank");
-        } 
-      }    
+      if (res.status === 200) {
+        let blob = await res.blob();
+        FileSaver.saveAs(blob, "Consulta médica.pdf");
+      }   
 
       const response: IGetMedicalConsultyPDFResponse = {
           data: obj.medicalConsulty,
