@@ -68,10 +68,12 @@ export default function Summary({
             {patient["segundoApellido"]}
           </p>
           <p className="font-light text-sm text-slate-500">
-            Edad: {getSubjectAge(patient["fechaNacimiento"])}{" "}
-            {getSubjectAgeType(patient["fechaNacimiento"]) === "years"
+            Edad: {getSubjectAge(patient["Sujetos"]["fechaNacimiento"])}{" "}
+            {getSubjectAgeType(patient["Sujetos"]["fechaNacimiento"]) ===
+            "years"
               ? "años"
-              : getSubjectAgeType(patient["fechaNacimiento"]) === "days"
+              : getSubjectAgeType(patient["Sujetos"]["fechaNacimiento"]) ===
+                "days"
               ? "días"
               : "meses"}
           </p>

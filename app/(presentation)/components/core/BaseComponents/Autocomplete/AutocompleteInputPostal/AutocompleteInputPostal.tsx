@@ -86,6 +86,7 @@ export default function AutocompleteInputPostal({
       className={className}
       activeSearch={false}
       onlyItemsAdd
+      isLoading={loading}
     />
   );
 }
