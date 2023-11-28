@@ -461,7 +461,7 @@ export default function Formulary() {
           )}
           {!errors.names && listOfErrors.includes("names") && (
             <div className="mt-1">
-              <span className="text-red-500 mt-1">Campo requerido</span>
+              <span className="text-red-500 mt-1">Debe escribir su nombre</span>
             </div>
           )}
         </div>
@@ -482,7 +482,9 @@ export default function Formulary() {
             {!errors.first_lastname &&
               listOfErrors.includes("first_lastname") && (
                 <div className="mt-1">
-                  <span className="text-red-500 mt-1">Campo requerido</span>
+                  <span className="text-red-500 mt-1">
+                    Debe escribir su apellido
+                  </span>
                 </div>
               )}
           </div>
@@ -509,11 +511,6 @@ export default function Formulary() {
           {errors.phone_number.length > 0 && (
             <div className="mt-1">
               <span className="text-red-500 mt-2">{errors.phone_number}</span>
-            </div>
-          )}
-          {!errors.phone_number && listOfErrors.includes("phone_number") && (
-            <div className="mt-1">
-              <span className="text-red-500 mt-1">Campo requerido</span>
             </div>
           )}
         </div>
@@ -553,7 +550,9 @@ export default function Formulary() {
           )}
           {!errors.email && listOfErrors.includes("email") && (
             <div className="mt-1">
-              <span className="text-red-500 mt-1">Campo requerido</span>
+              <span className="text-red-500 mt-1">
+                Debe escribir su correo electrónico
+              </span>
             </div>
           )}
         </div>

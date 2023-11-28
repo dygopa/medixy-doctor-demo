@@ -1,6 +1,7 @@
 import clsx from "clsx";
 import { ChangeEvent, KeyboardEvent, useEffect, useRef, useState } from "react";
 import { twMerge } from "tailwind-merge";
+import Loading from "../../Loading/Loading";
 import Button from "../Button";
 import { FormInput } from "../Form";
 import Lucide from "../Lucide";
@@ -29,6 +30,7 @@ interface IAutocompleteInputProps {
   showClearButton?: boolean;
   showCreateItem?: boolean;
   activeSearch?: boolean;
+  isLoading?: boolean;
 }
 
 export default function AutocompleteInput({
@@ -46,6 +48,7 @@ export default function AutocompleteInput({
   showClearButton = true,
   showCreateItem,
   activeSearch = true,
+  isLoading = false,
 }: IAutocompleteInputProps) {
   const [field, setField] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -195,11 +198,16 @@ export default function AutocompleteInput({
 
       <div
         className={twMerge([
-          "absolute w-full bg-white shadow-md py-2 z-50 max-h-[140px] overflow-y-auto",
+          "absolute w-full bg-white shadow-md z-50 max-h-[140px] overflow-y-auto",
           showDropdown ? "visible" : "invisible",
+          isLoading ? "py-0 pb-4" : "py-2",
         ])}
       >
-        {itemsList.length > 0 ? (
+        {isLoading ? (
+          <div className="w-full flex justify-center">
+            <Loading />
+          </div>
+        ) : itemsList.length > 0 ? (
           itemsList.map((itemShow: IAutocompleteValue) => (
             <button
               type="button"
@@ -228,7 +236,7 @@ export default function AutocompleteInput({
           ""
         )}
 
-        {field.length > 0 && showCreateItem && (
+        {field.length > 0 && showCreateItem && !isLoading && (
           <button
             type="button"
             className="py-2 hover:bg-gray-500 hover:bg-opacity-10 w-full text-left"

@@ -1,15 +1,18 @@
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import Link from "next/link";
 import { HiOutlineBell } from "react-icons/hi";
-import { DashboardContext, IDashboardContext } from "../context/DashboardContext";
+import {
+  DashboardContext,
+  IDashboardContext,
+} from "../context/DashboardContext";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { IUser } from "domain/core/entities/userEntity";
 import moment from "moment";
 import { actions } from "../MedicalConsultationList/context/MedicalConsultationListActions";
 
 export default function MedicalConsultationNext({ user }: { user: IUser }) {
-
-  const { state, actions, dispatch } = useContext<IDashboardContext>(DashboardContext);
+  const { state, actions, dispatch } =
+    useContext<IDashboardContext>(DashboardContext);
 
   const { data, loading, error, successful } = state.getLatestAppointment;
   const { getLatestAppointment } = actions;
@@ -19,7 +22,7 @@ export default function MedicalConsultationNext({ user }: { user: IUser }) {
   }, [user.userId]);
 
   const LoadingAppointment = () => {
-    return(
+    return (
       <div className="w-full h-full lg:flex md:flex sm:flex block justify-between items-start gap-4 p-5 bg-white rounded-md shadow-md">
         <div className="w-[10%] flex flex-col justify-start items-start">
           <span className="w-[2.5rem] h-[2.5rem] bg-yellow-200 text-yellow-500 rounded-md flex flex-col justify-center items-center text-xl">
@@ -30,13 +33,15 @@ export default function MedicalConsultationNext({ user }: { user: IUser }) {
           <p>Cargando...</p>
         </div>
       </div>
-    )
-  }
+    );
+  };
 
   const LastOne = () => {
-
-    let appointment:any = data !== null ? data : {}
-    let hour = moment(appointment["fechaReserva"]).utc().format("hh:mm a").toString()
+    let appointment: any = data !== null ? data : {};
+    let hour = moment(appointment["fechaReserva"])
+      .utc()
+      .format("hh:mm a")
+      .toString();
 
     return (
       <div className="w-full h-full lg:flex md:flex sm:flex block justify-between items-start gap-4 p-5 bg-white rounded-md shadow-md">
@@ -54,7 +59,7 @@ export default function MedicalConsultationNext({ user }: { user: IUser }) {
             <p className="font-medium text-base text-slate-900">{hour}</p>
           </div>
           <div className="mb-4 mt-2">
-            <p className="font-medium text-lg text-slate-900">
+            <p className="font-medium text-lg text-slate-900 text-ellipsis overflow-hidden whitespace-nowrap xl:max-w-[400px] lg:max-w-[300px] md:max-w-[300px] max-w-[300px]">
               {appointment["nombres"]} {appointment["primerApellido"]}
             </p>
             <p className="font-light text-sm text-slate-500">
@@ -63,14 +68,15 @@ export default function MedicalConsultationNext({ user }: { user: IUser }) {
             </p>
           </div>
           <Link
-          className='w-full'
-          href={{
-            pathname: "/medical-record/" + appointment["id"],
-            query: {
-              type: "appointment"
-            }
-          }}>
-            <Button variant='primary' className='w-full'>
+            className="w-full"
+            href={{
+              pathname: "/medical-record/" + appointment["id"],
+              query: {
+                type: "appointment",
+              },
+            }}
+          >
+            <Button variant="primary" className="w-full">
               Atender
             </Button>
           </Link>
@@ -100,10 +106,11 @@ export default function MedicalConsultationNext({ user }: { user: IUser }) {
     );
   };
 
-  return loading ? 
-    <LoadingAppointment/> 
-  : (successful && data) ? 
-    <LastOne/> 
-  : 
-    <EmptyState/>;
+  return loading ? (
+    <LoadingAppointment />
+  ) : successful && data ? (
+    <LastOne />
+  ) : (
+    <EmptyState />
+  );
 }
