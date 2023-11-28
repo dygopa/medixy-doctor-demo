@@ -32,7 +32,7 @@ export default interface IAppointmentRepository {
   getAppointmentById(appointmentId: string): Promise<IGetAppointmentResponse | AppointmentFailure>;
   editAppointmentStatus(obj: { appointmentId: string; status: number }): Promise<IUpdateAppointmentResponse | AppointmentFailure>;
   createAppointment(obj:any, now?:boolean): Promise<any | ScheduleFailure>;
-  finishedAppointment(obj: {trataimentId: number | null, trataimentPDF: string | null, appointmentId: string }): Promise<any | MedicalConsultyFailure>;
+  finishedAppointment(obj: {trataimentId: number | null, appointmentId: string }): Promise<any | MedicalConsultyFailure>;
 }
 
 export class AppointmentRepository implements IAppointmentRepository {
@@ -262,7 +262,7 @@ export class AppointmentRepository implements IAppointmentRepository {
       }
   }
 
-  async finishedAppointment(obj: {trataimentId: number | null, trataimentPDF: string | null, appointmentId: string }): Promise<any | MedicalConsultyFailure> {
+  async finishedAppointment(obj: {trataimentId: number | null, appointmentId: string }): Promise<any | MedicalConsultyFailure> {
     try {
 
       let cookies = nookies.get(undefined, 'access_token');
@@ -274,7 +274,6 @@ export class AppointmentRepository implements IAppointmentRepository {
 
       var raw = JSON.stringify({
         treatment_id: obj.trataimentId ?? null,
-        treatment_pdf: obj.trataimentPDF ?? null,
       });
 
       var requestOptions = {

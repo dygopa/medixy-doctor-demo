@@ -12,6 +12,7 @@ import { GET_MEDICAL_RECORDS_REPORT_ENDPOINT } from 'infrastructure/config/api/d
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import * as QRCode from "qrcode";
 import nookies from 'nookies';
+import FileSaver from 'file-saver';
 
 export default interface IMedicalRecordRepository {
   getMedicalRecords(obj: { 
@@ -229,19 +230,10 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       const res = await fetch(URL, requestOptions)
 
-      if (res.status === 200 && res.body) {
-        const data = await res.body.getReader().read();
-        const decoder = new TextDecoder();
-
-        if (!data.done && data.value) {
-          const decodedChunk = decoder.decode(data.value, { stream: true });
-
-          let blob = new Blob([decodedChunk], { type: 'application/pdf' });
-          let url = window.URL.createObjectURL(blob)
-
-          window.open(url, "_blank");
-        } 
-      }  
+      if (res.status === 200) {
+        let blob = await res.blob();
+        FileSaver.saveAs(blob, "Orden médica.pdf");
+      }
 
       const response: IGetMedicalRecordPDFResponse = {
           data: obj.medicalRecord,
@@ -277,19 +269,10 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       const res = await fetch(URL, requestOptions)
 
-      if (res.status === 200 && res.body) {
-        const data = await res.body.getReader().read();
-        const decoder = new TextDecoder();
-
-        if (!data.done && data.value) {
-          const decodedChunk = decoder.decode(data.value, { stream: true });
-
-          let blob = new Blob([decodedChunk], { type: 'application/pdf' });
-          let url = window.URL.createObjectURL(blob)
-
-          window.open(url, "_blank");
-        } 
-      }  
+      if (res.status === 200) {
+        let blob = await res.blob();
+        FileSaver.saveAs(blob, "Orden médica.pdf");
+      }
 
       const response: IGetMedicalRecordPDFResponse = {
           data: obj.medicalRecord,
@@ -325,19 +308,10 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       const res = await fetch(URL, requestOptions)
 
-      if (res.status === 200 && res.body) {
-        const data = await res.body.getReader().read();
-        const decoder = new TextDecoder();
-
-        if (!data.done && data.value) {
-          const decodedChunk = decoder.decode(data.value, { stream: true });
-
-          let blob = new Blob([decodedChunk], { type: 'application/pdf' });
-          let url = window.URL.createObjectURL(blob)
-
-          window.open(url, "_blank");
-        } 
-      }  
+      if (res.status === 200) {
+        let blob = await res.blob();
+        FileSaver.saveAs(blob, "Orden médica.pdf");
+      }
 
       const response: IGetMedicalRecordPDFResponse = {
           data: obj.medicalRecord,
@@ -373,19 +347,10 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       const res = await fetch(URL, requestOptions)
 
-      if (res.status === 200 && res.body) {
-        const data = await res.body.getReader().read();
-        const decoder = new TextDecoder();
-
-        if (!data.done && data.value) {
-          const decodedChunk = decoder.decode(data.value, { stream: true });
-
-          let blob = new Blob([decodedChunk], { type: 'application/pdf' });
-          let url = window.URL.createObjectURL(blob)
-
-          window.open(url, "_blank");
-        } 
-      }  
+      if (res.status === 200) {
+        let blob = await res.blob();
+        FileSaver.saveAs(blob, "Orden médica.pdf");
+      }
 
       const response: IGetMedicalRecordPDFResponse = {
           data: obj.medicalRecord,
@@ -421,19 +386,10 @@ export class MedicalRecordRepository implements IMedicalRecordRepository {
 
       const res = await fetch(URL, requestOptions)
 
-      if (res.status === 200 && res.body) {
-        const data = await res.body.getReader().read();
-        const decoder = new TextDecoder();
-
-        if (!data.done && data.value) {
-          const decodedChunk = decoder.decode(data.value, { stream: true });
-
-          let blob = new Blob([decodedChunk], { type: 'application/pdf' });
-          let url = window.URL.createObjectURL(blob)
-
-          window.open(url, "_blank");
-        } 
-      }      
+      if (res.status === 200) {
+        let blob = await res.blob();
+        FileSaver.saveAs(blob, "Orden médica.pdf");
+      }    
 
       const response: IGetMedicalRecordPDFResponse = {
           data: obj.medicalRecord,
