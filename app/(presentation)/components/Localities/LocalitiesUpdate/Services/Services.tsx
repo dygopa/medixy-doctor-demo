@@ -15,7 +15,6 @@ import {
   useMemo,
   useState,
 } from "react";
-import { FiCheck } from "react-icons/fi";
 import { NumericFormat } from "react-number-format";
 import { twMerge } from "tailwind-merge";
 import {
@@ -246,7 +245,7 @@ export default function Services({
                   isInList && "bg-green-500 border-green-500 text-white",
                 ])}
               >
-                <FiCheck />
+                <Lucide icon="check" color="#fff" />
               </button>
             </div>
           )}

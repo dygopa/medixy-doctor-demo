@@ -1,34 +1,43 @@
-import Image from "next/image"
-import { Dispatch, SetStateAction, useContext, useMemo } from "react"
-import { AiFillBuild } from "react-icons/ai"
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
+import Image from "next/image";
+import { Dispatch, SetStateAction, useContext, useMemo } from "react";
 import { NumericFormat } from "react-number-format";
 import { twMerge } from "tailwind-merge";
-import { IServicesContext, ServicesContext } from "../../../context/ServicesContext";
-
+import {
+  IServicesContext,
+  ServicesContext,
+} from "../../../context/ServicesContext";
 
 interface ITableProps {
-  services: any[], 
-  setServices: Dispatch<SetStateAction<any[]>>
+  services: any[];
+  setServices: Dispatch<SetStateAction<any[]>>;
 }
 
-export default function TableResponsive ({services, setServices} : ITableProps) {
+export default function TableResponsive({
+  services,
+  setServices,
+}: ITableProps) {
   const { state, actions, dispatch } =
     useContext<IServicesContext>(ServicesContext);
-  
-  const { data: localities, loading, successful } = state.getLocalitiesToService
-  
+
+  const {
+    data: localities,
+    loading,
+    successful,
+  } = state.getLocalitiesToService;
+
   useMemo(() => {
-    if(localities) {
-      let listServices: any[] = []
+    if (localities) {
+      let listServices: any[] = [];
       localities.map((elem) => {
-        elem.service && listServices.push(elem.service)
-      })
+        elem.service && listServices.push(elem.service);
+      });
 
-      setServices(listServices)
+      setServices(listServices);
     }
-  }, [localities, successful])
+  }, [localities, successful]);
 
-  const LocalityComponent = ({ data, index }: { data: any; index: any; }) => {
+  const LocalityComponent = ({ data, index }: { data: any; index: any }) => {
     return (
       <div className="bg-white border rounded-lg cursor-pointer">
         <div className="w-full h-40 bg-primary/40 text-primary flex justify-center items-center text-3xl">
@@ -41,7 +50,7 @@ export default function TableResponsive ({services, setServices} : ITableProps) 
               className="w-full h-full object-fill"
             />
           ) : (
-            <AiFillBuild />
+            <Lucide icon="at" />
           )}
         </div>
         <div className="p-4 flex flex-col justify-start items-start gap-2">
@@ -51,7 +60,9 @@ export default function TableResponsive ({services, setServices} : ITableProps) 
           <div className="text-left w-full">
             <p className="font-light text-gray-500 text-sm">Dirección</p>
             <p className="font-normal w-full text-gray-950 text-base truncate">
-              {data.address.postal_code ? data.address.postal_code : "No especificado"}
+              {data.address.postal_code
+                ? data.address.postal_code
+                : "No especificado"}
             </p>
           </div>
           <div className="text-left w-full">
@@ -70,23 +81,25 @@ export default function TableResponsive ({services, setServices} : ITableProps) 
                   thousandSeparator="."
                   decimalSeparator=","
                   onValueChange={(values, sourceInfo) => {
-                    const newList: any[] = []
-                    
-                    services.map((elem, i) => {
-                      if(i === index) {
-                        newList.push({
-                          ...elem,
-                          base_price: values.floatValue
-                          ? values.floatValue
-                          : 0,
-                        })
-                      } else {
-                        newList.push(elem)
-                      }
-                    },
+                    const newList: any[] = [];
 
-                    setServices(newList)
-                  )}}
+                    services.map(
+                      (elem, i) => {
+                        if (i === index) {
+                          newList.push({
+                            ...elem,
+                            base_price: values.floatValue
+                              ? values.floatValue
+                              : 0,
+                          });
+                        } else {
+                          newList.push(elem);
+                        }
+                      },
+
+                      setServices(newList)
+                    );
+                  }}
                   className={twMerge([
                     "disabled:bg-gray-300 text-left pl-5 disabled:cursor-not-allowed dark:disabled:bg-darkmode-800/50 dark:disabled:border-transparent text-gray-900 w-full",
                     "[&[readonly]]:bg-gray-300 [&[readonly]]:cursor-not-allowed [&[readonly]]:dark:bg-darkmode-800/50 [&[readonly]]:dark:border-transparent",
@@ -128,12 +141,12 @@ export default function TableResponsive ({services, setServices} : ITableProps) 
     );
   }
 
-  return(
+  return (
     <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-4 overflow-auto lg:overflow-visible z-0">
       {localities?.length > 0 &&
         localities.map((center, i) => (
           <LocalityComponent data={center} index={i} />
-      ))}
+        ))}
     </div>
-  )
+  );
 }

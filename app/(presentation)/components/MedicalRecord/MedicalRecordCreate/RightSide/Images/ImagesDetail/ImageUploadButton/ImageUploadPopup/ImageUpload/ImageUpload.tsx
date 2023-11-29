@@ -1,10 +1,10 @@
 import { b64toBlob } from "(presentation)/(helper)/files/filesHelper";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import { FormTextarea } from "(presentation)/components/core/BaseComponents/Form";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { IMedicalConsultyImage } from "domain/core/entities/medicalConsultyEntity";
 import Image from "next/image";
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
-import { BiImage } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 
 type valuesTypes = {
@@ -111,7 +111,7 @@ export default function ImageUpload({
                 "hover:bg-slate-200",
               ])}
             >
-              <BiImage size={60} />
+              <Lucide icon="image" size={60} color="#216AD9" />
             </div>
           </>
         )}

@@ -1,5 +1,4 @@
-import { FaRegCalendarAlt } from "react-icons/fa";
-import { FiBriefcase, FiMapPin } from "react-icons/fi";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 export const DataSelection = () => {
   return (
@@ -7,7 +6,7 @@ export const DataSelection = () => {
       <div className="w-full flex justify-start items-start gap-5 mb-3">
         <div className="w-[10%] relative flex flex-col justify-start items-center">
           <span className="w-9 h-9 border bg-white text-secondary rounded-md flex flex-col justify-center items-center">
-            <FiMapPin />
+            <Lucide icon="at" />
           </span>
         </div>
         <div className="w-[90%] relative flex flex-col justify-start items-start gap-2">
@@ -27,7 +26,7 @@ export const DataSelection = () => {
       <div className="w-full flex justify-start items-start gap-3">
         <div className="w-[10%] relative flex flex-col justify-start items-center">
           <span className="w-9 h-9 border bg-white text-secondary rounded-md flex flex-col justify-center items-center">
-            <FiBriefcase />
+            <Lucide icon="at" />
           </span>
         </div>
         <div className="w-[90%] relative flex flex-col justify-start items-start gap-2">
@@ -47,7 +46,7 @@ export const DataSelection = () => {
         <div className="flex w-full gap-3">
           <div className="w-[10%] relative flex flex-col justify-start items-center">
             <span className="w-9 h-9 border bg-white text-secondary rounded-md flex flex-col justify-center items-center">
-              <FaRegCalendarAlt />
+              <Lucide icon="at" />
             </span>
           </div>
           <div className="w-[90%] relative flex flex-col justify-start items-start gap-2">

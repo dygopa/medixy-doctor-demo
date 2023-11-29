@@ -9,14 +9,6 @@ import {
 } from "(presentation)/components/core/BaseComponents/Form";
 import Link from "next/link";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import {
-  FiBriefcase,
-  FiCheck,
-  FiHome,
-  FiLock,
-  FiUnlock,
-  FiUser,
-} from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import SpecialSearch from "(presentation)/components/core/SpecialSearch/SpecialSearch";
 import { IService } from "domain/core/entities/serviceEntity";

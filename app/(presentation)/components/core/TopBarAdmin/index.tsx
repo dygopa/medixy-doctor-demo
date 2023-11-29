@@ -2,8 +2,8 @@ import _ from "lodash";
 import Breadcrumb from "../BaseComponents/Breadcrumb";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { FiUser } from "react-icons/fi";
 import { IAdmin } from "domain/core/entities/adminEntity";
+import Lucide from "../BaseComponents/Lucide";
 
 interface INavigation {
   title: string;
@@ -42,7 +42,7 @@ function TopbarAdmin({
           <p className="font-light text-sm text-slate-500">Administrador</p>
         </div>
         <div className="w-[3rem] h-[3rem] flex flex-col justify-center items-center rounded-xl overflow-hidden p-0 bg-slate-300">
-          <FiUser />
+          <Lucide icon="at" />
         </div>
       </div>
     </div>

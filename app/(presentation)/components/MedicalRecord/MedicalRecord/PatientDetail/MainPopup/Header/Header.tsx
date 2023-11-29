@@ -42,7 +42,7 @@ export default function Header({
             router.push(getRedirectMedicalRecordCreate());
           }}
         >
-          <Lucide icon="X" color="#fff" size={30} />
+          <Lucide icon="close" color="#fff" size={30} />
         </button>
       </div>
     </div>

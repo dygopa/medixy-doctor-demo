@@ -17,7 +17,6 @@ import {
 import Loading from "(presentation)/components/core/Loading/Loading";
 import Link from "next/link";
 import { twMerge } from "tailwind-merge";
-import { FiUser } from "react-icons/fi";
 import { AppointmentEnum } from "(presentation)/(enum)/appointment/appointmentEnum";
 import { Menu, Transition } from "@headlessui/react";
 
@@ -109,7 +108,7 @@ const AppointmentComponent = ({
         >
           <div className="w-10 h-full flex flex-col justify-center items-start">
             <div className="w-10 h-10 rounded-lg bg-primary/20 text-primary flex flex-col justify-center items-center text-lg overflow-hidden">
-              <FiUser />
+              <Lucide icon="account" />
             </div>
           </div>
           <div className="w-[53%] h-full flex flex-col justify-between items-start overflow-hidden">

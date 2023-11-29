@@ -1,7 +1,6 @@
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { ICIE10 } from "domain/core/entities/cie10Entity";
 import { Dispatch, SetStateAction } from "react";
-import { AiFillStar, AiOutlineStar } from "react-icons/ai";
 
 type valuesTypes = {
   diagnose: ICIE10[];
@@ -47,7 +46,7 @@ export default function DiagnoseMobile({
       <div className="w-full flex justify-between items-center gap-4">
         <div className="w-full flex items-center gap-4">
           <div className="w-12 h-12 bg-primary/40 text-primary flex justify-center items-center rounded-md text-xl">
-            <Lucide icon="Activity" color="#22345F" size={25} />
+            <Lucide icon="medical-bag" color="#22345F" size={25} />
           </div>
 
           <div className="relative flex flex-col justify-center items-start">
@@ -66,14 +65,18 @@ export default function DiagnoseMobile({
             className="text-center flex justify-center w-full"
           >
             {!cie10.isPrincipal ? (
-              <AiOutlineStar
+              <Lucide
+                icon="star-outline"
                 className="text-2xl cursor-pointer text-yellow-500"
                 title="Principal"
+                color="rgb(234 179 8)"
               />
             ) : (
-              <AiFillStar
+              <Lucide
+                icon="star"
                 className="text-2xl cursor-pointer text-yellow-500"
                 title="Principal"
+                color="rgb(234 179 8)"
               />
             )}
           </button>
@@ -85,7 +88,7 @@ export default function DiagnoseMobile({
             onClick={() => onDeleteDiagnose(cie10)}
             className="text-center flex justify-center w-full"
           >
-            <Lucide icon="Trash2" color="#e11d48" size={25} />
+            <Lucide icon="trash-can-outline" color="#e11d48" size={25} />
           </button>
         </div>
       </div>

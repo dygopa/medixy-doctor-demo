@@ -44,13 +44,13 @@ export default function Navigator({
           type="button"
           className="w-[85%] lg:w-fit"
         >
-          <Lucide icon="Plus" className="w-5 h-5 mr-2" />
+          <Lucide icon="plus" color="#fff" className="w-5 h-5 mr-2" />
           Nueva cita
         </Button>
 
         <Menu as="div" className="relative inline-block text-left">
           <Menu.Button className="cursor-pointer w-10 h-10 flex flex-col justify-center items-center bg-primary/10 hover:bg-primary/20 transition rounded-md">
-            <Lucide icon="MoreVertical" className="h-5" />
+            <Lucide icon="cog" className="h-5" />
           </Menu.Button>
           <Transition
             as={Fragment}
@@ -73,7 +73,7 @@ export default function Navigator({
                           : `/schedule/configuration?locality=${selectedLocality["id"]}`
                       }
                     >
-                      <Lucide icon="Settings" className="w-5 h-5" />
+                      <Lucide icon="cog" className="w-5 h-5" />
                       Configurar agenda
                     </Link>
                   </div>

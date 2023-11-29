@@ -1,7 +1,6 @@
 import { InputHTMLAttributes, useEffect, useRef, useState } from "react";
-import { FaSpinner } from "react-icons/fa";
-import { FiCheck, FiEdit } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
+import Lucide from "../BaseComponents/Lucide";
 
 interface IJiraInputProps extends InputHTMLAttributes<any> {
   text: string;
@@ -63,10 +62,10 @@ export const JiraInput = ({
         >
           {loading ? (
             <p className="animate-spin p-2">
-              <FaSpinner />
+              <Lucide icon="at" />
             </p>
           ) : (
-            <FiCheck />
+            <Lucide icon="at" />
           )}
         </div>
       )}

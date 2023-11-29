@@ -1,5 +1,5 @@
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { INotification } from "domain/core/entities/notificationEntity";
-import { FiBell, FiX } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 
 const NotificationMessageView = ({
@@ -16,7 +16,7 @@ const NotificationMessageView = ({
             "w-[2.2rem] h-[2.2rem] text-[1rem] text-primary rounded bg-primary/20 p-[0.5rem]",
           ])}
         >
-          <FiBell />
+          <Lucide icon="at" />
         </div>
       </div>
       <div className="w-5/6 relative flex flex-col justify-center items-start">

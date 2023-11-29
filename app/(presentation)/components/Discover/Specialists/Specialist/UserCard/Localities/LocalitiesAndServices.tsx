@@ -1,11 +1,11 @@
 import { twMerge } from "tailwind-merge";
-import { BsCheckLg } from "react-icons/bs";
 import { Specialist } from "domain/core/entities/specialists/specialist";
 import { useContext, useMemo } from "react";
 import {
   ISpecialistsContext,
   SpecialistsContext,
 } from "../../../context/SpecialistsContext";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 function LocalitiesComponent({ specialist }: { specialist: Specialist }) {
   const { state, actions, dispatch } =
@@ -36,7 +36,7 @@ function LocalitiesComponent({ specialist }: { specialist: Specialist }) {
                 "w-7 h-7 border-[3px] border-secondary text-white text-[12px] rounded-full flex flex-col justify-center items-center",
               ])}
             >
-              <BsCheckLg />
+              <Lucide icon="at" />
             </span>
           </div>
           <div className="w-[92%] flex flex-col justify-center items-start gap-2">

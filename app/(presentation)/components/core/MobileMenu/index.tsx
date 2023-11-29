@@ -60,7 +60,8 @@ function Main() {
               }}
             >
               <Lucide
-                icon="BarChart2"
+                icon="chart-tree"
+                color="#fff"
                 className="w-8 h-8 text-white transform -rotate-90"
               />
             </Button>
@@ -88,7 +89,8 @@ function Main() {
               ])}
             >
               <Lucide
-                icon="XCircle"
+                icon="close"
+                color="#fff"
                 className="w-8 h-8 text-white transform -rotate-90"
               />
             </Button>
@@ -221,7 +223,7 @@ function Menu(props: {
       }}
     >
       <div>
-        <Lucide icon={props.menu.icon} />
+        <Lucide icon={props.menu.icon} color="#fff" />
       </div>
       <div className="flex items-center w-full ml-3">
         {props.menu.title}
@@ -232,7 +234,7 @@ function Menu(props: {
               props.menu.activeDropdown && "transform rotate-180",
             ])}
           >
-            <Lucide icon="ChevronDown" className="w-5 h-5" />
+            <Lucide icon="arrow-down" className="w-5 h-5" />
           </div>
         )}
       </div>

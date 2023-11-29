@@ -13,7 +13,6 @@ import {
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import { twMerge } from "tailwind-merge";
 import moment from "moment";
-import { FiUser } from "react-icons/fi";
 import Link from "next/link";
 import { AppointmentEnum } from "(presentation)/(enum)/appointment/appointmentEnum";
 import {
@@ -155,7 +154,7 @@ function AppointmentDetail({
             <div className="w-full flex gap-0">
               <div className="flex justify-center">
                 <div className="w-20 h-20 rounded-full bg-primary/20 text-primary flex flex-col justify-center items-center text-lg overflow-hidden">
-                  <FiUser />
+                  <Lucide icon="account" />
                 </div>
               </div>
               <div className="flex flex-col justify-center items-start gap-0 text-left ml-4">
@@ -183,7 +182,7 @@ function AppointmentDetail({
                 <div className="flex justify-end">
                   <Menu as="div" className="relative inline-block text-left">
                     <Menu.Button className="rounded-lg hover:bg-gray-100 p-1">
-                      <Lucide icon="MoreVertical" className="h-7" />
+                      <Lucide icon="dots-vertical" className="h-7" />
                     </Menu.Button>
                     <Transition
                       as={Fragment}
@@ -203,7 +202,10 @@ function AppointmentDetail({
                                 className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
                                 onClick={() => setShowRescheduleModal(true)}
                               >
-                                <Lucide icon="CalendarClock" size={20} />
+                                <Lucide
+                                  icon="calendar-clock-outline"
+                                  size={20}
+                                />
                                 Reagendar cita
                               </button>
                             </div>
@@ -227,7 +229,7 @@ function AppointmentDetail({
                                 }}
                               >
                                 <div>
-                                  <Lucide icon="XSquare" size={20} />
+                                  <Lucide icon="close-box-outline" size={20} />
                                 </div>
 
                                 <div>Cancelar cita</div>

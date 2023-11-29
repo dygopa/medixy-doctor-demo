@@ -3,15 +3,6 @@ import _ from "lodash";
 import Breadcrumb from "../BaseComponents/Breadcrumb";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import {
-  FiChevronLeft,
-  FiClipboard,
-  FiGlobe,
-  FiMail,
-  FiSend,
-  FiShare,
-  FiUser,
-} from "react-icons/fi";
 import { IUser } from "domain/core/entities/userEntity";
 import Image from "next/image";
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
@@ -43,6 +34,7 @@ import {
   StepByStepContext,
 } from "../StepByStepPopup/context/StepByStepContext";
 import { ConfigEnviroment } from "infrastructure/config/env/env";
+import Lucide from "../BaseComponents/Lucide";
 
 interface INavigation {
   title: string;
@@ -115,7 +107,7 @@ function Main({
                 copied ? "text-white" : "text-slate-900",
               ])}
             >
-              <FiClipboard />
+              <Lucide icon="clipboard-multiple-outline" />
             </span>
             {copied ? (
               <p className="text-xs text-white text-center">Enlace copiado</p>
@@ -135,7 +127,7 @@ function Main({
           ])}
         >
           <span className={twMerge(["text-xl", "text-slate-900"])}>
-            <FiGlobe />
+            <Lucide icon="arrow-up" />
           </span>
           <p className="text-xs text-slate-500 text-center">
             Ir al <br /> enlace
@@ -149,7 +141,7 @@ function Main({
             ])}
           >
             <span className={twMerge(["text-xl", "text-slate-900"])}>
-              <FiMail />
+              <Lucide icon="at" />
             </span>
             <p className="text-xs text-slate-500 text-center">Email</p>
           </div>
@@ -277,7 +269,7 @@ function Main({
               className="cursor-pointer transition h-[5rem] rounded-md flex flex-col justify-center items-center gap-1 bg-slate-100 hover:bg-slate-200"
             >
               <span className="text-xl text-slate-900">
-                <FiShare />
+                <Lucide icon="at" />
               </span>
               <p className="text-xs text-slate-500 text-center">
                 Compartir <br /> perfíl
@@ -334,7 +326,7 @@ function Main({
                 <div className="mr-2 lg:block hidden">
                   <p className="text-sm">Compartir link</p>
                 </div>
-                <FiSend />
+                <Lucide icon="send-variant" />
               </div>
             </button>
           )}
@@ -373,7 +365,7 @@ function Main({
                 className="w-[3rem] h-[3rem] rounded-md object-contain"
               />
             ) : (
-              <FiUser />
+              <Lucide icon="at" />
             )}
           </div>
         </button>

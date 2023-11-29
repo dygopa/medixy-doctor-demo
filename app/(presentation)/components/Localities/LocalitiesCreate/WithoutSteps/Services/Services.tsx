@@ -24,7 +24,6 @@ import {
   useRef,
   useState,
 } from "react";
-import { FiCheck } from "react-icons/fi";
 import { NumericFormat } from "react-number-format";
 import { twMerge } from "tailwind-merge";
 
@@ -289,7 +288,7 @@ export default function Services({
           }}
           variant="primary"
         >
-          <Lucide icon="Plus" className="mr-2" />
+          <Lucide icon="plus" className="mr-2" color="#fff" />
           {createUserLocalityLoading ? "Creando..." : "Crear Consultorio"}
         </Button>
       </div>
@@ -300,7 +299,7 @@ export default function Services({
         onClick={() => setStep(0)}
       >
         <div className="mr-2">
-          <Lucide icon="ChevronLeft" size={25} color="#216AD9" />
+          <Lucide icon="arrow-left" size={25} color="#216AD9" />
         </div>
 
         <div>

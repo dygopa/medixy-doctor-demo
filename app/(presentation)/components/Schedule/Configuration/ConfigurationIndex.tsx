@@ -15,7 +15,7 @@ export default function ConfigurationIndex({ user }: IConfigurationIndexProps) {
     <div className="container pt-8">
       <ScheduleProvider>
         <Navigator user={user} />
-        <Popup user={user} />
+        <Popup user={user} from={"SCHEDULE"} />
         <CalendarIndex user={user} />
       </ScheduleProvider>
     </div>

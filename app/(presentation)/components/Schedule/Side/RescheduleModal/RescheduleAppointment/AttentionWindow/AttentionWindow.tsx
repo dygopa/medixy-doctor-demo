@@ -1,5 +1,5 @@
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import moment from "moment";
-import { FiCheck } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 
 export default function AttentionWindow({
@@ -40,7 +40,7 @@ export default function AttentionWindow({
   let isActualHour = data["tipo"] === 2;
 
   if (!data.disponible) return <div />;
-  if (isBefore) return <div />
+  if (isBefore) return <div />;
 
   return (
     <div
@@ -65,7 +65,7 @@ export default function AttentionWindow({
               : "bg-transparent border-slate-300",
           ])}
         >
-          {isSelected && <FiCheck />}
+          {isSelected && <Lucide icon="check-circle-outline" color="#fff" />}
         </span>
       </div>
       <div className="w-full flex justify-between items-center">

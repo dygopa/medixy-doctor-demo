@@ -45,8 +45,8 @@ export default function Filters() {
               }}
             />
             <Lucide
-              icon="Search"
-              className="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
+              icon="magnify"
+              className="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3 mt-2"
             />
           </div>
 

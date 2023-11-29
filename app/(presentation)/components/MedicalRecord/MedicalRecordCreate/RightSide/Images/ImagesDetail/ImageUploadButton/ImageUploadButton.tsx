@@ -1,6 +1,6 @@
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { IMedicalConsultyImage } from "domain/core/entities/medicalConsultyEntity";
 import { ChangeEvent, Dispatch, SetStateAction, useRef, useState } from "react";
-import { BiImage } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 import ImageUploadPopup from "./ImageUploadPopup/ImageUploadPopup";
 
@@ -27,7 +27,7 @@ export default function ImageUpload({ values, setValues }: IImageUploadProps) {
               "hover:bg-slate-200",
             ])}
           >
-            <BiImage size={60} />
+            <Lucide icon="image" size={60} color="#216AD9" />
           </div>
         </div>
       </div>

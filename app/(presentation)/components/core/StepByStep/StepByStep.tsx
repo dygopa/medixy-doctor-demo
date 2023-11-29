@@ -1,12 +1,12 @@
 import Link from "next/link";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { FiArrowDown, FiArrowUp, FiCheck } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import {
   IStepByStepContext,
   StepByStepContext,
 } from "./context/StepByStepContext";
 import { IUser } from "domain/core/entities/userEntity";
+import Lucide from "../BaseComponents/Lucide";
 
 interface IStep {
   id: number;
@@ -73,7 +73,7 @@ export default function StepByStep({ user }: { user: IUser }) {
               ])}
             >
               {props.completed ? (
-                <FiCheck />
+                <Lucide icon="at" />
               ) : (
                 <p className="text-primary">{props.id + 1}</p>
               )}
@@ -82,12 +82,13 @@ export default function StepByStep({ user }: { user: IUser }) {
               {props.title}
             </p>
           </div>
-          <div 
-          onClick={() => {
-            setOpen(!open);
-          }}
-          className="w-7 h-7 flex justify-center items-center text-base text-slate-900">
-            {!open ? <FiArrowDown /> : <FiArrowUp />}
+          <div
+            onClick={() => {
+              setOpen(!open);
+            }}
+            className="w-7 h-7 flex justify-center items-center text-base text-slate-900"
+          >
+            {!open ? <Lucide icon="at" /> : <Lucide icon="at" />}
           </div>
         </div>
         <div
@@ -127,7 +128,9 @@ export default function StepByStep({ user }: { user: IUser }) {
           </p>
         </div>
         <div className="w-14 h-14 rounded-lg flex justify-center items-center bg-primary text-white p-3">
-          <p className="font-bold text-base">{steps.filter(elem => elem["completed"] === true).length}</p>
+          <p className="font-bold text-base">
+            {steps.filter((elem) => elem["completed"] === true).length}
+          </p>
           <p className="font-light text-base">/</p>
           <p className="font-light text-base">{steps.length}</p>
         </div>
@@ -135,33 +138,33 @@ export default function StepByStep({ user }: { user: IUser }) {
     );
   };
 
-  function formatListOfSteps(){
+  function formatListOfSteps() {
+    let list = data as any[];
+    let mappedList = [...list].map((elem) => elem["evento"]);
+    let l = steps.map((elem) => ({
+      ...elem,
+      completed: mappedList.includes(elem["step_enum"]),
+    }));
 
-    let list = data as any[]
-    let mappedList = [...list].map(elem => elem["evento"])
-    let l = steps.map(elem => ({
-        ...elem,
-        completed: mappedList.includes(elem["step_enum"]),
-      })
-    )
-
-    setSteps(l)
-    setCanShowHelp(mappedList.length < 3)
+    setSteps(l);
+    setCanShowHelp(mappedList.length < 3);
   }
-  
-  useMemo(()=>{
-    if(successful) formatListOfSteps()
-  },[successful])
+
+  useMemo(() => {
+    if (successful) formatListOfSteps();
+  }, [successful]);
 
   useEffect(() => {
-    if(user?.accountId) getSteps(user?.accountId)(dispatch);
+    if (user?.accountId) getSteps(user?.accountId)(dispatch);
   }, [user]);
 
   return (
-    <div className={twMerge([
-      "w-fit h-fit fixed bottom-5 right-5 flex flex-col justify-end items-center gap-4 z-[100]",
-      !canShowHelp && "hidden"
-    ])}>
+    <div
+      className={twMerge([
+        "w-fit h-fit fixed bottom-5 right-5 flex flex-col justify-end items-center gap-4 z-[100]",
+        !canShowHelp && "hidden",
+      ])}
+    >
       {activeHelper && (
         <div className="w-[20rem] max-h-[50vh] h-fit p-4 flex flex-col justify-start items-center gap-3 border border-slate-200 rounded-lg bg-white shadow-md overflow-hidden relative overflow-y-auto">
           <div className="w-full bg-primary rounded-md flex flex-col justify-center items-center gap-2 p-3 sticky top-0 z-20">
@@ -169,10 +172,14 @@ export default function StepByStep({ user }: { user: IUser }) {
               Completemos tu cuenta
             </p>
             <div className="w-full grid grid-cols-3 gap-2 justify-center items-center">
-              {steps.map(elem => <span className={twMerge([
-                "h-2 relative block",
-                elem["completed"] ? "bg-green-500" : "bg-white/20"
-              ])}></span>)}
+              {steps.map((elem) => (
+                <span
+                  className={twMerge([
+                    "h-2 relative block",
+                    elem["completed"] ? "bg-green-500" : "bg-white/20",
+                  ])}
+                ></span>
+              ))}
             </div>
           </div>
           {steps.map((elem, i) => (

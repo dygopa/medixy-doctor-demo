@@ -12,14 +12,10 @@ import {
 } from "(presentation)/components/core/BaseComponents/Form";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
-import { MdOutlineMedicalServices } from "react-icons/md";
-import {
-  b64toBlob,
-} from "(presentation)/(helper)/files/filesHelper";
-import {
-  ILocality,
-} from "domain/core/entities/localityEntity";
+import { b64toBlob } from "(presentation)/(helper)/files/filesHelper";
+import { ILocality } from "domain/core/entities/localityEntity";
 import { NumericFormat } from "react-number-format";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 interface IPropsFormulary {
   formData: {
@@ -31,29 +27,28 @@ interface IPropsFormulary {
     location: ILocality;
     locationId: number;
     media: {
+      data: string;
+      type: string;
+    };
+  };
+  setFormData: Dispatch<
+    SetStateAction<{
+      name: string;
+      description: string;
+      conditions: string;
+      base_price: number;
+      status: number;
+      location: ILocality;
+      locationId: number;
+      media: {
         data: string;
         type: string;
-    };
-  }
-  setFormData: Dispatch<SetStateAction<{
-    name: string;
-    description: string;
-    conditions: string;
-    base_price: number;
-    status: number;
-    location: ILocality;
-    locationId: number;
-    media: {
-        data: string;
-        type: string;
-    };
-  }>>
+      };
+    }>
+  >;
 }
 
-export default function Formulary({
-  formData,
-  setFormData,
-}: IPropsFormulary) {
+export default function Formulary({ formData, setFormData }: IPropsFormulary) {
   let avatarRef = useRef<HTMLInputElement>(null);
 
   const handleClickRef = () => avatarRef.current && avatarRef.current.click();
@@ -149,7 +144,7 @@ export default function Formulary({
                           "hover:bg-slate-200",
                         ])}
                       >
-                        <MdOutlineMedicalServices size={60} />
+                        <Lucide icon="image" size={60} color="#216AD9" />
                       </div>
                     </div>
                     <p className="text-[13px] text-slate-500 font-medium pt-2">
@@ -228,9 +223,7 @@ export default function Formulary({
                       onValueChange={(values, sourceInfo) =>
                         setFormData({
                           ...formData,
-                          base_price: values.floatValue
-                            ? values.floatValue
-                            : 0,
+                          base_price: values.floatValue ? values.floatValue : 0,
                         })
                       }
                       className={twMerge([

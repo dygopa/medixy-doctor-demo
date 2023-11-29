@@ -5,13 +5,13 @@ import {
 } from "(presentation)/(helper)/dates/datesHelper";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import Button from "(presentation)/components/core/BaseComponents/Button";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import {
   IScheduleContext,
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
 import moment from "moment";
 import { useContext, useEffect, useMemo, useState } from "react";
-import { FiUser } from "react-icons/fi";
 
 interface ISummaryProps {
   patient: any;
@@ -59,7 +59,7 @@ export default function Summary({
       <div className="w-full flex justify-start items-center gap-2 mb-8">
         <div className="flex justify-center items-center">
           <div className="w-20 h-20 rounded-lg bg-primary/20 text-primary flex flex-col justify-center items-center text-lg overflow-hidden">
-            <FiUser />
+            <Lucide icon="account" />
           </div>
         </div>
         <div className="flex flex-col justify-center items-start gap-1 text-left">

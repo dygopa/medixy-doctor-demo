@@ -1,7 +1,4 @@
 import clsx from "clsx";
-import { MdOutlineNotificationsActive } from "react-icons/md";
-import { BsCalendarDate } from "react-icons/bs";
-import { FiUser } from "react-icons/fi";
 import {
   DashboardContext,
   IDashboardContext,
@@ -9,6 +6,7 @@ import {
 import { useContext, useEffect, useMemo, useState } from "react";
 import { IUser } from "domain/core/entities/userEntity";
 import moment from "moment";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 export default function MedicalConsultationCalendar({ user }: { user: IUser }) {
   const { state } = useContext<IDashboardContext>(DashboardContext);
@@ -67,7 +65,7 @@ export default function MedicalConsultationCalendar({ user }: { user: IUser }) {
           label={"Citas pendientes hoy"}
         >
           <div className="w-12 h-12 flex justify-center items-center rounded-lg bg-yellow-200 text-yellow-800 text-xl">
-            <MdOutlineNotificationsActive />
+            <Lucide icon="at" />
           </div>
         </StatComponent>
         <StatComponent
@@ -79,7 +77,7 @@ export default function MedicalConsultationCalendar({ user }: { user: IUser }) {
           label={"Citas completadas"}
         >
           <div className="w-12 h-12 flex justify-center items-center rounded-lg bg-green-200 text-green-800 text-xl">
-            <BsCalendarDate />
+            <Lucide icon="at" />
           </div>
         </StatComponent>
         <StatComponent
@@ -87,7 +85,7 @@ export default function MedicalConsultationCalendar({ user }: { user: IUser }) {
           label={"Pacientes"}
         >
           <div className="w-12 h-12 flex justify-center items-center rounded-lg bg-red-200 text-red-800 text-xl">
-            <FiUser />
+            <Lucide icon="at" />
           </div>
         </StatComponent>
       </div>

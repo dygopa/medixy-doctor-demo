@@ -15,7 +15,6 @@ import {
   useEffect,
   useRef,
 } from "react";
-import { FiUser } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import { getCountriesDialCodeES } from "(presentation)/(helper)/intl/intlHelper";
 import moment from "moment";
@@ -35,6 +34,7 @@ import {
   MedicalRecordCreateContext,
 } from "(presentation)/components/MedicalRecord/MedicalRecordCreate/context/MedicalRecordCreateContext";
 import PhoneNumberInput from "(presentation)/components/core/BaseComponents/Inputs/PhoneNumberInput/PhoneNumberInput";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 interface IBasicDataProps {
   values: {
@@ -360,7 +360,7 @@ export default function BasicData({
                         "hover:bg-slate-200",
                       ])}
                     >
-                      <FiUser size={60} />
+                      <Lucide icon="image" size={60} color="#216AD9" />
                     </div>
                     <p className="text-[13px] text-slate-500 font-medium">
                       Recomendado (.png, .jpg, .jpeg)

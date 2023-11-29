@@ -9,6 +9,7 @@ import {
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
 import PhoneNumberInput from "(presentation)/components/core/BaseComponents/Inputs/PhoneNumberInput/PhoneNumberInput";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { ICountryLocation } from "domain/core/entities/countryEntity";
 import { IFederalEntity } from "domain/core/entities/federalEntitiesEntity";
 import { IMunicipality } from "domain/core/entities/municipalityEntity";
@@ -22,7 +23,6 @@ import {
   useEffect,
   useRef,
 } from "react";
-import { FiUser } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import {
   EditPatientContext,
@@ -320,7 +320,7 @@ export default function BasicData({
                     "hover:bg-slate-200",
                   ])}
                 >
-                  <FiUser size={60} />
+                  <Lucide icon="at" size={60} />
                 </div>
                 <p className="text-[13px] text-slate-500 font-medium">
                   Recomendado (.png, .jpg, .jpeg)

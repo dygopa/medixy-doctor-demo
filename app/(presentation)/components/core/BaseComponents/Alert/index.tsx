@@ -1,7 +1,6 @@
 import { twMerge } from "tailwind-merge";
-import { Transition } from "@headlessui/react";
-import { FiAlertCircle, FiCheckCircle, FiX } from "react-icons/fi";
 import { useMemo, useState } from "react";
+import Lucide from "../Lucide";
 
 type Variant = "success" | "error" | "warning";
 
@@ -45,9 +44,15 @@ const AlertComponent = ({ variant, show, description }: IAlertProps) => {
             variant === "error" && "text-red-500",
           ])}
         >
-          {variant === "success" && <FiCheckCircle />}
-          {variant === "warning" && <FiAlertCircle />}
-          {variant === "error" && <FiAlertCircle />}
+          {variant === "success" && (
+            <Lucide icon="check-circle-outline" color="rgb(34 197 94)" />
+          )}
+          {variant === "warning" && (
+            <Lucide icon="alert-circle-outline" color="rgb(234 179 8)" />
+          )}
+          {variant === "error" && (
+            <Lucide icon="alert-circle-outline" color="rgb(239 68 68)" />
+          )}
         </div>
         <div className="w-[85%] relative flex flex-col justify-center items-start">
           <p className="font-semibold text-base text-slate-900">
@@ -63,7 +68,7 @@ const AlertComponent = ({ variant, show, description }: IAlertProps) => {
           }}
           className="cursor-pointer relative flex justify-center items-center text-base text-slate-500"
         >
-          <FiX />
+          <Lucide icon="information-outline" />
         </div>
       </div>
     </div>

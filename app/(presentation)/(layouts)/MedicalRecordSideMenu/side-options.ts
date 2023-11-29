@@ -16,7 +16,7 @@ export const navigationOptions: FormattedMenu[] = [
         subMenu: undefined,
         title: "Mi Tablero",
         pathname: DashboardRoutesEnum.Dashboard,
-        icon: "LayoutDashboard",
+        icon: "home",
         ignore: false,
     },
     {
@@ -24,7 +24,7 @@ export const navigationOptions: FormattedMenu[] = [
         subMenu: undefined,
         title: "Citas",
         pathname: OrdersRoutesEnum.OrdersList,
-        icon: "Banknote",
+        icon: "calendar-blank",
         ignore: true,
     },
     {
@@ -32,7 +32,7 @@ export const navigationOptions: FormattedMenu[] = [
         subMenu: undefined,
         title: "Mi Agenda",
         pathname: ScheduleRoutesEnum.Schedule,
-        icon: "Calendar",
+        icon: "calendar-blank",
         ignore: false,
     },
     {
@@ -40,7 +40,7 @@ export const navigationOptions: FormattedMenu[] = [
         subMenu: undefined,
         title: "Mis Consultas",
         pathname: MedicalRecordRoutesEnum.MedicalRecordList,
-        icon: "FolderHeart",
+        icon: "medical-bag",
         ignore: false,
     },
     {
@@ -48,7 +48,7 @@ export const navigationOptions: FormattedMenu[] = [
         subMenu: undefined,
         title: "Mis Pacientes",
         pathname: PatientsRoutesEnum.PatientsList,
-        icon: "Contact",
+        icon: "account-group",
         ignore: false,
     },
     {
@@ -84,7 +84,7 @@ export const endNavigationOptions: FormattedMenu[] = [
         subMenu: undefined,
         title: "Configuración",
         pathname: SettingsRoutesEnum.Settings,
-        icon: "Settings",
+        icon: "cog",
         ignore: false,
     },
     {
@@ -92,7 +92,7 @@ export const endNavigationOptions: FormattedMenu[] = [
         subMenu: undefined,
         title: "Salir",
         pathname: AccountRoutesEnum.Logout,
-        icon: "LogOut",
+        icon: "logout",
         ignore: false,
     },
 ]

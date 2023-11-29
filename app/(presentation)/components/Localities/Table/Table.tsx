@@ -10,7 +10,6 @@ import {
   LocalitiesContext,
 } from "../context/LocalitiesContext";
 import { ILocality } from "domain/core/entities/localityEntity";
-import { AiFillBuild } from "react-icons/ai";
 import Image from "next/image";
 
 export default function Table({ user }: { user: IUser }) {
@@ -36,7 +35,7 @@ export default function Table({ user }: { user: IUser }) {
                 className="w-[3rem] h-[2.5rem] rounded-md"
               />
             ) : (
-              <AiFillBuild />
+              <Lucide icon="office-building-outline" />
             )}
           </div>
           <div className="relative flex flex-col justify-center items-start">

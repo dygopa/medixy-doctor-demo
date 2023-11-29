@@ -2,7 +2,6 @@
 
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { FiBell } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import Popup from "./Popup/Popup";
 import { IUser } from "domain/core/entities/userEntity";
@@ -16,6 +15,7 @@ import {
 } from "infrastructure/config/firebase/FirebaseConfig";
 import { INotification } from "domain/core/entities/notificationEntity";
 import NotificationToast from "../NotificationToast/NotificationToast";
+import Lucide from "../BaseComponents/Lucide";
 
 const NotificationPopup = ({ user }: { user: IUser }) => {
   const { actions, dispatch } = useContext<INotificationPopupContext>(
@@ -29,7 +29,8 @@ const NotificationPopup = ({ user }: { user: IUser }) => {
   const [hasPermission, setHasPermission] = useState(false);
 
   useEffect(() => {
-    if(("Notification" in window)) setHasPermission(Notification.permission === "granted");
+    if ("Notification" in window)
+      setHasPermission(Notification.permission === "granted");
   }, []);
 
   useEffect(() => {
@@ -69,22 +70,22 @@ const NotificationPopup = ({ user }: { user: IUser }) => {
   useEffect(() => {
     if (!user) return;
 
-    if (("Notification" in window)) {
+    if ("Notification" in window) {
       const unsubscribe = onMessageListener().then((payload) => {
-      console.log(payload);
-      setActiveDot(true);
-      setNotification({
-        show: true,
-        data: payload as INotification,
+        console.log(payload);
+        setActiveDot(true);
+        setNotification({
+          show: true,
+          data: payload as INotification,
+        });
+        getNotifications({
+          userId: user.accountId,
+        })(dispatch);
       });
-      getNotifications({
-        userId: user.accountId,
-      })(dispatch);
-    });
 
-    return () => {
-      unsubscribe.catch((err) => console.log("failed: ", err));
-    };
+      return () => {
+        unsubscribe.catch((err) => console.log("failed: ", err));
+      };
     }
   }, [user]);
 
@@ -112,7 +113,7 @@ const NotificationPopup = ({ user }: { user: IUser }) => {
           ) : (
             ""
           )}
-          <FiBell />
+          <Lucide icon="bell-outline" />
         </div>
 
         <Popup

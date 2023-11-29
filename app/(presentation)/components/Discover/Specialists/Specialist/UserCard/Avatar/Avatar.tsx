@@ -8,10 +8,10 @@ import React, {
 import { IUserCardContext, UserCardContext } from "../context/UserCardContext";
 import Image from "next/image";
 import { twMerge } from "tailwind-merge";
-import { FiUser } from "react-icons/fi";
 import { Specialist } from "domain/core/entities/specialists/specialist";
 import clsx from "clsx";
 import TooltipIndicator from "(presentation)/components/core/TooltipIndacator/tooltipIndicator";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 interface IAvatarProps {
   step: number;
@@ -163,7 +163,7 @@ const Avatar = ({ step, setStep, specialist, disabled }: IAvatarProps) => {
                 step === 1 && "bg-slate-200",
               ])}
             >
-              <FiUser size={60} />
+              <Lucide icon="image" size={60} color="#216AD9" />
             </div>
             {!disabled && (
               <p

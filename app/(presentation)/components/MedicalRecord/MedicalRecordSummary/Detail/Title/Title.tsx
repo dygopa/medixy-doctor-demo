@@ -57,7 +57,7 @@ export default function Title({ user, medicalConsulty }: ITitleProps) {
         <div className="flex items-center justify-end">
           <Menu as="div" className="relative inline-block text-left">
             <Menu.Button className="rounded-lg hover:bg-primary hover:bg-opacity-20 p-1 border border-primary">
-              <Lucide icon="MoreVertical" className="h-5" />
+              <Lucide icon="dots-vertical" className="h-5" />
             </Menu.Button>
             <Transition
               as={Fragment}
@@ -83,7 +83,7 @@ export default function Title({ user, medicalConsulty }: ITitleProps) {
                         }
                         className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
                       >
-                        <Lucide icon="FilePlus" size={20} />
+                        <Lucide icon="file-document-edit-outline" size={20} />
                         Generar PDF de la consulta
                       </button>
                     </div>
@@ -98,7 +98,7 @@ export default function Title({ user, medicalConsulty }: ITitleProps) {
                         onClick={() => setShowQrCodeModal(true)}
                         className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
                       >
-                        <Lucide icon="QrCode" size={20} />
+                        <Lucide icon="qrcode" size={20} />
                         Ver QR de la consulta
                       </button>
                     </div>

@@ -4,6 +4,7 @@ import {
 } from "(presentation)/(helper)/dates/datesHelper";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import Loading from "(presentation)/components/core/Loading/Loading";
 import {
   IScheduleContext,
@@ -11,7 +12,6 @@ import {
 } from "(presentation)/components/Schedule/context/ScheduleContext";
 import moment from "moment";
 import { useContext, useMemo, useState } from "react";
-import { FiCheck } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import AttentionWindow from "./AttentionWindow/AttentionWindow";
 
@@ -151,7 +151,7 @@ export default function RescheduleAppointment({
                 : "bg-transparent border-slate-300",
             ])}
           >
-            {isSelected && <FiCheck />}
+            {isSelected && <Lucide icon="check-circle-outline" color="#fff" />}
           </span>
         </div>
         <div className="w-full flex justify-between items-center">
