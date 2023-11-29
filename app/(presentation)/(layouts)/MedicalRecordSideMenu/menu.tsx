@@ -1,5 +1,4 @@
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
-import SideMenuTooltip from "(presentation)/components/core/SideMenuTooltip";
 import clsx from "clsx";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -49,7 +48,7 @@ export default function Menu(props: {
           })}
         >
           <div className="ml-2">
-            <Lucide icon={props.menu.icon} />
+            <Lucide icon={props.menu.icon} color="#fff" />
           </div>
         </div>
       </Link>

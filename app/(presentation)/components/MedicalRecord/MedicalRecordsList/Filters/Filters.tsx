@@ -46,8 +46,8 @@ export default function Filters() {
               }}
             />
             <Lucide
-              icon="Search"
-              className="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
+              icon="magnify"
+              className="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3 mt-2"
             />
           </div>
 
@@ -57,7 +57,11 @@ export default function Filters() {
               onClick={() => setShowFilters(!showFilters)}
               className="px-4"
             >
-              <Lucide icon="Filter" className="w-4 h-5" />
+              <Lucide
+                icon="filter"
+                className="w-4 h-5"
+                color={showFilters ? "#fff" : "#216AD9"}
+              />
             </Button>
           </div>
         </div>

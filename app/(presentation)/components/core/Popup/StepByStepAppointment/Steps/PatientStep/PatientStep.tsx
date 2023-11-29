@@ -13,7 +13,6 @@ import {
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import SpecialSearch from "(presentation)/components/core/SpecialSearch/SpecialSearch";
 import { twMerge } from "tailwind-merge";
-import { FiUser, FiX } from "react-icons/fi";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import moment from "moment";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
@@ -26,6 +25,7 @@ import { NameValidator } from "(presentation)/(validators)/nameValidator";
 import { LastNameValidator } from "(presentation)/(validators)/lastNameValidator";
 import { EmailValidator } from "(presentation)/(validators)/emailValidator";
 import { BirthDateValidator } from "(presentation)/(validators)/birthDateValidator";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 const PatientStep = ({
   user,
@@ -307,7 +307,7 @@ const PatientStep = ({
             ])}
           >
             <div className="w-12 h-12 overflow-hidden rounded-lg bg-primary/20 text-primary text-lg flex flex-col justify-center items-center">
-              <FiUser />
+              <Lucide icon="account" />
             </div>
             <div className="w-[90%] h-full flex flex-col justify-center items-start">
               <p className="font-semibold text-gray-950 text-[0.9rem]">
@@ -333,7 +333,7 @@ const PatientStep = ({
                 }}
                 className="cursor-pointer w-8 h-8 overflow-hidden rounded-lg bg-red-500/20 text-red-500 text-lg flex flex-col justify-center items-center"
               >
-                <FiX />
+                <Lucide icon="at" />
               </div>
             )}
           </div>

@@ -1,5 +1,4 @@
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
-import SideMenuTooltip from "(presentation)/components/core/SideMenuTooltip";
 import clsx from "clsx";
 import Link from "next/link";
 import { Dispatch, SetStateAction, useState } from "react";
@@ -48,7 +47,7 @@ export default function Menu(props: {
             "dark:text-slate-400": !props.menu.active && props.level == "first",
           })}
         >
-          <Lucide icon={props.menu.icon} />
+          <Lucide icon={props.menu.icon} color="#fff" />
         </div>
 
         <div
@@ -73,7 +72,7 @@ export default function Menu(props: {
                 { "transform rotate-180": props.menu.activeDropdown },
               ])}
             >
-              <Lucide className="w-4 h-4" icon="ChevronDown" />
+              <Lucide className="w-4 h-4" icon="arrow-down" />
             </div>
           )}
         </div>

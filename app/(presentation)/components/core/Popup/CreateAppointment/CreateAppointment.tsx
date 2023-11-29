@@ -9,7 +9,6 @@ import {
 } from "(presentation)/components/core/BaseComponents/Form";
 import Link from "next/link";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { FiBriefcase, FiCheck, FiHome, FiUser } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import SpecialSearch from "(presentation)/components/core/SpecialSearch/SpecialSearch";
 import { IService } from "domain/core/entities/serviceEntity";
@@ -22,6 +21,7 @@ import {
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
 import { ILocality } from "domain/core/entities/localityEntity";
+import Lucide from "../../BaseComponents/Lucide";
 
 function CreateAppointment({
   cancelFuntion,
@@ -178,7 +178,7 @@ function CreateAppointment({
                 : "bg-transparent border-slate-300",
             ])}
           >
-            {isSelected && <FiCheck />}
+            {isSelected && <Lucide icon="check-circle-outline" color="#fff" />}
           </span>
         </div>
         <div className="w-full flex justify-between items-center">
@@ -409,7 +409,7 @@ function CreateAppointment({
                 ])}
               >
                 <div className="w-12 h-12 overflow-hidden rounded-lg bg-primary/20 text-primary text-lg flex flex-col justify-center items-center">
-                  <FiUser />
+                  <Lucide icon="at" />
                 </div>
                 <div className="w-[90%] h-full flex flex-col justify-center items-start">
                   <p className="font-semibold text-gray-950 text-[0.9rem]">
@@ -441,7 +441,7 @@ function CreateAppointment({
               ])}
             >
               <div className="w-12 h-12 overflow-hidden rounded-lg bg-primary/20 text-primary text-lg flex flex-col justify-center items-center">
-                <FiHome />
+                <Lucide icon="at" />
               </div>
               <div className="w-[90%] h-full flex flex-col justify-center items-start">
                 <p className="font-semibold text-gray-950 text-[0.9rem]">
@@ -470,7 +470,7 @@ function CreateAppointment({
               ])}
             >
               <div className="w-12 h-12 overflow-hidden rounded-lg bg-primary/20 text-primary text-lg flex flex-col justify-center items-center">
-                <FiBriefcase />
+                <Lucide icon="at" />
               </div>
               <div className="w-[90%] h-full flex flex-col justify-center items-start">
                 <p className="font-semibold text-gray-950 text-[0.9rem]">
@@ -499,7 +499,7 @@ function CreateAppointment({
                 }}
               >
                 En otro momento
-                {!isNow && <FiCheck />}
+                {!isNow && <Lucide icon="check-circle-outline" color="#fff" />}
               </div>
 
               <div
@@ -514,7 +514,7 @@ function CreateAppointment({
                 }}
               >
                 Ahora mismo
-                {isNow && <FiCheck />}
+                {isNow && <Lucide icon="check-circle-outline" color="#fff" />}
               </div>
             </div>
             {!isNow && (
@@ -617,7 +617,7 @@ function CreateAppointment({
                 ])}
               >
                 <div className="w-12 h-12 overflow-hidden rounded-lg bg-primary/20 text-primary text-lg flex flex-col justify-center items-center">
-                  <FiUser />
+                  <Lucide icon="account" />
                 </div>
                 <div className="w-[90%] h-full flex flex-col justify-center items-start">
                   <p className="font-semibold text-gray-950 text-[0.9rem]">

@@ -5,12 +5,12 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { FiBriefcase, FiCheck, FiHome, FiPlus, FiUser } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import { Variants, motion } from "framer-motion";
 import { FormInput } from "../BaseComponents/Form";
 import Link from "next/link";
 import Button from "../BaseComponents/Button";
+import Lucide from "../BaseComponents/Lucide";
 
 interface SpecialSearchProps {
   selectedItem: any;
@@ -60,9 +60,11 @@ const ValueOnList = ({ customClick, data, isSelected }: ValueOnListProps) => {
       ])}
     >
       <div className="w-12 h-12 overflow-hidden rounded-lg bg-primary/20 text-primary text-lg flex flex-col justify-center items-center">
-        {data["type"] === "SERVICE" && <FiBriefcase />}
-        {data["type"] === "PATIENT" && <FiUser />}
-        {data["type"] === "LOCALITY" && <FiHome />}
+        {data["type"] === "SERVICE" && <Lucide icon="briefcase-outline" />}
+        {data["type"] === "PATIENT" && <Lucide icon="account" />}
+        {data["type"] === "LOCALITY" && (
+          <Lucide icon="office-building-outline" />
+        )}
       </div>
       <div className="w-[90%] h-full flex flex-col justify-center items-start">
         <p className="font-semibold text-gray-950 text-[0.9rem]">

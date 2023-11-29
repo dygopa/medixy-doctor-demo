@@ -6,7 +6,6 @@ import Button from "(presentation)/components/core/BaseComponents/Button";
 import SpecialSearch from "(presentation)/components/core/SpecialSearch/SpecialSearch";
 import React, { useContext, useMemo, useState } from "react";
 import { IService } from "domain/core/entities/serviceEntity";
-import { FiBriefcase, FiHome } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import { ILocality } from "domain/core/entities/localityEntity";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
@@ -15,6 +14,7 @@ import {
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
 import { IUser } from "domain/core/entities/userEntity";
+import Lucide from "../../BaseComponents/Lucide";
 
 export default function FiltersComponent({
   user,
@@ -145,7 +145,7 @@ export default function FiltersComponent({
               ])}
             >
               <div className="w-12 h-12 overflow-hidden rounded-lg bg-primary/20 text-primary text-lg flex flex-col justify-center items-center">
-                <FiHome />
+                <Lucide icon="at" />
               </div>
               <div className="w-[90%] h-full flex flex-col justify-center items-start">
                 <p className="font-semibold text-gray-950 text-[0.9rem]">
@@ -174,7 +174,7 @@ export default function FiltersComponent({
               ])}
             >
               <div className="w-12 h-12 overflow-hidden rounded-lg bg-primary/20 text-primary text-lg flex flex-col justify-center items-center">
-                <FiBriefcase />
+                <Lucide icon="at" />
               </div>
               <div className="w-[90%] h-full flex flex-col justify-center items-start">
                 <p className="font-semibold text-gray-950 text-[0.9rem]">

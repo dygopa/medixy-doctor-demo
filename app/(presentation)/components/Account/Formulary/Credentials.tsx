@@ -4,11 +4,9 @@ import {
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
-import { useCallback, useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { IUserContext, UserContext } from "../context/UserContext";
 import { IUser } from "domain/core/entities/userEntity";
-import { FiPlus, FiSave, FiTrash } from "react-icons/fi";
-import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { twMerge } from "tailwind-merge";
 import AutocompleteInputSpecialties from "(presentation)/components/core/BaseComponents/Autocomplete/AutocompleteInputSpecialties/AutocompleteInputSpecialties";
@@ -159,7 +157,8 @@ export default function Credentials({
         </div>
         <div className="relative grid grid-cols-3 items-center lg:justify-items-end justify-items-center lg:mt-0 mt-4">
           {!speciality["main_specialty"] ? (
-            <AiOutlineStar
+            <Lucide
+              icon="at"
               onClick={() => {
                 updateSpeciality({ ...speciality, main_specialty: true }),
                   setSpeciality({ ...speciality, main_specialty: true });
@@ -168,7 +167,8 @@ export default function Credentials({
               title="Principal"
             />
           ) : (
-            <AiFillStar
+            <Lucide
+              icon="at"
               onClick={() => {
                 updateSpeciality({ ...speciality, main_specialty: false }),
                   setSpeciality({ ...speciality, main_specialty: false });
@@ -177,7 +177,8 @@ export default function Credentials({
               title="Principal"
             />
           )}
-          <FiSave
+          <Lucide
+            icon="at"
             onClick={() => {
               if (canUpdate) {
                 updateSpeciality(speciality as Object);
@@ -190,7 +191,8 @@ export default function Credentials({
             ])}
             title="Guardar"
           />
-          <FiTrash
+          <Lucide
+            icon="at"
             onClick={() => {
               deleteSpeciality(speciality as Object);
             }}
@@ -411,7 +413,7 @@ export default function Credentials({
                     className="w-full flex justify-center items-center gap-2  font-base"
                     variant="outline-primary"
                   >
-                    <FiPlus />
+                    <Lucide icon="at" />
                     <p>Agregar</p>
                   </Button>
                 </div>

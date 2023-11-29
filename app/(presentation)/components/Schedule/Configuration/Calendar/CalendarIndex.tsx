@@ -12,8 +12,6 @@ import {
 } from "(presentation)/(layouts)/AppLayout/context/AuthContext";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import Link from "next/link";
-import { FiBriefcase, FiHome } from "react-icons/fi";
-import { AiFillBuild } from "react-icons/ai";
 import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { EventClickArg } from "@fullcalendar/core";
@@ -162,7 +160,7 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
         <div className="md:w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4">
           <div className="w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center">
             <span className="h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center">
-              <Lucide icon="Building" />
+              <Lucide icon="at" />
             </span>
           </div>
           <div className="w-full h-fit flex flex-col justify-center items-center gap-1 text-center px-2">
@@ -287,7 +285,7 @@ export default function CalendarIndex({ user }: ICalendarIndexProps) {
                     <div className="md:w-1/3 h-fit border rounded-md bg-white shadow-md p-5 flex flex-col justify-center items-center gap-4">
                       <div className="w-full min-h-16 h-16 max-h-16 flex flex-col justify-center items-center">
                         <span className="h-16 w-16 rounded-md bg-primary/20 text-primary text-xl overflow-hidden flex flex-col justify-center items-center">
-                          <Lucide icon="Building" />
+                          <Lucide icon="at" />
                         </span>
                       </div>
                       <div className="w-full h-fit flex flex-col justify-center items-center gap-1 text-center px-2">

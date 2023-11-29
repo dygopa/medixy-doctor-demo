@@ -234,13 +234,13 @@ const StepByStepPopup = ({ user }: IAlertProps) => {
             ])}
           >
             <Step props={steps[0]}>
-              <Lucide icon="Pencil" />
+              <Lucide icon="pencil" />
             </Step>
             <Step props={steps[1]}>
-              <Lucide icon="Building" />
+              <Lucide icon="office-building-outline" />
             </Step>
             <Step props={steps[2]}>
-              <Lucide icon="CalendarCheck" />
+              <Lucide icon="calendar-blank" />
             </Step>
           </div>
 

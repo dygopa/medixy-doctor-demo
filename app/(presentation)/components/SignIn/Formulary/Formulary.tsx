@@ -210,8 +210,9 @@ export default function Formulary() {
             }
           />
           <Lucide
-            icon="AtSign"
-            className="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
+            icon="email-outline"
+            color="#808080"
+            className="absolute inset-y-0 right-0 w-4 h-4 mt-3 mr-3"
           />
           {errors.email.length > 0 && (
             <div className="mt-1">
@@ -241,13 +242,15 @@ export default function Formulary() {
             }
           />
           <Lucide
-            icon="Lock"
-            className="absolute inset-y-0 right-0 w-4 h-4 my-auto mr-3"
+            icon="lock-outline"
+            color="#808080"
+            className="absolute inset-y-0 right-0 w-4 h-4 mt-3 mr-3"
           />
           <Lucide
-            icon={inputPassword === "text" ? "EyeOff" : "Eye"}
+            icon={inputPassword === "text" ? "eye-closed" : "eye-outline"}
+            color="#808080"
             className={twMerge([
-              "absolute inset-y-0 right-7 w-4 h-4 my-auto mr-3 cursor-pointer transition-all",
+              "absolute inset-y-0 right-7 w-4 h-4 mt-3 mr-3 cursor-pointer transition-all",
               inputPassword === "text" && "text-black",
             ])}
             onClick={(e: any) => {

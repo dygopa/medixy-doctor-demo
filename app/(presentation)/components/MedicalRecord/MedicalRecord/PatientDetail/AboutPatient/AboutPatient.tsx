@@ -2,7 +2,6 @@ import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
 import Image from "next/image";
 import { Dispatch, Fragment, SetStateAction, useContext } from "react";
-import { FiUser } from "react-icons/fi";
 import {
   IMedicalRecordContext,
   MedicalRecordContext,
@@ -91,7 +90,7 @@ export default function AboutPatient() {
             <div className="w-full flex justify-end">
               <Menu as="div" className="relative inline-block text-left">
                 <Menu.Button className="rounded-lg hover:bg-gray-100 p-1">
-                  <Lucide icon="MoreVertical" className="h-5" />
+                  <Lucide icon="dots-vertical" className="h-5" />
                 </Menu.Button>
                 <Transition
                   as={Fragment}
@@ -116,7 +115,7 @@ export default function AboutPatient() {
                               );
                             }}
                           >
-                            <Lucide icon="Pen" size={20} />
+                            <Lucide icon="square-edit-outline" size={20} />
                             Editar
                           </button>
                         </div>
@@ -137,7 +136,7 @@ export default function AboutPatient() {
                             }}
                           >
                             <div>
-                              <Lucide icon="Users" size={20} />
+                              <Lucide icon="account" size={20} />
                             </div>
 
                             <div>Contactos</div>

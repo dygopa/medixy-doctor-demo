@@ -55,7 +55,7 @@ export default function ImageUploadPopup({
         <div className="w-full px-4">
           <div className="w-full flex justify-end items-center">
             <Lucide
-              icon="X"
+              icon="close"
               size={25}
               onClick={(e) => setShowImageUploadPopup(false)}
               className="cursor-pointer"

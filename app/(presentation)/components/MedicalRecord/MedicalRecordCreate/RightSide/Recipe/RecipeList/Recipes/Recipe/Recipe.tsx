@@ -116,7 +116,7 @@ export default function Recipe({
             <div className="flex items-center">
               <div>
                 <Lucide
-                  icon="Pencil"
+                  icon="pencil"
                   color={
                     recipeEdit && recipeEdit.recipeId === recipe.recipeId
                       ? "#059669"
@@ -151,7 +151,7 @@ export default function Recipe({
               );
             }}
           >
-            <Lucide icon="Trash2" color="#e11d48" size={25} />
+            <Lucide icon="trash-can-outline" color="#e11d48" size={25} />
           </button>
         </div>
       </div>

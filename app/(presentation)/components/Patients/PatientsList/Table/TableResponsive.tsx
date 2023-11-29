@@ -89,7 +89,7 @@ export default function TableResponsive({ user }: ITableResponsiveProps) {
           >
             <div className="w-full flex items-center gap-4">
               <div className="w-12 h-12 bg-primary/40 text-primary flex justify-center items-center rounded-md text-xl">
-                <Lucide icon="User" />
+                <Lucide icon="account" />
               </div>
 
               <div className="relative flex flex-col justify-center items-start">

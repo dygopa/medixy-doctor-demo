@@ -15,7 +15,6 @@ import {
   useEffect,
   useRef,
 } from "react";
-import { FiUser } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import moment from "moment";
 import {
@@ -25,6 +24,7 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import PhoneNumberInput from "(presentation)/components/core/BaseComponents/Inputs/PhoneNumberInput/PhoneNumberInput";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 interface IBasicDataProps {
   values: {
@@ -351,7 +351,7 @@ export default function BasicData({
                         "hover:bg-slate-200",
                       ])}
                     >
-                      <FiUser size={60} />
+                      <Lucide icon="image" size={60} color="#216AD9" />
                     </div>
                     <p className="text-[13px] text-slate-500 font-medium">
                       Recomendado (.png, .jpg, .jpeg)

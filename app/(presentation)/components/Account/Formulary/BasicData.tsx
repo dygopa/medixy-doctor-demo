@@ -7,11 +7,6 @@ import { ChangeEvent, useContext, useRef, useEffect, useState } from "react";
 import { IUserContext, UserContext } from "../context/UserContext";
 import { twMerge } from "tailwind-merge";
 import { IUser } from "domain/core/entities/userEntity";
-import {
-  AuthContext,
-  IAuthContext,
-} from "(presentation)/(layouts)/AppLayout/context/AuthContext";
-import { FiUser } from "react-icons/fi";
 import moment from "moment/moment";
 import Image from "next/image";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
@@ -263,7 +258,7 @@ export default function BasicData({
                       "hover:bg-slate-200",
                     ])}
                   >
-                    <FiUser size={60} />
+                    <Lucide icon="account" size={60} />
                   </div>
                   <p className="text-[13px] text-slate-500 font-medium">
                     Recomendado (.png, .jpg, .jpeg)

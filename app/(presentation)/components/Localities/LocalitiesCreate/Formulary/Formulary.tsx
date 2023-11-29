@@ -14,8 +14,6 @@ import {
   ChangeEvent,
   useMemo,
 } from "react";
-import { FiCheck, FiCheckCircle, FiX } from "react-icons/fi";
-import { BiBuildingHouse } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
@@ -28,6 +26,7 @@ import {
   IStepByStepContext,
   StepByStepContext,
 } from "(presentation)/components/core/StepByStep/context/StepByStepContext";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 export default function Formulary({
   userId,
@@ -114,7 +113,7 @@ export default function Formulary({
           {active < data["value"] || active === data["value"] ? (
             data["value"] + 1
           ) : (
-            <FiCheck />
+            <Lucide icon="at" />
           )}
         </span>
         <p className="font-light text-slate-950 text-base">{data["title"]}</p>
@@ -171,7 +170,7 @@ export default function Formulary({
       >
         <div className="lg:w-[2.5rem] w-full flex justify-center">
           <span className="w-[2.5rem] h-[2.5rem] text-center rounded-md bg-primary/30 text-primary flex flex-col justify-center items-center text-lg lg:mb-0 mb-4">
-            <BiBuildingHouse />
+            <Lucide icon="at" />
           </span>
         </div>
         <div className="lg:w-[80%] flex flex-col justify-center items-start lg:mb-0 mb-4">
@@ -187,7 +186,7 @@ export default function Formulary({
                 "bg-green-500 border-green-500 text-white",
             ])}
           >
-            <FiCheck />
+            <Lucide icon="at" />
           </span>
         </div>
       </div>

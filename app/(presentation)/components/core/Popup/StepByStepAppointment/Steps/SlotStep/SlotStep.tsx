@@ -16,7 +16,6 @@ import {
 } from "../../context/StepByStepAppointmentContext";
 import moment from "moment";
 import { twMerge } from "tailwind-merge";
-import { FiCheck } from "react-icons/fi";
 import Loading from "(presentation)/components/core/Loading/Loading";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import { FormInput } from "(presentation)/components/core/BaseComponents/Form";
@@ -25,6 +24,7 @@ import {
   ScheduleContext,
 } from "(presentation)/components/Schedule/context/ScheduleContext";
 import { IUser } from "domain/core/entities/userEntity";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 const SlotStep = ({
   user,
@@ -153,7 +153,7 @@ const SlotStep = ({
                 : "bg-transparent border-slate-300",
             ])}
           >
-            {isSelected && <FiCheck />}
+            {isSelected && <Lucide icon="check-circle-outline" color="#fff" />}
           </span>
         </div>
         <div className="w-full flex justify-between items-center">
@@ -224,7 +224,7 @@ const SlotStep = ({
             }
           >
             En otro momento
-            {!isNow && <FiCheck />}
+            {!isNow && <Lucide icon="check-circle-outline" color="#fff" />}
           </div>
           <div
             className={twMerge([
@@ -244,7 +244,7 @@ const SlotStep = ({
             }
           >
             Ahora mismo
-            {isNow && <FiCheck />}
+            {isNow && <Lucide icon="check-circle-outline" color="#fff" />}
           </div>
         </div>
         {!isNow && (

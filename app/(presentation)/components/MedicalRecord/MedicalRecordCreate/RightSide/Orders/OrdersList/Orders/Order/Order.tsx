@@ -57,7 +57,7 @@ export default function Order({
             <div className="flex items-center">
               <div>
                 <Lucide
-                  icon="Pencil"
+                  icon="pencil"
                   color={
                     orderEdit && orderEdit.orderId === order.orderId
                       ? "#059669"
@@ -92,7 +92,7 @@ export default function Order({
             }}
             className="text-center flex justify-center w-full"
           >
-            <Lucide icon="Trash2" color="#e11d48" size={25} />
+            <Lucide icon="trash-can-outline" color="#e11d48" size={25} />
           </button>
         </div>
       </div>

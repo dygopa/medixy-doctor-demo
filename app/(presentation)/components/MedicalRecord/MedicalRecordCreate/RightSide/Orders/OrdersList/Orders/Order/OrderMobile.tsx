@@ -23,7 +23,11 @@ export default function OrderMobile({
       <div className="w-full flex justify-between items-center gap-4">
         <div className="w-full flex items-center gap-4">
           <div className="w-12 h-12 bg-primary/40 text-primary flex justify-center items-center rounded-md text-xl">
-            <Lucide icon="Activity" color="#22345F" size={25} />
+            <Lucide
+              icon="file-document-edit-outline"
+              color="#22345F"
+              size={25}
+            />
           </div>
 
           <div className="relative flex flex-col justify-center items-start">
@@ -55,7 +59,7 @@ export default function OrderMobile({
             <div className="flex items-center">
               <div>
                 <Lucide
-                  icon="Pencil"
+                  icon="pencil"
                   color={
                     orderEdit && orderEdit.orderId === order.orderId
                       ? "#059669"
@@ -90,7 +94,7 @@ export default function OrderMobile({
             }}
             className="text-center flex justify-center w-full"
           >
-            <Lucide icon="Trash2" color="#e11d48" size={25} />
+            <Lucide icon="trash-can-outline" color="#e11d48" size={25} />
           </button>
         </div>
       </div>

@@ -1,6 +1,5 @@
 import { twMerge } from "tailwind-merge";
 import { Transition } from "@headlessui/react";
-import { FiCheckCircle } from "react-icons/fi";
 import { useMemo, useState } from "react";
 import Button from "../Button";
 import Lucide from "../Lucide";
@@ -18,7 +17,16 @@ interface IAlertProps {
   onClickButtonSecondary?: Function;
 }
 
-const SuccessfulComponent = ({ tittle, variant, show, description, textButtonPrincipal, textButtonSecondary, onClickButtonPrincipal, onClickButtonSecondary }: IAlertProps) => {
+const SuccessfulComponent = ({
+  tittle,
+  variant,
+  show,
+  description,
+  textButtonPrincipal,
+  textButtonSecondary,
+  onClickButtonPrincipal,
+  onClickButtonSecondary,
+}: IAlertProps) => {
   const [isVisible, setIsVisible] = useState(false);
 
   useMemo(() => {
@@ -35,14 +43,19 @@ const SuccessfulComponent = ({ tittle, variant, show, description, textButtonPri
       <div className="w-[80%] md:w-[60%] lg:w-[60%] h-auto overflow-y-auto flex flex-col justify-between items-start bg-white lg:rounded-md p-6 gap-8">
         <div className="w-full px-4">
           <div className="mb-14 w-full flex justify-between items-center">
-              <p className="font-bold text-2xl text-slate-900">
-                {tittle}
-              </p>
-              <Lucide icon="X" size={25} onClick={(e) => {setIsVisible(false)}} className="cursor-pointer" />
+            <p className="font-bold text-2xl text-slate-900">{tittle}</p>
+            <Lucide
+              icon="at"
+              size={25}
+              onClick={(e) => {
+                setIsVisible(false);
+              }}
+              className="cursor-pointer"
+            />
           </div>
-        
+
           <div className="flex justify-center text-center mb-6">
-            <Lucide icon="CheckCircle" color="#00bb2b" size={60} />
+            <Lucide icon="at" color="#00bb2b" size={60} />
           </div>
 
           <div className=" text-center mb-14">
@@ -51,33 +64,40 @@ const SuccessfulComponent = ({ tittle, variant, show, description, textButtonPri
             </p>
           </div>
 
-          <div className={twMerge([
+          <div
+            className={twMerge([
               "items-center text-center justify-center mb-4",
-              textButtonSecondary && onClickButtonSecondary ? "lg:grid grid-cols-2 gap-4" : "w-full",
-            ])}  
+              textButtonSecondary && onClickButtonSecondary
+                ? "lg:grid grid-cols-2 gap-4"
+                : "w-full",
+            ])}
           >
-              { textButtonPrincipal && onClickButtonPrincipal &&
-                <div className="lg:mb-0 mb-4">
-                  <Button
-                      variant="primary"
-                      className={ textButtonSecondary && onClickButtonSecondary ? "w-full" : "w-auto" }
-                      onClick={() => onClickButtonPrincipal()}
-                  >
-                      {textButtonPrincipal}
-                  </Button>
-                </div>
-              }
-              { textButtonSecondary && onClickButtonSecondary &&
-                <div>
-                  <Button
-                      variant="outline-primary"
-                      className="w-full"
-                      onClick={() => onClickButtonSecondary()}
-                  >
-                      {textButtonSecondary}
-                  </Button>
-                </div>
-              }
+            {textButtonPrincipal && onClickButtonPrincipal && (
+              <div className="lg:mb-0 mb-4">
+                <Button
+                  variant="primary"
+                  className={
+                    textButtonSecondary && onClickButtonSecondary
+                      ? "w-full"
+                      : "w-auto"
+                  }
+                  onClick={() => onClickButtonPrincipal()}
+                >
+                  {textButtonPrincipal}
+                </Button>
+              </div>
+            )}
+            {textButtonSecondary && onClickButtonSecondary && (
+              <div>
+                <Button
+                  variant="outline-primary"
+                  className="w-full"
+                  onClick={() => onClickButtonSecondary()}
+                >
+                  {textButtonSecondary}
+                </Button>
+              </div>
+            )}
           </div>
         </div>
       </div>

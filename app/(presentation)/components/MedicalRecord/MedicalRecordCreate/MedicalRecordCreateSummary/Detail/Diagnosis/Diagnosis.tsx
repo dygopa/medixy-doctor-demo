@@ -1,6 +1,6 @@
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { IDiagnosis } from "domain/core/entities/diagnosis";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
-import { AiFillStar } from "react-icons/ai";
 
 interface IDiagnosisProps {
   medicalConsulty: IMedicalConsulty;
@@ -25,9 +25,11 @@ export default function Diagnosis({ medicalConsulty }: IDiagnosisProps) {
 
               {diagnose.isPrincipal && (
                 <div>
-                  <AiFillStar
+                  <Lucide
+                    icon="star"
                     className="text-2xl cursor-pointer text-yellow-500"
                     title="Principal"
+                    color="rgb(234 179 8)"
                   />
                 </div>
               )}

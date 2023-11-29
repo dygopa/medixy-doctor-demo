@@ -3,13 +3,14 @@ import {
   FormInput,
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
-import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { useCallback, useContext, useEffect, useMemo, useState } from "react";
 import { IUser } from "domain/core/entities/userEntity";
-import { FiPlus, FiSave, FiTrash } from "react-icons/fi";
-import { AiOutlineStar, AiFillStar } from "react-icons/ai";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
-import { IUserContext, UserContext } from "(presentation)/components/Account/context/UserContext";
+import {
+  IUserContext,
+  UserContext,
+} from "(presentation)/components/Account/context/UserContext";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 export default function Credentials() {
   return (
@@ -37,10 +38,7 @@ export default function Credentials() {
               <p className="text-[13px] w-fit text-slate-900 font-medium mb-2">
                 Especialidad
               </p>
-              <FormSelect
-                value=""
-                className="form-control w-full"
-              >
+              <FormSelect value="" className="form-control w-full">
                 <option value="">-</option>
               </FormSelect>
             </div>
@@ -79,7 +77,7 @@ export default function Credentials() {
                 className="w-full flex justify-center items-center gap-2 text-white font-base"
                 variant="success"
               >
-                <FiPlus />
+                <Lucide icon="at" />
                 <p>Agregar</p>
               </Button>
             </div>

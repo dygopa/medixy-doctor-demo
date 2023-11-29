@@ -1,15 +1,12 @@
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import { IUser } from "domain/core/entities/userEntity";
 import Image from "next/image";
-import { FiUser } from "react-icons/fi";
 
 interface IBasicDataProps {
   doctor: IUser | null;
 }
 
-export default function BasicData({
-  doctor
-}: IBasicDataProps) {
-
+export default function BasicData({ doctor }: IBasicDataProps) {
   return (
     <div className="w-full bg-white shadow-xl shadow-slate-100 rounded-md h-fit p-7">
       <div className="w-full flex flex-wrap justify-between items-center gap-6 relative">
@@ -25,23 +22,19 @@ export default function BasicData({
               type="file"
               className="hidden"
             />
-            <div
-              className="transition w-[10rem] h-[10rem] rounded-full border flex flex-col justify-center items-center"
-            >
-              { doctor?.avatar && doctor?.avatar.length > 0 ? 
-                <div
-                  className="w-[10rem] h-[10rem] relative flex justify-center rounded-full"
-                >
+            <div className="transition w-[10rem] h-[10rem] rounded-full border flex flex-col justify-center items-center">
+              {doctor?.avatar && doctor?.avatar.length > 0 ? (
+                <div className="w-[10rem] h-[10rem] relative flex justify-center rounded-full">
                   <Image
-                  className="object-cover rounded-full "
-                  src={doctor?.avatar}
-                  alt=""
-                  fill
+                    className="object-cover rounded-full "
+                    src={doctor?.avatar}
+                    alt=""
+                    fill
                   />
                 </div>
-              :
-                <FiUser size={60} />
-              }
+              ) : (
+                <Lucide icon="at" size={60} />
+              )}
             </div>
           </div>
           <div className="lg:w-[70%] grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 justify-start items-center gap-3 lg:mt-0 mt-6">
@@ -49,31 +42,41 @@ export default function BasicData({
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
                 Nombre(s)
               </p>
-              {doctor?.names && doctor?.names.length > 0 ? doctor?.names : "No especificado"}
+              {doctor?.names && doctor?.names.length > 0
+                ? doctor?.names
+                : "No especificado"}
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1 mb-2">
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
                 Apellido paterno
               </p>
-              {doctor?.firstName && doctor?.firstName.length > 0 ? doctor?.firstName : "No especificado"}
+              {doctor?.firstName && doctor?.firstName.length > 0
+                ? doctor?.firstName
+                : "No especificado"}
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1 mb-2">
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
                 Apellido materno
               </p>
-              {doctor?.lastName && doctor?.lastName.length > 0 ? doctor?.lastName : "No especificado"}
+              {doctor?.lastName && doctor?.lastName.length > 0
+                ? doctor?.lastName
+                : "No especificado"}
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1 mb-2">
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
                 CURP
               </p>
-              {doctor?.curp && doctor?.curp.length > 0 ? doctor?.curp : "No especificado"}
+              {doctor?.curp && doctor?.curp.length > 0
+                ? doctor?.curp
+                : "No especificado"}
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1 mb-2">
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
                 Fecha de nacimiento
               </p>
-              {doctor?.birthDate && doctor?.birthDate.length > 0 ? doctor?.birthDate : "No especificado"}
+              {doctor?.birthDate && doctor?.birthDate.length > 0
+                ? doctor?.birthDate
+                : "No especificado"}
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1 mb-2">
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
@@ -85,13 +88,17 @@ export default function BasicData({
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
                 País nacimiento
               </p>
-              {doctor?.country && doctor?.country.length > 0 ? doctor?.country : "No especificado"}
+              {doctor?.country && doctor?.country.length > 0
+                ? doctor?.country
+                : "No especificado"}
             </div>
             <div className="flex flex-col justify-between items-start relative gap-1 mb-2">
               <p className="text-[13px] w-fit text-slate-900 font-semibold">
                 Email
               </p>
-              {doctor?.email && doctor?.email.length > 0 ? doctor?.email : "No especificado"}
+              {doctor?.email && doctor?.email.length > 0
+                ? doctor?.email
+                : "No especificado"}
             </div>
           </div>
         </div>

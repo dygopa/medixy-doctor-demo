@@ -12,7 +12,6 @@ import {
   Dispatch,
   SetStateAction,
 } from "react";
-import { BiBuilding } from "react-icons/bi";
 import { twMerge } from "tailwind-merge";
 import Button from "(presentation)/components/core/BaseComponents/Button";
 import {
@@ -30,6 +29,7 @@ import AlertComponent from "(presentation)/components/core/BaseComponents/Alert"
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
 import { LocalitiesRoutesEnum } from "(presentation)/(routes)/localitiesRoutes";
 import { useRouter } from "next/navigation";
+import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 
 export default function Formulary({
   userId,
@@ -383,7 +383,7 @@ export default function Formulary({
                             "hover:bg-slate-200",
                           ])}
                         >
-                          <BiBuilding size={60} />
+                          <Lucide icon="image" size={60} color="#216AD9" />
                         </div>
                       </div>
                       <p className="text-[13px] text-slate-500 font-medium pt-2">

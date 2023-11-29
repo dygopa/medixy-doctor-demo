@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
-import { FiBell, FiX } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import NotificationMessageView from "./Notification/Notification";
 import {

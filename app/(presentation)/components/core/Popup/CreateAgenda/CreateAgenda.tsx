@@ -4,7 +4,6 @@ import {
   FormSelect,
 } from "(presentation)/components/core/BaseComponents/Form";
 import React, { useContext, useEffect, useMemo, useState } from "react";
-import { FiBriefcase, FiCheck, FiHelpCircle, FiHome } from "react-icons/fi";
 import { twMerge } from "tailwind-merge";
 import moment from "moment";
 import { useSearchParams, useRouter } from "next/navigation";
@@ -708,7 +707,7 @@ function CreateAgenda({
           className="cursor-pointer text-primary rounded-md w-fit h-fit flex justify-end items-center text-sm font-normal gap-2"
         >
           <p className="text-end">Necesito ayuda</p>
-          <FiHelpCircle />
+          <Lucide icon="help-circle-outline" color="#216AD9" />
         </div>
       </div>
       <div className="w-full flex flex-col justify-center items-center gap-5">
@@ -771,7 +770,9 @@ function CreateAgenda({
                 key={i}
               >
                 {elem["title"]}
-                {formData["type"] === elem["value"] && <FiCheck />}
+                {formData["type"] === elem["value"] && (
+                  <Lucide icon="check-circle-outline" color="#fff" />
+                )}
               </div>
             ))}
           </div>
@@ -918,7 +919,7 @@ function CreateAgenda({
             <div className="transition w-full h-auto p-3 flex flex-col justify-center items-start border rounded-md relative border-slate-300 bg-slate-100">
               <div className="flex items-center">
                 <div>
-                  <Lucide icon="AlertCircle" color="#216AD9" size={25} />
+                  <Lucide icon="at" color="#216AD9" size={25} />
                 </div>
 
                 <div className="ml-2">
@@ -950,7 +951,7 @@ function CreateAgenda({
                 >
                   {isSelected && (
                     <span className="w-5 h-5 bg-green-500 rounded-full flex justify-center items-center text-white text-xs absolute top-2 right-2">
-                      <FiCheck />
+                      <Lucide icon="check" color="#fff" />
                     </span>
                   )}
                   <p className="font-medium text-sm text-slate-900">

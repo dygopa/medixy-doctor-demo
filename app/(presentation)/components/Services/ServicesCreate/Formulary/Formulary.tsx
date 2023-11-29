@@ -19,7 +19,6 @@ import {
   ServicesContext,
 } from "../../context/ServicesContext";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
-import { MdOutlineMedicalServices } from "react-icons/md";
 import Image from "next/image";
 import { b64toBlob } from "(presentation)/(helper)/files/filesHelper";
 import SuccessfulComponent from "(presentation)/components/core/BaseComponents/Successful";
@@ -336,7 +335,7 @@ export default function Formulary({
                             "hover:bg-slate-200",
                           ])}
                         >
-                          <MdOutlineMedicalServices size={60} />
+                          <Lucide icon="at" size={60} />
                         </div>
                       </div>
                       <p className="text-[13px] text-slate-500 font-medium pt-2">

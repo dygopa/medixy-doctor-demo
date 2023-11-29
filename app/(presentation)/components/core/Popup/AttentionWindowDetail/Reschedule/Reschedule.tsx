@@ -5,7 +5,6 @@ import { twMerge } from "tailwind-merge";
 import RescheduleAppointment from "./RescheduleAppointment/RescheduleAppointment";
 import SucessfulMessage from "./SucessfulMessage/SucessfulMessage";
 import Summary from "./Summary/Summary";
-import { FiChevronLeft } from "react-icons/fi";
 
 interface RescheduleModalProps {
   appointment: any;
@@ -31,7 +30,7 @@ export default function Reschedule({
             }}
             className="cursor-pointer text-lg text-slate-900"
           >
-            <FiChevronLeft />
+            <Lucide icon="at" />
           </span>
           <p className="font-bold text-2xl text-slate-900">Reagendar cita</p>
         </div>
