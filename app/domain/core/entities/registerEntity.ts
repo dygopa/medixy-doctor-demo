@@ -11,4 +11,5 @@ export interface IRegister{
     state_id: number,
     municipality_id: number,
     locality_is_virtual: boolean,
+    is_supplier: true
 }

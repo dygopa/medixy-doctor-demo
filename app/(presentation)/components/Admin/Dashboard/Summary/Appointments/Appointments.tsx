@@ -19,6 +19,6 @@ export default function Appointments() {
   if (loading || error) return <div />;
 
   return (
-    <SummaryItem title="Total de citas" quantity={data} icon="CalendarCheck" />
+    <SummaryItem title="Total de citas" quantity={data} icon="calendar-blank" />
   );
 }

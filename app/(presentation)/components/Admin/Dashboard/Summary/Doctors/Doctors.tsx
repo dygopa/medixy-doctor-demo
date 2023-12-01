@@ -22,7 +22,7 @@ export default function Doctors() {
     <SummaryItem
       title="Cantidad de doctores"
       quantity={data}
-      icon="HeartPulse"
+      icon="medical-bag"
     />
   );
 }

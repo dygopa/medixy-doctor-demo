@@ -15,7 +15,7 @@ export default function DashboardIndex({ user }: IDashboardIndexProps) {
     <div className="py-8">
       <DashboardProvider>
         <ScheduleProvider>
-          <Popup user={user} />
+          <Popup user={user} from={"SCHEDULE"} />
           <DoctorsCase account={user} />
         </ScheduleProvider>
       </DashboardProvider>

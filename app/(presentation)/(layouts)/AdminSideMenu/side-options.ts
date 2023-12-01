@@ -3,6 +3,7 @@ import { AdminAccountRoutesEnum } from "(presentation)/(routes)/admin/accountRou
 import { AdminDashboardRoutesEnum } from "(presentation)/(routes)/admin/dashboardRoutes";
 import { AdminDoctorsRoutesEnum } from "(presentation)/(routes)/admin/doctorsRoutes";
 import { AdminMetricsRoutesEnum } from "(presentation)/(routes)/admin/metricsRoutes";
+import { AdminMedicalCentersRoutesEnum } from "(presentation)/(routes)/admin/medicalCentersRoutes";
 
 export const navigationOptions: FormattedMenu[] = [
     {
@@ -10,7 +11,7 @@ export const navigationOptions: FormattedMenu[] = [
         subMenu: undefined,
         title: "Tablero",
         pathname: AdminDashboardRoutesEnum.Dashboard,
-        icon: "LayoutDashboard",
+        icon: "home",
         ignore: false,
     },
     {
@@ -18,7 +19,7 @@ export const navigationOptions: FormattedMenu[] = [
         subMenu: undefined,
         title: "Métricas",
         pathname: AdminMetricsRoutesEnum.Metrics,
-        icon: "BarChart4",
+        icon: "chart-tree",
         ignore: false,
     },
     {
@@ -26,7 +27,15 @@ export const navigationOptions: FormattedMenu[] = [
         subMenu: undefined,
         title: "Doctores",
         pathname: AdminDoctorsRoutesEnum.DoctorsList,
-        icon: "HeartPulse",
+        icon: "medical-bag",
+        ignore: false,
+    },
+    {
+        active: false,
+        subMenu: undefined,
+        title: "Centros",
+        pathname: AdminMedicalCentersRoutesEnum.MedicalCentersList,
+        icon: "office-building-outline",
         ignore: false,
     },
 ]
@@ -38,7 +47,7 @@ export const endNavigationOptions: FormattedMenu[] = [
         subMenu: undefined,
         title: "Salir",
         pathname: AdminAccountRoutesEnum.Logout,
-        icon: "LogOut",
+        icon: "logout",
         ignore: false,
     },
 ]

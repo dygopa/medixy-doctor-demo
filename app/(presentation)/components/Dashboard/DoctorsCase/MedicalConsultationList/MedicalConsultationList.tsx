@@ -143,7 +143,7 @@ export default function MedicalConsultationList({ user }: { user: IUser }) {
             type="button"
             className="w-[85%] lg:w-fit my-4"
           >
-            <Lucide icon="at" className="w-5 h-5 mr-2" />
+            <Lucide icon="plus" color="#fff" className="w-5 h-5 mr-2" />
             Nueva consulta
           </Button>
         </div>
