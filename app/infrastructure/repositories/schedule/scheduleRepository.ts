@@ -4,6 +4,7 @@ import { CREATE_ATTENTION_WINDOW_ENDPOINT, GET_CATEGORIES_SERVICES_ENDPOINT, REG
 import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import moment from 'moment';
 import { AppointmentEnum } from '(presentation)/(enum)/appointment/appointmentEnum';
+import { StatusEnum } from '(presentation)/(enum)/status/statusEnum';
 
 export default interface IScheduleRepository {
     getCalendarEvents(id:number, localityId:number, sinceDate:any, untilDate:any, serviceId?:number): Promise<any[] | ScheduleFailure>;
@@ -57,7 +58,7 @@ export class ScheduleRepository implements IScheduleRepository {
             let windowAttentionId = resServiciosEnVentanasAtencion.data![0]["ventanaAtencionBaseId"].toString()
 
             let queryVentanasAtencion = supabase.from("VentanasAtencion")
-            .select(`*`).in("ventanaAtencionBaseId", resServiciosEnVentanasAtencion.data!.map((elem:any)=> elem["ventanaAtencionBaseId"] ))
+            .select(`*`).in("ventanaAtencionBaseId", resServiciosEnVentanasAtencion.data!.map((elem:any)=> elem["ventanaAtencionBaseId"] )).neq("estado", StatusEnum.DELETED)
             .filter('fechaInicio', 'gte', sinceDate).filter('fechaFin', 'lte', untilDate)
             
             let resVentanasAtencion = await queryVentanasAtencion
@@ -86,7 +87,7 @@ export class ScheduleRepository implements IScheduleRepository {
                 VentanasAtencion (
                     *
                 )
-            `).in("ventanaAtencionId", resVentanasAtencion.data!.map((elem:any)=> elem["id"] ))
+            `).in("ventanaAtencionId", resVentanasAtencion.data!.map((elem:any)=> elem["id"] )).neq("estado", StatusEnum.DELETED)
 
             if(serviceId) {
                 queryCitas = queryCitas.or(`servicioId.eq.${serviceId},and(servicioId.is.null)`);
@@ -105,7 +106,7 @@ export class ScheduleRepository implements IScheduleRepository {
     async getAppointments(id:number, dateStart?:string, dateEnd?:string, localityId?:number, status?:number, onlySubjects?: boolean, serviceId?: number, ): Promise<any[] | ScheduleFailure> {
         try {
             
-            let queryOfServices = supabase.from("ServiciosDoctores").select(`*`).eq("doctorId", id);
+            let queryOfServices = supabase.from("ServiciosDoctores").select(`*`).eq("doctorId", id).neq("estado", StatusEnum.DELETED);
 
             if(localityId !== undefined){
                 queryOfServices = supabase.from("Servicios").select(`*`).eq("localidadId", localityId);
@@ -216,7 +217,7 @@ export class ScheduleRepository implements IScheduleRepository {
                     Servicios (
                         nombre
                     )
-                `).in("ventanaAtencionBaseId", resServiciosEnVentanasAtencion.data!.map((elem:any)=> elem["ventanaAtencionBaseId"] ))
+                `).in("ventanaAtencionBaseId", resServiciosEnVentanasAtencion.data!.map((elem:any)=> elem["ventanaAtencionBaseId"] )).neq("estado", StatusEnum.DELETED)
 
                 let resVentanasAtencion = await queryVentanasAtencion
 
@@ -229,7 +230,7 @@ export class ScheduleRepository implements IScheduleRepository {
                 Servicios (
                     nombre
                 )
-            `).eq("ventanaAtencionBaseId", id)
+            `).eq("ventanaAtencionBaseId", id).neq("estado", StatusEnum.DELETED)
 
             let resVentanasAtencion = await queryVentanasAtencion
 
@@ -265,7 +266,7 @@ export class ScheduleRepository implements IScheduleRepository {
                 Servicios (
                     nombre
                 )
-            `).in("ventanaAtencionBaseId", resServiciosEnVentanasAtencion.data!.map((elem:any)=> elem["ventanaAtencionBaseId"] ))
+            `).in("ventanaAtencionBaseId", resServiciosEnVentanasAtencion.data!.map((elem:any)=> elem["ventanaAtencionBaseId"] )).neq("estado", StatusEnum.DELETED)
 
             let resVentanasAtencion = await queryVentanasAtencion
 
@@ -278,7 +279,7 @@ export class ScheduleRepository implements IScheduleRepository {
 
     async getAllAttentionWindows(doctorId: number, initialDate?: Date | null): Promise<any[] | ScheduleFailure> {
         try {
-            const response = await supabase.from("ServiciosDoctores").select("*").eq("doctorId", doctorId);
+            const response = await supabase.from("ServiciosDoctores").select("*").eq("doctorId", doctorId).neq("estado", StatusEnum.DELETED);
 
             if (response.error || response.data?.length === 0) return [];
 
@@ -292,7 +293,7 @@ export class ScheduleRepository implements IScheduleRepository {
                 Servicios (
                     nombre
                 )
-            `).in("ventanaAtencionBaseId", resBaseAttentionWindows.data.map((data) => data.ventanaAtencionBaseId))
+            `).in("ventanaAtencionBaseId", resBaseAttentionWindows.data.map((data) => data.ventanaAtencionBaseId)).neq("estado", StatusEnum.DELETED)
 
             if (initialDate) {
                 queryVentanasAtencion = queryVentanasAtencion.gte("fechaInicio", initialDate);
@@ -313,7 +314,7 @@ export class ScheduleRepository implements IScheduleRepository {
 
     async getBaseAttentionWindows(doctorId:number, initialDate?: Date | null): Promise<any[] | ScheduleFailure> {
         try {
-            const response = await supabase.from("ServiciosDoctores").select("*").eq("doctorId", doctorId);
+            const response = await supabase.from("ServiciosDoctores").select("*").eq("doctorId", doctorId).neq("estado", StatusEnum.DELETED);
 
             if (response.error || response.data?.length === 0) return [];
 
@@ -421,6 +422,7 @@ export class ScheduleRepository implements IScheduleRepository {
             let queryVentanasAtencion = supabase.from("VentanasAtencion")
             .select(`*`)
             .in("ventanaAtencionBaseId", resServiciosEnVentanasAtencion.data!.map((elem:any)=> elem["ventanaAtencionBaseId"] ))
+            .neq("estado", StatusEnum.DELETED)
             .filter('fechaInicio', 'gte', date)
             .filter('fechaFin', 'lte', endDate)
             
@@ -534,7 +536,7 @@ export class ScheduleRepository implements IScheduleRepository {
             .select(`
                 *,
                 Sujetos (*)
-            `).order("fechaReserva", { ascending: true }).eq("ventanaAtencionId", id)
+            `).order("fechaReserva", { ascending: true }).eq("ventanaAtencionId", id).neq("estado", StatusEnum.DELETED)
 
             let resCitas = await queryCitas
             
@@ -675,7 +677,7 @@ export class ScheduleRepository implements IScheduleRepository {
 
             if (!resVentanasAtencion.data || resVentanasAtencion.data.length === 0) return {};
 
-            let query = supabase.from("VentanasAtencion").select(`*`).eq("ventanaAtencionBaseId", resVentanasAtencion.data[0].ventanaAtencionBaseId).gte("fechaInicio", moment().format("YYYY-MM-DD")).order("fechaInicio", { ascending: true }).limit(1);
+            let query = supabase.from("VentanasAtencion").select(`*`).eq("ventanaAtencionBaseId", resVentanasAtencion.data[0].ventanaAtencionBaseId).gte("fechaInicio", moment().format("YYYY-MM-DD")).order("fechaInicio", { ascending: true }).neq("estado", StatusEnum.DELETED).limit(1);
 
             let res = await query;
 

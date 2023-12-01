@@ -45,7 +45,7 @@ const SuccessfulComponent = ({
           <div className="mb-14 w-full flex justify-between items-center">
             <p className="font-bold text-2xl text-slate-900">{tittle}</p>
             <Lucide
-              icon="at"
+              icon="close"
               size={25}
               onClick={(e) => {
                 setIsVisible(false);
@@ -55,7 +55,7 @@ const SuccessfulComponent = ({
           </div>
 
           <div className="flex justify-center text-center mb-6">
-            <Lucide icon="at" color="#00bb2b" size={60} />
+            <Lucide icon="check-circle-outline" color="#00bb2b" size={60} />
           </div>
 
           <div className=" text-center mb-14">

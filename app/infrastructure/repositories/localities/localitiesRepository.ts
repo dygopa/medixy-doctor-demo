@@ -6,6 +6,7 @@ import { supabase } from 'infrastructure/config/supabase/supabase-client';
 import { nanoid } from 'nanoid'
 import { getFileFromBase64 } from 'infrastructure/utils/files/filesUtils';
 import { localityFromSupabaseToMap } from 'domain/mappers/localities/localitiesSupabaseMapper';
+import { StatusEnum } from '(presentation)/(enum)/status/statusEnum';
 
 export default interface ILocalitiesRepository {
   getMedicalCenters(): Promise<Array<ILocality> | LocalityFailure>;
@@ -109,7 +110,7 @@ export class LocalitiesRepository implements ILocalitiesRepository {
 
   async getUserLocalitiesWithServices(id:number): Promise<Array<any> | LocalityFailure> {
     try {
-      let queryOfLocalidadesDoctores = supabase.from("LocalidadesDoctores").select(`*`).eq("doctorId", id);
+      let queryOfLocalidadesDoctores = supabase.from("LocalidadesDoctores").select(`*`).eq("doctorId", id).neq("estado", StatusEnum.DELETED);
       let resLocalidadesDoctores = await queryOfLocalidadesDoctores
 
       if(resLocalidadesDoctores.data?.length === 0) return []

@@ -1,4 +1,5 @@
 import { AppointmentEnum } from "(presentation)/(enum)/appointment/appointmentEnum";
+import { StatusEnum } from "(presentation)/(enum)/status/statusEnum";
 import { base64 } from "@firebase/util";
 import { IAppointment } from "domain/core/entities/appointmentEntity";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
@@ -47,7 +48,7 @@ export class AppointmentRepository implements IAppointmentRepository {
                 *,
                 Sujetos (*)
             `,
-            { count: "exact" });
+            { count: "exact" }).eq("status", StatusEnum.ACTIVE);
 
             if (obj.sort) {
                 query = query.order(obj.sort.field, {
