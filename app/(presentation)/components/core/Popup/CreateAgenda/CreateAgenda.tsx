@@ -919,7 +919,11 @@ function CreateAgenda({
             <div className="transition w-full h-auto p-3 flex flex-col justify-center items-start border rounded-md relative border-slate-300 bg-slate-100">
               <div className="flex items-center">
                 <div>
-                  <Lucide icon="at" color="#216AD9" size={25} />
+                  <Lucide
+                    icon="alert-circle-outline"
+                    color="#216AD9"
+                    size={25}
+                  />
                 </div>
 
                 <div className="ml-2">
