@@ -33,7 +33,7 @@ export default function BasicData({ doctor }: IBasicDataProps) {
                   />
                 </div>
               ) : (
-                <Lucide icon="at" size={60} />
+                <Lucide icon="image" size={60} color="#216AD9" />
               )}
             </div>
           </div>

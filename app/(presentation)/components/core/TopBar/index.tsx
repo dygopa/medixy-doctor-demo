@@ -365,7 +365,7 @@ function Main({
                 className="w-[3rem] h-[3rem] rounded-md object-contain"
               />
             ) : (
-              <Lucide icon="at" />
+              <Lucide icon="account" />
             )}
           </div>
         </button>

@@ -47,6 +47,7 @@ export default function Formulary() {
     phone_number: formData?.phone_number ?? "",
     pwaProfessionId: 0,
     password: null,
+    is_supplier: true,
     //curp: formData?.curp ?? "",
   });
 
