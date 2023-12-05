@@ -29,7 +29,7 @@ export default function ArrowRight({
   return (
     <div className="flex items-center h-full">
       <button onClick={() => onNextImage()}>
-        <Lucide icon="ChevronRight" color="#fff" size={60} />
+        <Lucide icon="arrow-right" color="#fff" size={60} />
       </button>
     </div>
   );

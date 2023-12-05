@@ -22,7 +22,7 @@ export default function Header({ setShowImageViewPopup }: IHeaderProps) {
 
       <div>
         <button onClick={() => setShowImageViewPopup(false)}>
-          <Lucide icon="X" color="#fff" size={40} />
+          <Lucide icon="close" color="#fff" size={40} />
         </button>
       </div>
     </div>
