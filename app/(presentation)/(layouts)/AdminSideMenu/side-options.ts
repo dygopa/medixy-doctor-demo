@@ -30,14 +30,14 @@ export const navigationOptions: FormattedMenu[] = [
         icon: "medical-bag",
         ignore: false,
     },
-    {
+   /* {
         active: false,
         subMenu: undefined,
         title: "Centros",
         pathname: AdminMedicalCentersRoutesEnum.MedicalCentersList,
         icon: "office-building-outline",
         ignore: false,
-    },
+    }, */
 ]
 
 
