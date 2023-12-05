@@ -17,7 +17,7 @@ export default function ArrowLeft({
         disabled={activeIndex === 0}
       >
         <Lucide
-          icon="ChevronLeft"
+          icon="arrow-left"
           color={activeIndex === 0 ? "#A8A8A8" : "#fff"}
           size={60}
         />
