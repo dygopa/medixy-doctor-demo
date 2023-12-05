@@ -264,7 +264,7 @@ export default function Formulary({
             variant="primary"
             className="lg:w-1/2 w-full px-7"
           >
-            <Lucide icon="Plus" className="mr-2" />
+            <Lucide icon="plus" color="#fff" className="mr-2" />
             {loadingCreationService ? "Creando..." : "Crear Servicio"}
           </Button>
         </div>
@@ -335,7 +335,7 @@ export default function Formulary({
                             "hover:bg-slate-200",
                           ])}
                         >
-                          <Lucide icon="at" size={60} />
+                          <Lucide icon="image" color="#216AD9" size={60} />
                         </div>
                       </div>
                       <p className="text-[13px] text-slate-500 font-medium pt-2">

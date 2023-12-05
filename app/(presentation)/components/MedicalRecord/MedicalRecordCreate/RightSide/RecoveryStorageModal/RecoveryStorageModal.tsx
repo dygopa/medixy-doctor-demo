@@ -20,7 +20,7 @@ export default function RecoveryStorageModal({
       </div>
 
       <div className="flex justify-center text-center mb-6">
-        <Lucide icon="Info" color="#216AD9" size={60} />
+        <Lucide icon="information-outline" color="#216AD9" size={60} />
       </div>
 
       <div className="flex justify-center text-center mb-14">

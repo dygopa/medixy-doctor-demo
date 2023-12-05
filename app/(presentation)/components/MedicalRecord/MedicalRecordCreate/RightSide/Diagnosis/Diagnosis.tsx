@@ -166,7 +166,7 @@ export default function Diagnosis() {
               <div className="mr-2">Estudios y especialidad</div>
 
               <div>
-                <Lucide icon="ArrowRight" color="#fff" size={25} />
+                <Lucide icon="arrow-right" color="#fff" size={25} />
               </div>
             </div>
           </Button>
