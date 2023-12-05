@@ -158,27 +158,29 @@ export default function Credentials({
         <div className="relative grid grid-cols-3 items-center lg:justify-items-end justify-items-center lg:mt-0 mt-4">
           {!speciality["main_specialty"] ? (
             <Lucide
-              icon="at"
+              icon="star-outline"
               onClick={() => {
                 updateSpeciality({ ...speciality, main_specialty: true }),
                   setSpeciality({ ...speciality, main_specialty: true });
               }}
               className="text-2xl cursor-pointer text-yellow-500"
               title="Principal"
+              color="rgb(234 179 8)"
             />
           ) : (
             <Lucide
-              icon="at"
+              icon="star"
               onClick={() => {
                 updateSpeciality({ ...speciality, main_specialty: false }),
                   setSpeciality({ ...speciality, main_specialty: false });
               }}
               className="text-2xl cursor-pointer text-yellow-500"
               title="Principal"
+              color="rgb(234 179 8)"
             />
           )}
           <Lucide
-            icon="at"
+            icon="square-edit-outline"
             onClick={() => {
               if (canUpdate) {
                 updateSpeciality(speciality as Object);
@@ -190,14 +192,16 @@ export default function Credentials({
               !canUpdate && "cursor-not-allowed text-slate-500/50",
             ])}
             title="Guardar"
+            color="rgb(100 116 139)"
           />
           <Lucide
-            icon="at"
+            icon="trash-can-outline"
             onClick={() => {
               deleteSpeciality(speciality as Object);
             }}
             className="text-xl cursor-pointer text-red-500"
             title="Eliminar"
+            color="rgb(239 68 68)"
           />
         </div>
       </div>
