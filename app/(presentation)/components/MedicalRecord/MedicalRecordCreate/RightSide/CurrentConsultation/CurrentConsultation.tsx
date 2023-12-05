@@ -167,7 +167,7 @@ export default function CurrentConsultation({
               <div className="mr-2">Exploración</div>
 
               <div>
-                <Lucide icon="ArrowRight" color="#fff" size={25} />
+                <Lucide icon="arrow-right" color="#fff" size={25} />
               </div>
             </div>
           </Button>

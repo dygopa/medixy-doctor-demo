@@ -33,7 +33,7 @@ const CompletedStepByStepPopup = ({
         <div className="w-full px-4">
           <div className="w-full flex justify-end items-center">
             <Lucide
-              icon="X"
+              icon="close"
               size={25}
               onClick={(e) => {
                 setIsVisible(false);

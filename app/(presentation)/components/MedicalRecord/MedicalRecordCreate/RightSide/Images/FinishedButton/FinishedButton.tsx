@@ -696,7 +696,7 @@ export default function FinishedButton({ user }: IFinishedButtonProps) {
           </div>
 
           <div>
-            <Lucide icon="ArrowRight" color="#fff" size={25} />
+            <Lucide icon="arrow-right" color="#fff" size={25} />
           </div>
         </div>
       </Button>
