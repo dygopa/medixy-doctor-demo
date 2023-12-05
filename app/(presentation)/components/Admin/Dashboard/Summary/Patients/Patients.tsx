@@ -19,6 +19,10 @@ export default function Patients() {
   if (loading || error) return <div />;
 
   return (
-    <SummaryItem title="Cantidad de pacientes" quantity={data} icon="Users" />
+    <SummaryItem
+      title="Cantidad de pacientes"
+      quantity={data}
+      icon="account-group"
+    />
   );
 }

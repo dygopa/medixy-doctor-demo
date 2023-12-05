@@ -26,9 +26,10 @@ export default function Diagnosis({ medicalConsulty }: IDiagnosisProps) {
               {diagnose.isPrincipal && (
                 <div>
                   <Lucide
-                    icon="at"
+                    icon="star"
                     className="text-2xl cursor-pointer text-yellow-500"
                     title="Principal"
+                    color="rgb(234 179 8)"
                   />
                 </div>
               )}
