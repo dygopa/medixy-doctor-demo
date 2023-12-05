@@ -171,7 +171,7 @@ export default function MedicalConsultationList({ user }: { user: IUser }) {
             >
               <div className="w-10 h-full flex flex-col justify-center items-start">
                 <div className="w-10 h-10 rounded-lg bg-primary/20 text-primary flex flex-col justify-center items-center text-lg overflow-hidden">
-                  <Lucide icon="at" />
+                  <Lucide icon="account" />
                 </div>
               </div>
               <div className="w-[53%] h-full flex flex-col justify-center items-start overflow-hidden">
