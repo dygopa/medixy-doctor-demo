@@ -92,7 +92,7 @@ export default function ShortDescriptionField({
           loading={loading}
           disabledButton
           disabled={step === 0}
-          text={specialist.shortDescription}
+          text={userObject.shortDescription}
           placeholder="Descripción corta sobre ti"
           onChange={(e) => {
             setUserObject({

@@ -71,6 +71,7 @@ export const UserCardComponent = ({
     shortDescription: "",
     aboutMe: "",
     pwaProfessionId: 0,
+    pwaProfessionName: null,
   });
 
   const handleNames = (value: string) => {

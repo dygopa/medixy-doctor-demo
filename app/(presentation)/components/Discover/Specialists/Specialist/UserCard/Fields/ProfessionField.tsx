@@ -90,9 +90,9 @@ export default function ProfessionField({
           onClick={() => {}}
           disabled={step === 0}
           customStyleText={"text-base text-slate-500 font-light"}
-          placeholder="Selecciona tu especialidad"
+          placeholder={"Selecciona tu especialidad"}
           customType="select"
-          text={profesion?.name ?? "Selecciona tu especialidad"}
+          text={userObject?.pwaProfessionName ?? "Selecciona tu especialidad"}
           loading={loading}
           disabledButton
           customList={listProfesions.map((value: any) => ({
@@ -100,9 +100,15 @@ export default function ProfessionField({
             value: value.name,
           }))}
           onChange={(e) => {
+            const profession = listProfesions.find(
+              (professionFind: any) =>
+                professionFind.id === parseInt(e.target.value, 10)
+            );
+
             setUserObject({
               ...userObject,
               pwaProfessionId: e.target.value,
+              pwaProfessionName: profession?.name ?? "",
             });
           }}
         />
