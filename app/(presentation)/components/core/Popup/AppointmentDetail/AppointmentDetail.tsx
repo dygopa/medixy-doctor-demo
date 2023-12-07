@@ -244,7 +244,7 @@ function AppointmentDetail({
               )}
           </div>
         </div>
-        <div className="w-full flex flex-col justify-start items-center gap-5 mt-12">
+        <div className="w-full flex justify-start items-center gap-5 mt-12">
           {cancelAppointment ? (
             <div>
               <div className="mb-4">
@@ -261,8 +261,8 @@ function AppointmentDetail({
               </div>
             </div>
           ) : (
-            <>
-              <div className="w-full grid grid-cols-2 justify-between items-center gap-3">
+            <div className="grid lg:grid-cols-2 md:grid-cols-2 grid-cols-1 gap-3">
+              <div className="w-full justify-between items-center">
                 <DataSpan label={"Servicio"} value={data["nombre"]} />
                 <DataSpan
                   label={"Consultorio"}
@@ -271,17 +271,17 @@ function AppointmentDetail({
                   }
                 />
               </div>
-              <div className="w-full grid grid-cols-2 justify-between items-center gap-3">
+              <div className="w-full justify-between items-center gap-3">
                 <DataSpan label={"Tipo de cita"} value={"Primera vez"} />
               </div>
-              <div className="w-full grid grid-cols-2 justify-between items-center gap-3">
+              <div className="w-full justify-between items-center gap-3">
                 <DataSpan
                   label={"Correo electrónico"}
                   value={data["email"] ?? "-"}
                 />
                 <DataSpan label={"Teléfono"} value={data["telefono"] ?? "-"} />
               </div>
-              <div className="w-full grid grid-cols-2 justify-between items-center gap-3">
+              <div className="w-full justify-between items-center gap-3">
                 <DataSpan
                   label={"Para cuando"}
                   value={getFullDate(new Date(data["fechaReserva"]))}
@@ -291,7 +291,7 @@ function AppointmentDetail({
                   value={moment(data["fechaReserva"]).utc().format("hh:mm a")}
                 />
               </div>
-              <div className="w-full grid grid-cols-2 justify-between items-center gap-3">
+              <div className="w-full justify-between items-center gap-3">
                 <DataSpan
                   label={"Quien hizo la cita"}
                   value={`${
@@ -301,7 +301,7 @@ function AppointmentDetail({
                   } `}
                 />
               </div>
-            </>
+            </div>
           )}
         </div>
         <div className="w-full flex flex-col justify-center items-center gap-4 sticky bottom-0 py-3 bg-white mt-12 mb-4">
