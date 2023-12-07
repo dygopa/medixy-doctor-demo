@@ -29,7 +29,7 @@ function Main() {
       {/* BEGIN: Mobile Menu */}
       <div
         className={clsx([
-          "w-full fixed border-b border-white/[0.08] -mt-5 -mx-3 sm:-mx-8 mb-6 dark:bg-darkmode-700 md:hidden",
+          "w-full fixed border-b border-white/[0.08] -mt-5 -mx-3 sm:-mx-8 bg-primary mb-6 dark:bg-darkmode-700 md:hidden",
           "before:content-[''] before:absolute before:inset-0 before:z-[-1] before:w-full before:h-full before:bg-black/[0.15]",
           "after:content-[''] after:w-full after:h-screen after:z-10 after:fixed after:inset-0 after:bg-black/90 after:transition-opacity after:duration-200 after:ease-in-out",
           !activeMobileMenu && "after:invisible after:opacity-0",
