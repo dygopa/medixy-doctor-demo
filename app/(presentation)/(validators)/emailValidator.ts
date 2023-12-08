@@ -18,7 +18,7 @@ export class EmailValidator extends Validator {
     } 
 
     validate_regexp(): IValidator {
-        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(this.value.trimEnd())) {
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{1,10})+$/.test(this.value.trimEnd())) {
             return { isValid: false, error: { code: "field-invalid-format", message: "Debe escribir un correo electrónico válido" } } as IValidator;
         }
 

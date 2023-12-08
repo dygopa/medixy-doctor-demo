@@ -265,7 +265,7 @@ export default function Navigator({ user }: INavigatorProps) {
             type="button"
             className="w-full mt-2 md:mt-0 md:w-auto"
           >
-            <Lucide icon="Plus" className="w-5 h-5 mr-2" />
+            <Lucide icon="plus" color="#fff" className="w-5 h-5 mr-2" />
             Nueva ventana de atención
           </Button>
         )}

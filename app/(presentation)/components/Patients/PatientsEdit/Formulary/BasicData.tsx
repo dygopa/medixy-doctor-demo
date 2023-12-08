@@ -320,7 +320,7 @@ export default function BasicData({
                     "hover:bg-slate-200",
                   ])}
                 >
-                  <Lucide icon="at" size={60} />
+                  <Lucide icon="image" size={60} />
                 </div>
                 <p className="text-[13px] text-slate-500 font-medium">
                   Recomendado (.png, .jpg, .jpeg)

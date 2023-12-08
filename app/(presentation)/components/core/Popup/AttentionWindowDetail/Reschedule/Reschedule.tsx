@@ -30,7 +30,7 @@ export default function Reschedule({
             }}
             className="cursor-pointer text-lg text-slate-900"
           >
-            <Lucide icon="at" />
+            <Lucide icon="close" />
           </span>
           <p className="font-bold text-2xl text-slate-900">Reagendar cita</p>
         </div>

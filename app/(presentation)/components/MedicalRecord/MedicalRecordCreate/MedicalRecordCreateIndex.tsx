@@ -45,7 +45,6 @@ export default function MedicalRecordCreateIndex({
   const searchParams = useSearchParams();
 
   const type = searchParams.get("type");
-  const view = searchParams.get("view");
 
   function getCurrentDimension() {
     return {
@@ -116,10 +115,6 @@ export default function MedicalRecordCreateIndex({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [appointmentSucessful]);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [view]);
 
   if (loading || appointmentLoading)
     return (

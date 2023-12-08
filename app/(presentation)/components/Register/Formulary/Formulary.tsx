@@ -341,18 +341,18 @@ export default function Formulary() {
           "Algo no ha salido como se esperaba. Vuelve a intentarlo.";
         break;
       case registerFailuresEnum.emailAlreadyRegistered:
-        errors["global"] = "El email ya esta siendo usado por otro proveedor.";
+        errors["global"] = "El correo ya esta siendo usado por otro usuario.";
         break;
       case registerFailuresEnum.badGateway:
         errors["global"] =
-          "El servidor ha demorado mucho tiempo en responder, vuelve a intentarlo más tarde.";
+          "Algo no ha salido como se esperaba. Vuelve a intentarlo.";
         break;
       case registerFailuresEnum.curpAlreadyRegistered:
         errors["global"] = "El CURP ya esta registrado por otro proveedor.";
         break;
       default:
         errors["global"] =
-          "El servidor ha demorado mucho tiempo en responder, Vuelve a intentarlo más tarde.";
+          "Algo no ha salido como se esperaba. Vuelve a intentarlo.";
         break;
     }
   };

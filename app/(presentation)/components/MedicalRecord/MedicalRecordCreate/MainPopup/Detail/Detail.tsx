@@ -28,12 +28,12 @@ export default function Detail({
 }: IDetailProps) {
   let listTabs = [
     "Paciente",
+    "Antecedentes",
     "Contactos",
     "Historial",
     "Alergias",
     "Signos vítales",
     "Tratamientos",
-    "Antecedentes",
     "Ordenes",
   ];
 
@@ -85,8 +85,10 @@ export default function Detail({
       case 0:
         return <Patient subjectId={subjectId} />;
       case 1:
-        return <Companion subjectId={subjectId} />;
+        return <Records subjectId={subjectId} />;
       case 2:
+        return <Companion subjectId={subjectId} />;
+      case 3:
         return (
           <History
             user={user}
@@ -94,14 +96,12 @@ export default function Detail({
             appointmentId={appointmentId}
           />
         );
-      case 3:
-        return <Allergies subjectId={subjectId} />;
       case 4:
-        return <VitalSigns subjectId={subjectId} />;
+        return <Allergies subjectId={subjectId} />;
       case 5:
-        return <Treatments subjectId={subjectId} />;
+        return <VitalSigns subjectId={subjectId} />;
       case 6:
-        return <Records subjectId={subjectId} />;
+        return <Treatments subjectId={subjectId} />;
       case 7:
         return <Orders user={user} subjectId={subjectId} />;
 

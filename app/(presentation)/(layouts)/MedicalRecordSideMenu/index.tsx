@@ -11,6 +11,8 @@ import VersionHandler from "../AppLayout/VersionHandler/VersionHandler";
 import StepByStepProvider from "(presentation)/components/core/StepByStepPopup/context/StepByStepContext";
 import SmartBar from "(presentation)/components/core/SmartBar/SmartBar";
 import Navigation from "./nav";
+import { useEffect, useRef } from "react";
+import { useSearchParams } from "next/navigation";
 
 interface INavigation {
   title: string;
@@ -28,6 +30,18 @@ function MedicalRecordSideMenu({
   showStepsBySteps?: boolean;
   user: IUser;
 }) {
+  const searchParams = useSearchParams();
+  const view = searchParams.get("view");
+
+  const ref = useRef<any>();
+
+  useEffect(() => {
+    console.log(ref);
+    if (ref.current) {
+      ref.current.scrollTo(0, 0);
+    }
+  }, [view]);
+
   return (
     <VersionHandler>
       <StepByStepProvider>
@@ -43,6 +57,7 @@ function MedicalRecordSideMenu({
               {/* END: Side Menu */}
               {/* BEGIN: Content */}
               <div
+                ref={ref}
                 className={clsx([
                   "xl:mt-0 lg:mt-0 md:mt-0 mt-[4rem] lg:ml-[125px] overflow-y-auto h-auto rounded-[30px] md:rounded-[35px/50px_0px_0px_0px] w-0 max-w-full md:max-w-none bg-slate-100 flex-1 pb-10 px-4 md:px-6 relative",
                   "before:content-[''] before:w-full before:h-px before:block",

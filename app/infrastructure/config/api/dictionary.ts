@@ -21,8 +21,8 @@ export const DELETE_MEDICAL_SPECIALITY_ENDPOINT = (id:number, speciality_id:numb
 
 export const GET_MEDICAL_CENTERS_ENDPOINT : string = new ConfigEnviroment().nextPublicAPIUrl + `/medical_center`;
 export const GET_USER_LOCALITIES_ENDPOINT = (id:number, country: string) => new ConfigEnviroment().nextPublicAPIUrl + `/doctor/${id}/location/${country}`;
-export const CREATE_USER_LOCALITY_ENDPOINT = (id:number) => new ConfigEnviroment().nextPublicAPIUrl + `/doctor/${id}/location`;
-export const UPDATE_USER_LOCALITY_ENDPOINT = (locality_id:number) => new ConfigEnviroment().nextPublicAPIUrl + `/location/${locality_id}`;
+export const CREATE_USER_LOCALITY_ENDPOINT = (id:number) => new ConfigEnviroment().nextPublicAPIUrl + `/doctor/${id}/location/MEX`;
+export const UPDATE_USER_LOCALITY_ENDPOINT = (locality_id:number) => new ConfigEnviroment().nextPublicAPIUrl + `/location/${locality_id}/MEX`;
 export const ADD_MEDIA_LOCALITY_ENDPOINT = (locality_id:number) => new ConfigEnviroment().nextPublicAPIUrl + `/location/${locality_id}/media`;
 export const GET_COUNTRY_STATES_ENDPOINT : string = new ConfigEnviroment().nextPublicAPIUrl + '/doctors';
 

@@ -30,9 +30,16 @@ export default function ShortDescriptionField({
           <div className="absolute z-[201] lg:top-[145px] md:top-[145px] lg:left-[600px] md:left-[420px] lg:block md:block hidden">
             <TooltipIndicator
               tittle="Escribe una descripción corta"
-              description="Da un resumen corto de ti y tus servicios como profesional para ser visualizados por tus pacientes"
+              description="Da un resumen corto de ti y tus servicios como profesional para ser visualizados por tus pacientes. Máximo 140 caracteres"
+              errorMessage={
+                userObject?.shortDescription?.length > 140
+                  ? "* La descripción corta debe ser de máximo 140 caracteres"
+                  : null
+              }
               onClick={
-                loading || userObject?.shortDescription?.length === 0
+                loading ||
+                userObject?.shortDescription?.length === 0 ||
+                userObject.shortDescription?.length > 140
                   ? () => {}
                   : () => {
                       handleOnClick("shortDescription");
@@ -55,9 +62,16 @@ export default function ShortDescriptionField({
           <div className="absolute z-[201] top-[230px] left-2 right-2 lg:hidden md:hidden block">
             <TooltipIndicator
               tittle="Escribe una descripción corta"
-              description="Da un resumen corto de ti y tus servicios como profesional para ser visualizados por tus pacientes"
+              description="Da un resumen corto de ti y tus servicios como profesional para ser visualizados por tus pacientes. Máximo 140 caracteres"
+              errorMessage={
+                userObject?.shortDescription?.length > 140
+                  ? "* La descripción corta debe ser de máximo 140 caracteres"
+                  : null
+              }
               onClick={
-                loading || userObject?.shortDescription?.length === 0
+                loading ||
+                userObject?.shortDescription?.length === 0 ||
+                userObject.shortDescription?.length > 140
                   ? () => {}
                   : () => {
                       handleOnClick("shortDescription");

@@ -50,7 +50,7 @@ export default function TableResponsive({
               className="w-full h-full object-fill"
             />
           ) : (
-            <Lucide icon="at" />
+            <Lucide icon="office-building-outline" />
           )}
         </div>
         <div className="p-4 flex flex-col justify-start items-start gap-2">

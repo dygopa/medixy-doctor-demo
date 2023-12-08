@@ -43,6 +43,8 @@ export default function PhoneNumberInput({
   });
   const [focus, setFocus] = useState(false);
 
+  console.log(values);
+
   const setCountriesDialCodes = () => {
     const countries: CountryISO[] = [];
 

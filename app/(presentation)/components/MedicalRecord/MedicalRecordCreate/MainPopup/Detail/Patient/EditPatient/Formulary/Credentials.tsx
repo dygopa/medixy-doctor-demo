@@ -77,7 +77,7 @@ export default function Credentials() {
                 className="w-full flex justify-center items-center gap-2 text-white font-base"
                 variant="success"
               >
-                <Lucide icon="at" />
+                <Lucide icon="plus" color="#fff" />
                 <p>Agregar</p>
               </Button>
             </div>

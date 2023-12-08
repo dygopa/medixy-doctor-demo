@@ -101,7 +101,7 @@ const SlotComponent = ({
               ])}
             >
               <p>Cancelar</p>
-              <Lucide icon="at" />
+              <Lucide icon="close-box-outline" />
             </div>
           </div>
         )}

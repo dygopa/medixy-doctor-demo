@@ -185,7 +185,7 @@ export default function RecordsForm({ setShowRecordsForm }: IRecordsForm) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-3">
+      <div className="w-full flex justify-between items-center sticky top-[68px] py-4 z-[50] bg-white">
         <div className="flex items-center">
           <div className="mr-2">
             <button
