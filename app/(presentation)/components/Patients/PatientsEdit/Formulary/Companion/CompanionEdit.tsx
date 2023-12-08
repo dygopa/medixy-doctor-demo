@@ -310,7 +310,7 @@ export default function CompanionEdit({
         className="flex justify-start gap-3 items-center lg:w-[40%] cursor-pointer"
         onClick={() => returnListCompanion()}
       >
-        <Lucide icon="at" className="w-4 h-4" />
+        <Lucide icon="arrow-left" className="w-4 h-4" />
         <p className="text-base text-slate-500 py-2">
           Volver a la lista de Contactos
         </p>
@@ -335,7 +335,7 @@ export default function CompanionEdit({
                   "hover:bg-slate-200",
                 ])}
               >
-                <Lucide icon="at" size={60} />
+                <Lucide icon="image" size={60} />
               </div>
               <p className="text-[13px] text-slate-500 font-medium">
                 Recomendado (.png, .jpg, .jpeg)

@@ -333,7 +333,7 @@ const PatientStep = ({
                 }}
                 className="cursor-pointer w-8 h-8 overflow-hidden rounded-lg bg-red-500/20 text-red-500 text-lg flex flex-col justify-center items-center"
               >
-                <Lucide icon="at" />
+                <Lucide icon="account" />
               </div>
             )}
           </div>

@@ -36,7 +36,7 @@ function LocalitiesComponent({ specialist }: { specialist: Specialist }) {
                 "w-7 h-7 border-[3px] border-secondary text-white text-[12px] rounded-full flex flex-col justify-center items-center",
               ])}
             >
-              <Lucide icon="at" />
+              <Lucide icon="office-building-outline" />
             </span>
           </div>
           <div className="w-[92%] flex flex-col justify-center items-start gap-2">

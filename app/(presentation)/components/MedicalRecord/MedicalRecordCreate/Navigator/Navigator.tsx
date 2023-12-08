@@ -55,7 +55,7 @@ export default function Navigator({
           variant="outline-primary"
           disabled={loading || successful}
           onClick={() => {
-            setPopupSectionActive(6);
+            setPopupSectionActive(1);
             setIsOpen(true);
           }}
           className="lg:w-[200px] md:w-[200px] sm:w-[200px] w-full"

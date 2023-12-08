@@ -24,7 +24,7 @@ const NotificationToast = ({
             "w-[2.2rem] h-[2.2rem] text-[1rem] text-primary rounded bg-primary/20 p-[0.5rem]",
           ])}
         >
-          <Lucide icon="at" />
+          <Lucide icon="bell" />
         </div>
       </div>
       <div className="w-5/6 relative flex flex-col justify-center items-start">

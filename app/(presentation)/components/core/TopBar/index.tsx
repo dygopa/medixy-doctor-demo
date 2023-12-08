@@ -355,7 +355,7 @@ function Main({
             )}
             <p className="font-light text-sm text-slate-500">Médico</p>
           </div>
-          <div className="w-[3rem] h-[3rem] flex flex-col justify-center items-center rounded-xl overflow-hidden p-0 bg-slate-300">
+          <div className="w-[3rem] h-[3rem] flex flex-col justify-center items-center rounded-xl overflow-hidden p-0 bg-slate-200">
             {user?.avatar?.length > 0 ? (
               <Image
                 src={user?.avatar}

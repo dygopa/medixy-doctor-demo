@@ -193,6 +193,11 @@ export default function LocalityCreateFormulary({
               <AddressAutocomplete
                 formData={address}
                 setFormData={setAddress}
+                federalEntityId={address.federalEntity}
+                municipalityId={address.municipality}
+                municipalityCatalogId={address.municipalityCatalogId}
+                location={address.countryLocation}
+                postalCode={address.postal_code}
                 showPostalCode
               />
 

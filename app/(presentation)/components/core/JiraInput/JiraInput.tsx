@@ -25,6 +25,7 @@ export const JiraInput = ({
   customList,
   disabledButton = false,
 }: IJiraInputProps) => {
+  const [focus, setFocus] = useState(false);
   const [canUpdate, setCanUpdate] = useState(false);
 
   const wrapperRef = useRef(null);
@@ -62,10 +63,10 @@ export const JiraInput = ({
         >
           {loading ? (
             <p className="animate-spin p-2">
-              <Lucide icon="at" />
+              <Lucide icon="check-circle-outline" />
             </p>
           ) : (
-            <Lucide icon="at" />
+            <Lucide icon="check-circle-outline" />
           )}
         </div>
       )}
@@ -73,30 +74,42 @@ export const JiraInput = ({
         <>
           {customType === "text" && (
             <input
-              onFocus={onFocus}
-              onBlur={onBlur}
+              onFocus={() => {
+                setFocus(true);
+                onFocus;
+              }}
+              onBlur={() => {
+                setFocus(false);
+                onBlur;
+              }}
               className={twMerge([
                 "w-full h-fit relative block p-1 rounded outline-none border border-primary",
                 "focus:border focus:border-primary",
                 customStyleText,
               ])}
               onChange={onChange}
-              placeholder={placeholder}
+              placeholder={focus ? "" : placeholder}
               defaultValue={text}
               type="text"
             />
           )}
           {customType === "textarea" && (
             <textarea
-              onFocus={onFocus}
-              onBlur={onBlur}
+              onFocus={() => {
+                setFocus(true);
+                onFocus;
+              }}
+              onBlur={() => {
+                setFocus(false);
+                onBlur;
+              }}
               className={twMerge([
                 "w-full h-fit relative block p-1 rounded outline-none border border-primary",
                 "focus:border focus:border-primary",
                 customStyleText,
               ])}
               onChange={onChange}
-              placeholder={placeholder}
+              placeholder={focus ? "" : placeholder}
               defaultValue={text}
               rows={5}
             ></textarea>

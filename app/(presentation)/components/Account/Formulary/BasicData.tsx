@@ -224,7 +224,7 @@ export default function BasicData({
                       }}
                     />
                     <Image
-                      className="object-cover rounded-full"
+                      className="object-contain rounded-full"
                       src={account?.avatar}
                       alt=""
                       fill

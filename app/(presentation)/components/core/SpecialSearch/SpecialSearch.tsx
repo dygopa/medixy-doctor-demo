@@ -259,14 +259,14 @@ export function SpecialSelect({ ...props }: SpecialSelectProps) {
       >
         <div className="flex items-center justify-between">
           <div className="w-full">
-            <p className="block whitespace-nowrap font-medium text-gray-950 text-[0.9rem] w-full overflow-hidden text-ellipsis max-w-[300px">
+            <p className="block whitespace-nowrap font-medium text-gray-950 text-[0.9rem] w-full overflow-hidden text-ellipsis max-w-[200px]">
               {activeValue.title
                 ? activeValue.title
                 : props.emptySelectedValue
                 ? props.emptySelectedValue["title"]
                 : "Nada aún"}
             </p>
-            <p className="block whitespace-nowrap font-light text-gray-500 text-[0.8rem] w-full overflow-hidden text-ellipsis max-w-[300px]">
+            <p className="block whitespace-nowrap font-light text-gray-500 text-[0.8rem] w-full overflow-hidden text-ellipsis max-w-[200px]">
               {activeValue.description
                 ? activeValue.description
                 : props.emptySelectedValue
@@ -421,7 +421,7 @@ export function SpecialSelectSchedule({ ...props }: SpecialSelectProps) {
                   className={`w-[10px] h-[10px] relative block rounded-full`}
                 ></span>
               )}
-              <p className="block whitespace-nowrap font-medium text-gray-950 text-[0.9rem] w-[98%] overflow-hidden text-ellipsis">
+              <p className="block whitespace-nowrap font-medium text-gray-950 text-[0.9rem] max-w-[200px] overflow-hidden text-ellipsis">
                 {activeValue.title
                   ? activeValue.title
                   : props.emptySelectedValue
@@ -429,7 +429,7 @@ export function SpecialSelectSchedule({ ...props }: SpecialSelectProps) {
                   : "Nada aún"}
               </p>
             </div>
-            <p className="block whitespace-nowrap font-light text-gray-500 text-[0.8rem] w-full overflow-hidden text-ellipsis">
+            <p className="block whitespace-nowrap font-light text-gray-500 text-[0.8rem] max-w-[200px] overflow-hidden text-ellipsis">
               {activeValue.description
                 ? activeValue.description
                 : props.emptySelectedValue

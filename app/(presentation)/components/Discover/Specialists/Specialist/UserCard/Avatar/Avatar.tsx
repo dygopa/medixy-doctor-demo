@@ -124,7 +124,7 @@ const Avatar = ({ step, setStep, specialist, disabled }: IAvatarProps) => {
                 />
               )}
               <Image
-                className="object-cover w-full h-full"
+                className="object-contain w-full h-full"
                 src={data ? data.toString() : specialist?.avatar}
                 alt=""
                 fill

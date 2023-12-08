@@ -145,7 +145,7 @@ export default function FiltersComponent({
               ])}
             >
               <div className="w-12 h-12 overflow-hidden rounded-lg bg-primary/20 text-primary text-lg flex flex-col justify-center items-center">
-                <Lucide icon="at" />
+                <Lucide icon="office-building-outline" />
               </div>
               <div className="w-[90%] h-full flex flex-col justify-center items-start">
                 <p className="font-semibold text-gray-950 text-[0.9rem]">
@@ -174,7 +174,7 @@ export default function FiltersComponent({
               ])}
             >
               <div className="w-12 h-12 overflow-hidden rounded-lg bg-primary/20 text-primary text-lg flex flex-col justify-center items-center">
-                <Lucide icon="at" />
+                <Lucide icon="medical-bag" />
               </div>
               <div className="w-[90%] h-full flex flex-col justify-center items-start">
                 <p className="font-semibold text-gray-950 text-[0.9rem]">

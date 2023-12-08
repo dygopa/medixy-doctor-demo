@@ -11,6 +11,7 @@ interface ITooltipProps {
   disabledButton?: boolean;
   secondaryDisabledButton?: boolean;
   secondaryTittleButton?: string;
+  errorMessage?: string | null;
 }
 
 export default function TooltipIndicator({
@@ -23,6 +24,7 @@ export default function TooltipIndicator({
   secondaryDisabledButton = true,
   onClickSecondary = () => {},
   secondaryTittleButton = "",
+  errorMessage,
 }: ITooltipProps) {
   return (
     <div
@@ -47,6 +49,9 @@ export default function TooltipIndicator({
       <div className="max-w-[400px] z-[100] w-fit h-fit py-3 bg-white rounded-md px-5 shadow-md">
         <p className="font-bold text-base text-slate-900">{tittle}</p>
         <p className="font-light text-sm text-slate-500 py-4">{description}</p>
+        {errorMessage && (
+          <p className="font-light text-sm text-danger mb-4">{errorMessage}</p>
+        )}
         <div
           className={`w-full flex justify-start ${disabledButton && "hidden"}`}
         >

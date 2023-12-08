@@ -26,6 +26,8 @@ export default function Title({ user, medicalConsulty }: ITitleProps) {
 
   const [showQrCodeModal, setShowQrCodeModal] = useState(false);
 
+  console.log(medicalConsulty);
+
   return (
     <>
       <AlertComponent
@@ -47,7 +49,7 @@ export default function Title({ user, medicalConsulty }: ITitleProps) {
               <div className="lg:text-left md:text-left text-center">
                 <h1 className="text-slate-400 text-lg">
                   {new Date(medicalConsulty.consultationDate).getDate()}/
-                  {new Date(medicalConsulty.consultationDate).getMonth()}/
+                  {new Date(medicalConsulty.consultationDate).getMonth() + 1}/
                   {new Date(medicalConsulty.consultationDate).getFullYear()}
                 </h1>
               </div>

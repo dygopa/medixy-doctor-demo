@@ -26,7 +26,7 @@ export default function MedicalConsultationNext({ user }: { user: IUser }) {
       <div className="w-full h-full lg:flex md:flex sm:flex block justify-between items-start gap-4 p-5 bg-white rounded-md shadow-md">
         <div className="w-[10%] flex flex-col justify-start items-start">
           <span className="w-[2.5rem] h-[2.5rem] bg-yellow-200 text-yellow-500 rounded-md flex flex-col justify-center items-center text-xl">
-            <Lucide icon="at" />
+            <Lucide icon="account" />
           </span>
         </div>
         <div className="w-[90%] h-full flex flex-col justify-between items-center">

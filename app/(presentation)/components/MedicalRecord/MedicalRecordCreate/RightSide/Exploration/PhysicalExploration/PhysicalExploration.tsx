@@ -251,7 +251,7 @@ export default function PhysicalExploration() {
 
         <div>
           <Lucide
-            icon={showBody ? "Minus" : "Plus"}
+            icon={showBody ? "minus" : "plus"}
             color="#22345F"
             size={30}
           />
