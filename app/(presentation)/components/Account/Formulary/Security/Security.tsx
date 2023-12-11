@@ -123,13 +123,13 @@ export default function Security({ account }: IFormularyProps) {
               </p>
               <FormInput
                 type={inputPassword}
-                placeholder="Escribe tu nueva Constraseña"
+                placeholder="Escribe tu nueva contraseña"
                 min={0}
                 className="form-control w-full"
                 onChange={(e: any) => handlePassword(e.target.value)}
               />
               <Lucide
-                icon={inputPassword === "text" ? "EyeOff" : "Eye"}
+                icon={inputPassword === "text" ? "eye-closed" : "eye-outline"}
                 className={twMerge([
                   "absolute top-11 right-0 w-4 h-4 my-auto mr-3 cursor-pointer transition-all",
                   inputPassword === "text" && "text-black",
@@ -148,13 +148,13 @@ export default function Security({ account }: IFormularyProps) {
               </p>
               <FormInput
                 type={inputPassword}
-                placeholder="Escribe tu nueva Constraseña"
+                placeholder="Escribe tu nueva contraseña"
                 min={0}
                 className="form-control w-full"
                 onChange={(e: any) => handlePasswordRepeat(e.target.value)}
               />
               <Lucide
-                icon={inputPassword === "text" ? "EyeOff" : "Eye"}
+                icon={inputPassword === "text" ? "eye-closed" : "eye-outline"}
                 className={twMerge([
                   "absolute top-11 right-0 w-4 h-4 my-auto mr-3 cursor-pointer transition-all",
                   inputPassword === "text" && "text-black",
