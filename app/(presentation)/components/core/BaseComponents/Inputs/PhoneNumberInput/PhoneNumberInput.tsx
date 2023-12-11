@@ -7,6 +7,7 @@ import clsx from "clsx";
 interface IPhoneNumberInputProps {
   preferredCountries?: string[] | null;
   defaultSelectedCountry?: string | null;
+  defaultSelectedCountryCode?: string | null;
   defaultValue?: string;
   onPhoneNumberChange: (obj: {
     phoneCode: string;
@@ -29,6 +30,7 @@ export interface CountryISO {
 export default function PhoneNumberInput({
   preferredCountries,
   defaultSelectedCountry,
+  defaultSelectedCountryCode,
   onPhoneNumberChange,
   isDark = false,
   height = "44px",
@@ -43,10 +45,61 @@ export default function PhoneNumberInput({
   });
   const [focus, setFocus] = useState(false);
 
-  console.log(values);
+  const setDefaultCountryByCountry = (countriesListIso: CountryISO[]) => {
+    const country = countriesListIso.find(
+      (element) => element.code === defaultSelectedCountry?.toLowerCase()
+    );
+
+    if (country?.code && country?.code?.length > 0) {
+      setValues({
+        ...values,
+        phoneCode: country.dialCode,
+        phoneNumber: defaultValue.trim(),
+        fullPhoneNumber: `${country.dialCode}${defaultValue.trim()}`,
+        code: country.code,
+      });
+    } else {
+      setValues({
+        ...values,
+        phoneCode: countriesListIso[0].dialCode,
+        phoneNumber: defaultValue.trim(),
+        fullPhoneNumber: `${
+          countriesListIso[0].dialCode
+        }${defaultValue.trim()}`,
+        code: countriesListIso[0].code,
+      });
+    }
+  };
+
+  const setDefaultCountryByCountryCode = (countriesListIso: CountryISO[]) => {
+    const country = countriesListIso.find(
+      (element) =>
+        element.dialCode === defaultSelectedCountryCode?.toLowerCase()
+    );
+
+    if (country?.dialCode && country?.dialCode?.length > 0) {
+      setValues({
+        ...values,
+        phoneCode: country.dialCode,
+        phoneNumber: defaultValue.trim(),
+        fullPhoneNumber: `${country.dialCode}${defaultValue.trim()}`,
+        code: country.code,
+      });
+    } else {
+      setValues({
+        ...values,
+        phoneCode: countriesListIso[0].dialCode,
+        phoneNumber: defaultValue.trim(),
+        fullPhoneNumber: `${
+          countriesListIso[0].dialCode
+        }${defaultValue.trim()}`,
+        code: countriesListIso[0].code,
+      });
+    }
+  };
 
   const setCountriesDialCodes = () => {
-    const countries: CountryISO[] = [];
+    const countriesListIso: CountryISO[] = [];
 
     CountriesCodeJson.countries.forEach((country) => {
       let countryIso: CountryISO = {} as CountryISO;
@@ -73,44 +126,32 @@ export default function PhoneNumberInput({
         };
       }
 
-      if (countryIso.code?.length > 0) countries.push(countryIso);
+      if (countryIso.code?.length > 0) countriesListIso.push(countryIso);
 
-      if (countries.length > 0 && defaultSelectedCountry) {
-        const country = countries.find(
-          (element) => element.code === defaultSelectedCountry.toLowerCase()
-        );
-
-        if (country?.code && country?.code?.length > 0) {
-          setValues({
-            ...values,
-            phoneCode: country.dialCode,
-            phoneNumber: defaultValue.trim(),
-            fullPhoneNumber: `${country.dialCode}${defaultValue.trim()}`,
-            code: country.code,
-          });
-        } else {
-          setValues({
-            ...values,
-            phoneCode: countries[0].dialCode,
-            phoneNumber: defaultValue.trim(),
-            fullPhoneNumber: `${countries[0].dialCode}${defaultValue.trim()}`,
-            code: countries[0].code,
-          });
-        }
+      if (countriesListIso.length > 0 && defaultSelectedCountryCode) {
+        setDefaultCountryByCountryCode(countriesListIso);
+        return;
       }
 
-      if (countries.length > 0 && !defaultSelectedCountry) {
+      if (countriesListIso.length > 0 && defaultSelectedCountry) {
+        setDefaultCountryByCountry(countriesListIso);
+        return;
+      }
+
+      if (countriesListIso.length > 0 && !defaultSelectedCountry) {
         setValues({
           ...values,
-          phoneCode: countries[0].dialCode,
+          phoneCode: countriesListIso[0].dialCode,
           phoneNumber: defaultValue.trim(),
-          fullPhoneNumber: `${countries[0].dialCode}${defaultValue.trim()}`,
-          code: countries[0].code,
+          fullPhoneNumber: `${
+            countriesListIso[0].dialCode
+          }${defaultValue.trim()}`,
+          code: countriesListIso[0].code,
         });
       }
     });
 
-    setCountries(countries);
+    setCountries(countriesListIso);
   };
 
   const onChange = (e: ChangeEvent<HTMLInputElement>) => {

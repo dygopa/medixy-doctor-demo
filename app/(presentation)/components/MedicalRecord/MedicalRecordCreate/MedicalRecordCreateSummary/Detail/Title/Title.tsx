@@ -10,6 +10,7 @@ import {
   MedicalRecordCreateSummaryContext,
 } from "../../context/MedicalRecordCreateSummaryContext";
 import { IUser } from "domain/core/entities/userEntity";
+import moment from "moment";
 
 interface ITitleProps {
   user: IUser;
@@ -25,8 +26,6 @@ export default function Title({ user, medicalConsulty }: ITitleProps) {
   const { loading, error } = state.getMedicalConsultyPDF;
 
   const [showQrCodeModal, setShowQrCodeModal] = useState(false);
-
-  console.log(medicalConsulty);
 
   return (
     <>
@@ -48,9 +47,9 @@ export default function Title({ user, medicalConsulty }: ITitleProps) {
             {medicalConsulty.consultationDate && (
               <div className="lg:text-left md:text-left text-center">
                 <h1 className="text-slate-400 text-lg">
-                  {new Date(medicalConsulty.consultationDate).getDate()}/
-                  {new Date(medicalConsulty.consultationDate).getMonth() + 1}/
-                  {new Date(medicalConsulty.consultationDate).getFullYear()}
+                  {moment(medicalConsulty.consultationDate).format(
+                    "YYYY/MM/DD"
+                  )}
                 </h1>
               </div>
             )}

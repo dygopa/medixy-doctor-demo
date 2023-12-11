@@ -73,7 +73,7 @@ export default function StepByStep({ user }: { user: IUser }) {
               ])}
             >
               {props.completed ? (
-                <Lucide icon="at" />
+                <Lucide icon="check-circle-outline" />
               ) : (
                 <p className="text-primary">{props.id + 1}</p>
               )}

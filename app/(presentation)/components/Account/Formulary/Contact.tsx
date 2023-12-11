@@ -53,7 +53,16 @@ export default function Contact({ account, setAccount }: IFormularyProps) {
               Teléfono de Contacto
             </p>
             <PhoneNumberInput
-              //defaultValue={account.phone}
+              defaultValue={
+                account.phone && account.phone.length > 0
+                  ? account.phone.substring(3)
+                  : ""
+              }
+              defaultSelectedCountryCode={
+                account.phone && account.phone.length > 0
+                  ? account.phone.substring(0, 3)
+                  : ""
+              }
               defaultSelectedCountry="mx"
               onPhoneNumberChange={(values) => {
                 handlephone(values.fullPhoneNumber, true);

@@ -18,6 +18,7 @@ import {
 } from "(presentation)/components/MedicalRecord/MedicalRecord/context/MedicalRecordContext";
 import AlertComponent from "(presentation)/components/core/BaseComponents/Alert";
 import { IUser } from "domain/core/entities/userEntity";
+import moment from "moment";
 
 interface ITitleProps {
   user: IUser;
@@ -95,9 +96,9 @@ export default function Title({
             {medicalConsulty.consultationDate && (
               <div className="lg:text-left md:text-left text-center">
                 <h1 className="text-slate-400 text-lg">
-                  {new Date(medicalConsulty.consultationDate).getDate()}/
-                  {new Date(medicalConsulty.consultationDate).getMonth()}/
-                  {new Date(medicalConsulty.consultationDate).getFullYear()}
+                  {moment(medicalConsulty.consultationDate).format(
+                    "YYYY/MM/DD"
+                  )}
                 </h1>
               </div>
             )}
@@ -107,7 +108,7 @@ export default function Title({
         <div className="flex items-center justify-end">
           <Menu as="div" className="relative inline-block text-left">
             <Menu.Button className="rounded-lg hover:bg-primary hover:bg-opacity-20 p-1 border border-primary">
-              <Lucide icon="MoreVertical" className="h-5" />
+              <Lucide icon="dots-vertical" className="h-5" />
             </Menu.Button>
             <Transition
               as={Fragment}
@@ -148,7 +149,7 @@ export default function Title({
                         onClick={() => setShowQrCodeModal(true)}
                         className="flex items-center py-2 px-3 m-0 gap-2 hover:bg-gray-100 w-full"
                       >
-                        <Lucide icon="QrCode" size={20} />
+                        <Lucide icon="qrcode" size={20} />
                         Ver QR de la consulta
                       </button>
                     </div>

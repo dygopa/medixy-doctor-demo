@@ -1,11 +1,13 @@
 import Button from "(presentation)/components/core/BaseComponents/Button";
-import Lucide from "(presentation)/components/core/BaseComponents/Lucide";
 import clsx from "clsx";
-import { ICIE10 } from "domain/core/entities/cie10Entity";
 import { IMedicalConsultyImage } from "domain/core/entities/medicalConsultyEntity";
 import { IUser } from "domain/core/entities/userEntity";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import {
+  MedicalRecordCreateContext,
+  IMedicalRecordCreateContext,
+} from "../../context/MedicalRecordCreateContext";
 import FinishedButton from "./FinishedButton/FinishedButton";
 import ImagesDetail from "./ImagesDetail/ImagesDetail";
 
@@ -18,6 +20,11 @@ interface IImagesProps {
 }
 
 export default function Images({ user }: IImagesProps) {
+  const { state } = useContext<IMedicalRecordCreateContext>(
+    MedicalRecordCreateContext
+  );
+  const { loading } = state.createMedicalConsulty;
+
   const router = useRouter();
   const params = useSearchParams();
   const pathname = usePathname();
@@ -123,6 +130,7 @@ export default function Images({ user }: IImagesProps) {
       <div className="w-full lg:flex md:flex justify-end mt-14">
         <div className="lg:mr-2 md:mr-2 mr-0 lg:mb-0 md:mb-0 mb-4">
           <Button
+            disabled={loading}
             variant="outline-primary"
             className="h-[46px] lg:w-[150px] md:w-[150px] w-full"
             onClick={() => {

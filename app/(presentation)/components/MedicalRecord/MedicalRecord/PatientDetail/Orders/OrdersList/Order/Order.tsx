@@ -4,6 +4,7 @@ import {
 } from "(presentation)/(enum)/medicalRecord/medicalRecordEnums";
 import MedicalRecordProvider from "(presentation)/components/MedicalRecord/MedicalRecord/context/MedicalRecordContext";
 import { IMedicalRecord } from "domain/core/entities/medicalRecordEntity";
+import moment from "moment";
 import DownloadPDF from "./DownloadPDF/DownloadPDF";
 
 interface IOrderProps {
@@ -74,15 +75,9 @@ export default function Order({ medicalRecord }: IOrderProps) {
       <div className="flex items-center w-full">
         <div className="lg:mr-8 md:mr-8 mr-3">
           <p className="text-slate-500 font-normal lg:text-[14px] md:text-[14px] text-xs">
-            {new Date(medicalRecord.medicalConsulty.consultationDate).getDate()}
-            /
-            {new Date(
-              medicalRecord.medicalConsulty.consultationDate
-            ).getMonth()}
-            /
-            {new Date(
-              medicalRecord.medicalConsulty.consultationDate
-            ).getFullYear()}
+            {moment(medicalRecord.medicalConsulty.consultationDate).format(
+              "YYYY/MM/DD"
+            )}
           </p>
         </div>
 
