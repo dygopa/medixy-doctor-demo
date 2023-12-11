@@ -1,5 +1,6 @@
 import clsx from "clsx";
 import { IMedicalConsulty } from "domain/core/entities/medicalConsultyEntity";
+import moment from "moment";
 import { Dispatch, SetStateAction, useState } from "react";
 
 interface IMedicalConsultyProps {
@@ -29,9 +30,7 @@ export default function MedicalConsulty({
               isHover ? "text-white" : "text-slate-900",
             ])}
           >
-            {new Date(medicalConsulty.consultationDate).getDate()}/
-            {new Date(medicalConsulty.consultationDate).getMonth()}/
-            {new Date(medicalConsulty.consultationDate).getFullYear()}
+            {moment(medicalConsulty.consultationDate).format("YYYY/MM/DD")}
           </p>
         </div>
 

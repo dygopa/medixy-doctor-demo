@@ -1,17 +1,19 @@
 import { IMedicalConsulty, IMedicalConsultyImage } from "domain/core/entities/medicalConsultyEntity";
 import { ISubject } from "domain/core/entities/subjectEntity";
 import { getDateFormatUTC } from "infrastructure/utils/dates/datesUtils";
+import moment from "moment";
 
 export function medicalConsultySupabaseToMap(data: any): IMedicalConsulty {
+  console.log(data)
   return {
     id: data?.id ?? 0,
     doctorId: data?.doctorId ?? 0,
     subjectId: data?.sujetoId ?? 0,
     subject: {} as ISubject,
-    consultationDate: data?.fechaConsulta ? getDateFormatUTC(data.fechaConsulta) : new Date(),
+    consultationDate: data?.fechaConsulta ? moment(data.fechaConsulta) : new Date(),
     consultationReason: data?.motivoConsulta ?? "",
     referrerBy: data?.referidoPor,
-    sufferingDate: data?.inicioPadecimiento ? new Date(data.inicioPadecimiento) : null,
+    sufferingDate: data?.inicioPadecimiento ? moment(data.fechaConsulta) : null,
     generalInspection: data?.inspeccionGeneral,
     respiratorySystem: data?.aparatoRespiratorio,
     digestiveSystem: data?.aparatoDigestivo,
