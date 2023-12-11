@@ -130,7 +130,7 @@ export default function FinishRegister({ user }: IFinishRegisterProps) {
             onChange={(e: any) => handlePassword(e.target.value)}
           />
           <Lucide
-            icon={inputPassword === "text" ? "EyeOff" : "Eye"}
+            icon={inputPassword === "text" ? "eye-closed" : "eye-outline"}
             className={twMerge([
               "absolute top-4 right-0 w-4 h-4 my-auto mr-3 cursor-pointer transition-all",
               inputPassword === "text" && "text-black",
